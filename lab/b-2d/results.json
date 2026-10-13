@@ -1,0 +1,430 @@
+[
+ {
+  "lane": "B",
+  "repo": "GSAP",
+  "package": "gsap (+ SplitText, MorphSVGPlugin, MotionPathPlugin, CustomEase)",
+  "version": "3.15.0",
+  "licence": "GSAP standard 'no charge' licence: all plugins incl. SplitText and MorphSVG are in the public npm package and free for commercial use; clause: no use in no-code animation tools that materially assist a Webflow competitor",
+  "variant": "B1-gsap",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 168.9,
+  "ms_per_frame_all_runs": [
+   168.9,
+   185,
+   218.7,
+   219.9,
+   239.5,
+   398.8,
+   879.4
+  ],
+  "seek_only_ms_per_frame": 0.02,
+  "quality": 4,
+  "quality_note": "At 100% text, colour, easings (CustomEase within 0.15 px), counter and spring match B6 (89.7 / 69.4 / 45.5 / 42.3 / 69.7 / 69.5 dB on the six stills). Two visible deviations: MorphSVG's default in-betweens for natural circle-to-rect paths lean (4.9 % of the shape area off the symmetric lerp, 2.7 % with smooth:'auto', 0 % when the circle is authored in the same structure), and MotionPath is arc-length parameterised so the document is up to 11.6 px / 2 degrees off the spec's Bezier-t path (frames 68-72, 35.7 dB). Edges clean, no artefacts.",
+  "loc": 33,
+  "deps_mb": 6.3,
+  "needs_bundler": false,
+  "unique": "SplitText mask:'lines' (masked per-word and per-char reveals with no CSS mask of our own), MorphSVG between different path structures, MotionPath with autoRotate, CustomEase from a cubic-bezier string, innerText counters through modifiers (nothing depends on onUpdate), native HyperFrames adapter and Studio timeline.",
+  "verdict": "ADOPT",
+  "why": "Default 2D authoring engine in HyperFrames: 33 lines for the whole shot, native adapter, G1 to G4 pass with two documented settings (force3D false, warm pass), plugins now free under the standard licence.",
+  "evidence": [
+   "b1-gsap/anim.js",
+   "b1-gsap/index.html",
+   "b1-gsap/seekcheck/report.json",
+   "b1-gsap/seekcheck-b/report.json",
+   "b1-gsap/seekcheck-force3d-auto/report.json",
+   "b1-gsap/preview.mp4",
+   "b1-gsap/probe.json",
+   "hf/b1-gsap/index.html",
+   "hf-out/b1-gsap.mp4",
+   "sheets/frame-060.jpg",
+   "sheets/morph-mid-frames.jpg"
+  ],
+  "psnr_vs_b6_db_all_120_frames": {
+   "min": 35.7,
+   "mean": 73.09
+  },
+  "console_messages_in_final_runs": 0,
+  "hyperframes": {
+   "lint": "0 errors, 0 warnings",
+   "render_exit": 0,
+   "output": "hf-out/b1-gsap.mp4",
+   "frames": "120",
+   "size_mb": 8.27,
+   "psnr_vs_own_harness_still_db": {
+    "15": 34.21,
+    "36": 30.84,
+    "60": 30.54,
+    "78": 30.4,
+    "96": 29.71,
+    "117": 29.66
+   },
+   "hf_output_vs_b6_hf_output_all_frames_db": {
+    "min": 35.7,
+    "mean": 56.4
+   },
+   "check": "0 error(s), 0 warning(s), 6 info(s) | ◇ 83/83 text checks pass WCAG AA | ◇  Check passed",
+   "render_twice_identical_decoded_frames": "120/120"
+  }
+ },
+ {
+  "lane": "B",
+  "repo": "Anime.js",
+  "package": "animejs",
+  "version": "4.5.0",
+  "licence": "MIT",
+  "variant": "B2-animejs",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 152.6,
+  "ms_per_frame_all_runs": [
+   152.6,
+   155.2,
+   172.6,
+   236.3,
+   247,
+   314.8,
+   891.4
+  ],
+  "seek_only_ms_per_frame": 0.27,
+  "quality": 4,
+  "quality_note": "Text, colour, easings, counter and the spring (spring(), 0.000 scale deviation) match B6 (89.7 / 58.1 / 41.9 / 41.9 / 66.8 / 66.6 dB on the six stills). Visible deviations: svg.morphTo resamples both paths to polylines and leans like MorphSVG (worst frame 34.9 dB at frames 43-47), and createMotionPath is arc-length (11.9 px / 2 degrees off the Bezier-t path). No edge artefacts.",
+  "loc": 32,
+  "deps_mb": 2.6,
+  "needs_bundler": false,
+  "unique": "Free splitText (words/chars/lines, wrap:'clip'), svg.morphTo / createDrawable / createMotionPath, spring() with settling duration, createSeededRandom; MIT and 115 kB.",
+  "verdict": "ADOPT-FOR small DOM/SVG flourishes where an MIT licence or a tiny footprint matters",
+  "why": "Works and is tiny, but v4 timelines need explicit initial states, a rewind before backward seeks, a warm pass and accessible:false; GSAP stays the default.",
+  "evidence": [
+   "b2-animejs/anim.js",
+   "b2-animejs/index.html",
+   "b2-animejs/seekcheck/report.json",
+   "b2-animejs/seekcheck-b/report.json",
+   "b2-animejs/seekcheck-bare-seek/report.json",
+   "b2-animejs/preview.mp4",
+   "b2-animejs/probe.json",
+   "hf/b2-animejs/index.html",
+   "hf-out/b2-animejs.mp4",
+   "scratch/anime-rewind.html"
+  ],
+  "psnr_vs_b6_db_all_120_frames": {
+   "min": 34.92,
+   "mean": 71.43
+  },
+  "console_messages_in_final_runs": 0,
+  "hyperframes": {
+   "lint": "0 errors, 0 warnings",
+   "render_exit": 0,
+   "output": "hf-out/b2-animejs.mp4",
+   "frames": "120",
+   "size_mb": 8.27,
+   "psnr_vs_own_harness_still_db": {
+    "15": 34.21,
+    "36": 30.84,
+    "60": 30.53,
+    "78": 30.4,
+    "96": 29.71,
+    "117": 29.66
+   },
+   "hf_output_vs_b6_hf_output_all_frames_db": {
+    "min": 35.0,
+    "mean": 55.5
+   },
+   "check": "0 error(s), 0 warning(s), 9 info(s) | ◇ 83/83 text checks pass WCAG AA | ◇  Check passed"
+  }
+ },
+ {
+  "lane": "B",
+  "repo": "Motion",
+  "package": "motion",
+  "version": "13.4.5 (14.x is younger than 14 days)",
+  "licence": "MIT; splitText, AnimateNumber, Typewriter, ScrambleText, Carousel, Ticker, Cursor are Motion+ (paid) and not in this package",
+  "variant": "B3-motion",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 184,
+  "ms_per_frame_all_runs": [
+   184,
+   191.7,
+   207.6,
+   216.2,
+   230.4,
+   237.2,
+   842.2
+  ],
+  "seek_only_ms_per_frame": 16.66,
+  "quality": 5,
+  "quality_note": "After the workarounds the output is within 1 px of B6: 81.3 / 79.3 / 999 (bit-identical) / 80.4 / 75.7 / 83.9 dB on the six stills, all-120-frame mean 87.7 dB, min 42.4 dB at frames 105-109 where Motion's sampled spring is 0.003 scale off the closed form. The morph, the path and the opacity had to bypass Motion's own API, so this is the quality of hand-written code driven by Motion's clock, not of animate().",
+  "loc": 40,
+  "deps_mb": 12.8,
+  "needs_bundler": false,
+  "unique": "First-class springs (spring(), createGeneratorEasing + generateLinearEasing for an offline CSS linear() generator), tiny animate() for UI, stagger(); nothing needed for offline capture that GSAP or B6 lack.",
+  "verdict": "REJECT",
+  "why": "Built for realtime UI: no path morph, opacity always runs as native WAAPI (flaky screenshots), function segments need full-span hacks, no HyperFrames adapter (hf-seek plus buildReady by hand), splitText and AnimateNumber are paid; it duplicates GSAP and B6 at higher risk.",
+  "evidence": [
+   "b3-motion/anim.js",
+   "b3-motion/index.html",
+   "b3-motion/seekcheck/report.json",
+   "b3-motion/seekcheck-b/report.json",
+   "b3-motion/seekcheck-v1/report.json",
+   "b3-motion/preview.mp4",
+   "b3-motion/probe.json",
+   "hf/b3-motion/index.html",
+   "hf-out/b3-motion.mp4",
+   "scratch/motion-d.html",
+   "scratch/b3-waapi-list.mjs"
+  ],
+  "psnr_vs_b6_db_all_120_frames": {
+   "min": 42.36,
+   "mean": 87.67
+  },
+  "console_messages_in_final_runs": 0,
+  "hyperframes": {
+   "lint": "0 errors, 0 warnings",
+   "render_exit": 0,
+   "output": "hf-out/b3-motion.mp4",
+   "frames": "120",
+   "size_mb": 8.2,
+   "psnr_vs_own_harness_still_db": {
+    "15": 34.21,
+    "36": 30.84,
+    "60": 30.54,
+    "78": 30.4,
+    "96": 29.71,
+    "117": 29.66
+   },
+   "hf_output_vs_b6_hf_output_all_frames_db": {
+    "min": 41.4,
+    "mean": 60.2
+   },
+   "check": "0 error(s), 3 warning(s), 12 info(s) | ◇ 83/83 text checks pass WCAG AA | ◇  Check passed"
+  }
+ },
+ {
+  "lane": "B",
+  "repo": "Motion Canvas",
+  "package": "@motion-canvas/core",
+  "version": "3.17.2",
+  "licence": "MIT (core, 2d, ui, player, vite-plugin, vite 5.4.21); transitive: chroma-js BSD-3-Clause AND Apache-2.0, mathjax-full Apache-2.0, rest MIT/ISC",
+  "variant": "B4-motion-canvas",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "g4_note": "null by instruction: Motion Canvas is a frame-based Canvas2D renderer, not a DOM/adapter comp, so it has no HyperFrames adapter. Its output was still pushed through the real pipeline as a muted <video> clip: lint 0 errors/0 warnings (needs data-no-timeline on the root and a clip with GOP <= 30, tagged BT.709), `hyperframes@0.8.142 render ... --video-bitrate 26M -w 2` ok in about 11 s, 120 frames at 30 fps; PSNR vs the PNG source 35 dB (two lossy H.264 generations plus 4:2:0).",
+  "worst_psnr_db": null,
+  "worst_psnr_note": "no mismatch in any gate (harness mismatches: none), so there is no PSNR to report; real export path: 120 of 120 frames bit-identical across two renders, cold sub-range render (frames 30-60) bit-identical to the full render, and bit-identical to the player-page screenshots",
+  "psnr_vs_dom_baseline_b6_db": {
+   "all_120_frames_min": 51.39,
+   "mean": 54.47,
+   "max": 56.01,
+   "six_stills": [
+    55.94,
+    53.22,
+    54.19,
+    54.3,
+    53.94,
+    53.91
+   ],
+   "native_spring_variant_min": 31.89,
+   "native_spring_variant_frames_87_to_95": "31.9 to 36.8"
+  },
+  "ms_per_frame": 232.0,
+  "ms_per_frame_path": "common/seekcheck.mjs forward pass on the <motion-canvas-player> page: __seek(t) + 2 rAF + 1080x1920 PNG screenshot; best of 4 runs (232.0, 260.8, 270.6, 382.7) on a loaded Mac; B6 baseline in the same session 175.4/190.2 (lead's own run 153.6). Pure __seek alone is 20-55 ms (about 33 ms per forward step: the player loop is rAF-gated; backward jumps replay from the scene start).",
+  "ms_per_frame_real_export": "real export path (editor ?render, canvas.toDataURL PNG over the HMR websocket): best 39 ms/frame (4.7 s for 122 frames), typical 54-79 ms/frame under load; startup 1.3-1.5 s; ffmpeg x264 crf 18 encode of the 120 PNGs 1.8-2.9 s; best total about 9.6 s for 120 frames",
+  "quality": 5,
+  "quality_note": "All six stills at 100% match the DOM baseline: 53-56 dB PSNR, over all 120 frames min 51.4 / mean 54.5 dB; every glyph pixel of the headline, counter and chip text is within 2/255 of the baseline (Manrope 800 at -0.035em, the IBM Plex Mono counter and the check-mark fallback glyph are identical because Txt lays text out in a hidden DOM and fills it with canvas fillText, so kerning, spacing and font fallback come from the browser); easing, counter, circle-square-box morph, Bezier-follow with tangent rotation, band draw-on and the 8 percent chip spring land on the right pixels frame by frame. Only differences: under 0.02 percent of pixels (about 200-350 px per frame, up to 93/255 on single edge pixels), all 1 px antialiasing on rounded-rect/pill edges (canvas AA vs DOM pixel snapping, e.g. the highlight bar's left edge, the shape corners, the chip outline). Caveat: exact only with the hand-written closed-form spring; native spring() (120 Hz semi-implicit Euler) is up to 0.021 scale off, 12.8 px at the chip edge, dropping frames 87-95 to 31.9-36.8 dB.",
+  "loc": 254,
+  "loc_note": "scene file src/scenes/ontherecord.tsx: 254 lines (222 code); plus harness/harness.ts 63, harness/index.html 17, vite configs 23, project.ts 7. B6 baseline anim.js is 65 lines.",
+  "deps_mb": 106.1,
+  "deps_note": "installed closure: the five @motion-canvas packages 6.9 MB; with their runtime deps 59 packages 78.6 MB (mathjax-full 40 MB, starry-night 13 MB, speech-rule-engine 8 MB, all unused here); vite 5.4.21 toolchain 10 packages 27.5 MB (esbuild 9.5, its native binary 9.4); plus a 13 MB node_modules/.vite dev cache. Shipped to the page: project.js 189 KB (59 KB gzip) + harness 50 KB + two fonts.",
+  "needs_bundler": true,
+  "needs_bundler_note": "yes, Vite: core/2d lib are unbundled ESM with extensionless imports (cannot be loaded raw in a browser), the plugin handles ?scene/?project/?meta imports and CSS extraction, and its peer range is vite 4.x||5.x only (vite latest is 8.3.4), so the toolchain is pinned to vite 5.4.21. The real export (ImageExporter) only works under the vite dev server (needs import.meta.hot).",
+  "unique": "An in-browser editor plus generator (yield*) timelines over a flexbox layout evaluated by the real DOM and painted on Canvas2D; the editor's ?render URL flag runs the real export headlessly with no clicks; frame-stepped replay makes every frame a pure function of the frame index by construction (G1-G3 pass, export PNGs bit-identical to the player canvas). Nothing here that HyperFrames+GSAP (DOM comps) or manimgx (diagrams) does not already cover for ANVE.",
+  "verdict": "KEEP-CURRENT",
+  "why": "Passes G1-G3 and matches the DOM baseline to 51-56 dB on all 120 frames, but costs a Vite build, about 106 MB of deps, 254 scene lines against 65, three hand-written workarounds (cubic-bezier easing, text/unit splitting, exact spring) plus a parametric Bezier and font-wait, a lossy video hand-off into HyperFrames (GOP and BT.709 gotchas, 35 dB after re-encode), and upstream has had no code commit since 2025-02-16 (last stable 3.17.2 on 2024-12-14, vite capped at 5); only reconsider as ADOPT-FOR generator-timeline explainer scenes with a live editor if manimgx and HyperFrames+GSAP prove insufficient.",
+  "adoption_risk": {
+   "last_stable": "3.17.2, 2024-12-14 (npm time)",
+   "last_prerelease": "3.18.0-alpha.0, 2025-02-16",
+   "github_last_commit": "2026-07-02 (docs domain change); last code commit 2025-02-16 (feat(ui): bring back audio offset editing)",
+   "open_issues": 175,
+   "stars": 19309,
+   "archived": false,
+   "vite_peer_range": "4.x || 5.x"
+  },
+  "evidence": [
+   "b-2d/b4-motion-canvas/seekcheck/report.json",
+   "b-2d/b4-motion-canvas/stills/f0015.png",
+   "b-2d/b4-motion-canvas/stills/f0036.png",
+   "b-2d/b4-motion-canvas/stills/f0060.png",
+   "b-2d/b4-motion-canvas/stills/f0078.png",
+   "b-2d/b4-motion-canvas/stills/f0096.png",
+   "b-2d/b4-motion-canvas/stills/f0117.png",
+   "b-2d/b4-motion-canvas/preview.mp4",
+   "b-2d/b4-motion-canvas/sheet-b4.jpg",
+   "b-2d/b4-motion-canvas/psnr_all_b4_vs_b6.json",
+   "b-2d/b4-motion-canvas/psnr_native_spring_vs_b6.json",
+   "b-2d/b4-motion-canvas/logs/export_runs_summary.json",
+   "b-2d/b4-motion-canvas/logs/report-timing-b4-1.json",
+   "b-2d/b4-motion-canvas/output/runB/000000.png",
+   "b-2d/b4-motion-canvas/encodes/runB.mp4",
+   "b-2d/b4-motion-canvas/hf/index.html",
+   "b-2d/b4-motion-canvas/hf-out/b4-hf-bt709.mp4",
+   "b-2d/b4-motion-canvas/hf-out/stills/f0117.png",
+   "b-2d/b4-motion-canvas/src/scenes/ontherecord.tsx",
+   "b-2d/b4-motion-canvas/harness/harness.ts",
+   "b-2d/b4-motion-canvas/tools/spring_compare.mjs",
+   "b-2d/b4-motion-canvas/tools/arclength_vs_parametric.mjs",
+   "b-2d/b4-motion-canvas/tools/dep_sizes.mjs"
+  ],
+  "psnr_vs_b6_db_all_120_frames": {
+   "min": 51.39,
+   "mean": 54.47
+  }
+ },
+ {
+  "lane": "B",
+  "repo": "Remotion",
+  "package": "remotion",
+  "version": "4.0.529",
+  "licence": "Remotion License (source-available): Free License for individuals, for-profit orgs up to 3 employees, non-profits and evaluation; paid Company License (remotion.pro) otherwise",
+  "variant": "B5-remotion",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null,
+   "G4_note": "not applicable to a frame-based renderer: Remotion is not an HyperFrames adapter. G1-G3 were mapped onto CLI renders: 120/120 PNGs byte-identical for the same command twice (plus a third render after a bundle rebuild), for --concurrency 1, 4 and 6 (frames split across a different number of tabs), and for cold sub-ranges 60-70 and 100-110 against the full render. The mp4 is used as a <video> clip in HyperFrames instead (hf-clip/, lint + check clean, render ok, 37.3 dB and a 2-4 level R/B colour shift versus the lossless frames)."
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 31.7,
+  "ms_per_frame_note": "3.80 s (better of 2; runs were 5.52 and 3.80 s) / 120 frames for the whole `npx remotion render src/index.ts OnTheRecord out.mp4` with default flags (H.264, JPEG frames, 6 tabs). Phases from one verbose run (4.84 s wall): warm bundle 1.05 s, frame capture 1.78 s (14.8 ms/frame effective, ~41 ms per frame per tab), x264 stitch 0.77 s, the remaining ~1.2 s is npx/CLI start, browser launch and cleanup. PNG frames: 9.4-9.9 s (capture 4.9 s). Not comparable with the harness numbers (different path: bundle + CDP screenshots + ffmpeg, machine shared with other renders).",
+  "quality": 3,
+  "quality_note": "Lead's score 3 (worker gave 4): text, layout, glow, bar, counter, chip, band and document are identical to B6 (54-55 dB on the six stills), easings exact, spring within 4.7e-5. But interpolatePath is a d3-interpolate-path port, not flubber: a circle drawn as four arcs morphing to a rounded rect drawn as lines and arcs turns into a faceted polygon for about 0.33 s (frames 37-46, down to 36.5 dB, up to 12 px off the spec shape; sheets/morph-mid-frames.jpg). That is a visible artefact; with a structure-matched shape the render equals B6 (score 5). Worker's full note: From 100% stills and all 120 frames against the B6 reference. Text, layout, glow, bar, counter, chip, band and document are identical to B6: difference images show only 1-2 level gradient banding (Remotion's Chrome Headless Shell 149 vs the harness Chrome; 54 dB floor) and 1 px antialiasing fringes. Easings are exact (Easing.bezier within 6e-6 of the pack, Easing.out(cubic) and inOut(sin) exact); Remotion's spring() with the brief's 227.4/13.87 is within 4.7e-5 of the SPEC curve (0.03 px on the chip), 1e-15 with the unrounded values. One real defect, a library-structure issue: @remotion/paths interpolatePath() is a d3-interpolate-path port (not flubber), and a circle drawn as 4 arcs morphed to a rounded rect drawn as lines+arcs twists into a faceted polygon for frames 37-46 (up to 12.3 px off the SPEC shape, min 36.5 dB, a jump at the first step); interpolatePaths() is smooth but still skewed (up to 7.7 px, min 38.9 dB). With the baseline's matched 8-segment structure the render equals B6 on all 120 frames (min 51.5 dB, mean 54.4). getPointAtLength(u*L) is parameterised by arc length and puts the document up to 12.7 px / 2 deg off the SPEC Bezier-t path (35.7 dB), so the shipped comp uses the closed-form Bezier. Score 4 as delivered (natural morph); 5 with the matched structure.",
+  "loc": 100,
+  "loc_note": "100 non-blank non-comment lines of TS/TSX (OnTheRecord.tsx 81, Root.tsx 16, index.ts 3) plus 18 lines of reused CSS (shot.css, 31 lines with comments); the composition also carries the comparison modes (matched, keyframes, arclength).",
+  "deps_mb": 224,
+  "deps_note": "224 MB node_modules right after `npm i` (251 packages: remotion + @remotion/cli, paths, fonts at 4.0.529, react + react-dom 19.3.0). Plus 193 MB Chrome Headless Shell 149.0.7790.0 in node_modules/.remotion and 166-176 MB webpack cache created by the first bundle: `du -sh node_modules` is 583-593 MB after the first render.",
+  "needs_bundler": true,
+  "needs_bundler_note": "the CLI bundles the entry with its own webpack + esbuild-loader (cold 3.9 s, warm 0.7 s; target chrome85, so no top-level await); no bundler config of ours. React 19.3.0.",
+  "unique": "React/TypeScript component model with Studio scrubbing; Remotion's closed-form spring() (exact damped oscillator) and Easing.bezier/out/inOut as plain functions; @remotion/paths (interpolatePath(s), evolvePath, getPointAtLength/TangentAtLength, cutPath, reduceInstructions); props + calculateMetadata data-driven batch renders; one command to mp4, PNG sequence or arbitrary frame lists; parallel multi-tab capture. HyperFrames + GSAP (CustomEase, MorphSVG, MotionPath, sine.inOut) already covers every effect of this shot; the only thing we lack is the React/Studio authoring layer.",
+  "verdict": "KEEP-CURRENT",
+  "why": "Deterministic and baseline-exact (G1-G3 bit-identical, B6 parity when the morph is structure-matched), but it is a second renderer, not an HF adapter (clip-only: lossy mp4 with a colour shift through HF), it adds 224 MB plus a 193 MB browser and a bundle step, needs a paid licence above 3 employees, its path morph is not flubber and twists natural shapes, and the Remotion skills carry wrong or outdated advice; HyperFrames + GSAP already do the same job.",
+  "evidence": [
+   "b-2d/b5-remotion/src/OnTheRecord.tsx",
+   "b-2d/b5-remotion/stills/f0015.png",
+   "b-2d/b5-remotion/stills/f0036.png",
+   "b-2d/b5-remotion/stills/f0060.png",
+   "b-2d/b5-remotion/stills/f0078.png",
+   "b-2d/b5-remotion/stills/f0096.png",
+   "b-2d/b5-remotion/stills/f0117.png",
+   "b-2d/b5-remotion/sheet-b5.jpg",
+   "b-2d/b5-remotion/preview.mp4",
+   "b-2d/b5-remotion/out/preview-matched.mp4",
+   "b-2d/b5-remotion/gates.json",
+   "b-2d/b5-remotion/out/seq-a.sha256",
+   "b-2d/b5-remotion/work/vs_b6_all.json",
+   "b-2d/b5-remotion/work/compare_b6.json",
+   "b-2d/b5-remotion/work/morph/sheet-natural.png",
+   "b-2d/b5-remotion/work/morph/sheet-matched.png",
+   "b-2d/b5-remotion/work/morph/sheet-keyframes.png",
+   "b-2d/b5-remotion/work/morph/sheet-port.png",
+   "b-2d/b5-remotion/hf-clip/index.html",
+   "b-2d/b5-remotion/hf-clip-out.mp4",
+   "b-2d/b5-remotion/hf-port/index.html",
+   "b-2d/b5-remotion/hf-port-out.mp4",
+   "b-2d/b5-remotion/hf-port-v1-skill-faithful/index.html",
+   "b-2d/b5-remotion/work/runs.jsonl",
+   "b-2d/b5-remotion/evidence.json"
+  ],
+  "quality_worker": 4,
+  "psnr_vs_b6_db_all_120_frames": {
+   "min": 36.5,
+   "mean": 52.5
+  }
+ },
+ {
+  "lane": "B",
+  "repo": "ANVE motion pack",
+  "package": "pack type/ease.js + type/presets.js (own code, no library)",
+  "version": "pack as of 2026-10-13",
+  "licence": "owned",
+  "variant": "B6-baseline",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 168.1,
+  "ms_per_frame_all_runs": [
+   168.1,
+   170,
+   188.6,
+   199.1,
+   201,
+   201.8,
+   409.1
+  ],
+  "seek_only_ms_per_frame": 0.04,
+  "quality": 5,
+  "quality_note": "The reference by definition: every pixel is a pure function of t, G1 to G3 bit-exact on the first run, text/colour/easings exact to the spec. Limits are features, not artefacts: no path morph between different structures (matched structure authored by hand), no motion-path helper (closed-form Bezier), no splitter (8 lines).",
+  "loc": 53,
+  "deps_mb": 0.0,
+  "needs_bundler": false,
+  "unique": "Zero dependencies (13 kB of pack code on top of 53 lines), bit-exact in every gate, engine-independent (the same functions drive DOM, canvas and three.js overlays).",
+  "verdict": "KEEP-CURRENT",
+  "why": "Lowest-risk engine and the correctness reference; stays as the component layer (type, gfx, captions) while GSAP is used for authoring.",
+  "evidence": [
+   "b6-baseline/anim.js",
+   "b6-baseline/index.html",
+   "b6-baseline/seekcheck/report.json",
+   "b6-baseline/seekcheck-b/report.json",
+   "b6-baseline/preview.mp4",
+   "b6-baseline/probe.json",
+   "hf/b6-baseline/index.html",
+   "hf-out/b6-baseline.mp4"
+  ],
+  "psnr_vs_b6_db_all_120_frames": {
+   "min": 999.0,
+   "mean": 999.0
+  },
+  "console_messages_in_final_runs": 0,
+  "hyperframes": {
+   "lint": "0 errors, 0 warnings",
+   "render_exit": 0,
+   "output": "hf-out/b6-baseline.mp4",
+   "frames": "120",
+   "size_mb": 8.26,
+   "psnr_vs_own_harness_still_db": {
+    "15": 34.21,
+    "36": 30.84,
+    "60": 30.54,
+    "78": 30.4,
+    "96": 29.71,
+    "117": 29.66
+   },
+   "hf_output_vs_b6_hf_output_all_frames_db": null,
+   "check": "0 error(s), 3 warning(s), 12 info(s) | ◇ 83/83 text checks pass WCAG AA | ◇  Check passed",
+   "render_twice_identical_decoded_frames": "120/120"
+  }
+ }
+]

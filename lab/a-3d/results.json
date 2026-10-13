@@ -1,0 +1,940 @@
+[
+ {
+  "lane": "A",
+  "repo": "Three.js",
+  "package": "three",
+  "version": "0.160.0",
+  "licence": "MIT",
+  "variant": "A0-kit-baseline",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": 116.069266,
+  "ms_per_frame": 44.5,
+  "quality": 4,
+  "quality_note": "reference look at 100 %: soft shadows from the jittered key light, crisp text, band core at the design hex with a smooth halo and LED glow, subtle DoF; three from jsDelivr and from node_modules are pixel-identical (PSNR inf)",
+  "loc": 51,
+  "deps_mb": 1.21,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "KEEP-CURRENT",
+  "why": "the kit's own chain is the look reference, the cheapest of the lot and passes every gate; nothing tested beats it",
+  "evidence": [
+   "a-3d/kit-copy/set-A0.html",
+   "a-3d/qa/seekcheck/A0-at/report.json",
+   "a-3d/qa/seekcheck/A0-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/g4/A0/clip.mp4"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.36.7",
+  "licence": "Zlib",
+  "variant": "A1-pp",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 53.6,
+  "quality": 3,
+  "quality_note": "idiomatic chain (SelectiveBloom + DoF + Vignette + custom grade effect): edges as good as the kit, but the band core drifts yellow (bloom is added on the emitter itself), LED glow nearly gone, desk glow decals cannot be selected without washing the white desk, and the DoF fill pass thins macro text (1st-percentile text luminance 58.7 vs 48.0) | PSNR vs A0 over the 5 key frames: 27.71 to 41.85 dB",
+  "loc": 95,
+  "deps_mb": 1.8,
+  "needs_bundler": false,
+  "unique": "ready-made EffectPass framework: LUT3D, SMAA, tone-map operators, SSAO, god rays, glitch, outline, etc.",
+  "verdict": "REJECT",
+  "why": "as a replacement for the kit's bloom and DoF it needs two custom effects and per-version re-tuning to get back to the kit's look, and it is not cheaper",
+  "evidence": [
+   "a-3d/kit-copy/set-A1.html",
+   "a-3d/qa/seekcheck/A1-at/report.json",
+   "a-3d/qa/seekcheck/A1-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/contact-wide-aspect.jpg",
+   "a-3d/qa/cal/"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.36.7",
+  "licence": "Zlib",
+  "variant": "A1-pp-restore",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 61.1,
+  "quality": 4,
+  "quality_note": "A1 plus a 10-line EmitterRestore effect (the kit's 'no bloom inside the source' mask): band core back at the design orange, halo within 6.6 RMS of the kit; LED glow still weaker and macro text still softer than the kit | PSNR vs A0 over the 5 key frames: 27.71 to 42.75 dB",
+  "loc": 95,
+  "deps_mb": 1.8,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "reaches near parity only with custom effects on top, so it buys nothing over the kit's chain",
+  "evidence": [
+   "a-3d/kit-copy/set-A1.html",
+   "a-3d/qa/seekcheck/A1-restore-at/report.json",
+   "a-3d/qa/seekcheck/A1-restore-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/probe/restore-compare.png"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.36.7",
+  "licence": "Zlib",
+  "variant": "A1-pp-nodof",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 3,
+  "quality_note": "DoF switched off: text is the crispest of all variants (macro p1 45.1 vs kit 48.0) but the plate loses its subtle depth of field | PSNR vs A0 over the 5 key frames: 30.53 to 41.32 dB",
+  "loc": 95,
+  "deps_mb": 1.8,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "diagnostic variant: shows the DoF effect is what softens text",
+  "evidence": [
+   "a-3d/kit-copy/set-A1.html",
+   "a-3d/qa/seekcheck/A1-nodof-at/report.json",
+   "a-3d/qa/seekcheck/A1-nodof-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.36.7",
+  "licence": "Zlib",
+  "variant": "A1-pp-smaa",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": 116.069266,
+  "ms_per_frame": 14,
+  "quality": 2,
+  "quality_note": "single unjittered sample + SMAAEffect (HIGH): stair-steps on curved edges and the desk edge, the key-light jitter is lost so the cast shadow turns hard and dark, no shutter blur on fast frames | PSNR vs A0 over the 5 key frames: 25.42 to 31.04 dB",
+  "loc": 95,
+  "deps_mb": 1.8,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "SMAA is 3.5x cheaper than the 4-subframe jitter but loses soft shadows and motion blur as well as edge quality",
+  "evidence": [
+   "a-3d/kit-copy/set-A1.html",
+   "a-3d/qa/seekcheck/A1-smaa-at/report.json",
+   "a-3d/qa/seekcheck/A1-smaa-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/probe/shadow-compare.png",
+   "a-3d/qa/probe/hop-compare.png"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.36.7",
+  "licence": "Zlib",
+  "variant": "A1-pp-smaa-msaa4",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 3,
+  "quality_note": "single sample + SMAAEffect + MSAA 4 (aa=smaa&msaa=4): edges as clean as the kit's (desk edge and heads, qa/probe/smaa-msaa4-desk-edge.png), but the cast shadow is hard and dark and there is no shutter blur; PSNR vs A0 29.3 (band), 29.5 (wide), 31.1 dB (macroB); about the cost of the one-sample variants",
+  "loc": 95,
+  "deps_mb": 1.8,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "edge quality is fine with MSAA 4, but a single sample drops the soft shadow and the motion blur that the kit's jitter gives for about 3x the time",
+  "evidence": [
+   "a-3d/kit-copy/set-A1.html",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/probe/smaa-msaa4-desk-edge.png",
+   "a-3d/qa/probe/smaa-msaa4-compare-half.png"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.36.7",
+  "licence": "Zlib",
+  "variant": "A1-pp-agx",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 2,
+  "quality_note": "native AgX ToneMappingEffect instead of the kit's shoulder: flat grey cast, the palette's design hexes are lost (PSNR 19 dB vs kit) | PSNR vs A0 over the 5 key frames: 18.97 to 20.46 dB",
+  "loc": 95,
+  "deps_mb": 1.8,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "native tone mappers fight the kit's hex-faithful grade",
+  "evidence": [
+   "a-3d/kit-copy/set-A1.html",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/contact-looks.jpg"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.36.7",
+  "licence": "Zlib",
+  "variant": "A1-pp-lut",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 3,
+  "quality_note": "LUT3DEffect from a generated 17^3 .cube works and is seek-safe, but inside the full pp chain it carries the A1 differences (use A4 instead) | PSNR vs A0 over the 5 key frames: 26.3 to 31.54 dB",
+  "loc": 95,
+  "deps_mb": 1.8,
+  "needs_bundler": false,
+  "unique": "LUT3D .cube import",
+  "verdict": "REJECT",
+  "why": "superseded by A4, where the same LUT sits on the kit's own chain",
+  "evidence": [
+   "a-3d/kit-copy/set-A1.html",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/contact-looks.jpg"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "Three.js",
+  "package": "three (examples/jsm/postprocessing)",
+  "version": "0.160.0",
+  "licence": "MIT",
+  "variant": "A2-addons",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 68.9,
+  "quality": 3,
+  "quality_note": "closest numerically to the kit (41-43 dB at the normal camera, band core kept at the design orange because the kit's own comp shader and bloom-source trick are reused, macro text 40.6 dB), but BokehPass blurs near-field silhouettes (a soft halo around Peri's and the Partner's heads at the wide frame), UnrealBloom's LED glow is weaker, and edges are only as good as the jitter gives | PSNR vs A0 over the 5 key frames: 33.66 to 42.6 dB",
+  "loc": 71,
+  "deps_mb": 1.31,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "same look as the kit at a higher time per frame (BokehPass re-renders the scene for depth) with softer silhouettes and no new capability",
+  "evidence": [
+   "a-3d/kit-copy/set-A2.html",
+   "a-3d/qa/seekcheck/A2-at/report.json",
+   "a-3d/qa/seekcheck/A2-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/g4/A2/clip.mp4"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "Three.js",
+  "package": "three (examples/jsm/postprocessing)",
+  "version": "0.160.0",
+  "licence": "MIT",
+  "variant": "A2-addons-smaa",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": 113.058966,
+  "ms_per_frame": 12.6,
+  "quality": 2,
+  "quality_note": "single sample + SMAAPass: visible stair-stepping on the head and band edges (worse than pp's SMAA), hard cast shadow, no shutter blur | PSNR vs A0 over the 5 key frames: 29.28 to 31.38 dB",
+  "loc": 71,
+  "deps_mb": 1.31,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "same loss as the pp SMAA variant, with more aliasing",
+  "evidence": [
+   "a-3d/kit-copy/set-A2.html",
+   "a-3d/qa/seekcheck/A2-smaa-at/report.json",
+   "a-3d/qa/seekcheck/A2-smaa-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/probe/shadow-compare.png",
+   "a-3d/qa/probe/hop-compare.png"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "Three.js",
+  "package": "three",
+  "version": "0.186.1",
+  "licence": "MIT",
+  "variant": "A3-three186",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": 113.058966,
+  "ms_per_frame": 42,
+  "quality": 3,
+  "quality_note": "runs with one console.error ('shadow chunk patch failed': r186 ships its own Vogel-disk PCF); every lit surface about 7/255 darker than the 0.160 kit (wall 227.7 to 220.3), PSNR 32.8 dB | PSNR vs A0 over the 5 key frames: 32.34 to 39.76 dB",
+  "loc": 0,
+  "deps_mb": 2.02,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "KEEP-CURRENT",
+  "why": "do not bump three now: drift is far below the 40 dB bar and nothing in r186 improves our plates",
+  "evidence": [
+   "a-3d/kit-copy/set-A3.html",
+   "a-3d/qa/seekcheck/A3-at/report.json",
+   "a-3d/qa/seekcheck/A3-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/final/A3/"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "Three.js",
+  "package": "three",
+  "version": "0.186.1",
+  "licence": "MIT",
+  "variant": "A3c-three186-trim",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": false
+  },
+  "worst_psnr_db": 113.058966,
+  "ms_per_frame": 42,
+  "quality": 4,
+  "quality_note": "same with a global exposure trim of 1.073: PSNR 38.3 dB (still under 40), look is the kit's | PSNR vs A0 over the 5 key frames: 37.72 to 39.7 dB",
+  "loc": 1,
+  "deps_mb": 2.02,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "KEEP-CURRENT",
+  "why": "a bump is a one-off re-grade (+7.3 % exposure, retire patchShadows) plus re-verifying every shipped spot, for no gain",
+  "evidence": [
+   "a-3d/kit-copy/set-A3c.html",
+   "a-3d/qa/seekcheck/A3-at/report.json",
+   "a-3d/qa/seekcheck/A3-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/g4/A3c/clip.mp4",
+   "a-3d/qa/final/A3c/"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.39.5",
+  "licence": "Zlib",
+  "variant": "A1b-pp639-three186",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": 116.069266,
+  "ms_per_frame": null,
+  "quality": 3,
+  "quality_note": "pp 6.39.5 on three 0.186.1: the same DoF code produced a fully blurred frame until focusDistance/focusRange were re-mapped (6.39 moved them from normalised depth to world units under the same property names); afterwards 32 dB vs A0 (the three-186 drift) | PSNR vs A0 over the 5 key frames: 26.87 to 32.06 dB",
+  "loc": 95,
+  "deps_mb": 2.63,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "conditional variant (drift was not negligible), run as a probe: shows pp minor versions change semantics silently",
+  "evidence": [
+   "a-3d/kit-copy/set-A1b.html",
+   "a-3d/qa/seekcheck/A1b-at/report.json",
+   "a-3d/qa/seekcheck/A1b-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/final/A1b/"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing (pmndrs postprocessing)",
+  "package": "postprocessing",
+  "version": "6.36.7",
+  "licence": "Zlib",
+  "variant": "A4-kit-plus-pp-tail",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": 116.069266,
+  "ms_per_frame": 47.6,
+  "quality": 4,
+  "quality_note": "the kit's chain untouched plus ONE pmndrs EffectPass (LUT3DEffect) after the comp: kit fidelity kept (crisp text, orange band, soft shadows), grade changes as the LUT says; with an identity effect the output is bit-identical to A0 (PSNR inf) | PSNR vs A0 over the 5 key frames: 31.72 to 34.39 dB",
+  "loc": 16,
+  "deps_mb": 1.8,
+  "needs_bundler": false,
+  "unique": "per-spot .cube grading and any single-pass pmndrs effect without touching the kit's DoF/bloom",
+  "verdict": "ADOPT-FOR per-spot LUT grade or a one-off tail effect",
+  "why": "14 added lines, no change to the kit's output when off, seek-safe, one 0.6 MB ESM dependency",
+  "evidence": [
+   "a-3d/kit-copy/set-A4.html",
+   "a-3d/qa/seekcheck/A4-at/report.json",
+   "a-3d/qa/seekcheck/A4-fr/report.json",
+   "a-3d/qa/contact-crop-band.jpg",
+   "a-3d/qa/contact-crop-text.jpg",
+   "a-3d/qa/contact-crop-edges.jpg",
+   "a-3d/qa/contact-crop-macroL.jpg",
+   "a-3d/qa/contact-crop-macroB.jpg",
+   "a-3d/qa/g4/A4/clip.mp4",
+   "a-3d/adapters/core-tail.diff",
+   "a-3d/qa/final/A4-id/"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "Three.js",
+  "package": "three + postprocessing (pmndrs, no React, no bundler)",
+  "version": "three 0.160.0, postprocessing 6.36.7",
+  "licence": "MIT (three), Zlib (postprocessing)",
+  "variant": "A2-v1-vanilla",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 124.6,
+  "ms_per_frame_runs": [
+   124.6,
+   164.5
+  ],
+  "ms_per_frame_in_page_gpu_incl": [
+   11.5,
+   11.3
+  ],
+  "boot_ms": [
+   266,
+   299
+  ],
+  "quality": 4,
+  "quality_note": "From 100% stills: clean MSAA 4 edges, smooth soft bloom halo on the black body, subtle clean DoF at the desk edge, neutral colour (desk 214/213/208, band 239/153/64). One point off: no dither or grain stage so faint banding rings in the vignette/wall gradient under x4 contrast, and single-sample (no 4-subframe supersampling or shutter).",
+  "loc": 161,
+  "loc_code_comments_stripped": 142,
+  "loc_variant_specific_code": 53,
+  "loc_kit_builders_copied_unmodified_nonblank": 459,
+  "deps_mb": 35.0,
+  "runtime_mb": 2.21,
+  "needs_bundler": false,
+  "needs_bundler_why": "import map to ./node_modules; all ES modules served as static files",
+  "also_installed": [],
+  "unique": "pmndrs effect set (DoF, selective bloom, tone mapping, vignette) in 7 lines of page code; the kit chain remains richer for hero plates (4-subframe supersampling, shutter, grain, knee).",
+  "verdict": "ADOPT-FOR single-sample plates and quick previews with pmndrs effects",
+  "adopt_for": "single-sample plates and quick previews with pmndrs effects; hero plates keep the kit chain (lead post-chain bake-off decides)",
+  "why": "Passes G1-G4 with the kit builders unmodified, 11 ms a frame, no bundler, 53 lines of variant code; needs two shader-chunk patches (kit shadows, 21-line Neutral tone map for three r160) and DoF-before-bloom ordering.",
+  "evidence": [
+   "RESULTS-A2.md",
+   "evidence/contact-sheet.jpg",
+   "evidence/diff/",
+   "evidence/lights-parity.txt",
+   "evidence/crops/sheet-crops.jpg",
+   "evidence/loc.json",
+   "evidence/perf-seek.txt",
+   "evidence/transitive-ages.txt",
+   "evidence/A2-v1-vanilla/run1/report.json",
+   "evidence/A2-v1-vanilla/run2/report.json",
+   "evidence/g4/A2-v1-vanilla.mp4",
+   "evidence/g4/A2-v1-vanilla-mp4-frame30.png"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Three Fiber",
+  "package": "@react-three/fiber",
+  "version": "9.8.1",
+  "licence": "MIT",
+  "variant": "A2-v2-r3f",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 120.2,
+  "ms_per_frame_runs": [
+   165.4,
+   120.2
+  ],
+  "ms_per_frame_in_page_gpu_incl": [
+   11.2,
+   11.1
+  ],
+  "boot_ms": [
+   653,
+   488
+  ],
+  "v1_vs_v2_psnr_db_frames_0_40_80_119": [
+   106.07,
+   104.93,
+   103.76,
+   106.53
+  ],
+  "quality": 4,
+  "quality_note": "Pixel-identical to the vanilla variant (PSNR 106.07/104.93/103.76/106.53 dB at frames 0/40/80/119, x8 difference image black), so the same judgement: clean edges, smooth halo, subtle DoF, neutral colour, faint banding in the gradient.",
+  "loc": 242,
+  "loc_code_comments_stripped": 219,
+  "loc_variant_specific_code": 130,
+  "loc_kit_builders_copied_unmodified_nonblank": 459,
+  "deps_mb": 215.5,
+  "runtime_mb": 1.13,
+  "runtime_gzip_kb": 324,
+  "needs_bundler": true,
+  "needs_bundler_why": "react 19.3.0 / react-dom 19.3.0 are CJS only (type commonjs, exports default ./index.js, entry is module.exports = require(./cjs/...)); a no-bundler R3F page needs a CDN +esm conversion (not tested, needs approval)",
+  "also_installed": [
+   "react@19.3.0",
+   "react-dom@19.3.0",
+   "vite@8.3.1",
+   "@vitejs/plugin-react@6.1.1",
+   "three@0.160.0",
+   "postprocessing@6.36.7 (override)",
+   "n8ao@2.0.1 (dependency of @react-three/postprocessing, 0.8 MB, not bundled)",
+   "overrides pinning rolldown 1.2.11, postcss 8.5.28, nanoid 3.3.19, source-map-js 1.2.1, @babel/runtime 7.29.7 (all transitive and older than 14 days)"
+  ],
+  "unique": "Declarative JSX for camera, lights and effects and automatic composer resize/dispose; nothing the kit lacks for an offline plate.",
+  "verdict": "KEEP-CURRENT",
+  "adopt_for": "only if ANVE ships a React web preview or configurator of the box that should share these scene components",
+  "why": "R3F reproduces the vanilla frame to the last bit and passes every gate, but costs 6x the installed deps, a bundler, 2.4x the variant code and about ten seek hazards, with no pixel, speed or capability gain.",
+  "evidence": [
+   "RESULTS-A2.md",
+   "evidence/contact-sheet.jpg",
+   "evidence/diff/",
+   "evidence/lights-parity.txt",
+   "evidence/crops/sheet-crops.jpg",
+   "evidence/loc.json",
+   "evidence/perf-seek.txt",
+   "evidence/transitive-ages.txt",
+   "evidence/A2-v2-r3f/run1/report.json",
+   "evidence/A2-v2-r3f/run2/report.json",
+   "evidence/g4/A2-v2-r3f.mp4",
+   "evidence/g4/A2-v2-r3f-mp4-frame30.png",
+   "v2-r3f/app/SeekCanvas.jsx",
+   "v2-r3f/app/Shot.jsx"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "Drei",
+  "package": "@react-three/drei",
+  "version": "10.7.9",
+  "licence": "MIT",
+  "variant": "A2-v2-r3f/drei",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 4,
+  "quality_note": "Judged from the shared V2 stills (Drei contributes only PerspectiveCamera there) plus the lab stills: SoftShadows gives a visibly softer contact shadow and MeshReflectorMaterial mirrors the floor, both working on three r160.",
+  "loc": 1,
+  "deps_mb": 111.9,
+  "deps_mb_note": "drei + hls.js + three-stdlib + stats-gl (with a nested three 0.170) + @mediapipe/tasks-vision alone; none of it reaches the bundle (sideEffects false)",
+  "needs_bundler": true,
+  "lab_gates": {
+   "base": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": null
+    }
+   },
+   "env": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": null
+    }
+   },
+   "contact": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": null
+    }
+   },
+   "contact1": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": null
+    }
+   },
+   "float": {
+    "G1": true,
+    "G2": true,
+    "G3": false,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": 17.864331
+    }
+   },
+   "sparkles": {
+    "G1": true,
+    "G2": true,
+    "G3": false,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": 36.625927
+    }
+   },
+   "accum": {
+    "G1": false,
+    "G2": false,
+    "G3": false,
+    "worst_psnr_db": {
+     "repeat": 40.13533,
+     "order": 40.13533,
+     "cold": 62.253928
+    }
+   },
+   "wobble": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": null
+    }
+   },
+   "transmission": {
+    "G1": true,
+    "G2": true,
+    "G3": false,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": 98.745328
+    }
+   },
+   "softshadows": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": null
+    }
+   },
+   "reflector": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "worst_psnr_db": {
+     "repeat": null,
+     "order": null,
+     "cold": null
+    }
+   }
+  },
+  "unique": "SoftShadows (PCSS contact-hardening chunk patch) and MeshReflectorMaterial (blurred planar reflection) are plain-three code the kit lacks; both passed G1-G3 in the lab.",
+  "verdict": "ADOPT-FOR cherry-pick (port without React) SoftShadows and MeshReflectorMaterial into the kit",
+  "adopt_for": "cherry-pick (port without React) SoftShadows and MeshReflectorMaterial into the kit; do not use Drei at runtime",
+  "why": "Most helpers duplicate the kit or three/addons, and Float, Sparkles, AccumulativeShadows and MeshTransmissionMaterial fail G3 or worse (Math.random, clocks, history); only two ideas are worth porting.",
+  "evidence": [
+   "RESULTS-A2.md",
+   "evidence/lab/summary.md",
+   "evidence/lab/sheet-lab.jpg",
+   "evidence/lab/sheet-lab2.jpg",
+   "v2-r3f/app/lab.jsx"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Postprocessing",
+  "package": "@react-three/postprocessing",
+  "version": "3.1.2",
+  "licence": "MIT (postprocessing Zlib, n8ao ISC)",
+  "variant": "A2-v2-r3f/react-postprocessing",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 4,
+  "quality_note": "Identical pixels to vanilla pmndrs once V1 copies the wrapper defaults (ADD blend for selective bloom, MULTIPLY_RGB_SET_ALPHA DoF mask).",
+  "loc": 9,
+  "deps_mb": 0.7,
+  "needs_bundler": true,
+  "unique": null,
+  "verdict": "REJECT",
+  "adopt_for": null,
+  "why": "Redundant with pmndrs postprocessing used directly (same pixels); inside R3F it builds its pipeline over several async cycles, hard-codes blend and mask choices, re-creates the composer on camera swap and warns without a lights prop; keep only if R3F itself is adopted.",
+  "evidence": [
+   "RESULTS-A2.md",
+   "v2-r3f/app/Shot.jsx",
+   "evidence/lights-parity.txt"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "Rapier",
+  "package": "@dimforge/rapier3d-compat",
+  "version": "0.21.0",
+  "licence": "Apache-2.0",
+  "variant": "A3-P1-bake",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 501.3,
+  "ms_per_frame_note": "seekcheck median (seek + 2 rAF + PNG screenshot) on the real kit page, 1080x1920, full post chain; better of 2 runs (run 2 was 972 ms with other lanes on the GPU). Production render.mjs: 407 ms/frame (120 frames in 48.9 s, 8 subframes on fast frames).",
+  "quality": 4,
+  "quality_note": "From the 100% production stills: 24 textured cards tumble in with a believable motion blur, flop flat, slide and settle by 1.83 s; the box drops in from above the frame (no pop-in), lands on the pile at 2.98 s at 9.5 u/s, rebounds 0.059 u (restitution 0.2) and rests on the cards (base y 0.016, tilt 0.8 deg) with cards sticking out under it and no visible crush-through (deepest card/box overlap 0.009 u = 1.1 card thicknesses, for one 1/60 s step). Not a 5: rigid slabs have no paper flutter, one card balances on its edge for about 0.4 s, the bounce is subtle (about 20 px), and frames 0-10 already have cards mid-air.",
+  "loc": 251,
+  "loc_note": "bake.mjs 143 + table-player.js 63 + timelines/drop.js 45 (the minimal adapter drop-min.js is 20); analyze.mjs 107 is QA tooling",
+  "deps_mb": 15,
+  "deps_note": "node_modules of the build-time bake tool (rapier3d-compat 0.21.0 incl. a 3.1 MB wasm inlined in a 4.3 MB module); shipped to the page: 0.39 MB table JSON (0.09 MB gzip) + 4.7 KB player",
+  "needs_bundler": false,
+  "unique": "Multi-body rigid physics we have none of today (24 cards + box: collisions, stacking, friction slides, tumbling), baked once into a seek-safe table: zero runtime dependency, byte-identical on Node 21/22/25 and Chrome 154, contact events with impact speeds for frame-exact sound cues (37 cues generated).",
+  "verdict": "ADOPT-FOR multi-body physical motion (scatter, pile, topple, drop onto things), baked at build time; keep springs for single-object moves",
+  "why": "A baked table is a pure function of t, so the real kit page passes G1-G3 bit-exactly and G4 cleanly for a 0.13 s bake and a 387 KB table, while naive live physics fails G2 and even the seekable live variant needs a replay per rewind plus 114 MB of tooling.",
+  "evidence": [
+   "a-3d/physics/evidence/p1/report.json",
+   "a-3d/physics/evidence/p1-run2/report.json",
+   "a-3d/physics/evidence/p1/g4/drop.mp4",
+   "a-3d/physics/evidence/p1/g4/sheet-g4.jpg",
+   "a-3d/physics/evidence/A3-P1-contact-4s.jpg",
+   "a-3d/physics/evidence/p1/qa/render-qa.json",
+   "a-3d/physics/evidence/p1/prod-hash.json",
+   "a-3d/physics/evidence/p1-determinism.json",
+   "a-3d/physics/evidence/bake-browser.json",
+   "a-3d/physics/evidence/p1-analysis.json",
+   "a-3d/physics/evidence/p1-variants.json",
+   "a-3d/physics/evidence/p1-ccd-test.txt",
+   "a-3d/physics/evidence/p1-sound-cues.json",
+   "a-3d/physics/drop.table.json"
+  ]
+ },
+ {
+  "lane": "A",
+  "repo": "React Three Rapier (with React Three Fiber, three; engine @dimforge/rapier3d-compat 0.19.2 pulled in by @react-three/rapier)",
+  "package": "@react-three/rapier",
+  "version": "2.2.0",
+  "licence": "MIT (repo LICENSE, Poimandres; the 2.2.0 npm package declares none); engine Apache-2.0",
+  "variant": "A3-P2",
+  "gates": {
+   "G1": true,
+   "G2": false,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": 13.612628,
+  "ms_per_frame": 79.5,
+  "loc": 401,
+  "deps_mb": 114,
+  "needs_bundler": true,
+  "quality": 2,
+  "quality_note": "From the forward-pass stills at 100%: believable paper fall and settle, but the box topples (tilt 57.7 deg) and the naive page shows the final state for any earlier t; unusable for scrubbing.",
+  "unique": "Live Rapier world with a React API (colliders, events, joints) in the same scene graph as the visuals.",
+  "verdict": "REJECT",
+  "why": "Fails G2 by construction (no rewind) and runs one engine step off nominal on most frames; the pinned engine (0.19.2) also gives a different, toppled outcome than the tuned 0.21.0 scene.",
+  "evidence": [
+   "a-3d/physics/evidence/p2/report.json",
+   "a-3d/physics/evidence/p2/forward/",
+   "a-3d/physics/evidence/p2/diag-p2.json",
+   "a-3d/physics/evidence/p2/mismatch-0192-vs-0210.json",
+   "a-3d/physics/evidence/A3-all-contact-4s.jpg",
+   "a-3d/physics/p2-r3f-rapier/p2-summary.json"
+  ],
+  "ms_per_frame_note": "seekcheck median on a bare R3F scene (no post chain): NOT comparable with P1's render cost; it is mostly screenshot time"
+ },
+ {
+  "lane": "A",
+  "repo": "React Three Rapier (with React Three Fiber, three; engine @dimforge/rapier3d-compat 0.19.2 pulled in by @react-three/rapier)",
+  "package": "@react-three/rapier",
+  "version": "2.2.0",
+  "licence": "MIT (repo LICENSE, Poimandres; the 2.2.0 npm package declares none); engine Apache-2.0",
+  "variant": "A3-P2b",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 83.6,
+  "loc": 401,
+  "deps_mb": 114,
+  "needs_bundler": true,
+  "quality": 3,
+  "quality_note": "Same picture as P2 at the same step, but seek-safe: G1-G3 pass, bit-identical in forward / reverse / shuffled / cold orders (V2); box still topples on 0.19.2.",
+  "unique": "Scrubbable live physics inside R3F: the R3F/Rapier API stays available while simulated time becomes a function of the frame index (cost: replay from zero on every rewind).",
+  "verdict": "REJECT",
+  "why": "Seekable and bit-identical (remount + replay: 116-121 ms cold seek, 36 ms median rewind) but it duplicates the P1 table at 114 MB node_modules, 3.3 MB of JS and a bundler, and on the pinned engine 0.19.2 the box topples instead of landing flat; it would only earn ADOPT-FOR an interactive R3F page that must also be scrubbed (none today).",
+  "evidence": [
+   "a-3d/physics/evidence/p2b/report.json",
+   "a-3d/physics/evidence/p2b/diag-p2b-v2.json",
+   "a-3d/physics/evidence/p2b/diag-p2b-v1.json",
+   "a-3d/physics/evidence/p2b/diag-p2b-v3.json",
+   "a-3d/physics/evidence/p2b/diag-snaptest.json",
+   "a-3d/physics/evidence/A3-all-contact-4s.jpg",
+   "a-3d/physics/p2-r3f-rapier/p2-summary.json"
+  ],
+  "ms_per_frame_note": "seekcheck median on a bare R3F scene (no post chain): NOT comparable with P1's render cost; it is mostly screenshot time"
+ },
+ {
+  "lane": "A",
+  "repo": "React Three Rapier (with React Three Fiber, three; engine @dimforge/rapier3d-compat 0.19.2 pulled in by @react-three/rapier)",
+  "package": "@react-three/rapier",
+  "version": "2.2.0",
+  "licence": "MIT (repo LICENSE, Poimandres; the 2.2.0 npm package declares none); engine Apache-2.0",
+  "variant": "A3-P2-default60",
+  "gates": {
+   "G1": true,
+   "G2": false,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": 13.907657,
+  "ms_per_frame": 84.3,
+  "loc": 401,
+  "deps_mb": 114,
+  "needs_bundler": true,
+  "quality": 1,
+  "quality_note": "Cards crumple into the desk at the box impact and the box leaves the desk.",
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "timeStep 1/60 (library default) destroys the scene: card-card depth 7x thickness, cards 0.068 u under the desk, box off the desk.",
+  "evidence": [
+   "a-3d/physics/evidence/p2-default60/report.json",
+   "a-3d/physics/evidence/p2-default60/diag-default60.json",
+   "a-3d/physics/evidence/A3-all-contact-4s.jpg",
+   "a-3d/physics/p2-r3f-rapier/p2-summary.json"
+  ],
+  "ms_per_frame_note": "seekcheck median on a bare R3F scene (no post chain): NOT comparable with P1's render cost; it is mostly screenshot time"
+ }
+]

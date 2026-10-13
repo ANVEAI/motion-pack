@@ -1,0 +1,692 @@
+[
+ {
+  "lane": "D",
+  "repo": "Satori",
+  "package": "satori + @resvg/resvg-js",
+  "version": "0.33.5 + 2.6.2 (pinned 0.52.0 is <14 days old, not installed: needs approval)",
+  "licence": "MPL-2.0 + MPL-2.0",
+  "variant": "D1a-satori-resvg",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 319.4,
+  "quality": 4,
+  "quality_note": "100% stills: near-identical to Chrome (PSNR vs Chrome: card 32.16 dB, emoji 24.03 dB); headline ink is +12 px wider (letter-spacing not applied after spaces, fixed upstream in 0.49.1), chip text 'DEVICE\u00b7 NO' loses its space, alpha-shaped emoji shadow impossible (filter:drop-shadow clipped to the img box, replaced by a rotated box-shadow), gradient bands (no dithering), transform matrix rounded to 2 decimals displaces rotated elements. Cover 699 ms.",
+  "loc": 87,
+  "deps_mb": 17.7,
+  "needs_bundler": false,
+  "unique": "No browser: pure Node, byte-identical output across processes, 0.3-0.7 s per image (resvg dominates: 310 of 319 ms).",
+  "verdict": "ADOPT-FOR browserless runtimes (no Chrome available); provisional until re-tested on 0.52.0",
+  "why": "Close to Chrome and deterministic, but 17 of 50 probed CSS features are silently ignored and 5 throw, five workarounds were needed, and our pipeline already ships Chrome.",
+  "evidence": [
+   "d1/out/sheet-thumb-all.jpg",
+   "d1/out/sheet-cover-all.jpg",
+   "d1/out/compare-final.json",
+   "d1/out/css/css-compat-table.md",
+   "d1/out/css/sheet-css-1.jpg",
+   "d1/out/kern-probe.json",
+   "d1/out/satori-timing.json",
+   "evidence/d1/resvg-abort-thumb-card-blur90.svg"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Satori (Chrome reference)",
+  "package": "puppeteer-core + /Applications/Google Chrome (harness approach)",
+  "version": "puppeteer-core 25.13.0 + Chrome 154.0.8037.98",
+  "licence": "Apache-2.0 + Chrome freeware",
+  "variant": "D1b-html-chrome-screenshot",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": 98.4,
+  "ms_per_frame": 202.1,
+  "quality": 5,
+  "quality_note": "Reference by definition: variable Manrope 800 with GPOS kerning, dithered gradients, alpha-shaped drop-shadow, Fluent PNG, gradient text. Gates are CPU raster (--disable-gpu via lib/chrome-nogpu.sh); with GPU raster the thumb differs in 2 of 20 renders by 98.4 dB (cover 111 dB), a noise-only G2/G3 FAIL. Cover 283 ms warm; cold (new browser each image) 545 / 662 ms.",
+  "loc": 98,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": "Same engine and CSS as HyperFrames comps: covers share fonts/tokens with the videos, and the same HTML renders as a HyperFrames comp (G4: 29.5 dB through H.264, visually identical).",
+  "verdict": "ADOPT",
+  "why": "Fastest warm, highest fidelity, zero workarounds, one authoring model for covers and video comps; add --disable-gpu when byte-identical stills matter.",
+  "evidence": [
+   "d1/out/chrome-thumb.png",
+   "d1/out/chrome-cover.png",
+   "d1/out/chrome-determinism.json",
+   "d1/out/seekcheck/D1b-nogpu-thumb/report.json",
+   "d1/out/seekcheck/D1b-thumb/report.json",
+   "d1/out/sheet-g4-cover.jpg",
+   "d1/hf-cover/index.html"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Satori (PIL reference)",
+  "package": "Pillow + numpy + fontTools (hand-built layout)",
+  "version": "Pillow 10.1.0 (no raqm), numpy 1.26.4, fontTools 4.58.2",
+  "licence": "HPND + BSD + MIT",
+  "variant": "D1c-pil",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 549.3,
+  "quality": 4,
+  "quality_note": "Headline matches Chrome to 1 px only after hand-written GPOS pair kerning (without it lines are +38..+52 px wider); PSNR vs Chrome: headline 25.69 dB, card 31.37 dB, emoji 26.92 dB. Bands like Satori (no dithering). Cover 898 ms.",
+  "loc": 273,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": "Pixel-level control and exact determinism without a browser; fits captions/overlay alpha tracks.",
+  "verdict": "KEEP-CURRENT (pixel compositing only, not layout)",
+  "why": "Eight times the code of the HTML route for the same picture; every CSS behaviour (wrap, tracking, kerning, clipping, shadows) is re-implemented by hand.",
+  "evidence": [
+   "d1/render_pil.py",
+   "d1/out/pil-thumb.png",
+   "d1/out/pil-cover.png",
+   "d1/out/kern-probe.json",
+   "d1/out/sheet-thumb-headline.jpg"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "FFmpeg",
+  "package": "ffmpeg libx264 (make_upload_copy.sh recipe)",
+  "version": "ffmpeg 8.0.1, x264 core 165 r3222",
+  "licence": "GPL-3.0-or-later (build)",
+  "variant": "D2a-x264-2pass-slow-animation",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 71.4,
+  "quality": 5,
+  "quality_note": "3966 kbps: 4.62 MB, PSNR 48.96 dB, SSIM 0.9907, VMAF 97.47, 21.4 s for 300 frames. Best H.264 at every rate tested; moov before mdat; bt709/tv tags preserved; also valid on a real HyperFrames render (G4: 4.85 MB, 48.87 dB). At 1100 kbps: 1.34 MB, PSNR 48.16, VMAF 96.96, 15.8 s.",
+  "loc": 12,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "KEEP-CURRENT",
+  "why": "Wins H.264 quality per byte at both rates (+1.0 dB / +0.6 VMAF at 4.6 MB, +2.5 dB / +3.3 VMAF at 1.34 MB over Mediabunny at equal size), speed is not a constraint for upload copies.",
+  "evidence": [
+   "evidence/d2/measure.json",
+   "evidence/d2/ffmpeg-run.json",
+   "d2/out/sheet-d2-crops-1100.jpg"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "FFmpeg",
+  "package": "ffmpeg libx264",
+  "version": "ffmpeg 8.0.1",
+  "licence": "GPL-3.0-or-later (build)",
+  "variant": "D2b-x264-1pass-veryfast",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 10.3,
+  "quality": 3,
+  "quality_note": "3966 kbps: 4.73 MB, PSNR 47.28 dB, SSIM 0.9892, VMAF n/a, 3.1 s for 300 frames. Speed-class peer of the browser encoders. At 1100 kbps: 1.23 MB, PSNR 45.32, VMAF n/a, 2.8 s.",
+  "loc": 4,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "1.7 dB worse than the two-pass recipe at the same size for 3 s instead of 21 s; nothing to gain over Mediabunny's browser encoders either.",
+  "evidence": [
+   "evidence/d2/measure.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "FFmpeg",
+  "package": "ffmpeg h264_videotoolbox",
+  "version": "ffmpeg 8.0.1",
+  "licence": "GPL-3.0-or-later (build)",
+  "variant": "D2c-ffmpeg-h264_videotoolbox",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 6.7,
+  "quality": 3,
+  "quality_note": "3966 kbps: 5.15 MB, PSNR 47.66 dB, SSIM 0.9908, VMAF 95.97, 2.0 s for 300 frames. Same hardware block Chrome uses; overshoots the bitrate (+4% at 3966k, +9% at 1100k). At 1100 kbps: 1.49 MB, PSNR 45.03, VMAF n/a, 2.5 s.",
+  "loc": 4,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "Duplicates Mediabunny's hardware path with a bigger file and lower quality than x264.",
+  "evidence": [
+   "evidence/d2/measure.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny",
+  "package": "mediabunny (Conversion, avc, VideoToolbox via WebCodecs)",
+  "version": "mediabunny 1.60.0 (pinned 1.61.4 is <14 days old) in Chrome 154 WebCodecs",
+  "licence": "MPL-2.0",
+  "variant": "D2d-mediabunny-avc-hw",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 5.2,
+  "quality": 3,
+  "quality_note": "3966 kbps: 5.00 MB, PSNR 47.95 dB, SSIM 0.9908, VMAF 96.11, 1.6 s for 300 frames. bitrateMode constant == variable byte for byte (hardware ignores it). Matched size 4.61 MB: 47.80 dB / VMAF 95.99; matched 1.34 MB: 45.63 dB / VMAF 93.47. At 1100 kbps: 1.39 MB, PSNR 45.70, VMAF 93.56, 1.6 s.",
+  "loc": 25,
+  "deps_mb": 0.7,
+  "needs_bundler": false,
+  "unique": "Encode inside a page: no ffmpeg, no node round trip; MP4 fastStart:'in-memory' valid and bt709-tagged; AAC encode also available.",
+  "verdict": "ADOPT-FOR in-browser instant drafts and client-side exports",
+  "why": "14x faster than x264 slow (1.6 s vs 21.4 s, 190 fps decode+encode) but 1.0-2.5 dB below it at equal bytes; fine for previews, not for final upload copies.",
+  "evidence": [
+   "evidence/d2/mb-run.json",
+   "evidence/d2/probe-encoders.json",
+   "d2/mb_encode.html"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny",
+  "package": "mediabunny (avc, software OpenH264 via WebCodecs)",
+  "version": "mediabunny 1.60.0 (pinned 1.61.4 is <14 days old) in Chrome 154 WebCodecs",
+  "licence": "MPL-2.0",
+  "variant": "D2e-mediabunny-avc-sw",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 13.6,
+  "quality": 3,
+  "quality_note": "3966 kbps: 4.92 MB, PSNR 48.03 dB, SSIM 0.9898, VMAF 96.95, 4.1 s for 300 frames. Software H.264 stays available with --disable-gpu. Matched 4.62 MB: 47.92 dB / VMAF 96.84; matched 1.35 MB: 45.13 dB / VMAF 93.76. At 1100 kbps: 1.36 MB, PSNR 45.13, VMAF 93.7, 2.2 s.",
+  "loc": 25,
+  "deps_mb": 0.7,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "ADOPT-FOR same niche when no hardware encoder exists",
+  "why": "Better VMAF than the hardware path at 5 MB, still 1.0 dB below x264 slow.",
+  "evidence": [
+   "evidence/d2/mb-run.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny",
+  "package": "mediabunny (vp9 software via WebCodecs)",
+  "version": "mediabunny 1.60.0 (pinned 1.61.4 is <14 days old) in Chrome 154 WebCodecs",
+  "licence": "MPL-2.0",
+  "variant": "D2f-mediabunny-vp9",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 7.7,
+  "quality": 4,
+  "quality_note": "3966 kbps: 4.84 MB, PSNR 48.68 dB, SSIM 0.9902, VMAF 97.53, 2.3 s for 300 frames. Realtime-class libvpx: 2.3 s for 10 s of 1080x1920. At 1100 kbps: 1.45 MB, PSNR 46.63, VMAF 95.77, 1.7 s.",
+  "loc": 25,
+  "deps_mb": 0.7,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "No platform we post to needs VP9 and AV1 beats it at the same speed.",
+  "evidence": [
+   "evidence/d2/mb-run.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny",
+  "package": "mediabunny (av1 software via WebCodecs)",
+  "version": "mediabunny 1.60.0 (pinned 1.61.4 is <14 days old) in Chrome 154 WebCodecs",
+  "licence": "MPL-2.0",
+  "variant": "D2g-mediabunny-av1",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 7.7,
+  "quality": 4,
+  "quality_note": "3966 kbps: 3.89 MB, PSNR 48.73 dB, SSIM 0.9906, VMAF 97.43, 2.3 s for 300 frames. 3.89 MB for VMAF 97.43 vs x264 4.62 MB for 97.47 (16% fewer bytes); AV1-in-MP4 plays in ffmpeg/Chrome, not tested on social platforms. At 1100 kbps: 1.13 MB, PSNR 47.18, VMAF 96.16, 1.7 s.",
+  "loc": 25,
+  "deps_mb": 0.7,
+  "needs_bundler": false,
+  "unique": "Fast AV1 inside Chrome without building an AV1 encoder into ffmpeg.",
+  "verdict": "ADOPT-FOR web AV1 renditions (site hero video), not for social uploads",
+  "why": "AV1 in 2.3 s with 16% fewer bytes than x264 at equal VMAF, but upload targets want H.264.",
+  "evidence": [
+   "evidence/d2/mb-run.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "FFmpeg",
+  "package": "ffmpeg libsvtav1 -preset 6",
+  "version": "ffmpeg 8.0.1, SVT-AV1 4.0.1",
+  "licence": "GPL-3.0-or-later (build) / BSD-2-Clause-Patent (SVT-AV1)",
+  "variant": "D2h-ffmpeg-svtav1",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 45.0,
+  "quality": 5,
+  "quality_note": "3966 kbps: 3.91 MB, PSNR 49.59 dB, SSIM 0.9915, VMAF 97.91, 13.5 s for 300 frames. Best AV1 numbers: 3.91 MB, 49.59 dB, VMAF 97.91. At 1100 kbps: 1.03 MB, PSNR 48.83, VMAF n/a, 7.7 s.",
+  "loc": 4,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "ADOPT-FOR AV1 finals if AV1 is ever required",
+  "why": "Highest quality per byte of everything measured (+0.9 dB over Mediabunny AV1) at 13.5 s, already in our ffmpeg.",
+  "evidence": [
+   "evidence/d2/measure.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "FFmpeg",
+  "package": "ffmpeg libvpx-vp9 good cpu-used 2",
+  "version": "ffmpeg 8.0.1",
+  "licence": "GPL-3.0-or-later (build) / BSD-3-Clause (libvpx)",
+  "variant": "D2i-ffmpeg-vp9",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 95.8,
+  "quality": 4,
+  "quality_note": "3966 kbps: 5.04 MB, PSNR 49.69 dB, SSIM 0.9917, VMAF 97.91, 28.7 s for 300 frames. Slowest encode (28.7 s) and the largest file at 5.04 MB. At 1100 kbps: 1.62 MB, PSNR 48.26, VMAF n/a, 22.6 s.",
+  "loc": 4,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "Dominated by SVT-AV1 and x264 on size and time.",
+  "evidence": [
+   "evidence/d2/measure.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny (control)",
+  "package": "hyperframes render (framework-owned <video>)",
+  "version": "hyperframes 0.8.142",
+  "licence": "see hyperframes package",
+  "variant": "D3a-hyperframes-native-video",
+  "gates": {
+   "G1": true,
+   "G2": null,
+   "G3": null,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 65.0,
+  "quality": 5,
+  "quality_note": "Barcode check of ALL 300 output frames: 300/300 right index, no skip/duplicate; offset comp (data-start 0.5, data-media-start 1.0): 90/90; PSNR vs ffmpeg reference 39.5 dB avg (38.9 min) after the 26 Mbps re-encode; two renders byte-identical (same SHA-256). Render 19.5 s for 300 frames incl. capture and encode (frames are pre-extracted with ffmpeg and injected).",
+  "loc": 6,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": "Frame-exact video is already done by the framework; nothing to add.",
+  "verdict": "ADOPT",
+  "why": "Frame-exact (300/300, offsets 90/90) and deterministic, so Mediabunny adds nothing to HyperFrames comps.",
+  "evidence": [
+   "evidence/d3/hf-video-main.json",
+   "evidence/d3/hf-video-offset.json",
+   "evidence/d3/hf-video.render.log.txt",
+   "evidence/d3/sheet-hf-vs-ref.jpg",
+   "d3/hf-video/index.html"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny (control)",
+  "package": "<video> + currentTime = N/fps",
+  "version": "Chrome 154",
+  "licence": "n/a",
+  "variant": "D3b-video-element-currentTime-exact",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 30.2,
+  "quality": 1,
+  "quality_note": "13/24 sampled frames show the right index (random order 13/24), PSNR vs ffmpeg reference 41.19 dB (min 39.94), bit-exact vs ffmpeg 0/24; random-access median 32.9 ms, first seek 280.6 ms. Off by one on 11 of 24 frames (2, 29, 59, 61, 62, 89, 119, 179, 239, 269, 299): the previous frame is shown. The harness gates PASS anyway: G1-G3 prove determinism, not correctness.",
+  "loc": 25,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "Silently wrong frames while passing G1-G3.",
+  "evidence": [
+   "evidence/d3/d3-summary.json",
+   "evidence/d3/seekcheck-video-exact.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny (control)",
+  "package": "<video> + currentTime = (N+0.5)/fps",
+  "version": "Chrome 154",
+  "licence": "n/a",
+  "variant": "D3c-video-element-half-frame",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 29.5,
+  "quality": 4,
+  "quality_note": "24/24 sampled frames show the right index (random order 24/24), PSNR vs ffmpeg reference 41.14 dB (min 39.94), bit-exact vs ffmpeg 0/24; random-access median 32.9 ms, first seek 74.5 ms. Works only with the half-frame offset and waits for 'seeked' + 2 rAF.",
+  "loc": 25,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "Correct but a workaround for a plain page; HyperFrames or Mediabunny do it properly.",
+  "evidence": [
+   "evidence/d3/d3-summary.json",
+   "evidence/d3/seekcheck-video-half.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny (control)",
+  "package": "<video> + requestVideoFrameCallback",
+  "version": "Chrome 154",
+  "licence": "n/a",
+  "variant": "D3d-video-element-rvfc",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 182.2,
+  "quality": 4,
+  "quality_note": "24/24 sampled frames show the right index (random order 24/24), PSNR vs ffmpeg reference 41.14 dB (min 39.94), bit-exact vs ffmpeg 0/24; random-access median 177.4 ms, first seek 203.5 ms. Correct but 182 ms per seek.",
+  "loc": 28,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "REJECT",
+  "why": "6x slower than Mediabunny for the same pixels.",
+  "evidence": [
+   "evidence/d3/d3-summary.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny",
+  "package": "mediabunny CanvasSink",
+  "version": "mediabunny 1.60.0",
+  "licence": "MPL-2.0",
+  "variant": "D3e-mediabunny-canvassink",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 21.7,
+  "quality": 5,
+  "quality_note": "24/24 sampled frames show the right index (random order 24/24), PSNR vs ffmpeg reference 41.14 dB (min 39.94), bit-exact vs ffmpeg 0/24; random-access median 21.6 ms, first seek 39.9 ms. Exact boundary timestamps N/fps are safe (no half-frame trick), hardware and software decode give bit-identical pixels to a correct <video> frame. Inside render.mjs (kit driver) a WebGL page fed by CanvasSink rendered 90/90 right frames (async captureFrame is awaited).",
+  "loc": 15,
+  "deps_mb": 0.7,
+  "needs_bundler": false,
+  "unique": "Random-access exact frames for WebGL/canvas plates (the kit has no video-texture path today).",
+  "verdict": "ADOPT-FOR video as a texture/canvas source in kit WebGL plates and custom canvas pages",
+  "why": "Exact, order-independent random access at ~22 ms; not useful inside HyperFrames, which owns <video>.",
+  "evidence": [
+   "evidence/d3/d3-summary.json",
+   "evidence/d3/seekcheck-mb-canvas-exact.json",
+   "evidence/d3/kit-video-plate-check.json",
+   "evidence/d3/kit-video-plate-f0030.png",
+   "d3/kit-page/video-plate.html"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Mediabunny",
+  "package": "mediabunny VideoSampleSink",
+  "version": "mediabunny 1.60.0",
+  "licence": "MPL-2.0",
+  "variant": "D3f-mediabunny-videosamplesink",
+  "gates": {
+   "G1": true,
+   "G2": true,
+   "G3": true,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": 24,
+  "quality": 5,
+  "quality_note": "24/24 sampled frames show the right index (random order 24/24), PSNR vs ffmpeg reference 41.14 dB (min 39.94), bit-exact vs ffmpeg 0/24; random-access median 23.6 ms, first seek 48 ms. Same result as CanvasSink; sample.toVideoFrame() can go straight to texImage2D/WebGPU.",
+  "loc": 15,
+  "deps_mb": 0.7,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "ADOPT-FOR same niche (lower level than CanvasSink)",
+  "why": "Exact and order-independent; use when you want the VideoFrame itself.",
+  "evidence": [
+   "evidence/d3/d3-summary.json",
+   "evidence/d3/seekcheck-mb-sample-exact.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Howler.js",
+  "package": "howler",
+  "version": "2.2.4",
+  "licence": "MIT",
+  "variant": "D4a-howler-in-hyperframes",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": false
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 1,
+  "quality_note": "Howler loaded and playing (autoplay on load + a timer) in a 4 s comp: the rendered MP4 has NO audio stream (render trace hasAudio:false, 21 KB file). With a native <audio> tag in the same comp the MP4 carries only the tag's 880 Hz tone, never Howler's 440 Hz. WebAudio/HTMLAudio output is not captured by the frame-seek renderer and Howler runs on the wall clock.",
+  "loc": 6,
+  "deps_mb": 0.04,
+  "needs_bundler": false,
+  "unique": "Real-time playback/spatial audio in interactive web apps (not our pipeline).",
+  "verdict": "REJECT",
+  "why": "Sound played through Howler never reaches the rendered MP4 and is not a pure function of t.",
+  "evidence": [
+   "evidence/d4/audio-analysis.json",
+   "evidence/d4/hf-howler.render.log.txt",
+   "evidence/d4/hf-howler-bridge.render.log.txt",
+   "d4/hf-howler/index.html"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Howler.js",
+  "package": "hyperframes <audio id data-start> (framework-owned)",
+  "version": "hyperframes 0.8.142",
+  "licence": "see hyperframes package",
+  "variant": "D4b-hf-audio-tag",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 5,
+  "quality_note": "880 Hz tone placed at data-start 0.5 s: first sample above threshold at 500.04 ms, ends 2499.98 ms; level preserved (peak -18.0 dBFS in and out, -21.9 LUFS); AAC 97 kbps stereo 48 kHz; id on every <audio> is mandatory (lint media_missing_id, otherwise silent).",
+  "loc": 1,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "ADOPT",
+  "why": "Sample-accurate placement and no gain change for simple beds, SFX and voice-over, with nothing to install.",
+  "evidence": [
+   "evidence/d4/audio-analysis.json",
+   "evidence/d4/audio-sync.json",
+   "d4/hf-audio-tag/index.html"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "Howler.js",
+  "package": "motion-pack mixer.py -> master.wav -> <audio> in the comp (or ffmpeg mux)",
+  "version": "mixer.py (read-only) + hyperframes 0.8.142 + ffmpeg 8.0.1",
+  "licence": "owned",
+  "variant": "D4c-offline-mixer-master",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 5,
+  "quality_note": "Cue sheet (bed + click + thud + logo) -> master -14.04 LUFS, -1.50 dBTP (AAC probes -1.50/-1.39). Through the HyperFrames render: -14.1 LUFS, -1.3 dBTP, lag 0 samples vs master; ffmpeg aac 256k mux: -14.1 LUFS, -1.4 dBTP, lag 0.",
+  "loc": 8,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": "Measured, ducked, true-peak-limited master; hits land on the frame contract.",
+  "verdict": "ADOPT",
+  "why": "Already our finishing path: sample-exact, loudness-measured, survives the HyperFrames AAC encode within 0.2 dB.",
+  "evidence": [
+   "evidence/d4/master_report.json",
+   "evidence/d4/audio-analysis.json",
+   "evidence/d4/audio-sync.json",
+   "evidence/d4/cuesheet.json"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "FFmpeg",
+  "package": "ffmpeg (Homebrew 8.0.1_4)",
+  "version": "8.0.1",
+  "licence": "GPL-3.0-or-later (--enable-gpl --enable-version3)",
+  "variant": "D5a-ffmpeg-8.0.1-current",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": true
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 5,
+  "quality_note": "Winning settings: libx264 two-pass -preset slow -tune animation, -b:v from the size cap, -maxrate 1.8x -bufsize 2.5x, -profile:v high -pix_fmt yuv420p -movflags +faststart, AAC 128k; HyperFrames render at --video-bitrate 26M. Lacks: libass (ass/subtitles filters), libfreetype (drawtext), libvmaf filter, libzimg (zscale), libplacebo, rubberband, libaom/rav1e, fdk-aac. Has: xpsnr, psnr, ssim, ebur128, loudnorm, videotoolbox encoders, aac_at, SVT-AV1, vpx, x265, opus.",
+  "loc": 0,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": null,
+  "verdict": "KEEP-CURRENT",
+  "why": "Nothing measured in this lane beat it for finals; its gaps are covered elsewhere (DOM/PNG captions, standalone vmaf).",
+  "evidence": [
+   "evidence/d2/measure.json",
+   "d5/ffmpeg-capabilities.txt"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "FFmpeg",
+  "package": "ffmpeg-full (Homebrew, keg-only) with libass + libvmaf",
+  "version": "9.0.2 (formula page, not installed or tested)",
+  "licence": "GPL-3.0-or-later; libass ISC; libvmaf BSD-2-Clause-Plus-Patent",
+  "variant": "D5b-ffmpeg-full-libass-libvmaf",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": null,
+  "quality_note": "Not installed (download of ~47 dependencies needs approval). Formula page lists libass 0.17.5, libvmaf 3.2.1, freetype, fontconfig, zimg, rubberband, libplacebo, aom, rav1e; keg-only, so it can sit beside the pipeline ffmpeg. Same GPL-3.0-or-later as our current build, internal use only.",
+  "loc": 0,
+  "deps_mb": null,
+  "needs_bundler": false,
+  "unique": "libass burn-in of ASS/SRT subtitles on finished footage; the libvmaf filter.",
+  "verdict": "REJECT (not worth adding now)",
+  "why": "Captions are DOM clips in HyperFrames or PNG alpha tracks, and VMAF already works through the installed standalone vmaf CLI.",
+  "evidence": [
+   "d5/ffmpeg-capabilities.txt"
+  ]
+ },
+ {
+  "lane": "D",
+  "repo": "FFmpeg",
+  "package": "vmaf CLI 3.0.0 (Homebrew libvmaf, already on PATH)",
+  "version": "3.0.0, model vmaf_v0.6.1, --subsample 3",
+  "licence": "BSD-2-Clause-Plus-Patent",
+  "variant": "D5c-standalone-vmaf-cli",
+  "gates": {
+   "G1": null,
+   "G2": null,
+   "G3": null,
+   "G4": null
+  },
+  "worst_psnr_db": null,
+  "ms_per_frame": null,
+  "quality": 5,
+  "quality_note": "Used for every VMAF number in this lane: ffmpeg writes yuv420p y4m for source and distorted (933 MB each for 10 s of 1080x1920), vmaf scores 100 frames in roughly 30 s per file including the y4m write. Agrees with PSNR ordering (x264 97.47 > MB AV1 97.43 > MB avc sw 96.95 > MB avc hw 96.11 at 3966 kbps).",
+  "loc": 15,
+  "deps_mb": 0,
+  "needs_bundler": false,
+  "unique": "Perceptual metric without rebuilding ffmpeg.",
+  "verdict": "ADOPT-FOR QC of encodes and codec/preset sweeps",
+  "why": "Gives VMAF today with zero new installs; y4m temp files are large, so delete them after each run.",
+  "evidence": [
+   "d2/measure.py",
+   "evidence/d2/measure.json"
+  ]
+ }
+]

@@ -16,7 +16,7 @@ The code source is `templates/_shared/plan.mjs PLATFORMS` and `type/safezones.js
 
 ## 9:16 safe rectangle (1080x1920, conservative union)
 
-The safe rectangle is `x 65..1015`, `y 270..1248`. That means top 269 px, bottom 672 px and right 120 px are reserved. `type/safezones.js` uses `conservative`, and every platform row there is flagged `verify: true`.
+The safe rectangle is `x 65..960`, `y 269..1248`. That means top 269 px, bottom 672 px and right 120 px are reserved. `type/safezones.js` uses `conservative`, and every platform row there is flagged `verify: true`.
 
 `docs/research/visual.md` section 9 gives a looser alternative: x 60..960, y 220..1500. Sources conflict, so check the current platform UI before final export.
 

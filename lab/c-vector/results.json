@@ -1,0 +1,529 @@
+[
+  {
+    "lane": "C",
+    "repo": "lottie-web (baseline that dotLottie Web is compared against)",
+    "package": "lottie-web",
+    "version": "5.13.0",
+    "licence": "MIT",
+    "variant": "C1-lottie-web-svg",
+    "gates": {
+      "G1": true,
+      "G2": false,
+      "G3": true,
+      "G4": true
+    },
+    "worst_psnr_db": 84.866452,
+    "ms_per_frame": 87,
+    "quality": 4,
+    "quality_note": "Crisp Skia vector edges at 1080 and 2160 (edge spread 2.15 px, hairline contrast 44), gradients smooth, trim-path draw-on correct. Minus one: Trim-before-Repeater renders ticks shorter than the keyframes say (and than ThorVG); drop-shadow effect is clipped to a hard box.",
+    "loc": 3,
+    "deps_mb": 25,
+    "needs_bundler": false,
+    "unique": "The native HyperFrames Lottie adapter drives it with zero glue; the reference implementation for AE exports (full build also runs AE expressions).",
+    "verdict": "ADOPT",
+    "why": "Default Lottie player for HyperFrames: works through the native adapter with 3 lines; its only gate miss is G2 at 84.9 dB (1 to 3 pixels on a 22 %-alpha hairline at frames 6, 10, 11), i.e. Chrome SVG raster noise of the same class that makes the inline-SVG draw-on render byte-different at -w 1 vs -w 2.",
+    "extra": {
+      "init_ms": 26,
+      "seek_js_ms_1080": 0.1,
+      "seek_js_ms_2160": 0.1,
+      "harness_ms_per_frame_2160": 161.9,
+      "payload_gzip_bytes": 77282,
+      "g2_mismatching_frames": [
+        6,
+        10,
+        11
+      ],
+      "hf_render_wall_s_1080_60f": 4.75,
+      "hf_render_wall_s_square4k_60f": 6.1
+    },
+    "evidence": [
+      "c-vector/lottie/lw-svg.html",
+      "c-vector/lottie/gates-allframes/C1-lottie-web-svg/report.json",
+      "c-vector/lottie/gates/C1-lottie-web-svg/run1/report.json",
+      "c-vector/hf/lw-svg/index.html",
+      "c-vector/hf/renders/lw-svg-native.mp4",
+      "c-vector/hf/renders/lw-svg-native.vs-harness.json",
+      "c-vector/sheets/c1-g4-hf-lottie-web-svg.jpg",
+      "c-vector/sheets/c1-fidelity-1080.jpg",
+      "c-vector/sheets/c1-repeater-trim-isolation.jpg"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "lottie-web (baseline)",
+    "package": "lottie-web",
+    "version": "5.13.0",
+    "licence": "MIT",
+    "variant": "C1-lottie-web-canvas",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": true
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": 89,
+    "quality": 3,
+    "quality_note": "Edges as crisp as SVG, but the canvas renderer ignores effects (drop shadow, fill), ignores animated gradient-stroke width, applies group opacity per item (fill and stroke blend through each other) and drops sub-pixel trim slivers (frame 37).",
+    "loc": 3,
+    "deps_mb": 25,
+    "needs_bundler": false,
+    "unique": null,
+    "verdict": "REJECT",
+    "why": "Same speed as the SVG renderer, strictly fewer features, and it renders a BLANK video in HyperFrames unless its container has an explicit pixel size (HyperFrames stamps the root size after inline scripts run).",
+    "extra": {
+      "init_ms": 32,
+      "hf_blank_without_explicit_px_container": true
+    },
+    "evidence": [
+      "c-vector/lottie/lw-canvas.html",
+      "c-vector/lottie/gates-allframes/C1-lottie-web-canvas/report.json",
+      "c-vector/hf/lw-canvas/index.html",
+      "c-vector/hf/renders/lw-canvas-native.mp4",
+      "c-vector/lottie/probe-analysis/probe-cells.json",
+      "c-vector/sheets/c1-probe-flagged-cells.jpg"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "dotLottie Web",
+    "package": "@lottiefiles/dotlottie-web",
+    "version": "0.80.0",
+    "licence": "MIT (ThorVG inside the wasm is MIT too)",
+    "variant": "C1-dotlottie-web",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": true
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": 83.7,
+    "quality": 4,
+    "quality_note": "ThorVG matches lottie-web within ~50 dB on shapes, strokes and gradients and follows the keyframe maths where lottie-web does not (Trim before Repeater); proper blurred drop shadow, Fill effect and simple expressions work; sharp at 2160 when the canvas follows devicePixelRatio. Minus one: edges a little softer than Skia in the HyperFrames 4K path (2.9 vs 2.25 px edge spread) and a corner artefact on a rotated 8x8 PNG magnified 17x (clean at 1:1, 3x and 0.5x with a 128 px PNG, where its image edges are smoother than lottie-web).",
+    "loc": 7,
+    "deps_mb": 7.1,
+    "needs_bundler": false,
+    "unique": "Software raster (WASM) into a bitmap: byte-identical mp4 for -w 1 and -w 2 (tested; stable across machines is expected from the CPU-only raster but untested); .lottie bundles (1,506 B vs 5,870 B JSON, bit-identical frames); effects and expressions that lottie-web SVG draws badly; 32 % cheaper per frame at 2160 in the screenshot harness (110 vs 162 ms), which does not show up in the HyperFrames capture (5.4 vs 6.1 s for 60 frames at square-4k).",
+    "verdict": "ADOPT-FOR",
+    "why": "Use it for .lottie bundles, effect-heavy files (drop shadow, fill) and when byte-reproducible renders matter; needs a 7-line hf-seek bridge because the native HyperFrames adapter silently renders a blank video for it.",
+    "extra": {
+      "init_ms": 34,
+      "seek_js_ms_1080": 2.2,
+      "seek_js_ms_2160": 7.6,
+      "harness_ms_per_frame_2160": 110.3,
+      "payload_gzip_bytes": 530448,
+      "lottie_zip_bytes": 1506,
+      "hf_render_wall_s_1080_60f": 4.6,
+      "hf_render_wall_s_square4k_60f": 5.4,
+      "version_note": "0.81.0 (7 days old) not installed: BRIEF rule 3 needs >= 14 days"
+    },
+    "evidence": [
+      "c-vector/lottie/dl.html",
+      "c-vector/lottie/gates-allframes/C1-dotlottie-web/report.json",
+      "c-vector/lottie/gates/C1-dotlottie-web/run1/report.json",
+      "c-vector/hf/dl-bridge/index.html",
+      "c-vector/hf/dl-shim/index.html",
+      "c-vector/hf/dl-dpr/index.html",
+      "c-vector/hf/renders/dl-bridge.mp4",
+      "c-vector/hf/renders/dl-shim.mp4",
+      "c-vector/hf/renders/dl-dpr-4k.mp4",
+      "c-vector/lottie/gates-lottiezip/pairwise.json",
+      "c-vector/lottie/probe-analysis/probe-cells.json",
+      "c-vector/lottie/probe-analysis/probe-geometry.json",
+      "c-vector/lottie/probe-image/C1-image-dotlottie-web/report.json",
+      "c-vector/sheets/c1-image-probe-f20.jpg",
+      "c-vector/sheets/c1-image-probe-corner.jpg",
+      "c-vector/sheets/c1-probe-flagged-cells.jpg",
+      "c-vector/sheets/c1-worst-frames.jpg",
+      "c-vector/sheets/c1-sharpness-crops-2160.jpg",
+      "c-vector/sheets/c1-hf-4k-sharpness.jpg"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "dotLottie Web",
+    "package": "@lottiefiles/dotlottie-web",
+    "version": "0.80.0",
+    "licence": "MIT",
+    "variant": "C1-dotlottie-web-hf-native-adapter-only",
+    "gates": {
+      "G1": null,
+      "G2": null,
+      "G3": null,
+      "G4": false
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": null,
+    "quality": 1,
+    "quality_note": "Every frame of the HyperFrames render is the empty background (PSNR 10.9 to 11.8 dB against the correct frames): the adapter finds neither setCurrentRawFrameValue nor seek on DotLottie and does nothing, with no warning.",
+    "loc": 6,
+    "deps_mb": 7.1,
+    "needs_bundler": false,
+    "unique": null,
+    "verdict": "REJECT",
+    "why": "The integration the HyperFrames docs describe (register the player on window.__hfLottie) renders blank for current dotlottie-web; use the hf-seek bridge instead.",
+    "evidence": [
+      "c-vector/hf/dl-native/index.html",
+      "c-vector/hf/renders/dl-native.mp4",
+      "c-vector/hf/renders/dl-native.vs-harness.json",
+      "c-vector/sheets/c1-hf-dl-native-adapter-probe.jpg"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "dotLottie Web",
+    "package": "@lottiefiles/dotlottie-web (dist/webgl)",
+    "version": "0.80.0",
+    "licence": "MIT",
+    "variant": "C1-dotlottie-web-webgl",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": null
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": 80.7,
+    "quality": 4,
+    "quality_note": "Same picture as the software build (47.8 dB median between them; only the sliver frame 37 differs strongly).",
+    "loc": 7,
+    "deps_mb": 7.1,
+    "needs_bundler": false,
+    "unique": null,
+    "verdict": "REJECT",
+    "why": "Passes all three gates headless under ANGLE-Metal but adds a GPU raster dependency for no visible gain; the software build is bit-stable and fast enough. Not rendered through HyperFrames.",
+    "evidence": [
+      "c-vector/lottie/dl-webgl.html",
+      "c-vector/lottie/gates-webgl/C1-dotlottie-web-webgl/report.json",
+      "c-vector/lottie/gates-webgl/pairwise.json",
+      "c-vector/sheets/c1-dl-webgl-vs-software.jpg"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "Rive Web",
+    "package": "@rive-app/canvas + @rive-app/canvas-advanced",
+    "version": "2.43.1",
+    "licence": "MIT (runtime). Test asset vehicles.riv: licence not stated, test only, not redistributed",
+    "loc": 15,
+    "deps_mb": 8.8,
+    "needs_bundler": false,
+    "unique": "Interactive state-machine assets and a designer tool chain (the Rive editor), neither of which we can use: .riv cannot be authored without a rive.app account.",
+    "variant": "C2-rive-advanced-linear-persist",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": true
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": 83.1,
+    "quality": 4,
+    "quality_note": "Crisp Canvas2D vector at 1920x1080 and at 3840x2160 (DPR 2 canvas); the sample truck/idle animation looks as the Rive samples do.",
+    "verdict": "REJECT",
+    "why": "Seeks deterministically (instance.time = 0; advance(t); apply(1); artboard.advance(0)) and renders in HyperFrames through a 15-line hf-seek bridge, but we cannot author .riv files, the runtime is 2.0 MB raw, and state machines need fixed-step replay: not worth a place in the default stack.",
+    "extra": {
+      "init_ms": 46,
+      "seek_js_ms": 0.1,
+      "payload_gzip_bytes": 828568,
+      "hf_render_wall_s_1080p_90f": 7.9,
+      "hf_mp4_byte_identical_w1_vs_w2": true,
+      "version_note": "2.44.2 (3 days old) and 2.44.0 (13 days) not installed: BRIEF rule 3 needs >= 14 days"
+    },
+    "evidence": [
+      "c-vector/rive/adv.html",
+      "c-vector/rive/probe/linear-persist/report.json",
+      "c-vector/hf/rive-bridge/index.html",
+      "c-vector/hf/renders/rive-bridge.mp4",
+      "c-vector/hf/renders/rive-bridge.vs-harness.json",
+      "c-vector/hf/renders/rive-bridge-4k.mp4",
+      "c-vector/sheets/c2-g4-hf-rive-bridge.jpg",
+      "c-vector/sheets/c2-rive-4k-crop.jpg",
+      "c-vector/rive/probe/pairwise-linear.json"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "Rive Web",
+    "package": "@rive-app/canvas + @rive-app/canvas-advanced",
+    "version": "2.43.1",
+    "licence": "MIT (runtime). Test asset vehicles.riv: licence not stated, test only, not redistributed",
+    "loc": 15,
+    "deps_mb": 8.8,
+    "needs_bundler": false,
+    "unique": "Interactive state-machine assets and a designer tool chain (the Rive editor), neither of which we can use: .riv cannot be authored without a rive.app account.",
+    "variant": "C2-rive-advanced-linear-fresh",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": null
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": 82,
+    "quality": 4,
+    "quality_note": "Identical pictures to the persist recipe (48 to 999 dB, float noise only).",
+    "verdict": "REJECT",
+    "why": "Same as the persist recipe (a new artboard + animation instance per seek: 0.6 ms of JS per seek); also deterministic.",
+    "extra": {
+      "seek_js_ms": 0.6
+    },
+    "evidence": [
+      "c-vector/rive/probe/linear-fresh/report.json",
+      "c-vector/rive/probe/pairwise-linear.json"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "Rive Web",
+    "package": "@rive-app/canvas + @rive-app/canvas-advanced",
+    "version": "2.43.1",
+    "licence": "MIT (runtime). Test asset vehicles.riv: licence not stated, test only, not redistributed",
+    "loc": 15,
+    "deps_mb": 8.8,
+    "needs_bundler": false,
+    "unique": "Interactive state-machine assets and a designer tool chain (the Rive editor), neither of which we can use: .riv cannot be authored without a rive.app account.",
+    "variant": "C2-rive-advanced-linear-settime",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": null
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": 88.8,
+    "quality": 2,
+    "quality_note": "Passes the gates but is wrong for looping animations: instance.time = t does not wrap, so frames after the first loop differ from advance(t) by up to 27 dB.",
+    "verdict": "REJECT",
+    "why": "Do not set time directly; always advance(t) from 0 so loops wrap.",
+    "evidence": [
+      "c-vector/rive/probe/linear-settime/report.json",
+      "c-vector/rive/probe/pairwise-linear.json"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "Rive Web",
+    "package": "@rive-app/canvas + @rive-app/canvas-advanced",
+    "version": "2.43.1",
+    "licence": "MIT (runtime). Test asset vehicles.riv: licence not stated, test only, not redistributed",
+    "loc": 15,
+    "deps_mb": 8.8,
+    "needs_bundler": false,
+    "unique": "Interactive state-machine assets and a designer tool chain (the Rive editor), neither of which we can use: .riv cannot be authored without a rive.app account.",
+    "variant": "C2-rive-advanced-sm-replay",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": null
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": 81.1,
+    "quality": 3,
+    "quality_note": "A state machine seeks deterministically only by replaying from a fresh instance in fixed steps (n x 1/fps from 0, input fired at a fixed step). The frame at the same t differs between a 30 fps and a 60 fps step (31.7 to 38.8 dB) and between n small steps and one big advance (19.9 to 24.8 dB).",
+    "verdict": "REJECT",
+    "why": "Pure function of t only for a fixed canonical step; changing the output fps or step changes the picture, and cost grows with t.",
+    "extra": {
+      "seek_js_ms": 1.4
+    },
+    "evidence": [
+      "c-vector/rive/probe/sm-replay/report.json",
+      "c-vector/rive/probe/pairwise-sm-nofire.json",
+      "c-vector/rive/probe/pairwise-sm-fire0.json",
+      "c-vector/rive/probe/sm-replay-nofire-60/report.json"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "Rive Web",
+    "package": "@rive-app/canvas + @rive-app/canvas-advanced",
+    "version": "2.43.1",
+    "licence": "MIT (runtime). Test asset vehicles.riv: licence not stated, test only, not redistributed",
+    "loc": 15,
+    "deps_mb": 8.8,
+    "needs_bundler": false,
+    "unique": "Interactive state-machine assets and a designer tool chain (the Rive editor), neither of which we can use: .riv cannot be authored without a rive.app account.",
+    "variant": "C2-rive-advanced-sm-incremental",
+    "gates": {
+      "G1": true,
+      "G2": false,
+      "G3": false,
+      "G4": null
+    },
+    "worst_psnr_db": 20.186782,
+    "ms_per_frame": 84.1,
+    "quality": 1,
+    "quality_note": "How a live player behaves (advance by the delta since the last seek): history dependent, 25 mismatching frames, worst 20.2 dB (a real state error, not GPU noise).",
+    "verdict": "REJECT",
+    "why": "Fails G2 and G3 by design; never drive a Rive state machine this way in a render.",
+    "evidence": [
+      "c-vector/rive/probe/sm-incremental/report.json"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "Rive Web",
+    "package": "@rive-app/canvas + @rive-app/canvas-advanced",
+    "version": "2.43.1",
+    "licence": "MIT (runtime). Test asset vehicles.riv: licence not stated, test only, not redistributed",
+    "loc": 6,
+    "deps_mb": 8.8,
+    "needs_bundler": false,
+    "unique": "Interactive state-machine assets and a designer tool chain (the Rive editor), neither of which we can use: .riv cannot be authored without a rive.app account.",
+    "variant": "C2-rive-highlevel-scrub",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": null
+    },
+    "worst_psnr_db": null,
+    "ms_per_frame": 82,
+    "quality": 4,
+    "quality_note": "Bit-identical to the advanced persist recipe on all 90 frames.",
+    "verdict": "REJECT",
+    "why": "rive.scrub() works and passes, but both scrub() and the animations parameter are deprecated and will be removed in the next major; the default RuntimeLoader also fetches wasm from a CDN unless pointed at a local file.",
+    "evidence": [
+      "c-vector/rive/hl.html",
+      "c-vector/rive/probe/hl-scrub/report.json",
+      "c-vector/rive/probe/pairwise-hl.json"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "SVGO",
+    "package": "svgo",
+    "version": "4.1.0",
+    "licence": "MIT",
+    "needs_bundler": false,
+    "deps_mb": 10.8,
+    "ms_per_frame": null,
+    "variant": "C3-svgo-default-preset",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": true
+    },
+    "worst_psnr_db": null,
+    "quality": 1,
+    "loc": 0,
+    "quality_note": "Merges sibling paths: Lucide drawables 380 -> 195 (70 of 111 icons change count), the pack draw-on frames differ from the originals (min 16.2 dB over the 90-frame test, 7 to 13 dB mid-draw on 5 of 6 icons); arc fitting moves Fluent outlines (min 32.92 dB, 20 emoji below 40 dB).",
+    "unique": null,
+    "verdict": "REJECT",
+    "why": "Saves the most bytes (-40.9 % raw) but breaks stroke-by-stroke draw-on and visibly moves Fluent outlines.",
+    "extra": {
+      "raw_saved_pct": {
+        "lucide": 14.4,
+        "phosphor": 2.5,
+        "fluent": 46.2,
+        "all": 40.9
+      },
+      "gzip_saved_pct_all": 33.2,
+      "raster_psnr_min_db": 32.92,
+      "icons_drawable_count_changed": 240,
+      "optimize_ms_498_icons": 393
+    },
+    "evidence": [
+      "c-vector/svgo/results/final-compare.json",
+      "c-vector/svgo/results/drawon-test.json",
+      "c-vector/svgo/results/drawon-pairwise.json",
+      "c-vector/optimized/_a-default-preset",
+      "c-vector/sheets/c3-drawon-before-after.jpg",
+      "c-vector/sheets/c3-fidelity-worst.jpg",
+      "c-vector/sheets/c3-g4-hf-drawon.jpg"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "SVGO",
+    "package": "svgo",
+    "version": "4.1.0",
+    "licence": "MIT",
+    "needs_bundler": false,
+    "deps_mb": 10.8,
+    "ms_per_frame": null,
+    "variant": "C3-svgo-mergePaths-off-only",
+    "gates": {
+      "G1": null,
+      "G2": null,
+      "G3": null,
+      "G4": null
+    },
+    "worst_psnr_db": null,
+    "quality": 3,
+    "loc": 1,
+    "quality_note": "Fixes the drawable count (2217 -> 2217) but arc fitting still moves outlines: min 32.91 dB, 20 Fluent emoji below 40 dB, 6 lengths and 1 end point changed.",
+    "unique": null,
+    "verdict": "REJECT",
+    "why": "Not enough: convertPathData(makeArcs) also has to go (ablation of all 33 preset plugins).",
+    "extra": {
+      "raw_saved_pct_all": 38.4
+    },
+    "evidence": [
+      "c-vector/svgo/results/ablation.json",
+      "c-vector/svgo/results/first-look.json"
+    ]
+  },
+  {
+    "lane": "C",
+    "repo": "SVGO",
+    "package": "svgo",
+    "version": "4.1.0",
+    "licence": "MIT",
+    "needs_bundler": false,
+    "deps_mb": 10.8,
+    "ms_per_frame": null,
+    "variant": "C3-svgo-recommended",
+    "gates": {
+      "G1": true,
+      "G2": true,
+      "G3": true,
+      "G4": true
+    },
+    "worst_psnr_db": null,
+    "quality": 5,
+    "loc": 35,
+    "quality_note": "0 icons change drawable count (2217 elements), draw-on frames bit-identical to the originals for all 90 frames (999 dB) and in the HyperFrames render (44.5 dB = codec only); raster min PSNR 42.8 dB (fluent) / 52.02 dB (lucide) / 54.89 dB (phosphor), 198 of 498 icons pixel-identical.",
+    "unique": "Normalised, 30.7 % smaller icon markup (raw; 25.2 % gzip) with draw-on structure intact; ids prefixed so inlined icons cannot collide.",
+    "verdict": "ADOPT",
+    "why": "Run once per icon set at import time (not per render): preset-default with mergePaths, convertShapeToPath and makeArcs off, plus prefixIds.",
+    "extra": {
+      "raw_saved_pct": {
+        "lucide": 8.9,
+        "phosphor": 2.5,
+        "fluent": 34.8,
+        "all": 30.7
+      },
+      "gzip_saved_pct_all": 25.2,
+      "bytes_all": {
+        "before": 697426,
+        "after": 483177
+      },
+      "raster_psnr_min_db": 42.8,
+      "optimize_ms_498_icons": 204,
+      "one_end_point_artifact": "fluent/face-with-spiral-eyes (trailing m, pixels unchanged)",
+      "hf_byte_identical_w1_vs_w2": false
+    },
+    "evidence": [
+      "c-vector/svgo.config.mjs",
+      "c-vector/optimized/lucide",
+      "c-vector/optimized/phosphor",
+      "c-vector/optimized/fluent",
+      "c-vector/svgo/results/final-compare.json",
+      "c-vector/svgo/results/ablation.json",
+      "c-vector/svgo/results/sweep-pathdata.json",
+      "c-vector/svgo/results/drawon-test.json",
+      "c-vector/svgo/results/drawon-pairwise.json",
+      "c-vector/svgo/gates/C3-drawon-rec/report.json",
+      "c-vector/hf/svgo-rec/index.html",
+      "c-vector/hf/renders/svgo-rec.mp4",
+      "c-vector/hf/renders/svgo-rec.vs-harness.json",
+      "c-vector/sheets/c3-drawon-before-after.jpg",
+      "c-vector/sheets/c3-g4-hf-drawon.jpg",
+      "c-vector/sheets/c3-fidelity-worst.jpg"
+    ]
+  }
+]
