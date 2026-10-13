@@ -1,0 +1,328 @@
+{
+ "template": "beat-edit",
+ "fps": 30,
+ "seconds": 12,
+ "music": "music/bed_tech_pulse_loop8",
+ "size": [
+  1920,
+  1080
+ ],
+ "safe": {
+  "top": 0.05,
+  "bottom": 0.08,
+  "side": 0.05
+ },
+ "bpm": 120,
+ "bpmAsked": 120,
+ "framesPerBeat": 15,
+ "beatSec": 0.5,
+ "beats": [
+  0,
+  0.5,
+  1,
+  1.5,
+  2,
+  2.5,
+  3,
+  3.5,
+  4,
+  4.5,
+  5,
+  5.5,
+  6,
+  6.5,
+  7,
+  7.5,
+  8,
+  8.5,
+  9,
+  9.5,
+  10,
+  10.5,
+  11,
+  11.5
+ ],
+ "shots": [
+  {
+   "id": "c0",
+   "sec": "intro",
+   "beat": 0,
+   "media": "../_shared/media/plate-devices.mp4",
+   "mediaStart": 0,
+   "dur": 2,
+   "flash": false,
+   "tx": "transitions/cut",
+   "start": 0
+  },
+  {
+   "id": "c1",
+   "sec": "build",
+   "beat": 4,
+   "media": "../film-scene/out/film-scene-wide.mp4",
+   "mediaStart": 0,
+   "dur": 1,
+   "flash": false,
+   "tx": "transitions/flash",
+   "txReason": "RHYTHM: section change on the downbeat",
+   "start": 2
+  },
+  {
+   "id": "c2",
+   "sec": "build",
+   "beat": 6,
+   "media": "../_shared/media/plate-film.mp4",
+   "mediaStart": 0,
+   "dur": 1,
+   "flash": false,
+   "tx": "transitions/cut",
+   "start": 3
+  },
+  {
+   "id": "c3",
+   "sec": "build",
+   "beat": 8,
+   "media": "../character-spot/out/character-spot-wide.mp4",
+   "mediaStart": 0,
+   "dur": 1,
+   "flash": false,
+   "tx": "transitions/cut",
+   "start": 4
+  },
+  {
+   "id": "c4",
+   "sec": "build",
+   "beat": 10,
+   "media": "../_shared/media/plate-cast.mp4",
+   "mediaStart": 0,
+   "dur": 1,
+   "flash": false,
+   "tx": "transitions/cut",
+   "start": 5
+  },
+  {
+   "id": "c5",
+   "sec": "drop",
+   "beat": 12,
+   "media": "../_shared/media/plate-devices.mp4",
+   "mediaStart": 1.3,
+   "dur": 0.5,
+   "flash": true,
+   "tx": "transitions/flash",
+   "txReason": "RHYTHM: section change on the downbeat",
+   "start": 6
+  },
+  {
+   "id": "c6",
+   "sec": "drop",
+   "beat": 13,
+   "media": "../film-scene/out/film-scene-wide.mp4",
+   "mediaStart": 1.3,
+   "dur": 0.5,
+   "flash": true,
+   "tx": "transitions/scale-punch",
+   "txReason": "RHYTHM: every drop cut lands on the beat",
+   "start": 6.5
+  },
+  {
+   "id": "c7",
+   "sec": "drop",
+   "beat": 14,
+   "media": "../_shared/media/plate-film.mp4",
+   "mediaStart": 1.3,
+   "dur": 0.5,
+   "flash": true,
+   "tx": "transitions/scale-punch",
+   "txReason": "RHYTHM: every drop cut lands on the beat",
+   "start": 7
+  },
+  {
+   "id": "c8",
+   "sec": "drop",
+   "beat": 15,
+   "media": "../character-spot/out/character-spot-wide.mp4",
+   "mediaStart": 1.3,
+   "dur": 0.5,
+   "flash": true,
+   "tx": "transitions/scale-punch",
+   "txReason": "RHYTHM: every drop cut lands on the beat",
+   "start": 7.5
+  },
+  {
+   "id": "c9",
+   "sec": "drop",
+   "beat": 16,
+   "media": "../_shared/media/plate-cast.mp4",
+   "mediaStart": 1.3,
+   "dur": 0.5,
+   "flash": true,
+   "tx": "transitions/scale-punch",
+   "txReason": "RHYTHM: every drop cut lands on the beat",
+   "start": 8
+  },
+  {
+   "id": "c10",
+   "sec": "drop",
+   "beat": 17,
+   "media": "../_shared/media/plate-devices.mp4",
+   "mediaStart": 2.6,
+   "dur": 0.5,
+   "flash": true,
+   "tx": "transitions/scale-punch",
+   "txReason": "RHYTHM: every drop cut lands on the beat",
+   "start": 8.5
+  },
+  {
+   "id": "c11",
+   "sec": "drop",
+   "beat": 18,
+   "media": "../film-scene/out/film-scene-wide.mp4",
+   "mediaStart": 2.6,
+   "dur": 0.5,
+   "flash": true,
+   "tx": "transitions/scale-punch",
+   "txReason": "RHYTHM: every drop cut lands on the beat",
+   "start": 9
+  },
+  {
+   "id": "c12",
+   "sec": "drop",
+   "beat": 19,
+   "media": "../_shared/media/plate-film.mp4",
+   "mediaStart": 2.6,
+   "dur": 0.5,
+   "flash": true,
+   "tx": "transitions/scale-punch",
+   "txReason": "RHYTHM: every drop cut lands on the beat",
+   "start": 9.5
+  },
+  {
+   "id": "c13",
+   "sec": "out",
+   "beat": 20,
+   "media": "../character-spot/out/character-spot-wide.mp4",
+   "mediaStart": 2.6,
+   "dur": 2,
+   "flash": false,
+   "tx": "transitions/flash",
+   "txReason": "RHYTHM: section change on the downbeat",
+   "start": 10
+  }
+ ],
+ "words": [
+  {
+   "text": "CUT",
+   "t": 6,
+   "dur": 1
+  },
+  {
+   "text": "TO",
+   "t": 7,
+   "dur": 1
+  },
+  {
+   "text": "THE",
+   "t": 8,
+   "dur": 1
+  },
+  {
+   "text": "BEAT",
+   "t": 9,
+   "dur": 1
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/tx/shutter_flash",
+   "t": 2,
+   "gainDb": -4,
+   "why": "tx transitions/flash"
+  },
+  {
+   "id": "sfx/tx/shutter_flash",
+   "t": 6,
+   "gainDb": -4,
+   "why": "tx transitions/flash"
+  },
+  {
+   "id": "sfx/riser/noise_2bar",
+   "t": 6,
+   "gainDb": -8,
+   "why": "riser ends on the drop downbeat"
+  },
+  {
+   "id": "sfx/drum/crash",
+   "t": 6,
+   "gainDb": -6,
+   "why": "drop"
+  },
+  {
+   "id": "sfx/hit/punch",
+   "t": 6,
+   "gainDb": -4,
+   "why": "drop hit"
+  },
+  {
+   "id": "sfx/tx/scale_punch",
+   "t": 6.5,
+   "gainDb": -4,
+   "why": "tx transitions/scale-punch"
+  },
+  {
+   "id": "sfx/tx/scale_punch",
+   "t": 7,
+   "gainDb": -4,
+   "why": "tx transitions/scale-punch"
+  },
+  {
+   "id": "sfx/tx/scale_punch",
+   "t": 7.5,
+   "gainDb": -4,
+   "why": "tx transitions/scale-punch"
+  },
+  {
+   "id": "sfx/tx/scale_punch",
+   "t": 8,
+   "gainDb": -4,
+   "why": "tx transitions/scale-punch"
+  },
+  {
+   "id": "sfx/tx/scale_punch",
+   "t": 8.5,
+   "gainDb": -4,
+   "why": "tx transitions/scale-punch"
+  },
+  {
+   "id": "sfx/tx/scale_punch",
+   "t": 9,
+   "gainDb": -4,
+   "why": "tx transitions/scale-punch"
+  },
+  {
+   "id": "sfx/tx/scale_punch",
+   "t": 9.5,
+   "gainDb": -4,
+   "why": "tx transitions/scale-punch"
+  },
+  {
+   "id": "sfx/tx/shutter_flash",
+   "t": 10,
+   "gainDb": -4,
+   "why": "tx transitions/flash"
+  }
+ ],
+ "claims": [],
+ "paceRule": {
+  "aslMax": 2.5,
+  "longMax": 2.1
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 14,
+   "asl": 0.86,
+   "longest": 2,
+   "pass": true
+  }
+ }
+}

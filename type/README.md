@@ -1,0 +1,56 @@
+# type: kinetic typography, captions, icons, safe zones
+
+State is a pure function `f(preset, params, unit, t)`: no DOM, no clock. Two renderers share the numbers: `render-canvas.js` (2D canvas / three.js overlay) and `dom.js` (DOM spans baked to GSAP with one `tl.set` per changed frame, or driven from `hf-seek`).
+
+| Piece | File | Notes | Tags |
+|---|---|---|---|
+| `maskRise` | presets.js | words rise 0.6 em inside a line mask, 14 f, stagger 4 f, E.hero | headline, premium, ad |
+| `charRise` | | char version, stagger 2 f | short title |
+| `wordStagger`, `charStagger` | | opacity + rise + blur, stagger 3 f / 1.5 f | subhead, playful |
+| `blurIn` | | line blur 24 px to 0, 18 f | cinematic, end card |
+| `scaleSlam` | | 1.35 to 1.00 in 6 f, 8 px shake decaying over 4 f, blur first 2 f, one word per beat (15 f) | hype, hook, CTA |
+| `typewriter` | | 2 f per char, +6 f after `. , ? !`, caret blinks 15 f | terminal, tech |
+| `trackingCollapse`, `weightMorph`, `wipe`, `flipSplit`, `elasticPop`, `scramble`, `glitchSplit` | | premium title card, variable-font emphasis, broadcast wipe, 3D flip, spring (zeta 0.38 = 27% overshoot, 0.7 = 4.6%), decode, RGB split on hits | |
+| highlight-bar super | render-canvas.js `highlight: [wordIdx]` | highlighter bar sweeps behind chosen words in 10 f | emphasis |
+| Captions | captions.js | `chunkWords` (2-4 words, breaks at sentence ends and gaps), `captionFrame`; styles `karaoke`, `impact`, `emphasis`, `pill`, `clean` | talking head |
+| Emoji pops | icons.js | 15 owned vector icons (burst, star, spark, heart, flame, bolt, thumb, play, speech, tag, check, cross, arrow, wave, zigzag, bracket) + keyword map, pop 8 f | sticker |
+| Safe zones | safezones.js | `SAFE` per platform, `safeRect`, `captionBox`, `lintRect`, `lintCaptionStyle` | 9:16, 16:9 |
+
+Rules baked in (`lintType`, `lintPiece`, `lintCaptions`): fully formed hold >= 9 f, <= 3.5 words/s, hold = max(0.5 s, 0.35 + 0.28 s per word), exits 30% faster than entrances, at most two tone families per piece, captions 64-80 px (9:16), <= 2 lines, <= 18 chars per line, active word is exactly the spoken word.
+
+```js
+import { drawType, drawCaptions } from './type/render-canvas.js';
+drawType(g, { preset: 'maskRise', text: 'Voice that sells', at: 0.2, out: 2.6, font: { size: 124 }, anchor: { x: 0.1, y: 0.25 }, highlight: [1] }, t, { W, H });
+const chunks = chunkWords(transcriptWords);                       // Whisper-style [{word,start,end}] works as is
+drawCaptions(g, chunks, t, CAPTION_STYLES.karaoke, { W, H, platform: 'conservative' });
+// HyperFrames: m = mountType(el, spec); bakeType(tl, m, spec, {dur}); cm = mountCaptions(el, chunks, style, {W,H}); bakeCaptions(tl, cm, chunks, {dur})
+```
+
+## Expansion (2026-10-13): editor-staple graphics (`gfx/`), 56 owned stickers, layouts, draw-on
+
+`gfx/index.js`: `renderSVG(id, t, {at, dur, params}, {W, H, platform})` -> full-frame SVG string; `mountGfx(root, items)` + `bindHF()` for HyperFrames. Every item has an entrance / hold / exit (`gfx/core.js life()`), sits inside the platform safe rect, and is a pure function of t. `GFX_SFX` / `sfxFor(id)` give each one a default sound by id.
+
+| Family | Ids | File |
+|---|---|---|
+| Lower thirds | `lowerThird.cleanBar`, `.boldBlock`, `.accentRule`, `.softPill`, `.newsBar` (ticker), `.neonBorder` | `gfx/editorial.js` |
+| Counters | `counter.countUp`, `.wheel` (odometer), `.statCard`, `.ring`, `.priceSlash` | `gfx/editorial.js` |
+| Titles / HUD | `title.chapterCard`, `.slate` (clapper), `.timecodeHUD`, `.letterboxRamp`, `.progressBar`, `.countdown321`, `.recDot` | `gfx/editorial.js` |
+| Call-outs | `callout.scribbleCircle`, `.handArrow`, `.underline`, `.bracket`, `.pinLeader`, `.spotlight` | `gfx/callouts.js` |
+| Mime-style emotion marks | `fx.emotion.sweat`, `.vein`, `.heartBurst`, `.question`, `.exclaim`, `.dizzy`, `.sparkle`, `.zzz`, `.bulb` | `gfx/callouts.js` |
+| Comic impact | `fx.impact.onomatopoeia`, `.speedLines`, `.dustPoof`, `.star`, `.smear` | `gfx/callouts.js` |
+| Social (generic, no platform trade dress) | `social.followButton`, `.replyBubble`, `.testimonial` (marked PLACEHOLDER COPY), `.notification`, `.typing`, `.chatBubbles` | `gfx/social.js` |
+| Devices | `device.phone` (taps, scroll), `device.laptop` (cursor path, click ripples) | `gfx/social.js` |
+| Captions | `caption.meme`, `.replyCard`, `.cinematic`, `.bilingual`, `.oneWordSlam` | `gfx/social.js` |
+| Charts + map | `chart.bar`, `.line`, `.donut`, `.race`, `map.route` (abstract map, no tiles; every chart carries a `source` line) | `gfx/social.js` |
+| Stickers + reactions | `sticker.place` (56 owned stickers: 12 faces + 44 objects incl. diya, rangoli, kite, chai), `reaction.place`, `reaction.burst`; motions popBounce, wiggle, float, shake, orbit, spin, pulse, rise | `gfx/stickers.js` |
+| Layouts (DOM shots) | `layout.splitScreen` (vertical / horizontal / diagonal / 3up / grid), `layout.pip`, `layout.beforeAfter`, `layout.freezeFrame` | `gfx/layout.js` |
+| Draw-on engine | `prepareDrawOn`, `drawOnAt`, `trimAt`, `bindDrawOn`: stroke-dashoffset, seek-safe, works on licensed icon SVGs (Lucide / Phosphor / Fluent after the ORIGIN check) | `gfx/drawon.js` |
+
+Reaction glyphs are placeholders by design: `setGlyphSource(fn)` swaps in a licensed emoji set, for example the Fluent Emoji subset fetched by `scripts/fetch-external.sh` (Apple Color Emoji is not licensed for this use). Candidates read on 2026-10-13 (not downloaded): Noto Emoji (github.com/googlefonts/noto-emoji: README states images under Apache-2.0, font under OFL 1.1, flags separately licensed) and Fluent Emoji (github.com/microsoft/fluentui-emoji: repository licence MIT; the page does not say the licence covers the assets specifically, so confirm before use). Fetched sets arrive with an ORIGIN.txt and pinned checksums; see THIRD_PARTY.md. Demos: `demo/out/gfx-*.jpg`, `demo/out/gfx-sticker-grid.jpg`; test: `node tests/gfx-sheet.mjs` (every id non-empty at its hero time, empty before its start, identical when rendered twice, no page errors).
+Honest limits: text widths are estimated (no DOM measurement), so very long names can overrun a box (check the sheet); Devanagari in `caption.bilingual` falls back to a system font; charts and the testimonial ship with placeholder data / copy.
+
+## Measured (`tests/type.test.mjs`, 26 checks)
+Determinism in any order for all 14 presets; every timing contract above asserted; captions (5 styles x 6 tall platforms x 70 times) never leave the safe zone; DOM bake under random-access seeks equals the pure function (deviation 0) for 7 presets; caption bake within 2%.
+
+## Honest limits
+Safe-zone numbers: the research sources conflict and none could be verified against a current official template. `conservative` is the union (top 269, bottom 672, left 65, right 120 px at 1080x1920); every platform row is flagged `verify: true`. `scramble` swaps glyph text: use the canvas renderer or `driveType`, not `bakeType`. Canvas has no 3D, so `flipSplit` is approximated by a vertical squash there (DOM uses real rotateX). Demos: `demo/out/presets1.jpg`, `presets2.jpg`, `captions.jpg`, `icons.png`.

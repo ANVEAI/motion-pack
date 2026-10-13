@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack overlay demo</title>
+<style>html,body{margin:0;background:#000}#root{position:relative;width:1920px;height:1080px;overflow:hidden}#plate{position:absolute;inset:0;width:100%;height:100%}</style></head><body>
+<div id="root"><canvas id="plate" width="1920" height="1080"></canvas><div id="wrap" style="position:absolute;inset:0"></div></div>
+<script type="module">
+/* Overlay demo: a plate canvas + a DOM stack of overlay canvases (the HyperFrames path). window.setup(layers, t, frame) re-mounts and renders. */
+import { mountStack } from '../overlay.js';
+import { drawPlate } from './plate.js';
+const W = 1920, H = 1080, pg = document.getElementById('plate').getContext('2d'); let stack = null;
+window.setup = (layers, t = 1, frame, mood = 'day') => { if (stack) stack.dispose(); drawPlate(pg, W, H, t, { mood }); stack = mountStack(document.getElementById('wrap'), layers, { width: W, height: H, fps: 30 }); stack.render(t, { frame: frame ?? Math.round(t * 30) }); return stack.layers.map((l) => l.canvas.style.mixBlendMode); };
+window.again = (t, frame) => { stack.render(t, { frame: frame ?? Math.round(t * 30) }); };
+window.__ready = true;
+</script></body></html>

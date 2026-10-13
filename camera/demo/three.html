@@ -1,0 +1,34 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack camera 3D demo</title><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/ext/three/build/three.module.js"}}</script></head><body>
+<script type="module">
+/* Camera 3D demo: a miniature studio (slab, hero box, spheres, strip lights) rendered with the pack's camera presets through applyToThree (same rig as the ANVE kit),
+   with 8-subframe motion blur for fast moves. Page contract: window.__ready, setMove(name), renderAt(t, {blur}), captureFrame. Query: w, h. */
+import * as THREE from 'three';
+import * as C from '../cam3d.js';
+const q = new URLSearchParams(location.search), W = +(q.get('w') || 640), H = +(q.get('h') || 360), FPS = 30;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); renderer.setSize(W, H); renderer.setPixelRatio(1); document.body.appendChild(renderer.domElement);
+const gl = renderer.getContext(), dbg = gl.getExtension('WEBGL_debug_renderer_info'); window.__gpu = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : '?';
+const scene = new THREE.Scene(); scene.background = new THREE.Color('#d9d4ca'); scene.fog = new THREE.Fog('#d9d4ca', 18, 60);
+scene.add(new THREE.HemisphereLight('#ffffff', '#8a8478', 1.6)); const key = new THREE.DirectionalLight('#fff1dd', 2.2); key.position.set(-5, 8, 6); scene.add(key); const rim = new THREE.PointLight('#4a18ed', 60, 20); rim.position.set(1, 3, -5); scene.add(rim);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({ color: '#e8e3d8', roughness: 0.9 })); floor.rotation.x = -Math.PI / 2; floor.position.y = -1.85; scene.add(floor);
+const slab = new THREE.Mesh(new THREE.BoxGeometry(2.9, 0.64, 1.9), new THREE.MeshStandardMaterial({ color: '#f2f0ea', roughness: 0.45 })); slab.position.y = -1.53; scene.add(slab);
+const hero = new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.0, 1.0), new THREE.MeshStandardMaterial({ color: '#4a18ed', roughness: 0.25, metalness: 0.2 })); hero.position.set(0, -0.71, 0); scene.add(hero);   // 1.0 unit wide subject for the dolly-zoom width check
+[[-1.0, '#e5322d'], [1.0, '#18b6c9'], [1.9, '#f2c318']].forEach(([x, c], i) => { const s = new THREE.Mesh(new THREE.SphereGeometry(0.28, 32, 16), new THREE.MeshStandardMaterial({ color: c, roughness: 0.3 })); s.position.set(x * 0.9, -1.0, 0.5 - i * 0.5); scene.add(s); });
+for (let i = 0; i < 9; i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.2 + (i % 4) * 0.5, 0.5), new THREE.MeshStandardMaterial({ color: i % 2 ? '#cfc8ba' : '#bdb5a5', roughness: 0.8 })); b.position.set(-8 + i * 2, -1.85 + (0.2 + (i % 4) * 0.5) / 2, -5 - (i % 3)); scene.add(b); }
+const camera = new THREE.PerspectiveCamera(18, W / H, 1, 200), base = { ...C.KIT.wide, fov: 24, dist: 11, target: [0, -0.9, 0], screen: [960, 540] };
+const M = {
+  hold: () => C.hold(base), pushIn: () => C.pushIn(base, { at: 0.2, dur: 1.2 }), pullOut: () => C.pullOut(base, { at: 0.2, dur: 1.6 }), orbit: () => C.orbit(base, { at: 0, dur: 2, deg: 40 }), crane: () => C.crane(base, { at: 0, dur: 2, from: 10, to: 42 }),
+  truck: () => C.truck(base, { at: 0, dur: 2, dx: 1.8 }), dollyZoom: () => C.dollyZoom({ ...base, fov: 20, dist: 12 }, { at: 0.2, dur: 2.0, fovTo: 55 }), whipOut: () => C.whipPan(base, { at: 0.5, deg: 70 }),
+  handheld: () => C.handheld(base, { level: 'action', seed: 3, H }), dutch: () => C.dutch(base, { at: 0, dur: 1, deg: 8 }), beatPunch: () => C.beatPunch(base, { hits: [0.5, 1.0], amount: 0.06 }),
+};
+let cam = M.hold(); window.setMove = (n) => { cam = M[n](); return Object.keys(M); };
+const acc = document.createElement('canvas'); acc.width = W; acc.height = H; const ag = acc.getContext('2d');
+const shot = (t) => { const s = cam(t); C.applyToThree(THREE, camera, s, W, H, H / 1080); renderer.render(scene, camera); };
+window.renderAt = (t, { blur = 0 } = {}) => { if (!blur) { shot(t); return renderer.domElement; } const n = 8; ag.clearRect(0, 0, W, H); for (let i = 0; i < n; i++) { shot(t - blur / 2 + blur * (i + 0.5) / n); ag.globalAlpha = 1 / (i + 1); ag.drawImage(renderer.domElement, 0, 0); } ag.globalAlpha = 1; return acc; };
+window.sheet = (moves, times, blur = 0) => { const cols = times.length, sc = document.createElement('canvas'); sc.width = W * cols; sc.height = H * moves.length; const g = sc.getContext('2d'); moves.forEach((m, r) => { window.setMove(m); times.forEach((t, c) => { const cv = window.renderAt(t, { blur: /whip/.test(m) ? 0.5 / FPS : 0 }); g.drawImage(cv, c * W, r * H); g.fillStyle = 'rgba(0,0,0,.55)'; g.fillRect(c * W, r * H, 170, 20); g.fillStyle = '#fff'; g.font = '13px monospace'; g.fillText(`${m} t=${t.toFixed(2)}`, c * W + 6, r * H + 14); }); }); return sc.toDataURL('image/png'); };
+window.projectState = (state, w) => { C.applyToThree(THREE, camera, state, W, H, H / 1080); const v = new THREE.Vector3(...w).project(camera); return [(v.x * 0.5 + 0.5) * W, (1 - (v.y * 0.5 + 0.5)) * H]; };
+window.hashCanvas = (el) => { const g2 = document.createElement('canvas'); g2.width = W; g2.height = H; const c = g2.getContext('2d'); c.drawImage(el, 0, 0); const d = c.getImageData(0, 0, W, H).data; let h = 0x811c9dc5; for (let i = 0; i < d.length; i += 3) { h ^= d[i]; h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(16); };
+window.hashAt = (name, t, blur = 0) => { window.setMove(name); return window.hashCanvas(window.renderAt(t, { blur })); };
+window.state = (name, t) => { window.setMove(name); return cam(t); };
+window.CONFIG = { name: 'camera3d', fps: FPS, loopFrames: 60, width: W, height: H }; window.__ready = true;
+</script></body></html>

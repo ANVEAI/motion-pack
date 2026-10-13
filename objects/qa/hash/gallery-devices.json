@@ -1,0 +1,46 @@
+{
+ "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)",
+ "config": {
+  "fps": 30,
+  "loopFrames": 120,
+  "width": 960,
+  "height": 540,
+  "qaFrames": [
+   0,
+   60,
+   119
+  ],
+  "name": "objects-gallery-devices"
+ },
+ "same_frame_twice": {
+  "frame": 67,
+  "a": "65c26c1d45a9caf4",
+  "b": "65c26c1d45a9caf4",
+  "pass": true
+ },
+ "renderAt_0_vs_loop": {
+  "a": "b5371f82acb3b64d",
+  "b": "b5371f82acb3b64d",
+  "pass": true
+ },
+ "renderAt_t_vs_t_plus_3loops": {
+  "t": 1.2345,
+  "pass": true
+ },
+ "frame0_vs_frameN": {
+  "a": "4bef1382e523a36a",
+  "b": "4bef1382e523a36a",
+  "pass": true
+ },
+ "seam_mean_abs_diff": {
+  "117->118": 1.612,
+  "118->119": 1.602,
+  "119->0 (seam)": 11.897,
+  "0->1": 1.633,
+  "1->2": 1.625
+ },
+ "seam_pass": false,
+ "console": [],
+ "console_pass": true,
+ "pass": false
+}

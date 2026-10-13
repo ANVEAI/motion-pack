@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>motion-pack character-spot template</title>
+<link rel="icon" href="data:,">
+<style>html,body{margin:0;padding:0;background:#f3f2ef;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+/* character-spot (mime-style grammar, our own character): white world, one gag, one feature, end line + sting.
+   Driven by ./config.mjs. URL: ?aspect=wide|tall &scale=0.5 &notype=1 (clean plate: put the end line on in HyperFrames instead). */
+import { runScene, U, THREE } from './objects/kit/studio-lite.js';
+import { O } from './objects/index.js';
+import { stageConfig, makeStage, cutShots } from './objects/stage.js';
+import { CONFIG as C, buildPlan } from './config.mjs';
+const { E, seg, clamp, lerp, springU } = U, PLAN = buildPlan(C), EV = C.events, L = C.layout;
+window.CONFIG = stageConfig({ name: C.name, seconds: PLAN.seconds, fps: C.fps, colors: { backdrop: C.world.paper }, grade: { vignette: 0.06 }, env: { floor: 0.32 } });
+window.__PLAN = PLAN;
+const SHOTS = PLAN.shots.map((s) => ({ t: s.start, fov: 18, ...s.cam, screen: undefined }));
+const AT = Object.fromEntries(PLAN.shots.map((s) => [s.id, s.start]));
+const st = {};
+
+function performance() {
+  const P = O.POSES, look = O.look, k = [], yaw = 0.6;
+  const type = (t, i) => [t, { ...look(yaw, 0.2, 0.3), lean: 0.1, aLu: 1.05 + (i % 2 ? 0.14 : 0), aRu: 1.05 + (i % 2 ? 0 : 0.14), aLo: 0.12, aRo: 0.12, aLe: 0.95, aRe: 0.95, squint: 0.4 }, 'soft'];
+  for (let i = 0; i * 0.13 < 2.4; i++) k.push(type(i * 0.13, i));
+  k.push([EV.stretch - 0.15, { ...P.wakeAntic, yaw }, 'soft'], [EV.stretch + 0.3, { ...P.stretch, yaw }, 'enter'], [EV.stretch + 1.2, { ...P.stretch, yaw }, 'soft'], [EV.stretch + 1.7, O.emote({ ...look(yaw, 0.1, 0.05) }, 'happy'), 'soft']);
+  k.push([EV.reach - 0.25, { ...look(0.9, 0.3, 0.35), lean: 0.04 }, 'soft'], [EV.knock, { ...P.reachR, yaw: 0.9, aRu: 1.3, lean: 0.2 }, 'enter'], [EV.knock + 0.25, { ...P.reachR, yaw: 0.9, aRu: 1.25, lean: 0.18 }, 'soft']);
+  k.push([EV.freeze, O.emote({ ...P.flinch, yaw: 0.9 }, 'surprised'), 'enter'], [AT.escalation + 2.9, O.emote({ ...P.flinch, yaw: 0.9 }, 'surprised'), 'soft']);
+  k.push(...O.ACTS.slump(AT.despair).map(([t, p, e]) => [t, { ...p, yaw: 0.25, hYaw: 0.1 }, e]));
+  k.push([AT.twist + 1.45, { ...P.slump, yaw: 0.25, sy: 0.88 }, 'soft']);
+  k.push(...O.ACTS.doubleTake(AT.reaction - 0.05, { yaw: 0.35, hold: 4 }).map(([t, p, e]) => [t, { ...p, yaw: 0.35 }, e]));
+  k.push(...O.ACTS.cheer(EV.cheer).map(([t, p, e]) => [t, { ...p, yaw: 0.2 }, e]));
+  k.push([PLAN.seconds, { ...P.delight, yaw: 0.15 }, 'soft']);
+  return { color: L.color, keys: O.keysOf(k), blinks: O.blinkTimes(0, PLAN.seconds, 5).filter((b) => b < EV.freeze || b > AT.reaction + 0.6),
+    path: [{ t: 0, at: L.worker }, { hop: 1, start: EV.cheer + 0.3, end: EV.cheer + 0.62, to: L.worker, n: 1, h: 0.18 }] };
+}
+
+runScene({
+  async build(ctx) {
+    st.stage = makeStage(ctx, { mode: 'white', paper: C.world.paper, cycFar: -9, cycR: 6 }); const G = st.stage.parent;
+    st.laptop = O.makeLaptop(ctx, G); st.laptop.pose([L.laptop[0], 0, L.laptop[1]], -0.2);
+    st.mug = O.makeMug(ctx, G);
+    st.puddle = ctx.add(G, new THREE.Mesh(new THREE.CircleGeometry(1, 64), O.MAT.liquid('#3b2416')), { recv: true, name: 'puddle' }); st.puddle.rotation.x = -Math.PI / 2;
+    st.worker = O.makeWorker(ctx, G, performance(), () => 0, st.stage.lights.rim);
+    ctx.probes = { worker: st.worker.probes.worker, laptop: st.laptop.probes.laptop, mug: st.mug.probes.mug };
+  },
+  update(ctx, t, n, slot) {
+    st.stage.update(n, slot, 0);
+    // laptop: typing progress, dies when the spill reaches it, wakes itself with the draft restored (the feature)
+    const prog = +Math.min(0.92, 0.3 + 0.62 * seg(t, 0, 2.4)).toFixed(3), dead = t >= EV.dark && t < EV.restore, wake = E.soft(seg(t, EV.restore, EV.restore + 0.25));
+    const flick = n === Math.round(EV.dark * 30) - 1 ? 0.35 : 1;
+    st.laptop.set({ open: 1, screen: dead ? 0 : (t >= EV.restore ? wake : flick), ui: t >= EV.restore ? { title: 'Draft restored', progress: prog, accent: C.brand.mint, kpis: ['OK', '0', '0'] } : { title: 'Draft', progress: prog, kpis: ['1', '0', '0'] } });
+    // mug: tips about its front-right base edge (toward the laptop), coffee leaves it, the puddle grows toward the laptop
+    const tip = E.move(seg(t, EV.knock, EV.knock + 0.22)) + 0.04 * (t > EV.knock + 0.22 ? springU(t - EV.knock - 0.22, 0.3, 5) : 0), th = -1.45 * clamp(tip), r = 0.15;
+    st.mug.pose([L.mug[0] + r - r * Math.cos(th), r * Math.abs(Math.sin(th)), L.mug[1]], -0.9); st.mug.set({ fill: t < EV.knock + 0.08 ? 0.9 : 0, tilt: th });
+    const sp = E.enter(seg(t, EV.spill[0], EV.spill[1]));
+    st.puddle.visible = sp > 0.001; st.puddle.scale.set(0.1 + 0.42 * sp, 0.06 + 0.2 * sp, 1); st.puddle.position.set(L.mug[0] + 0.35 + 0.42 * sp, 0.0025, L.mug[1] - 0.12 * sp);
+    st.worker.update(t);
+  },
+  camera(ctx, t) { return cutShots(ctx, t, SHOTS); },
+  focus(ctx, t) { let s = SHOTS[0]; for (const x of SHOTS) if (x.t <= t + 1e-9) s = x; return s.target; },
+  /* the end line: TODO hook type/end-line (type module); fallback = one Manrope line + brand, faded in over 8 f, inside the safe zone */
+  drawType(ctx, g, t) {
+    const t0 = AT.message + 0.3; if (t < t0) return; const a = E.soft(seg(t, t0, t0 + 8 / 30)), W = ctx.W, H = ctx.H, tall = ctx.aspect === 'tall', px = (tall ? 0.085 : 0.075) * Math.min(W, H) * (tall ? 1.4 : 1);
+    g.globalAlpha = a; g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.font = `800 ${px}px "Manrope"`; g.letterSpacing = (-0.03 * px).toFixed(1) + 'px';
+    const parts = C.brand.line.split('*'), y = tall ? H * 0.30 : H * 0.24; let w = 0; parts.forEach((p) => (w += g.measureText(p).width)); let x = W / 2 - w / 2; g.textAlign = 'left';
+    parts.forEach((p, i) => { g.fillStyle = i % 2 ? C.brand.accent : '#111111'; g.fillText(p, x, y + (1 - a) * 14 * ctx.PX); x += g.measureText(p).width; });
+    g.font = `800 ${px * 0.5}px "Manrope"`; g.textAlign = 'center'; g.fillStyle = '#111111'; g.fillText(C.brand.name + '.', W / 2, y + px * 0.95);
+    g.globalAlpha = 1;
+  },
+  subframes(n) { const t = n / 30; return st.worker.fast(n) || (t > EV.knock - 0.1 && t < EV.knock + 0.5) || (t > AT.reaction - 0.1 && t < AT.reaction + 0.8) ? 8 : 4; },
+});
+</script>
+</body>
+</html>

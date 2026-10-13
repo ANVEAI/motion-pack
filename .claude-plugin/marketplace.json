@@ -1,0 +1,17 @@
+{
+  "name": "anve",
+  "description": "Open-source plugins from ANVE (anveai.com).",
+  "owner": {
+    "name": "ANVE (Anveshana Futurecorp Pvt Ltd)",
+    "url": "https://anveai.com"
+  },
+  "plugins": [
+    {
+      "name": "motion-pack",
+      "source": "./",
+      "description": "Deterministic motion-production pack: transitions, cuts, synthesised SFX and music, layers, kinetic type, camera, 3D objects and genre templates, with the skill that drives them.",
+      "category": "media",
+      "tags": ["video", "motion-graphics", "sound-design", "hyperframes"]
+    }
+  ]
+}

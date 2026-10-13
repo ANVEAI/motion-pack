@@ -1,0 +1,219 @@
+{
+ "template": "film-scene",
+ "fps": 30,
+ "seconds": 8.2,
+ "shots": [
+  {
+   "id": "establishing",
+   "dur": 2,
+   "cam": {
+    "fov": 18,
+    "elev": [
+     22,
+     20
+    ],
+    "az": [
+     -18,
+     -12
+    ],
+    "dist": [
+     10.8,
+     10.2
+    ],
+    "target": [
+     -0.1,
+     0.45,
+     0
+    ],
+    "tall": {
+     "dist": [
+      19,
+      18
+     ]
+    }
+   },
+   "start": 0
+  },
+  {
+   "id": "action",
+   "dur": 2,
+   "cam": {
+    "fov": 18,
+    "elev": [
+     34,
+     32
+    ],
+    "az": [
+     8,
+     12
+    ],
+    "dist": [
+     5.4,
+     5
+    ],
+    "target": [
+     0.85,
+     0.05,
+     0.4
+    ],
+    "tall": {
+     "dist": [
+      9.5,
+      9
+     ]
+    }
+   },
+   "tx": "transitions/cut",
+   "txReason": "STORY: beat change (hard cut)",
+   "start": 2
+  },
+  {
+   "id": "reaction",
+   "dur": 1.6,
+   "cam": {
+    "fov": 18,
+    "elev": [
+     9,
+     8
+    ],
+    "az": [
+     26,
+     24
+    ],
+    "dist": [
+     5.6,
+     5.2
+    ],
+    "target": [
+     -1,
+     0.8,
+     0.35
+    ],
+    "tall": {
+     "dist": [
+      8.5,
+      8
+     ]
+    }
+   },
+   "tx": "transitions/cut",
+   "txReason": "STORY: beat change (hard cut)",
+   "start": 4
+  },
+  {
+   "id": "payoff",
+   "dur": 2.6,
+   "cam": {
+    "fov": 18,
+    "elev": [
+     20,
+     19
+    ],
+    "az": [
+     -8,
+     -4
+    ],
+    "dist": [
+     10.6,
+     10.2
+    ],
+    "target": [
+     0,
+     0.45,
+     0.2
+    ],
+    "tall": {
+     "dist": [
+      18,
+      17.5
+     ]
+    }
+   },
+   "tx": "transitions/cut",
+   "txReason": "STORY: beat change (hard cut)",
+   "start": 5.6
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/amb/room_tone",
+   "t": 0,
+   "gainDb": -20,
+   "loopTo": 8.2,
+   "why": "room tone under the scene (sound-first)"
+  },
+  {
+   "id": "sfx/ui/typing_burst",
+   "t": 0.15,
+   "gainDb": -12,
+   "why": "typing"
+  },
+  {
+   "id": "sfx/ui/typing_burst",
+   "t": 1.1,
+   "gainDb": -13,
+   "why": "typing"
+  },
+  {
+   "id": "sfx/ui/notify",
+   "t": 2.25,
+   "gainDb": -6,
+   "why": "phone buzz (visual on the same frame)"
+  },
+  {
+   "id": "sfx/ui/notify",
+   "t": 2.75,
+   "gainDb": -6,
+   "why": "phone buzz (visual on the same frame)"
+  },
+  {
+   "id": "sfx/ui/notify",
+   "t": 3.25,
+   "gainDb": -6,
+   "why": "phone buzz (visual on the same frame)"
+  },
+  {
+   "id": "sfx/voice/huh",
+   "t": 4.533333333333333,
+   "gainDb": -4,
+   "why": "double-take snap"
+  },
+  {
+   "id": "sfx/cartoon/walk_bounce",
+   "t": 5.75,
+   "gainDb": -9,
+   "why": "hop"
+  },
+  {
+   "id": "sfx/wood/tap",
+   "t": 6.8,
+   "gainDb": -5,
+   "why": "phone lands face-down"
+  },
+  {
+   "id": "sfx/voice/sigh",
+   "t": 7.2,
+   "gainDb": -8,
+   "why": "relief"
+  }
+ ],
+ "claims": [],
+ "layers": [
+  "layers/grain",
+  "layers/vignette"
+ ],
+ "paceRule": {
+  "aslMax": 3,
+  "longMax": 4
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 4,
+   "asl": 2.05,
+   "longest": 2.6,
+   "pass": true
+  }
+ }
+}

@@ -1,0 +1,2113 @@
+{
+ "module": "layers",
+ "version": "1.0.0",
+ "backends": {
+  "finisher": "WebGL2, needs plate pixels (bloom, halation, chroma, lens, diffusion, VHS, glitch)",
+  "overlay": "WebGL2 canvas + CSS mix-blend-mode, no plate needed",
+  "gradeSVG": "SVG feComponentTransfer chain on a wrapper div",
+  "gradeCube": ".cube 3D LUT for ffmpeg lut3d / NLEs"
+ },
+ "components": [
+  {
+   "id": "grade.premium-product",
+   "file": "layers/presets/grades.js",
+   "kind": "grade",
+   "tags": [
+    "product",
+    "ad",
+    "clean",
+    "tech",
+    "launch",
+    "ui"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grade.warm-film",
+   "file": "layers/presets/grades.js",
+   "kind": "grade",
+   "tags": [
+    "film",
+    "short-film",
+    "drama",
+    "warm",
+    "human",
+    "nostalgia"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grade.cool-tech",
+   "file": "layers/presets/grades.js",
+   "kind": "grade",
+   "tags": [
+    "tech",
+    "cyber",
+    "night",
+    "saas",
+    "ai",
+    "hype"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grade.retro-vhs",
+   "file": "layers/presets/grades.js",
+   "kind": "grade",
+   "tags": [
+    "retro",
+    "vhs",
+    "lofi",
+    "90s",
+    "glitch"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grade.nostalgic-print",
+   "file": "layers/presets/grades.js",
+   "kind": "grade",
+   "tags": [
+    "nostalgia",
+    "memory",
+    "flashback",
+    "print",
+    "vintage"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grade.bright-playful",
+   "file": "layers/presets/grades.js",
+   "kind": "grade",
+   "tags": [
+    "mime",
+    "cartoon",
+    "kids",
+    "playful",
+    "social",
+    "comedy"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grade.noir",
+   "file": "layers/presets/grades.js",
+   "kind": "grade",
+   "tags": [
+    "noir",
+    "thriller",
+    "bw",
+    "mono",
+    "drama"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grade.documentary",
+   "file": "layers/presets/grades.js",
+   "kind": "grade",
+   "tags": [
+    "talking-head",
+    "interview",
+    "documentary",
+    "human",
+    "founder",
+    "vlog"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.none-clean",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.premium-product",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "ad",
+    "product",
+    "ui",
+    "saas",
+    "clean",
+    "launch"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.warm-film",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "short-film",
+    "drama",
+    "cinema",
+    "film"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.cool-tech",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "tech",
+    "ai",
+    "hype",
+    "night",
+    "cyber",
+    "beat-edit"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.retro-vhs",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "retro",
+    "vhs",
+    "lofi",
+    "glitch",
+    "meme"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.nostalgic-print",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "flashback",
+    "nostalgia",
+    "memory",
+    "montage"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.bright-playful",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "mime",
+    "cartoon",
+    "kids",
+    "comedy",
+    "social"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.noir",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "noir",
+    "thriller",
+    "bw"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.documentary",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "talking-head",
+    "interview",
+    "founder",
+    "vlog",
+    "retention"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finish.launch-studio",
+   "file": "layers/presets/finish.js",
+   "kind": "finish-recipe",
+   "tags": [
+    "3d",
+    "studio-kit"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grain.none",
+   "file": "layers/presets/stocks.js",
+   "kind": "grain-stock",
+   "tags": [
+    "grain",
+    "texture",
+    "none"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "sigma within 15% of 0.408 x amount (tests)"
+  },
+  {
+   "id": "grain.clean",
+   "file": "layers/presets/stocks.js",
+   "kind": "grain-stock",
+   "tags": [
+    "grain",
+    "texture",
+    "clean"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "sigma within 15% of 0.408 x amount (tests)"
+  },
+  {
+   "id": "grain.digital-soft",
+   "file": "layers/presets/stocks.js",
+   "kind": "grain-stock",
+   "tags": [
+    "grain",
+    "texture",
+    "digital-soft"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "sigma within 15% of 0.408 x amount (tests)"
+  },
+  {
+   "id": "grain.film35",
+   "file": "layers/presets/stocks.js",
+   "kind": "grain-stock",
+   "tags": [
+    "grain",
+    "texture",
+    "film35"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "sigma within 15% of 0.408 x amount (tests)"
+  },
+  {
+   "id": "grain.film16",
+   "file": "layers/presets/stocks.js",
+   "kind": "grain-stock",
+   "tags": [
+    "grain",
+    "texture",
+    "film16"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "sigma within 15% of 0.408 x amount (tests)"
+  },
+  {
+   "id": "grain.super8",
+   "file": "layers/presets/stocks.js",
+   "kind": "grain-stock",
+   "tags": [
+    "grain",
+    "texture",
+    "super8"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "sigma within 15% of 0.408 x amount (tests)"
+  },
+  {
+   "id": "grain.vhs",
+   "file": "layers/presets/stocks.js",
+   "kind": "grain-stock",
+   "tags": [
+    "grain",
+    "texture",
+    "vhs"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "sigma within 15% of 0.408 x amount (tests)"
+  },
+  {
+   "id": "grain.upload-safe",
+   "file": "layers/presets/stocks.js",
+   "kind": "grain-stock",
+   "tags": [
+    "grain",
+    "texture",
+    "upload-safe"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "sigma within 15% of 0.408 x amount (tests)"
+  },
+  {
+   "id": "overlay.grain",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "overlay",
+   "tags": [
+    "grain",
+    "film",
+    "texture"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "overlay.vignette",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "normal",
+   "tags": [
+    "vignette",
+    "lens",
+    "focus"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "overlay.leaks",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "screen",
+   "tags": [
+    "light-leak",
+    "film",
+    "warm",
+    "transition"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "overlay.dust",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "normal",
+   "tags": [
+    "dust",
+    "scratch",
+    "hair",
+    "film",
+    "nostalgia"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "overlay.bokeh",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "screen",
+   "tags": [
+    "bokeh",
+    "lights",
+    "depth",
+    "premium"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "overlay.glow",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "screen",
+   "tags": [
+    "glow",
+    "rim",
+    "light"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "overlay.paper",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "multiply",
+   "tags": [
+    "paper",
+    "texture",
+    "print",
+    "nostalgia"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "overlay.scanlines",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "normal",
+   "tags": [
+    "scanlines",
+    "crt",
+    "retro",
+    "vhs"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "overlay.bars",
+   "file": "layers/overlay.js",
+   "kind": "overlay-layer",
+   "blend": "normal",
+   "tags": [
+    "letterbox",
+    "cinema",
+    "bars"
+   ],
+   "demo": "layers/demo/out/overlays.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "finisher",
+   "file": "layers/finisher.js",
+   "kind": "pipeline",
+   "tags": [
+    "bloom",
+    "halation",
+    "chromatic-aberration",
+    "lens",
+    "diffusion",
+    "vhs",
+    "glitch",
+    "leaks",
+    "bokeh",
+    "glow",
+    "paper",
+    "dither",
+    "letterbox"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs"
+  },
+  {
+   "id": "grade.emitters",
+   "file": "layers/grade.js",
+   "kind": "grade-tools",
+   "tags": [
+    "lut",
+    "cube",
+    "svg",
+    "glsl",
+    "cdl"
+   ],
+   "demo": "layers/demo/out/finisher-wide.png",
+   "test": "layers/tests/layers.test.mjs",
+   "measured": "GLSL max 0.56 levels vs JS ref; ffmpeg lut3d max 1.34; SVG mean dE <= 0.6"
+  },
+  {
+   "id": "overlay.flareStreak",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "screen",
+   "tags": [
+    "flare",
+    "anamorphic",
+    "lens",
+    "cinematic",
+    "sci-fi"
+   ],
+   "params": {
+    "x": 0.72,
+    "y": 0.38,
+    "length": 0.9,
+    "thick": 0.006,
+    "color": "#6FA8FF",
+    "intensity": 0.9,
+    "flicker": 0.15
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.flareGhosts",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "screen",
+   "tags": [
+    "flare",
+    "ghosts",
+    "lens",
+    "sun"
+   ],
+   "params": {
+    "x": 0.78,
+    "y": 0.25,
+    "count": 6,
+    "size": 0.06,
+    "color": "#FFB46A",
+    "color2": "#7AD0FF",
+    "intensity": 0.5
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.starburst",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "screen",
+   "tags": [
+    "flare",
+    "star",
+    "sparkle",
+    "sun",
+    "glint"
+   ],
+   "params": {
+    "x": 0.5,
+    "y": 0.4,
+    "rays": 8,
+    "spin": 0.05,
+    "falloff": 6,
+    "color": "#FFF2D8",
+    "intensity": 0.8
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.lensDirt",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "screen",
+   "tags": [
+    "lens",
+    "dirt",
+    "smudge",
+    "flare",
+    "realism"
+   ],
+   "params": {
+    "x": 0.75,
+    "y": 0.3,
+    "radius": 0.6,
+    "color": "#FFE6C8",
+    "intensity": 0.45,
+    "scale": 1
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.rainGlass",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "normal",
+   "tags": [
+    "rain",
+    "glass",
+    "window",
+    "mood",
+    "weather"
+   ],
+   "params": {
+    "density": 1,
+    "speed": 0.25,
+    "size": 1,
+    "intensity": 0.8
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.fog",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "screen",
+   "tags": [
+    "fog",
+    "haze",
+    "mist",
+    "atmosphere",
+    "mood"
+   ],
+   "params": {
+    "density": 0.55,
+    "scale": 2.2,
+    "drift": 0.04,
+    "ground": 0.6,
+    "color": "#C9D3DE",
+    "intensity": 0.6
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.godRays",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "screen",
+   "tags": [
+    "god-rays",
+    "light",
+    "volumetric",
+    "sun",
+    "church"
+   ],
+   "params": {
+    "x": 0.25,
+    "y": -0.05,
+    "rays": 22,
+    "falloff": 1.6,
+    "sway": 0.06,
+    "color": "#FFE2A8",
+    "intensity": 0.55
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.halftone",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "multiply",
+   "tags": [
+    "halftone",
+    "comic",
+    "print",
+    "pop-art",
+    "mime"
+   ],
+   "params": {
+    "cell": 12,
+    "angle": 45,
+    "x": 0.5,
+    "y": 0.5,
+    "spread": 1.3,
+    "color": "#1A1A2E",
+    "intensity": 0.45
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.speedLines",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "normal",
+   "tags": [
+    "speed-lines",
+    "manga",
+    "anime",
+    "impact",
+    "comic"
+   ],
+   "params": {
+    "x": 0.5,
+    "y": 0.5,
+    "lines": 90,
+    "fps": 12,
+    "clear": 0.28,
+    "color": "#FFFFFF",
+    "intensity": 0.85
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.vhs",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "normal",
+   "tags": [
+    "vhs",
+    "tape",
+    "tracking",
+    "retro",
+    "90s"
+   ],
+   "params": {
+    "tracking": 0.6,
+    "speed": 0.15,
+    "headSwitch": 1,
+    "chroma": 0.5,
+    "intensity": 0.7
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.burnEdge",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "screen",
+   "tags": [
+    "film-burn",
+    "edge",
+    "analog",
+    "film",
+    "warm"
+   ],
+   "params": {
+    "edge": "right",
+    "reach": 0.35,
+    "flicker": 1,
+    "color": "#FF5A12",
+    "color2": "#FFE7B0",
+    "intensity": 0.85
+   },
+   "demo": "layers/demo/out/fx2-lens.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.paperFold",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "multiply",
+   "tags": [
+    "paper",
+    "fold",
+    "crease",
+    "texture",
+    "print"
+   ],
+   "params": {
+    "folds": 3,
+    "intensity": 0.6,
+    "tint": "#F4EEDF"
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.crumple",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "multiply",
+   "tags": [
+    "paper",
+    "crumple",
+    "texture",
+    "craft"
+   ],
+   "params": {
+    "cells": 9,
+    "intensity": 0.55,
+    "tint": "#F3EEE4"
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.cardboard",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "multiply",
+   "tags": [
+    "cardboard",
+    "kraft",
+    "texture",
+    "craft",
+    "unboxing"
+   ],
+   "params": {
+    "flutes": 60,
+    "intensity": 0.7,
+    "tint": "#C9A27A"
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.canvas",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "multiply",
+   "tags": [
+    "canvas",
+    "weave",
+    "texture",
+    "art",
+    "painting"
+   ],
+   "params": {
+    "weave": 220,
+    "intensity": 0.45,
+    "tint": "#EFE8DA"
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.cloth",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "multiply",
+   "tags": [
+    "cloth",
+    "fabric",
+    "twill",
+    "texture",
+    "fashion"
+   ],
+   "params": {
+    "weave": 380,
+    "intensity": 0.4,
+    "tint": "#E6E2EE"
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.concrete",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "multiply",
+   "tags": [
+    "concrete",
+    "urban",
+    "texture",
+    "wall",
+    "grunge"
+   ],
+   "params": {
+    "scale": 3,
+    "pits": 0.6,
+    "intensity": 0.5,
+    "tint": "#D9D8D4"
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.brushedMetal",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "overlay",
+   "tags": [
+    "metal",
+    "brushed",
+    "texture",
+    "premium",
+    "product"
+   ],
+   "params": {
+    "angle": 0,
+    "streaks": 900,
+    "intensity": 0.5
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.tornEdge",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "normal",
+   "tags": [
+    "torn",
+    "paper",
+    "edge",
+    "collage",
+    "craft"
+   ],
+   "params": {
+    "side": "bottom",
+    "depth": 0.12,
+    "rough": 1,
+    "tint": "#F6F1E6",
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.noiseMap",
+   "file": "layers/fx2.js",
+   "kind": "overlay-layer",
+   "backend": "webgl2",
+   "blend": "normal",
+   "tags": [
+    "noise",
+    "matte",
+    "displacement",
+    "luma",
+    "utility"
+   ],
+   "params": {
+    "scale": 3,
+    "octaves": 5,
+    "contrast": 1.2,
+    "drift": 0,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-comic.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.sparks",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "sparks",
+    "particles",
+    "fire",
+    "grinder",
+    "impact"
+   ],
+   "params": {
+    "x": 0.5,
+    "y": 0.75,
+    "count": 90,
+    "spread": 0.6,
+    "speed": 1.1,
+    "gravity": 1.4,
+    "life": 0.9,
+    "color": "#FFB347",
+    "burstAt": null,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-particles.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.embers",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "embers",
+    "particles",
+    "fire",
+    "warm",
+    "cinematic"
+   ],
+   "params": {
+    "count": 60,
+    "rise": 0.12,
+    "sway": 0.03,
+    "life": 6,
+    "size": 3,
+    "color": "#FF7A2A",
+    "intensity": 0.9
+   },
+   "demo": "layers/demo/out/fx2-particles.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.smoke",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "smoke",
+    "puff",
+    "particles",
+    "atmosphere",
+    "cartoon"
+   ],
+   "params": {
+    "x": 0.5,
+    "y": 0.85,
+    "count": 26,
+    "rise": 0.35,
+    "spread": 0.12,
+    "life": 4,
+    "size": 0.12,
+    "color": "#B9B9C2",
+    "intensity": 0.5
+   },
+   "demo": "layers/demo/out/fx2-particles.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.confetti",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "confetti",
+    "celebrate",
+    "win",
+    "party",
+    "particles"
+   ],
+   "params": {
+    "count": 140,
+    "fall": 0.22,
+    "life": 5,
+    "size": 14,
+    "colors": [
+     "#4A18ED",
+     "#FFC83D",
+     "#FF4F7B",
+     "#2BD9A0",
+     "#5AB0FF"
+    ],
+    "burstAt": null,
+    "x": 0.5,
+    "y": 0.6,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-particles.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.snow",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "snow",
+    "winter",
+    "particles",
+    "festive",
+    "calm"
+   ],
+   "params": {
+    "count": 220,
+    "fall": 0.12,
+    "life": 9,
+    "size": 2.6,
+    "sway": 0.02,
+    "intensity": 0.9
+   },
+   "demo": "layers/demo/out/fx2-particles.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.motes",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "dust",
+    "motes",
+    "light",
+    "beam",
+    "calm"
+   ],
+   "params": {
+    "count": 70,
+    "size": 2.2,
+    "drift": 0.01,
+    "intensity": 0.7,
+    "beam": [
+     0.3,
+     0,
+     0.7,
+     1
+    ]
+   },
+   "demo": "layers/demo/out/fx2-particles.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.recHUD",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "rec",
+    "hud",
+    "camcorder",
+    "vlog",
+    "found-footage"
+   ],
+   "params": {
+    "label": "REC",
+    "start": 0,
+    "fps": 30,
+    "battery": 0.7,
+    "color": "#FFFFFF",
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.timecode",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "timecode",
+    "vhs",
+    "crt",
+    "hud",
+    "retro"
+   ],
+   "params": {
+    "style": "vhs",
+    "date": "OCT 13 2026",
+    "start": 0,
+    "fps": 30,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.sprocket",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "film",
+    "sprocket",
+    "strip",
+    "analog",
+    "frame"
+   ],
+   "params": {
+    "width": 0.07,
+    "holes": 7,
+    "speed": 0,
+    "weave": 1.5,
+    "color": "#0B0B0B",
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.gateEdge",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "film",
+    "gate",
+    "frame",
+    "analog",
+    "vintage"
+   ],
+   "params": {
+    "radius": 0.06,
+    "soft": 0.012,
+    "weave": 2,
+    "color": "#050505",
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.polaroid",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "polaroid",
+    "photo",
+    "frame",
+    "memory",
+    "scrapbook"
+   ],
+   "params": {
+    "caption": "",
+    "paper": "#F7F5EE",
+    "ink": "#2A2A3A",
+    "surround": "#16161B",
+    "side": 0.06,
+    "bottom": 0.2,
+    "scale": 0.86,
+    "tilt": -2,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.instax",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "instax",
+    "photo",
+    "frame",
+    "memory",
+    "social"
+   ],
+   "params": {
+    "caption": "",
+    "paper": "#FBFBF8",
+    "ink": "#2A2A3A",
+    "surround": "#F0D9E4",
+    "side": 0.045,
+    "bottom": 0.15,
+    "aspect": 0.74,
+    "scale": 0.9,
+    "tilt": 2,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.impactFrame",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "impact",
+    "manga",
+    "anime",
+    "flash",
+    "comic"
+   ],
+   "params": {
+    "x": 0.5,
+    "y": 0.5,
+    "spikes": 64,
+    "invert": false,
+    "at": 0,
+    "frames": 3,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.arBars",
+   "file": "layers/canvas2d.js",
+   "kind": "audio-reactive",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "audio-reactive",
+    "bars",
+    "equalizer",
+    "music",
+    "podcast"
+   ],
+   "params": {
+    "bars": 32,
+    "x": 0.5,
+    "y": 0.82,
+    "width": 0.6,
+    "height": 0.16,
+    "color": "#FFFFFF",
+    "beats": [],
+    "env": null,
+    "decay": 0.25,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.arRing",
+   "file": "layers/canvas2d.js",
+   "kind": "audio-reactive",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "audio-reactive",
+    "ring",
+    "pulse",
+    "voice",
+    "ai"
+   ],
+   "params": {
+    "x": 0.5,
+    "y": 0.5,
+    "radius": 0.14,
+    "gain": 0.35,
+    "rings": 3,
+    "color": "#8E6BFF",
+    "beats": [],
+    "env": null,
+    "decay": 0.3,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.arWave",
+   "file": "layers/canvas2d.js",
+   "kind": "audio-reactive",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "audio-reactive",
+    "waveform",
+    "voice",
+    "podcast",
+    "ai"
+   ],
+   "params": {
+    "y": 0.5,
+    "height": 0.12,
+    "cycles": 3,
+    "color": "#FFFFFF",
+    "beats": [],
+    "env": null,
+    "decay": 0.25,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.arSpectrum",
+   "file": "layers/canvas2d.js",
+   "kind": "audio-reactive",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "audio-reactive",
+    "spectrum",
+    "radial",
+    "music",
+    "visualizer"
+   ],
+   "params": {
+    "x": 0.5,
+    "y": 0.5,
+    "radius": 0.18,
+    "bands": 64,
+    "height": 0.12,
+    "color": "#5AB0FF",
+    "color2": "#FF4F7B",
+    "beats": [],
+    "env": null,
+    "decay": 0.25,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-frames.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "look.bleach-bypass",
+   "file": "layers/looks/look.bleach-bypass.cube",
+   "kind": "look",
+   "tags": [
+    "war",
+    "gritty",
+    "thriller",
+    "desaturated"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bleach-soft",
+   "file": "layers/looks/look.bleach-soft.cube",
+   "kind": "look",
+   "tags": [
+    "gritty",
+    "drama",
+    "documentary"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.cross-process",
+   "file": "layers/looks/look.cross-process.cube",
+   "kind": "look",
+   "tags": [
+    "fashion",
+    "music",
+    "retro",
+    "2000s"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.day-for-night",
+   "file": "layers/looks/look.day-for-night.cube",
+   "kind": "look",
+   "tags": [
+    "night",
+    "moonlight",
+    "film",
+    "mystery"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.teal-orange",
+   "file": "layers/looks/look.teal-orange.cube",
+   "kind": "look",
+   "tags": [
+    "blockbuster",
+    "ad",
+    "action",
+    "travel"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.teal-orange-soft",
+   "file": "layers/looks/look.teal-orange-soft.cube",
+   "kind": "look",
+   "tags": [
+    "ad",
+    "lifestyle",
+    "travel"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.two-strip",
+   "file": "layers/looks/look.two-strip.cube",
+   "kind": "look",
+   "tags": [
+    "vintage",
+    "1920s",
+    "period",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.cyanotype",
+   "file": "layers/looks/look.cyanotype.cube",
+   "kind": "look",
+   "tags": [
+    "art",
+    "blueprint",
+    "print",
+    "mono"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.sepia",
+   "file": "layers/looks/look.sepia.cube",
+   "kind": "look",
+   "tags": [
+    "vintage",
+    "memory",
+    "history",
+    "mono"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.selenium",
+   "file": "layers/looks/look.selenium.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "fine-art",
+    "portrait"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bw-neutral",
+   "file": "layers/looks/look.bw-neutral.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "bw",
+    "classic"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bw-red-filter",
+   "file": "layers/looks/look.bw-red-filter.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "bw",
+    "dramatic-sky",
+    "portrait"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bw-orange-filter",
+   "file": "layers/looks/look.bw-orange-filter.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "bw",
+    "skin",
+    "portrait"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bw-yellow-filter",
+   "file": "layers/looks/look.bw-yellow-filter.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "bw",
+    "landscape"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bw-green-filter",
+   "file": "layers/looks/look.bw-green-filter.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "bw",
+    "foliage"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bw-blue-filter",
+   "file": "layers/looks/look.bw-blue-filter.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "bw",
+    "moody",
+    "fog"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bw-high-key",
+   "file": "layers/looks/look.bw-high-key.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "bright",
+    "beauty"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.bw-low-key",
+   "file": "layers/looks/look.bw-low-key.cube",
+   "kind": "look",
+   "tags": [
+    "mono",
+    "noir",
+    "dramatic"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.faded-90s",
+   "file": "layers/looks/look.faded-90s.cube",
+   "kind": "look",
+   "tags": [
+    "90s",
+    "retro",
+    "nostalgia",
+    "skate"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.faded-film",
+   "file": "layers/looks/look.faded-film.cube",
+   "kind": "look",
+   "tags": [
+    "nostalgia",
+    "indie",
+    "lifestyle"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.matte-cool",
+   "file": "layers/looks/look.matte-cool.cube",
+   "kind": "look",
+   "tags": [
+    "tech",
+    "minimal",
+    "calm",
+    "saas"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.matte-warm",
+   "file": "layers/looks/look.matte-warm.cube",
+   "kind": "look",
+   "tags": [
+    "lifestyle",
+    "cafe",
+    "cozy"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.golden-hour",
+   "file": "layers/looks/look.golden-hour.cube",
+   "kind": "look",
+   "tags": [
+    "sunset",
+    "warm",
+    "romance",
+    "travel"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.blue-hour",
+   "file": "layers/looks/look.blue-hour.cube",
+   "kind": "look",
+   "tags": [
+    "dusk",
+    "city",
+    "calm",
+    "cool"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.overcast",
+   "file": "layers/looks/look.overcast.cube",
+   "kind": "look",
+   "tags": [
+    "grey",
+    "drama",
+    "british",
+    "muted"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.neon-night",
+   "file": "layers/looks/look.neon-night.cube",
+   "kind": "look",
+   "tags": [
+    "cyberpunk",
+    "night",
+    "club",
+    "tech"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.neon-teal-pink",
+   "file": "layers/looks/look.neon-teal-pink.cube",
+   "kind": "look",
+   "tags": [
+    "synthwave",
+    "retro",
+    "music"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.pastel",
+   "file": "layers/looks/look.pastel.cube",
+   "kind": "look",
+   "tags": [
+    "soft",
+    "kids",
+    "beauty",
+    "dreamy"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.high-key-beauty",
+   "file": "layers/looks/look.high-key-beauty.cube",
+   "kind": "look",
+   "tags": [
+    "beauty",
+    "skincare",
+    "bright",
+    "clean"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.tobacco-wash",
+   "file": "layers/looks/look.tobacco-wash.cube",
+   "kind": "look",
+   "tags": [
+    "western",
+    "whiskey",
+    "period",
+    "warm"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.green-matrix",
+   "file": "layers/looks/look.green-matrix.cube",
+   "kind": "look",
+   "tags": [
+    "hacker",
+    "tech",
+    "thriller"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.sodium-street",
+   "file": "layers/looks/look.sodium-street.cube",
+   "kind": "look",
+   "tags": [
+    "city",
+    "night",
+    "crime",
+    "india-street"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.clean-commercial",
+   "file": "layers/looks/look.clean-commercial.cube",
+   "kind": "look",
+   "tags": [
+    "ad",
+    "product",
+    "clean",
+    "tv"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.vivid-pop",
+   "file": "layers/looks/look.vivid-pop.cube",
+   "kind": "look",
+   "tags": [
+    "social",
+    "pop",
+    "kids",
+    "food"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.food-warm",
+   "file": "layers/looks/look.food-warm.cube",
+   "kind": "look",
+   "tags": [
+    "food",
+    "restaurant",
+    "appetite"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.muted-earth",
+   "file": "layers/looks/look.muted-earth.cube",
+   "kind": "look",
+   "tags": [
+    "documentary",
+    "nature",
+    "earthy"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.arctic-white",
+   "file": "layers/looks/look.arctic-white.cube",
+   "kind": "look",
+   "tags": [
+    "clean",
+    "winter",
+    "medical",
+    "tech"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.desert-heat",
+   "file": "layers/looks/look.desert-heat.cube",
+   "kind": "look",
+   "tags": [
+    "desert",
+    "heat",
+    "rajasthan",
+    "travel"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.monsoon-green",
+   "file": "layers/looks/look.monsoon-green.cube",
+   "kind": "look",
+   "tags": [
+    "monsoon",
+    "rain",
+    "india",
+    "nature"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.festive-gold",
+   "file": "layers/looks/look.festive-gold.cube",
+   "kind": "look",
+   "tags": [
+    "diwali",
+    "wedding",
+    "festive",
+    "gold"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.horror-cold",
+   "file": "layers/looks/look.horror-cold.cube",
+   "kind": "look",
+   "tags": [
+    "horror",
+    "thriller",
+    "cold"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.dream-glow",
+   "file": "layers/looks/look.dream-glow.cube",
+   "kind": "look",
+   "tags": [
+    "dream",
+    "memory",
+    "romance"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.newsprint",
+   "file": "layers/looks/look.newsprint.cube",
+   "kind": "look",
+   "tags": [
+    "print",
+    "paper",
+    "comic",
+    "mono"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.security-cam",
+   "file": "layers/looks/look.security-cam.cube",
+   "kind": "look",
+   "tags": [
+    "cctv",
+    "found-footage",
+    "thriller"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.lofi-polaroid",
+   "file": "layers/looks/look.lofi-polaroid.cube",
+   "kind": "look",
+   "tags": [
+    "polaroid",
+    "memory",
+    "scrapbook",
+    "lofi"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "log.logc3-to-709",
+   "file": "layers/looks/log.logc3-to-709.cube",
+   "kind": "conversion-lut",
+   "tags": [
+    "log",
+    "camera",
+    "logc3",
+    "rec709",
+    "conversion"
+   ],
+   "measured": "18% grey -> 0.441 display (PBR Neutral); gamut matrix rows sum to 1",
+   "caveat": "formulae as published; re-verify against vendor white papers before a grading job",
+   "test": "layers/tools/log_cubes.py"
+  },
+  {
+   "id": "log.slog3-to-709",
+   "file": "layers/looks/log.slog3-to-709.cube",
+   "kind": "conversion-lut",
+   "tags": [
+    "log",
+    "camera",
+    "slog3",
+    "rec709",
+    "conversion"
+   ],
+   "measured": "18% grey -> 0.441 display (PBR Neutral); gamut matrix rows sum to 1",
+   "caveat": "formulae as published; re-verify against vendor white papers before a grading job",
+   "test": "layers/tools/log_cubes.py"
+  },
+  {
+   "id": "log.vlog-to-709",
+   "file": "layers/looks/log.vlog-to-709.cube",
+   "kind": "conversion-lut",
+   "tags": [
+    "log",
+    "camera",
+    "vlog",
+    "rec709",
+    "conversion"
+   ],
+   "measured": "18% grey -> 0.441 display (PBR Neutral); gamut matrix rows sum to 1",
+   "caveat": "formulae as published; re-verify against vendor white papers before a grading job",
+   "test": "layers/tools/log_cubes.py"
+  },
+  {
+   "id": "look.neutral-rolloff-709",
+   "file": "layers/looks/neutral.rolloff-709.cube",
+   "kind": "conversion-lut",
+   "tags": [
+    "highlight",
+    "roll-off",
+    "tone-map",
+    "pbr-neutral"
+   ],
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/log_cubes.py"
+  },
+  {
+   "id": "hf.integration",
+   "file": "layers/demo/hf/index.html",
+   "kind": "demo",
+   "tags": [
+    "hyperframes",
+    "composition"
+   ],
+   "demo": "layers/demo/out/hf-demo.mp4",
+   "test": "layers/demo/hf/make.sh <dir> lint|render"
+  }
+ ]
+}

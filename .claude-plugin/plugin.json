@@ -1,0 +1,14 @@
+{
+  "name": "motion-pack",
+  "displayName": "Motion Pack",
+  "version": "0.1.0",
+  "description": "A deterministic motion-production pack for AI agents: transitions, cuts, synthesised SFX and music, finishing layers, kinetic type, camera moves, 3D objects and genre templates for HyperFrames and three.js, plus the skill that drives them.",
+  "author": {
+    "name": "ANVE (Anveshana Futurecorp Pvt Ltd)",
+    "url": "https://anveai.com"
+  },
+  "homepage": "https://anveai.github.io/motion-pack/catalog/",
+  "repository": "https://github.com/ANVEAI/motion-pack",
+  "license": "MIT",
+  "keywords": ["video", "motion-graphics", "transitions", "sfx", "music", "hyperframes", "threejs", "gsap", "templates", "skills"]
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280, height=720">
+<title>motion-pack GL transitions in HyperFrames</title>
+<style>
+  body { margin: 0; background: #000; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000; }
+  #gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="mp-hf-gl" data-no-timeline data-start="0" data-width="1280" data-height="720" data-duration="6">
+  <canvas id="gl" width="1280" height="720"></canvas>
+</div>
+<script type="module">
+/* GL back-end inside HyperFrames: shots are canvases (procedural test cards here; in a real piece draw your
+   footage/stills into them per frame or pass <img>/<canvas> sources). Rendered from t alone via hf-seek. */
+import { createTxRenderer } from './lib/tx-gl.js';
+import { planEdits, stateAt } from './lib/sequence.js';
+import { hfBind } from './lib/tx-hf.js';
+import { paintA, paintB } from './lib/testcard.js';
+const W = 1280, H = 720, cv = document.getElementById('gl'), tx = createTxRenderer(cv); tx.compileAll();
+const shots = [0, 1, 2, 3, 4].map(() => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; });
+const paint = (i, t) => (i % 2 ? paintB : paintA)(shots[i].getContext('2d'), t + i * 0.37, W, H);
+const plan = planEdits([
+  { cut_s: 1.0, key: 'whip' }, { cut_s: 2.0, key: 'glitch' }, { cut_s: 3.2, key: 'ink' }, { cut_s: 4.6, key: 'maskReveal', params: { text: 'ORBIT' } },
+]);
+function renderAt(t) {
+  const s = stateAt(t, plan);
+  if ('shot' in s) { paint(s.shot, t); tx.render({ key: 'dissolve', from: shots[s.shot], to: shots[s.shot], p: 0 }); return; }
+  paint(s.from, t); paint(s.to, t);
+  tx.render({ key: s.key, from: shots[s.from], to: shots[s.to], p: s.p, params: s.params, dur_s: s.dur });
+}
+hfBind(renderAt, { compositionId: 'mp-hf-gl', duration: 6 });
+</script>
+</body>
+</html>

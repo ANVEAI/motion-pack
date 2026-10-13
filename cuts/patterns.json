@@ -1,0 +1,54 @@
+{
+ "schema": "motion-pack/cuts@1",
+ "note": "Cut-pattern library (data). cuts/cutgen.py turns a BPM + a pattern into frame-exact cut points. Beat positions are in beats from the start of each cycle (4/4 assumed: 1 bar = 4 beats). Numbers are house starting values [H] from docs/research/edit.md sections 2.3, 2.5, 3.3, 6.1, 7.2 and docs/research/sound.md 4.10 / bundle.short_film: tune by retention data, never treat as platform facts.",
+ "beat": {
+  "every_beat":     {"cycle_beats": 1, "cuts": [0], "use": "drop / chorus montage, 120-150 BPM gives 0.4-0.5 s shots", "energy": 4},
+  "every_2":        {"cycle_beats": 2, "cuts": [0], "use": "default beat edit, readable shots", "energy": 3},
+  "every_bar":      {"cycle_beats": 4, "cuts": [0], "use": "verses, product holds, talking-head B-roll on music", "energy": 2},
+  "every_2bars":    {"cycle_beats": 8, "cuts": [0], "use": "intros, emotional holds, short film on score", "energy": 1},
+  "eighths":        {"cycle_beats": 0.5, "cuts": [0], "use": "1-2 bar burst only (stutter montage); never sustained (flash safety for flashes)", "energy": 5},
+  "offbeat":        {"cycle_beats": 1, "cuts": [0.5], "use": "the 'and': syncopated, nervous energy", "energy": 4},
+  "backbeat":       {"cycle_beats": 4, "cuts": [1, 3], "use": "cut on the snare (beats 2 and 4)", "energy": 3},
+  "push_and":       {"cycle_beats": 4, "cuts": [0, 2, 3.5], "use": "anticipation: the cut before the bar line lands early, pulls into the next bar", "energy": 3},
+  "tresillo_332":   {"cycle_beats": 4, "cuts": [0, 1.5, 3], "use": "3+3+2 eighths: groove, Afro-Latin and pop hooks", "energy": 3},
+  "son_clave_32":   {"cycle_beats": 8, "cuts": [0, 1.5, 3, 5, 6], "use": "2-bar clave: dance edits", "energy": 3},
+  "downbeat_hits":  {"cycle_beats": 16, "cuts": [0, 4, 8, 12, 14, 15], "use": "4-bar phrase with a turnaround: two quick cuts lead into the next phrase", "energy": 3}
+ },
+ "sections": {
+  "build_accelerate": {"segments": [{"bars": 2, "pattern": "every_bar"}, {"bars": 2, "pattern": "every_2"}, {"bars": 1, "pattern": "every_beat"}, {"bars": 1, "pattern": "eighths"}], "then": "hero cut on the next downbeat (riser ends there: sfx/riser/* length = whole bars)", "use": "build into a drop / reveal"},
+  "drop_doubletime":  {"segments": [{"bars": 4, "pattern": "every_2"}, {"bars": 4, "pattern": "every_beat"}], "use": "chorus or drop after a build"},
+  "hook_3s":          {"segments": [{"bars": 1, "pattern": "every_beat"}, {"bars": 1, "pattern": "every_2"}], "use": "short-form hook: >= 3 visual states in the first 5 s (ABCD R3)"},
+  "verse_chorus":     {"segments": [{"bars": 8, "pattern": "every_bar"}, {"bars": 8, "pattern": "every_2"}, {"bars": 4, "pattern": "every_beat"}], "use": "music video / lyric edit skeleton"},
+  "breath_out":       {"segments": [{"bars": 2, "pattern": "every_2"}, {"bars": 2, "pattern": "every_bar"}, {"bars": 4, "pattern": "every_2bars"}], "use": "decelerate into an end card (decelerate before a CTA)"}
+ },
+ "split": {
+  "J":          {"audio_lead_ms": 400, "range_ms": [200, 800], "crossfade_ms": 80, "ambience_bridge_ms": 1500, "use": "next scene's audio starts before its picture: anticipation, scene bridges, interviews"},
+  "L":          {"audio_tail_ms": 600, "range_ms": [200, 1200], "crossfade_ms": 80, "ambience_bridge_ms": 1500, "use": "previous audio lingers over new picture: reaction shots, dialogue overlap"},
+  "film_J":     {"audio_lead_frames": [12, 24], "audio_lead_ms": 600, "crossfade_ms": 120, "use": "short-film scene change: sound leads the cut (docs/research/sound.md bundle.short_film)"},
+  "broll_lead": {"audio_lead_ms": -150, "crossfade_ms": 0, "use": "talking-head B-roll: the PICTURE leads the VO line by 150 ms (micro J, inverted)"}
+ },
+ "talking_head": {
+  "autocut":           {"silence_min_ms": 500, "breath_keep_ms": 120, "pad_before_ms": 60, "pad_after_ms": 90, "crossfade_ms": 6, "filler": ["um", "uh", "like", "you know"], "analysis_by": "talking-head-recut / video-use skills (reuse; this file only holds the numbers)"},
+  "reframe_alternate": {"scales": [1.0, 1.15, 1.0, 1.25], "anchor": [0.5, 0.38], "use": "disguise jump cuts: every jump cut changes framing, anchored on the eyes"},
+  "punch_in":          {"scale_to": 1.12, "in_ms": 140, "ease": "outCubic", "min_gap_s": 4.0, "hold_until": "next_cut", "sfx": "sfx/hit/punch", "use": "key claims and predictable dips; max 1 per 4 s"},
+  "slow_push":         {"from": 1.0, "to": 1.06, "ease": "linear", "when_shot_longer_than_s": 4.0},
+  "beat_hold":         {"hold_ms": 450, "use": "hold the face 400-600 ms after a punchline, then cut"},
+  "cut_tick":          {"sfx": "sfx/ui/tick", "gain_db": -18, "use": "optional jump-cut tick so cuts are not sterile"}
+ },
+ "smash": {
+  "pre_silence_ms": 200, "ramp_ms": 4, "contrast_loudness_db": 12, "contrast_luma": 0.4, "hold_a_ms": [0, 100],
+  "sfx": ["sfx/hit/sub_drop", "sfx/hit/boom_meme"], "sfx_at": "cut + 1 frame",
+  "use": "comedy, shock, irony, problem-to-solved snap, mime-style punchline; the silence before is what sells it"
+ },
+ "interrupts": {
+  "minor_every_s": 2.5, "medium_every_s": 5.0, "major_every_s": 9.0, "jitter": 0.25, "major_min_gap_s": 6.0, "major_pair_min_gap_s": 1.5,
+  "levels": {"1": ["cam.punchIn", "caption emphasis", "new angle", "tx.scalePunch"], "2": ["B-roll insert", "text card", "tx.whip", "zoom-out reveal", "colour field"], "3": ["cut.smash", "tx.glitch", "tx.flash + music drop", "format switch"]}
+ },
+ "pace": {
+  "hype_ad":      {"asl_s": [1.2, 2.0], "shots_per_30s": [15, 24], "beat_pattern": "every_2"},
+  "beat_edit":    {"asl_beats": [1, 2], "shots_per_30s": [30, 60], "beat_pattern": "every_beat"},
+  "talking_head": {"asl_s": [2.5, 5.0], "shots_per_30s": [6, 12], "beat_pattern": null},
+  "mime_spot":  {"asl_s": [2.0, 3.0], "reaction_hold_s": 1.5, "shots_per_30s": [8, 12], "beat_pattern": null},
+  "short_film":   {"asl_s": [4.0, 8.0], "shots_per_30s": [4, 8], "beat_pattern": null}
+ }
+}

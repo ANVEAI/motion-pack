@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack layers demo</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body>
+<canvas id="out"></canvas>
+<script type="module">
+/* Finisher demo page. Implements the spec-to-loop render.mjs contract (CONFIG, __ready, renderFrame/captureFrame/__hashFrame) + window.mp for the tests.
+   Query: preset=<finish preset>  aspect=wide|tall  mood=day|night  flat=<0..255>  hits=0.5,1.2 */
+import { Finisher, resolvePreset } from '../finisher.js';
+import { drawPlate, flatGrey, drawChart } from './plate.js';
+import { FINISH_PRESETS } from '../presets/finish.js';
+const q = new URLSearchParams(location.search), tall = (q.get('aspect') || 'wide') === 'tall', W = tall ? 1080 : 1920, H = tall ? 1920 : 1080, FPS = 30;
+window.CONFIG = { name: 'layers-demo', fps: FPS, loopFrames: 60, width: W, height: H, qaFrames: [0, 30] };
+try {
+  const plate = document.createElement('canvas'); plate.width = W; plate.height = H; const pg = plate.getContext('2d');
+  const out = document.getElementById('out'); const fin = new Finisher(out, q.get('preset') || 'none-clean', { width: W, height: H, fps: FPS });
+  const hits = (q.get('hits') || '').split(',').filter(Boolean).map(Number), mood = q.get('mood') || 'day', flat = q.get('flat');
+  fin.setSource(plate); window.__gpu = fin.gpu;
+  const draw = (t, n) => { if (flat != null) flatGrey(pg, W, H, +flat); else drawPlate(pg, W, H, t, { mood }); fin.render(t, { frame: n, hits }); };
+  window.mp = { fin, plate, pg, W, H, FPS, draw, FINISH_PRESETS, resolvePreset, drawPlate, flatGrey, drawChart, hits };
+  window.renderFrame = (n, fps = FPS) => draw(n / fps, n);
+  window.captureFrame = (n, fps = FPS) => { draw(n / fps, n); const b = fin.readRGBA(); let s = ''; for (let i = 0; i < b.length; i += 32768) s += String.fromCharCode.apply(null, b.subarray(i, i + 32768)); return btoa(s); };
+  window.__hashFrame = (n, fps = FPS) => { draw(n / fps, n); return fin.hash(); };
+  window.__hashAt = (t) => { draw(t, Math.round(t * FPS)); return fin.hash(); };
+  window.renderAt = (t) => draw(t, Math.round(t * FPS));
+  /* contact sheet: finished frames (and the raw plate) in a grid, returned as a PNG data URL */
+  window.sheet = (names, t, n, cols = 3, cw = 640) => {
+    const ch = Math.round(cw * H / W), rows = Math.ceil((names.length) / cols), sc = document.createElement('canvas'); sc.width = cw * cols; sc.height = (ch + 0) * rows; const sg = sc.getContext('2d'); sg.fillStyle = '#222'; sg.fillRect(0, 0, sc.width, sc.height);
+    names.forEach((nm, i) => { const x = (i % cols) * cw, y = Math.floor(i / cols) * ch; if (nm === '@plate') { drawPlate(pg, W, H, t, { mood }); sg.drawImage(plate, x, y, cw, ch); } else { fin.setPreset(nm); draw(t, n); sg.drawImage(out, x, y, cw, ch); }
+      sg.fillStyle = 'rgba(0,0,0,.55)'; sg.fillRect(x, y, 190, 22); sg.fillStyle = '#fff'; sg.font = '14px monospace'; sg.fillText(nm, x + 6, y + 16); });
+    return sc.toDataURL('image/png');
+  };
+  draw(0, 0); window.__ready = true;
+} catch (e) { window.__error = String(e && e.stack || e); }
+</script></body></html>

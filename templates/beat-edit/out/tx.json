@@ -1,0 +1,182 @@
+[
+ {
+  "i": 1,
+  "id": "transitions/flash",
+  "key": "flash",
+  "params": {},
+  "cutF": 60,
+  "startF": 59,
+  "endF": 63,
+  "cut": 2,
+  "start": 1.9666666666666666,
+  "end": 2.1,
+  "out": [
+   "#c0"
+  ],
+  "in": [
+   "#c1"
+  ]
+ },
+ {
+  "i": 5,
+  "id": "transitions/flash",
+  "key": "flash",
+  "params": {},
+  "cutF": 180,
+  "startF": 179,
+  "endF": 183,
+  "cut": 6,
+  "start": 5.966666666666667,
+  "end": 6.1,
+  "out": [
+   "#c4"
+  ],
+  "in": [
+   "#c5"
+  ]
+ },
+ {
+  "i": 6,
+  "id": "transitions/scale-punch",
+  "key": "scalePunch",
+  "params": {},
+  "cutF": 195,
+  "startF": 193,
+  "endF": 201,
+  "cut": 6.5,
+  "start": 6.433333333333334,
+  "end": 6.7,
+  "out": [
+   "#c5"
+  ],
+  "in": [
+   "#c6"
+  ]
+ },
+ {
+  "i": 7,
+  "id": "transitions/scale-punch",
+  "key": "scalePunch",
+  "params": {},
+  "cutF": 210,
+  "startF": 208,
+  "endF": 216,
+  "cut": 7,
+  "start": 6.933333333333334,
+  "end": 7.2,
+  "out": [
+   "#c6"
+  ],
+  "in": [
+   "#c7"
+  ]
+ },
+ {
+  "i": 8,
+  "id": "transitions/scale-punch",
+  "key": "scalePunch",
+  "params": {},
+  "cutF": 225,
+  "startF": 223,
+  "endF": 231,
+  "cut": 7.5,
+  "start": 7.433333333333334,
+  "end": 7.7,
+  "out": [
+   "#c7"
+  ],
+  "in": [
+   "#c8"
+  ]
+ },
+ {
+  "i": 9,
+  "id": "transitions/scale-punch",
+  "key": "scalePunch",
+  "params": {},
+  "cutF": 240,
+  "startF": 238,
+  "endF": 246,
+  "cut": 8,
+  "start": 7.933333333333334,
+  "end": 8.2,
+  "out": [
+   "#c8"
+  ],
+  "in": [
+   "#c9"
+  ]
+ },
+ {
+  "i": 10,
+  "id": "transitions/scale-punch",
+  "key": "scalePunch",
+  "params": {},
+  "cutF": 255,
+  "startF": 253,
+  "endF": 261,
+  "cut": 8.5,
+  "start": 8.433333333333334,
+  "end": 8.7,
+  "out": [
+   "#c9"
+  ],
+  "in": [
+   "#c10"
+  ]
+ },
+ {
+  "i": 11,
+  "id": "transitions/scale-punch",
+  "key": "scalePunch",
+  "params": {},
+  "cutF": 270,
+  "startF": 268,
+  "endF": 276,
+  "cut": 9,
+  "start": 8.933333333333334,
+  "end": 9.2,
+  "out": [
+   "#c10"
+  ],
+  "in": [
+   "#c11"
+  ]
+ },
+ {
+  "i": 12,
+  "id": "transitions/scale-punch",
+  "key": "scalePunch",
+  "params": {},
+  "cutF": 285,
+  "startF": 283,
+  "endF": 291,
+  "cut": 9.5,
+  "start": 9.433333333333334,
+  "end": 9.7,
+  "out": [
+   "#c11"
+  ],
+  "in": [
+   "#c12"
+  ]
+ },
+ {
+  "i": 13,
+  "id": "transitions/flash",
+  "key": "flash",
+  "params": {},
+  "cutF": 300,
+  "startF": 299,
+  "endF": 303,
+  "cut": 10,
+  "start": 9.966666666666667,
+  "end": 10.1,
+  "out": [
+   "#c12"
+  ],
+  "in": [
+   "#c13"
+  ]
+ }
+]

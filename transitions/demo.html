@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:,">
+<title>motion-pack transition demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden} canvas{display:block}</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<script type="module">
+/* Demo page for one transition, implementing the spec-to-loop render contract (render.mjs):
+   window.CONFIG, __ready, __error, __gpu, renderAt(t), renderFrame(n,fps), captureFrame(n,fps), __hashFrame, __hashAt.
+   URL: demo.html?tx=<key>&w=960&h=540[&params=<json>]. 2 s ping-pong loop: A->B cut on t=0.5, B->A cut on t=1.5,
+   so the loop is seamless and the QA seam test applies. */
+import { REGISTRY } from './lib/registry.js';
+import { createTxRenderer } from './lib/tx-gl.js';
+import { speedRamp, RAMP_PRESETS } from './lib/tx-core.js';
+import { paintA, paintB, paintCurve } from './lib/testcard.js';
+try {
+  const q = new URLSearchParams(location.search), key = q.get('tx') || 'whip', W = +(q.get('w') || 960), H = +(q.get('h') || 540);
+  const params = q.get('params') ? JSON.parse(q.get('params')) : {}, entry = REGISTRY[key];
+  if (!entry) throw new Error('unknown tx ' + key);
+  const fps = 30, L = 2;
+  window.CONFIG = { fps, loopFrames: L * fps, width: W, height: H, qaFrames: [15, 45], name: key };
+  const cv = document.getElementById('gl'); cv.width = W; cv.height = H; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+  const ca = mk(), cb = mk(), ga = ca.getContext('2d'), gb = cb.getContext('2d');
+  const tx = createTxRenderer(cv); tx.compileAll();
+  const gl = tx.gl, dbg = gl.getExtension('WEBGL_debug_renderer_info');
+  window.__gpu = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+  const dur = Math.min(0.9, entry.timing.ms / 1000), cut = entry.timing.cut;
+  const ramp = key === 'speedRamp' ? speedRamp(RAMP_PRESETS[params.preset || 'hit'], { anchor: 1.0 }) : null;
+  const drift = ramp ? (L - (ramp.map(L) - ramp.map(0))) / L : 0;
+  window.renderAt = t => {
+    t = ((t % L) + L) % L;
+    if (ramp) {                       // retime shot A by the ramp; linear drift correction keeps the 2 s loop seamless
+      const ts = ramp.map(t) - ramp.map(0) + drift * t; paintA(ga, ts, W, H);
+      paintCurve(ga, W, H, ramp.rateAt, 0, L, t);
+      tx.render({ key: 'dissolve', from: ca, to: ca, p: 0 }); return;
+    }
+    paintA(ga, t, W, H); paintB(gb, t, W, H);
+    const second = t >= 1, c0 = second ? 1.5 : 0.5, p = (t - (c0 - cut * dur)) / dur;
+    tx.render({ key, from: second ? cb : ca, to: second ? ca : cb, p, params, dur_s: dur, fps });
+  };
+  const px = new Uint8Array(W * H * 4), acc = new Float32Array(W * H * 4), out = new Uint8Array(W * H * 4), SUB = 8;
+  window.renderFrame = (n, f = fps) => window.renderAt(n / f);
+  function grab(n, f) {
+    acc.fill(0);
+    for (let k = 0; k < SUB; k++) { window.renderAt((n + ((k + 0.5) / SUB - 0.5) * 0.5) / f); gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, px); for (let i = 0; i < px.length; i++) acc[i] += px[i]; }
+    for (let y = 0; y < H; y++) { const so = (H - 1 - y) * W * 4, d = y * W * 4; for (let i = 0; i < W * 4; i++) out[d + i] = Math.round(acc[so + i] / SUB); }
+    return out;
+  }
+  const b64 = u8 => { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
+  const hash = u8 => { let a = 0x811c9dc5, b = 0x01000193 ^ 0x5bd1e995; for (let i = 0; i < u8.length; i++) { a = Math.imul(a ^ u8[i], 0x01000193); b = Math.imul(b ^ u8[i], 0x5bd1e995) ^ (b >>> 15); } return (a >>> 0).toString(16).padStart(8, '0') + (b >>> 0).toString(16).padStart(8, '0'); };
+  window.captureFrame = (n, f = fps) => b64(grab(n, f));
+  window.__hashFrame = (n, f = fps) => hash(grab(n, f));
+  window.__hashAt = t => { window.renderAt(t); gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, px); return hash(px); };
+  await document.fonts.ready;
+  window.renderAt(+(q.get('t') || 0));
+  window.__ready = true;
+} catch (e) { window.__error = String(e && e.stack || e); window.__ready = true; console.error(e); }
+</script>
+</body>
+</html>

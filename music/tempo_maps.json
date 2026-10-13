@@ -1,0 +1,682 @@
+{
+ "75@24fps": {
+  "bpm": 75.7895,
+  "frames_per_beat": 19,
+  "frames_per_bar": 76,
+  "bar_seconds": 3.16667,
+  "riser_1bar_s": 3.16667,
+  "snap_error_pct": 1.053
+ },
+ "90@24fps": {
+  "bpm": 90.0,
+  "frames_per_beat": 16,
+  "frames_per_bar": 64,
+  "bar_seconds": 2.66667,
+  "riser_1bar_s": 2.66667,
+  "snap_error_pct": 0.0
+ },
+ "100@24fps": {
+  "bpm": 102.8571,
+  "frames_per_beat": 14,
+  "frames_per_bar": 56,
+  "bar_seconds": 2.33333,
+  "riser_1bar_s": 2.33333,
+  "snap_error_pct": 2.857
+ },
+ "105@24fps": {
+  "bpm": 102.8571,
+  "frames_per_beat": 14,
+  "frames_per_bar": 56,
+  "bar_seconds": 2.33333,
+  "riser_1bar_s": 2.33333,
+  "snap_error_pct": -2.041
+ },
+ "110@24fps": {
+  "bpm": 110.7692,
+  "frames_per_beat": 13,
+  "frames_per_bar": 52,
+  "bar_seconds": 2.16667,
+  "riser_1bar_s": 2.16667,
+  "snap_error_pct": 0.699
+ },
+ "112.5@24fps": {
+  "bpm": 110.7692,
+  "frames_per_beat": 13,
+  "frames_per_bar": 52,
+  "bar_seconds": 2.16667,
+  "riser_1bar_s": 2.16667,
+  "snap_error_pct": -1.538
+ },
+ "120@24fps": {
+  "bpm": 120.0,
+  "frames_per_beat": 12,
+  "frames_per_bar": 48,
+  "bar_seconds": 2.0,
+  "riser_1bar_s": 2.0,
+  "snap_error_pct": 0.0
+ },
+ "128@24fps": {
+  "bpm": 130.9091,
+  "frames_per_beat": 11,
+  "frames_per_bar": 44,
+  "bar_seconds": 1.83333,
+  "riser_1bar_s": 1.83333,
+  "snap_error_pct": 2.273
+ },
+ "138@24fps": {
+  "bpm": 144.0,
+  "frames_per_beat": 10,
+  "frames_per_bar": 40,
+  "bar_seconds": 1.66667,
+  "riser_1bar_s": 1.66667,
+  "snap_error_pct": 4.348
+ },
+ "140@24fps": {
+  "bpm": 144.0,
+  "frames_per_beat": 10,
+  "frames_per_bar": 40,
+  "bar_seconds": 1.66667,
+  "riser_1bar_s": 1.66667,
+  "snap_error_pct": 2.857
+ },
+ "150@24fps": {
+  "bpm": 144.0,
+  "frames_per_beat": 10,
+  "frames_per_bar": 40,
+  "bar_seconds": 1.66667,
+  "riser_1bar_s": 1.66667,
+  "snap_error_pct": -4.0
+ },
+ "75@30fps": {
+  "bpm": 75.0,
+  "frames_per_beat": 24,
+  "frames_per_bar": 96,
+  "bar_seconds": 3.2,
+  "riser_1bar_s": 3.2,
+  "snap_error_pct": 0.0
+ },
+ "90@30fps": {
+  "bpm": 90.0,
+  "frames_per_beat": 20,
+  "frames_per_bar": 80,
+  "bar_seconds": 2.66667,
+  "riser_1bar_s": 2.66667,
+  "snap_error_pct": 0.0
+ },
+ "100@30fps": {
+  "bpm": 100.0,
+  "frames_per_beat": 18,
+  "frames_per_bar": 72,
+  "bar_seconds": 2.4,
+  "riser_1bar_s": 2.4,
+  "snap_error_pct": 0.0
+ },
+ "105@30fps": {
+  "bpm": 105.8824,
+  "frames_per_beat": 17,
+  "frames_per_bar": 68,
+  "bar_seconds": 2.26667,
+  "riser_1bar_s": 2.26667,
+  "snap_error_pct": 0.84
+ },
+ "110@30fps": {
+  "bpm": 112.5,
+  "frames_per_beat": 16,
+  "frames_per_bar": 64,
+  "bar_seconds": 2.13333,
+  "riser_1bar_s": 2.13333,
+  "snap_error_pct": 2.273
+ },
+ "112.5@30fps": {
+  "bpm": 112.5,
+  "frames_per_beat": 16,
+  "frames_per_bar": 64,
+  "bar_seconds": 2.13333,
+  "riser_1bar_s": 2.13333,
+  "snap_error_pct": 0.0
+ },
+ "120@30fps": {
+  "bpm": 120.0,
+  "frames_per_beat": 15,
+  "frames_per_bar": 60,
+  "bar_seconds": 2.0,
+  "riser_1bar_s": 2.0,
+  "snap_error_pct": 0.0
+ },
+ "128@30fps": {
+  "bpm": 128.5714,
+  "frames_per_beat": 14,
+  "frames_per_bar": 56,
+  "bar_seconds": 1.86667,
+  "riser_1bar_s": 1.86667,
+  "snap_error_pct": 0.446
+ },
+ "138@30fps": {
+  "bpm": 138.4615,
+  "frames_per_beat": 13,
+  "frames_per_bar": 52,
+  "bar_seconds": 1.73333,
+  "riser_1bar_s": 1.73333,
+  "snap_error_pct": 0.334
+ },
+ "140@30fps": {
+  "bpm": 138.4615,
+  "frames_per_beat": 13,
+  "frames_per_bar": 52,
+  "bar_seconds": 1.73333,
+  "riser_1bar_s": 1.73333,
+  "snap_error_pct": -1.099
+ },
+ "150@30fps": {
+  "bpm": 150.0,
+  "frames_per_beat": 12,
+  "frames_per_bar": 48,
+  "bar_seconds": 1.6,
+  "riser_1bar_s": 1.6,
+  "snap_error_pct": 0.0
+ },
+ "75@60fps": {
+  "bpm": 75.0,
+  "frames_per_beat": 48,
+  "frames_per_bar": 192,
+  "bar_seconds": 3.2,
+  "riser_1bar_s": 3.2,
+  "snap_error_pct": 0.0
+ },
+ "90@60fps": {
+  "bpm": 90.0,
+  "frames_per_beat": 40,
+  "frames_per_bar": 160,
+  "bar_seconds": 2.66667,
+  "riser_1bar_s": 2.66667,
+  "snap_error_pct": 0.0
+ },
+ "100@60fps": {
+  "bpm": 100.0,
+  "frames_per_beat": 36,
+  "frames_per_bar": 144,
+  "bar_seconds": 2.4,
+  "riser_1bar_s": 2.4,
+  "snap_error_pct": 0.0
+ },
+ "105@60fps": {
+  "bpm": 105.8824,
+  "frames_per_beat": 34,
+  "frames_per_bar": 136,
+  "bar_seconds": 2.26667,
+  "riser_1bar_s": 2.26667,
+  "snap_error_pct": 0.84
+ },
+ "110@60fps": {
+  "bpm": 109.0909,
+  "frames_per_beat": 33,
+  "frames_per_bar": 132,
+  "bar_seconds": 2.2,
+  "riser_1bar_s": 2.2,
+  "snap_error_pct": -0.826
+ },
+ "112.5@60fps": {
+  "bpm": 112.5,
+  "frames_per_beat": 32,
+  "frames_per_bar": 128,
+  "bar_seconds": 2.13333,
+  "riser_1bar_s": 2.13333,
+  "snap_error_pct": 0.0
+ },
+ "120@60fps": {
+  "bpm": 120.0,
+  "frames_per_beat": 30,
+  "frames_per_bar": 120,
+  "bar_seconds": 2.0,
+  "riser_1bar_s": 2.0,
+  "snap_error_pct": 0.0
+ },
+ "128@60fps": {
+  "bpm": 128.5714,
+  "frames_per_beat": 28,
+  "frames_per_bar": 112,
+  "bar_seconds": 1.86667,
+  "riser_1bar_s": 1.86667,
+  "snap_error_pct": 0.446
+ },
+ "138@60fps": {
+  "bpm": 138.4615,
+  "frames_per_beat": 26,
+  "frames_per_bar": 104,
+  "bar_seconds": 1.73333,
+  "riser_1bar_s": 1.73333,
+  "snap_error_pct": 0.334
+ },
+ "140@60fps": {
+  "bpm": 138.4615,
+  "frames_per_beat": 26,
+  "frames_per_bar": 104,
+  "bar_seconds": 1.73333,
+  "riser_1bar_s": 1.73333,
+  "snap_error_pct": -1.099
+ },
+ "150@60fps": {
+  "bpm": 150.0,
+  "frames_per_beat": 24,
+  "frames_per_bar": 96,
+  "bar_seconds": 1.6,
+  "riser_1bar_s": 1.6,
+  "snap_error_pct": 0.0
+ },
+ "ramps": {
+  "100->128@24fps/8bars": {
+   "fps": 24,
+   "bpm_from": 100,
+   "bpm_to": 128,
+   "bars": 8,
+   "bar_frames_per_beat": [
+    14,
+    14,
+    13,
+    13,
+    12,
+    12,
+    12,
+    11
+   ],
+   "bar_bpm": [
+    102.8571,
+    102.8571,
+    110.7692,
+    110.7692,
+    120.0,
+    120.0,
+    120.0,
+    130.9091
+   ],
+   "bar_frames": [
+    0,
+    56,
+    112,
+    164,
+    216,
+    264,
+    312,
+    360
+   ],
+   "end_frame": 404,
+   "length_s": 16.8333
+  },
+  "100->128@24fps/16bars": {
+   "fps": 24,
+   "bpm_from": 100,
+   "bpm_to": 128,
+   "bars": 16,
+   "bar_frames_per_beat": [
+    14,
+    14,
+    14,
+    14,
+    13,
+    13,
+    13,
+    13,
+    13,
+    12,
+    12,
+    12,
+    12,
+    12,
+    11,
+    11
+   ],
+   "bar_bpm": [
+    102.8571,
+    102.8571,
+    102.8571,
+    102.8571,
+    110.7692,
+    110.7692,
+    110.7692,
+    110.7692,
+    110.7692,
+    120.0,
+    120.0,
+    120.0,
+    120.0,
+    120.0,
+    130.9091,
+    130.9091
+   ],
+   "bar_frames": [
+    0,
+    56,
+    112,
+    168,
+    224,
+    276,
+    328,
+    380,
+    432,
+    484,
+    532,
+    580,
+    628,
+    676,
+    724,
+    768
+   ],
+   "end_frame": 812,
+   "length_s": 33.8333
+  },
+  "128->100@24fps/8bars": {
+   "fps": 24,
+   "bpm_from": 128,
+   "bpm_to": 100,
+   "bars": 8,
+   "bar_frames_per_beat": [
+    11,
+    12,
+    12,
+    12,
+    13,
+    13,
+    14,
+    14
+   ],
+   "bar_bpm": [
+    130.9091,
+    120.0,
+    120.0,
+    120.0,
+    110.7692,
+    110.7692,
+    102.8571,
+    102.8571
+   ],
+   "bar_frames": [
+    0,
+    44,
+    92,
+    140,
+    188,
+    240,
+    292,
+    348
+   ],
+   "end_frame": 404,
+   "length_s": 16.8333
+  },
+  "100->128@30fps/8bars": {
+   "fps": 30,
+   "bpm_from": 100,
+   "bpm_to": 128,
+   "bars": 8,
+   "bar_frames_per_beat": [
+    18,
+    17,
+    17,
+    16,
+    16,
+    15,
+    15,
+    14
+   ],
+   "bar_bpm": [
+    100.0,
+    105.8824,
+    105.8824,
+    112.5,
+    112.5,
+    120.0,
+    120.0,
+    128.5714
+   ],
+   "bar_frames": [
+    0,
+    72,
+    140,
+    208,
+    272,
+    336,
+    396,
+    456
+   ],
+   "end_frame": 512,
+   "length_s": 17.0667
+  },
+  "100->128@30fps/16bars": {
+   "fps": 30,
+   "bpm_from": 100,
+   "bpm_to": 128,
+   "bars": 16,
+   "bar_frames_per_beat": [
+    18,
+    18,
+    17,
+    17,
+    17,
+    16,
+    16,
+    16,
+    16,
+    15,
+    15,
+    15,
+    15,
+    14,
+    14,
+    14
+   ],
+   "bar_bpm": [
+    100.0,
+    100.0,
+    105.8824,
+    105.8824,
+    105.8824,
+    112.5,
+    112.5,
+    112.5,
+    112.5,
+    120.0,
+    120.0,
+    120.0,
+    120.0,
+    128.5714,
+    128.5714,
+    128.5714
+   ],
+   "bar_frames": [
+    0,
+    72,
+    144,
+    212,
+    280,
+    348,
+    412,
+    476,
+    540,
+    604,
+    664,
+    724,
+    784,
+    844,
+    900,
+    956
+   ],
+   "end_frame": 1012,
+   "length_s": 33.7333
+  },
+  "128->100@30fps/8bars": {
+   "fps": 30,
+   "bpm_from": 128,
+   "bpm_to": 100,
+   "bars": 8,
+   "bar_frames_per_beat": [
+    14,
+    15,
+    15,
+    16,
+    16,
+    17,
+    17,
+    18
+   ],
+   "bar_bpm": [
+    128.5714,
+    120.0,
+    120.0,
+    112.5,
+    112.5,
+    105.8824,
+    105.8824,
+    100.0
+   ],
+   "bar_frames": [
+    0,
+    56,
+    116,
+    176,
+    240,
+    304,
+    372,
+    440
+   ],
+   "end_frame": 512,
+   "length_s": 17.0667
+  },
+  "100->128@60fps/8bars": {
+   "fps": 60,
+   "bpm_from": 100,
+   "bpm_to": 128,
+   "bars": 8,
+   "bar_frames_per_beat": [
+    36,
+    35,
+    33,
+    32,
+    31,
+    30,
+    29,
+    28
+   ],
+   "bar_bpm": [
+    100.0,
+    102.8571,
+    109.0909,
+    112.5,
+    116.129,
+    120.0,
+    124.1379,
+    128.5714
+   ],
+   "bar_frames": [
+    0,
+    144,
+    284,
+    416,
+    544,
+    668,
+    788,
+    904
+   ],
+   "end_frame": 1016,
+   "length_s": 16.9333
+  },
+  "100->128@60fps/16bars": {
+   "fps": 60,
+   "bpm_from": 100,
+   "bpm_to": 128,
+   "bars": 16,
+   "bar_frames_per_beat": [
+    36,
+    35,
+    35,
+    34,
+    33,
+    33,
+    32,
+    32,
+    31,
+    31,
+    30,
+    30,
+    29,
+    29,
+    29,
+    28
+   ],
+   "bar_bpm": [
+    100.0,
+    102.8571,
+    102.8571,
+    105.8824,
+    109.0909,
+    109.0909,
+    112.5,
+    112.5,
+    116.129,
+    116.129,
+    120.0,
+    120.0,
+    124.1379,
+    124.1379,
+    124.1379,
+    128.5714
+   ],
+   "bar_frames": [
+    0,
+    144,
+    284,
+    424,
+    560,
+    692,
+    824,
+    952,
+    1080,
+    1204,
+    1328,
+    1448,
+    1568,
+    1684,
+    1800,
+    1916
+   ],
+   "end_frame": 2028,
+   "length_s": 33.8
+  },
+  "128->100@60fps/8bars": {
+   "fps": 60,
+   "bpm_from": 128,
+   "bpm_to": 100,
+   "bars": 8,
+   "bar_frames_per_beat": [
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    35,
+    36
+   ],
+   "bar_bpm": [
+    128.5714,
+    124.1379,
+    120.0,
+    116.129,
+    112.5,
+    109.0909,
+    102.8571,
+    100.0
+   ],
+   "bar_frames": [
+    0,
+    112,
+    228,
+    348,
+    472,
+    600,
+    732,
+    872
+   ],
+   "end_frame": 1016,
+   "length_s": 16.9333
+  }
+ }
+}

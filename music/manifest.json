@@ -1,0 +1,3261 @@
+{
+ "version": 1,
+ "sample_rate": 48000,
+ "bit_depth": 24,
+ "fps_default": 30,
+ "bed_lufs_i": -16.0,
+ "count": 64,
+ "items": [
+  {
+   "id": "music.bed_tech_pulse_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_tech_pulse_loop8.wav",
+   "preset": "tech_pulse",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 118,
+   "frames_per_beat": 15,
+   "bars": 8,
+   "key": "A",
+   "scale": "dorian",
+   "mood": [
+    "tech",
+    "confident"
+   ],
+   "use": [
+    "launch",
+    "ad"
+   ],
+   "desc": "soft four-on-the-floor, plucks, pad, sub; SaaS and launch films",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.8
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_tech_pulse_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:tech_pulse",
+    "mood:tech",
+    "mood:confident",
+    "use:launch",
+    "use:ad",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -2.97,
+   "sample_peak_db": -2.98,
+   "lufs_s_max": -15.89,
+   "centroid_hz": 311,
+   "crest_db": 13.9,
+   "duration_s": 16.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_uplift_corporate_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_uplift_corporate_loop8.wav",
+   "preset": "uplift_corporate",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 112.5,
+   "bpm_requested": 112.5,
+   "frames_per_beat": 16,
+   "bars": 8,
+   "key": "A",
+   "scale": "major",
+   "mood": [
+    "warm",
+    "optimistic"
+   ],
+   "use": [
+    "ad",
+    "talking_head",
+    "launch"
+   ],
+   "desc": "keys, pluck arp, shaker, claps; product ads and explainers",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.75
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_uplift_corporate_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:uplift_corporate",
+    "mood:warm",
+    "mood:optimistic",
+    "use:ad",
+    "use:talking_head",
+    "use:launch",
+    "loop"
+   ],
+   "lufs_i": -16.02,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.73,
+   "centroid_hz": 861,
+   "crest_db": 15.9,
+   "duration_s": 17.067,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_hype_house_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_hype_house_loop8.wav",
+   "preset": "hype_house",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 128.571,
+   "bpm_requested": 128,
+   "frames_per_beat": 14,
+   "bars": 8,
+   "key": "6",
+   "scale": "minor",
+   "mood": [
+    "hype",
+    "tension"
+   ],
+   "use": [
+    "beat_edit",
+    "ad"
+   ],
+   "desc": "four-floor kick, offbeat hats, saw stabs; beat edits (F# minor)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.95
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_hype_house_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:hype_house",
+    "mood:hype",
+    "mood:tension",
+    "use:beat_edit",
+    "use:ad",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -3.9,
+   "sample_peak_db": -3.94,
+   "lufs_s_max": -15.67,
+   "centroid_hz": 428,
+   "crest_db": 13.3,
+   "duration_s": 14.933,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_trap_half_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_trap_half_loop8.wav",
+   "preset": "trap_half",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 138.462,
+   "bpm_requested": 140,
+   "frames_per_beat": 13,
+   "bars": 8,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "edgy",
+    "hype"
+   ],
+   "use": [
+    "beat_edit"
+   ],
+   "desc": "half-time trap feel: 808, hat rolls, clap; beat edits and edgy hooks",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.85
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_trap_half_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:trap_half",
+    "mood:edgy",
+    "mood:hype",
+    "use:beat_edit",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -3.3,
+   "sample_peak_db": -3.32,
+   "lufs_s_max": -15.45,
+   "centroid_hz": 333,
+   "crest_db": 12.9,
+   "duration_s": 13.867,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_cinematic_drone_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_cinematic_drone_loop8.wav",
+   "preset": "cinematic_drone",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 75.0,
+   "bpm_requested": 75,
+   "frames_per_beat": 24,
+   "bars": 8,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "tense"
+   ],
+   "use": [
+    "short_film",
+    "launch"
+   ],
+   "desc": "drones, sub hits, toms, reverse cymbals; short films and trailers",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.6
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_cinematic_drone_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:cinematic_drone",
+    "mood:cinematic",
+    "mood:tense",
+    "use:short_film",
+    "use:launch",
+    "loop"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -14.57,
+   "centroid_hz": 180,
+   "crest_db": 15.2,
+   "duration_s": 25.6,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_playful_bounce_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_playful_bounce_loop8.wav",
+   "preset": "playful_bounce",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 120,
+   "frames_per_beat": 15,
+   "bars": 8,
+   "key": "A",
+   "scale": "pent_major",
+   "mood": [
+    "playful",
+    "comic"
+   ],
+   "use": [
+    "mime",
+    "ad"
+   ],
+   "desc": "pizzicato, marimba, woodblock, cowbell; mime-style character spots",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.8
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_playful_bounce_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:playful_bounce",
+    "mood:playful",
+    "mood:comic",
+    "use:mime",
+    "use:ad",
+    "loop"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.61,
+   "centroid_hz": 1171,
+   "crest_db": 16.6,
+   "duration_s": 16.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_lofi_warm_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_lofi_warm_loop8.wav",
+   "preset": "lofi_warm",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 75.0,
+   "bpm_requested": 75,
+   "frames_per_beat": 24,
+   "bars": 8,
+   "key": "A",
+   "scale": "dorian",
+   "mood": [
+    "warm",
+    "calm"
+   ],
+   "use": [
+    "talking_head",
+    "short_film"
+   ],
+   "desc": "soft keys, brushed hats, mellow kick; talking-head beds",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.6
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_lofi_warm_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:lofi_warm",
+    "mood:warm",
+    "mood:calm",
+    "use:talking_head",
+    "use:short_film",
+    "loop"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -16.46,
+   "centroid_hz": 210,
+   "crest_db": 15.9,
+   "duration_s": 25.6,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_desi_bounce_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_desi_bounce_loop8.wav",
+   "preset": "desi_bounce",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 100.0,
+   "bpm_requested": 100,
+   "frames_per_beat": 18,
+   "bars": 8,
+   "key": "A",
+   "scale": "mixolydian",
+   "mood": [
+    "playful",
+    "warm"
+   ],
+   "use": [
+    "ad",
+    "mime"
+   ],
+   "desc": "own-synthesis hand-drum groove, shaker, plucks; India-market ads (no sample imitation)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.85
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_desi_bounce_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:desi_bounce",
+    "mood:playful",
+    "mood:warm",
+    "use:ad",
+    "use:mime",
+    "loop"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.51,
+   "centroid_hz": 1692,
+   "crest_db": 17.7,
+   "duration_s": 19.2,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_suspense_tick_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_suspense_tick_loop8.wav",
+   "preset": "suspense_tick",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 94.737,
+   "bpm_requested": 95,
+   "frames_per_beat": 19,
+   "bars": 8,
+   "key": "A",
+   "scale": "harmonic_minor",
+   "mood": [
+    "tense",
+    "curiosity"
+   ],
+   "use": [
+    "short_film",
+    "ad"
+   ],
+   "desc": "clock tick per beat, drone, heartbeat; thriller and curiosity hooks",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.6
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_suspense_tick_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:suspense_tick",
+    "mood:tense",
+    "mood:curiosity",
+    "use:short_film",
+    "use:ad",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -3.69,
+   "sample_peak_db": -3.69,
+   "lufs_s_max": -15.46,
+   "centroid_hz": 104,
+   "crest_db": 12.2,
+   "duration_s": 20.267,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_anthem_build_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_anthem_build_loop8.wav",
+   "preset": "anthem_build",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 120,
+   "frames_per_beat": 15,
+   "bars": 8,
+   "key": "A",
+   "scale": "major",
+   "mood": [
+    "triumphant"
+   ],
+   "use": [
+    "launch",
+    "ad"
+   ],
+   "desc": "snare-roll builds, claps, brass-like stabs; finales and CTA",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.9
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_anthem_build_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:anthem_build",
+    "mood:triumphant",
+    "use:launch",
+    "use:ad",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -3.88,
+   "sample_peak_db": -3.95,
+   "lufs_s_max": -15.6,
+   "centroid_hz": 437,
+   "crest_db": 13.2,
+   "duration_s": 16.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_indian_fusion_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_indian_fusion_loop8.wav",
+   "preset": "indian_fusion",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 94.737,
+   "bpm_requested": 96,
+   "frames_per_beat": 19,
+   "bars": 8,
+   "key": "A",
+   "scale": "raga_khamaj",
+   "mood": [
+    "warm",
+    "festive"
+   ],
+   "use": [
+    "ad",
+    "short_film",
+    "launch"
+   ],
+   "desc": "keherwa tabla theka, tanpura plucks, soft pad, sitar motif (khamaj, just intonation); India-market ads",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.85
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_indian_fusion_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:indian_fusion",
+    "mood:warm",
+    "mood:festive",
+    "use:ad",
+    "use:short_film",
+    "use:launch",
+    "loop"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.65,
+   "lufs_s_max": -15.22,
+   "centroid_hz": 634,
+   "crest_db": 16.8,
+   "duration_s": 20.267,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_bhangra_hype_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_bhangra_hype_loop8.wav",
+   "preset": "bhangra_hype",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 112.5,
+   "bpm_requested": 112.5,
+   "frames_per_beat": 16,
+   "bars": 8,
+   "key": "A",
+   "scale": "mixolydian",
+   "mood": [
+    "hype",
+    "festive"
+   ],
+   "use": [
+    "ad",
+    "beat_edit",
+    "mime"
+   ],
+   "desc": "dhol chaal (own synthesis), claps, harmonium, high plucked riff; celebratory India-market hype",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.95
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_bhangra_hype_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:bhangra_hype",
+    "mood:hype",
+    "mood:festive",
+    "use:ad",
+    "use:beat_edit",
+    "use:mime",
+    "loop"
+   ],
+   "lufs_i": -16.03,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.58,
+   "centroid_hz": 480,
+   "crest_db": 16.4,
+   "duration_s": 17.067,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_raga_calm_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_raga_calm_loop8.wav",
+   "preset": "raga_calm",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 69.231,
+   "bpm_requested": 70,
+   "frames_per_beat": 26,
+   "bars": 8,
+   "key": "A",
+   "scale": "raga_yaman",
+   "mood": [
+    "calm",
+    "warm"
+   ],
+   "use": [
+    "short_film",
+    "talking_head"
+   ],
+   "desc": "tanpura cycle, bansuri-like flute phrases in yaman (just intonation), sparse tabla",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.6
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_raga_calm_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:raga_calm",
+    "mood:calm",
+    "mood:warm",
+    "use:short_film",
+    "use:talking_head",
+    "loop"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.55,
+   "lufs_s_max": -14.99,
+   "centroid_hz": 481,
+   "crest_db": 16.5,
+   "duration_s": 27.733,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_festive_dhol_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_festive_dhol_loop8.wav",
+   "preset": "festive_dhol",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 128.571,
+   "bpm_requested": 128,
+   "frames_per_beat": 14,
+   "bars": 8,
+   "key": "A",
+   "scale": "raga_bilawal",
+   "mood": [
+    "festive",
+    "hype"
+   ],
+   "use": [
+    "ad",
+    "launch",
+    "mime"
+   ],
+   "desc": "dholak groove, manjira, nagara accents, harmonium, shehnai-like lead; festival / wedding energy",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.95
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_festive_dhol_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:festive_dhol",
+    "mood:festive",
+    "mood:hype",
+    "use:ad",
+    "use:launch",
+    "use:mime",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.48,
+   "centroid_hz": 430,
+   "crest_db": 16.7,
+   "duration_s": 14.933,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_lofi_jazz_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_lofi_jazz_loop8.wav",
+   "preset": "lofi_jazz",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 81.818,
+   "bpm_requested": 82,
+   "frames_per_beat": 22,
+   "bars": 8,
+   "key": "2",
+   "scale": "dorian",
+   "mood": [
+    "calm",
+    "warm"
+   ],
+   "use": [
+    "talking_head",
+    "short_film"
+   ],
+   "desc": "swung lo-fi: 7th chords on soft keys, upright bass, brushed snare (D dorian)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.65
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_lofi_jazz_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:lofi_jazz",
+    "mood:calm",
+    "mood:warm",
+    "use:talking_head",
+    "use:short_film",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.55,
+   "lufs_s_max": -16.22,
+   "centroid_hz": 182,
+   "crest_db": 16.0,
+   "duration_s": 23.467,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_synthwave_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_synthwave_loop8.wav",
+   "preset": "synthwave",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 100.0,
+   "bpm_requested": 100,
+   "frames_per_beat": 18,
+   "bars": 8,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "retro",
+    "confident"
+   ],
+   "use": [
+    "launch",
+    "ad",
+    "beat_edit"
+   ],
+   "desc": "retro 80s-style drive: 8th-note saw bass, wide detuned pad, gated-style snare",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.85
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_synthwave_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:synthwave",
+    "mood:retro",
+    "mood:confident",
+    "use:launch",
+    "use:ad",
+    "use:beat_edit",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -2.74,
+   "sample_peak_db": -3.21,
+   "lufs_s_max": -15.63,
+   "centroid_hz": 675,
+   "crest_db": 14.6,
+   "duration_s": 19.2,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_deep_house_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_deep_house_loop8.wav",
+   "preset": "deep_house",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 122,
+   "frames_per_beat": 15,
+   "bars": 8,
+   "key": "2",
+   "scale": "minor",
+   "mood": [
+    "tech",
+    "calm"
+   ],
+   "use": [
+    "ad",
+    "launch",
+    "talking_head"
+   ],
+   "desc": "deep-house variant: minor 7th keys, offbeat sub, four-floor, shaker 16ths (D minor)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.85
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_deep_house_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:deep_house",
+    "mood:tech",
+    "mood:calm",
+    "use:ad",
+    "use:launch",
+    "use:talking_head",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -3.32,
+   "sample_peak_db": -3.34,
+   "lufs_s_max": -15.72,
+   "centroid_hz": 185,
+   "crest_db": 12.9,
+   "duration_s": 16.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_dnb_170_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_dnb_170_loop8.wav",
+   "preset": "dnb_170",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 163.636,
+   "bpm_requested": 170,
+   "frames_per_beat": 11,
+   "bars": 8,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "hype",
+    "tech"
+   ],
+   "use": [
+    "beat_edit",
+    "ad"
+   ],
+   "desc": "drum & bass two-step at the frame-snapped 163.6 BPM (170 requested), saw bass, pad",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.9
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_dnb_170_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:dnb_170",
+    "mood:hype",
+    "mood:tech",
+    "use:beat_edit",
+    "use:ad",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -3.16,
+   "sample_peak_db": -3.17,
+   "lufs_s_max": -15.73,
+   "centroid_hz": 885,
+   "crest_db": 14.7,
+   "duration_s": 11.733,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_ambient_pad_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_ambient_pad_loop8.wav",
+   "preset": "ambient_pad",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 60.0,
+   "bpm_requested": 60,
+   "frames_per_beat": 30,
+   "bars": 8,
+   "key": "A",
+   "scale": "lydian",
+   "mood": [
+    "calm",
+    "cinematic"
+   ],
+   "use": [
+    "short_film",
+    "talking_head",
+    "launch"
+   ],
+   "desc": "no drums: slow wide pad, drone, sparse bell motif (A lydian)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.6
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_ambient_pad_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:ambient_pad",
+    "mood:calm",
+    "mood:cinematic",
+    "use:short_film",
+    "use:talking_head",
+    "use:launch",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -5.53,
+   "sample_peak_db": -5.57,
+   "lufs_s_max": -15.58,
+   "centroid_hz": 608,
+   "crest_db": 12.2,
+   "duration_s": 32.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_chiptune_8bit_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_chiptune_8bit_loop8.wav",
+   "preset": "chiptune_8bit",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 150.0,
+   "bpm_requested": 150,
+   "frames_per_beat": 12,
+   "bars": 8,
+   "key": "A",
+   "scale": "major",
+   "mood": [
+    "playful",
+    "retro"
+   ],
+   "use": [
+    "mime",
+    "ad",
+    "beat_edit"
+   ],
+   "desc": "8-bit: naive square lead / bass, 50 Hz chord arps, noise drums; original melody (Content ID safe by construction)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.9
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_chiptune_8bit_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:chiptune_8bit",
+    "mood:playful",
+    "mood:retro",
+    "use:mime",
+    "use:ad",
+    "use:beat_edit",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -3.82,
+   "sample_peak_db": -5.24,
+   "lufs_s_max": -15.7,
+   "centroid_hz": 1224,
+   "crest_db": 13.5,
+   "duration_s": 12.8,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_acoustic_folk_pluck_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_acoustic_folk_pluck_loop8.wav",
+   "preset": "acoustic_folk_pluck",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 100.0,
+   "bpm_requested": 100,
+   "frames_per_beat": 18,
+   "bars": 8,
+   "key": "A",
+   "scale": "major",
+   "mood": [
+    "warm",
+    "optimistic"
+   ],
+   "use": [
+    "ad",
+    "talking_head",
+    "short_film"
+   ],
+   "desc": "strummed Karplus-Strong guitar, plucked melody, hand claps, upright bass",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.8
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_acoustic_folk_pluck_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:acoustic_folk_pluck",
+    "mood:warm",
+    "mood:optimistic",
+    "use:ad",
+    "use:talking_head",
+    "use:short_film",
+    "loop"
+   ],
+   "lufs_i": -16.02,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.41,
+   "centroid_hz": 716,
+   "crest_db": 15.9,
+   "duration_s": 19.2,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_documentary_marimba_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_documentary_marimba_loop8.wav",
+   "preset": "documentary_marimba",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 90.0,
+   "bpm_requested": 90,
+   "frames_per_beat": 20,
+   "bars": 8,
+   "key": "A",
+   "scale": "lydian",
+   "mood": [
+    "curiosity",
+    "optimistic"
+   ],
+   "use": [
+    "talking_head",
+    "ad",
+    "short_film"
+   ],
+   "desc": "curious explainer / documentary: marimba ostinato over a soft pad, light shaker",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.75
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_documentary_marimba_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:documentary_marimba",
+    "mood:curiosity",
+    "mood:optimistic",
+    "use:talking_head",
+    "use:ad",
+    "use:short_film",
+    "loop"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -14.97,
+   "centroid_hz": 641,
+   "crest_db": 16.0,
+   "duration_s": 21.333,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_orchestral_synth_epic_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_orchestral_synth_epic_loop8.wav",
+   "preset": "orchestral_synth_epic",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 90.0,
+   "bpm_requested": 90,
+   "frames_per_beat": 20,
+   "bars": 8,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "triumphant"
+   ],
+   "use": [
+    "launch",
+    "short_film",
+    "ad"
+   ],
+   "desc": "trailer-style: taiko ostinato, string ensemble, brass-like stabs and lead",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.9
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_orchestral_synth_epic_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:orchestral_synth_epic",
+    "mood:cinematic",
+    "mood:triumphant",
+    "use:launch",
+    "use:short_film",
+    "use:ad",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -2.46,
+   "sample_peak_db": -2.47,
+   "lufs_s_max": -15.58,
+   "centroid_hz": 272,
+   "crest_db": 14.8,
+   "duration_s": 21.333,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_jazz_walk_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_jazz_walk_loop8.wav",
+   "preset": "jazz_walk",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 138.462,
+   "bpm_requested": 135,
+   "frames_per_beat": 13,
+   "bars": 8,
+   "key": "5",
+   "scale": "major",
+   "mood": [
+    "playful",
+    "warm"
+   ],
+   "use": [
+    "talking_head",
+    "short_film",
+    "mime"
+   ],
+   "desc": "jazz trio feel: walking upright bass, swung ride, 7th-chord comping (F major ii-V-I-vi)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.8
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_jazz_walk_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:jazz_walk",
+    "mood:playful",
+    "mood:warm",
+    "use:talking_head",
+    "use:short_film",
+    "use:mime",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -1.81,
+   "sample_peak_db": -1.82,
+   "lufs_s_max": -15.66,
+   "centroid_hz": 491,
+   "crest_db": 15.1,
+   "duration_s": 13.867,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_comedy_pizzicato_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_comedy_pizzicato_loop8.wav",
+   "preset": "comedy_pizzicato",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 128.571,
+   "bpm_requested": 130,
+   "frames_per_beat": 14,
+   "bars": 8,
+   "key": "2",
+   "scale": "major",
+   "mood": [
+    "comic",
+    "playful"
+   ],
+   "use": [
+    "mime",
+    "ad",
+    "talking_head"
+   ],
+   "desc": "sneaky comedy: pizzicato bass and melody, marimba, rim clicks (D major)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.85
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_comedy_pizzicato_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:comedy_pizzicato",
+    "mood:comic",
+    "mood:playful",
+    "use:mime",
+    "use:ad",
+    "use:talking_head",
+    "loop"
+   ],
+   "lufs_i": -16.02,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.33,
+   "centroid_hz": 681,
+   "crest_db": 16.3,
+   "duration_s": 14.933,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_corporate_bright_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_corporate_bright_loop8.wav",
+   "preset": "corporate_bright",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 118,
+   "frames_per_beat": 15,
+   "bars": 8,
+   "key": "4",
+   "scale": "major",
+   "mood": [
+    "optimistic",
+    "warm"
+   ],
+   "use": [
+    "ad",
+    "talking_head",
+    "launch"
+   ],
+   "desc": "bright corporate: strummed guitar, airy pad, claps, bell hook (E major)",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.8
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_corporate_bright_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:corporate_bright",
+    "mood:optimistic",
+    "mood:warm",
+    "use:ad",
+    "use:talking_head",
+    "use:launch",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -2.57,
+   "sample_peak_db": -2.63,
+   "lufs_s_max": -15.72,
+   "centroid_hz": 506,
+   "crest_db": 14.7,
+   "duration_s": 16.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_suspense_pulse_loop8",
+   "kind": "bed",
+   "file": "library/beds/bed_suspense_pulse_loop8.wav",
+   "preset": "suspense_pulse",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 100.0,
+   "bpm_requested": 100,
+   "frames_per_beat": 18,
+   "bars": 8,
+   "key": "A",
+   "scale": "harmonic_minor",
+   "mood": [
+    "tense",
+    "curiosity"
+   ],
+   "use": [
+    "short_film",
+    "ad"
+   ],
+   "desc": "suspense: 8th-note saw ostinato, tremolo strings, 16th ticks, sub hits",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.7
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_suspense_pulse_loop8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:suspense_pulse",
+    "mood:tense",
+    "mood:curiosity",
+    "use:short_film",
+    "use:ad",
+    "loop"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -2.88,
+   "sample_peak_db": -2.89,
+   "lufs_s_max": -15.11,
+   "centroid_hz": 189,
+   "crest_db": 13.6,
+   "duration_s": 19.2,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_tech_pulse_ad30",
+   "kind": "bed",
+   "file": "library/beds/bed_tech_pulse_ad30.wav",
+   "preset": "tech_pulse",
+   "structure": "ad_30s",
+   "loop": false,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 118,
+   "frames_per_beat": 15,
+   "bars": 15,
+   "key": "A",
+   "scale": "dorian",
+   "mood": [
+    "tech",
+    "confident"
+   ],
+   "use": [
+    "launch",
+    "ad"
+   ],
+   "desc": "soft four-on-the-floor, plucks, pad, sub; SaaS and launch films",
+   "sections": [
+    {
+     "name": "intro",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 1,
+     "energy": 0.25
+    },
+    {
+     "name": "build",
+     "bar0": 1,
+     "frame0": 60,
+     "bars": 3,
+     "energy": 0.55
+    },
+    {
+     "name": "drop",
+     "bar0": 4,
+     "frame0": 240,
+     "bars": 5,
+     "energy": 1.0
+    },
+    {
+     "name": "break",
+     "bar0": 9,
+     "frame0": 540,
+     "bars": 1,
+     "energy": 0.4
+    },
+    {
+     "name": "final",
+     "bar0": 10,
+     "frame0": 600,
+     "bars": 4,
+     "energy": 0.85
+    },
+    {
+     "name": "tail",
+     "bar0": 14,
+     "frame0": 840,
+     "bars": 1,
+     "energy": 0.15
+    }
+   ],
+   "drop_frames": [
+    60.0,
+    240.0,
+    600.0
+   ],
+   "sidecar": "library/beds/bed_tech_pulse_ad30.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:tech_pulse",
+    "mood:tech",
+    "mood:confident",
+    "use:launch",
+    "use:ad"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -2.14,
+   "sample_peak_db": -2.15,
+   "lufs_s_max": -14.9,
+   "centroid_hz": 409,
+   "crest_db": 15.6,
+   "duration_s": 33.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_hype_house_reel15",
+   "kind": "bed",
+   "file": "library/beds/bed_hype_house_reel15.wav",
+   "preset": "hype_house",
+   "structure": "reel_15s",
+   "loop": false,
+   "fps": 30,
+   "bpm": 128.571,
+   "bpm_requested": 128,
+   "frames_per_beat": 14,
+   "bars": 8,
+   "key": "6",
+   "scale": "minor",
+   "mood": [
+    "hype",
+    "tension"
+   ],
+   "use": [
+    "beat_edit",
+    "ad"
+   ],
+   "desc": "four-floor kick, offbeat hats, saw stabs; beat edits (F# minor)",
+   "sections": [
+    {
+     "name": "hook",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 1,
+     "energy": 1.0
+    },
+    {
+     "name": "verse",
+     "bar0": 1,
+     "frame0": 56,
+     "bars": 2,
+     "energy": 0.55
+    },
+    {
+     "name": "build",
+     "bar0": 3,
+     "frame0": 168,
+     "bars": 1,
+     "energy": [
+      0.6,
+      0.85
+     ]
+    },
+    {
+     "name": "drop",
+     "bar0": 4,
+     "frame0": 224,
+     "bars": 3,
+     "energy": 1.0
+    },
+    {
+     "name": "tail",
+     "bar0": 7,
+     "frame0": 392,
+     "bars": 1,
+     "energy": 0.2
+    }
+   ],
+   "drop_frames": [
+    0.0,
+    224.0
+   ],
+   "sidecar": "library/beds/bed_hype_house_reel15.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:hype_house",
+    "mood:hype",
+    "mood:tension",
+    "use:beat_edit",
+    "use:ad"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -3.4,
+   "sample_peak_db": -3.4,
+   "lufs_s_max": -15.31,
+   "centroid_hz": 367,
+   "crest_db": 14.7,
+   "duration_s": 17.933,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_cinematic_drone_cine30",
+   "kind": "bed",
+   "file": "library/beds/bed_cinematic_drone_cine30.wav",
+   "preset": "cinematic_drone",
+   "structure": "cine_30s",
+   "loop": false,
+   "fps": 30,
+   "bpm": 75.0,
+   "bpm_requested": 75,
+   "frames_per_beat": 24,
+   "bars": 10,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "tense"
+   ],
+   "use": [
+    "short_film",
+    "launch"
+   ],
+   "desc": "drones, sub hits, toms, reverse cymbals; short films and trailers",
+   "sections": [
+    {
+     "name": "drone",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 2,
+     "energy": 0.1
+    },
+    {
+     "name": "rise",
+     "bar0": 2,
+     "frame0": 192,
+     "bars": 2,
+     "energy": [
+      0.2,
+      0.5
+     ]
+    },
+    {
+     "name": "swell",
+     "bar0": 4,
+     "frame0": 384,
+     "bars": 2,
+     "energy": 0.6
+    },
+    {
+     "name": "peak",
+     "bar0": 6,
+     "frame0": 576,
+     "bars": 2,
+     "energy": 0.9
+    },
+    {
+     "name": "fall",
+     "bar0": 8,
+     "frame0": 768,
+     "bars": 2,
+     "energy": 0.3
+    }
+   ],
+   "drop_frames": [
+    576.0
+   ],
+   "sidecar": "library/beds/bed_cinematic_drone_cine30.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:cinematic_drone",
+    "mood:cinematic",
+    "mood:tense",
+    "use:short_film",
+    "use:launch"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -13.57,
+   "centroid_hz": 196,
+   "crest_db": 15.8,
+   "duration_s": 35.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_playful_bounce_hook6",
+   "kind": "bed",
+   "file": "library/beds/bed_playful_bounce_hook6.wav",
+   "preset": "playful_bounce",
+   "structure": "hook_6s",
+   "loop": false,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 120,
+   "frames_per_beat": 15,
+   "bars": 2,
+   "key": "A",
+   "scale": "pent_major",
+   "mood": [
+    "playful",
+    "comic"
+   ],
+   "use": [
+    "mime",
+    "ad"
+   ],
+   "desc": "pizzicato, marimba, woodblock, cowbell; mime-style character spots",
+   "sections": [
+    {
+     "name": "hit",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 1,
+     "energy": 1.0
+    },
+    {
+     "name": "tail",
+     "bar0": 1,
+     "frame0": 60,
+     "bars": 1,
+     "energy": 0.4
+    }
+   ],
+   "drop_frames": [
+    0.0
+   ],
+   "sidecar": "library/beds/bed_playful_bounce_hook6.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:playful_bounce",
+    "mood:playful",
+    "mood:comic",
+    "use:mime",
+    "use:ad"
+   ],
+   "lufs_i": -16.03,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.41,
+   "centroid_hz": 928,
+   "crest_db": 18.0,
+   "duration_s": 7.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_anthem_ramp16",
+   "kind": "bed",
+   "file": "library/beds/bed_anthem_ramp16.wav",
+   "preset": "anthem_ramp",
+   "structure": "anthem_ramp_16",
+   "loop": false,
+   "fps": 30,
+   "bpm": 100.0,
+   "bpm_requested": 120,
+   "frames_per_beat": 18,
+   "bars": 16,
+   "key": "A",
+   "scale": "major",
+   "mood": [
+    "triumphant"
+   ],
+   "use": [
+    "launch",
+    "ad"
+   ],
+   "desc": "anthem_build with a frame-exact tempo ramp 100 -> 128 BPM (per-bar whole-frame beats); finales and CTA",
+   "sections": [
+    {
+     "name": "intro",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 2,
+     "energy": 0.35
+    },
+    {
+     "name": "build",
+     "bar0": 2,
+     "frame0": 144,
+     "bars": 6,
+     "energy": [
+      0.45,
+      0.85
+     ]
+    },
+    {
+     "name": "drop",
+     "bar0": 8,
+     "frame0": 576,
+     "bars": 6,
+     "energy": 1.0
+    },
+    {
+     "name": "final",
+     "bar0": 14,
+     "frame0": 1008,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "tail",
+     "bar0": 15,
+     "frame0": 1080,
+     "bars": 1,
+     "energy": 0.15
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_anthem_ramp16.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:anthem_ramp",
+    "mood:triumphant",
+    "use:launch",
+    "use:ad",
+    "tempo-ramp"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -2.42,
+   "sample_peak_db": -2.47,
+   "lufs_s_max": -14.94,
+   "centroid_hz": 366,
+   "crest_db": 15.7,
+   "duration_s": 36.733,
+   "mastered_lufs": -16.0,
+   "tempo_ramp": {
+    "bpm_from": 100,
+    "bpm_to": 128,
+    "bar_frames_per_beat": [
+     18,
+     18,
+     17,
+     17,
+     17,
+     16,
+     16,
+     16,
+     16,
+     15,
+     15,
+     15,
+     15,
+     14,
+     14,
+     14
+    ],
+    "bar_frames": [
+     0,
+     72,
+     144,
+     212,
+     280,
+     348,
+     412,
+     476,
+     540,
+     604,
+     664,
+     724,
+     784,
+     844,
+     900,
+     956
+    ],
+    "end_frame": 1012
+   }
+  },
+  {
+   "id": "music.bed_corporate_bright_explainer60",
+   "kind": "bed",
+   "file": "library/beds/bed_corporate_bright_explainer60.wav",
+   "preset": "corporate_bright",
+   "structure": "explainer_60s",
+   "loop": false,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 118,
+   "frames_per_beat": 15,
+   "bars": 30,
+   "key": "4",
+   "scale": "major",
+   "mood": [
+    "optimistic",
+    "warm"
+   ],
+   "use": [
+    "ad",
+    "talking_head",
+    "launch"
+   ],
+   "desc": "bright corporate: strummed guitar, airy pad, claps, bell hook (E major)",
+   "sections": [
+    {
+     "name": "intro",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 2,
+     "energy": 0.3
+    },
+    {
+     "name": "verse",
+     "bar0": 2,
+     "frame0": 120,
+     "bars": 8,
+     "energy": 0.55
+    },
+    {
+     "name": "lift",
+     "bar0": 10,
+     "frame0": 600,
+     "bars": 4,
+     "energy": [
+      0.6,
+      0.8
+     ]
+    },
+    {
+     "name": "main",
+     "bar0": 14,
+     "frame0": 840,
+     "bars": 10,
+     "energy": 0.85
+    },
+    {
+     "name": "break",
+     "bar0": 24,
+     "frame0": 1440,
+     "bars": 2,
+     "energy": 0.4
+    },
+    {
+     "name": "outro",
+     "bar0": 26,
+     "frame0": 1560,
+     "bars": 3,
+     "energy": 0.75
+    },
+    {
+     "name": "tail",
+     "bar0": 29,
+     "frame0": 1740,
+     "bars": 1,
+     "energy": 0.15
+    }
+   ],
+   "drop_frames": [
+    1560.0
+   ],
+   "sidecar": "library/beds/bed_corporate_bright_explainer60.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:corporate_bright",
+    "mood:optimistic",
+    "mood:warm",
+    "use:ad",
+    "use:talking_head",
+    "use:launch"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -1.67,
+   "sample_peak_db": -1.68,
+   "lufs_s_max": -14.6,
+   "centroid_hz": 457,
+   "crest_db": 15.6,
+   "duration_s": 63.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_chiptune_cold_open3",
+   "kind": "bed",
+   "file": "library/beds/bed_chiptune_cold_open3.wav",
+   "preset": "chiptune_8bit",
+   "structure": "cold_open_3s",
+   "loop": false,
+   "fps": 30,
+   "bpm": 150.0,
+   "bpm_requested": 150,
+   "frames_per_beat": 12,
+   "bars": 2,
+   "key": "A",
+   "scale": "major",
+   "mood": [
+    "playful",
+    "retro"
+   ],
+   "use": [
+    "mime",
+    "ad",
+    "beat_edit"
+   ],
+   "desc": "8-bit: naive square lead / bass, 50 Hz chord arps, noise drums; original melody (Content ID safe by construction)",
+   "sections": [
+    {
+     "name": "hook",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 1,
+     "energy": 1.0
+    },
+    {
+     "name": "tail",
+     "bar0": 1,
+     "frame0": 48,
+     "bars": 1,
+     "energy": 0.2
+    }
+   ],
+   "drop_frames": [
+    0.0
+   ],
+   "sidecar": "library/beds/bed_chiptune_cold_open3.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:chiptune_8bit",
+    "mood:playful",
+    "mood:retro",
+    "use:mime",
+    "use:ad",
+    "use:beat_edit"
+   ],
+   "lufs_i": -16.02,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.94,
+   "lufs_s_max": -15.03,
+   "centroid_hz": 1208,
+   "crest_db": 18.7,
+   "duration_s": 6.2,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_orchestral_epic_outro8",
+   "kind": "bed",
+   "file": "library/beds/bed_orchestral_epic_outro8.wav",
+   "preset": "orchestral_synth_epic",
+   "structure": "outro_8s",
+   "loop": false,
+   "fps": 30,
+   "bpm": 90.0,
+   "bpm_requested": 90,
+   "frames_per_beat": 20,
+   "bars": 4,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "triumphant"
+   ],
+   "use": [
+    "launch",
+    "short_film",
+    "ad"
+   ],
+   "desc": "trailer-style: taiko ostinato, string ensemble, brass-like stabs and lead",
+   "sections": [
+    {
+     "name": "final",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 3,
+     "energy": 0.8
+    },
+    {
+     "name": "tail",
+     "bar0": 3,
+     "frame0": 240,
+     "bars": 1,
+     "energy": 0.15
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_orchestral_epic_outro8.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:orchestral_synth_epic",
+    "mood:cinematic",
+    "mood:triumphant",
+    "use:launch",
+    "use:short_film",
+    "use:ad"
+   ],
+   "lufs_i": -16.0,
+   "true_peak_db": -2.08,
+   "sample_peak_db": -2.11,
+   "lufs_s_max": -14.52,
+   "centroid_hz": 314,
+   "crest_db": 16.2,
+   "duration_s": 13.667,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_comedy_pizzicato_sting",
+   "kind": "bed",
+   "file": "library/beds/bed_comedy_pizzicato_sting.wav",
+   "preset": "comedy_pizzicato",
+   "structure": "sting_only",
+   "loop": false,
+   "fps": 30,
+   "bpm": 128.571,
+   "bpm_requested": 130,
+   "frames_per_beat": 14,
+   "bars": 2,
+   "key": "2",
+   "scale": "major",
+   "mood": [
+    "comic",
+    "playful"
+   ],
+   "use": [
+    "mime",
+    "ad",
+    "talking_head"
+   ],
+   "desc": "sneaky comedy: pizzicato bass and melody, marimba, rim clicks (D major)",
+   "sections": [
+    {
+     "name": "hit",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 1,
+     "energy": 1.0
+    },
+    {
+     "name": "tail",
+     "bar0": 1,
+     "frame0": 56,
+     "bars": 1,
+     "energy": 0.15
+    }
+   ],
+   "drop_frames": [
+    0.0
+   ],
+   "sidecar": "library/beds/bed_comedy_pizzicato_sting.json",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:comedy_pizzicato",
+    "mood:comic",
+    "mood:playful",
+    "use:mime",
+    "use:ad",
+    "use:talking_head"
+   ],
+   "lufs_i": -16.02,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -14.88,
+   "centroid_hz": 510,
+   "crest_db": 17.8,
+   "duration_s": 6.733,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_tabla_teental_loop",
+   "kind": "bed",
+   "file": "library/beds/bed_tabla_teental_loop.wav",
+   "preset": "theka_teental",
+   "structure": "2 cycles",
+   "loop": true,
+   "fps": 30,
+   "bpm": 100.0,
+   "bpm_requested": 100,
+   "frames_per_beat": 18,
+   "bars": 2,
+   "key": "A",
+   "scale": "sa-pa drone",
+   "mood": [
+    "calm",
+    "warm"
+   ],
+   "use": [
+    "short_film",
+    "talking_head",
+    "ad"
+   ],
+   "desc": "tabla teental theka (16 matras x 2 cycles) over a tanpura; sam / khali frames in the sidecar",
+   "sections": [
+    {
+     "name": "cycle0",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle1",
+     "bar0": 1,
+     "frame0": 288,
+     "bars": 1,
+     "energy": 0.8
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_tabla_teental_loop.json",
+   "tala": "teental",
+   "matras": 16,
+   "tags": [
+    "family:music",
+    "bed",
+    "loop",
+    "region:in",
+    "preset:theka_teental",
+    "mood:calm",
+    "mood:warm",
+    "use:short_film",
+    "use:talking_head",
+    "use:ad"
+   ],
+   "lufs_i": -16.03,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.23,
+   "centroid_hz": 612,
+   "crest_db": 16.9,
+   "duration_s": 19.2,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_tabla_keherwa_loop",
+   "kind": "bed",
+   "file": "library/beds/bed_tabla_keherwa_loop.wav",
+   "preset": "theka_keherwa",
+   "structure": "4 cycles",
+   "loop": true,
+   "fps": 30,
+   "bpm": 112.5,
+   "bpm_requested": 110,
+   "frames_per_beat": 16,
+   "bars": 4,
+   "key": "A",
+   "scale": "sa-pa drone",
+   "mood": [
+    "warm",
+    "playful"
+   ],
+   "use": [
+    "ad",
+    "talking_head",
+    "mime"
+   ],
+   "desc": "tabla keherwa theka (8 matras x 4 cycles) over a tanpura; the everyday light-music groove",
+   "sections": [
+    {
+     "name": "cycle0",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle1",
+     "bar0": 1,
+     "frame0": 128,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle2",
+     "bar0": 2,
+     "frame0": 256,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle3",
+     "bar0": 3,
+     "frame0": 384,
+     "bars": 1,
+     "energy": 0.8
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_tabla_keherwa_loop.json",
+   "tala": "keherwa",
+   "matras": 8,
+   "tags": [
+    "family:music",
+    "bed",
+    "loop",
+    "region:in",
+    "preset:theka_keherwa",
+    "mood:warm",
+    "mood:playful",
+    "use:ad",
+    "use:talking_head",
+    "use:mime"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.08,
+   "centroid_hz": 655,
+   "crest_db": 16.9,
+   "duration_s": 17.067,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_tabla_dadra_loop",
+   "kind": "bed",
+   "file": "library/beds/bed_tabla_dadra_loop.wav",
+   "preset": "theka_dadra",
+   "structure": "6 cycles",
+   "loop": true,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 120,
+   "frames_per_beat": 15,
+   "bars": 6,
+   "key": "A",
+   "scale": "sa-pa drone",
+   "mood": [
+    "warm",
+    "playful"
+   ],
+   "use": [
+    "ad",
+    "short_film",
+    "mime"
+   ],
+   "desc": "tabla dadra theka (6 matras x 6 cycles) over a tanpura; lilting 6-beat feel",
+   "sections": [
+    {
+     "name": "cycle0",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle1",
+     "bar0": 1,
+     "frame0": 90,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle2",
+     "bar0": 2,
+     "frame0": 180,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle3",
+     "bar0": 3,
+     "frame0": 270,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle4",
+     "bar0": 4,
+     "frame0": 360,
+     "bars": 1,
+     "energy": 0.8
+    },
+    {
+     "name": "cycle5",
+     "bar0": 5,
+     "frame0": 450,
+     "bars": 1,
+     "energy": 0.8
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_tabla_dadra_loop.json",
+   "tala": "dadra",
+   "matras": 6,
+   "tags": [
+    "family:music",
+    "bed",
+    "loop",
+    "region:in",
+    "preset:theka_dadra",
+    "mood:warm",
+    "mood:playful",
+    "use:ad",
+    "use:short_film",
+    "use:mime"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.76,
+   "centroid_hz": 632,
+   "crest_db": 16.9,
+   "duration_s": 18.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_bhangra_dhol_loop",
+   "kind": "bed",
+   "file": "library/beds/bed_bhangra_dhol_loop.wav",
+   "preset": "bhangra_dhol",
+   "structure": "loop_8",
+   "loop": true,
+   "fps": 30,
+   "bpm": 100.0,
+   "bpm_requested": 100,
+   "frames_per_beat": 18,
+   "bars": 8,
+   "key": "A",
+   "scale": "mixolydian",
+   "mood": [
+    "hype",
+    "festive"
+   ],
+   "use": [
+    "ad",
+    "beat_edit",
+    "mime"
+   ],
+   "desc": "bhangra dhol chaal (12/8 feel, own dhol voices) with a high plucked riff",
+   "sections": [
+    {
+     "name": "loop",
+     "bar0": 0,
+     "frame0": 0,
+     "bars": 8,
+     "energy": 0.95
+    }
+   ],
+   "drop_frames": [],
+   "sidecar": "library/beds/bed_bhangra_dhol_loop.json",
+   "tala": null,
+   "matras": 4,
+   "tags": [
+    "family:music",
+    "bed",
+    "loop",
+    "region:in",
+    "preset:bhangra_dhol",
+    "mood:hype",
+    "mood:festive",
+    "use:ad",
+    "use:beat_edit",
+    "use:mime"
+   ],
+   "lufs_i": -16.02,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -15.51,
+   "centroid_hz": 325,
+   "crest_db": 16.1,
+   "duration_s": 19.2,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.sting_button_major",
+   "kind": "stinger",
+   "file": "library/stingers/sting_button_major.wav",
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "key": "A",
+   "info": {
+    "kind": "button",
+    "minor": false
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:start"
+   ],
+   "desc": "musical stinger in A: button major",
+   "lufs_i": -17.22,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -18.1,
+   "centroid_hz": 445,
+   "crest_db": 16.7,
+   "duration_s": 4.4
+  },
+  {
+   "id": "music.sting_button_minor",
+   "kind": "stinger",
+   "file": "library/stingers/sting_button_minor.wav",
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "key": "A",
+   "info": {
+    "kind": "button",
+    "minor": true
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:start"
+   ],
+   "desc": "musical stinger in A: button minor",
+   "lufs_i": -16.88,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -17.77,
+   "centroid_hz": 436,
+   "crest_db": 16.4,
+   "duration_s": 4.4
+  },
+  {
+   "id": "music.sting_rise_hit_2bar",
+   "kind": "stinger",
+   "file": "library/stingers/sting_rise_hit_2bar.wav",
+   "anchor_sample": 177067,
+   "anchor_ms": 3688.9,
+   "key": "A",
+   "info": {
+    "kind": "rise_hit",
+    "bars": 2,
+    "riser_end_frame_offset": -1
+   },
+   "anchor_frame_offset": -1,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:end"
+   ],
+   "desc": "musical stinger in A: rise hit 2bar",
+   "lufs_i": -17.52,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -17.51,
+   "centroid_hz": 1963,
+   "crest_db": 19.7,
+   "duration_s": 6.431
+  },
+  {
+   "id": "music.sting_rise_hit_1bar",
+   "kind": "stinger",
+   "file": "library/stingers/sting_rise_hit_1bar.wav",
+   "anchor_sample": 96000,
+   "anchor_ms": 2000.0,
+   "key": "A",
+   "info": {
+    "kind": "rise_hit",
+    "bars": 1,
+    "riser_end_frame_offset": -1
+   },
+   "anchor_frame_offset": -1,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:end"
+   ],
+   "desc": "musical stinger in A: rise hit 1bar",
+   "lufs_i": -17.18,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -17.31,
+   "centroid_hz": 947,
+   "crest_db": 19.4,
+   "duration_s": 6.4
+  },
+  {
+   "id": "music.sting_pluck_resolve",
+   "kind": "stinger",
+   "file": "library/stingers/sting_pluck_resolve.wav",
+   "anchor_sample": 23040,
+   "anchor_ms": 480.0,
+   "key": "A",
+   "info": {
+    "kind": "pluck_resolve"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:start"
+   ],
+   "desc": "musical stinger in A: pluck resolve",
+   "lufs_i": -12.7,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.19,
+   "lufs_s_max": -14.38,
+   "centroid_hz": 1304,
+   "crest_db": 16.1,
+   "duration_s": 3.05
+  },
+  {
+   "id": "music.sting_tension_stab",
+   "kind": "stinger",
+   "file": "library/stingers/sting_tension_stab.wav",
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "key": "A",
+   "info": {
+    "kind": "tension_stab"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:start"
+   ],
+   "desc": "musical stinger in A: tension stab",
+   "lufs_i": -17.0,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -19.71,
+   "centroid_hz": 60,
+   "crest_db": 17.4,
+   "duration_s": 4.0
+  },
+  {
+   "id": "music.sting_bounce_out",
+   "kind": "stinger",
+   "file": "library/stingers/sting_bounce_out.wav",
+   "anchor_sample": 18720,
+   "anchor_ms": 390.0,
+   "key": "A",
+   "info": {
+    "kind": "bounce_out"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:start"
+   ],
+   "desc": "musical stinger in A: bounce out",
+   "lufs_i": -14.25,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.21,
+   "lufs_s_max": -20.92,
+   "centroid_hz": 1138,
+   "crest_db": 15.3,
+   "duration_s": 0.79
+  },
+  {
+   "id": "music.sting_lofi_chord",
+   "kind": "stinger",
+   "file": "library/stingers/sting_lofi_chord.wav",
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "key": "A",
+   "info": {
+    "kind": "lofi_chord"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:start"
+   ],
+   "desc": "musical stinger in A: lofi chord",
+   "lufs_i": -17.27,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -19.04,
+   "centroid_hz": 496,
+   "crest_db": 19.3,
+   "duration_s": 3.45
+  },
+  {
+   "id": "music.sting_epic_swell",
+   "kind": "stinger",
+   "file": "library/stingers/sting_epic_swell.wav",
+   "anchor_sample": 91261,
+   "anchor_ms": 1901.3,
+   "key": "A",
+   "info": {
+    "kind": "epic_swell",
+    "riser_end_frame_offset": -1
+   },
+   "anchor_frame_offset": -1,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:end"
+   ],
+   "desc": "musical stinger in A: epic swell",
+   "lufs_i": -18.28,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.02,
+   "lufs_s_max": -18.57,
+   "centroid_hz": 141,
+   "crest_db": 18.3,
+   "duration_s": 7.365
+  },
+  {
+   "id": "music.sting_outro_sparkle",
+   "kind": "stinger",
+   "file": "library/stingers/sting_outro_sparkle.wav",
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "key": "A",
+   "info": {
+    "kind": "outro_sparkle"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "stinger",
+    "key:A",
+    "anchor:start"
+   ],
+   "desc": "musical stinger in A: outro sparkle",
+   "lufs_i": -12.66,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -13.11,
+   "centroid_hz": 751,
+   "crest_db": 16.5,
+   "duration_s": 4.4
+  },
+  {
+   "id": "music.logo_pattern_ascend_land",
+   "kind": "logo",
+   "file": "library/logos/logo_pattern_ascend_land.wav",
+   "anchor_sample": 26880,
+   "anchor_ms": 560.0,
+   "key": "A",
+   "info": {
+    "pattern": "ascend_land",
+    "notes": [
+     0,
+     4,
+     7,
+     12
+    ]
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: ascend_land",
+   "lufs_i": -13.87,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.02,
+   "lufs_s_max": -16.39,
+   "centroid_hz": 1056,
+   "crest_db": 18.1,
+   "duration_s": 3.8
+  },
+  {
+   "id": "music.logo_pattern_fifth_lift",
+   "kind": "logo",
+   "file": "library/logos/logo_pattern_fifth_lift.wav",
+   "anchor_sample": 16320,
+   "anchor_ms": 340.0,
+   "key": "A",
+   "info": {
+    "pattern": "fifth_lift",
+    "notes": [
+     0,
+     7,
+     4
+    ]
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: fifth_lift",
+   "lufs_i": -14.47,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.02,
+   "lufs_s_max": -17.56,
+   "centroid_hz": 568,
+   "crest_db": 18.8,
+   "duration_s": 3.8
+  },
+  {
+   "id": "music.logo_pattern_question",
+   "kind": "logo",
+   "file": "library/logos/logo_pattern_question.wav",
+   "anchor_sample": 16320,
+   "anchor_ms": 340.0,
+   "key": "A",
+   "info": {
+    "pattern": "question",
+    "notes": [
+     0,
+     2,
+     7
+    ]
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: question",
+   "lufs_i": -14.6,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.06,
+   "lufs_s_max": -17.71,
+   "centroid_hz": 634,
+   "crest_db": 19.0,
+   "duration_s": 3.8
+  },
+  {
+   "id": "music.logo_pattern_pulse_pad",
+   "kind": "logo",
+   "file": "library/logos/logo_pattern_pulse_pad.wav",
+   "anchor_sample": 26880,
+   "anchor_ms": 560.0,
+   "key": "A",
+   "info": {
+    "pattern": "pulse_pad",
+    "notes": [
+     0,
+     0,
+     7,
+     0
+    ]
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: pulse_pad",
+   "lufs_i": -15.25,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -17.43,
+   "centroid_hz": 542,
+   "crest_db": 18.5,
+   "duration_s": 3.8
+  },
+  {
+   "id": "music.logo_pattern_two_note",
+   "kind": "logo",
+   "file": "library/logos/logo_pattern_two_note.wav",
+   "anchor_sample": 10560,
+   "anchor_ms": 220.0,
+   "key": "A",
+   "info": {
+    "pattern": "two_note",
+    "notes": [
+     7,
+     12
+    ]
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: two_note",
+   "lufs_i": -14.42,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.06,
+   "lufs_s_max": -17.6,
+   "centroid_hz": 764,
+   "crest_db": 19.2,
+   "duration_s": 3.8
+  },
+  {
+   "id": "music.logo_pattern_drop_land",
+   "kind": "logo",
+   "file": "library/logos/logo_pattern_drop_land.wav",
+   "anchor_sample": 16320,
+   "anchor_ms": 340.0,
+   "key": "A",
+   "info": {
+    "pattern": "drop_land",
+    "notes": [
+     12,
+     7,
+     0
+    ]
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: drop_land",
+   "lufs_i": -14.51,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -17.48,
+   "centroid_hz": 471,
+   "crest_db": 18.5,
+   "duration_s": 3.8
+  },
+  {
+   "id": "music.logo_brand_orbit",
+   "kind": "logo",
+   "file": "library/logos/logo_brand_orbit.wav",
+   "anchor_sample": 14016,
+   "anchor_ms": 292.0,
+   "key": "A",
+   "info": {
+    "name": "Orbit",
+    "pattern": "fifth_lift",
+    "notes": [
+     0,
+     7,
+     4
+    ],
+    "rhythm_ms": [
+     0,
+     138,
+     292
+    ],
+    "hold_s": 0.91,
+    "sha": "4fa1a13ac468"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: Orbit",
+   "lufs_i": -14.49,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.05,
+   "lufs_s_max": -17.86,
+   "centroid_hz": 552,
+   "crest_db": 19.2,
+   "duration_s": 3.9
+  },
+  {
+   "id": "music.logo_brand_nova",
+   "kind": "logo",
+   "file": "library/logos/logo_brand_nova.wav",
+   "anchor_sample": 17808,
+   "anchor_ms": 371.0,
+   "key": "A",
+   "info": {
+    "name": "Nova",
+    "pattern": "fifth_lift",
+    "notes": [
+     0,
+     9,
+     4
+    ],
+    "rhythm_ms": [
+     0,
+     174,
+     371
+    ],
+    "hold_s": 1.33,
+    "sha": "19e05df6b2e5"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: Nova",
+   "lufs_i": -13.93,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.16,
+   "lufs_s_max": -16.24,
+   "centroid_hz": 678,
+   "crest_db": 17.7,
+   "duration_s": 3.9
+  },
+  {
+   "id": "music.logo_brand_lumen",
+   "kind": "logo",
+   "file": "library/logos/logo_brand_lumen.wav",
+   "anchor_sample": 31200,
+   "anchor_ms": 650.0,
+   "key": "A",
+   "info": {
+    "name": "Lumen",
+    "pattern": "pulse_pad",
+    "notes": [
+     0,
+     0,
+     9,
+     0
+    ],
+    "rhythm_ms": [
+     0,
+     162,
+     325,
+     650
+    ],
+    "hold_s": 1.15,
+    "sha": "456f45fddc2e"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: Lumen",
+   "lufs_i": -14.73,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.02,
+   "lufs_s_max": -16.53,
+   "centroid_hz": 628,
+   "crest_db": 17.8,
+   "duration_s": 3.9
+  },
+  {
+   "id": "music.logo_brand_atlas",
+   "kind": "logo",
+   "file": "library/logos/logo_brand_atlas.wav",
+   "anchor_sample": 10032,
+   "anchor_ms": 209.0,
+   "key": "A",
+   "info": {
+    "name": "Atlas",
+    "pattern": "two_note",
+    "notes": [
+     7,
+     12
+    ],
+    "rhythm_ms": [
+     0,
+     209
+    ],
+    "hold_s": 0.75,
+    "sha": "7c8260250085"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: Atlas",
+   "lufs_i": -14.3,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -17.72,
+   "centroid_hz": 658,
+   "crest_db": 19.3,
+   "duration_s": 3.9
+  },
+  {
+   "id": "music.logo_brand_ember",
+   "kind": "logo",
+   "file": "library/logos/logo_brand_ember.wav",
+   "anchor_sample": 10368,
+   "anchor_ms": 216.0,
+   "key": "A",
+   "info": {
+    "name": "Ember",
+    "pattern": "two_note",
+    "notes": [
+     7,
+     12
+    ],
+    "rhythm_ms": [
+     0,
+     216
+    ],
+    "hold_s": 1.11,
+    "sha": "7cadc15d609c"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest"
+   ],
+   "desc": "sonic logo: Ember",
+   "lufs_i": -14.08,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.01,
+   "lufs_s_max": -16.68,
+   "centroid_hz": 862,
+   "crest_db": 18.6,
+   "duration_s": 3.9
+  },
+  {
+   "id": "music.logo_sitar_orbit",
+   "kind": "logo",
+   "file": "library/logos/logo_sitar_orbit.wav",
+   "anchor_sample": 16896,
+   "anchor_ms": 352.0,
+   "key": "A",
+   "info": {
+    "name": "Orbit",
+    "pattern": "fifth_lift",
+    "notes": [
+     0,
+     7,
+     4
+    ],
+    "rhythm_ms": [
+     0,
+     138,
+     292
+    ],
+    "hold_s": 0.91,
+    "sha": "4fa1a13ac468",
+    "timbre": "sitar"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest",
+    "region:in",
+    "timbre:sitar"
+   ],
+   "desc": "sitar-and-tanpura sonic logo: Orbit",
+   "lufs_i": -21.44,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.19,
+   "lufs_s_max": -23.83,
+   "centroid_hz": 726,
+   "crest_db": 24.0,
+   "duration_s": 3.2
+  },
+  {
+   "id": "music.logo_sitar_nova",
+   "kind": "logo",
+   "file": "library/logos/logo_sitar_nova.wav",
+   "anchor_sample": 20688,
+   "anchor_ms": 431.0,
+   "key": "A",
+   "info": {
+    "name": "Nova",
+    "pattern": "fifth_lift",
+    "notes": [
+     0,
+     9,
+     4
+    ],
+    "rhythm_ms": [
+     0,
+     174,
+     371
+    ],
+    "hold_s": 1.33,
+    "sha": "19e05df6b2e5",
+    "timbre": "sitar"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest",
+    "region:in",
+    "timbre:sitar"
+   ],
+   "desc": "sitar-and-tanpura sonic logo: Nova",
+   "lufs_i": -21.33,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.21,
+   "lufs_s_max": -23.74,
+   "centroid_hz": 714,
+   "crest_db": 23.9,
+   "duration_s": 3.2
+  },
+  {
+   "id": "music.logo_sitar_pattern_ascend_land",
+   "kind": "logo",
+   "file": "library/logos/logo_sitar_pattern_ascend_land.wav",
+   "anchor_sample": 29760,
+   "anchor_ms": 620.0,
+   "key": "A",
+   "info": {
+    "pattern": "ascend_land",
+    "notes": [
+     0,
+     4,
+     7,
+     12
+    ],
+    "timbre": "sitar"
+   },
+   "anchor_frame_offset": 0,
+   "tags": [
+    "family:music",
+    "logo",
+    "key:A",
+    "anchor:crest",
+    "region:in",
+    "timbre:sitar"
+   ],
+   "desc": "sitar-and-tanpura sonic logo: ascend_land",
+   "lufs_i": -21.51,
+   "true_peak_db": -3.0,
+   "sample_peak_db": -3.08,
+   "lufs_s_max": -23.9,
+   "centroid_hz": 567,
+   "crest_db": 24.3,
+   "duration_s": 3.2
+  }
+ ],
+ "notes": "All generated by code. Beds are mastered to -16 LUFS-I as a stand-alone preview level; the mixer sets the real level. Loop beds are seamless. anchor_sample on stingers/logos lands on (visual frame + 1) x SR/fps."
+}

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack beat-edit template</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #111; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #111; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.w { position: absolute; inset: 0; }
+.word { display: grid; place-items: center; }
+.word div { font-weight: 800; font-size: 281px; letter-spacing: -0.05em; color: #111; text-shadow: 0 6px 40px rgba(245,242,234,.9); }
+.word.alt div { color: #4a18ed; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="12">
+<div class="w" id="w-c0"><video id="c0" class="clip fill" src="assets/media/plate-devices.mp4" muted playsinline data-start="0.0000" data-duration="2.1000" data-media-start="0" data-track-index="0"></video></div>
+<div class="w" id="w-c1"><video id="c1" class="clip fill" src="assets/media/film-scene-wide.mp4" muted playsinline data-start="1.9667" data-duration="1.0333" data-media-start="0" data-track-index="0"></video></div>
+<div class="w" id="w-c2"><video id="c2" class="clip fill" src="assets/media/plate-film.mp4" muted playsinline data-start="3.0000" data-duration="1.0000" data-media-start="0" data-track-index="0"></video></div>
+<div class="w" id="w-c3"><video id="c3" class="clip fill" src="assets/media/character-spot-wide.mp4" muted playsinline data-start="4.0000" data-duration="1.0000" data-media-start="0" data-track-index="0"></video></div>
+<div class="w" id="w-c4"><video id="c4" class="clip fill" src="assets/media/plate-cast.mp4" muted playsinline data-start="5.0000" data-duration="1.1000" data-media-start="0" data-track-index="0"></video></div>
+<div class="w" id="w-c5"><video id="c5" class="clip fill" src="assets/media/plate-devices.mp4" muted playsinline data-start="5.9667" data-duration="0.7333" data-media-start="1.2667" data-track-index="0"></video></div>
+<div class="w" id="w-c6"><video id="c6" class="clip fill" src="assets/media/film-scene-wide.mp4" muted playsinline data-start="6.4333" data-duration="0.7667" data-media-start="1.2333" data-track-index="0"></video></div>
+<div class="w" id="w-c7"><video id="c7" class="clip fill" src="assets/media/plate-film.mp4" muted playsinline data-start="6.9333" data-duration="0.7667" data-media-start="1.2333" data-track-index="0"></video></div>
+<div class="w" id="w-c8"><video id="c8" class="clip fill" src="assets/media/character-spot-wide.mp4" muted playsinline data-start="7.4333" data-duration="0.7667" data-media-start="1.2333" data-track-index="0"></video></div>
+<div class="w" id="w-c9"><video id="c9" class="clip fill" src="assets/media/plate-cast.mp4" muted playsinline data-start="7.9333" data-duration="0.7667" data-media-start="1.2333" data-track-index="0"></video></div>
+<div class="w" id="w-c10"><video id="c10" class="clip fill" src="assets/media/plate-devices.mp4" muted playsinline data-start="8.4333" data-duration="0.7667" data-media-start="2.5333" data-track-index="0"></video></div>
+<div class="w" id="w-c11"><video id="c11" class="clip fill" src="assets/media/film-scene-wide.mp4" muted playsinline data-start="8.9333" data-duration="0.7667" data-media-start="2.5333" data-track-index="0"></video></div>
+<div class="w" id="w-c12"><video id="c12" class="clip fill" src="assets/media/plate-film.mp4" muted playsinline data-start="9.4333" data-duration="0.6667" data-media-start="2.5333" data-track-index="0"></video></div>
+<div class="w" id="w-c13"><video id="c13" class="clip fill" src="assets/media/character-spot-wide.mp4" muted playsinline data-start="9.9667" data-duration="2.0333" data-media-start="2.5667" data-track-index="0"></video></div>
+<section class="clip word" id="word0" data-start="6.0000" data-duration="1.0000" data-track-index="2"><div id="wt0">CUT</div></section>
+<section class="clip word alt" id="word1" data-start="7.0000" data-duration="1.0000" data-track-index="2"><div id="wt1">TO</div></section>
+<section class="clip word" id="word2" data-start="8.0000" data-duration="1.0000" data-track-index="2"><div id="wt2">THE</div></section>
+<section class="clip word alt" id="word3" data-start="9.0000" data-duration="1.0000" data-track-index="2"><div id="wt3">BEAT</div></section>
+<div id="fx" class="clip" data-start="0" data-duration="12" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="12" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module" src="assets/mp/adapters/type.mjs"></script>
+<script type="module" src="assets/mp/adapters/transitions.mjs"></script>
+<script type="module">
+import { MP } from './assets/mp/pack.mjs';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"vignette","params":{}},{"kind":"grain","params":{"stock":"digital-soft"}}], { width: 1920, height: 1080, fps: 30, seed: 5 }), { fps: 30 });
+const tl = gsap.timeline({ paused: true });
+  tl.fromTo('#w-c5', { scale: 1.08 }, { scale: 1.0, duration: 0.2000, ease: 'power3.out' }, 6.0000);   // cam.punch on the beat
+  tl.fromTo('#w-c6', { scale: 1.08 }, { scale: 1.0, duration: 0.2000, ease: 'power3.out' }, 6.5000);   // cam.punch on the beat
+  tl.fromTo('#w-c7', { scale: 1.08 }, { scale: 1.0, duration: 0.2000, ease: 'power3.out' }, 7.0000);   // cam.punch on the beat
+  tl.fromTo('#w-c8', { scale: 1.08 }, { scale: 1.0, duration: 0.2000, ease: 'power3.out' }, 7.5000);   // cam.punch on the beat
+  tl.fromTo('#w-c9', { scale: 1.08 }, { scale: 1.0, duration: 0.2000, ease: 'power3.out' }, 8.0000);   // cam.punch on the beat
+  tl.fromTo('#w-c10', { scale: 1.08 }, { scale: 1.0, duration: 0.2000, ease: 'power3.out' }, 8.5000);   // cam.punch on the beat
+  tl.fromTo('#w-c11', { scale: 1.08 }, { scale: 1.0, duration: 0.2000, ease: 'power3.out' }, 9.0000);   // cam.punch on the beat
+  tl.fromTo('#w-c12', { scale: 1.08 }, { scale: 1.0, duration: 0.2000, ease: 'power3.out' }, 9.5000);   // cam.punch on the beat
+  MP.transition(tl, "transitions/flash", { out: ["#c0"], in: ["#c1"], root: '#root', start: 1.9667, cut: 2.0000, end: 2.1000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/flash", { out: ["#c4"], in: ["#c5"], root: '#root', start: 5.9667, cut: 6.0000, end: 6.1000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/scale-punch", { out: ["#c5"], in: ["#c6"], root: '#root', start: 6.4333, cut: 6.5000, end: 6.7000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/scale-punch", { out: ["#c6"], in: ["#c7"], root: '#root', start: 6.9333, cut: 7.0000, end: 7.2000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/scale-punch", { out: ["#c7"], in: ["#c8"], root: '#root', start: 7.4333, cut: 7.5000, end: 7.7000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/scale-punch", { out: ["#c8"], in: ["#c9"], root: '#root', start: 7.9333, cut: 8.0000, end: 8.2000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/scale-punch", { out: ["#c9"], in: ["#c10"], root: '#root', start: 8.4333, cut: 8.5000, end: 8.7000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/scale-punch", { out: ["#c10"], in: ["#c11"], root: '#root', start: 8.9333, cut: 9.0000, end: 9.2000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/scale-punch", { out: ["#c11"], in: ["#c12"], root: '#root', start: 9.4333, cut: 9.5000, end: 9.7000, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/flash", { out: ["#c12"], in: ["#c13"], root: '#root', start: 9.9667, cut: 10.0000, end: 10.1000, W: 1920, H: 1080, params: {} });
+  MP.type(tl, "type/scaleSlam", '#wt0', { at: 6.0000, dur: 1.0000, fps: 30, beat: true });
+  MP.type(tl, "type/scaleSlam", '#wt1', { at: 7.0000, dur: 1.0000, fps: 30, beat: true });
+  MP.type(tl, "type/scaleSlam", '#wt2', { at: 8.0000, dur: 1.0000, fps: 30, beat: true });
+  MP.type(tl, "type/scaleSlam", '#wt3', { at: 9.0000, dur: 1.0000, fps: 30, beat: true });
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

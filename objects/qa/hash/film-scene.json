@@ -1,0 +1,47 @@
+{
+ "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)",
+ "config": {
+  "fps": 30,
+  "loopFrames": 246,
+  "width": 960,
+  "height": 540,
+  "qaFrames": [
+   30,
+   90,
+   140,
+   200
+  ],
+  "name": "film-scene"
+ },
+ "same_frame_twice": {
+  "frame": 130,
+  "a": "07d1876d0c81b900",
+  "b": "07d1876d0c81b900",
+  "pass": true
+ },
+ "renderAt_0_vs_loop": {
+  "a": "58033a9030775b35",
+  "b": "58033a9030775b35",
+  "pass": true
+ },
+ "renderAt_t_vs_t_plus_3loops": {
+  "t": 1.2345,
+  "pass": true
+ },
+ "frame0_vs_frameN": {
+  "a": "a9dc22d5bea5f91c",
+  "b": "a9dc22d5bea5f91c",
+  "pass": true
+ },
+ "seam_mean_abs_diff": {
+  "243->244": 1.636,
+  "244->245": 1.628,
+  "245->0 (seam)": 12.457,
+  "0->1": 1.625,
+  "1->2": 1.622
+ },
+ "seam_pass": false,
+ "console": [],
+ "console_pass": true,
+ "pass": false
+}

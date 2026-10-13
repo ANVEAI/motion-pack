@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack gfx demo</title>
+<style>@font-face{font-family:Manrope;src:url(/templates/_shared/fonts/Manrope-Variable.ttf) format('truetype');font-weight:200 800}@font-face{font-family:'IBM Plex Mono';src:url(/templates/_shared/fonts/IBMPlexMono-SemiBold.ttf) format('truetype')}
+html,body{margin:0;background:#000}#root{position:relative;overflow:hidden;font-family:Manrope}#bg{position:absolute;inset:0}.shot{position:absolute;inset:0}</style></head><body>
+<div id="root"><div id="bg"></div><div id="shots"></div><div id="ov" style="position:absolute;inset:0;z-index:10"></div></div>
+<script type="module">
+/* gfx demo: window.show(id, t, params, W, H, opts) paints a plate + one gfx item (or a layout over 2-4 coloured shots) at time t. Used by type/tests/gfx-sheet.mjs. */
+import { GFX, renderSVG, layoutAt, applyLayout, LAYOUTS, STICKER_NAMES, REACTIONS } from '../gfx/index.js';
+import { STICKERS } from '../gfx/stickers.js';
+const root = document.getElementById('root'), bg = document.getElementById('bg'), shots = document.getElementById('shots'), ov = document.getElementById('ov');
+const plate = (light) => light ? 'linear-gradient(160deg,#dfe6f0,#9fb0c8 60%,#c9b79a)' : 'radial-gradient(120% 90% at 30% 20%,#3b2a7a 0%,#15131f 55%,#0b0b10 100%)';
+const shotBg = ['linear-gradient(135deg,#ff8a3d,#ff3d7a)', 'linear-gradient(135deg,#2bd9a0,#1a6cff)', 'linear-gradient(135deg,#ffd23a,#ff6a1a)', 'linear-gradient(135deg,#8e6bff,#3a1fb0)'];
+window.show = (id, t, params = {}, W = 1920, H = 1080, o = {}) => {
+  Object.assign(root.style, { width: W + 'px', height: H + 'px' }); bg.style.background = plate(o.light); shots.innerHTML = ''; ov.innerHTML = '';
+  if (LAYOUTS[id]) { const n = { 'layout.splitScreen': params.mode === '3up' ? 3 : params.mode === 'grid' ? 4 : 2, 'layout.pip': 2, 'layout.beforeAfter': 2, 'layout.freezeFrame': 1 }[id];
+    const els = Array.from({ length: n }, (_, i) => { const d = document.createElement('div'); d.className = 'shot'; d.style.background = shotBg[i]; d.innerHTML = `<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 ${H * 0.12}px Manrope;color:#fff">SHOT ${'ABCD'[i]}</div>`; shots.appendChild(d); return d; });
+    const st = layoutAt(id, t, params, { W, H }); applyLayout(els, st); ov.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="position:absolute;inset:0">${st.svg}</svg>`; return true; }
+  ov.innerHTML = renderSVG(id, t, { params, at: 0 }, { W, H, platform: o.platform || null }); return ov.innerHTML.length > 0;
+};
+/* every owned sticker in one grid (static, final frame) */
+window.stickerSheet = (W = 1920, H = 1080) => { Object.assign(root.style, { width: W + 'px', height: H + 'px' }); bg.style.background = '#26232f'; shots.innerHTML = ''; const cols = 11, cw = W / cols, ch = H / Math.ceil(STICKER_NAMES.length / cols);
+  ov.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">` + STICKER_NAMES.map((n, i) => `<g transform="translate(${(i % cols) * cw + cw / 2 - 55} ${Math.floor(i / cols) * ch + 20}) scale(1.1)">${STICKERS[n]()}</g><text x="${(i % cols) * cw + cw / 2}" y="${Math.floor(i / cols) * ch + ch - 22}" fill="#ddd" font-family="Manrope" font-size="20" text-anchor="middle">${n}</text>`).join('') + '</svg>'; return STICKER_NAMES.length; };
+window.GFX_IDS = [...Object.keys(GFX), ...Object.keys(LAYOUTS)];
+document.fonts.ready.then(() => { window.__ready = true; });
+</script></body></html>

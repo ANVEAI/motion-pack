@@ -1,0 +1,304 @@
+{
+ "template": "character-spot",
+ "fps": 30,
+ "seconds": 16,
+ "music": "music/bed_playful_bounce_loop8",
+ "shots": [
+  {
+   "id": "hook",
+   "dur": 2.5,
+   "cam": {
+    "elev": [
+     15,
+     14
+    ],
+    "az": [
+     -12,
+     -8
+    ],
+    "dist": [
+     8.6,
+     8.1
+    ],
+    "target": [
+     -0.25,
+     0.5,
+     0.05
+    ]
+   },
+   "start": 0
+  },
+  {
+   "id": "setup",
+   "dur": 2.5,
+   "cam": {
+    "elev": [
+     12,
+     12
+    ],
+    "az": [
+     -24,
+     -20
+    ],
+    "dist": [
+     6.4,
+     6
+    ],
+    "target": [
+     -0.6,
+     0.55,
+     0.2
+    ]
+   },
+   "tx": "transitions/cut",
+   "start": 2.5
+  },
+  {
+   "id": "escalation",
+   "dur": 3,
+   "cam": {
+    "elev": [
+     20,
+     21
+    ],
+    "az": [
+     -6,
+     -2
+    ],
+    "dist": [
+     9.2,
+     8.8
+    ],
+    "target": [
+     0,
+     0.35,
+     0.05
+    ]
+   },
+   "tx": "transitions/cut",
+   "start": 5
+  },
+  {
+   "id": "despair",
+   "dur": 2,
+   "cam": {
+    "elev": [
+     8,
+     8
+    ],
+    "az": [
+     22,
+     20
+    ],
+    "dist": [
+     4.9,
+     4.6
+    ],
+    "target": [
+     -0.95,
+     0.72,
+     0.3
+    ]
+   },
+   "tx": "transitions/smash",
+   "txReason": "EMOTION: the loss lands (smash to the face)",
+   "start": 8
+  },
+  {
+   "id": "twist",
+   "dur": 1.5,
+   "cam": {
+    "elev": [
+     10,
+     10
+    ],
+    "az": [
+     -4,
+     -3
+    ],
+    "dist": [
+     4.4,
+     4.2
+    ],
+    "target": [
+     0.35,
+     0.52,
+     -0.25
+    ]
+   },
+   "tx": "transitions/smash",
+   "txReason": "STORY: the reversal (screen wakes)",
+   "start": 10
+  },
+  {
+   "id": "reaction",
+   "dur": 1.5,
+   "cam": {
+    "elev": [
+     10,
+     10
+    ],
+    "az": [
+     18,
+     16
+    ],
+    "dist": [
+     6,
+     5.7
+    ],
+    "target": [
+     -0.9,
+     0.6,
+     0.3
+    ]
+   },
+   "tx": "transitions/cut",
+   "start": 11.5
+  },
+  {
+   "id": "message",
+   "dur": 3,
+   "cam": {
+    "elev": [
+     16,
+     18
+    ],
+    "az": [
+     -6,
+     -4
+    ],
+    "dist": [
+     12.5,
+     13.5
+    ],
+    "target": [
+     -0.2,
+     0.9,
+     0
+    ]
+   },
+   "tx": "transitions/cut",
+   "start": 13
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/amb/studio_air",
+   "t": 0,
+   "gainDb": -24,
+   "loopTo": 16,
+   "why": "air under the white world"
+  },
+  {
+   "id": "sfx/ui/typing_burst",
+   "t": 0.2,
+   "gainDb": -10,
+   "why": "typing"
+  },
+  {
+   "id": "sfx/ui/typing_burst",
+   "t": 1.2,
+   "gainDb": -11,
+   "why": "typing"
+  },
+  {
+   "id": "sfx/voice/mumble",
+   "t": 1.9,
+   "gainDb": -10,
+   "why": "pleased hum (wordless)"
+  },
+  {
+   "id": "sfx/lift/inhale",
+   "t": 2.6,
+   "gainDb": -9,
+   "why": "stretch"
+  },
+  {
+   "id": "sfx/ceramic/clink",
+   "t": 5.6,
+   "gainDb": -3,
+   "why": "hand hits the mug"
+  },
+  {
+   "id": "sfx/liquid/splash",
+   "t": 5.970000000000001,
+   "gainDb": -6,
+   "why": "coffee lands"
+  },
+  {
+   "id": "sfx/liquid/pour",
+   "t": 6.07,
+   "gainDb": -12,
+   "why": "spreading"
+  },
+  {
+   "id": "sfx/tx/tape_stop",
+   "t": 6.7,
+   "gainDb": -4,
+   "why": "laptop dies"
+  },
+  {
+   "id": "sfx/voice/gasp",
+   "t": 7,
+   "gainDb": -6,
+   "why": "gasp"
+  },
+  {
+   "id": "sfx/tx/smash_cut",
+   "t": 8,
+   "gainDb": -4,
+   "why": "tx transitions/smash"
+  },
+  {
+   "id": "sfx/cartoon/sad_brass",
+   "t": 8.2,
+   "gainDb": -6,
+   "why": "despair"
+  },
+  {
+   "id": "sfx/tx/smash_cut",
+   "t": 10,
+   "gainDb": -4,
+   "why": "tx transitions/smash"
+  },
+  {
+   "id": "sfx/stinger/win",
+   "t": 10,
+   "gainDb": -3,
+   "why": "the reversal"
+  },
+  {
+   "id": "sfx/voice/wow",
+   "t": 11.6,
+   "gainDb": -5,
+   "why": "wow"
+  },
+  {
+   "id": "sfx/cartoon/tada",
+   "t": 12.2,
+   "gainDb": -6,
+   "why": "cheer"
+  },
+  {
+   "id": "sfx/logo/two_note",
+   "t": 13.4,
+   "gainDb": -2,
+   "why": "sonic sting on the end line"
+  }
+ ],
+ "claims": [],
+ "paceRule": {
+  "aslMax": 3.2,
+  "longMax": 3.5
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 7,
+   "asl": 2.29,
+   "longest": 3,
+   "pass": true
+  }
+ }
+}

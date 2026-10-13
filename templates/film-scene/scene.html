@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>motion-pack film-scene template</title>
+<link rel="icon" href="data:,">
+<style>html,body{margin:0;padding:0;background:#f5f2ea;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+/* film-scene: establishing -> action -> reaction -> payoff. Everything below is driven by ./config.mjs (CONFIG + buildPlan).
+   URL: ?aspect=wide|tall &scale=0.5 &t=<s>. Render: node ../../tools/render.mjs scene.html out/x.mp4 <s> 30 --query "aspect=wide" */
+import { runScene, U } from './objects/kit/studio-lite.js';
+import { O } from './objects/index.js';
+import { stageConfig, makeStage, cutShots } from './objects/stage.js';
+import { CONFIG as C, buildPlan } from './config.mjs';
+const { E, seg, clamp, lerp, springU } = U, PLAN = buildPlan(C), EV = C.events, L = C.layout;
+window.CONFIG = stageConfig({ name: C.name, seconds: PLAN.seconds, fps: C.fps, grade: C.stage.grade, qaFrames: [30, 90, 140, 200] });
+window.__PLAN = PLAN;
+const SHOTS = PLAN.shots.map((s) => ({ t: s.start, ...s.cam }));
+const st = {};
+
+/* the worker's performance (pose keys from the pose library + acts) */
+function performance() {
+  const P = O.POSES, look = O.look, k = [];
+  const type = (t, i) => [t, { ...look(0.55, 0.25, 0.32), lean: 0.1, aLu: 1.05 + (i % 2 ? 0.12 : 0), aRu: 1.05 + (i % 2 ? 0 : 0.12), aLo: 0.12, aRo: 0.12, aLe: 0.95, aRe: 0.95 }, 'soft'];
+  for (let i = 0; i * 0.14 < 2.0; i++) k.push(type(i * 0.14, i));                         // establishing: typing (arms alternate every 4 f)
+  k.push(type(2.15, 0), [2.4, { ...look(0.55, 0.3, 0.3), lean: 0.08, aLu: 0.9, aRu: 0.9, aLe: 0.8, aRe: 0.8, squint: 0.3 }, 'soft']);   // buzz: annoyed, keeps typing
+  k.push([3.4, O.emote({ ...look(0.55, 0.25, 0.3), lean: 0.1, aLu: 1.0, aRu: 1.0, aLe: 0.9, aRe: 0.9 }, 'angry'), 'soft']);
+  const dt = O.ACTS.doubleTake(EV.take, { yaw: 0.55, hold: 10 }).map(([t, p, e]) => [t, { ...p, yaw: 0.55, hYaw: (p.hYaw || 0) + 0.55 }, e]);
+  k.push(...dt);
+  k.push([EV.hop[0] - 0.2, O.POSES.jumpAntic, 'soft'], [EV.hop[1], { ...O.POSES.hurry, yaw: 1.2 }, 'soft']);
+  k.push([EV.flip[0] - 0.12, { ...O.POSES.patAntic, yaw: 0.9 }, 'soft'], [EV.flip[0] + 0.05, { ...O.POSES.pat, yaw: 0.9 }, 'enter'], [EV.flip[1] + 0.2, { ...O.POSES.pat, yaw: 0.9, squint: 1 }, 'soft']);
+  k.push([EV.smile, O.emote({ ...O.POSES.relief, yaw: 0.3 }, 'happy'), 'soft'], [PLAN.seconds, O.emote({ ...O.POSES.relief, yaw: 0.3, sy: 1.05 }, 'happy'), 'soft']);
+  return { color: L.workerColor, keys: O.keysOf(k), blinks: [1.3, 3.0, 5.3, 7.6],
+    path: [{ t: 0, at: L.worker }, { hop: 1, start: EV.hop[0], end: EV.hop[1], to: [L.phone[0] - 0.55, L.phone[1] - 0.05], n: 2, h: 0.22 }] };
+}
+
+runScene({
+  async build(ctx) {
+    st.stage = makeStage(ctx, { slab: C.stage.slab }); const G = st.stage.parent;
+    st.laptop = O.makeLaptop(ctx, G); st.laptop.pose([L.laptop[0], 0, L.laptop[1]], -0.12);
+    st.phone = O.makePhone(ctx, G); st.mug = O.makeMug(ctx, G); st.mug.pose([L.mug[0], 0, L.mug[1]], -0.8);
+    st.worker = O.makeWorker(ctx, G, performance(), () => 0, st.stage.lights.rim);
+    ctx.probes = { worker: st.worker.probes.worker, laptop: st.laptop.probes.laptop, phone: st.phone.probes.phone };
+  },
+  update(ctx, t, n, slot) {
+    st.stage.update(n, slot, 0);
+    const notes = EV.buzz.filter((b) => b <= t).length;
+    st.laptop.set({ open: 1, screen: 1, ui: { title: 'Draft', progress: +(0.35 + 0.1 * Math.floor(Math.min(t, 2) / 0.5)).toFixed(2), kpis: ['4', String(notes), '0'] } });
+    // phone: buzz = a 6-frame lateral tremble at 22 Hz + screen wake; flip = lift, half-turn about its long axis, land face-down
+    let buzz = 0; for (const b of EV.buzz) { const a = t - b; if (a >= 0 && a < 0.22) buzz = Math.max(buzz, 1 - a / 0.22); }
+    const jx = 0.012 * buzz * Math.sin(2 * Math.PI * 22 * t), fl = E.move(seg(t, EV.flip[0], EV.flip[1]));
+    const lift = 0.31 * Math.sin(Math.PI * fl)   /* clears half its length while it turns end over end */, land = t > EV.flip[1] ? 0.004 * springU(t - EV.flip[1], 0.3, 6) : 0;
+    st.phone.pose([L.phone[0] + jx, 0.016 + lift + land, L.phone[1]], [-Math.PI / 2 - Math.PI * fl, -0.3 + 0.08 * buzz * Math.sin(2 * Math.PI * 17 * t), 0]);
+    st.phone.set({ screen: notes ? 1 : 0.0, ui: { messages: Math.max(1, notes), title: 'Notifications' } });
+    st.mug.set({ fill: 0.9, slosh: O.mugSlosh(t - EV.flip[1], 0.06) + O.mugSlosh(t - EV.hop[1], 0.04) });
+    st.worker.update(t);
+  },
+  camera(ctx, t) { return cutShots(ctx, t, SHOTS); },
+  focus(ctx, t) { let s = SHOTS[0]; for (const x of SHOTS) if (x.t <= t + 1e-9) s = x; return s.target; },
+  subframes(n) { const t = n / 30; return st.worker.fast(n) || (t > EV.flip[0] - 0.05 && t < EV.flip[1] + 0.05) || (t > EV.take && t < EV.take + 0.7) ? 8 : 4; },
+});
+</script>
+</body>
+</html>

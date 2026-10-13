@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    # Headless checks that need no GPU. The browser tests (layers/tests/run-all.sh) and renders need a hardware GPU
+    # and run locally; see CONTRIBUTING.md.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - name: python packages
+        run: pip install -r requirements.txt
+      - name: cross-module ids resolve
+        run: python3 tools/check_ids.py
+      - name: python tests (cuts, sfx, music)
+        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tests
+      - name: transitions core tests
+        run: node transitions/tests/core.test.mjs
+      - name: transitions lint
+        run: node transitions/tools/lint.mjs
+      - name: camera maths
+        run: node camera/tests/camera.test.mjs
+      - name: README counts are current
+        run: python3 tools/count.py --check
+      - name: catalog media all resolve
+        run: python3 tools/pages_site.py "$RUNNER_TEMP/site"

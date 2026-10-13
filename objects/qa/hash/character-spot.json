@@ -1,0 +1,42 @@
+{
+ "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)",
+ "config": {
+  "fps": 30,
+  "loopFrames": 480,
+  "width": 960,
+  "height": 540,
+  "qaFrames": [],
+  "name": "character-spot"
+ },
+ "same_frame_twice": {
+  "frame": 247,
+  "a": "a470112e2af7f0ab",
+  "b": "a470112e2af7f0ab",
+  "pass": true
+ },
+ "renderAt_0_vs_loop": {
+  "a": "7a7f99727a49c123",
+  "b": "7a7f99727a49c123",
+  "pass": true
+ },
+ "renderAt_t_vs_t_plus_3loops": {
+  "t": 1.2345,
+  "pass": true
+ },
+ "frame0_vs_frameN": {
+  "a": "919f8bcdb11befd7",
+  "b": "919f8bcdb11befd7",
+  "pass": true
+ },
+ "seam_mean_abs_diff": {
+  "477->478": 1.517,
+  "478->479": 1.522,
+  "479->0 (seam)": 15.548,
+  "0->1": 1.528,
+  "1->2": 1.528
+ },
+ "seam_pass": false,
+ "console": [],
+ "console_pass": true,
+ "pass": false
+}

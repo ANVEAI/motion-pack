@@ -1,0 +1,42 @@
+{
+ "name": "camera3d",
+ "total": 7,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "three.js page ready on a hardware GPU",
+   "pass": true,
+   "detail": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)"
+  },
+  {
+   "label": "look-at point lands on the screen px for 4 camera setups (max err 0.000 px)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "positive roll rotates the picture clockwise (like CSS rotate) by exactly roll degrees about the look-at screen point (err 0.000 0.000 0.000 deg)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dolly zoom in real three: subject width 83.55..83.59 px (spread 0.05%), near plane pulled in to 1.63",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "shake px shifts the image by exactly that many output px (10.00,-4.00: expect 10.00,-4.00)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "rendered frame identical after another frame in between; blurred whip identical; blur actually differs from the sharp frame",
+   "pass": true,
+   "detail": "[\"3988c4a1\",\"a976a766\",\"2ad75146\"]"
+  },
+  {
+   "label": "no console errors",
+   "pass": true,
+   "detail": "[\"error: Failed to load resource: the server responded with a status of 404 (Not Found)\"]"
+  }
+ ]
+}

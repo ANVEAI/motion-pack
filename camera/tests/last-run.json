@@ -1,0 +1,117 @@
+{
+ "name": "camera",
+ "total": 22,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "3d: every preset gives identical state for the same t in shuffled / repeated order (17 presets x 240 samples), frozen base never mutated",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "2d: every preset gives identical state for the same t in shuffled / repeated order (13 presets x 240 samples), frozen base never mutated",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "all presets finite for t in [-5 .. 1e4]",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dolly zoom keeps projected subject width constant (spread 0.0000%) and ends at dist 4.06 (research: 12 -> 4.06)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "whip pan out: 0 -> +70 deg in exactly 7 frames, speed peaks mid-whip (0/10/160/810/810/160/10/0 deg/s), roll returns to 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "whip pan in: starts at -70 deg, lands on the base az; cut midpoint = at + 3.5 frames",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "handheld doc: horizontal shake peak 9.1 px <= 9.6, RMS 3.58 px; action/doc RMS ratio 2.500 (expect 2.5)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "handheld spectrum: designed lines (0.37 0.83 1.31 7.1 9.3 Hz +-0.12) carry 99% of power, beyond 10 Hz up to Nyquist 0.00%",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "handheld action: roll peak 1.07 deg, fov breathing 1.37%, subtle < doc < action RMS",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "handheld: same seed identical, different seed different",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "beat punch: peak 0.0120 = amount ON the hit, zero 1 frame before attack, zero after 8 frames",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "impact shake decays over ~4 frames (6.6 1.1 0.7 0.1 0.0 0.0 px)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "lock freezes the camera over a key action; unlocked outside",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "lintCameraMoves flags a moving camera under a key action, passes locked and a hold",
+   "pass": true,
+   "detail": "[\"12.6\"]"
+  },
+  {
+   "label": "sequence cuts between cameras",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "punch cadence: 1.00 -> 1.08 -> 1.00 -> 1.15 at the boundaries, 6-frame ease-out-expo (scale 1 frame in: 1.055 of 1.08)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "default cadence never repeats the same framing back-to-back (incl. wrap-around)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "lintPunchCadence: cadence at 1.2/6.4 s passes (1.2,6.4), 1 s and 3.5 s punches flagged",
+   "pass": true,
+   "detail": "[{\"t\":3.5,\"gap\":2.5,\"msg\":\"punch-in 2.5 s after the previous one (min 4 s)\"}]"
+  },
+  {
+   "label": "coverScale is the exact minimum scale that hides the edges (200 random rot/translate cases, brute-force corner test)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "2D whip: streak blur peaks mid-whip (0/3/49/250/250/49/3/0 px), zero outside, x travels 1.2 H",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "bakeGSAP writes one tl.set per frame (61 for 2 s) identical to toGSAP(cam(t)); CSS transform numbers match GSAP vars",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "ease.js is byte-identical in layers/, type/ and camera/",
+   "pass": true,
+   "detail": ""
+  }
+ ]
+}

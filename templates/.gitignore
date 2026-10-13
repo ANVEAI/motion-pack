@@ -1,0 +1,5 @@
+*/assets/
+*/out/dev*/
+*/out/*.wav
+*/out/*.wav.json
+*/out/render*.log

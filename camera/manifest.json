@@ -1,0 +1,545 @@
+{
+ "module": "camera",
+ "version": "1.0.0",
+ "handheld_levels": {
+  "subtle": 0.4,
+  "doc": 1,
+  "action": 2.5
+ },
+ "components": [
+  {
+   "id": "cam3d.hold",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "hold"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.pushIn",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "pushIn"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.pushSlow",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "pushSlow"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.pullOut",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "pullOut"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.orbit",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "orbit"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.crane",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "crane"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.truck",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "truck"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.dollyZoom",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "dollyZoom"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.whipPan",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "whipPan"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.handheld",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "handheld"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.beatPunch",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "beatPunch"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.dutch",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "dutch"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.breathe",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "breathe"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam3d.impactShake",
+   "file": "camera/cam3d.js",
+   "kind": "camera-3d",
+   "tags": [
+    "three",
+    "kit",
+    "impactShake"
+   ],
+   "demo": "camera/demo/out/cam3d.png",
+   "test": "camera/tests/camera.test.mjs | camera3d.test.mjs"
+  },
+  {
+   "id": "cam2d.push2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "push2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.pull2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "pull2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.pan2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "pan2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.whip2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "whip2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.handheld2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "handheld2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.punchCadence",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "punchCadence"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.punchIn2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "punchIn2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.beatPunch2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "beatPunch2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.kenBurns",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "kenBurns"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.dutch2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "dutch2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.breathe2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "breathe2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.shake2d",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "shake2d"
+   ],
+   "demo": "camera/demo/out/cam2d.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.crashZoom",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "crashZoom"
+   ],
+   "demo": "camera/demo/out/cam2d-expansion.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.doubleTake",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "doubleTake"
+   ],
+   "demo": "camera/demo/out/cam2d-expansion.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.dollySnap",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "dollySnap"
+   ],
+   "demo": "camera/demo/out/cam2d-expansion.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.rackFocus2D",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "rackFocus2D"
+   ],
+   "demo": "camera/demo/out/cam2d-expansion.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.dutchRoll",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "dutchRoll"
+   ],
+   "demo": "camera/demo/out/cam2d-expansion.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam3d.lock",
+   "file": "camera/cam3d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "three",
+    "lock"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam3d.sequence",
+   "file": "camera/cam3d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "three",
+    "sequence"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam3d.rackFocus",
+   "file": "camera/cam3d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "three",
+    "rackFocus"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam3d.lintCameraMoves",
+   "file": "camera/cam3d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "three",
+    "lintCameraMoves"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam3d.applyToThree",
+   "file": "camera/cam3d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "three",
+    "applyToThree"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam3d.kitDrift",
+   "file": "camera/cam3d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "three",
+    "kitDrift"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.parallaxStack",
+   "file": "camera/cam2d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "dom",
+    "parallax",
+    "2.5d",
+    "layers"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.dutchRoll.presets",
+   "file": "camera/cam2d.js",
+   "kind": "camera-presets",
+   "presets": {
+    "unease": {
+     "deg": 6,
+     "sway": 0
+    },
+    "comedy": {
+     "deg": 12,
+     "sway": 0
+    },
+    "thriller": {
+     "deg": 9,
+     "sway": 1.2
+    },
+    "drunk": {
+     "deg": 4,
+     "sway": 4
+    }
+   },
+   "tags": [
+    "dutch",
+    "roll",
+    "unease",
+    "comedy"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.coverScale",
+   "file": "camera/cam2d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "dom",
+    "coverScale"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.lintPunchCadence",
+   "file": "camera/cam2d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "dom",
+    "lintPunchCadence"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.toCSS",
+   "file": "camera/cam2d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "dom",
+    "toCSS"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.toGSAP",
+   "file": "camera/cam2d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "dom",
+    "toGSAP"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.blurFilterSVG",
+   "file": "camera/cam2d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "dom",
+    "blurFilterSVG"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "camera.bake",
+   "file": "camera/bake.js",
+   "kind": "binding",
+   "tags": [
+    "gsap",
+    "hf-seek"
+   ],
+   "test": "camera/tests/camera2d.test.mjs"
+  }
+ ]
+}

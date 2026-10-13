@@ -1,0 +1,43 @@
+# --- generated heavy media (regenerate, or download from the GitHub Release) ---
+sfx/library/
+sfx/library_ext/
+music/library/
+music/demo/out/
+sfx/demo/out/
+# full-size PNG renders: tools/make_previews.py turns them into committed JPEG previews
+transitions/renders/**/*.png
+layers/demo/out/*.png
+!layers/demo/out/plate-test.png
+type/demo/out/*.png
+!type/demo/out/icons.png
+camera/demo/out/*.png
+objects/qa/**/*.png
+sfx/demo/stills/*.png
+music/demo/stills/*.png
+transitions/renders/*.frames.json
+transitions/renders/_tmp*
+
+# --- template build products (make.mjs / render3d.sh) ---
+templates/*/assets/
+templates/*/out/dev*/
+templates/*/out/*.wav
+templates/*/out/*.wav.json
+templates/*/out/render*.log
+objects/qa/*/log.txt
+objects/tools/tmp/
+**/tmp/chrome-*/
+
+# --- third-party sets fetched by scripts/fetch-external.sh (never committed) ---
+external/
+
+# --- maintainer-only release audit (describes what was removed; never publish) ---
+AUDIT.md
+
+# --- tooling ---
+node_modules/
+package-lock.json
+__pycache__/
+*.pyc
+.pytest_cache/
+_site/
+.DS_Store

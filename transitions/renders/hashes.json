@@ -1,0 +1,952 @@
+{
+ "blurCross": {
+  "stills": {
+   "f0012.png": {
+    "run1": "6efafc14ae9dad01",
+    "run2": "6efafc14ae9dad01"
+   },
+   "f0015.png": {
+    "run1": "aecbc1c15dab168d",
+    "run2": "aecbc1c15dab168d"
+   },
+   "f0018.png": {
+    "run1": "0ce877ee3ab2745a",
+    "run2": "0ce877ee3ab2745a"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "dip": {
+  "stills": {
+   "f0010.png": {
+    "run1": "11b57a6be26be84b",
+    "run2": "11b57a6be26be84b"
+   },
+   "f0015.png": {
+    "run1": "c27f91c342621f62",
+    "run2": "c27f91c342621f62"
+   },
+   "f0020.png": {
+    "run1": "ab3432f56b6c85e4",
+    "run2": "ab3432f56b6c85e4"
+   }
+  },
+  "same": true,
+  "qa_hash": "497836de6c6e0ad1",
+  "qa_pass": true
+ },
+ "dissolve": {
+  "stills": {
+   "f0012.png": {
+    "run1": "35afb8c53d955a4e",
+    "run2": "35afb8c53d955a4e"
+   },
+   "f0015.png": {
+    "run1": "c8151cab7276c8ef",
+    "run2": "c8151cab7276c8ef"
+   },
+   "f0018.png": {
+    "run1": "17a8eabd4ad4b910",
+    "run2": "17a8eabd4ad4b910"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "filmBurn": {
+  "stills": {
+   "f0009.png": {
+    "run1": "627552481c4e12d0",
+    "run2": "627552481c4e12d0"
+   },
+   "f0015.png": {
+    "run1": "dc9677f0e1b0e227",
+    "run2": "dc9677f0e1b0e227"
+   },
+   "f0021.png": {
+    "run1": "c84c9fcaefd77f17",
+    "run2": "c84c9fcaefd77f17"
+   }
+  },
+  "same": true,
+  "qa_hash": "70731d911c697880",
+  "qa_pass": true
+ },
+ "flash": {
+  "stills": {
+   "f0013.png": {
+    "run1": "d5ffda3ebaa03b47",
+    "run2": "d5ffda3ebaa03b47"
+   },
+   "f0015.png": {
+    "run1": "41020098cfbdb2e2",
+    "run2": "41020098cfbdb2e2"
+   },
+   "f0017.png": {
+    "run1": "9d2ed49b7e4c8751",
+    "run2": "9d2ed49b7e4c8751"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "glitch": {
+  "stills": {
+   "f0013.png": {
+    "run1": "522fd5bb223d6b76",
+    "run2": "522fd5bb223d6b76"
+   },
+   "f0015.png": {
+    "run1": "ed2e6a536e01bec2",
+    "run2": "ed2e6a536e01bec2"
+   },
+   "f0017.png": {
+    "run1": "56f2bd5aeca12995",
+    "run2": "56f2bd5aeca12995"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "ink": {
+  "stills": {
+   "f0008.png": {
+    "run1": "f6e9fc1b5e9b9e3d",
+    "run2": "f6e9fc1b5e9b9e3d"
+   },
+   "f0015.png": {
+    "run1": "ff4aef1cb48df0d2",
+    "run2": "ff4aef1cb48df0d2"
+   },
+   "f0022.png": {
+    "run1": "4bbbdba951fc09af",
+    "run2": "4bbbdba951fc09af"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "iris": {
+  "stills": {
+   "f0012.png": {
+    "run1": "0d96420987606a81",
+    "run2": "0d96420987606a81"
+   },
+   "f0015.png": {
+    "run1": "0ec30347eb239f1a",
+    "run2": "0ec30347eb239f1a"
+   },
+   "f0018.png": {
+    "run1": "59af60daacc516fe",
+    "run2": "59af60daacc516fe"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "lightLeak": {
+  "stills": {
+   "f0010.png": {
+    "run1": "4c36ee57432a5ff7",
+    "run2": "4c36ee57432a5ff7"
+   },
+   "f0015.png": {
+    "run1": "1f25123f8e3c23b6",
+    "run2": "1f25123f8e3c23b6"
+   },
+   "f0020.png": {
+    "run1": "d8c35af06318ea12",
+    "run2": "d8c35af06318ea12"
+   }
+  },
+  "same": true,
+  "qa_hash": "d4dfe00b95fa266c",
+  "qa_pass": true
+ },
+ "lumaWipe": {
+  "stills": {
+   "f0011.png": {
+    "run1": "2762e2d1b6c0f192",
+    "run2": "2762e2d1b6c0f192"
+   },
+   "f0015.png": {
+    "run1": "0351d2c66c7b7538",
+    "run2": "0351d2c66c7b7538"
+   },
+   "f0019.png": {
+    "run1": "06b8f00e345dd9fd",
+    "run2": "06b8f00e345dd9fd"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "maskReveal": {
+  "stills": {
+   "f0007.png": {
+    "run1": "3985b6c69918f9a8",
+    "run2": "3985b6c69918f9a8"
+   },
+   "f0015.png": {
+    "run1": "d4aed1a49bc63336",
+    "run2": "d4aed1a49bc63336"
+   },
+   "f0020.png": {
+    "run1": "ea5d0cd0cff8f26a",
+    "run2": "ea5d0cd0cff8f26a"
+   }
+  },
+  "same": true,
+  "qa_hash": "a22132a0aad3b347",
+  "qa_pass": true
+ },
+ "maskReveal_9x16": {
+  "stills": {
+   "f0007.png": {
+    "run1": "9b6120ebe716aa89",
+    "run2": "9b6120ebe716aa89"
+   },
+   "f0015.png": {
+    "run1": "679e0b847e86d16d",
+    "run2": "679e0b847e86d16d"
+   },
+   "f0020.png": {
+    "run1": "1c4e51b7f492bb8d",
+    "run2": "1c4e51b7f492bb8d"
+   }
+  },
+  "same": true,
+  "qa_hash": "8a9fddceb1894b61",
+  "qa_pass": true
+ },
+ "match": {
+  "stills": {
+   "f0011.png": {
+    "run1": "9d2397edab7dfa35",
+    "run2": "9d2397edab7dfa35"
+   },
+   "f0015.png": {
+    "run1": "5b17100be0b0cc58",
+    "run2": "5b17100be0b0cc58"
+   },
+   "f0020.png": {
+    "run1": "d54414d81de9409b",
+    "run2": "d54414d81de9409b"
+   }
+  },
+  "same": true,
+  "qa_hash": "3a168a0b9c9c4b12",
+  "qa_pass": true
+ },
+ "morph": {
+  "stills": {
+   "f0011.png": {
+    "run1": "9fff54bad7c5644b",
+    "run2": "9fff54bad7c5644b"
+   },
+   "f0015.png": {
+    "run1": "24720414a1995b9d",
+    "run2": "24720414a1995b9d"
+   },
+   "f0020.png": {
+    "run1": "47bd0a418450b505",
+    "run2": "47bd0a418450b505"
+   }
+  },
+  "same": true,
+  "qa_hash": "dbe2fb808fed5add",
+  "qa_pass": true
+ },
+ "pagePeel": {
+  "stills": {
+   "f0009.png": {
+    "run1": "80e4281e9597df26",
+    "run2": "80e4281e9597df26"
+   },
+   "f0015.png": {
+    "run1": "d429c0161b824ce7",
+    "run2": "d429c0161b824ce7"
+   },
+   "f0021.png": {
+    "run1": "458f0253ec84d012",
+    "run2": "458f0253ec84d012"
+   }
+  },
+  "same": true,
+  "qa_hash": "ea545ff09d0b1130",
+  "qa_pass": true
+ },
+ "pixelSort": {
+  "stills": {
+   "f0011.png": {
+    "run1": "a599d8a9fb73bea9",
+    "run2": "a599d8a9fb73bea9"
+   },
+   "f0015.png": {
+    "run1": "d12e5c240ca55e80",
+    "run2": "d12e5c240ca55e80"
+   },
+   "f0019.png": {
+    "run1": "2f940d401d851825",
+    "run2": "2f940d401d851825"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "push": {
+  "stills": {
+   "f0012.png": {
+    "run1": "219390e8f4f4dc6f",
+    "run2": "219390e8f4f4dc6f"
+   },
+   "f0015.png": {
+    "run1": "78c4093d0683214d",
+    "run2": "78c4093d0683214d"
+   },
+   "f0018.png": {
+    "run1": "6fe4dcf9f2999fc2",
+    "run2": "6fe4dcf9f2999fc2"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "scalePunch": {
+  "stills": {
+   "f0013.png": {
+    "run1": "93691bbf0ede275b",
+    "run2": "93691bbf0ede275b"
+   },
+   "f0015.png": {
+    "run1": "5f606b62dd063ef6",
+    "run2": "5f606b62dd063ef6"
+   },
+   "f0017.png": {
+    "run1": "562be7c0bd5b8925",
+    "run2": "562be7c0bd5b8925"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "shutter": {
+  "stills": {
+   "f0012.png": {
+    "run1": "5afd248759971cd8",
+    "run2": "5afd248759971cd8"
+   },
+   "f0015.png": {
+    "run1": "f689ad2dace8a9bc",
+    "run2": "f689ad2dace8a9bc"
+   },
+   "f0018.png": {
+    "run1": "238059f82223b3d7",
+    "run2": "238059f82223b3d7"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "speedRamp": {
+  "stills": {
+   "f0024.png": {
+    "run1": "bdd939c7480a48ae",
+    "run2": "bdd939c7480a48ae"
+   },
+   "f0030.png": {
+    "run1": "9e30ca159344c1e0",
+    "run2": "9e30ca159344c1e0"
+   },
+   "f0036.png": {
+    "run1": "54669ebc5b778f2c",
+    "run2": "54669ebc5b778f2c"
+   }
+  },
+  "same": true,
+  "qa_hash": "c45784f177ac046e",
+  "qa_pass": true
+ },
+ "spin": {
+  "stills": {
+   "f0012.png": {
+    "run1": "de983cae930fe562",
+    "run2": "de983cae930fe562"
+   },
+   "f0015.png": {
+    "run1": "e84e19d116b16225",
+    "run2": "e84e19d116b16225"
+   },
+   "f0018.png": {
+    "run1": "078fa5307b6c16f1",
+    "run2": "078fa5307b6c16f1"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "swipeUp": {
+  "stills": {
+   "f0012.png": {
+    "run1": "0b725c1ff8807f76",
+    "run2": "0b725c1ff8807f76"
+   },
+   "f0015.png": {
+    "run1": "0c6abb8a76e37ae9",
+    "run2": "0c6abb8a76e37ae9"
+   },
+   "f0018.png": {
+    "run1": "75d7d7778065cbda",
+    "run2": "75d7d7778065cbda"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "swipeUp_9x16": {
+  "stills": {
+   "f0012.png": {
+    "run1": "67053216b2d7af79",
+    "run2": "67053216b2d7af79"
+   },
+   "f0015.png": {
+    "run1": "911bf071f42a2f83",
+    "run2": "911bf071f42a2f83"
+   },
+   "f0018.png": {
+    "run1": "968563d2748f9b15",
+    "run2": "968563d2748f9b15"
+   }
+  },
+  "same": true,
+  "qa_hash": "63b6c2e8bf8bc016",
+  "qa_pass": true
+ },
+ "whip": {
+  "stills": {
+   "f0013.png": {
+    "run1": "1c1a304f40716500",
+    "run2": "1c1a304f40716500"
+   },
+   "f0015.png": {
+    "run1": "4b46ff356a60aa83",
+    "run2": "4b46ff356a60aa83"
+   },
+   "f0017.png": {
+    "run1": "0a992b624fbbb9e1",
+    "run2": "0a992b624fbbb9e1"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "whip_9x16": {
+  "stills": {
+   "f0013.png": {
+    "run1": "38ebaebd15c4321c",
+    "run2": "38ebaebd15c4321c"
+   },
+   "f0015.png": {
+    "run1": "e4dcd8b5b5b561e1",
+    "run2": "e4dcd8b5b5b561e1"
+   },
+   "f0017.png": {
+    "run1": "102a73cbfc077bc8",
+    "run2": "102a73cbfc077bc8"
+   }
+  },
+  "same": true,
+  "qa_hash": "63b6c2e8bf8bc016",
+  "qa_pass": true
+ },
+ "zoomThrough": {
+  "stills": {
+   "f0011.png": {
+    "run1": "6b198b4297b81dd5",
+    "run2": "6b198b4297b81dd5"
+   },
+   "f0015.png": {
+    "run1": "696cda1c96b537a7",
+    "run2": "696cda1c96b537a7"
+   },
+   "f0019.png": {
+    "run1": "5b3174abf098f2c6",
+    "run2": "5b3174abf098f2c6"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "ripple": {
+  "stills": {
+   "f0010.png": {
+    "run1": "9cbdacc932e7600b",
+    "run2": "9cbdacc932e7600b"
+   },
+   "f0015.png": {
+    "run1": "f75363c1ff4bf25d",
+    "run2": "f75363c1ff4bf25d"
+   },
+   "f0020.png": {
+    "run1": "a8d4cff6fccc39ca",
+    "run2": "a8d4cff6fccc39ca"
+   }
+  },
+  "same": true,
+  "qa_hash": "a16c102a31e0049f",
+  "qa_pass": true
+ },
+ "blinds": {
+  "stills": {
+   "f0011.png": {
+    "run1": "ced37e93fc51ac9c",
+    "run2": "ced37e93fc51ac9c"
+   },
+   "f0015.png": {
+    "run1": "b5f6cd6f7acf0af4",
+    "run2": "b5f6cd6f7acf0af4"
+   },
+   "f0020.png": {
+    "run1": "627329ac3662212c",
+    "run2": "627329ac3662212c"
+   }
+  },
+  "same": true,
+  "qa_hash": "9cacb8b1e2835b3c",
+  "qa_pass": true
+ },
+ "bookFlip": {
+  "stills": {
+   "f0008.png": {
+    "run1": "47e2905f4b2977d6",
+    "run2": "47e2905f4b2977d6"
+   },
+   "f0015.png": {
+    "run1": "2da6a83bd1c432d0",
+    "run2": "2da6a83bd1c432d0"
+   },
+   "f0022.png": {
+    "run1": "c8898d445392b30e",
+    "run2": "c8898d445392b30e"
+   }
+  },
+  "same": true,
+  "qa_hash": "d279e7eb61eb8edc",
+  "qa_pass": true
+ },
+ "burnOut": {
+  "stills": {
+   "f0008.png": {
+    "run1": "dafd1262c2176c88",
+    "run2": "dafd1262c2176c88"
+   },
+   "f0015.png": {
+    "run1": "7a7bb2eac14a1498",
+    "run2": "7a7bb2eac14a1498"
+   },
+   "f0022.png": {
+    "run1": "262ce2e7ffe9c29a",
+    "run2": "262ce2e7ffe9c29a"
+   }
+  },
+  "same": true,
+  "qa_hash": "0a58911dcd5d525d",
+  "qa_pass": true
+ },
+ "crossWarp": {
+  "stills": {
+   "f0011.png": {
+    "run1": "22b28a34959f6541",
+    "run2": "22b28a34959f6541"
+   },
+   "f0015.png": {
+    "run1": "fdecddb82d05df5c",
+    "run2": "fdecddb82d05df5c"
+   },
+   "f0019.png": {
+    "run1": "a5049a70ce4c90e3",
+    "run2": "a5049a70ce4c90e3"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "cube": {
+  "stills": {
+   "f0010.png": {
+    "run1": "a402604c58fee7f6",
+    "run2": "a402604c58fee7f6"
+   },
+   "f0015.png": {
+    "run1": "7f86db19b296b258",
+    "run2": "7f86db19b296b258"
+   },
+   "f0020.png": {
+    "run1": "8890a7dd28b43e12",
+    "run2": "8890a7dd28b43e12"
+   }
+  },
+  "same": true,
+  "qa_hash": "cb42f0d0fc4c7e92",
+  "qa_pass": true
+ },
+ "directionalWarp": {
+  "stills": {
+   "f0011.png": {
+    "run1": "63bd0ceeabc3673c",
+    "run2": "63bd0ceeabc3673c"
+   },
+   "f0015.png": {
+    "run1": "b902234447781037",
+    "run2": "b902234447781037"
+   },
+   "f0019.png": {
+    "run1": "a4cb9493a38beb3f",
+    "run2": "a4cb9493a38beb3f"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "doorway": {
+  "stills": {
+   "f0009.png": {
+    "run1": "543fe4751085983f",
+    "run2": "543fe4751085983f"
+   },
+   "f0015.png": {
+    "run1": "8408ae83d05b22c6",
+    "run2": "8408ae83d05b22c6"
+   },
+   "f0021.png": {
+    "run1": "7b5a788a374e1322",
+    "run2": "7b5a788a374e1322"
+   }
+  },
+  "same": true,
+  "qa_hash": "d3b81ec74261c427",
+  "qa_pass": true
+ },
+ "dreamyZoom": {
+  "stills": {
+   "f0009.png": {
+    "run1": "646325ca6620b414",
+    "run2": "646325ca6620b414"
+   },
+   "f0015.png": {
+    "run1": "345b56dd1a21330d",
+    "run2": "345b56dd1a21330d"
+   },
+   "f0021.png": {
+    "run1": "7716182cec9b4723",
+    "run2": "7716182cec9b4723"
+   }
+  },
+  "same": true,
+  "qa_hash": "7cba9d5eace0ce9c",
+  "qa_pass": true
+ },
+ "gridFlip": {
+  "stills": {
+   "f0008.png": {
+    "run1": "ebdc35179045fa40",
+    "run2": "ebdc35179045fa40"
+   },
+   "f0015.png": {
+    "run1": "9ca5d913931976b5",
+    "run2": "9ca5d913931976b5"
+   },
+   "f0022.png": {
+    "run1": "fcd4cc3f9254f177",
+    "run2": "fcd4cc3f9254f177"
+   }
+  },
+  "same": true,
+  "qa_hash": "64fa5064084a30c6",
+  "qa_pass": true
+ },
+ "hexagonalize": {
+  "stills": {
+   "f0011.png": {
+    "run1": "a8d6a453f28d01b7",
+    "run2": "a8d6a453f28d01b7"
+   },
+   "f0015.png": {
+    "run1": "c363624f41ff92a8",
+    "run2": "c363624f41ff92a8"
+   },
+   "f0020.png": {
+    "run1": "af036605645ec598",
+    "run2": "af036605645ec598"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "kaleido": {
+  "stills": {
+   "f0010.png": {
+    "run1": "2dee0a0d13e155ca",
+    "run2": "2dee0a0d13e155ca"
+   },
+   "f0015.png": {
+    "run1": "372c56bce1ba4aae",
+    "run2": "372c56bce1ba4aae"
+   },
+   "f0020.png": {
+    "run1": "aa4c28e96f5f51e6",
+    "run2": "aa4c28e96f5f51e6"
+   }
+  },
+  "same": true,
+  "qa_hash": "ee539cfb47b3a81a",
+  "qa_pass": true
+ },
+ "linearBlur": {
+  "stills": {
+   "f0012.png": {
+    "run1": "fb402ee8ebf0bf91",
+    "run2": "fb402ee8ebf0bf91"
+   },
+   "f0015.png": {
+    "run1": "c6fa0252f0636eea",
+    "run2": "c6fa0252f0636eea"
+   },
+   "f0018.png": {
+    "run1": "35730f878cc48e6f",
+    "run2": "35730f878cc48e6f"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "luminanceMelt": {
+  "stills": {
+   "f0008.png": {
+    "run1": "4af8a88f3868c216",
+    "run2": "4af8a88f3868c216"
+   },
+   "f0015.png": {
+    "run1": "2cad67fae8dea116",
+    "run2": "2cad67fae8dea116"
+   },
+   "f0022.png": {
+    "run1": "7b9b81437da82d5b",
+    "run2": "7b9b81437da82d5b"
+   }
+  },
+  "same": true,
+  "qa_hash": "65d9be75f6401e3f",
+  "qa_pass": true
+ },
+ "overexposure": {
+  "stills": {
+   "f0010.png": {
+    "run1": "7c5b04583cbbbc4e",
+    "run2": "7c5b04583cbbbc4e"
+   },
+   "f0015.png": {
+    "run1": "4a981c60f901d377",
+    "run2": "4a981c60f901d377"
+   },
+   "f0020.png": {
+    "run1": "a47be7abf6188385",
+    "run2": "a47be7abf6188385"
+   }
+  },
+  "same": true,
+  "qa_hash": "eacfe41dc8895cca",
+  "qa_pass": true
+ },
+ "pinwheel": {
+  "stills": {
+   "f0011.png": {
+    "run1": "bcc940d0aae878c1",
+    "run2": "bcc940d0aae878c1"
+   },
+   "f0015.png": {
+    "run1": "dff376ab74888dda",
+    "run2": "dff376ab74888dda"
+   },
+   "f0020.png": {
+    "run1": "d615c9ed3f150e87",
+    "run2": "d615c9ed3f150e87"
+   }
+  },
+  "same": true,
+  "qa_hash": "b012dd290f3328f4",
+  "qa_pass": true
+ },
+ "polkaDots": {
+  "stills": {
+   "f0010.png": {
+    "run1": "dd79989ccfc6fccd",
+    "run2": "dd79989ccfc6fccd"
+   },
+   "f0015.png": {
+    "run1": "b4c6fbcb2ba198b6",
+    "run2": "b4c6fbcb2ba198b6"
+   },
+   "f0020.png": {
+    "run1": "90db93e5a25694fc",
+    "run2": "90db93e5a25694fc"
+   }
+  },
+  "same": true,
+  "qa_hash": "94637fcc5cc76099",
+  "qa_pass": true
+ },
+ "radial": {
+  "stills": {
+   "f0011.png": {
+    "run1": "d00694f05ac6d767",
+    "run2": "d00694f05ac6d767"
+   },
+   "f0015.png": {
+    "run1": "64659b5bc85f3ad5",
+    "run2": "64659b5bc85f3ad5"
+   },
+   "f0020.png": {
+    "run1": "811d3995da20113b",
+    "run2": "811d3995da20113b"
+   }
+  },
+  "same": true,
+  "qa_hash": "828ea1c90323c0c6",
+  "qa_pass": true
+ },
+ "squeeze": {
+  "stills": {
+   "f0012.png": {
+    "run1": "6458bb2f8130b976",
+    "run2": "6458bb2f8130b976"
+   },
+   "f0015.png": {
+    "run1": "a411e9bc3b71a4bc",
+    "run2": "a411e9bc3b71a4bc"
+   },
+   "f0018.png": {
+    "run1": "23e3b8d24c668c26",
+    "run2": "23e3b8d24c668c26"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "swirl": {
+  "stills": {
+   "f0010.png": {
+    "run1": "614958d59e61dee5",
+    "run2": "614958d59e61dee5"
+   },
+   "f0015.png": {
+    "run1": "7486dd5359c4d584",
+    "run2": "7486dd5359c4d584"
+   },
+   "f0020.png": {
+    "run1": "365c180e9424506b",
+    "run2": "365c180e9424506b"
+   }
+  },
+  "same": true,
+  "qa_hash": "5b19fd9241c1f397",
+  "qa_pass": true
+ },
+ "tvStatic": {
+  "stills": {
+   "f0011.png": {
+    "run1": "408e16817d42d2d7",
+    "run2": "408e16817d42d2d7"
+   },
+   "f0015.png": {
+    "run1": "4aeaf773a806a9db",
+    "run2": "4aeaf773a806a9db"
+   },
+   "f0019.png": {
+    "run1": "a4bfaeed29443811",
+    "run2": "a4bfaeed29443811"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ },
+ "waterDrop": {
+  "stills": {
+   "f0009.png": {
+    "run1": "acf4926b0e6cfdac",
+    "run2": "acf4926b0e6cfdac"
+   },
+   "f0015.png": {
+    "run1": "0d36fbb2c52b5b0e",
+    "run2": "0d36fbb2c52b5b0e"
+   },
+   "f0021.png": {
+    "run1": "2ecd0d5521336670",
+    "run2": "2ecd0d5521336670"
+   }
+  },
+  "same": true,
+  "qa_hash": "832eb60fb44630ea",
+  "qa_pass": true
+ },
+ "wind": {
+  "stills": {
+   "f0011.png": {
+    "run1": "21021985b884c4b4",
+    "run2": "21021985b884c4b4"
+   },
+   "f0015.png": {
+    "run1": "3399289c18cf2481",
+    "run2": "3399289c18cf2481"
+   },
+   "f0020.png": {
+    "run1": "f812529e184bbcfa",
+    "run2": "f812529e184bbcfa"
+   }
+  },
+  "same": true,
+  "qa_hash": "c6b5478e6d9856b5",
+  "qa_pass": true
+ },
+ "windowSlice": {
+  "stills": {
+   "f0011.png": {
+    "run1": "64a1e9bce1437784",
+    "run2": "64a1e9bce1437784"
+   },
+   "f0015.png": {
+    "run1": "58eb269e5fd600a4",
+    "run2": "58eb269e5fd600a4"
+   },
+   "f0019.png": {
+    "run1": "a447613f1f0dae8d",
+    "run2": "a447613f1f0dae8d"
+   }
+  },
+  "same": true,
+  "qa_hash": "5029900e8fac7870",
+  "qa_pass": true
+ }
+}

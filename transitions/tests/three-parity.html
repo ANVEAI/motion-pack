@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="icon" href="data:,"><title>three parity</title>
+<script type="importmap">{"imports":{"three":"./three/three.module.js"}}</script></head>
+<body><canvas id="a"></canvas><canvas id="b"></canvas>
+<script type="module">
+/* Parity: every GL transition through tx-three.js (three ShaderMaterial) vs tx-gl.js (raw WebGL) at p = 0.3/0.5/0.7.
+   Served by tools/three-parity.sh from a temp dir where ./lib -> transitions/lib and ./three -> a local three build.
+   Reports through console.warn('PARITY ...') and sets __error when any mean abs diff > 1.0 (8-bit levels). */
+import * as THREE from 'three';
+import { SHADERS } from './lib/tx-shaders.js';
+import { createTxRenderer } from './lib/tx-gl.js';
+import { makeTransitionPass } from './lib/tx-three.js';
+import { paintA, paintB } from './lib/testcard.js';
+try {
+  const W = 480, H = 270; window.CONFIG = { fps: 30, loopFrames: 1, width: W, height: H };
+  const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+  const ca = mk(), cb = mk(); paintA(ca.getContext('2d'), 0.3, W, H); paintB(cb.getContext('2d'), 0.3, W, H);
+  const c1 = document.getElementById('a'); c1.width = W; c1.height = H; const tx = createTxRenderer(c1);
+  const c2 = document.getElementById('b'); c2.width = W; c2.height = H;
+  const r = new THREE.WebGLRenderer({ canvas: c2, preserveDrawingBuffer: true, antialias: false }); r.setPixelRatio(1); r.setSize(W, H, false);
+  r.outputColorSpace = THREE.LinearSRGBColorSpace;
+  const ta = new THREE.CanvasTexture(ca), tb = new THREE.CanvasTexture(cb);
+  for (const t of [ta, tb]) { t.colorSpace = THREE.NoColorSpace; t.minFilter = THREE.LinearFilter; t.generateMipmaps = false; t.flipY = true; }
+  const p1 = new Uint8Array(W * H * 4), p2 = new Uint8Array(W * H * 4), gl2 = r.getContext(), rows = []; let worst = 0;
+  for (const key of Object.keys(SHADERS)) for (const p of [0, 0.3, 0.5, 0.7, 1]) {
+    tx.render({ key, from: ca, to: cb, p }); tx.gl.readPixels(0, 0, W, H, tx.gl.RGBA, tx.gl.UNSIGNED_BYTE, p1);
+    const pass = makeTransitionPass(THREE, key); pass.set({ from: ta, to: tb, p, width: W, height: H });
+    r.setRenderTarget(null); r.render(pass.scene, pass.camera); gl2.readPixels(0, 0, W, H, gl2.RGBA, gl2.UNSIGNED_BYTE, p2); pass.dispose();
+    let s = 0, mx = 0; for (let i = 0; i < p1.length; i += 4) for (let c = 0; c < 3; c++) { const d = Math.abs(p1[i + c] - p2[i + c]); s += d; if (d > mx) mx = d; }
+    const mean = s / (W * H * 3); worst = Math.max(worst, mean); rows.push(`${key}@${p}:${mean.toFixed(3)}/${mx}`);
+  }
+  console.warn('PARITY three r' + THREE.REVISION + ' worst-mean=' + worst.toFixed(3) + ' ' + rows.join(' '));
+  if (worst > 1.0) window.__error = 'three parity failed: worst mean abs diff ' + worst.toFixed(3);
+  window.__gpu = 'Apple'; window.captureFrame = () => btoa(String.fromCharCode(...new Uint8Array(16))); window.__ready = true;
+} catch (e) { window.__error = String(e && e.stack || e); window.__ready = true; }
+</script></body></html>

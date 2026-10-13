@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><title>grade SVG emitter test</title><style>html,body{margin:0;background:#000}#chart{position:relative;width:1920px;height:1080px}#chart div{position:absolute}</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg><div id="chart"></div>
+<script type="module">
+import { toSVGFilter } from '../grade.js'; import { CHART_LEVELS } from './plate.js';
+const chart = document.getElementById('chart'), cw = 1920 / 27, ch = 1080 / 27; let k = 0;
+for (const r of CHART_LEVELS) for (const g of CHART_LEVELS) for (const b of CHART_LEVELS) { const d = document.createElement('div'); d.style.cssText = `left:${(k % 27) * cw}px;top:${Math.floor(k / 27) * ch}px;width:${cw + 1}px;height:${ch + 1}px;background:rgb(${r},${g},${b})`; chart.appendChild(d); k++; }
+window.applyGrade = (p) => { document.getElementById('defs').innerHTML = toSVGFilter(p, 'mpg'); chart.style.filter = 'url(#mpg)'; return true; };
+window.__ready = true;
+</script></body></html>

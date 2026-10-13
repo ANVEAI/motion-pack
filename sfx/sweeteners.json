@@ -1,0 +1,665 @@
+{
+ "hardCut": [
+  {
+   "id": "snd.tx.cut_tick",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": 0.0
+  }
+ ],
+ "whip": [
+  {
+   "id": "snd.whoosh.whip_pan",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": 2.0
+  }
+ ],
+ "push": [
+  {
+   "id": "snd.tx.push",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": 1.0
+  }
+ ],
+ "scalePunch": [
+  {
+   "id": "snd.tx.scale_punch",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": 3.0
+  }
+ ],
+ "zoomThrough": [
+  {
+   "id": "snd.tx.zoom_through",
+   "anchor": "end",
+   "tier": 2,
+   "over_bed_db": 3.0
+  }
+ ],
+ "flash": [
+  {
+   "id": "snd.tx.flash_swell",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": 2.0
+  }
+ ],
+ "lightLeak": [
+  {
+   "id": "snd.tx.light_leak",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": 2.0
+  }
+ ],
+ "filmBurn": [
+  {
+   "id": "snd.tx.film_burn",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": 2.0
+  }
+ ],
+ "glitch": [
+  {
+   "id": "snd.tx.glitch_stutter",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": 3.0
+  }
+ ],
+ "dissolve": [
+  {
+   "id": "snd.tx.dissolve_pad",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": -2.0
+  }
+ ],
+ "dipToBlack": [
+  {
+   "id": "snd.tx.dip_to_black",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": -2.0
+  }
+ ],
+ "blurCross": [
+  {
+   "id": "snd.tx.blur_cross",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": 0.0
+  }
+ ],
+ "match": [
+  {
+   "id": "snd.tx.match_link",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": 1.0
+  }
+ ],
+ "morph": [
+  {
+   "id": "snd.tx.morph_warble",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": 1.0
+  }
+ ],
+ "ink": [
+  {
+   "id": "snd.tx.ink_bloom",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": 2.0
+  }
+ ],
+ "iris": [
+  {
+   "id": "snd.tx.iris_close",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": 1.0
+  }
+ ],
+ "lumaWipe": [
+  {
+   "id": "snd.tx.luma_wipe",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": 2.0
+  }
+ ],
+ "maskReveal": [
+  {
+   "id": "snd.tx.mask_reveal",
+   "anchor": "end",
+   "tier": 3,
+   "over_bed_db": 2.0
+  }
+ ],
+ "speedRamp": [
+  {
+   "id": "snd.tx.speed_ramp",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": 2.0
+  }
+ ],
+ "freezeHold": [
+  {
+   "id": "snd.tx.freeze_hit",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": 3.0
+  }
+ ],
+ "smash": [
+  {
+   "id": "snd.tx.smash_cut",
+   "anchor": "start",
+   "tier": 1,
+   "over_bed_db": 4.5
+  }
+ ],
+ "jcut": [],
+ "shutter": [
+  {
+   "id": "snd.whoosh.swish_s",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": 1.0
+  },
+  {
+   "id": "snd.camera.shutter",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": 3.0
+  }
+ ],
+ "swipeUp": [
+  {
+   "id": "snd.whoosh.swish_xs",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": 1.0
+  }
+ ],
+ "spin": [
+  {
+   "id": "snd.whoosh.whoosh_m",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": 2.0
+  }
+ ],
+ "pagePeel": [
+  {
+   "id": "snd.paper.flip",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": 1.0
+  }
+ ],
+ "pixelSort": [
+  {
+   "id": "snd.tx.glitch_stutter",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": 2.0
+  },
+  {
+   "id": "snd.sizzle.grain",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": -2.0
+  }
+ ],
+ "dip": [
+  {
+   "id": "snd.tx.dip_to_black",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": -2.0
+  }
+ ],
+ "blinds": [
+  {
+   "id": "snd.paper.flip",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.plastic.click",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "bookFlip": [
+  {
+   "id": "snd.paper.flip",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 1.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "burnOut": [
+  {
+   "id": "snd.tx.film_burn",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.sizzle.grain",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -4.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "crossWarp": [
+  {
+   "id": "snd.whoosh.swish_s",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": 1.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "cube": [
+  {
+   "id": "snd.whoosh.whoosh_m",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 1.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.plastic.click",
+   "anchor": "end",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "directionalWarp": [
+  {
+   "id": "snd.whoosh.swish_s",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": 1.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "doorway": [
+  {
+   "id": "snd.wood.creak",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.whoosh.whoosh_in_m",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "dreamyZoom": [
+  {
+   "id": "snd.lift.inhale",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.sparkle.shimmer",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "gridFlip": [
+  {
+   "id": "snd.paper.flip",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -1.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.ui.tick",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -4.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "hexagonalize": [
+  {
+   "id": "snd.tx.glitch_stutter",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -3.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.ui.blip",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "kaleido": [
+  {
+   "id": "snd.sparkle.shimmer",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.tx.morph_warble",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "linearBlur": [
+  {
+   "id": "snd.whoosh.swish_xs",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "luminanceMelt": [
+  {
+   "id": "snd.liquid.glug",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.tx.morph_warble",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -3.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "overexposure": [
+  {
+   "id": "snd.tx.flash_swell",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.sparkle.shimmer",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "pinwheel": [
+  {
+   "id": "snd.whoosh.whoosh_m",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.cartoon.zip_run",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -3.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "polkaDots": [
+  {
+   "id": "snd.ui.pop",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.cartoon.boing_hi",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": -3.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "radial": [
+  {
+   "id": "snd.ui.tick",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.whoosh.swish_s",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "ripple": [
+  {
+   "id": "snd.liquid.drip",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.tx.dissolve_pad",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -4.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "squeeze": [
+  {
+   "id": "snd.tx.tape_stop",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -1.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.ui.blip",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": 0.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "swirl": [
+  {
+   "id": "snd.whoosh.whoosh_m",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 1.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.sparkle.shimmer",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "tvStatic": [
+  {
+   "id": "snd.tx.glitch_stutter",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.sizzle.grain",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -4.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "waterDrop": [
+  {
+   "id": "snd.liquid.drip",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": 1.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.liquid.splash",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": 1,
+   "gain_db": -4.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "wind": [
+  {
+   "id": "snd.whoosh.whoosh_l",
+   "anchor": "mid",
+   "tier": 2,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -1.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "windowSlice": [
+  {
+   "id": "snd.whoosh.swish_s",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 0,
+   "gain_db": 1.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "_extra_at_energy_ge_0.7": {
+  "hardCut": {
+   "id": "snd.hit.low_thump",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": 2.0
+  }
+ }
+}

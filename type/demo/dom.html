@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack type DOM demo</title>
+<style>html,body{margin:0;background:#f4efe6}#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:linear-gradient(#f4efe6,#e6dccb);color:#111}#t{position:absolute;left:160px;top:240px;width:1500px}#cap{position:absolute;inset:0}</style></head><body>
+<div id="stage"><div id="t"></div><div id="cap"></div></div>
+<script src="/ext/gsap.min.js"></script>
+<script type="module">
+import { mountType, bakeType, driveType, stateToVars, mountCaptions, bakeCaptions } from '../dom.js'; import { unitStates } from '../presets.js'; import { chunkWords, CAPTION_STYLES, captionFrame } from '../captions.js';
+const ff = new FontFace('Manrope', 'url(/ext/kitfonts/Manrope-Variable.ttf)', { weight: '200 800' }); await ff.load(); document.fonts.add(ff);
+let m = null, spec = null, tl = null;
+window.setup = (sp, dur) => { document.getElementById('t').innerHTML = ''; spec = sp; m = mountType(document.getElementById('t'), sp, { fontPx: 124 }); tl = gsap.timeline({ paused: true }); bakeType(tl, m, sp, { t0: 0, dur, fps: 30 }); window.tl = tl; return m.units.length; };
+const mat = (el) => { const x = new DOMMatrix(getComputedStyle(el).transform); return { a: x.a, e: x.e, f: x.f, op: +getComputedStyle(el).opacity }; };
+window.check = (ts) => { let worst = 0, details = null; for (const t of ts) { tl.seek(t, false); const R = unitStates(spec, m.texts, t); m.units.forEach((u, k) => { const v = stateToVars(R.states[k], m.fontPx, m.H, u.text), g = mat(u.el); const d = Math.max(Math.abs(g.op - v.opacity), Math.abs(g.e - v.x) / 100, Math.abs(g.f - v.y) / 100, spec.preset === 'flipSplit' ? 0 : Math.abs(g.a - v.scale)); if (d > worst) { worst = d; details = { t, k, got: g, want: v }; } }); } return { worst, details }; };
+window.capCheck = (words, style, ts) => { const chunks = chunkWords(words), cm = mountCaptions(document.getElementById('cap'), chunks, CAPTION_STYLES[style], { W: 1920, H: 1080, platform: 'wideTitle' }), ctl = gsap.timeline({ paused: true }); bakeCaptions(ctl, cm, chunks, { t0: 0, dur: Math.max(...chunks.map((c) => c.e)) + 0.2, fps: 30 }); let worst = 0, shown = 0;
+  for (const t of ts) { ctl.seek(t, false); const F = captionFrame(chunks, t, CAPTION_STYLES[style]); cm.els.forEach((e, ci) => { const live = F && F.index === ci, op = +getComputedStyle(e.el).opacity; worst = Math.max(worst, Math.abs(op - (live ? 1 : 0))); if (live) { shown++; e.words.forEach((s, k) => { worst = Math.max(worst, Math.abs(+getComputedStyle(s).opacity - F.words[k].opacity), Math.abs(new DOMMatrix(getComputedStyle(s).transform).a - F.words[k].scale)); }); } }); } return { worst, shown }; };
+window.__ready = true;
+</script></body></html>

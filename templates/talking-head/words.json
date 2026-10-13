@@ -1,0 +1,114 @@
+{
+"source": "DEMO transcript written by hand to match templates/film-scene/out/film-scene-wide.mp4 (no speech in it: mechanics demo). In real use: whisper via video-use / talking-head-recut.",
+"words": [
+{
+"w": "Most",
+"s": 0.3,
+"e": 0.51
+},
+{
+"w": "of",
+"s": 0.54,
+"e": 0.75
+},
+{
+"w": "my",
+"s": 0.78,
+"e": 0.99
+},
+{
+"w": "day",
+"s": 1.02,
+"e": 1.23
+},
+{
+"w": "is",
+"s": 1.26,
+"e": 1.47
+},
+{
+"w": "just",
+"s": 1.5,
+"e": 1.71
+},
+{
+"w": "typing.",
+"s": 1.74,
+"e": 2.022,
+"emph": true
+},
+{
+"w": "Then",
+"s": 2.95,
+"e": 3.17
+},
+{
+"w": "the",
+"s": 3.2,
+"e": 3.42
+},
+{
+"w": "phone",
+"s": 3.45,
+"e": 3.67
+},
+{
+"w": "buzzes.",
+"s": 3.7,
+"e": 3.995
+},
+{
+"w": "Again.",
+"s": 4.025,
+"e": 4.32,
+"emph": true
+},
+{
+"w": "So",
+"s": 4.95,
+"e": 5.18
+},
+{
+"w": "I",
+"s": 5.21,
+"e": 5.44
+},
+{
+"w": "flipped",
+"s": 5.47,
+"e": 5.778,
+"emph": true
+},
+{
+"w": "it",
+"s": 5.808,
+"e": 6.038
+},
+{
+"w": "over.",
+"s": 6.068,
+"e": 6.298
+},
+{
+"w": "Best",
+"s": 6.62,
+"e": 6.89,
+"emph": true
+},
+{
+"w": "decision",
+"s": 6.92,
+"e": 7.28
+},
+{
+"w": "this",
+"s": 7.31,
+"e": 7.58
+},
+{
+"w": "week.",
+"s": 7.61,
+"e": 7.88
+}
+]
+}

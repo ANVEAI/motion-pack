@@ -1,0 +1,325 @@
+{
+ "template": "talking-head",
+ "fps": 30,
+ "seconds": 6.4667,
+ "size": [
+  1080,
+  1920
+ ],
+ "safe": {
+  "top": 0.14,
+  "bottom": 0.35,
+  "side": 0.06
+ },
+ "keep": [
+  [
+   0.24,
+   2.112
+  ],
+  [
+   2.89,
+   4.41
+  ],
+  [
+   4.89,
+   7.97
+  ]
+ ],
+ "segs": [
+  {
+   "id": "seg0",
+   "src": 0.24,
+   "start": 0,
+   "dur": 1.8666666666666667,
+   "scale": 1
+  },
+  {
+   "id": "seg1",
+   "src": 2.89,
+   "start": 1.8666666666666667,
+   "dur": 1.5333333333333334,
+   "scale": 1.15
+  },
+  {
+   "id": "seg2",
+   "src": 4.89,
+   "start": 3.4,
+   "dur": 3.066666666666667,
+   "scale": 1
+  }
+ ],
+ "captions": [
+  {
+   "id": "cap0",
+   "words": [
+    {
+     "w": "Most",
+     "s": 0.06,
+     "e": 0.27
+    },
+    {
+     "w": "of",
+     "s": 0.3,
+     "e": 0.51
+    },
+    {
+     "w": "my",
+     "s": 0.54,
+     "e": 0.75
+    }
+   ],
+   "start": 0,
+   "end": 0.7
+  },
+  {
+   "id": "cap1",
+   "words": [
+    {
+     "w": "day",
+     "s": 0.78,
+     "e": 0.99
+    },
+    {
+     "w": "is",
+     "s": 1.02,
+     "e": 1.23
+    },
+    {
+     "w": "just",
+     "s": 1.26,
+     "e": 1.47
+    }
+   ],
+   "start": 0.7,
+   "end": 1.4333333333333333
+  },
+  {
+   "id": "cap2",
+   "words": [
+    {
+     "w": "typing.",
+     "s": 1.5,
+     "e": 1.782,
+     "emph": true
+    }
+   ],
+   "start": 1.4333333333333333,
+   "end": 1.8
+  },
+  {
+   "id": "cap3",
+   "words": [
+    {
+     "w": "Then",
+     "s": 1.932,
+     "e": 2.152
+    },
+    {
+     "w": "the",
+     "s": 2.182,
+     "e": 2.402
+    },
+    {
+     "w": "phone",
+     "s": 2.432,
+     "e": 2.652
+    }
+   ],
+   "start": 1.8666666666666667,
+   "end": 2.6
+  },
+  {
+   "id": "cap4",
+   "words": [
+    {
+     "w": "buzzes.",
+     "s": 2.682,
+     "e": 2.977
+    }
+   ],
+   "start": 2.6,
+   "end": 2.933333333333333
+  },
+  {
+   "id": "cap5",
+   "words": [
+    {
+     "w": "Again.",
+     "s": 3.007,
+     "e": 3.302,
+     "emph": true
+    }
+   ],
+   "start": 2.933333333333333,
+   "end": 3.3
+  },
+  {
+   "id": "cap6",
+   "words": [
+    {
+     "w": "So",
+     "s": 3.452,
+     "e": 3.682
+    },
+    {
+     "w": "I",
+     "s": 3.712,
+     "e": 3.942
+    },
+    {
+     "w": "flipped",
+     "s": 3.972,
+     "e": 4.28,
+     "emph": true
+    }
+   ],
+   "start": 3.4,
+   "end": 4.233333333333333
+  },
+  {
+   "id": "cap7",
+   "words": [
+    {
+     "w": "it",
+     "s": 4.31,
+     "e": 4.54
+    },
+    {
+     "w": "over.",
+     "s": 4.57,
+     "e": 4.8
+    }
+   ],
+   "start": 4.233333333333333,
+   "end": 4.8
+  },
+  {
+   "id": "cap8",
+   "words": [
+    {
+     "w": "Best",
+     "s": 5.122,
+     "e": 5.392,
+     "emph": true
+    },
+    {
+     "w": "decision",
+     "s": 5.422,
+     "e": 5.782
+    }
+   ],
+   "start": 5.066666666666666,
+   "end": 5.733333333333333
+  },
+  {
+   "id": "cap9",
+   "words": [
+    {
+     "w": "this",
+     "s": 5.812,
+     "e": 6.082
+    },
+    {
+     "w": "week.",
+     "s": 6.112,
+     "e": 6.382
+    }
+   ],
+   "start": 5.733333333333333,
+   "end": 6.366666666666666
+  }
+ ],
+ "punches": [
+  {
+   "t": 1.5,
+   "word": "typing."
+  }
+ ],
+ "broll": [
+  {
+   "id": "broll0",
+   "word": "phone",
+   "dur": 1.3,
+   "src": "../_shared/media/plate-devices.mp4",
+   "mediaStart": 2,
+   "start": 2.2666666666666666
+  }
+ ],
+ "shots": [
+  {
+   "id": "seg0",
+   "start": 0,
+   "dur": 1.8666666666666667
+  },
+  {
+   "id": "seg1",
+   "start": 1.8666666666666667,
+   "dur": 1.5333333333333334
+  },
+  {
+   "id": "seg2",
+   "start": 3.4,
+   "dur": 3.066666666666667
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/ui/slide",
+   "t": 0.4,
+   "gainDb": -18,
+   "why": "lower third"
+  },
+  {
+   "id": "sfx/tx/scale_punch",
+   "t": 1.5,
+   "gainDb": -14,
+   "why": "punch-in on \"typing.\""
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 1.5,
+   "gainDb": -20,
+   "why": "emphasis \"typing.\""
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 2.2666666666666666,
+   "gainDb": -14,
+   "why": "B-roll in"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 3,
+   "gainDb": -20,
+   "why": "emphasis \"Again.\""
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 3.966666666666667,
+   "gainDb": -20,
+   "why": "emphasis \"flipped\""
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 5.133333333333334,
+   "gainDb": -20,
+   "why": "emphasis \"Best\""
+  }
+ ],
+ "claims": [],
+ "coverage": 0.2,
+ "paceRule": {
+  "aslMax": 4,
+  "longMax": 6
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 3,
+   "asl": 2.16,
+   "longest": 3.067,
+   "pass": true
+  }
+ }
+}

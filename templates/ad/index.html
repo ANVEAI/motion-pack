@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack ad template: Orbit</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #f5f2ea; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f5f2ea; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.card { background: #f5f2ea; display: flex; align-items: center; padding: 0 173px; }
+.hl { font-weight: 800; font-size: 118px; line-height: 1.02; letter-spacing: -0.035em; max-width: 1500px; }
+.hl em { font-style: normal; color: #4a18ed; }
+.over { display: flex; align-items: flex-start; padding: 108px 134px 0; }   /* plates keep their subject low: type sits in the clear top band */
+.over .hl { font-size: 104px; color: #111; text-shadow: 0 2px 24px rgba(245,242,234,0.85); }
+.proof { background: #f5f2ea; display: flex; align-items: center; gap: 48px; padding: 0 173px; }
+.proof .tick { width: 120px; height: 120px; border-radius: 60px; background: #4a18ed; flex: none; display: grid; place-items: center; }
+.proof .tick svg { width: 64px; height: 64px; }
+.proof .hl { font-size: 92px; }
+.end { background: #f5f2ea; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+.end .name { font-weight: 800; font-size: 200px; letter-spacing: -0.05em; color: #111111; }
+.end .name i { font-style: normal; color: #4a18ed; }
+.end .cta { font-weight: 700; font-size: 64px; background: #4a18ed; color: #fff; padding: 22px 54px; border-radius: 60px; }
+.end .url { font-family: "IBM Plex Mono"; font-weight: 600; font-size: 34px; color: #5d5850; letter-spacing: 0.04em; }
+.reveal .hl { font-size: 220px; letter-spacing: -0.05em; }
+#fx { pointer-events: none; } #fx canvas { z-index: 5; }   /* layers over picture + type; z on the canvases, NOT on #fx (a stacking context on #fx would isolate mix-blend-mode) */
+video.clip { z-index: 0; } .card, .proof, .end { z-index: 1; } .over { z-index: 3; }   /* a later coverage cut must never cover the line */
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="15">
+<video id="v-hook" class="clip fill" src="assets/media/plate-devices.mp4" muted playsinline data-start="0.0000" data-duration="1.2667" data-media-start="2.2" data-track-index="0"></video>
+<section id="hook" class="clip over plate" data-start="0.0000" data-duration="2.5000" data-track-index="2"><div class="hl" id="t-hook">Your desk, <em>handled</em>.</div></section>
+<video id="v-hook_1" class="clip fill" src="assets/media/plate-devices.mp4" muted playsinline data-start="1.2667" data-duration="1.2333" data-media-start="1.5" data-track-index="0"></video>
+<section id="problem0" class="clip card" data-start="2.5000" data-duration="1.2667" data-track-index="1"><div class="hl" id="t-problem0">Five tabs.</div></section>
+<video id="v-problem1" class="clip fill" src="assets/media/plate-film.mp4" muted playsinline data-start="3.7667" data-duration="1.3667" data-media-start="1.4" data-track-index="0"></video>
+<section id="problem1" class="clip over plate" data-start="3.7667" data-duration="1.3667" data-track-index="2"><div class="hl" id="t-problem1">Five <em>bills</em>.</div></section>
+<div class="clip" id="w-reveal"><video id="v-reveal" class="clip fill" src="assets/media/plate-film.mp4" muted playsinline data-start="4.8333" data-duration="2.3667" data-media-start="1.0333" data-track-index="0"></video></div>
+<section id="reveal" class="clip over reveal" data-start="4.8333" data-duration="2.3667" data-track-index="2"><div class="hl" id="t-reveal">Orbit</div></section>
+<section id="benefit" class="clip card" data-start="7.2000" data-duration="1.9667" data-track-index="1"><div class="hl" id="t-benefit">One box does the <em>busywork</em>.</div></section>
+<section id="proof0" class="clip proof" data-start="8.8000" data-duration="1.9667" data-track-index="1"><div class="tick"><svg viewBox="0 0 64 64"><path d="M14 33 L27 46 L51 19" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hl" id="t-proof0">Works with the tools you already use.</div></section>
+<section id="proof1" class="clip proof" data-start="10.7667" data-duration="2.0667" data-track-index="1"><div class="tick"><svg viewBox="0 0 64 64"><path d="M14 33 L27 46 L51 19" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hl" id="t-proof1">Your files stay on your desk.</div></section>
+<section id="cta" class="clip end" data-start="12.1333" data-duration="2.8667" data-track-index="1"><div class="name" id="t-cta">Orbit<i>.</i></div><div class="cta" id="t-cta-cta">Try it on your desk</div><div class="url" id="t-cta-url">orbit.example</div></section>
+<div id="fx" class="clip" data-start="0" data-duration="15" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="15" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module" src="assets/mp/adapters/type.mjs"></script>
+<script type="module" src="assets/mp/adapters/transitions.mjs"></script>
+<script type="module">
+import { MP } from './assets/mp/pack.mjs';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"vignette","params":{}},{"kind":"grain","params":{"stock":"digital-soft"}}], { width: 1920, height: 1080, fps: 30, seed: 7 }), { fps: 30 });
+const tl = gsap.timeline({ paused: true });
+  MP.type(tl, "type/scaleSlam", '#t-hook', { at: 0.0000, dur: 2.5000, fps: 30, kind: "plate" });
+  MP.type(tl, "type/maskRise", '#t-problem0', { at: 2.5000, dur: 1.2500, fps: 30, kind: "card" });
+  MP.type(tl, "type/maskRise", '#t-problem1', { at: 3.7667, dur: 1.2500, fps: 30, kind: "plate" });
+  MP.type(tl, "type/scaleSlam", '#t-reveal', { at: 5.0000, dur: 2.2000, fps: 30, kind: "reveal" });
+  tl.fromTo('#w-reveal', { scale: 1.0 }, { scale: 1.06, duration: 2.2000, ease: 'none' }, 5.0000);   // slow push on the hero hold (cam.push)
+  MP.type(tl, "type/maskRise", '#t-benefit', { at: 7.2000, dur: 1.8000, fps: 30, kind: "card" });
+  MP.type(tl, "type/maskRise", '#t-proof0', { at: 9.0000, dur: 1.7500, fps: 30, kind: "proof" });
+  MP.type(tl, "type/maskRise", '#t-proof1', { at: 10.7667, dur: 1.7500, fps: 30, kind: "proof" });
+  MP.type(tl, "type/elasticPop", '#t-cta', { at: 12.5000, dur: 2.5000, fps: 30, kind: "end" });
+  MP.type(tl, "type/blurIn", '#t-cta-cta', { at: 12.7500, dur: 2.2500, fps: 30 });
+  MP.type(tl, "type/blurIn", '#t-cta-url', { at: 12.9000, dur: 2.1000, fps: 30 });
+  MP.transition(tl, "transitions/whip", { out: ["#v-problem1","#problem1"], in: ["#v-reveal","#reveal"], root: '#root', start: 4.8333, cut: 5.0000, end: 5.1333, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/push", { out: ["#benefit"], in: ["#proof0"], root: '#root', start: 8.8000, cut: 9.0000, end: 9.1667, W: 1920, H: 1080, params: {} });
+  MP.transition(tl, "transitions/dip-to-black", { out: ["#proof1"], in: ["#cta"], root: '#root', start: 12.1333, cut: 12.5000, end: 12.8333, W: 1920, H: 1080, params: {"color":"#000000"} });
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

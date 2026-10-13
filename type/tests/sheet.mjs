@@ -1,0 +1,7 @@
+/* usage: node type/tests/sheet.mjs <out.png> <kind: presets|captions|icons> [...]  */
+import fs from 'node:fs'; import { open } from '../../layers/tests/harness.mjs';
+const [out, kind, a = '', b = '', bg = 'cream'] = process.argv.slice(2); const h = await open('/type/demo/index.html'); let url;
+if (kind === 'presets') { const ids = a.split(','), times = b.split(',').map(Number); const sp = { maskRise: 'Voice that sells', charRise: 'Orbit Voice', wordStagger: 'Say it once. Done.', charStagger: 'Big moment', blurIn: 'Meet Orbit', scaleSlam: 'FAST FREE ALWAYS', typewriter: 'Hello, world.', trackingCollapse: 'ORBIT', weightMorph: 'Weight morph', wipe: 'Wipe reveal', flipSplit: 'Flip split', elasticPop: 'Boing pop', scramble: 'DECODE THIS', glitchSplit: 'GLITCH' };
+  url = await h.page.evaluate((ids, times, sp, bg) => window.sheet(ids.map((id) => [id, { preset: id, text: sp[id] || id, at: 0.1, out: 2.6, anchor: { x: 0.08, y: 0.28 }, font: { size: 130 }, params: { hits: [0.5] }, highlight: id === 'maskRise' ? [1] : undefined }]), times, { bg }), ids, times, sp, bg); }
+else if (kind === 'captions') url = await h.page.evaluate((s, t) => window.capSheet(s, t), a.split(','), b.split(',').map(Number)); else url = await h.page.evaluate(() => window.iconSheet());
+fs.writeFileSync(out, Buffer.from(url.split(',')[1], 'base64')); console.log('wrote', out, h.errors.filter((e) => !/favicon|404/.test(e))); await h.close();

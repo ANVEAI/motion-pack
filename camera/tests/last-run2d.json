@@ -1,0 +1,22 @@
+{
+ "name": "camera2d",
+ "total": 3,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "bakeGSAP: 40 random-access seeks on 6 cameras reproduce the pure function (max matrix deviation 5.0e-5)",
+   "pass": true,
+   "detail": "{\"push2d\":0.00004999999999988347,\"whip\":0,\"handheld\":0,\"punchCadence\":0.000050000000000105516,\"shake\":1.7999999999903944e-9,\"dutch\":0,\"direct\":0}"
+  },
+  {
+   "label": "direct CSS path (toCSS) matches the same matrices (dev 0.0e+0)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no console errors",
+   "pass": true,
+   "detail": "[\"error: Failed to load resource: the server responded with a status of 404 (Not Found)\"]"
+  }
+ ]
+}

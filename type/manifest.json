@@ -1,0 +1,3770 @@
+{
+ "module": "type",
+ "version": "1.0.0",
+ "components": [
+  {
+   "id": "type.maskRise",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "word",
+   "dur_frames": 14,
+   "stagger_frames": 4,
+   "tone": "calm-sharp",
+   "tags": [
+    "headline",
+    "premium",
+    "ad",
+    "title"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.charRise",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "char",
+   "dur_frames": 12,
+   "stagger_frames": 2,
+   "tone": "calm-sharp",
+   "tags": [
+    "headline",
+    "short-title",
+    "premium"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.wordStagger",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "word",
+   "dur_frames": 16,
+   "stagger_frames": 3,
+   "tone": "neutral",
+   "tags": [
+    "subhead",
+    "body",
+    "explainer"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.charStagger",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "char",
+   "dur_frames": 12,
+   "stagger_frames": 1.5,
+   "tone": "kinetic-soft",
+   "tags": [
+    "title",
+    "playful",
+    "social"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.blurIn",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "line",
+   "dur_frames": 18,
+   "stagger_frames": 5,
+   "tone": "calm-soft",
+   "tags": [
+    "title",
+    "cinematic",
+    "film",
+    "end-card"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.scaleSlam",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "word",
+   "dur_frames": 6,
+   "stagger_frames": 15,
+   "tone": "kinetic-sharp",
+   "tags": [
+    "hype",
+    "beat",
+    "hook",
+    "cta",
+    "ad"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.typewriter",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "char",
+   "dur_frames": 1,
+   "stagger_frames": 2,
+   "tone": "neutral",
+   "tags": [
+    "terminal",
+    "tech",
+    "ui",
+    "subhead"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.trackingCollapse",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "line",
+   "dur_frames": 20,
+   "stagger_frames": 6,
+   "tone": "calm-soft",
+   "tags": [
+    "title-card",
+    "premium",
+    "brand",
+    "end-card"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.weightMorph",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "word",
+   "dur_frames": 18,
+   "stagger_frames": 3,
+   "tone": "calm-sharp",
+   "tags": [
+    "emphasis",
+    "variable-font",
+    "headline"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.wipe",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "line",
+   "dur_frames": 12,
+   "stagger_frames": 4,
+   "tone": "neutral",
+   "tags": [
+    "subhead",
+    "broadcast",
+    "explainer"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.flipSplit",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "line",
+   "dur_frames": 16,
+   "stagger_frames": 3,
+   "tone": "kinetic-sharp",
+   "tags": [
+    "tech",
+    "hype",
+    "title"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.elasticPop",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "word",
+   "dur_frames": 18,
+   "stagger_frames": 3,
+   "tone": "kinetic-soft",
+   "tags": [
+    "playful",
+    "mime",
+    "kids",
+    "social",
+    "sticker"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.scramble",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "char",
+   "dur_frames": 1,
+   "stagger_frames": 0,
+   "tone": "techy",
+   "tags": [
+    "tech",
+    "decode",
+    "cyber",
+    "hook"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.glitchSplit",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "line",
+   "dur_frames": 8,
+   "stagger_frames": 0,
+   "tone": "deconstructed",
+   "tags": [
+    "glitch",
+    "hype",
+    "cyber",
+    "retro"
+   ],
+   "demo": "type/demo/out/presets1.png | presets2.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "caption.karaoke",
+   "file": "type/captions.js",
+   "kind": "caption-style",
+   "mode": "chunk",
+   "tags": [
+    "talking-head",
+    "retention",
+    "social"
+   ],
+   "demo": "type/demo/out/captions.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "caption.impact",
+   "file": "type/captions.js",
+   "kind": "caption-style",
+   "mode": "single",
+   "tags": [
+    "hype",
+    "beat",
+    "hook"
+   ],
+   "demo": "type/demo/out/captions.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "caption.emphasis",
+   "file": "type/captions.js",
+   "kind": "caption-style",
+   "mode": "chunk",
+   "tags": [
+    "explainer",
+    "story"
+   ],
+   "demo": "type/demo/out/captions.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "caption.pill",
+   "file": "type/captions.js",
+   "kind": "caption-style",
+   "mode": "chunk",
+   "tags": [
+    "clean",
+    "founder",
+    "brand"
+   ],
+   "demo": "type/demo/out/captions.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "caption.clean",
+   "file": "type/captions.js",
+   "kind": "caption-style",
+   "mode": "chunk",
+   "tags": [
+    "documentary",
+    "interview"
+   ],
+   "demo": "type/demo/out/captions.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "caption.engine",
+   "file": "type/captions.js",
+   "kind": "engine",
+   "tags": [
+    "chunk",
+    "karaoke",
+    "emphasis",
+    "emoji-pop",
+    "transcript"
+   ],
+   "demo": "type/demo/out/captions.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.icons",
+   "file": "type/icons.js",
+   "kind": "icon-pack",
+   "count": 17,
+   "ids": [
+    "burst8",
+    "burst12",
+    "star",
+    "spark",
+    "heart",
+    "flame",
+    "bolt",
+    "thumb",
+    "play",
+    "speech",
+    "tag",
+    "check",
+    "cross",
+    "arrow",
+    "wave",
+    "zigzag",
+    "bracket"
+   ],
+   "tags": [
+    "sticker",
+    "emoji-pop",
+    "owned-vector"
+   ],
+   "demo": "type/demo/out/icons.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.safezones",
+   "file": "type/safezones.js",
+   "kind": "rules",
+   "platforms": [
+    "conservative",
+    "tiktok",
+    "reels",
+    "shorts",
+    "ytAd",
+    "metaStory",
+    "wideTitle",
+    "wideAction"
+   ],
+   "tags": [
+    "safe-zone",
+    "platform",
+    "lint"
+   ],
+   "demo": "type/demo/out/captions.png",
+   "test": "type/tests/type.test.mjs",
+   "caveat": "sources conflict; all platform rows flagged verify:true"
+  },
+  {
+   "id": "lowerThird.cleanBar",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3,
+   "in_frames": 14,
+   "out_frames": 10,
+   "params": {
+    "name": "Maya Rao",
+    "role": "Founder, Orbit",
+    "pos": "bl",
+    "accent": "#4A18ED"
+   },
+   "tags": [
+    "lower-third",
+    "name",
+    "interview",
+    "clean",
+    "talking-head"
+   ],
+   "demo": "type/demo/out/gfx-lowerthirds.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "lowerThird.boldBlock",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3,
+   "in_frames": 16,
+   "out_frames": 10,
+   "params": {
+    "name": "Maya Rao",
+    "role": "Founder, Orbit",
+    "pos": "bl",
+    "accent": "#4A18ED"
+   },
+   "tags": [
+    "lower-third",
+    "name",
+    "bold",
+    "ad",
+    "social"
+   ],
+   "demo": "type/demo/out/gfx-lowerthirds.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "lowerThird.accentRule",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3,
+   "in_frames": 18,
+   "out_frames": 10,
+   "params": {
+    "name": "Maya Rao",
+    "role": "Founder, Orbit",
+    "pos": "bl",
+    "accent": "#4A18ED",
+    "color": "#FFFFFF"
+   },
+   "tags": [
+    "lower-third",
+    "name",
+    "minimal",
+    "premium",
+    "documentary"
+   ],
+   "demo": "type/demo/out/gfx-lowerthirds.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "lowerThird.softPill",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3,
+   "in_frames": 12,
+   "out_frames": 9,
+   "params": {
+    "name": "Maya Rao",
+    "role": "Founder, Orbit",
+    "pos": "bl",
+    "accent": "#4A18ED",
+    "initials": "MR"
+   },
+   "tags": [
+    "lower-third",
+    "name",
+    "friendly",
+    "social",
+    "creator"
+   ],
+   "demo": "type/demo/out/gfx-lowerthirds.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "lowerThird.newsBar",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/stinger/bump",
+    "offset_f": 1,
+    "gain_db": 0
+   },
+   "dur_s": 4,
+   "in_frames": 12,
+   "out_frames": 9,
+   "params": {
+    "name": "Maya Rao",
+    "role": "Founder, Orbit",
+    "pos": "bl",
+    "accent": "#E3122E",
+    "tag": "LIVE",
+    "ticker": "Orbit ships today  •  Notes that stay on your desk  •  ",
+    "speed": 160
+   },
+   "tags": [
+    "lower-third",
+    "news",
+    "ticker",
+    "breaking",
+    "comedy"
+   ],
+   "demo": "type/demo/out/gfx-lowerthirds.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "lowerThird.neonBorder",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3,
+   "in_frames": 18,
+   "out_frames": 9,
+   "params": {
+    "name": "Maya Rao",
+    "role": "Founder, Orbit",
+    "pos": "bl",
+    "accent": "#7CF7FF"
+   },
+   "tags": [
+    "lower-third",
+    "name",
+    "neon",
+    "gaming",
+    "night"
+   ],
+   "demo": "type/demo/out/gfx-lowerthirds.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "counter.countUp",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 2.5,
+   "in_frames": 30,
+   "out_frames": 9,
+   "params": {
+    "from": 0,
+    "to": 12500,
+    "dec": 0,
+    "prefix": "",
+    "suffix": "+",
+    "label": "happy teams",
+    "pos": "c",
+    "size": 180,
+    "color": "#FFFFFF",
+    "accent": "#4A18ED",
+    "source": ""
+   },
+   "tags": [
+    "counter",
+    "number",
+    "stat",
+    "kpi",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "counter.wheel",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_tick",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 2.5,
+   "in_frames": 36,
+   "out_frames": 9,
+   "params": {
+    "to": 2026,
+    "digits": 4,
+    "pos": "c",
+    "size": 200,
+    "color": "#FFFFFF",
+    "bg": "rgba(0,0,0,0.55)",
+    "stagger": 4
+   },
+   "tags": [
+    "counter",
+    "odometer",
+    "number",
+    "rolling",
+    "retro"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "counter.statCard",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": 0
+   },
+   "dur_s": 3,
+   "in_frames": 24,
+   "out_frames": 9,
+   "params": {
+    "to": 487,
+    "suffix": " ms",
+    "label": "P50 voice latency",
+    "delta": "-38%",
+    "good": true,
+    "pos": "c",
+    "accent": "#4A18ED",
+    "source": "internal benchmark"
+   },
+   "tags": [
+    "counter",
+    "stat",
+    "card",
+    "kpi",
+    "saas"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "counter.ring",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 2.5,
+   "in_frames": 36,
+   "out_frames": 9,
+   "params": {
+    "value": 92,
+    "suffix": "%",
+    "label": "accuracy",
+    "pos": "c",
+    "radius": 150,
+    "accent": "#4A18ED",
+    "track": "rgba(255,255,255,0.18)",
+    "color": "#FFFFFF"
+   },
+   "tags": [
+    "counter",
+    "ring",
+    "progress",
+    "percent",
+    "dashboard"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "counter.priceSlash",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cash/ka_ching",
+    "offset_f": 18,
+    "gain_db": 2
+   },
+   "dur_s": 3,
+   "in_frames": 30,
+   "out_frames": 9,
+   "params": {
+    "was": "₹4,999",
+    "now": "₹2,499",
+    "label": "launch price",
+    "pos": "c",
+    "accent": "#FFC83D",
+    "color": "#FFFFFF"
+   },
+   "tags": [
+    "price",
+    "sale",
+    "offer",
+    "ad",
+    "cta"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.chapterCard",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/stinger/reveal",
+    "offset_f": 1,
+    "gain_db": 0
+   },
+   "dur_s": 2,
+   "in_frames": 18,
+   "out_frames": 12,
+   "params": {
+    "kicker": "Chapter 02",
+    "title": "The night before the audit",
+    "bg": "rgba(8,8,12,0.92)",
+    "accent": "#4A18ED"
+   },
+   "tags": [
+    "title",
+    "chapter",
+    "section",
+    "film",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.slate",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/camera/shutter",
+    "offset_f": 22,
+    "gain_db": 2
+   },
+   "dur_s": 1.6,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "prod": "ORBIT",
+    "scene": "12A",
+    "take": "3",
+    "roll": "A004",
+    "director": "M. Rao",
+    "clapAt": 0.6
+   },
+   "tags": [
+    "slate",
+    "clapper",
+    "behind-the-scenes",
+    "film",
+    "take"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.timecodeHUD",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": null,
+   "dur_s": 9999,
+   "in_frames": 1,
+   "out_frames": 1,
+   "params": {
+    "fps": 30,
+    "start": 0,
+    "label": "REVIEW",
+    "pos": "tr"
+   },
+   "tags": [
+    "timecode",
+    "hud",
+    "frame-count",
+    "review",
+    "behind-the-scenes"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.letterboxRamp",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_in_m",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 18,
+   "out_frames": 18,
+   "params": {
+    "ratio": 2.39,
+    "color": "#000000"
+   },
+   "tags": [
+    "letterbox",
+    "cinematic",
+    "bars",
+    "flashback",
+    "drama"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.progressBar",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": null,
+   "dur_s": 30,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "total": 30,
+    "chapters": [],
+    "edge": "top",
+    "height": 8,
+    "accent": "#4A18ED",
+    "track": "rgba(255,255,255,0.25)"
+   },
+   "tags": [
+    "progress",
+    "retention",
+    "chapters",
+    "explainer",
+    "shorts"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.countdown321",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/tick",
+    "offset_f": 1,
+    "gain_db": 0
+   },
+   "dur_s": 3,
+   "in_frames": 1,
+   "out_frames": 6,
+   "params": {
+    "from": 3,
+    "color": "#FFFFFF",
+    "accent": "#4A18ED",
+    "size": 360
+   },
+   "tags": [
+    "countdown",
+    "timer",
+    "intro",
+    "launch",
+    "game"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.recDot",
+   "file": "type/gfx/editorial.js",
+   "kind": "gfx",
+   "sfx": null,
+   "dur_s": 9999,
+   "in_frames": 1,
+   "out_frames": 1,
+   "params": {
+    "label": "REC",
+    "pos": "tl",
+    "blink": 1
+   },
+   "tags": [
+    "rec",
+    "live",
+    "camera",
+    "vlog",
+    "hud"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.scribbleCircle",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/paper/rustle",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 2,
+   "in_frames": 14,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.38,
+     0.4,
+     0.24,
+     0.14
+    ],
+    "color": "#FF3B5C",
+    "width": 7,
+    "seed": 3
+   },
+   "tags": [
+    "callout",
+    "circle",
+    "highlight",
+    "hand-drawn",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.handArrow",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/paper/rustle",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 2,
+   "in_frames": 14,
+   "out_frames": 8,
+   "params": {
+    "from": [
+     0.25,
+     0.75
+    ],
+    "to": [
+     0.45,
+     0.5
+    ],
+    "bend": 0.25,
+    "color": "#FFD400",
+    "width": 8,
+    "seed": 2,
+    "label": ""
+   },
+   "tags": [
+    "callout",
+    "arrow",
+    "point",
+    "hand-drawn",
+    "tutorial"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.underline",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/paper/rustle",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 2,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.35,
+     0.55,
+     0.3,
+     0.05
+    ],
+    "color": "#FFD400",
+    "width": 9,
+    "seed": 5,
+    "style": "scribble"
+   },
+   "tags": [
+    "callout",
+    "underline",
+    "emphasis",
+    "hand-drawn",
+    "caption"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.bracket",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/paper/rustle",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 2,
+   "in_frames": 12,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.36,
+     0.36,
+     0.28,
+     0.28
+    ],
+    "color": "#FFFFFF",
+    "width": 6,
+    "corner": 0.22
+   },
+   "tags": [
+    "callout",
+    "bracket",
+    "focus",
+    "frame",
+    "ui"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.pinLeader",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -1
+   },
+   "dur_s": 2.5,
+   "in_frames": 18,
+   "out_frames": 8,
+   "params": {
+    "at": [
+     0.5,
+     0.5
+    ],
+    "label": "Runs offline",
+    "elbow": [
+     0.14,
+     -0.12
+    ],
+    "color": "#FFFFFF",
+    "accent": "#4A18ED"
+   },
+   "tags": [
+    "callout",
+    "pin",
+    "label",
+    "annotation",
+    "product"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.spotlight",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_in_m",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 2.5,
+   "in_frames": 14,
+   "out_frames": 10,
+   "params": {
+    "box": [
+     0.3,
+     0.3,
+     0.4,
+     0.3
+    ],
+    "dim": 0.62,
+    "radius": 0.02,
+    "color": "#000000"
+   },
+   "tags": [
+    "callout",
+    "spotlight",
+    "dim",
+    "focus",
+    "ui-demo"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.sweat",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/pop_eye",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 1.5,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "at": [
+     0.58,
+     0.32
+    ],
+    "size": 1,
+    "color": "#7FD3FF"
+   },
+   "tags": [
+    "emotion",
+    "sweat",
+    "nervous",
+    "mime",
+    "comedy"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.vein",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/pop_eye",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 1.5,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "at": [
+     0.56,
+     0.26
+    ],
+    "size": 1,
+    "color": "#E3122E"
+   },
+   "tags": [
+    "emotion",
+    "anger",
+    "vein",
+    "mime",
+    "anime"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.heartBurst",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/xylo_up",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 1.6,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "at": [
+     0.5,
+     0.35
+    ],
+    "count": 7,
+    "size": 1,
+    "color": "#FF3B6B",
+    "seed": 4
+   },
+   "tags": [
+    "emotion",
+    "love",
+    "hearts",
+    "mime",
+    "reaction"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.question",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/voice/chirp_question",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 1.5,
+   "in_frames": 8,
+   "out_frames": 6,
+   "params": {
+    "at": [
+     0.6,
+     0.25
+    ],
+    "size": 1,
+    "color": "#FFFFFF",
+    "count": 1
+   },
+   "tags": [
+    "emotion",
+    "question",
+    "confused",
+    "mime",
+    "comedy"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.exclaim",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/stinger/alert",
+    "offset_f": 1,
+    "gain_db": -1
+   },
+   "dur_s": 1.2,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "at": [
+     0.6,
+     0.25
+    ],
+    "size": 1,
+    "color": "#FFD400"
+   },
+   "tags": [
+    "emotion",
+    "surprise",
+    "alert",
+    "mime",
+    "game"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.dizzy",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/sproing",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 2,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "at": [
+     0.5,
+     0.22
+    ],
+    "size": 1,
+    "count": 4,
+    "color": "#FFD400",
+    "speed": 1.2
+   },
+   "tags": [
+    "emotion",
+    "dizzy",
+    "stars",
+    "mime",
+    "cartoon"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.sparkle",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/sparkle/shimmer",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 1.6,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "at": [
+     0.5,
+     0.4
+    ],
+    "spread": 0.12,
+    "count": 5,
+    "size": 1,
+    "color": "#FFFFFF",
+    "seed": 7
+   },
+   "tags": [
+    "emotion",
+    "sparkle",
+    "clean",
+    "new",
+    "magic"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.zzz",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/pop_eye",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 2.5,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "at": [
+     0.58,
+     0.3
+    ],
+    "size": 1,
+    "color": "#FFFFFF"
+   },
+   "tags": [
+    "emotion",
+    "sleep",
+    "bored",
+    "mime",
+    "comedy"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.emotion.bulb",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/camera_ping",
+    "offset_f": 1,
+    "gain_db": -1
+   },
+   "dur_s": 1.6,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "at": [
+     0.5,
+     0.2
+    ],
+    "size": 1,
+    "color": "#FFE45C"
+   },
+   "tags": [
+    "emotion",
+    "idea",
+    "bulb",
+    "mime",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.impact.onomatopoeia",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/punch",
+    "offset_f": 1,
+    "gain_db": 2
+   },
+   "dur_s": 0.8,
+   "in_frames": 4,
+   "out_frames": 6,
+   "params": {
+    "word": "POW!",
+    "at": [
+     0.5,
+     0.45
+    ],
+    "size": 1,
+    "color": "#FFD400",
+    "burst": "#FF3B30",
+    "seed": 2
+   },
+   "tags": [
+    "impact",
+    "comic",
+    "pow",
+    "text",
+    "mime"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.impact.speedLines",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/punch",
+    "offset_f": 1,
+    "gain_db": 2
+   },
+   "dur_s": 1,
+   "in_frames": 2,
+   "out_frames": 4,
+   "params": {
+    "at": [
+     0.5,
+     0.5
+    ],
+    "lines": 48,
+    "clear": 0.28,
+    "color": "#FFFFFF",
+    "fps": 12,
+    "seed": 3
+   },
+   "tags": [
+    "impact",
+    "speed-lines",
+    "manga",
+    "focus",
+    "comic"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.impact.dustPoof",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/poof",
+    "offset_f": 0,
+    "gain_db": 0
+   },
+   "dur_s": 0.9,
+   "in_frames": 2,
+   "out_frames": 6,
+   "params": {
+    "at": [
+     0.5,
+     0.8
+    ],
+    "size": 1,
+    "color": "#E8E2D6",
+    "count": 9,
+    "seed": 5
+   },
+   "tags": [
+    "impact",
+    "dust",
+    "poof",
+    "landing",
+    "cartoon"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.impact.star",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/punch",
+    "offset_f": 1,
+    "gain_db": 2
+   },
+   "dur_s": 0.5,
+   "in_frames": 2,
+   "out_frames": 6,
+   "params": {
+    "at": [
+     0.5,
+     0.5
+    ],
+    "size": 1,
+    "color": "#FFFFFF",
+    "rim": "#FFD400",
+    "points": 9
+   },
+   "tags": [
+    "impact",
+    "hit",
+    "star",
+    "flash",
+    "comic"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "fx.impact.smear",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whip_pan",
+    "offset_f": 0,
+    "gain_db": 0
+   },
+   "dur_s": 0.2,
+   "in_frames": 1,
+   "out_frames": 3,
+   "params": {
+    "at": [
+     0.5,
+     0.5
+    ],
+    "dir": [
+     1,
+     0
+    ],
+    "length": 0.35,
+    "size": 1,
+    "color": "#FFFFFF",
+    "count": 5,
+    "seed": 1
+   },
+   "tags": [
+    "impact",
+    "smear",
+    "motion",
+    "animation",
+    "whip"
+   ],
+   "demo": "type/demo/out/gfx-emotion-impact.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "social.followButton",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/success",
+    "offset_f": 25,
+    "gain_db": 0
+   },
+   "dur_s": 2,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "label": "Follow",
+    "done": "Following",
+    "pos": "bc",
+    "clickAt": 0.8,
+    "accent": "#4A18ED",
+    "cursor": true
+   },
+   "tags": [
+    "social",
+    "follow",
+    "cta",
+    "subscribe",
+    "button"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "social.replyBubble",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -1
+   },
+   "dur_s": 3,
+   "in_frames": 12,
+   "out_frames": 8,
+   "params": {
+    "handle": "@curious_ca",
+    "textv": "Does it really work without internet?",
+    "pos": "tc",
+    "accent": "#4A18ED"
+   },
+   "tags": [
+    "social",
+    "comment",
+    "reply",
+    "question",
+    "creator"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "social.testimonial",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -1
+   },
+   "dur_s": 4,
+   "in_frames": 14,
+   "out_frames": 10,
+   "params": {
+    "quote": "We closed the books two days early.",
+    "name": "Priya S.",
+    "role": "Partner, accounting firm",
+    "stars": 5,
+    "pos": "c",
+    "accent": "#4A18ED",
+    "placeholder": true
+   },
+   "tags": [
+    "social",
+    "testimonial",
+    "review",
+    "quote",
+    "proof"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "social.notification",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/notify",
+    "offset_f": 1,
+    "gain_db": 0
+   },
+   "dur_s": 2.5,
+   "in_frames": 12,
+   "out_frames": 10,
+   "params": {
+    "app": "Orbit",
+    "title": "Meeting notes ready",
+    "body": "Summary, decisions and 4 action items",
+    "time": "now",
+    "accent": "#4A18ED"
+   },
+   "tags": [
+    "social",
+    "notification",
+    "phone",
+    "alert",
+    "ui"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "social.typing",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/typing_burst",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 2,
+   "in_frames": 8,
+   "out_frames": 6,
+   "params": {
+    "pos": "bl",
+    "side": "them",
+    "color": "#2A2A33",
+    "dot": "#FFFFFF"
+   },
+   "tags": [
+    "social",
+    "typing",
+    "chat",
+    "ai",
+    "waiting"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "social.chatBubbles",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/swipe_ding",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 5,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "msgs": [
+     {
+      "from": "them",
+      "text": "Can it summarise the call?",
+      "at": 0.2
+     },
+     {
+      "from": "me",
+      "text": "Done. 4 action items.",
+      "at": 1.2
+     },
+     {
+      "from": "them",
+      "text": "And it never left the office?",
+      "at": 2.2
+     },
+     {
+      "from": "me",
+      "text": "Never.",
+      "at": 3
+     }
+    ],
+    "accent": "#4A18ED",
+    "other": "#2A2A33",
+    "width": 0.7
+   },
+   "tags": [
+    "social",
+    "chat",
+    "messages",
+    "dialogue",
+    "ai"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "device.phone",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 6,
+   "in_frames": 14,
+   "out_frames": 10,
+   "params": {
+    "box": [
+     0.36,
+     0.08,
+     0.28,
+     0.84
+    ],
+    "color": "#121216",
+    "taps": [
+     {
+      "at": 1,
+      "x": 0.5,
+      "y": 0.6
+     }
+    ],
+    "scroll": [
+     {
+      "at": 2.5,
+      "dur": 0.8
+     }
+    ],
+    "cursor": false
+   },
+   "tags": [
+    "device",
+    "phone",
+    "mockup",
+    "app-demo",
+    "ui"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "device.laptop",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 6,
+   "in_frames": 14,
+   "out_frames": 10,
+   "params": {
+    "box": [
+     0.14,
+     0.12,
+     0.72,
+     0.62
+    ],
+    "color": "#1A1A20",
+    "base": "#C9CBD2",
+    "path": [
+     {
+      "at": 0.6,
+      "x": 0.8,
+      "y": 0.8
+     },
+     {
+      "at": 1.4,
+      "x": 0.3,
+      "y": 0.4,
+      "click": true
+     },
+     {
+      "at": 2.4,
+      "x": 0.62,
+      "y": 0.55,
+      "click": true
+     }
+    ]
+   },
+   "tags": [
+    "device",
+    "laptop",
+    "mockup",
+    "saas-demo",
+    "cursor"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.meme",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/record_scratch",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "dur_s": 2.5,
+   "in_frames": 4,
+   "out_frames": 4,
+   "params": {
+    "top": "Me: it will take 5 minutes",
+    "bottom": "The 5 minutes:",
+    "size": 1
+   },
+   "tags": [
+    "caption",
+    "meme",
+    "top-bottom",
+    "comedy",
+    "reels"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.replyCard",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/blip",
+    "offset_f": 0,
+    "gain_db": -8
+   },
+   "dur_s": 3,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "kicker": "You asked:",
+    "q": "Can a small firm afford this?",
+    "accent": "#FFD400"
+   },
+   "tags": [
+    "caption",
+    "question",
+    "hook",
+    "faq",
+    "shorts"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.cinematic",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/blip",
+    "offset_f": 0,
+    "gain_db": -8
+   },
+   "dur_s": 2.5,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "line": "You kept the receipts, didn’t you?",
+    "italic": false,
+    "size": 1
+   },
+   "tags": [
+    "caption",
+    "subtitle",
+    "film",
+    "cinematic",
+    "dialogue"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.bilingual",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/blip",
+    "offset_f": 0,
+    "gain_db": -8
+   },
+   "dur_s": 2.5,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "primary": "Your data never leaves the office.",
+    "secondary": "Second-language line here",
+    "accent": "#FFD400",
+    "size": 1
+   },
+   "tags": [
+    "caption",
+    "bilingual",
+    "translation",
+    "india",
+    "subtitle"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.oneWordSlam",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/punch",
+    "offset_f": 1,
+    "gain_db": 0
+   },
+   "dur_s": 3,
+   "in_frames": 1,
+   "out_frames": 4,
+   "params": {
+    "words": [
+     {
+      "w": "OWN",
+      "at": 0
+     },
+     {
+      "w": "YOUR",
+      "at": 0.5
+     },
+     {
+      "w": "DATA.",
+      "at": 1
+     }
+    ],
+    "size": 1,
+    "color": "#FFFFFF",
+    "accent": "#FFD400",
+    "hold": 0.5
+   },
+   "tags": [
+    "caption",
+    "one-word",
+    "slam",
+    "hype",
+    "beat"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "chart.bar",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 3,
+   "in_frames": 30,
+   "out_frames": 9,
+   "params": {
+    "labels": [
+     "Cloud AI",
+     "Hybrid",
+     "Orbit"
+    ],
+    "values": [
+     100,
+     64,
+     18
+    ],
+    "unit": "",
+    "highlight": 2,
+    "box": [
+     0.15,
+     0.2,
+     0.7,
+     0.6
+    ],
+    "color": "#6B6B80",
+    "accent": "#4A18ED",
+    "text": "#FFFFFF",
+    "source": "placeholder data"
+   },
+   "tags": [
+    "chart",
+    "bar",
+    "data",
+    "explainer",
+    "comparison"
+   ],
+   "demo": "type/demo/out/gfx-charts-map.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "chart.line",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 3,
+   "in_frames": 40,
+   "out_frames": 9,
+   "params": {
+    "values": [
+     3,
+     4,
+     3.6,
+     5,
+     6.2,
+     5.8,
+     7.4,
+     9.1
+    ],
+    "box": [
+     0.12,
+     0.2,
+     0.76,
+     0.6
+    ],
+    "accent": "#2BD9A0",
+    "text": "#FFFFFF",
+    "label": "Weekly active users",
+    "source": "placeholder data"
+   },
+   "tags": [
+    "chart",
+    "line",
+    "growth",
+    "trend",
+    "data"
+   ],
+   "demo": "type/demo/out/gfx-charts-map.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "chart.donut",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 3,
+   "in_frames": 36,
+   "out_frames": 9,
+   "params": {
+    "values": [
+     58,
+     27,
+     15
+    ],
+    "labels": [
+     "Docs",
+     "Calls",
+     "Email"
+    ],
+    "colors": [
+     "#4A18ED",
+     "#2BD9A0",
+     "#FFC83D"
+    ],
+    "pos": "c",
+    "radius": 220,
+    "text": "#FFFFFF",
+    "source": "placeholder data"
+   },
+   "tags": [
+    "chart",
+    "donut",
+    "pie",
+    "share",
+    "data"
+   ],
+   "demo": "type/demo/out/gfx-charts-map.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "chart.race",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 6,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "labels": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E"
+    ],
+    "frames": [
+     [
+      10,
+      8,
+      6,
+      4,
+      2
+     ],
+     [
+      12,
+      15,
+      7,
+      9,
+      3
+     ],
+     [
+      14,
+      18,
+      16,
+      10,
+      6
+     ],
+     [
+      15,
+      20,
+      24,
+      12,
+      13
+     ]
+    ],
+    "step": 1.4,
+    "colors": [
+     "#4A18ED",
+     "#2BD9A0",
+     "#FFC83D",
+     "#FF4F7B",
+     "#5AB0FF"
+    ],
+    "box": [
+     0.12,
+     0.18,
+     0.76,
+     0.64
+    ],
+    "text": "#FFFFFF",
+    "source": "placeholder data"
+   },
+   "tags": [
+    "chart",
+    "bar-race",
+    "ranking",
+    "data",
+    "viral"
+   ],
+   "demo": "type/demo/out/gfx-charts-map.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "map.route",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 12,
+    "gain_db": -3
+   },
+   "dur_s": 4,
+   "in_frames": 12,
+   "out_frames": 10,
+   "params": {
+    "route": [
+     [
+      0.2,
+      0.7
+     ],
+     [
+      0.32,
+      0.52
+     ],
+     [
+      0.5,
+      0.56
+     ],
+     [
+      0.62,
+      0.34
+     ],
+     [
+      0.8,
+      0.28
+     ]
+    ],
+    "from": "Kanpur",
+    "to": "Delhi",
+    "km": 440,
+    "land": "#20222B",
+    "block": "#2C2F3A",
+    "water": "#173049",
+    "road": "#3A3E4C",
+    "accent": "#FF4F7B",
+    "text": "#FFFFFF",
+    "seed": 11
+   },
+   "tags": [
+    "map",
+    "route",
+    "travel",
+    "delivery",
+    "journey"
+   ],
+   "demo": "type/demo/out/gfx-charts-map.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.place",
+   "file": "type/gfx/stickers.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -1
+   },
+   "dur_s": 2,
+   "in_frames": 9,
+   "out_frames": 6,
+   "params": {
+    "name": "fire",
+    "motion": "popBounce",
+    "at": [
+     0.7,
+     0.3
+    ],
+    "size": 1,
+    "rot": -6,
+    "seed": 1
+   },
+   "tags": [
+    "sticker",
+    "emoji",
+    "reaction",
+    "owned-vector",
+    "reels"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "reaction.place",
+   "file": "type/gfx/stickers.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -1
+   },
+   "dur_s": 2,
+   "in_frames": 9,
+   "out_frames": 6,
+   "params": {
+    "name": "laugh",
+    "motion": "popBounce",
+    "at": [
+     0.3,
+     0.3
+    ],
+    "size": 1,
+    "rot": 0,
+    "seed": 1
+   },
+   "tags": [
+    "reaction",
+    "emoji",
+    "placeholder-glyph",
+    "reels",
+    "comment"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "reaction.burst",
+   "file": "type/gfx/stickers.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/boing",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 2.5,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "names": [
+     "heart",
+     "fire",
+     "laugh",
+     "wow",
+     "clap"
+    ],
+    "count": 14,
+    "at": [
+     0.85,
+     0.85
+    ],
+    "size": 0.45,
+    "seed": 9
+   },
+   "tags": [
+    "reaction",
+    "burst",
+    "live",
+    "hearts",
+    "stream"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.splitScreen",
+   "file": "type/gfx/layout.js",
+   "kind": "layout",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "params": {
+    "mode": "vertical",
+    "gap": 8,
+    "at": 0,
+    "dur": 0.5,
+    "line": "#FFFFFF"
+   },
+   "tags": [
+    "layout",
+    "split-screen",
+    "comparison",
+    "duet",
+    "reaction"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.pip",
+   "file": "type/gfx/layout.js",
+   "kind": "layout",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "params": {
+    "corner": "br",
+    "size": 0.3,
+    "margin": 0.04,
+    "radius": 0.025,
+    "at": 0,
+    "dur": 0.45,
+    "border": "#FFFFFF",
+    "borderW": 4
+   },
+   "tags": [
+    "layout",
+    "pip",
+    "picture-in-picture",
+    "reaction",
+    "tutorial"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.beforeAfter",
+   "file": "type/gfx/layout.js",
+   "kind": "layout",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "params": {
+    "from": 0,
+    "to": 0.5,
+    "at": 0,
+    "dur": 1,
+    "sweep": true,
+    "labels": [
+     "BEFORE",
+     "AFTER"
+    ],
+    "line": "#FFFFFF"
+   },
+   "tags": [
+    "layout",
+    "before-after",
+    "comparison",
+    "wipe",
+    "transformation"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.freezeFrame",
+   "file": "type/gfx/layout.js",
+   "kind": "layout",
+   "sfx": {
+    "id": "sfx/cartoon/record_scratch",
+    "offset_f": 0,
+    "gain_db": 0
+   },
+   "params": {
+    "at": 0,
+    "dur": 0.25,
+    "scale": 0.84,
+    "rot": -3,
+    "stroke": "#FFFFFF",
+    "strokeW": 14,
+    "label": ""
+   },
+   "tags": [
+    "freeze-frame",
+    "record-scratch",
+    "intro",
+    "comedy",
+    "stroke"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.heart",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.fire",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.star",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.thumbsUp",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.hundred",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.check",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.cross",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.crown",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.rocket",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.bolt",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.sparkle",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.trophy",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.gift",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.moneyBag",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.coin",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.bell",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.pin",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.eyes",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.chat",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.bulb",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.clock",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.calendar",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.lock",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.shield",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.chartUp",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.megaphone",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.camera",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.mic",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.musicNote",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.sun",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.cloud",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.rainDrop",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.rainbow",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.diya",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.rangoli",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.kite",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.chai",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.sale",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.new",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.live",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.free",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.arrowUp",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.question",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.exclaim",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "object"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceSmile",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceLaugh",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceLove",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceWow",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceSad",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceAngry",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceCool",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceThink",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceWink",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceCry",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceParty",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "sticker.faceSleepy",
+   "file": "type/gfx/stickers.js",
+   "kind": "sticker",
+   "tags": [
+    "sticker",
+    "owned-vector",
+    "face"
+   ],
+   "motions": [
+    "popBounce",
+    "wiggle",
+    "float",
+    "shake",
+    "orbit",
+    "spin",
+    "pulse",
+    "rise"
+   ],
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "reaction.glyphs",
+   "file": "type/gfx/stickers.js",
+   "kind": "glyph-system",
+   "reactions": {
+    "laugh": "faceLaugh",
+    "love": "faceLove",
+    "wow": "faceWow",
+    "sad": "faceSad",
+    "angry": "faceAngry",
+    "cool": "faceCool",
+    "think": "faceThink",
+    "wink": "faceWink",
+    "cry": "faceCry",
+    "party": "faceParty",
+    "sleepy": "faceSleepy",
+    "smile": "faceSmile",
+    "fire": "fire",
+    "heart": "heart",
+    "clap": "thumbsUp",
+    "hundred": "hundred",
+    "eyes": "eyes",
+    "rocket": "rocket",
+    "check": "check",
+    "idea": "bulb",
+    "money": "moneyBag",
+    "crown": "crown"
+   },
+   "tags": [
+    "emoji",
+    "reaction",
+    "placeholder",
+    "licence-gate"
+   ],
+   "caveat": "placeholder faces until a licensed set is plugged in with setGlyphSource(); Apple Color Emoji is not licensed for our videos",
+   "demo": "type/demo/out/gfx-sticker-grid.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.drawon",
+   "file": "type/gfx/drawon.js",
+   "kind": "engine",
+   "tags": [
+    "svg",
+    "draw-on",
+    "trim-path",
+    "stroke-dashoffset",
+    "icons"
+   ],
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.dom",
+   "file": "type/dom.js",
+   "kind": "renderer",
+   "tags": [
+    "hyperframes",
+    "gsap",
+    "hf-seek"
+   ],
+   "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "type.canvas",
+   "file": "type/render-canvas.js",
+   "kind": "renderer",
+   "tags": [
+    "canvas",
+    "three-overlay"
+   ],
+   "test": "type/tests/type.test.mjs"
+  }
+ ]
+}

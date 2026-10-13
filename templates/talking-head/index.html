@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>motion-pack talking-head template</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #111; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #111; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.frame { position: absolute; inset: 0; transform-origin: 50% 38%; }
+.frame video { object-position: 50% 38%; }
+.cap { display: flex; justify-content: center; align-items: flex-start; padding-top: 1075px; }
+.capi { font-weight: 800; font-size: 100px; line-height: 1.05; text-align: center; max-width: 907px; color: #fff;
+  -webkit-text-stroke: 8px #111; paint-order: stroke fill; text-shadow: 0 4px 0 rgba(0,0,0,.35); letter-spacing: -0.02em; text-transform: none; }
+.capi span { display: inline-block; margin: 0 0.18em; }
+.lt { display: flex; align-items: flex-start; padding: 307px 0 0 86px; }   /* below the top UI zone, clear of the caption band */
+.lt .box { background: #fff; border-radius: 18px; padding: 18px 28px 20px; box-shadow: 0 10px 30px rgba(0,0,0,.12); border-left: 10px solid #4a18ed; }
+.lt .n { font-weight: 800; font-size: 50px; color: #111; } .lt .t { font-family: "IBM Plex Mono"; font-weight: 600; font-size: 31px; color: #5d5850; margin-top: 6px; }
+.broll { border-radius: 0; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="6.4667">
+<div class="frame" id="fr-0"><video id="seg0" class="clip fill" src="assets/media/input.mp4" playsinline data-has-audio="true" data-start="0.0000" data-duration="1.8667" data-media-start="0.2400" data-track-index="0" data-volume="1"></video></div>
+<div class="frame" id="fr-1"><video id="seg1" class="clip fill" src="assets/media/input.mp4" playsinline data-has-audio="true" data-start="1.8667" data-duration="1.5333" data-media-start="2.8900" data-track-index="0" data-volume="1"></video></div>
+<div class="frame" id="fr-2"><video id="seg2" class="clip fill" src="assets/media/input.mp4" playsinline data-has-audio="true" data-start="3.4000" data-duration="3.0667" data-media-start="4.8900" data-track-index="0" data-volume="1"></video></div>
+<video id="broll0" class="clip fill broll" src="assets/media/plate-devices.mp4" muted playsinline data-start="2.2667" data-duration="1.3000" data-media-start="2" data-track-index="1"></video>
+<div class="clip cap" id="cap0" data-start="0.0000" data-duration="0.7000" data-track-index="3"><div class="capi" id="ci-0"><span id="w-0-0">Most</span><span id="w-0-1">of</span><span id="w-0-2">my</span></div></div>
+<div class="clip cap" id="cap1" data-start="0.7000" data-duration="0.7333" data-track-index="3"><div class="capi" id="ci-1"><span id="w-1-0">day</span><span id="w-1-1">is</span><span id="w-1-2">just</span></div></div>
+<div class="clip cap" id="cap2" data-start="1.4333" data-duration="0.3667" data-track-index="3"><div class="capi" id="ci-2"><span id="w-2-0">typing.</span></div></div>
+<div class="clip cap" id="cap3" data-start="1.8667" data-duration="0.7333" data-track-index="3"><div class="capi" id="ci-3"><span id="w-3-0">Then</span><span id="w-3-1">the</span><span id="w-3-2">phone</span></div></div>
+<div class="clip cap" id="cap4" data-start="2.6000" data-duration="0.3333" data-track-index="3"><div class="capi" id="ci-4"><span id="w-4-0">buzzes.</span></div></div>
+<div class="clip cap" id="cap5" data-start="2.9333" data-duration="0.3667" data-track-index="3"><div class="capi" id="ci-5"><span id="w-5-0">Again.</span></div></div>
+<div class="clip cap" id="cap6" data-start="3.4000" data-duration="0.8333" data-track-index="3"><div class="capi" id="ci-6"><span id="w-6-0">So</span><span id="w-6-1">I</span><span id="w-6-2">flipped</span></div></div>
+<div class="clip cap" id="cap7" data-start="4.2333" data-duration="0.5667" data-track-index="3"><div class="capi" id="ci-7"><span id="w-7-0">it</span><span id="w-7-1">over.</span></div></div>
+<div class="clip cap" id="cap8" data-start="5.0667" data-duration="0.6667" data-track-index="3"><div class="capi" id="ci-8"><span id="w-8-0">Best</span><span id="w-8-1">decision</span></div></div>
+<div class="clip cap" id="cap9" data-start="5.7333" data-duration="0.6333" data-track-index="3"><div class="capi" id="ci-9"><span id="w-9-0">this</span><span id="w-9-1">week.</span></div></div>
+<section class="clip lt" id="lt" data-start="0.4" data-duration="2.6" data-track-index="4"><div class="box" id="lt-box"><div class="n">The Worker</div><div class="t">Desk resident since v10</div></div></section>
+<div id="fx" class="clip" data-start="0" data-duration="6.4667" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="6.4667" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module" src="assets/mp/adapters/type.mjs"></script>
+<script type="module" src="assets/mp/adapters/transitions.mjs"></script>
+<script type="module">
+import { MP } from './assets/mp/pack.mjs';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"vignette","params":{}},{"kind":"grain","params":{"stock":"digital-soft"}}], { width: 1080, height: 1920, fps: 30, seed: 11 }), { fps: 30 });
+const tl = gsap.timeline({ paused: true });
+  tl.set('#fr-0', { scale: 1 }, 0);   // cam.reframeAlternate
+  tl.set('#fr-1', { scale: 1.15 }, 0);   // cam.reframeAlternate
+  tl.set('#fr-2', { scale: 1 }, 0);   // cam.reframeAlternate
+  tl.fromTo('#fr-0', { scale: 1 }, { scale: 1.1200, duration: 0.140, ease: 'back.out(1.6)' }, 1.5000);   // cam.punchIn "typing."
+  tl.fromTo('#ci-0', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 0.0000).to('#ci-0', { scale: 1, duration: 0.07, ease: 'power2.in' }, 0.0700);
+  tl.set('#w-0-0', { color: '#4a18ed', scale: 1 }, 0.0600); tl.set('#w-0-0', { color: '#ffffff', scale: 1 }, 0.3000);
+  tl.set('#w-0-1', { color: '#4a18ed', scale: 1 }, 0.3000); tl.set('#w-0-1', { color: '#ffffff', scale: 1 }, 0.5400);
+  tl.set('#w-0-2', { color: '#4a18ed', scale: 1 }, 0.5400); tl.set('#w-0-2', { color: '#ffffff', scale: 1 }, 0.7000);
+  tl.fromTo('#ci-1', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 0.7000).to('#ci-1', { scale: 1, duration: 0.07, ease: 'power2.in' }, 0.7700);
+  tl.set('#w-1-0', { color: '#4a18ed', scale: 1 }, 0.7800); tl.set('#w-1-0', { color: '#ffffff', scale: 1 }, 1.0200);
+  tl.set('#w-1-1', { color: '#4a18ed', scale: 1 }, 1.0200); tl.set('#w-1-1', { color: '#ffffff', scale: 1 }, 1.2600);
+  tl.set('#w-1-2', { color: '#4a18ed', scale: 1 }, 1.2600); tl.set('#w-1-2', { color: '#ffffff', scale: 1 }, 1.4333);
+  tl.fromTo('#ci-2', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 1.4333).to('#ci-2', { scale: 1, duration: 0.07, ease: 'power2.in' }, 1.5033);
+  tl.set('#w-2-0', { color: '#4a18ed', scale: 1.15 }, 1.5000); tl.set('#w-2-0', { color: '#ffffff', scale: 1 }, 1.8000);
+  tl.fromTo('#ci-3', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 1.8667).to('#ci-3', { scale: 1, duration: 0.07, ease: 'power2.in' }, 1.9367);
+  tl.set('#w-3-0', { color: '#4a18ed', scale: 1 }, 1.9320); tl.set('#w-3-0', { color: '#ffffff', scale: 1 }, 2.1820);
+  tl.set('#w-3-1', { color: '#4a18ed', scale: 1 }, 2.1820); tl.set('#w-3-1', { color: '#ffffff', scale: 1 }, 2.4320);
+  tl.set('#w-3-2', { color: '#4a18ed', scale: 1 }, 2.4320); tl.set('#w-3-2', { color: '#ffffff', scale: 1 }, 2.6000);
+  tl.fromTo('#ci-4', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 2.6000).to('#ci-4', { scale: 1, duration: 0.07, ease: 'power2.in' }, 2.6700);
+  tl.set('#w-4-0', { color: '#4a18ed', scale: 1 }, 2.6820); tl.set('#w-4-0', { color: '#ffffff', scale: 1 }, 2.9333);
+  tl.fromTo('#ci-5', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 2.9333).to('#ci-5', { scale: 1, duration: 0.07, ease: 'power2.in' }, 3.0033);
+  tl.set('#w-5-0', { color: '#4a18ed', scale: 1.15 }, 3.0070); tl.set('#w-5-0', { color: '#ffffff', scale: 1 }, 3.3000);
+  tl.fromTo('#ci-6', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 3.4000).to('#ci-6', { scale: 1, duration: 0.07, ease: 'power2.in' }, 3.4700);
+  tl.set('#w-6-0', { color: '#4a18ed', scale: 1 }, 3.4520); tl.set('#w-6-0', { color: '#ffffff', scale: 1 }, 3.7120);
+  tl.set('#w-6-1', { color: '#4a18ed', scale: 1 }, 3.7120); tl.set('#w-6-1', { color: '#ffffff', scale: 1 }, 3.9720);
+  tl.set('#w-6-2', { color: '#4a18ed', scale: 1.15 }, 3.9720); tl.set('#w-6-2', { color: '#ffffff', scale: 1 }, 4.2333);
+  tl.fromTo('#ci-7', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 4.2333).to('#ci-7', { scale: 1, duration: 0.07, ease: 'power2.in' }, 4.3033);
+  tl.set('#w-7-0', { color: '#4a18ed', scale: 1 }, 4.3100); tl.set('#w-7-0', { color: '#ffffff', scale: 1 }, 4.5700);
+  tl.set('#w-7-1', { color: '#4a18ed', scale: 1 }, 4.5700); tl.set('#w-7-1', { color: '#ffffff', scale: 1 }, 4.8000);
+  tl.fromTo('#ci-8', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 5.0667).to('#ci-8', { scale: 1, duration: 0.07, ease: 'power2.in' }, 5.1367);
+  tl.set('#w-8-0', { color: '#4a18ed', scale: 1.15 }, 5.1220); tl.set('#w-8-0', { color: '#ffffff', scale: 1 }, 5.4220);
+  tl.set('#w-8-1', { color: '#4a18ed', scale: 1 }, 5.4220); tl.set('#w-8-1', { color: '#ffffff', scale: 1 }, 5.7333);
+  tl.fromTo('#ci-9', { scale: 0.85 }, { scale: 1.06, duration: 0.07, ease: 'power2.out' }, 5.7333).to('#ci-9', { scale: 1, duration: 0.07, ease: 'power2.in' }, 5.8033);
+  tl.set('#w-9-0', { color: '#4a18ed', scale: 1 }, 5.8120); tl.set('#w-9-0', { color: '#ffffff', scale: 1 }, 6.1120);
+  tl.set('#w-9-1', { color: '#4a18ed', scale: 1 }, 6.1120); tl.set('#w-9-1', { color: '#ffffff', scale: 1 }, 6.3667);
+  MP.type(tl, "type/wipe", '#lt-box', { at: 0.4, dur: 2.6, fps: 30, out: true });
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

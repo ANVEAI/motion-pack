@@ -1,0 +1,779 @@
+{
+ "count": 64,
+ "fails": [],
+ "warns": [
+  "music.bed_desi_bounce_loop8: in-scale chroma share 0.61",
+  "music.bed_bhangra_hype_loop8: in-scale chroma share 0.65",
+  "music.bed_festive_dhol_loop8: in-scale chroma share 0.68",
+  "music.bed_bhangra_dhol_loop: in-scale chroma share 0.49"
+ ],
+ "rows": [
+  {
+   "id": "music.bed_tech_pulse_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "d40744444174",
+   "beat_events_on_whole_frames": "48/48",
+   "inscale_share": 0.91,
+   "top_pc": 4,
+   "seam_flux_ratio": 0.92,
+   "seam_step_ratio": 0.03,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_uplift_corporate_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "7ad61fd72cb8",
+   "beat_events_on_whole_frames": "32/32",
+   "inscale_share": 0.87,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.96,
+   "seam_step_ratio": 0.01,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_hype_house_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "f3764868a75d",
+   "beat_events_on_whole_frames": "48/48",
+   "inscale_share": 0.92,
+   "top_pc": 6,
+   "seam_flux_ratio": 0.83,
+   "seam_step_ratio": 0.14,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_trap_half_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "13909b5681f3",
+   "beat_events_on_whole_frames": "8/8",
+   "inscale_share": 0.92,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.93,
+   "seam_step_ratio": 0.02,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_cinematic_drone_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "e5a260c7260a",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.98,
+   "top_pc": 9,
+   "seam_flux_ratio": 1.07,
+   "seam_step_ratio": 0.01,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_playful_bounce_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "3e8e60650efc",
+   "beat_events_on_whole_frames": "4/4",
+   "inscale_share": 0.78,
+   "top_pc": 4,
+   "seam_flux_ratio": 0.92,
+   "seam_step_ratio": 0.4,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_lofi_warm_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "415cf7799e97",
+   "beat_events_on_whole_frames": "2/2",
+   "inscale_share": 0.93,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.9,
+   "seam_step_ratio": 0.0,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_desi_bounce_loop8",
+   "notes": [
+    "warn in-scale chroma share 0.61"
+   ],
+   "ffmpeg_I": -16.0,
+   "sha": "732d67c89584",
+   "beat_events_on_whole_frames": "2/2",
+   "inscale_share": 0.61,
+   "top_pc": 5,
+   "seam_flux_ratio": 0.87,
+   "seam_step_ratio": 0.14,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_suspense_tick_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "5e4002b62722",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.86,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.98,
+   "seam_step_ratio": 0.01,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_anthem_build_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "cbd7697a98bb",
+   "beat_events_on_whole_frames": "48/48",
+   "inscale_share": 0.85,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.89,
+   "seam_step_ratio": 0.02,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_indian_fusion_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "b7426738fe1c",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.86,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.96,
+   "seam_step_ratio": 0.41,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_bhangra_hype_loop8",
+   "notes": [
+    "warn in-scale chroma share 0.65"
+   ],
+   "ffmpeg_I": -16.0,
+   "sha": "c643e68e3dcb",
+   "beat_events_on_whole_frames": "6/6",
+   "inscale_share": 0.65,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.98,
+   "seam_step_ratio": 0.29,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_raga_calm_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "729cf7aab56c",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.96,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.97,
+   "seam_step_ratio": 0.0,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_festive_dhol_loop8",
+   "notes": [
+    "warn in-scale chroma share 0.68"
+   ],
+   "ffmpeg_I": -16.0,
+   "sha": "6193213acd22",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.68,
+   "top_pc": 4,
+   "seam_flux_ratio": 0.93,
+   "seam_step_ratio": 0.04,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_lofi_jazz_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "0be2670665a6",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.89,
+   "top_pc": 0,
+   "seam_flux_ratio": 0.98,
+   "seam_step_ratio": 0.65,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_synthwave_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "378c68ddd8a3",
+   "beat_events_on_whole_frames": "32/32",
+   "inscale_share": 0.91,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.94,
+   "seam_step_ratio": 0.01,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_deep_house_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "102774acabbc",
+   "beat_events_on_whole_frames": "48/48",
+   "inscale_share": 0.9,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.86,
+   "seam_step_ratio": 0.02,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_dnb_170_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "86abba8166b2",
+   "beat_events_on_whole_frames": "8/8",
+   "inscale_share": 0.89,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.92,
+   "seam_step_ratio": 0.02,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_ambient_pad_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "9e33d422c9fc",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.97,
+   "top_pc": 9,
+   "seam_flux_ratio": 1.0,
+   "seam_step_ratio": 0.02
+  },
+  {
+   "id": "music.bed_chiptune_8bit_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "bf7a4047d1ba",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.82,
+   "top_pc": 9,
+   "seam_flux_ratio": 1.0,
+   "seam_step_ratio": 0.01,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_acoustic_folk_pluck_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "98790c9636a9",
+   "beat_events_on_whole_frames": "2/2",
+   "inscale_share": 0.77,
+   "top_pc": 4,
+   "seam_flux_ratio": 0.85,
+   "seam_step_ratio": 0.25,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_documentary_marimba_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "3c9b66296138",
+   "beat_events_on_whole_frames": "3/3",
+   "inscale_share": 0.93,
+   "top_pc": 4,
+   "seam_flux_ratio": 1.03,
+   "seam_step_ratio": 0.41,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_orchestral_synth_epic_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "b7da37ba74ac",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.97,
+   "top_pc": 7,
+   "seam_flux_ratio": 0.97,
+   "seam_step_ratio": 0.0,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_jazz_walk_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "d2eb307c6927",
+   "beat_events_on_whole_frames": "3/3",
+   "inscale_share": 0.8,
+   "top_pc": 7,
+   "seam_flux_ratio": 0.7,
+   "seam_step_ratio": 0.22,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_comedy_pizzicato_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "fcfa12334e47",
+   "beat_events_on_whole_frames": "4/4",
+   "inscale_share": 0.82,
+   "top_pc": 6,
+   "seam_flux_ratio": 0.93,
+   "seam_step_ratio": 0.01,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_corporate_bright_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "87fa1a506331",
+   "beat_events_on_whole_frames": "32/32",
+   "inscale_share": 0.75,
+   "top_pc": 11,
+   "seam_flux_ratio": 1.0,
+   "seam_step_ratio": 0.03,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_suspense_pulse_loop8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "b57d9d98a616",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.91,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.97,
+   "seam_step_ratio": 0.08,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_tech_pulse_ad30",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "d714a55d582b",
+   "beat_events_on_whole_frames": "72/72",
+   "inscale_share": 0.91,
+   "top_pc": 9,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_hype_house_reel15",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "f7ecaa3a787d",
+   "beat_events_on_whole_frames": "38/38",
+   "inscale_share": 0.92,
+   "top_pc": 6,
+   "hook_first3_peak_db": -3.6,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_cinematic_drone_cine30",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "0c42aac1a034",
+   "beat_events_on_whole_frames": "1/1",
+   "inscale_share": 0.98,
+   "top_pc": 9,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_playful_bounce_hook6",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "c745062fdfee",
+   "beat_events_on_whole_frames": "3/3",
+   "inscale_share": 0.86,
+   "top_pc": 9,
+   "hook_first3_peak_db": -1.5,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_anthem_ramp16",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "3d47f32159bc",
+   "beat_events_on_whole_frames": "4/4",
+   "inscale_share": 0.85,
+   "top_pc": 9,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_corporate_bright_explainer60",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "a41de1f6ea68",
+   "beat_events_on_whole_frames": "90/90",
+   "inscale_share": 0.79,
+   "top_pc": 11,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_chiptune_cold_open3",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "cf3b8695f00b",
+   "beat_events_on_whole_frames": "2/2",
+   "inscale_share": 0.92,
+   "top_pc": 9,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_orchestral_epic_outro8",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "2ac3f0b0210f",
+   "beat_events_on_whole_frames": "1/1",
+   "inscale_share": 0.97,
+   "top_pc": 7,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_comedy_pizzicato_sting",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "509be8ee0dbe",
+   "beat_events_on_whole_frames": "4/4",
+   "inscale_share": 0.92,
+   "top_pc": 2,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_tabla_teental_loop",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "9bc0beef7deb",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.93,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.6,
+   "seam_step_ratio": 0.01,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_tabla_keherwa_loop",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "0e00513dc7df",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.91,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.71,
+   "seam_step_ratio": 0.34,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_tabla_dadra_loop",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "a6d176f1910a",
+   "beat_events_on_whole_frames": "0/0",
+   "inscale_share": 0.94,
+   "top_pc": 9,
+   "seam_flux_ratio": 0.82,
+   "seam_step_ratio": 0.33,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "harmony": -6.0
+   }
+  },
+  {
+   "id": "music.bed_bhangra_dhol_loop",
+   "notes": [
+    "warn in-scale chroma share 0.49"
+   ],
+   "ffmpeg_I": -16.0,
+   "sha": "f9c95304ce2d",
+   "beat_events_on_whole_frames": "24/24",
+   "inscale_share": 0.49,
+   "top_pc": 5,
+   "seam_flux_ratio": 0.57,
+   "seam_step_ratio": 0.0,
+   "stem_rel_db": {
+    "drums": 0.0,
+    "lead": -4.0
+   }
+  },
+  {
+   "id": "music.sting_button_major",
+   "notes": []
+  },
+  {
+   "id": "music.sting_button_minor",
+   "notes": []
+  },
+  {
+   "id": "music.sting_rise_hit_2bar",
+   "notes": []
+  },
+  {
+   "id": "music.sting_rise_hit_1bar",
+   "notes": []
+  },
+  {
+   "id": "music.sting_pluck_resolve",
+   "notes": []
+  },
+  {
+   "id": "music.sting_tension_stab",
+   "notes": []
+  },
+  {
+   "id": "music.sting_bounce_out",
+   "notes": []
+  },
+  {
+   "id": "music.sting_lofi_chord",
+   "notes": []
+  },
+  {
+   "id": "music.sting_epic_swell",
+   "notes": []
+  },
+  {
+   "id": "music.sting_outro_sparkle",
+   "notes": []
+  },
+  {
+   "id": "music.logo_pattern_ascend_land",
+   "notes": [],
+   "peak_ms": 564.7
+  },
+  {
+   "id": "music.logo_pattern_fifth_lift",
+   "notes": [],
+   "peak_ms": 434.8
+  },
+  {
+   "id": "music.logo_pattern_question",
+   "notes": [],
+   "peak_ms": 354.2
+  },
+  {
+   "id": "music.logo_pattern_pulse_pad",
+   "notes": [],
+   "peak_ms": 573.4
+  },
+  {
+   "id": "music.logo_pattern_two_note",
+   "notes": [],
+   "peak_ms": 269.4
+  },
+  {
+   "id": "music.logo_pattern_drop_land",
+   "notes": [],
+   "peak_ms": 362.1
+  },
+  {
+   "id": "music.logo_brand_orbit",
+   "notes": [],
+   "peak_ms": 306.1
+  },
+  {
+   "id": "music.logo_brand_nova",
+   "notes": [],
+   "peak_ms": 392.9
+  },
+  {
+   "id": "music.logo_brand_lumen",
+   "notes": [],
+   "peak_ms": 654.9
+  },
+  {
+   "id": "music.logo_brand_atlas",
+   "notes": [],
+   "peak_ms": 214.2
+  },
+  {
+   "id": "music.logo_brand_ember",
+   "notes": [],
+   "peak_ms": 228.4
+  },
+  {
+   "id": "music.logo_sitar_orbit",
+   "notes": [],
+   "peak_ms": 353.2
+  },
+  {
+   "id": "music.logo_sitar_nova",
+   "notes": [],
+   "peak_ms": 432.2
+  },
+  {
+   "id": "music.logo_sitar_pattern_ascend_land",
+   "notes": [],
+   "peak_ms": 621.4
+  }
+ ]
+}

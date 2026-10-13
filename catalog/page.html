@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motion Pack Catalog</title>
+<link rel="icon" href="data:,">
+<style>
+:root {
+  --bg: #f6f5f1; --panel: #ffffff; --ink: #16151a; --muted: #6b6873; --line: #e3e0d8; --chip: #efede7;
+  --accent: #4a18ed; --accent-ink: #ffffff; --wave: #4a18ed; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 6px 24px rgba(0,0,0,.06);
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #111015; --panel: #1b1a21; --ink: #ecebf0; --muted: #9a97a3; --line: #2c2a33; --chip: #26242d; --accent: #8f6bff; --accent-ink: #0e0d12; --wave: #a58bff; --shadow: 0 1px 2px rgba(0,0,0,.4); }
+}
+:root[data-theme="dark"] { --bg: #111015; --panel: #1b1a21; --ink: #ecebf0; --muted: #9a97a3; --line: #2c2a33; --chip: #26242d; --accent: #8f6bff; --accent-ink: #0e0d12; --wave: #a58bff; --shadow: 0 1px 2px rgba(0,0,0,.4); }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 var(--sans); }
+header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.wrap { max-width: 1400px; margin: 0 auto; padding: 14px 16px; }
+h1 { font-size: 18px; margin: 0; letter-spacing: -0.01em; }
+.sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+input[type=search] { flex: 1 1 260px; min-width: 0; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: inherit; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--chip); color: var(--ink); border-radius: 999px; padding: 5px 10px; font-size: 12.5px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.chip small { opacity: .7; margin-left: 4px; }
+main .wrap { padding-top: 16px; }
+.count { color: var(--muted); font-size: 12.5px; margin-bottom: 10px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; cursor: pointer; box-shadow: var(--shadow); display: flex; flex-direction: column; text-align: left; padding: 0; color: inherit; font: inherit; }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.thumb { aspect-ratio: 16 / 9; background: var(--chip); display: grid; place-items: center; overflow: hidden; position: relative; }
+.thumb img, .thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb svg { width: 88%; height: 60%; }
+.thumb .ph { font: 600 12px var(--mono); color: var(--muted); padding: 8px; text-align: center; }
+.badge { position: absolute; top: 6px; left: 6px; font: 600 10.5px var(--mono); background: rgba(0,0,0,.55); color: #fff; padding: 2px 6px; border-radius: 6px; }
+.body { padding: 9px 11px 11px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.id { font: 12px var(--mono); color: var(--accent); overflow-wrap: anywhere; }
+.name { font-weight: 600; }
+.desc { color: var(--muted); font-size: 12.5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+.tag { font-size: 11px; background: var(--chip); color: var(--muted); border-radius: 6px; padding: 1px 6px; }
+dialog { width: min(920px, calc(100vw - 32px)); max-height: calc(100vh - 32px); border: 1px solid var(--line); border-radius: 14px; padding: 0; background: var(--panel); color: var(--ink); }
+dialog::backdrop { background: rgba(0,0,0,.45); }
+.dlg { padding: 16px; display: grid; gap: 12px; }
+.dlg .media img, .dlg .media video { width: 100%; max-height: 60vh; object-fit: contain; background: #000; border-radius: 10px; display: block; }
+.dlg .media audio { width: 100%; }
+.dlg .media svg { width: 100%; height: 90px; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+.row h2 { margin: 0; font-size: 17px; }
+button.small { border: 1px solid var(--line); background: var(--chip); color: var(--ink); border-radius: 8px; padding: 5px 10px; cursor: pointer; font: inherit; font-size: 12.5px; }
+table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+td, th { border-top: 1px solid var(--line); padding: 5px 6px; vertical-align: top; text-align: left; }
+th { color: var(--muted); font-weight: 500; width: 28%; }
+td code, .mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+h3 { margin: 4px 0 0; font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.pairs a { color: var(--accent); text-decoration: none; font-family: var(--mono); font-size: 12px; }
+.pairs li { margin: 2px 0; }
+.pairs ul { margin: 2px 0 6px; padding-left: 18px; }
+.ua { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 640px) { .ua { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } }
+.empty { color: var(--muted); padding: 40px 0; text-align: center; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Motion Pack Catalog</h1>
+  <div class="sub">__TOTAL__ owned components: transitions, cuts, SFX, music, layers, type, camera, objects and templates. Everything here is code or synthesised in code. Click a card for params and pairings. Audio plays MP3 previews for listening; timing-critical work uses the WAV masters. <a href="https://github.com/ANVEAI/motion-pack">Source on GitHub</a> &middot; made by <a href="https://anveai.com">ANVE</a> &middot; code MIT, media CC0.</div>
+  <div class="bar">
+    <input type="search" id="q" placeholder="Search ids, names, tags (e.g. whoosh, mime, beat, captions)" aria-label="Search">
+    <button class="small" id="theme" type="button" aria-label="Toggle theme">Theme</button>
+  </div>
+  <div class="bar chips" id="cats" role="group" aria-label="Category"></div>
+</div></header>
+<main><div class="wrap">
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+</div></main>
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+<script>
+const DATA = /*__DATA__*/null;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const byId = new Map(DATA.items.map((it) => [it.id, it]));
+let cat = 'all', q = '';
+try { const s = JSON.parse(localStorage.getItem('mp-catalog') || '{}'); if (s.cat) cat = s.cat; if (s.theme) document.documentElement.dataset.theme = s.theme; } catch (e) {}
+const save = () => { try { localStorage.setItem('mp-catalog', JSON.stringify({ cat, theme: document.documentElement.dataset.theme || '' })); } catch (e) {} };
+
+function waveSVG(w, h = 40) {
+  if (!w) return '<span class="ph">audio</span>';
+  const n = w.length, bw = 100 / n;
+  return `<svg viewBox="0 0 100 ${h}" preserveAspectRatio="none" aria-hidden="true">${w.map((v, i) => { const y = Math.max(0.6, v * h / 2); return `<rect x="${(i * bw + bw * 0.15).toFixed(2)}" y="${(h / 2 - y).toFixed(2)}" width="${(bw * 0.7).toFixed(2)}" height="${(2 * y).toFixed(2)}" rx="0.4" fill="var(--wave)"/>`; }).join('')}</svg>`;
+}
+function gridSVG(g) {
+  const n = g.beats, w = 100 / n;
+  let r = '';
+  for (let i = 0; i < n; i++) r += `<rect x="${(i * w).toFixed(2)}" y="14" width="${(w - 0.6).toFixed(2)}" height="12" rx="1" fill="var(--line)"${i % 4 === 0 ? ' opacity="1"' : ' opacity=".6"'}/>`;
+  for (const c of g.cuts) r += `<rect x="${(c * w - 0.5).toFixed(2)}" y="6" width="1.2" height="28" fill="var(--accent)"/>`;
+  return `<svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-label="${g.cuts.length} cuts over ${n} beats">${r}</svg>`;
+}
+function thumbHTML(it) {
+  const b = `<span class="badge">${esc(it.cat)}</span>`;
+  if (it.grid) return `<div class="thumb">${b}${gridSVG(it.grid)}</div>`;
+  if (it.thumb) return `<div class="thumb">${b}<img loading="lazy" src="${esc(it.thumb)}" alt=""></div>`;
+  if (it.video) return `<div class="thumb">${b}<video muted loop playsinline preload="none" src="${esc(it.video)}"></video></div>`;
+  if (it.audio || it.wave) return `<div class="thumb">${b}${waveSVG(it.wave)}</div>`;
+  return `<div class="thumb">${b}<span class="ph">${esc(it.id)}</span></div>`;
+}
+function cats() {
+  const all = [['all', DATA.items.length], ...Object.entries(DATA.counts)];
+  $('#cats').innerHTML = all.map(([c, n]) => `<button class="chip" type="button" data-cat="${esc(c)}" aria-pressed="${c === cat}">${esc(c)}<small>${n}</small></button>`).join('');
+}
+function match(it) {
+  if (cat !== 'all' && it.cat !== cat) return false;
+  if (!q) return true;
+  const hay = (it.id + ' ' + it.name + ' ' + (it.tags || []).join(' ') + ' ' + (it.desc || '') + ' ' + (it.use || '')).toLowerCase();
+  return q.split(/\s+/).every((w) => hay.includes(w));
+}
+function render() {
+  const list = DATA.items.filter(match);
+  $('#count').textContent = `${list.length} of ${DATA.items.length} components`;
+  $('#grid').innerHTML = list.length ? list.map((it) => `<button class="card" type="button" data-id="${esc(it.id)}">${thumbHTML(it)}<div class="body"><div class="id">${esc(it.id)}</div><div class="name">${esc(it.name)}</div>${it.desc ? `<div class="desc">${esc(it.desc)}</div>` : ''}<div class="tags">${(it.tags || []).slice(0, 5).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div></div></button>`).join('') : '<div class="empty">Nothing matches. Try a broader word.</div>';
+}
+function fmt(v) {
+  if (v == null) return '';
+  if (typeof v === 'object') return `<code>${esc(JSON.stringify(v))}</code>`;
+  return esc(v);
+}
+function linkify(s) {
+  const id = String(s).split(' ')[0];
+  const hit = byId.get(id) || byId.get(id.replace(/^transitions\/([a-z]+)-([a-z])/, (m, a, b) => 'transitions/' + a + b.toUpperCase()));
+  return hit ? `<a href="#" data-goto="${esc(hit.id)}">${esc(s)}</a>` : `<span class="mono">${esc(s)}</span>`;
+}
+function open(id) {
+  const it = byId.get(id); if (!it) return;
+  let media = '';
+  if (it.video) media = `<video controls autoplay muted loop playsinline src="${esc(it.video)}"></video>`;
+  else if (it.thumb) media = `<img src="${esc(it.thumb)}" alt="${esc(it.name)} demo still">`;
+  if (it.grid) media += gridSVG(it.grid) + `<div class="sub">${it.grid.cuts.length} cuts over ${it.grid.beats} beats (bars = 4 beats); accent lines are the cut points.</div>`;
+  if (it.audio) media += `${it.wave ? waveSVG(it.wave, 30) : ''}<audio controls preload="none" src="${esc(it.audio)}"></audio>`;
+  const params = it.params ? Object.entries(it.params).map(([k, v]) => {
+    if (v && typeof v === 'object' && !Array.isArray(v) && ('default' in v || 'doc' in v)) return `<tr><th><code>${esc(k)}</code></th><td>${'default' in v ? `default <code>${esc(JSON.stringify(v.default))}</code>` : ''}${v.opts ? ` · options <code>${esc(v.opts.join(' | '))}</code>` : ''}${v.min != null ? ` · ${v.min}..${v.max}` : ''}${v.doc ? `<br>${esc(v.doc)}` : ''}</td></tr>`;
+    return `<tr><th><code>${esc(k)}</code></th><td>${fmt(v)}</td></tr>`; }).join('') : '';
+  const meta = it.meta ? Object.entries(it.meta).filter(([, v]) => v != null && v !== '').map(([k, v]) => `<tr><th>${esc(k)}</th><td>${fmt(v)}</td></tr>`).join('') : '';
+  const pairs = it.pairs ? Object.entries(it.pairs).filter(([, v]) => v && v.length).map(([k, v]) => `<div><strong>${esc(k)}</strong><ul>${v.map((x) => `<li>${linkify(x)}</li>`).join('')}</ul></div>`).join('') : '';
+  $('#dlgBody').innerHTML = `<div class="row"><h2>${esc(it.name)}</h2><span><button class="small" type="button" data-copy="${esc(it.id)}">Copy id</button> <button class="small" type="button" data-close>Close</button></span></div>
+    <div class="id">${esc(it.id)}${it.file ? ` <span style="color:var(--muted)">· ${esc(it.file)}</span>` : ''}</div>
+    ${media ? `<div class="media">${media}</div>` : ''}
+    ${it.desc ? `<div>${esc(it.desc)}</div>` : ''}
+    ${it.use || it.avoid ? `<div class="ua">${it.use ? `<div><h3>Use</h3>${esc(it.use)}</div>` : ''}${it.avoid ? `<div><h3>Avoid</h3>${esc(it.avoid)}</div>` : ''}</div>` : ''}
+    ${meta ? `<div><h3>Measured / meta</h3><table>${meta}</table></div>` : ''}
+    ${params ? `<div><h3>Params</h3><table>${params}</table></div>` : ''}
+    ${pairs ? `<div class="pairs"><h3>Pairings</h3>${pairs}</div>` : ''}
+    <div class="tags">${(it.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>`;
+  const d = $('#dlg'); if (!d.open) d.showModal();
+}
+$('#cats').addEventListener('click', (e) => { const b = e.target.closest('[data-cat]'); if (!b) return; cat = b.dataset.cat; save(); cats(); render(); });
+$('#q').addEventListener('input', (e) => { q = e.target.value.trim().toLowerCase(); render(); });
+$('#grid').addEventListener('click', (e) => { const c = e.target.closest('.card'); if (c) open(c.dataset.id); });
+$('#grid').addEventListener('mouseover', (e) => { const v = e.target.closest('.card')?.querySelector('video'); if (v) v.play().catch(() => {}); });
+$('#grid').addEventListener('mouseout', (e) => { const v = e.target.closest('.card')?.querySelector('video'); if (v && !e.relatedTarget?.closest?.('.card')) v.pause(); });
+$('#dlgBody').addEventListener('click', (e) => {
+  const g = e.target.closest('[data-goto]'); if (g) { e.preventDefault(); open(g.dataset.goto); return; }
+  if (e.target.closest('[data-close]')) $('#dlg').close();
+  const c = e.target.closest('[data-copy]'); if (c) { try { navigator.clipboard.writeText(c.dataset.copy); c.textContent = 'Copied'; } catch (err) {} }
+});
+$('#dlg').addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+$('#dlg').addEventListener('close', () => { $('#dlgBody').querySelectorAll('video,audio').forEach((m) => m.pause()); });
+$('#theme').addEventListener('click', () => { const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; r.dataset.theme = dark ? 'light' : 'dark'; save(); });
+cats(); render();
+</script>
+</body>
+</html>

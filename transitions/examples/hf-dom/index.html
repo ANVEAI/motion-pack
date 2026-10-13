@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>motion-pack DOM transitions in HyperFrames (9:16)</title>
+<style>
+  body { margin: 0; background: #000; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000; }
+  .shot { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
+          color: #fff; font-family: system-ui, sans-serif; font-weight: 800; font-size: 150px; letter-spacing: -2px; }
+  .shot small { display: block; font-size: 44px; font-weight: 500; opacity: 0.8; margin-top: 24px; letter-spacing: 0; }
+  .s0 { background: linear-gradient(160deg, #12062f, #4A18ED); }
+  .s1 { background: linear-gradient(200deg, #ffd27a, #ff7a1a 55%, #c2185b); }
+  .s2 { background: linear-gradient(180deg, #0b3d2e, #12b886); }
+  .s3 { background: radial-gradient(circle at 30% 30%, #ffffff, #c7d2fe 40%, #4A18ED); color: #12062f; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="mp-hf-dom" data-no-timeline data-start="0" data-width="1080" data-height="1920" data-duration="10">
+</div>
+<script type="module">
+/* DOM back-end inside HyperFrames, 9:16: 13 transitions on 14 DOM shots, all from t alone (hf-seek). */
+import { applyDom } from './lib/tx-dom.js';
+import { planEdits, stateAt } from './lib/sequence.js';
+import { hfBind } from './lib/tx-hf.js';
+const root = document.getElementById('root');
+const keys = ['push', 'iris', 'shutter', 'whip', 'swipeUp', 'scalePunch', 'lumaWipe', 'flash', 'blurCross', 'spin', 'dip', 'dissolve', 'match'];
+const shots = [...keys, 'end'].map((k, i) => { const d = document.createElement('div'); d.className = `shot s${i % 4}`; d.id = `mp-shot-${i}`;
+  const t = document.createElement('div'); t.textContent = i === keys.length ? 'END' : String(i + 1).padStart(2, '0');
+  const s = document.createElement('small'); s.textContent = i < keys.length ? `next: tx.${k}` : 'motion-pack'; t.appendChild(s); d.appendChild(t); root.appendChild(d); return d; });
+const plan = planEdits(keys.map((key, i) => ({ cut_s: 0.6 + i * 0.7, key, params: key === 'iris' ? { center: [0.5, 0.42] } : key === 'whip' ? { dir: [0, 1] } : {} })));
+function renderAt(t) {
+  const s = stateAt(t, plan);
+  shots.forEach((el, i) => { if (!('shot' in s) && (i === s.from || i === s.to)) return; el.style.cssText = ''; el.style.opacity = ('shot' in s && i === s.shot) ? '1' : '0'; });
+  if ('shot' in s) { root.style.background = ''; const ov = root.querySelector('.mptx-ov'); if (ov) ov.querySelector('.mptx-fill').style.opacity = '0', ov.querySelector('.mptx-bars').innerHTML = ''; return; }
+  applyDom(s.key, s.p, { a: shots[s.from], b: shots[s.to], root, params: s.params });
+}
+hfBind(renderAt, { compositionId: 'mp-hf-dom', duration: 10 });
+</script>
+</body>
+</html>

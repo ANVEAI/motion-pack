@@ -1,0 +1,12 @@
+{
+ "schema": "motion-pack/retime@1",
+ "note": "Speed-ramp / retime presets for cuts/retime.py (ffmpeg setpts/atempo chains) and transitions/lib/tx-core.js RAMP_PRESETS (same keys and numbers). Times are seconds relative to the anchor (the hit). rate = source seconds per output second (0 = freeze). Segments of type reverse play src_dur seconds of source backwards. sfx ids follow sfx/<category>/<name>; anchor frame = cut + offset_f.",
+ "presets": {
+  "rampIn":      { "keys": [[-0.5, 1], [0, 0.25], [1.0, 0.25]], "use": "ease into slow motion on the hit and stay there (hero product, sport)", "sfx": [["sfx/tx/speed_ramp", "start", 0, 0], ["sfx/whoosh/reverse", "cut", 0, -2]] },
+  "rampOut":     { "keys": [[-0.6, 0.25], [0, 0.25], [0.35, 1]], "use": "come out of slow motion back to real time (end of a hero moment)", "sfx": [["sfx/riser/tape_up", "cut", 0, -2]] },
+  "heroRamp":    { "keys": [[-0.5, 2], [-0.1, 2], [0, 0.2], [0.5, 0.2], [0.8, 2], [1.1, 1]], "use": "fast-slow-fast: the classic action hero ramp, slowest frames ON the beat", "sfx": [["sfx/whoosh/reverse", "cut", 0, 0], ["sfx/hit/deep_impact", "cut", 1, 3]] },
+  "bulletTime":  { "keys": [[-0.3, 1], [0, 0.12], [0.6, 0.12], [0.9, 1]], "use": "near-freeze reveal with motion still visible", "sfx": [["sfx/tx/speed_ramp", "start", 0, 0], ["sfx/lift/inhale", "cut", 0, -3]] },
+  "reverseFlash":{ "segments": [{ "type": "reverse", "src_dur": 0.4, "rate": 2 }, { "type": "speed", "dur": 0.3, "rate": 1 }], "use": "rewind gag: 0.4 s of source played backwards at 2x, then forward again", "sfx": [["sfx/cartoon/record_scratch", "start", 0, 0], ["sfx/tx/tape_stop", "start", 0, -4]] },
+  "freezeStamp": { "keys": [[-0.1, 1], [0, 0], [0.8, 0], [0.85, 1]], "use": "freeze frame with a stamp / name card ('that's me'); pair with type layout.freezeFrame", "sfx": [["sfx/tx/freeze_hit", "cut", 0, 2], ["sfx/cartoon/record_scratch", "cut", 0, 0]] }
+ }
+}

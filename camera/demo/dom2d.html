@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack camera 2D demo</title>
+<style>html,body{margin:0;background:#111}#frame{position:relative;width:1920px;height:1080px;overflow:hidden;background:#000}#world{position:absolute;inset:0;transform-origin:50% 50%;background:linear-gradient(180deg,#eadfce,#c8d3e6)}
+.card{position:absolute;left:170px;top:210px;width:700px;height:520px;border-radius:36px;background:#f7f5ef;box-shadow:0 30px 80px rgba(20,20,60,.25)}.card h1{margin:44px 48px 0;font:800 86px Helvetica,Arial;color:#111;letter-spacing:-2px;line-height:.98}.card p{margin:18px 48px;font:600 34px Helvetica,Arial;color:#6b665c}
+.face{position:absolute;left:1100px;top:250px;width:420px;height:520px;border-radius:50% 50% 46% 46%;background:radial-gradient(circle at 40% 35%,#f1c9a8,#c98c62)}.eye{position:absolute;top:200px;width:46px;height:30px;border-radius:50%;background:#2a1a12}.mouth{position:absolute;left:150px;top:370px;width:120px;height:26px;border-radius:0 0 80px 80px;background:#7a2b2b}
+.bar{position:absolute;left:170px;top:820px;width:1180px;height:34px;border-radius:17px;background:#4a18ed}.dots{position:absolute;left:170px;top:900px;display:flex;gap:26px}.dots i{width:70px;height:70px;border-radius:50%}
+#safe{position:absolute;inset:0;pointer-events:none}</style></head><body>
+<div id="frame"><div id="world"><div class="card"><h1>Voice that sells</h1><p>Camera-move demo plate</p></div><div class="face"><div class="eye" style="left:100px"></div><div class="eye" style="left:236px"></div><div class="mouth"></div></div><div class="bar"></div><div class="dots"><i style="background:#e5322d"></i><i style="background:#2fa84f"></i><i style="background:#2a56d6"></i><i style="background:#f2c318"></i><i style="background:#d6329e"></i></div></div></div>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<script src="/ext/gsap.min.js"></script>
+<script type="module">
+import * as C from '../cam2d.js'; import { bakeGSAP, driveSeek } from '../bake.js';
+const world = document.getElementById('world'), W = 1920, H = 1080; document.getElementById('defs').innerHTML = C.blurFilterSVG('mp-streak'); const blurNode = document.getElementById('mp-streak-b');
+const face = [0.66, 0.46], hits = [0.5, 1.0, 1.5];
+const CAMS = {
+  push2d: () => C.push2d(C.ID2, { at: 0, dur: 1.2, to: 1.25, origin: face }), pan2d: () => C.pan2d(C.ID2, { at: 0, dur: 2, dx: 0.35 }), whip: () => C.whip2d(C.ID2, { at: 0.4, dx: 1.2 }), handheld: () => C.handheld2d(C.ID2, { level: 'action', seed: 2 }),
+  punchCadence: () => C.punchCadence(C.ID2, { boundaries: [0.5, 1.2, 1.9], origins: [face, [0.3, 0.45], face, [0.5, 0.5]] }), kenBurns: () => C.kenBurns(C.ID2, { at: 0, dur: 2.5, to: 1.12 }), dutch: () => C.dutch2d(C.ID2, { at: 0, dur: 1, deg: 6 }), beat: () => C.beatPunch2d(C.ID2, { hits, amount: 0.08 }), shake: () => C.shake2d(C.ID2, { hits, px: 24 }),
+  crashZoom: () => C.crashZoom(C.ID2, { at: 0.2, to: 1.6, origin: face }), doubleTake: () => C.doubleTake(C.ID2, { at: 0.1, origin: face }), dollySnap: () => C.dollySnap(C.ID2, { at: 0, snapAt: 1.0, origin: face }), dutchRoll: () => C.dutchRoll(C.ID2, { at: 0.1, preset: 'comedy' }),
+};
+let cam = CAMS.push2d(); window.setCam = (n) => { cam = CAMS[n](); return Object.keys(CAMS); };
+window.at = (t, { cover = false } = {}) => { const st = cam(t), c = C.toCSS(st, { W, H, cover }); world.style.transform = c.transform; world.style.transformOrigin = c.transformOrigin; world.style.filter = st.blur > 0.5 ? 'url(#mp-streak)' : 'none'; blurNode.setAttribute('stdDeviation', C.blurStd(st, H)); return st; };
+window.matrixAt = (t) => { window.at(t); const m = new DOMMatrix(getComputedStyle(world).transform); return [m.a, m.b, m.c, m.d, m.e, m.f]; };
+/* GSAP bake: the timeline is the single source of truth; random-access seeks must reproduce the pure function */
+window.bake = (name, dur, fps = 30) => { window.setCam(name); gsap.set(world, { clearProps: 'all' }); const tl = gsap.timeline({ paused: true }); bakeGSAP(tl, world, cam, { t0: 0, dur, fps, W, H, blurNode }); window.tl = tl; return tl.duration(); };
+window.seek = (t) => { window.tl.seek(t, false); const m = new DOMMatrix(getComputedStyle(world).transform); return [m.a, m.b, m.c, m.d, m.e, m.f]; };
+window.expect = (t) => { const g = C.toGSAP(cam(t), { W, H }), el = document.createElement('div'); el.style.cssText = `position:absolute;width:${W}px;height:${H}px;transform-origin:${g.transformOrigin};transform:translate(${g.x}px,${g.y}px) rotate(${g.rotation}deg) scale(${g.scale})`; document.body.appendChild(el); const m = new DOMMatrix(getComputedStyle(el).transform); el.remove(); return [m.a, m.b, m.c, m.d, m.e, m.f]; };
+window.sheet = null; window.__ready = true;
+</script></body></html>

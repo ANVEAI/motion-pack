@@ -1,0 +1,137 @@
+{
+ "name": "type",
+ "total": 26,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "all 14 presets: same state for the same t in any order; finite for t in [-3 .. 1e4]",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "maskRise: word i starts at i x 4 f, 14 f long, y 0.6 em -> 0, mask line",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "scaleSlam: 1.35 -> 1.00 in 6 f, motion blur only in the first 2 f, shake <= 8 px decaying, next word one beat (15 f) later",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "typewriter: 2 f per char, +6 f pause after punctuation, caret blinks every 15 f",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "elasticPop overshoot 27.5% at zeta 0.38 (research ~24%), 4.6% at zeta 0.7 (house cap ~7%)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "scramble: glyphs swap (seeded), resolve left to right at 1.2 f per char, then the real letters",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "weightMorph reaches wght 800 at 18 f",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "exits are 30% faster than entrances (dur x 0.7) and finish with opacity 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "holdTime = max(0.5 s, 0.35 + 0.28 s/word, 9 f): 1 word 0.63, 2 words 0.91",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "lintType flags a < 9 f hold and > 3.5 words/s; passes the default; lintPiece flags 3 tone families",
+   "pass": true,
+   "detail": "[[\"fully formed hold -13 f < 9 f\",\"10.0 words/s > 3.5\"],[\"fully formed hold 3 f < 9 f\",\"5.3 words/s > 3.5\"],[\"3 kinetic tone families in one piece (max 2): calm-sharp, kinetic-sharp, kinetic-soft\"]]"
+  },
+  {
+   "label": "chunker: 8 chunks of 2-3 words, none crosses a sentence end, none overlaps, lint clean",
+   "pass": true,
+   "detail": "So this is | the thing nobody | tells you about | voice AI. | It is fast, | it is free, | and it never | sleeps!"
+  },
+  {
+   "label": "normalizeWords accepts word/text/start/end aliases, drops junk, fixes overlap",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "karaoke: the active word is exactly the one being spoken (accent colour, scale -> 1.12 over 4 f); unspoken words dim to 0.55; nothing live between chunks",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "karaoke active index matches word timing at every word midpoint (first 4 chunks)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "impact shows ONE word at a time, slam 1.25 -> 1 in 4 f",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "emphasis style colours + pops only flagged words",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "emoji pops: keyword -> own vector icon (fast -> bolt, free -> burst12), progress 0 -> 1 over 8 f; every mapped icon exists",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "scribbleCircle is seeded: same seed same path, different seed different",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "safe zones: conservative = union (max) of the two conflicting research sources; all platforms listed with verify flags",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "captionBox sits inside the safe rect and ends 24 px above its bottom",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "lintRect reports the violated sides and distances",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "lintCaptionStyle: 72 px / 2 lines / 18 chars passes; 90 px, 3 lines flagged",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "captions (5 styles x 6 tall platforms, 70 times each) never leave the platform safe zone",
+   "pass": true,
+   "detail": "{}"
+  },
+  {
+   "label": "DOM bakeType: random-access seeks reproduce the pure states for 7 presets (opacity, x, y, scale)",
+   "pass": true,
+   "detail": "maskRise:0.0e+0 charStagger:0.0e+0 scaleSlam:0.0e+0 blurIn:0.0e+0 weightMorph:0.0e+0 flipSplit:0.0e+0 typewriter:0.0e+0"
+  },
+  {
+   "label": "DOM bakeCaptions: random-access seeks match captionFrame (worst 2.5e-5, 9 live chunk checks)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no console errors (dom page)",
+   "pass": true,
+   "detail": "[\"error: Failed to load resource: the server responded with a status of 404 (Not Found)\"]"
+  }
+ ]
+}
