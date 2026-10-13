@@ -83,6 +83,7 @@ What is the deliverable?
 ├─ Sell a product in 6 / 15 / 30 / 45 s (hook, problem, product, proof, CTA) ──> RECIPE A (ad)
 │     launch / reveal / sizzle with a hero product? -> RECIPE L (launch film)
 ├─ Photoreal product, 3D title or abstract 3D art ──> RECIPE P (Blender plates), then composite here
+├─ Terminal or ASCII look, a flock, a word a flock writes ──> terminal/ (baked plate as a <video> layer; set real titles with type/)
 ├─ Diagram / "how it works" / data / math ──> a diagram animation tool for the plates, then type, layers and sound here
 └─ Anything else in HTML ──> a HyperFrames composition built from pack parts
 Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY checklist -> QA checklist.

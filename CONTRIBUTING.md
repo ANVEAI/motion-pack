@@ -18,6 +18,7 @@ python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tes
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs
 node camera/tests/camera.test.mjs
 node physics/tests/test-player.mjs
+bash terminal/tests/smoke.sh                    # if you touched terminal/ (first run fetches and builds cbirds: cc, make, curl)
 python3 tools/count.py --write                  # refresh the README table if counts changed
 ```
 

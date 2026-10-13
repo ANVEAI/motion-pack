@@ -1,8 +1,8 @@
-# Lab: 20 motion repos, tested for frame-exact rendering
+# Lab: 21 repos, tested for frame-exact rendering
 
 An agent makes video by rendering web pages frame by frame. The renderer seeks: it asks for frame 0, then frame 1, or sometimes frame 90 first, or one chunk per worker. A library built for live playback (clocks, animation loops, integrating simulations, sound played into the speakers) can look perfect in a browser and still drift, jitter or go silent in a render.
 
-On 13 Oct 2026 we took a widely shared list of 20 GitHub repos "for an AI motion-design stack", installed every one, built the same shots with each, and measured them. **66 variants in 4 lanes:**
+On 13 Oct 2026 we took a widely shared list of 20 GitHub repos "for an AI motion-design stack", installed every one, built the same shots with each, and measured them. On 14 Oct 2026 we added a fifth lane for one more repo, cbirds (terminal and ASCII looks), which brings the lab to 21 repos. **75 variants in 5 lanes:**
 
 | lane | repos | write-up |
 |---|---|---|
@@ -10,8 +10,9 @@ On 13 Oct 2026 we took a widely shared list of 20 GitHub repos "for an AI motion
 | 2D engines and skill packs | GSAP, GSAP Skills, Anime.js, Motion, Motion AI Kit, Motion Canvas, Remotion, Remotion Skills | [`b-2d/RESULTS.md`](b-2d/RESULTS.md) |
 | Lottie, Rive, SVG | dotLottie Web (vs lottie-web), Rive Web, SVGO | [`c-vector/RESULTS.md`](c-vector/RESULTS.md) |
 | Covers, encoding, video, audio | Satori, Mediabunny, Howler.js, FFmpeg | [`d-output/RESULTS.md`](d-output/RESULTS.md) |
+| Terminal and ASCII | cbirds (live terminal vs headless recorder vs baked plate) | [`e-terminal/RESULTS.md`](e-terminal/RESULTS.md) |
 
-The verdicts for all 66 variants are in [`results.json`](results.json), and as a readable table in [`../skills/motion-stack/references/verdicts.md`](../skills/motion-stack/references/verdicts.md).
+The verdicts for all 75 variants are in [`results.json`](results.json), and as a readable table in [`../skills/motion-stack/references/verdicts.md`](../skills/motion-stack/references/verdicts.md).
 
 ## How every variant was judged
 
@@ -36,9 +37,9 @@ The harness is [`skills/motion-stack/scripts/seekcheck.mjs`](../skills/motion-st
 | verdict | variants |
 |---|---|
 | ADOPT | 7 |
-| ADOPT-FOR a named niche | 14 |
+| ADOPT-FOR a named niche | 20 |
 | KEEP-CURRENT (what we had already won) | 10 |
-| REJECT | 35 |
+| REJECT | 38 |
 
 1. **GSAP is the default 2D engine.** It is bit-exact after two settings (`force3D: false` and one warm pass), has a native HyperFrames adapter, and needed 33 lines for the test shot. Plain pure functions of t matched it bit for bit with zero dependencies.
 2. **`power2` is cubic and `power3` is quartic.** A widely used Remotion-to-HyperFrames guide maps cubic to `power3`; we reported it upstream ([heygen-com/hyperframes#5538](https://github.com/heygen-com/hyperframes/issues/5538)).
@@ -52,11 +53,12 @@ The harness is [`skills/motion-stack/scripts/seekcheck.mjs`](../skills/motion-st
 10. **SVGO's default preset breaks draw-on animation.** It fused strokes in 70 of 111 icons. A draw-on-safe config saved 30.7% with bit-identical draw-on frames.
 11. **Encoding:** ffmpeg x264 two-pass beat WebCodecs H.264 by 1–3 dB at equal size. WebCodecs was about 14x faster, which suits drafts.
 12. **Covers:** HTML plus a Chrome screenshot is the fidelity reference. Satori silently ignored or threw on 22 of 50 CSS features (in the version tested).
+13. **A live simulation is fine if you bake it.** cbirds' terminal mode steps on the wall clock (3 runs, 3 frames); its headless recorder steps on its own clock, so a baked plate is byte-identical bake to bake and frame-exact in HyperFrames. Builds fly different flocks (x86_64 vs arm64 diverge at frame 50), so keep the MP4.
 
 ## Honest limits
 
 - **One machine** (Apple M3 Pro, Chrome 154, ANGLE Metal), with four lanes sharing the GPU. Read ms/frame within a lane only.
-- **The version rule:** where a release was younger than 14 days at test time, we tested the newest version at least 14 days old (supply-chain caution). Each lane write-up says which.
+- **The version rule:** where a release was younger than 14 days at test time, we tested the newest version at least 14 days old (supply-chain caution). Each lane write-up says which. The one exception is cbirds (lane `e-terminal`): we tested a commit that was 2 days old, because its 3D mode is newer than any commit that was 14 days old.
 - **Content:** encoding results come from CG content, and the 2D shot is one design. Your content may rank differently, so run the harness on it.
 - **Not tested:**
   - Linux and Windows GPUs;

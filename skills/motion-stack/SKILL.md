@@ -63,8 +63,9 @@ Passing the gates proves repeatability, not correctness. Content with a source t
 | Final encodes and upload copies | ffmpeg x264 two-pass, `-preset slow -tune animation` | ffmpeg 8.x | +1–3 dB over WebCodecs H.264 at equal size | `references/output-tools.md` |
 | Video inside a composition | the renderer's own `<video>` (HyperFrames pre-extracts frames) | HyperFrames 0.8.142 | 300/300 frames exact; plain `currentTime = N/fps` was wrong on 11/24 | `references/output-tools.md` |
 | Sound | declared audio (`<audio id data-start>`) or an offline master mix | — | sample-accurate; live playback never reaches the MP4 | `references/output-tools.md` |
+| Terminal/ASCII b-roll, flock transitions, "the flock writes a word" | **cbirds, baked** (`terminal/bake-plate.sh`) → 30 fps MP4 as a `<video>` layer | cbirds @ fe6f9f1 (1.7.0), `-O2 -ffp-contract=off` | byte-identical bakes; 300/300 frame identity through HyperFrames; live terminal capture fails G1 | `references/verdicts.md` |
 
-## The 20 repos at a glance
+## The 21 repos at a glance
 
 | repo | verdict | one line |
 |---|---|---|
@@ -86,6 +87,7 @@ Passing the gates proves repeatability, not correctness. Content with a source t
 | Motion Canvas | KEEP-CURRENT | renders well, adds a second world; maintenance slowing |
 | Motion / Motion AI Kit | REJECT for video | built for live UI; the kit needs a hosted server and paid Motion+ |
 | Howler.js | REJECT for video | its sound never reached the render |
+| cbirds | ADOPT-FOR, baked | terminal/flock plates and word titles via `terminal/`; never screen-record the live terminal |
 
 The full table, with the numbers behind each verdict, is in `references/verdicts.md`.
 
@@ -110,6 +112,7 @@ The full table, with the numbers behind each verdict, is in `references/verdicts
 | Howler or any live audio | Replace it with declared audio or an offline mix; the render cannot hear it. |
 | Motion | Use its spring generator only, or wrap every property in full-span function segments (about 40 lines). |
 | A CSS transition | Convert it to a keyframe animation (WAAPI/CSS animations are seekable; transitions are not). |
+| A terminal toy (cbirds, asciinema, cmatrix) | Never screen-record it. If it has a headless recorder that steps on its own clock (cbirds `--record`), bake it into a plate; a `.cast` needs a renderer and carries a wall-clock header. |
 
 ## Bundled scripts
 

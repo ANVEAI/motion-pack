@@ -25,6 +25,7 @@ CC0 (`LICENSE-MEDIA`). This file lists everything else the pack touches, and how
 | fontTools (optional, `blender/` 3D title) | the user's Python, to cut a static weight from the variable font at run time (never redistributed) | MIT |
 | Rapier, `@dimforge/rapier3d-compat` 0.21.0 (optional, `physics/`) | `cd physics && npm install` (pinned in `physics/package-lock.json`); build time only, never loaded by a page | Apache-2.0 |
 | SVGO 4.1.0 (optional) | `npx svgo@4.1.0 --config scripts/svgo.config.mjs ...` to clean fetched icon sets | MIT |
+| cbirds @ `fe6f9f183cd5548c9403d0859ce49856850229ed` (1.7.0) (optional, `terminal/`) | `terminal/fetch-cbirds.sh` downloads the GitHub source tarball (SHA-256 pinned), builds it locally with `make cbirds`; build time only, never vendored or shipped | MIT, Copyright (c) 2025 clainstone@icloud.com (licence text in the fetched source). The default `--shape bird` renders cbirds' own bird drawing; the pack's recipes use `--shape arrow` (drawn in code) |
 
 ## 3. Formulae and ideas (re-implemented, no code or data copied)
 

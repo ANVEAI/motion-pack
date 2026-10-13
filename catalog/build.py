@@ -177,6 +177,20 @@ if os.path.exists(BM):
                   'showcase render': timing or None, 'contact sheets': ', '.join(s for s in sheets if s) or None, 'cli': rec.get('cli')}.items() if v not in (None, '')},
             use=rec.get('use'), avoid=rec.get('avoid'), file=mod if os.path.exists(os.path.join(PACK, mod)) else 'blender/run.py')
 
+# ---------- terminal: baked cbirds plates (terminal/manifest.json; JPEG previews committed in terminal/previews/, plates are not) ----------
+TM = os.path.join(PACK, 'terminal', 'manifest.json')
+if os.path.exists(TM):
+    tm = json.load(open(TM))
+    eng = tm['engine']
+    for rid, rec in tm['recipes'].items():
+        dfl = rec.get('defaults', {})
+        add('terminal', rid, rec.get('name', rid), ['terminal', 'plate', 'flock', 'baked', 'loop' if rec.get('loop') else ''],
+            desc=rec.get('doc', ''), thumb=rel(os.path.join(PACK, 'terminal', 'previews', rid.split('/', 1)[1] + '.jpg')),
+            params={k: {kk: v[kk] for kk in ('type', 'default', 'opts', 'min', 'max', 'doc') if kk in v} for k, v in rec.get('params', {}).items()},
+            meta={'defaults': f"{dfl.get('seconds')} s, {'x'.join(map(str, dfl.get('size', [])))}, 30 fps",
+                  'engine': f"{eng['name']} {eng['version']} @ {eng['commit'][:7]} ({eng['licence']}, fetched by {eng['fetch']})", 'cli': rec.get('cli')},
+            use=rec.get('use'), avoid=rec.get('avoid'), file='terminal/bake-plate.sh')
+
 # ---------- templates ----------
 TPL = {'ad': ('Ad 15/30 s: hook, problem, product, proof, CTA', 'out/ad-15.mp4', 'out/sheet.jpg'),
        'film-scene': ('Animated short-film scene', 'out/film-scene-wide.mp4', 'out/film-scene-wide-sheet.jpg'),

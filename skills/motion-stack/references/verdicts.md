@@ -1,8 +1,8 @@
-# Verdicts: every variant measured (13 Oct 2026)
+# Verdicts: every variant measured (13 and 14 Oct 2026)
 
-66 variants across 4 lanes. Gates: G1 same twice, G2 order independent, G3 cold equals warm, G4 renders through the production path (✓ pass, ✗ fail, – not run or not applicable). ms/frame is only comparable within a lane (shared GPU). Quality is 1–5, judged at 100 %.
+75 variants across 5 lanes. Gates: G1 same twice, G2 order independent, G3 cold equals warm, G4 renders through the production path (✓ pass, ✗ fail, – not run or not applicable). ms/frame is only comparable within a lane (shared GPU). Quality is 1–5, judged at 100 %.
 
-Verdict counts: ADOPT 7, ADOPT-FOR 14, KEEP-CURRENT 10, REJECT 35.
+Verdict counts: ADOPT 7, ADOPT-FOR 20, KEEP-CURRENT 10, REJECT 38.
 
 ## 3D, post, physics (`a-3d`)
 
@@ -89,4 +89,18 @@ Verdict counts: ADOPT 7, ADOPT-FOR 14, KEEP-CURRENT 10, REJECT 35.
 | FFmpeg | D5a-ffmpeg-8.0.1-current | ffmpeg (Homebrew 8.0.1_4) 8.0.1 | GPL-3.0-or-later … | –/–/–/✓ |  | 5 | KEEP-CURRENT | Nothing measured in this lane beat it for finals; its gaps are covered elsewhere (DOM/PNG captions, standalone vmaf). |
 | FFmpeg | D5b-ffmpeg-full-libass-libvmaf | ffmpeg-full (Homebrew, keg-on… 9.0.2 (formul… | GPL-3.0-or-later;… | –/–/–/– |  |  | REJECT (not worth adding now) | Captions are DOM clips in HyperFrames or PNG alpha tracks, and VMAF already works through the installed standalone vmaf CLI. |
 | FFmpeg | D5c-standalone-vmaf-cli | vmaf CLI 3.0.0 (Homebrew libv… 3.0.0, model … | BSD-2-Clause-Plus… | –/–/–/– |  | 5 | ADOPT-FOR QC of encodes and codec/prese… | Gives VMAF today with zero new installs; y4m temp files are large, so delete them after each run. |
+
+## Terminal and ASCII (`e-terminal`)
+
+| repo | variant | package @ version | licence | G1/G2/G3/G4 | ms/frame | Q | verdict | why |
+|---|---|---|---|---|---|---|---|---|
+| cbirds | E0-live-terminal | cbirds (live terminal mode, captured from a pseudo-terminal with --snapshot) @ fe6f9f1 | MIT | ✗/–/–/– |  | 2 | REJECT | The live loop steps on CLOCK_MONOTONIC: three runs with the same --seed 5 --frames 120 gave three different snapshots (27.7-28.0 dB), so screen-recording cbirds in a terminal can never be frame-exact; use --record. |
+| cbirds | E1-record-sprites | cbirds --record GIF, sprite birds (-n 900 -s 34 --color ice --hawks 2) @ fe6f9f1 | MIT | ✓/✗/✓/– | 17.5 | 4 | ADOPT-FOR flat-sprite flock plates, baked (E7) | Byte-identical GIF twice and on the never-run tarball build's first run, and prefix-stable (a 4 s take is the first 133 frames of the 9 s take); G2 fails for the raw simulation because frame N exists only after simulating 0..N-1, which baking fixes. |
+| cbirds | E2-record-braille | cbirds --record GIF --render braille (cells painted as a terminal shows them) @ fe6f9f1 | MIT | ✓/✗/✓/– | 20.8 | 3 | ADOPT-FOR terminal-look b-roll (braille dots), baked | Same gates as E1 and the only mode that looks like a real terminal; 7 colours of 2x4-dot cells at 1080x1920, so fine dots may shimmer after platform re-encodes (not tested). |
+| cbirds | E3-record-say | cbirds --record GIF --say TEXT (the flock writes a word and holds it) @ fe6f9f1 | MIT | ✓/✗/✓/– | 16.0 | 3 | ADOPT-FOR 'flock writes a word' title stings, baked | The word forms within about 2 s and holds while the rest of the flock orbits it; strokes are made of birds, so it reads as a playful dot-matrix title rather than typography, and the default size is modest (about a third of a 16:9 width). |
+| cbirds | E4-record-3d | cbirds --record GIF --3d (2000-bird murmuration, orbiting camera) @ fe6f9f1 | MIT | ✓/✗/✓/– | 18.7 | 4 | ADOPT-FOR murmuration b-roll and transition plates, baked | The most cinematic mode (depth, dusk ramp, banking) and as deterministic as E1 on one build; it differs from frame 0 across builds (240 warm-up steps run before the first frame), so the baked MP4 and its SHA-256, not the command, is the artifact. |
+| cbirds | E5-record-cast | cbirds --record .cast (asciinema v2, braille escape sequences) @ fe6f9f1 | MIT | ✓/✗/✓/– | 6.0 |  | REJECT | Frame lines are identical run to run and it steps at exactly 1/30 s, but the header carries time(NULL) (bytes differ every run) and turning a cast into pixels needs a third-party terminal renderer; the GIF path already paints braille itself. |
+| cbirds | E6-record-text | cbirds --record GIF --text FILE (the letters of a text take flight and land) @ fe6f9f1 | MIT | ✓/✗/✓/– | 15.6 | 3 | ADOPT-FOR 'code that flies' b-roll from our own text, baked | Letters lift off in a wave, flock and land on their own cells, deterministic like E1; a 5x7 bitmap font in 12x20 cells gives 90 columns at 1080 px wide, small on a phone, and a whole cycle runs 34 s. |
+| cbirds | E7-bake-plate-hyperframes | terminal/bake-plate.sh (cbirds -O2 -ffp-contract=off -> GIF -> 30 fps H.264) as a HyperFrames 0.8.142 <video> layer @ fe6f9f1 | MIT | ✓/✓/✓/✓ | 125.1 | 4 | ADOPT-FOR terminal/flock b-roll plates and 'flock writes a word' titles, baked at build time into a 30 fps MP4 played as a video layer | Two bakes gave byte-identical GIF and MP4 (x264 on one thread); every recorded frame maps to exactly one plate frame (300 frames, bt709, faststart); a -w 2 HyperFrames render matched the plate 300/300 by frame identity (39.9-41.6 dB, decoder colour path), the same pattern as baked Rapier. |
+| cbirds | E8-cross-build | cbirds built -O0 / -O3 -ffp-contract=off / x86_64 (Rosetta) vs the default -O3 arm64 build @ fe6f9f1 | MIT | ✓/–/✗/– |  |  | REJECT | Diagnostic: every build is deterministic on its own, but the chaotic flock diverges between builds (no-FMA arm64 and x86_64 at frame 50, -O0 at frame 158, 3D at frame 0), so pin the build flags and keep the baked MP4 rather than promising re-bakes on other machines. |
 

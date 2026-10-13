@@ -16,7 +16,7 @@ import argparse, os, shutil, subprocess, sys
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 AUDIO = [('sfx/library', 'sfx/previews'), ('music/library', 'music/previews')]
-IMAGE_DIRS = ['transitions/renders', 'layers/demo/out', 'type/demo/out', 'camera/demo/out', 'objects/qa', 'sfx/demo/stills', 'music/demo/stills']
+IMAGE_DIRS = ['transitions/renders', 'layers/demo/out', 'type/demo/out', 'camera/demo/out', 'objects/qa', 'sfx/demo/stills', 'music/demo/stills', 'terminal/previews']
 KEEP_PNG = {'layers/demo/out/plate-test.png',   # an input: layers/tools/looks_sheet.py grades it with every cube
             'type/demo/out/icons.png'}           # tiny line-art sheet, PNG is smaller than JPEG
 MP3_BITRATE = '128k'

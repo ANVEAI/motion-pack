@@ -1,0 +1,77 @@
+{
+ "module": "terminal",
+ "version": "0.1.0",
+ "schema": "anve-terminal-manifest/1",
+ "engine": {
+  "name": "cbirds",
+  "version": "1.7.0",
+  "commit": "fe6f9f183cd5548c9403d0859ce49856850229ed",
+  "tar_sha256": "593a371da5541c59cd076954fb9d83a313f36454c2e6b36e147f6ab81ab3b640",
+  "licence": "MIT",
+  "source": "https://github.com/clainstone/cbirds",
+  "fetch": "terminal/fetch-cbirds.sh",
+  "cflags": "-O2 -ffp-contract=off"
+ },
+ "license": "module code MIT; plates are renders we make (CC0). Recipes use --shape arrow (triangles drawn in code), so no cbirds artwork is in them",
+ "entry": "terminal/bake-plate.sh",
+ "smoke": "bash terminal/tests/smoke.sh",
+ "id_convention": "terminal/<look>",
+ "recipes": {
+  "terminal/flock": {
+   "name": "Flat flock",
+   "doc": "Boids flock in a flat ramp with two hawks cutting through it; starts after the 3 s BOIDS intro.",
+   "use": "Tech b-roll behind type, a busy-but-calm background, a cut-in between UI shots.",
+   "avoid": "Anything photoreal; plates re-baked on another CPU (keep the MP4).",
+   "loop": false,
+   "defaults": {"seconds": 10, "size": [1080, 1920], "aspect": "9:16"},
+   "params": {
+    "seed": {"type": "int", "default": 33, "doc": "same seed + same build = same flock"},
+    "color": {"type": "enum", "default": "ice", "opts": ["ice", "ember", "acid", "aurora", "prism", "potion", "dusk", "ash", "matrix"], "doc": "the ramp"},
+    "birds": {"type": "int", "default": 900, "min": 1, "max": 4080, "doc": "-n"},
+    "size": {"type": "int", "default": 34, "doc": "-s, sprite size in px"},
+    "hawks": {"type": "int", "default": 2, "min": 0, "doc": "-k"}
+   },
+   "cli": "terminal/bake-plate.sh --out plates/flock.mp4 --seed 33 --skip 3.5 -- -n 900 -s 34 --color ice --hawks 2 --shape arrow"
+  },
+  "terminal/braille": {
+   "name": "Braille terminal flock",
+   "doc": "The same flock as a text terminal shows it: 2x4-dot braille cells in a few colours.",
+   "use": "Terminal and CLI b-roll, developer-tool launches, a 'running in your shell' moment.",
+   "avoid": "Small phone crops (the dots blur after platform re-encodes; untested).",
+   "loop": false,
+   "defaults": {"seconds": 10, "size": [1080, 1920], "aspect": "9:16"},
+   "params": {"seed": {"type": "int", "default": 5}, "color": {"type": "enum", "default": "ice", "opts": ["ice", "ember", "acid", "aurora", "matrix"]}},
+   "cli": "terminal/bake-plate.sh --out plates/braille.mp4 --seed 5 --skip 3.5 -- -n 900 -s 34 --color ice --hawks 2 --render braille --shape arrow"
+  },
+  "terminal/word": {
+   "name": "Flock writes a word",
+   "doc": "The flock writes a word within about 2 s and holds it while the rest of the flock orbits round it.",
+   "use": "Title sting, transition into a set title, a playful end-card element.",
+   "avoid": "The title itself where it must read as typography (use type/); long words (it fills about a third of a 16:9 width by default).",
+   "loop": false,
+   "defaults": {"seconds": 8, "size": [1920, 1080], "aspect": "16:9"},
+   "params": {"text": {"type": "string", "default": "ORBIT", "doc": "--say"}, "seed": {"type": "int", "default": 5}, "color": {"type": "enum", "default": "prism", "opts": ["prism", "ember", "ice", "aurora", "acid"]}},
+   "cli": "terminal/bake-plate.sh --out plates/word.mp4 --seed 5 --aspect 16:9 --seconds 8 --ground black -- -n 900 --say ORBIT --color prism --shape arrow"
+  },
+  "terminal/murmuration": {
+   "name": "3D murmuration",
+   "doc": "Two thousand birds in a 3D sky with an orbiting camera, banking and depth falloff, at dusk.",
+   "use": "Full-frame transition, atmospheric b-roll, a 'many agents' metaphor.",
+   "avoid": "Re-baking on another machine (the 3D sky differs across builds from frame 0).",
+   "loop": false,
+   "defaults": {"seconds": 10, "size": [1920, 1080], "aspect": "16:9"},
+   "params": {"seed": {"type": "int", "default": 45}, "color": {"type": "enum", "default": "dusk", "opts": ["dusk", "ember", "ice", "aurora"]}, "hawks": {"type": "int", "default": 1}},
+   "cli": "terminal/bake-plate.sh --out plates/murmuration.mp4 --seed 45 --aspect 16:9 -- --3d --color dusk --hawks 1 --shape arrow"
+  },
+  "terminal/code": {
+   "name": "Code that flies",
+   "doc": "A text at rest lifts off letter by letter in a wave, flies as a flock and lands back on its own cells (one cycle is 34 s).",
+   "use": "Developer-tool b-roll from OUR OWN code or copy; a changelog or terminal output coming alive.",
+   "avoid": "Third-party text; phone-size crops (5x7 font, 90 columns at 1080 px).",
+   "loop": true,
+   "defaults": {"seconds": 34, "size": [1080, 1920], "aspect": "9:16"},
+   "params": {"text": {"type": "path", "default": "physics/table-player.js", "doc": "--text FILE (our own MIT code)"}, "seed": {"type": "int", "default": 5}},
+   "cli": "terminal/bake-plate.sh --out plates/code.mp4 --seed 5 --seconds 34 -- --text physics/table-player.js"
+  }
+ }
+}
