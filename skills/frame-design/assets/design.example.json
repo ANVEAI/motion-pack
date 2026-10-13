@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "for": "shotlist.json · Every draft, saved (16 s character spot, 16:9 lead, re-laid out to 9:16)",
+  "tone": {
+    "cell": "kinetic-soft",
+    "why": "wordless comedy: springy bodies, soft shapes, one sharp beat at the turn"
+  },
+  "motion": {
+    "personality": "The worker hurries; the product never does. Springy contacts, holds after every key action, one wow at the turn.",
+    "base_unit_frames": 5,
+    "easing": "soft for bodies, a pop only on the turn",
+    "overshoot_max": 0.07,
+    "hold_after_key_action_frames": 15,
+    "camera_still_on_impacts": true,
+    "type_presets": {
+      "headline": "type/elasticPop",
+      "card": "type/maskRise",
+      "end": "type/blurIn",
+      "sub": "type/blurIn"
+    }
+  },
+  "palette": {
+    "paper": "#F3F2EF",
+    "ink": "#141414",
+    "accent": "#C2410C",
+    "accent_ink": "#FFFFFF",
+    "muted": "#5F5F5F",
+    "success": "#0F766E",
+    "character": "#8B82D2"
+  },
+  "contrast": {
+    "checked_with": "scripts/contrast.py",
+    "pairs": [
+      {
+        "fg": "ink",
+        "bg": "paper",
+        "use": "text"
+      },
+      {
+        "fg": "accent",
+        "bg": "paper",
+        "use": "text"
+      },
+      {
+        "fg": "accent_ink",
+        "bg": "accent",
+        "use": "text"
+      },
+      {
+        "fg": "muted",
+        "bg": "paper",
+        "use": "text"
+      },
+      {
+        "fg": "success",
+        "bg": "paper",
+        "use": "ui"
+      },
+      {
+        "fg": "character",
+        "bg": "paper",
+        "use": "ui"
+      }
+    ]
+  },
+  "type": {
+    "display": {
+      "family": "Manrope",
+      "weight": 800,
+      "license": "OFL-1.1",
+      "file": "templates/_shared/fonts/Manrope-Variable.ttf"
+    },
+    "text": {
+      "family": "Manrope",
+      "weight": 600,
+      "license": "OFL-1.1",
+      "file": "templates/_shared/fonts/Manrope-Variable.ttf"
+    },
+    "mono": {
+      "family": "IBM Plex Mono",
+      "weight": 600,
+      "license": "OFL-1.1",
+      "file": "templates/_shared/fonts/IBMPlexMono-SemiBold.ttf"
+    },
+    "sizes_px_at_1080": {
+      "end_line": 96,
+      "headline": 118,
+      "caption_9x16": 72,
+      "label_16x9": 28,
+      "label_9x16": 30,
+      "fine_print": 28
+    },
+    "max_words_per_line": 6,
+    "tracking_em": {
+      "display": -0.035,
+      "label": 0.02
+    }
+  },
+  "grid": {
+    "16:9": {
+      "margin_px": 96,
+      "columns": 12,
+      "gutter_px": 24,
+      "baseline_px": 8,
+      "hero_third": "left"
+    },
+    "9:16": {
+      "safe": "conservative",
+      "columns": 4,
+      "gutter_px": 24,
+      "baseline_px": 8
+    }
+  },
+  "safe": {
+    "platform": "yt.ad.15",
+    "zones_9x16": "conservative",
+    "zones_16x9": "wideTitle"
+  },
+  "look": {
+    "grade": "bright-playful",
+    "finish": "bright-playful",
+    "lut": null,
+    "grain": "none",
+    "vignette": 0.06,
+    "flash_max_per_s": 3
+  },
+  "frames": {
+    "hero_by_shot": {
+      "s01": "the mug edging toward the laptop",
+      "s03": "the coffee flood",
+      "s04": "the face",
+      "s05": "the waking screen",
+      "s07": "the end line"
+    },
+    "cover": {
+      "subject": "the mug a centimetre from the keyboard",
+      "words": "ONE SIP AWAY",
+      "max_words": 4,
+      "test_width_px": 120
+    },
+    "end_card": {
+      "line": "Every draft, *saved*.",
+      "hold_s": 3.0,
+      "fine_print": "Illustration · fictional product"
+    },
+    "lower_third": null,
+    "labels": {
+      "style": "mono, palette.muted, bottom-left inside the safe rect",
+      "min_on_screen_s": 2.0
+    }
+  },
+  "config_map": {
+    "templates/character-spot": {
+      "world.mode": "white",
+      "world.paper": "palette.paper",
+      "brand.accent": "palette.accent",
+      "brand.mint": "palette.success",
+      "brand.line": "frames.end_card.line",
+      "layout.color": "palette.character",
+      "type.endLine": "motion.type_presets.end"
+    },
+    "templates/ad": {
+      "platform": "safe.platform",
+      "brand.accent": "palette.accent",
+      "brand.ink": "palette.ink",
+      "brand.paper": "palette.paper",
+      "type.headline": "motion.type_presets.headline",
+      "type.card": "motion.type_presets.card",
+      "type.end": "motion.type_presets.end",
+      "type.sub": "motion.type_presets.sub",
+      "layers": "look (grain stock and vignette as overlay kinds)"
+    }
+  }
+}

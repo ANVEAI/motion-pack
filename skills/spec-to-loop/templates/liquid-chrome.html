@@ -1,0 +1,593 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Liquid Chrome</title>
+<meta name="viewport" content="width=1080"><link rel="icon" href="data:,">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script id="config">
+/* =====================================================================================================
+   CONFIG  (the only block a new video edits; everything below DERIVED is computed from it)
+   Units: timings are FRAMES at CONFIG.fps; lengths are scene units (floor at layout.floorY); angles degrees.
+   The picture (module below) and the score (scripts/score.mjs) both read window.CONFIG, so a picture event
+   and its sound event come from the same number and cannot drift apart.
+   ===================================================================================================== */
+window.CONFIG = {
+  name: 'liquid-chrome',
+  width: 1080, height: 1080, fps: 60, loopFrames: 360,
+  text: 'LOOP',                           // any string the font has glyphs for; droplet count = non-space glyphs
+  font: { url: 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json',
+          size: 0.52, height: 0.12 /* r160 TextGeometry reads `height`, not `depth` */, bevel: 0.03, bevelSegments: 10, curveSegments: 24,
+          trackingEm: -0.04, opticalCenter: '.,:' /* these glyphs are centred between their neighbours' ink */ },
+  sdf: { width: 2048, height: 512 },
+  layout: { floorY: -0.8, textY: 0.15, blobY: -0.05, camTargetY: 0.05 },
+  chrome: { F0: 0.92, bounces: 3, creaseDeg: 35, edgeSoftDeg: 1.1 /* roughness 0.04 as a soft edge on every analytic light */ },
+  studio: {
+    floorAlbedo: 0.86, floorReflect: 0.06, blackBeyondZ: 4.0, shadowMin: 0.34,
+    overhead: 2.4, upperLeft: { i: 3.0, az: -55, el: 38, w: 28, h: 22 }, panel: [86, 57], flags: { az: 75, w: 14 },
+    rim: { hex: '#2AA597', az: 149, el: 24, w: 6, h: 32, i: 1.4 },
+    glint: { widthDeg: 2, i: 6, tiltDeg: 40, azFrom: -35, azTo: 25 },
+  },
+  blob: { radius: 0.62, breathe: 0.03, breatheFrames: 90, noise: 0.05, noiseFreq: 1.15, squash: 0.10, stretch: 2.4 },
+  smin: { kStart: 0.35, kEnd: 0.1 },
+  timeline: {
+    squash: [72, 84],                     // 1.2 to 1.4 s: squash 10%
+    stretch: [84, 105],                   // stretch 2.4x wide (eased), bead chain fades in over beadFade
+    beadFade: [95, 108], bead: [96, 123],
+    pinch: 'auto', pinchStart: 111,       // neck break frame per neck (glyphs - 1 of them), or an explicit array
+    arcFrames: 16, overshoot: 0.07, partSpeed: 0.9,
+    launch: null,                         // optional per-droplet launch frames (>= the frame both its necks broke), e.g. [112, 124, 136, 148] to land the letters one after another
+    form: { start: 132, stagger: 3, dur: 24, puffy: 0.07, springHz: 1.6, springDecay: 6 },
+    meshFade: [198, 216, 264, 282],       // cross-fade to the real TextGeometry mesh (in, full, full, out)
+    glint: [198, 246],                    // glint strip sweep
+    swell: [288, 294, 309],               // 6-frame swell (start, peak, relaxed)
+    slumpEnd: 308, slump: 0.12, soften: [294, 312, 0.045], unform: [299, 318],
+    drain: [297, 337], merge: 'auto', mergeStart: 318, blob: [325, 337],
+    wobble: { amp: 0.14, damping: 0.25, hz: 2.4, taperFrames: [42, 60] },
+  },
+  camera: { fovDeg: 30, elevDeg: 6, orbitDeg: 7, orbitCenterFrame: 231, dolly: [[0, 5.6], [156, 7.2], [174, 7.2], [288, 6.95], [354, 5.6]] },
+  post: { bloomThreshold: 1.0, bloomStrength: 0.3, toneKnee: 0.9, vignette: 0.07, grain: 0.015 },
+  sound: {                                 // frames are VISUAL frames; the engine lands each hit on (F + 1) x 800
+    bars: [67, 157, 247, 337], barFrames: 90, kickBars: [0, 2, 3],
+    chords: [[61.735, [246.94, 293.66, 369.99]], [48.999, [196.0, 246.94, 293.66]], [55.0, [220.0, 277.18, 329.63]], [73.416, [293.66, 369.99, 440.0]]],
+    inhale: [66, 84], glide: [84, 112], glideHz: 190,
+    pinchNotes: [1174.7, 987.77, 880.0, 1318.5, 1479.98, 739.99, 1567.98, 1975.5, 659.26, 1760.0],
+    pourFrames: 'auto', pourDelay: 4, pourScale: [587.33, 659.26, 739.99, 880.0, 987.77, 1174.66, 1318.51, 1479.98, 1760.0, 1975.53],
+    ting: 200, tingHz: 1760, shimmerEnd: 245, swell: [288, 303], dripHz: [1975.5, 1479.98],
+    blupNotes: [220, 185, 164.81, 146.83, 130.81, 123.47, 110, 98], gloopHz: 110, slurpFrames: 11,
+    levels: { kick: -10.5, kickUnderGloop: -17.2, sub: -16, pad: -29.5, shaker: -28, inhale: -14, glide: -6,   /* inhale peak and glide crest share a sample: keep the noise low, the tone carries the 60 ms */ pinch: -14, pour: -11.5,
+              ting: -12, shimmer: -25, swell: -8.7, drip: -14, blup: -10, slurp: -22, gloop: -6.6 },
+  },
+};
+/* ======================================= DERIVED (do not edit) ======================================= */
+(function (C) {
+  try { const q = new URLSearchParams(location.search); if (q.has('size')) C.width = C.height = +q.get('size'); if (q.has('w')) C.width = +q.get('w'); if (q.has('h')) C.height = +q.get('h'); if (q.has('dolly')) { const k = +q.get('dolly'); C.camera.dolly = C.camera.dolly.map(([f, d]) => [f, d * k]); C.studio.blackBeyondZ *= k; /* ?dolly=1.75 for a 9:16 reframe: the black camera-side floor moves back with the camera */ } } catch (e) {}
+  const T = C.timeline, S = C.sound, glyphs = [...C.text].filter(ch => ch !== ' ');
+  C.NG = glyphs.length; if (C.NG < 2) throw new Error('liquid-chrome needs at least 2 glyphs');
+  const necks = C.NG - 1, mid = (necks - 1) / 2, byDist = [...Array(necks).keys()].sort((a, b) => Math.abs(b - mid) - Math.abs(a - mid) || a - b);
+  if (T.pinch === 'auto') { T.pinch = Array(necks); byDist.forEach((i, r) => { T.pinch[i] = T.pinchStart + r + (r === necks - 1 && necks > 2 ? 5 : 0); }); }   // outer necks first, the centre one last
+  if (T.merge === 'auto') { T.merge = Array(necks); [...byDist].reverse().forEach((i, r) => { T.merge[i] = Math.min(T.blob[1] - 1, T.mergeStart + 3 * r); }); }  // centre first
+  if (T.pinch.length !== necks || T.merge.length !== necks) throw new Error('pinch / merge need ' + necks + ' frames');
+  C.formFrames = glyphs.map((_, i) => T.form.start + i * T.form.stagger);
+  const pour = S.pourFrames === 'auto' ? C.formFrames.map(f => f + S.pourDelay) : S.pourFrames;
+  // ---- the score, built from the same frames ----
+  const L = S.levels, fps = C.fps, sec = f => f / fps, ev = [], panOf = (i, n) => n > 1 ? (i / (n - 1) * 2 - 1) * 0.6 : 0;
+  S.bars.forEach((F, b) => {
+    const [root, tones] = S.chords[b % S.chords.length];
+    if (S.kickBars.includes(b)) ev.push({ id: 'kick' + F, bus: 'bed', frame: F, voice: 'tone', gain: F === T.blob[1] ? L.kickUnderGloop : L.kick, pitch: { drop: [140, 46, 0.028] }, attack: 0.0015, decay: 0.16, len: 0.45 });
+    ev.push({ id: 'sub' + F, bus: 'bed', frame: F, voice: 'pad', gain: L.sub, notes: [root], detune: [0], partials: [[1, 1], [2, 0.12]], dur: sec(S.barFrames) + 0.45, attack: 0.04, release: 0.45, seed: 11 + b });
+    ev.push({ id: 'pad' + F, bus: 'bed', frame: F, voice: 'pad', gain: L.pad, notes: tones, detune: [-4, 4], dur: sec(S.barFrames) + 0.6, attack: 0.35, release: 0.6, lp: 1800, seed: 100 + b });
+  });
+  const lastMerge = Math.max(...T.merge), gl = T.blob[1];
+  const active = [[S.inhale[0], S.glide[1] + 14], [Math.min(...pour) - 4, Math.max(...pour) + 7], [S.ting - 4, S.shimmerEnd + 5], [S.swell[0] - 2, lastMerge + 5], [gl - S.slurpFrames, gl + 39]];
+  const busy = F => active.some(([a, b]) => { const g = ((F - a) % C.loopFrames + C.loopFrames) % C.loopFrames; return g <= b - a; });
+  C.shakers = []; for (let k = 0; k < C.loopFrames / 30; k++) { const F = (S.bars[0] + 15 + 30 * k) % C.loopFrames; if (!busy(F)) C.shakers.push(F); }
+  C.shakers.forEach((F, k) => ev.push({ id: 'shaker' + F, bus: 'bed', frame: F, voice: 'shaker', gain: L.shaker, pan: 0.3, seed: 500 + k }));
+  ev.push({ id: 'inhale', bus: 'hits', frame: S.inhale[1], voice: 'noise', gain: L.inhale, pre: sec(S.inhale[1] - S.inhale[0]), pow: 2.2, release: 0.012, filter: { type: 'bp', f: [500, 2400], q: 1.2 }, seed: 1 });
+  ev.push({ id: 'glide', bus: 'hits', frame: S.glide[0], voice: 'tone', gain: L.glide, pitch: { glide: [S.glideHz, S.glideHz * Math.pow(2, 1.25), sec(S.glide[1] - S.glide[0])] }, partials: [[1, 1], [2, 0.25]], attack: 0.003, len: 0.5, env: { cut: [0.9, 0.44, 0.49] } });
+  T.pinch.forEach((F, i) => { const f0 = S.pinchNotes[i % S.pinchNotes.length]; ev.push({ id: 'pinch' + i, bus: 'hits', frame: F, voice: 'tone', gain: L.pinch, pan: panOf(i, necks), pitch: { approach: [f0, 1.5 * f0, 0.015] }, attack: 0.0015, decay: 0.045, len: 0.25 }); });
+  pour.forEach((F, i) => { const p = S.pourScale[i % S.pourScale.length]; ev.push({ id: 'pour' + i, bus: 'hits', frame: F, voice: 'tone', gain: L.pour, pan: panOf(i, C.NG), pitch: { approach: [0.75 * p, p, 0.02] }, partials: [[1, 1], [2, 0.12]], attack: 0.002, decay: 0.07, len: 0.35 }); });
+  ev.push({ id: 'ting', bus: 'hits', frame: S.ting, voice: 'tone', gain: L.ting, pitch: S.tingHz, partials: [[1, 1, 1.4], [2.32, 0.5, 0.7], [4.25, 0.25, 0.35]], attack: 0.0012, len: 1.6 });   // partials under 8 kHz
+  ev.push({ id: 'shimmer', bus: 'hits', frame: S.ting, voice: 'texture', gain: L.shimmer, partials: [[3150, 1], [3730, 0.8], [4410, 0.7], [5290, 0.55], [6260, 0.4], [7380, 0.3]], dur: sec(S.shimmerEnd - S.ting) + 0.07, pan: -0.85, panTo: 0.85, seed: 777 });
+  { const atk = sec(S.swell[1] - S.swell[0]);
+    ev.push({ id: 'swell', bus: 'hits', frame: S.swell[1], voice: 'tone', gain: L.swell, pitch: { glideIn: [110, 110 * Math.pow(2, 0.58), atk] }, partials: [[1, 1], [2, 0.3]], attack: atk, decay: 0.12, len: 0.5 });
+    ev.push({ id: 'swellnoise', bus: 'hits', frame: S.swell[1], voice: 'noise', gain: L.swell - 6, pre: atk, pow: 2, release: 0.1, filter: { type: 'lp', f: [300, 2000], q: 0.7 }, seed: 3 }); }
+  S.dripHz.forEach((f0, k) => ev.push({ id: 'drip' + k, bus: 'hits', frame: T.slumpEnd, voice: 'tone', gain: L.drip, pan: k ? 0.25 : -0.2, pitch: { approach: [f0, 1.4 * f0, 0.01] }, attack: 0.001, decay: 0.04, len: 0.2 }));
+  [...new Set(T.merge)].sort((a, b) => a - b).forEach((F, k) => { const f0 = S.blupNotes[k % S.blupNotes.length]; ev.push({ id: 'blup' + F, bus: 'hits', frame: F, voice: 'tone', gain: L.blup, pan: [0.45, 0.6, -0.15, -0.5, 0.2, -0.3][k % 6], pitch: { drop: [1.6 * f0, f0, 0.012] }, partials: [[1, 1], [2, 0.15]], attack: 0.002, decay: 0.06, len: 0.3 }); });
+  ev.push({ id: 'slurp', bus: 'hits', frame: gl, voice: 'noise', gain: L.slurp, pre: sec(S.slurpFrames), pow: 1.8, release: 0.002, filter: { type: 'bp', f: [350, 1600], q: 3 }, seed: 4 });
+  ev.push({ id: 'gloop', bus: 'hits', frame: gl, voice: 'tone', gain: L.gloop, pitch: { wobble: [S.gloopHz, 0.05, T.wobble.hz, T.wobble.damping] },   // every harmonic cosine phase: the peak stays on the crest sample
+            partials: [[1, 1], [2, 0.2], [3, 0.08]], attack: 0.004, decay: 0.5, len: 1.2, am: { wobble: [0.3, T.wobble.hz, T.wobble.damping] } });
+  C.SCORE = { fps, loopFrames: C.loopFrames, sr: 48000, events: ev, master: { lufs: -14, ceilingDb: -1.2, maxGrDb: 1.5, level: [3, 6], levelTarget: 4.5 }, levelTargets: {} };
+  C.qaFrames = [...new Set([0, ...T.squash, T.stretch[1], ...T.pinch, ...C.formFrames, T.glint[0], Math.round((T.glint[0] + T.glint[1]) / 2), T.swell[1], T.slumpEnd, ...T.merge, gl, C.loopFrames - 1])].sort((a, b) => a - b);
+})(window.CONFIG);
+</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head><body>
+<!-- ===== shared scene GLSL (raymarch AND mesh pass). Constants arrive as #defines generated from CONFIG. ===== -->
+<script type="x-shader" id="scene">
+precision highp float; precision highp int; precision highp sampler2D;
+uniform sampler2D uSdf; uniform vec4 uTexRect; uniform vec2 uTexPx;
+uniform vec4 uBlob, uBlobS; uniform float uBlobW, uPhase;
+uniform vec4 uDrop[NG]; uniform vec4 uDropS[NG]; uniform vec4 uGOff[NG]; uniform vec4 uGR[NG]; uniform vec4 uGHome[NG]; uniform vec4 uGBox[NG];
+uniform float uNeckK[NG];
+uniform vec3 uCamPos; uniform float uGlintAz, uGlintI;
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+10.0)*x);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){
+  const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
+  vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+  vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
+  vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+  i=mod289(i);
+  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+  float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx;
+  vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);
+  vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);
+  vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+  vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
+  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+  vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
+  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+  p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
+  vec4 m=max(0.5-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
+  return 105.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+}
+float smin(float a,float b,float k){ if(k<=1e-5) return min(a,b); float h=max(k-abs(a-b),0.0)/k; return min(a,b)-h*h*k*0.25; }
+float sdEll(vec3 p, vec3 r){ float k0=length(p/r); float k1=length(p/(r*r)); return k0*(k0-1.0)/max(k1,1e-6); }
+float blobSDF(vec3 p){
+  vec3 q=p-uBlob.xyz; float d=sdEll(q, uBlob.w*uBlobS.xyz);
+  vec3 o=0.7*vec3(cos(uPhase), sin(uPhase), 0.0);          // the noise domain travels a circle: periodic in the loop
+  return d + uBlobS.w*snoise(q*NOISE_FREQ+o);
+}
+float dropSDF(int i, vec3 p){
+  vec3 q=p-uDrop[i].xyz; float r=uDrop[i].w; float a=uDropS[i].w;
+  if(a<=1.0005) return length(q)-r;
+  vec3 n=uDropS[i].xyz; float al=dot(q,n); float pe=length(q-al*n);
+  float ra=r*a, rp=r/sqrt(a);
+  float k0=length(vec2(al/ra, pe/rp)); float k1=length(vec2(al/(ra*ra), pe/(rp*rp)));
+  return k0*(k0-1.0)/max(k1,1e-6);
+}
+// cubic B-spline SDF lookup (4 bilinear taps): C1 distance, so mirror normals do not facet at texel edges
+vec4 texBicubic(vec2 uv){
+  vec2 st=uv*uTexPx-0.5; vec2 i=floor(st); vec2 f=st-i; vec2 f2=f*f, f3=f2*f;
+  vec2 w0=(-f3+3.0*f2-3.0*f+1.0)/6.0, w1=(3.0*f3-6.0*f2+4.0)/6.0, w2=(-3.0*f3+3.0*f2+3.0*f+1.0)/6.0, w3=f3/6.0;
+  vec2 g0=w0+w1, g1=w2+w3; vec2 h0=i-1.0+w1/g0, h1=i+1.0+w3/g1;
+  vec2 p0=(h0+0.5)/uTexPx, p1=(h1+0.5)/uTexPx;
+  return g0.y*(g0.x*texture(uSdf,p0)+g1.x*texture(uSdf,vec2(p1.x,p0.y)))+g1.y*(g0.x*texture(uSdf,vec2(p0.x,p1.y))+g1.x*texture(uSdf,p1));
+}
+float texD(vec2 xy, int ch){
+  vec2 uv=(xy-uTexRect.xy)/uTexRect.zw; vec2 lo=1.5/uTexPx; vec2 c=clamp(uv, lo, 1.0-lo);
+  vec4 s=texBicubic(c); float d=(ch==0)?s.r:s.g;
+  return d+length((uv-c)*uTexRect.zw);
+}
+float sdBox(vec3 p, vec3 b){ vec3 q=abs(p)-b; return length(max(q,0.0))+min(max(q.x,max(q.y,q.z)),0.0); }
+float glyphSDF(int i, vec3 p){
+  vec4 o=uGOff[i]; vec4 h=uGHome[i]; vec4 g=uGR[i];
+  vec3 q=p-vec3(o.xy,0.0); q.xy=h.xy+(q.xy-h.xy)/o.w; q.z/=o.w;
+  float soft=g.z, rr=g.x+soft;
+  float bb=sdBox(q-vec3(h.xy,0.0), vec3(uGBox[i].xy, HALF_D)+rr);    // cheap conservative bound far from the glyph
+  if(bb>0.04) return bb*o.w;
+  float d2=texD(q.xy, i-2*(i/2));
+  d2=max(d2, max(h.z-q.x, q.x-h.w));                                  // per-glyph slab (same-channel neighbours are 2 glyphs away)
+  vec2 w=vec2(d2+soft, abs(q.z)-max(HALF_D-soft,0.0));
+  return (min(max(w.x,w.y),0.0)+length(max(w,0.0))-rr)*o.w;          // rounded extrusion = TextGeometry(height, bevel)
+}
+float mapObj(vec3 p){
+  if(uBlobW>=0.9999) return blobSDF(p);
+  float f=1e9;
+  for(int i=0;i<NG;i++){
+    float K=uGR[i].y; float d;
+    if(K>=0.9999) d=glyphSDF(i,p); else { d=dropSDF(i,p); if(K>0.0001) d=mix(d, glyphSDF(i,p), K); }
+    if(i==0) f=d; else f=smin(f,d,uNeckK[i-1]);
+  }
+  if(uBlobW>0.0001) f=mix(f, blobSDF(p), uBlobW);
+  return f;
+}
+vec3 calcNormal(vec3 p){
+  const float h=0.0011; const vec2 k=vec2(1.0,-1.0);
+  return normalize(k.xyy*mapObj(p+k.xyy*h)+k.yyx*mapObj(p+k.yyx*h)+k.yxy*mapObj(p+k.yxy*h)+k.xxx*mapObj(p+k.xxx*h));
+}
+float traceObj(vec3 ro, vec3 rd, float t0s){
+  vec3 inv=1.0/(rd+sign(rd)*1e-7+vec3(1e-9)); vec3 t0=(BMIN-ro)*inv, t1=(BMAX-ro)*inv;
+  vec3 tn3=min(t0,t1), tf3=max(t0,t1); float tn=max(max(tn3.x,tn3.y),tn3.z), tf=min(min(tf3.x,tf3.y),tf3.z);
+  if(tf<max(tn,0.0)) return 1e9;
+  float t=max(tn,t0s);
+  for(int i=0;i<220;i++){ float d=mapObj(ro+rd*t); if(d<0.00025*(1.0+t)) return t; t+=d*0.8; if(t>tf) break; }
+  return 1e9;
+}
+float escapeT(vec3 ro, vec3 rd){          // secondary rays first step out of the shell they start in (no self-hit specks)
+  float t=0.0;
+  for(int i=0;i<10;i++){ float d=mapObj(ro+rd*t); if(d>0.002) break; t+=max(0.003,0.003-d); }
+  return t;
+}
+float boxAE(float az, float el, float caz, float cel, float haz, float hel, float s){
+  float daz=mod(az-caz+180.0,360.0)-180.0; float d=max(abs(daz)-haz, abs(el-cel)-hel); return 1.0-smoothstep(-s,s,d);
+}
+// analytic studio in azimuth/elevation; azimuth 0 = toward the camera's home position (+z), positive = camera right (+x)
+vec3 env(vec3 d){
+  float az=degrees(atan(d.x,d.z)); float el=degrees(asin(clamp(d.y,-1.0,1.0)));
+  const float S=EDGE_SOFT;
+  float back=smoothstep(40.0,120.0,abs(az));
+  float base=mix(0.16,0.72,back)*mix(1.0,0.30,smoothstep(0.0,65.0,el));
+  base*=1.0-boxAE(az,el,0.0,0.0,PANEL_HAZ,PANEL_HEL,S);                                         // black camera-side panel
+  base*=1.0-max(boxAE(az,el,-FLAG_AZ,22.0,FLAG_HW,38.0,S), boxAE(az,el,FLAG_AZ,22.0,FLAG_HW,38.0,S)); // black flags L/R
+  vec3 c=vec3(base);
+  if(d.y>0.05){ vec2 tp=d.xz/d.y; float sb=1.0-smoothstep(-0.02,0.02,max(abs(tp.x)-0.55,abs(tp.y+0.05)-0.38)); c=mix(c,vec3(OVERHEAD_I),sb); }
+  c=mix(c,vec3(UL_I),boxAE(az,el,UL_AZ,UL_EL,UL_HW,UL_HH,S));
+  c=mix(c,RIM_I*RIM,boxAE(az,el,RIM_AZ,RIM_EL,RIM_HW,RIM_HH,0.6));
+  if(uGlintI>0.0){
+    float daz=mod(az-uGlintAz+180.0,360.0)-180.0;
+    float dl=daz*GLINT_C-el*GLINT_S;
+    c+=uGlintI*(1.0-smoothstep(GLINT_HW*0.6,GLINT_HW*1.4,abs(dl)))*(1.0-smoothstep(50.0,65.0,abs(el)));
+  }
+  return c;
+}
+float softShadow(vec3 ro){
+  float res=1.0, t=0.02;
+  for(int i=0;i<40;i++){ float h=mapObj(ro+vec3(0.0,t,0.0)); res=min(res,3.5*h/t); t+=clamp(h,0.025,0.2); if(res<0.002||t>1.9) break; }
+  return clamp(res,0.0,1.0);
+}
+float aoFloor(vec3 p){
+  float occ=0.0, sca=1.0;
+  for(int i=0;i<5;i++){ float h=0.03+0.11*float(i); float d=mapObj(p+vec3(0.0,h,0.0)); occ+=(h-d)*sca; sca*=0.72; }
+  return clamp(1.0-1.5*occ,0.0,1.0);
+}
+vec3 floorBasic(vec3 p, vec3 rd){
+  float sh=1.0, ao=1.0;
+  if(abs(p.x)<BMAX.x+1.0&&abs(p.z)<2.4){ sh=softShadow(p); ao=aoFloor(p); }
+  vec3 c=vec3(FLOOR_ALB)*mix(SHADOW_MIN,1.0,sh)*ao;
+  c*=1.0-smoothstep(BLACK_Z-0.15,BLACK_Z+0.15,p.z);                                 // black beyond z (camera side)
+  float dist=length(p.xz-uCamPos.xz);
+  return mix(c, env(normalize(vec3(rd.x,0.0,rd.z))), smoothstep(8.0,26.0,dist));
+}
+vec3 chromeShade(vec3 p, vec3 n, vec3 rd, int maxB, float off){
+  vec3 col=vec3(0.0), thr=vec3(1.0);
+  for(int b=0;b<BOUNCES;b++){
+    float c=clamp(dot(n,-rd),0.0,1.0); thr*=vec3(F0)+(1.0-F0)*pow(1.0-c,5.0);   // Schlick fresnel
+    vec3 r=reflect(rd,n); vec3 ro=p+n*off; off=0.003;
+    float tO=traceObj(ro,r,escapeT(ro,r)); float tF=(r.y<0.0)?(FLOOR_Y-ro.y)/r.y:1e9;
+    if(tO<tF&&tO<1e8){ if(b>=maxB-1){ col+=thr*env(r); break; } p=ro+r*tO; n=calcNormal(p); rd=r; continue; }
+    if(tF<1e8){ col+=thr*floorBasic(ro+r*tF,r); break; }
+    col+=thr*env(r); break;
+  }
+  return col;
+}
+vec3 radiance(vec3 ro, vec3 rd){
+  float tO=traceObj(ro,rd,0.0); float tF=(rd.y<0.0)?(FLOOR_Y-ro.y)/rd.y:1e9;
+  if(tO<tF&&tO<1e8){ vec3 p=ro+rd*tO; return chromeShade(p,calcNormal(p),rd,BOUNCES,0.003); }
+  if(tF<1e8){
+    vec3 p=ro+rd*tF; vec3 c=floorBasic(p,rd);
+    vec3 r=reflect(rd,vec3(0.0,1.0,0.0)); float t2=traceObj(p+vec3(0.0,0.001,0.0),r,0.0);
+    vec3 rc; if(t2<1e8){ vec3 q=p+r*t2; rc=chromeShade(q,calcNormal(q),r,BOUNCES-1,0.003);} else rc=env(r);
+    return c+FLOOR_REFL*rc*(1.0-smoothstep(BLACK_Z-0.15,BLACK_Z+0.15,p.z));
+  }
+  return env(rd);
+}
+</script>
+<script type="x-shader" id="fsVert">in vec3 position; void main(){ gl_Position=vec4(position.xy,0.0,1.0); }</script>
+<script type="x-shader" id="rayFrag">
+uniform vec2 uRes, uJitter; uniform vec3 uCamR, uCamU, uCamF; uniform float uTanHalf;
+out vec4 o;
+void main(){
+  vec2 ndc=(gl_FragCoord.xy+uJitter)/uRes*2.0-1.0;
+  vec3 rd=normalize(uCamF+ndc.x*uTanHalf*(uRes.x/uRes.y)*uCamR+ndc.y*uTanHalf*uCamU);
+  o=vec4(radiance(uCamPos,rd),1.0);
+}
+</script>
+<script type="x-shader" id="meshVert">
+precision highp float;
+uniform mat4 modelMatrix, viewMatrix, projectionMatrix;
+in vec3 position; in vec3 normal; out vec3 vW; out vec3 vN;
+void main(){ vec4 w=modelMatrix*vec4(position,1.0); vW=w.xyz; vN=mat3(modelMatrix)*normal; gl_Position=projectionMatrix*viewMatrix*w; }
+</script>
+<script type="x-shader" id="meshFrag">
+uniform float uMeshW; in vec3 vW; in vec3 vN; out vec4 o;
+void main(){
+  vec3 rd=normalize(vW-uCamPos); vec3 n=normalize(vN); if(dot(n,rd)>0.0) n=normalize(n-2.0*dot(n,rd)*rd);
+  o=vec4(chromeShade(vW,n,rd,BOUNCES,0.006),uMeshW);                  // same chrome GLSL; reflections traced into the SDF scene
+}
+</script>
+<script type="x-shader" id="depthFrag">precision highp float; out vec4 o; void main(){ o=vec4(0.0); }</script>
+<script type="x-shader" id="bakeFrag">
+precision highp float; precision highp int; precision highp sampler2D;
+uniform sampler2D uSeg; uniform int uN0, uN; uniform vec4 uRect; uniform vec2 uPx; out vec4 o;
+// exact distance to the extracted glyph polylines + crossing-parity sign, per channel (even glyphs R, odd glyphs G)
+void main(){
+  vec2 p=uRect.xy+gl_FragCoord.xy/uPx*uRect.zw;
+  float d0=1e9, d1=1e9; bool in0=false, in1=false;
+  for(int i=0;i<16384;i++){
+    if(i>=uN) break;
+    vec4 s=texelFetch(uSeg, ivec2(i%1024, i/1024), 0); vec2 a=s.xy, b=s.zw;
+    vec2 pa=p-a, ba=b-a; float h=clamp(dot(pa,ba)/dot(ba,ba),0.0,1.0); float d=length(pa-ba*h);
+    bool cr=((a.y>p.y)!=(b.y>p.y)) && (p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x);
+    if(i<uN0){ d0=min(d0,d); if(cr) in0=!in0; } else { d1=min(d1,d); if(cr) in1=!in1; }
+  }
+  float s0=in0?-d0:d0, s1=in1?-d1:d1;
+  o=vec4(s0, s1, min(s0,s1), 1.0);
+}
+</script>
+<script type="x-shader" id="accFrag">precision highp float; uniform sampler2D uSrc; uniform float uWgt; out vec4 o; void main(){ o=vec4(texelFetch(uSrc, ivec2(gl_FragCoord.xy), 0).rgb*uWgt, uWgt); }</script>
+<script type="x-shader" id="downFrag">
+precision highp float; uniform sampler2D uSrc; uniform vec2 uSrcPx; uniform vec2 uDstPx; uniform int uPrefilter; uniform float uThresh; out vec4 o;
+vec3 bp(vec3 c){ if(uPrefilter==0) return c; float L=max(max(c.r,c.g),c.b); return c*max(L-uThresh,0.0)/max(L,1e-4); }
+void main(){
+  vec2 uv=gl_FragCoord.xy/uDstPx; vec2 t=1.0/uSrcPx;
+  vec3 c=bp(texture(uSrc,uv+t*vec2(-1,-1)).rgb)+bp(texture(uSrc,uv+t*vec2(1,-1)).rgb)+bp(texture(uSrc,uv+t*vec2(-1,1)).rgb)+bp(texture(uSrc,uv+t*vec2(1,1)).rgb);
+  o=vec4(c*0.25,1.0);
+}
+</script>
+<script type="x-shader" id="upFrag">
+precision highp float; uniform sampler2D uLow; uniform sampler2D uCur; uniform vec2 uLowPx; uniform vec2 uDstPx; out vec4 o;
+void main(){
+  vec2 uv=gl_FragCoord.xy/uDstPx; vec2 t=1.0/uLowPx; vec3 s=vec3(0.0);
+  s+=texture(uLow,uv+t*vec2(-1,-1)).rgb+texture(uLow,uv+t*vec2(1,-1)).rgb+texture(uLow,uv+t*vec2(-1,1)).rgb+texture(uLow,uv+t*vec2(1,1)).rgb;
+  s+=2.0*(texture(uLow,uv+t*vec2(0,-1)).rgb+texture(uLow,uv+t*vec2(0,1)).rgb+texture(uLow,uv+t*vec2(-1,0)).rgb+texture(uLow,uv+t*vec2(1,0)).rgb);
+  s+=4.0*texture(uLow,uv).rgb;
+  o=vec4(s/16.0+texture(uCur,uv).rgb,1.0);
+}
+</script>
+<script type="x-shader" id="finalFrag">
+precision highp float; precision highp int;
+uniform sampler2D uAcc; uniform sampler2D uBloom; uniform vec2 uRes; uniform int uFrame; uniform float uBloomStrength, uBloomNorm, uKnee, uVig, uGrain; out vec4 o;
+uint pcg(uint v){ uint s=v*747796405u+2891336453u; uint w=((s>>((s>>28u)+4u))^s)*277803737u; return (w>>22u)^w; }
+float tone(float x){ return x<=uKnee ? x : uKnee+(1.0-uKnee)*(1.0-exp(-(x-uKnee)/(1.0-uKnee))); }   // linear to the knee, C1 soft shoulder
+float oetf(float x){ return x<=0.0031308 ? 12.92*x : 1.055*pow(x,1.0/2.4)-0.055; }
+void main(){
+  vec2 uv=gl_FragCoord.xy/uRes;
+  vec3 c=texelFetch(uAcc, ivec2(gl_FragCoord.xy), 0).rgb + uBloomStrength*uBloomNorm*texture(uBloom,uv).rgb;
+  c=vec3(tone(c.r),tone(c.g),tone(c.b));
+  float rr=length(uv-0.5)/0.70710678; c*=1.0-uVig*rr*rr;
+  c=vec3(oetf(clamp(c.r,0.0,1.0)),oetf(clamp(c.g,0.0,1.0)),oetf(clamp(c.b,0.0,1.0)));
+  uvec2 ip=uvec2(gl_FragCoord.xy); uint h1=pcg(ip.x+pcg(ip.y+pcg(uint(uFrame)+1013904223u))); uint h2=pcg(h1^0x9E3779B9u);
+  float g=float(h1)/4294967295.0+float(h2)/4294967295.0-1.0;                // triangular grain seeded by frame index only
+  o=vec4(clamp(c+uGrain*g,0.0,1.0),1.0);
+}
+</script>
+<script type="x-shader" id="blitFrag">precision highp float; uniform sampler2D uSrc; out vec4 o; void main(){ o=texelFetch(uSrc, ivec2(gl_FragCoord.xy), 0); }</script>
+<script type="module">
+import * as THREE from 'three';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+try {
+const C = window.CONFIG, T = C.timeline, FONT = C.font, ST = C.studio;
+const W = C.width, H = C.height, FPS = C.fps, NFR = C.loopFrames, LOOP = NFR / FPS, NG = C.NG;
+const sec = f => f / FPS;
+const SIZE = FONT.size, HEIGHT = FONT.height, BEVEL = FONT.bevel, TRACK = FONT.trackingEm * SIZE;
+const Y_T = C.layout.textY, Y_B = C.layout.blobY, Y_C = C.layout.camTargetY;
+const TEX_W = C.sdf.width, TEX_H = C.sdf.height;
+const qs = new URLSearchParams(location.search);
+const src = id => document.getElementById(id).textContent;
+const fl = x => { const s = String(+x); return s.includes('.') || s.includes('e') ? s : s + '.0'; };
+const lin = h => { const c = new THREE.Color(h); return `vec3(${fl(c.r)},${fl(c.g)},${fl(c.b)})`; };   // THREE.Color(hex) is linear sRGB
+
+/* ---------- easing (all pure functions of time) ---------- */
+const clamp01 = x => Math.min(1, Math.max(0, x));
+const mix = (a, b, t) => a + (b - a) * t;
+const sstep = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+const eio = t => { t = clamp01(t); return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+const eout = t => { t = clamp01(t); return 1 - Math.pow(1 - t, 3); };
+const ein = t => { t = clamp01(t); return t * t * t; };
+const backF = (x, c) => 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2);
+const backMax = c => { let m = 0; for (let i = 0; i <= 2000; i++) m = Math.max(m, backF(i / 2000, c)); return m; };
+let BACK_C; { let lo = 0, hi = 3; for (let k = 0; k < 60; k++) { const m = (lo + hi) / 2; if (backMax(m) > 1 + T.overshoot) hi = m; else lo = m; } BACK_C = (lo + hi) / 2; }
+const backOut = x => backF(clamp01(x), BACK_C);
+
+/* ---------- renderer (GPU) ---------- */
+const canvas = document.createElement('canvas'); document.body.appendChild(canvas);
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(1); renderer.setSize(W, H, true); renderer.autoClear = false;
+const gl = renderer.getContext(), dbg = gl.getExtension('WEBGL_debug_renderer_info');
+window.__gpu = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+renderer.extensions.get('OES_texture_float_linear');
+const rt = (w, h, type, depth = false, filter = THREE.LinearFilter) => new THREE.WebGLRenderTarget(w, h, { type, format: THREE.RGBAFormat, depthBuffer: depth, stencilBuffer: false, minFilter: filter, magFilter: filter, generateMipmaps: false, colorSpace: THREE.NoColorSpace });
+const rtScene = rt(W, H, THREE.HalfFloatType, true, THREE.NearestFilter), rtAcc = rt(W, H, THREE.FloatType), rtOut = rt(W, H, THREE.UnsignedByteType, false, THREE.NearestFilter);
+const LEVELS = 5, downs = [], ups = [];
+for (let l = 1; l <= LEVELS; l++) { const w = Math.max(1, Math.round(W / 2 ** l)), h = Math.max(1, Math.round(H / 2 ** l)); downs.push(rt(w, h, THREE.HalfFloatType)); ups.push(rt(w, h, THREE.HalfFloatType)); }
+const fsScene = new THREE.Scene(), fsCam = new THREE.Camera(), fsGeo = new THREE.BufferGeometry();
+fsGeo.setAttribute('position', new THREE.Float32BufferAttribute([-1, -1, 0, 3, -1, 0, -1, 3, 0], 3));
+const fsMesh = new THREE.Mesh(fsGeo); fsMesh.frustumCulled = false; fsScene.add(fsMesh);
+const mat = (frag, uniforms, extra = {}) => new THREE.RawShaderMaterial(Object.assign({ glslVersion: THREE.GLSL3, vertexShader: src('fsVert'), fragmentShader: frag, uniforms, depthTest: false, depthWrite: false }, extra));
+function pass(m, target) { fsMesh.material = m; renderer.setRenderTarget(target); renderer.render(fsScene, fsCam); }
+
+/* ---------- font, per-glyph layout, outlines ---------- */
+const font = await new FontLoader().loadAsync(FONT.url);
+const fscale = SIZE / font.data.resolution;
+const G = []; { let pen = 0; for (const ch of C.text) { const gd = font.data.glyphs[ch]; if (!gd) throw new Error('font has no glyph for ' + JSON.stringify(ch)); if (ch !== ' ') G.push({ ch, pen }); pen += gd.ha * fscale + TRACK; } }
+for (const g of G) {
+  g.contours = []; g.area = 0;
+  for (const s of font.generateShapes(g.ch, SIZE)) {
+    const { shape, holes } = s.extractPoints(FONT.curveSegments);           // the same extraction ExtrudeGeometry uses
+    g.contours.push(shape.map(p => [p.x, p.y])); g.area += Math.abs(THREE.ShapeUtils.area(shape));
+    for (const h of holes) { g.contours.push(h.map(p => [p.x, p.y])); g.area -= Math.abs(THREE.ShapeUtils.area(h)); }
+  }
+  let a = [1e9, 1e9, -1e9, -1e9]; for (const c of g.contours) for (const [x, y] of c) a = [Math.min(a[0], x), Math.min(a[1], y), Math.max(a[2], x), Math.max(a[3], y)];
+  g.lb = a;
+}
+const inkX = (g, k) => g.lb[k] + g.pen;
+for (let i = 1; i < G.length - 1; i++) if (FONT.opticalCenter.includes(G[i].ch)) {      // e.g. the period of "2.0": centred between the neighbours' ink
+  const p = G[i], want = (inkX(G[i - 1], 2) + inkX(G[i + 1], 0)) / 2; p.pen += want - (inkX(p, 0) + inkX(p, 2)) / 2; }
+let ink = [1e9, 1e9, -1e9, -1e9]; for (const g of G) ink = [Math.min(ink[0], inkX(g, 0)), Math.min(ink[1], g.lb[1]), Math.max(ink[2], inkX(g, 2)), Math.max(ink[3], g.lb[3])];
+const SHX = -(ink[0] + ink[2]) / 2, SHY = Y_T - (ink[1] + ink[3]) / 2;
+for (const g of G) { g.ox = g.pen + SHX; g.oy = SHY; g.x0 = g.lb[0] + g.ox; g.x1 = g.lb[2] + g.ox; g.y0 = g.lb[1] + g.oy; g.y1 = g.lb[3] + g.oy; g.cx = (g.x0 + g.x1) / 2; g.cy = (g.y0 + g.y1) / 2; g.hw = (g.x1 - g.x0) / 2; g.hh = (g.y1 - g.y0) / 2; }
+for (let i = 0; i < NG; i++) { const g = G[i], Lg = G[i - 2], Rg = G[i + 2]; g.lo = g.x0 - Math.min(0.16, Lg ? (g.x0 - Lg.x1) / 2 : 0.16); g.hi = g.x1 + Math.min(0.16, Rg ? (Rg.x0 - g.x1) / 2 : 0.16); }
+let RS = 1.0; for (let i = 0; i < NG - 1; i++) { const a = Math.sqrt(G[i].area / Math.PI), b = Math.sqrt(G[i + 1].area / Math.PI); RS = Math.min(RS, (G[i + 1].cx - G[i].cx - 0.062) / (a + b)); }
+for (const g of G) g.rho = RS * Math.sqrt(g.area / Math.PI);                 // droplet = disc of the glyph's area, scaled so parted drops keep k/2 apart
+const texW = Math.max(ink[2] - ink[0] + 0.5, (ink[3] - ink[1] + 0.3) * TEX_W / TEX_H), texRect = [-texW / 2, 0, texW, texW * TEX_H / TEX_W]; texRect[1] = Y_T - texRect[3] / 2;
+const halfX = Math.max(2.2, (ink[2] - ink[0]) / 2 + 0.5);
+const DEFS = [`#define NG ${NG}`, `#define FLOOR_Y ${fl(C.layout.floorY)}`, `#define F0 ${fl(C.chrome.F0)}`, `#define BOUNCES ${C.chrome.bounces}`, `#define HALF_D ${fl(HEIGHT / 2)}`,
+  `#define NOISE_FREQ ${fl(C.blob.noiseFreq)}`, `#define EDGE_SOFT ${fl(C.chrome.edgeSoftDeg)}`, `#define BMIN vec3(${fl(-halfX)},${fl(C.layout.floorY - 0.06)},-0.8)`, `#define BMAX vec3(${fl(halfX)},0.9,0.8)`,
+  `#define PANEL_HAZ ${fl(ST.panel[0] / 2)}`, `#define PANEL_HEL ${fl(ST.panel[1] / 2)}`, `#define FLAG_AZ ${fl(ST.flags.az)}`, `#define FLAG_HW ${fl(ST.flags.w / 2)}`,
+  `#define OVERHEAD_I ${fl(ST.overhead)}`, `#define UL_I ${fl(ST.upperLeft.i)}`, `#define UL_AZ ${fl(ST.upperLeft.az)}`, `#define UL_EL ${fl(ST.upperLeft.el)}`, `#define UL_HW ${fl(ST.upperLeft.w / 2)}`, `#define UL_HH ${fl(ST.upperLeft.h / 2)}`,
+  `#define RIM ${lin(ST.rim.hex)}`, `#define RIM_I ${fl(ST.rim.i)}`, `#define RIM_AZ ${fl(ST.rim.az)}`, `#define RIM_EL ${fl(ST.rim.el)}`, `#define RIM_HW ${fl(ST.rim.w / 2)}`, `#define RIM_HH ${fl(ST.rim.h / 2)}`,
+  `#define GLINT_HW ${fl(ST.glint.widthDeg / 2)}`, `#define GLINT_C ${fl(Math.cos(ST.glint.tiltDeg * Math.PI / 180))}`, `#define GLINT_S ${fl(Math.sin(ST.glint.tiltDeg * Math.PI / 180))}`,
+  `#define FLOOR_ALB ${fl(ST.floorAlbedo)}`, `#define FLOOR_REFL ${fl(ST.floorReflect)}`, `#define BLACK_Z ${fl(ST.blackBeyondZ)}`, `#define SHADOW_MIN ${fl(ST.shadowMin)}`].join('\n') + '\n';
+const SCENE = src('scene').replace('precision highp float; precision highp int; precision highp sampler2D;', 'precision highp float; precision highp int; precision highp sampler2D;\n' + DEFS);
+
+/* ---------- GPU bake of the SDF texture from the same outlines ---------- */
+const segs = [[], []];
+G.forEach((g, i) => { for (const c of g.contours) for (let k = 0; k < c.length; k++) { const a = c[k], b = c[(k + 1) % c.length]; const ax = a[0] + g.ox, ay = a[1] + g.oy, bx = b[0] + g.ox, by = b[1] + g.oy; if (Math.hypot(bx - ax, by - ay) > 1e-7) segs[i & 1].push(ax, ay, bx, by); } });
+const N0 = segs[0].length / 4, NS = N0 + segs[1].length / 4, rows = Math.ceil(NS / 1024);
+if (NS > 16384) throw new Error('too many outline segments for the bake: ' + NS);
+const segData = new Float32Array(1024 * rows * 4); segData.set(segs[0], 0); segData.set(segs[1], segs[0].length);
+const segTex = new THREE.DataTexture(segData, 1024, rows, THREE.RGBAFormat, THREE.FloatType); segTex.needsUpdate = true;
+const rtSdf = rt(TEX_W, TEX_H, THREE.HalfFloatType, false, THREE.LinearFilter);
+pass(mat(src('bakeFrag'), { uSeg: { value: segTex }, uN0: { value: N0 }, uN: { value: NS }, uRect: { value: new THREE.Vector4(...texRect) }, uPx: { value: new THREE.Vector2(TEX_W, TEX_H) } }), rtSdf);
+
+/* ---------- glyph meshes: TextGeometry per glyph, creased normals ---------- */
+const meshScene = new THREE.Scene(), meshes = [], V4 = () => new THREE.Vector4(), arr = () => [...Array(NG)].map(V4);
+const sceneUniforms = {
+  uSdf: { value: rtSdf.texture }, uTexRect: { value: new THREE.Vector4(...texRect) }, uTexPx: { value: new THREE.Vector2(TEX_W, TEX_H) },
+  uBlob: { value: V4() }, uBlobS: { value: V4() }, uBlobW: { value: 1 }, uPhase: { value: 0 },
+  uDrop: { value: arr() }, uDropS: { value: arr() }, uGOff: { value: arr() }, uGR: { value: arr() },
+  uGHome: { value: G.map(g => new THREE.Vector4(g.cx, g.cy, g.lo, g.hi)) }, uGBox: { value: G.map(g => new THREE.Vector4(g.hw, g.hh, 0, 0)) },
+  uNeckK: { value: new Array(NG).fill(0) }, uCamPos: { value: new THREE.Vector3() }, uGlintAz: { value: 0 }, uGlintI: { value: 0 },
+};
+const meshMat = new THREE.RawShaderMaterial({ glslVersion: THREE.GLSL3, vertexShader: src('meshVert'), fragmentShader: SCENE + src('meshFrag'),
+  uniforms: Object.assign({ uMeshW: { value: 0 } }, sceneUniforms), transparent: true, depthTest: true, depthWrite: false, depthFunc: THREE.EqualDepth,
+  blending: THREE.CustomBlending, blendSrc: THREE.SrcAlphaFactor, blendDst: THREE.OneMinusSrcAlphaFactor, blendSrcAlpha: THREE.ZeroFactor, blendDstAlpha: THREE.OneFactor });
+const depthMat = new THREE.RawShaderMaterial({ glslVersion: THREE.GLSL3, vertexShader: src('meshVert'), fragmentShader: src('depthFrag'), colorWrite: false, depthTest: true, depthWrite: true });
+for (const g of G) {
+  const geo = new TextGeometry(g.ch, { font, size: SIZE, height: HEIGHT, curveSegments: FONT.curveSegments, bevelEnabled: true, bevelThickness: BEVEL, bevelSize: BEVEL, bevelOffset: 0, bevelSegments: FONT.bevelSegments });
+  geo.translate(g.ox, g.oy, -(HEIGHT / 2));                                  // z-centred like the SDF extrusion
+  const m = new THREE.Mesh(toCreasedNormals(geo, C.chrome.creaseDeg * Math.PI / 180), depthMat); m.frustumCulled = false; meshScene.add(m); meshes.push(m);
+}
+const camera = new THREE.PerspectiveCamera(C.camera.fovDeg, W / H, 0.1, 100);
+
+/* ---------- timeline: every value is a pure function of wrapped time u in [0, LOOP) ---------- */
+const TB = T.pinch.map(sec), TM = T.merge.map(sec), NN = NG - 1, K0 = C.smin.kStart, K1 = C.smin.kEnd;
+const L = G.map((g, i) => Math.max(i > 0 ? TB[i - 1] : 0, i < NN ? TB[i] : 0, Array.isArray(T.launch) ? sec(T.launch[i]) : 0));   // a droplet launches when both its necks broke (T.launch[i] may hold it later: it drifts with the parted chain until its launch frame)
+const ARC_D = sec(T.arcFrames), V_PART = T.partSpeed, GC = 0.03, T0 = C.formFrames.map(sec), FORM_D = sec(T.form.dur);
+const kPinch = (i, u) => K0 - (K0 - K1) * sstep(TB[i] - 0.12, TB[i] + 0.06, u);
+const gPinch = (i, u) => kPinch(i, u) / 2 + V_PART * (u - TB[i]);              // gap == k/2 exactly on the pinch frame
+const sumRho = G.reduce((s, g) => s + g.rho, 0), idxN = [...Array(NN).keys()];
+const CHAIN_W = 2 * C.blob.radius * C.blob.stretch * 0.975, BEAD0 = sec(T.bead[0]), BEAD1 = sec(T.bead[1]);
+const B0 = (CHAIN_W - idxN.reduce((s, i) => s + gPinch(i, BEAD0), 0)) / (2 * sumRho);
+const bead = u => mix(B0, 1, sstep(BEAD0, BEAD1, u));
+function chainLayout(ext, gaps) { const x = [0]; for (let i = 0; i < NN; i++) x.push(x[i] + ext[i] + ext[i + 1] + gaps[i]); const c = ((x[0] - ext[0]) + (x[NN] + ext[NN])) / 2; return x.map(v => v - c); }
+const chainPinchX = u => chainLayout(G.map(g => bead(u) * g.rho), idxN.map(i => gPinch(i, u)));
+const P0 = G.map((g, i) => [chainPinchX(L[i])[i], Y_B]);
+function arcPos(i, u) { const s = clamp01((u - L[i]) / ARC_D), ex = backOut(s), ey = backOut(Math.min(1, s * 1.3)); return [P0[i][0] + (G[i].cx - P0[i][0]) * ex, P0[i][1] + (G[i].cy - P0[i][1]) * ey]; }
+const UNF0 = sec(T.unform[0]), UNF_D = sec(T.unform[1] - T.unform[0]), SW = T.swell.map(sec), SLUMP_E = sec(T.slumpEnd), SOF = [sec(T.soften[0]), sec(T.soften[1] - T.soften[0]), T.soften[2]];
+const DR0 = sec(T.drain[0]), DR1 = sec(T.drain[1]), BL0 = sec(T.blob[0]), BL1 = sec(T.blob[1]);
+const Kf = (i, u) => u < T0[i] ? 0 : (u < UNF0 ? eio((u - T0[i]) / FORM_D) : 1 - eio((u - UNF0) / UNF_D));
+const swell = u => u < SW[0] ? 0 : (u < SW[1] ? eout((u - SW[0]) / (SW[1] - SW[0])) : 1 - eio((u - SW[1]) / (SW[2] - SW[1])));
+const rBev = (i, u) => { const t = u - T0[i]; return (t < 0 ? T.form.puffy : BEVEL + (T.form.puffy - BEVEL) * Math.exp(-T.form.springDecay * t) * Math.cos(2 * Math.PI * T.form.springHz * t)) + 0.008 * swell(u); };
+const gScale = u => 1 + 0.035 * swell(u);
+const soften = u => SOF[2] * eio((u - SOF[0]) / SOF[1]);
+const slump = u => -T.slump * eio((u - SW[1]) / (SLUMP_E - SW[1]));
+const Ed = u => ein((u - DR0) / (DR1 - DR0));                                   // drain to the centre with ease-in
+const extD = (i, u) => mix(G[i].rho * (1 + 0.35 * Ed(u)), (G[i].hw + rBev(i, u)) * gScale(u), Kf(i, u));
+const GS = idxN.map(i => (G[i + 1].cx - G[i].cx) - extD(i, DR0) - extD(i + 1, DR0));
+const gDrain = (i, u) => u < TM[i] ? mix(GS[i], GC, ein((u - DR0) / (TM[i] - DR0))) : GC - 0.9 * (u - TM[i]);
+const kDrain = (i, u) => u < TM[i] - 0.1 ? 0 : (u < TM[i] ? 2 * GC * (u - (TM[i] - 0.1)) / 0.1 : Math.min(K0, 2 * GC + 2.0 * (u - TM[i])));
+const chainDrainRaw = u => chainLayout(G.map((g, i) => extD(i, u)), idxN.map(i => gDrain(i, u)));
+const DELTA = chainDrainRaw(DR0).map((x, i) => G[i].cx - x);
+const chainDrainX = u => chainDrainRaw(u).map((x, i) => x + DELTA[i] * (1 - sstep(DR0, DR0 + 0.4, u)));
+function dropPos(i, u) {
+  if (u >= DR0) { const x = chainDrainX(u)[i]; return [x, mix(G[i].cy + slump(u), Y_B, Ed(u))]; }
+  if (u >= L[i] + ARC_D) return [G[i].cx, G[i].cy + slump(u)];
+  if (u < L[i]) return [chainPinchX(u)[i], Y_B];
+  return arcPos(i, u);
+}
+const wrap = t => ((t % LOOP) + LOOP) % LOOP;
+const SQ0 = sec(T.squash[0]), SQ1 = sec(T.squash[1]), STR1 = sec(T.stretch[1]), BF0 = sec(T.beadFade[0]), BF1 = sec(T.beadFade[1]);
+const WB = T.wobble, WT0 = sec(WB.taperFrames[0]), WT1 = sec(WB.taperFrames[1]);
+const DOLLY = C.camera.dolly.map(([f, d]) => [sec(f), d]);
+const dolly = u => { for (let k = 0; k < DOLLY.length - 1; k++) if (u < DOLLY[k + 1][0]) return mix(DOLLY[k][1], DOLLY[k + 1][1], eio((u - DOLLY[k][0]) / (DOLLY[k + 1][0] - DOLLY[k][0]))); return DOLLY[DOLLY.length - 1][1]; };
+if (Math.abs(dolly(0) - dolly(LOOP - 1e-9)) > 1e-6) console.warn('camera dolly is not periodic: frame 0 and the loop end differ');
+const GL0 = sec(T.glint[0]), GL1 = sec(T.glint[1]), MF = T.meshFade.map(sec), FORM0 = T0[0];
+function state(t) {
+  const u = wrap(t), S = { u };
+  let sx = 1, sy = 1, sz = 1;
+  if (u >= SQ0 && u < SQ1) { const q = C.blob.squash * eio((u - SQ0) / (SQ1 - SQ0)); sy = 1 - q; sx = sz = 1 / Math.sqrt(sy); }
+  else if (u >= SQ1 && u < BL0) { const st = eio((u - SQ1) / (STR1 - SQ1)), y0 = 1 - C.blob.squash; sx = mix(1 / Math.sqrt(y0), C.blob.stretch, st); sy = mix(y0, 1 / Math.sqrt(C.blob.stretch), st); sz = 1 / (sx * sy); }
+  if (u >= BL0 && u < BL1) { const p = eout((u - BL0) / (BL1 - BL0)), y1 = 1 - WB.amp; sx = mix(1.8, 1 / Math.sqrt(y1), p); sy = mix(0.55, y1, p); sz = 1 / (sx * sy); }
+  const tau = wrap(u - BL1);                                                      // the wobble runs on wrapped time, through frame 0
+  if (tau < WT1 && !(u >= SQ0 && u < BL1)) { const A = -WB.amp * Math.pow(WB.damping, tau * 2 * WB.hz) * Math.cos(2 * Math.PI * WB.hz * tau) * (1 - sstep(WT0, WT1, tau)); sy *= 1 + A; sx /= Math.sqrt(1 + A); sz /= Math.sqrt(1 + A); }
+  S.blob = [0, Y_B, 0, C.blob.radius * (1 + C.blob.breathe * Math.sin(2 * Math.PI * u / sec(C.blob.breatheFrames)))]; S.blobS = [sx, sy, sz, C.blob.noise];
+  S.blobW = u < BF0 ? 1 : u < BF1 ? 1 - eio((u - BF0) / (BF1 - BF0)) : u < BL0 ? 0 : u < BL1 ? ein((u - BL0) / (BL1 - BL0)) : 1;
+  S.phase = 2 * Math.PI * u / LOOP;
+  S.drop = []; S.dropS = []; S.gOff = []; S.gR = []; S.neck = [];
+  for (let i = 0; i < NG; i++) {
+    const p = dropPos(i, u); let r = G[i].rho, a = 1, dir = [1, 0, 0];
+    if (u < DR0 && u < L[i] + ARC_D) r = bead(u) * G[i].rho; else if (u >= DR0) r = G[i].rho * (1 + 0.35 * Ed(u));
+    if ((u >= L[i] && u < L[i] + ARC_D) || u >= DR0) { const h = 1 / 960, p1 = dropPos(i, u + h), p0 = dropPos(i, u - h), v = [(p1[0] - p0[0]) / (2 * h), (p1[1] - p0[1]) / (2 * h)], sp = Math.hypot(v[0], v[1]);
+      if (sp > 1e-4) { dir = [v[0] / sp, v[1] / sp, 0]; a = 1 + Math.min(u >= DR0 ? 0.3 : 0.5, (u >= DR0 ? 0.12 : 0.3) * sp); } }   // stretch along the velocity
+    S.drop.push([p[0], p[1], 0, r]); S.dropS.push([...dir, a]);
+    const off = u >= DR0 ? [p[0] - G[i].cx, p[1] - G[i].cy] : [0, slump(u)];
+    S.gOff.push([off[0], off[1], 0, gScale(u)]); S.gR.push([rBev(i, u), Kf(i, u), soften(u), 0]);
+  }
+  for (let i = 0; i < NN; i++) S.neck.push(u < FORM0 ? kPinch(i, u) : u < DR0 ? K1 * (1 - Math.min(S.gR[i][1], S.gR[i + 1][1])) : kDrain(i, u));
+  const d = dolly(u), az = C.camera.orbitDeg * Math.PI / 180 * Math.sin(2 * Math.PI * (u - sec(C.camera.orbitCenterFrame)) / LOOP), el = C.camera.elevDeg * Math.PI / 180;
+  S.cam = [d * Math.cos(el) * Math.sin(az), Y_C + d * Math.sin(el), d * Math.cos(el) * Math.cos(az)];
+  const gs = clamp01((u - GL0) / (GL1 - GL0));
+  S.glintAz = mix(ST.glint.azFrom, ST.glint.azTo, eio(gs)); S.glintI = (u >= GL0 && u <= GL1) ? ST.glint.i * sstep(0, 0.12, gs) * (1 - sstep(0.88, 1, gs)) : 0;
+  S.meshW = sstep(MF[0], MF[1], u) * (1 - sstep(MF[2], MF[3], u));
+  return S;
+}
+window.__state = state;
+window.__layout = () => ({ glyphs: G.map(g => ({ ch: g.ch, cx: g.cx, cy: g.cy, hw: g.hw, area: g.area, rho: g.rho })), texRect, RS, B0, BACK_C, N0, NS, L, TB, TM, pinch: T.pinch, merge: T.merge });
+
+/* ---------- passes ---------- */
+const rayMat = mat(SCENE + src('rayFrag'), Object.assign({ uRes: { value: new THREE.Vector2(W, H) }, uJitter: { value: new THREE.Vector2() }, uCamR: { value: new THREE.Vector3() }, uCamU: { value: new THREE.Vector3() }, uCamF: { value: new THREE.Vector3() }, uTanHalf: { value: Math.tan(C.camera.fovDeg / 2 * Math.PI / 180) } }, sceneUniforms));
+const accMat = mat(src('accFrag'), { uSrc: { value: rtScene.texture }, uWgt: { value: 0.25 } }, { blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneFactor, blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneFactor, blendEquation: THREE.AddEquation });
+const downMat = mat(src('downFrag'), { uSrc: { value: null }, uSrcPx: { value: new THREE.Vector2() }, uDstPx: { value: new THREE.Vector2() }, uPrefilter: { value: 0 }, uThresh: { value: C.post.bloomThreshold } });
+const upMat = mat(src('upFrag'), { uLow: { value: null }, uCur: { value: null }, uLowPx: { value: new THREE.Vector2() }, uDstPx: { value: new THREE.Vector2() } });
+const finalMat = mat(src('finalFrag'), { uAcc: { value: rtAcc.texture }, uBloom: { value: ups[0].texture }, uRes: { value: new THREE.Vector2(W, H) }, uFrame: { value: 0 }, uBloomStrength: { value: C.post.bloomStrength }, uBloomNorm: { value: 1 / LEVELS },
+  uKnee: { value: C.post.toneKnee }, uVig: { value: C.post.vignette }, uGrain: { value: C.post.grain } });
+const blitMat = mat(src('blitFrag'), { uSrc: { value: rtOut.texture } });
+const JIT = [[-0.375, -0.125], [0.125, -0.375], [0.375, 0.125], [-0.125, 0.375]];   // rotated grid, quarter-pixel spacing (px)
+
+function setScene(S, jit) {
+  const U = sceneUniforms;
+  U.uBlob.value.set(...S.blob); U.uBlobS.value.set(...S.blobS); U.uBlobW.value = S.blobW; U.uPhase.value = S.phase;
+  for (let i = 0; i < NG; i++) { U.uDrop.value[i].set(...S.drop[i]); U.uDropS.value[i].set(...S.dropS[i]); U.uGOff.value[i].set(...S.gOff[i]); U.uGR.value[i].set(...S.gR[i]); }
+  for (let i = 0; i < NN; i++) U.uNeckK.value[i] = S.neck[i];
+  U.uGlintAz.value = S.glintAz; U.uGlintI.value = S.glintI;
+  camera.position.set(...S.cam); camera.up.set(0, 1, 0); camera.lookAt(0, Y_C, 0); camera.updateMatrixWorld(true);
+  camera.updateProjectionMatrix(); camera.projectionMatrix.elements[8] = 2 * jit[0] / W; camera.projectionMatrix.elements[9] = 2 * jit[1] / H;   // same offset as the raymarch
+  const e = camera.matrixWorld.elements;
+  rayMat.uniforms.uCamR.value.set(e[0], e[1], e[2]); rayMat.uniforms.uCamU.value.set(e[4], e[5], e[6]); rayMat.uniforms.uCamF.value.set(-e[8], -e[9], -e[10]);
+  U.uCamPos.value.set(...S.cam); rayMat.uniforms.uJitter.value.set(...jit);
+  meshMat.uniforms.uMeshW.value = S.meshW;
+}
+function subframe(t, fps, wgt) {
+  const f = t * fps, k = Math.min(3, Math.max(0, Math.floor((f - Math.floor(f + 1e-6)) * 4 + 1e-6)));   // jitter slot = floor(frac(t*fps)*4)
+  const S = state(t); setScene(S, JIT[k]);
+  renderer.setRenderTarget(rtScene); renderer.setClearColor(0x000000, 1); renderer.clear(true, true, false);
+  pass(rayMat, rtScene);
+  if (S.meshW > 0) {
+    renderer.setRenderTarget(rtScene); renderer.clear(false, true, false);
+    for (const m of meshes) m.material = depthMat; renderer.render(meshScene, camera);
+    for (const m of meshes) m.material = meshMat; renderer.render(meshScene, camera);
+  }
+  accMat.uniforms.uWgt.value = wgt; pass(accMat, rtAcc);
+}
+function post(frameIndex, nf) {
+  let srcT = rtAcc.texture, sw = W, sh = H;
+  for (let l = 0; l < LEVELS; l++) { const d = downs[l]; downMat.uniforms.uSrc.value = srcT; downMat.uniforms.uSrcPx.value.set(sw, sh); downMat.uniforms.uDstPx.value.set(d.width, d.height); downMat.uniforms.uPrefilter.value = l === 0 ? 1 : 0; pass(downMat, d); srcT = d.texture; sw = d.width; sh = d.height; }
+  let low = downs[LEVELS - 1];
+  for (let l = LEVELS - 2; l >= 0; l--) { upMat.uniforms.uLow.value = low.texture; upMat.uniforms.uCur.value = downs[l].texture; upMat.uniforms.uLowPx.value.set(low.width, low.height); upMat.uniforms.uDstPx.value.set(ups[l].width, ups[l].height); pass(upMat, ups[l]); low = ups[l]; }
+  finalMat.uniforms.uFrame.value = ((frameIndex % nf) + nf) % nf; pass(finalMat, rtOut);
+  renderer.setViewport(0, 0, W, H); pass(blitMat, null);
+}
+function clearAcc() { renderer.setRenderTarget(rtAcc); renderer.setClearColor(0x000000, 0); renderer.clear(true, false, false); }
+/* renderAt(t): one jittered sample (slot from frac(t*fps)), full post.  renderFrame(n, fps): 4 subframes at n/fps + k/(4 fps), averaged in linear HDR before post. */
+window.renderAt = t => { clearAcc(); subframe(t, FPS, 1); post(Math.floor(t * FPS + 1e-6), NFR); };
+window.renderFrame = (n, fps = FPS) => { const nf = Math.round(LOOP * fps), nw = ((n % nf) + nf) % nf; clearAcc(); for (let k = 0; k < 4; k++) subframe(nw / fps + k / (4 * fps), fps, 0.25); post(nw, nf); };
+const pix = new Uint8Array(W * H * 4), top = new Uint8Array(W * H * 4), RB = W * 4;
+function readTop() { renderer.readRenderTargetPixels(rtOut, 0, 0, W, H, pix); for (let y = 0; y < H; y++) top.set(pix.subarray((H - 1 - y) * RB, (H - y) * RB), y * RB); return top; }
+const b64 = u8 => new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result.slice(fr.result.indexOf(',') + 1)); fr.readAsDataURL(new Blob([u8])); });
+const sha = async u8 => [...new Uint8Array(await crypto.subtle.digest('SHA-256', u8))].map(b => b.toString(16).padStart(2, '0')).join('');
+window.captureFrame = (n, fps) => { window.renderFrame(n, fps); return b64(readTop()); };     // RGBA, top row first
+window.__hashFrame = (n, fps) => { window.renderFrame(n, fps); return sha(readTop()); };
+window.__hashAt = t => { window.renderAt(t); return sha(readTop()); };
+window.__probeSdf = (x, y) => { const px = new Float32Array(4); renderer.readRenderTargetPixels(rtSdf, Math.floor((x - texRect[0]) / texRect[2] * TEX_W), Math.floor((y - texRect[1]) / texRect[3] * TEX_H), 1, 1, px); return [...px]; };
+
+window.renderFrame(sec(T.meshFade[1]) * FPS | 0); window.renderFrame(0); renderer.readRenderTargetPixels(rtOut, 0, 0, 1, 1, new Uint8Array(4));   // warm-up compiles every program
+window.__ready = true;
+if (qs.has('t')) window.renderAt(parseFloat(qs.get('t')));                 // ?t=: one frame, never start requestAnimationFrame
+else if (!qs.has('norun')) { let n = 0; const loop = () => { window.renderFrame(n); n = (n + 1) % NFR; requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+} catch (err) { window.__error = String(err && err.stack || err); console.error(window.__error); window.__ready = true; }
+</script>
+</body></html>

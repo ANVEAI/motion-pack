@@ -17,8 +17,11 @@ python3 tools/check_ids.py                      # 0 unresolved
 python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tests
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs
 node camera/tests/camera.test.mjs
+node physics/tests/test-player.mjs
 python3 tools/count.py --write                  # refresh the README table if counts changed
 ```
+
+If you touched `blender/`: `bash blender/tests/smoke.sh` (3 frames per recipe at 480p; needs Blender 5.2.x, set `BLENDER` if it is not on `PATH`), and regenerate its manifest with `python3 blender/tools/make_manifest.py`. If you touched `physics/`: re-bake with `cd physics && npm install && node bake.mjs ...` and commit the table.
 
 If you touched anything visual, also run the browser tests on a machine with a hardware GPU:
 

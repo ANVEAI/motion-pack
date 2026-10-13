@@ -156,6 +156,27 @@ for m in re.finditer(r"'(objects/[a-z0-9-]+)': r\(.*?\[([^\]]*)\], '([^']*)', '(
 add('objects', 'objects/characters/poses', 'poses + emotions + acts', ['character', 'acts', 'emotions'], desc='45 film poses + 6 generic, 6 emotions (emote), timed acts (doubleTake, shrug, wave, point, cheer, facepalm, slowBurn, slump, jumpScare, danceBob)',
     thumb=rel(os.path.join(PACK, 'objects/qa/cast-r2/sheet.jpg')), file='objects/characters/poses.js')
 
+# ---------- blender: photoreal plates (blender/manifest.json; previews committed in blender/previews/, renders are not) ----------
+BM = os.path.join(PACK, 'blender', 'manifest.json')
+if os.path.exists(BM):
+    bm = json.load(open(BM))
+    plates = bm.get('showcase', {})
+    for rid, rec in bm['recipes'].items():
+        mine = [(k, v) for k, v in sorted(plates.items()) if v.get('recipe') == rid]
+        thumb = next((rel(os.path.join(PACK, v['preview'])) for _, v in mine if v.get('preview')), None)
+        if not thumb:   # a recipe outside the showcase: its 480p smoke-test still
+            thumb = rel(os.path.join(PACK, 'blender', 'previews', rid.split('/', 1)[1] + '-smoke.jpg'))
+        sheets = [rel(os.path.join(PACK, v['sheet'])) for _, v in mine if v.get('sheet')]
+        timing = '; '.join(f"{k}: {v['mean_s_per_frame']} s/frame at {v['size'][0]}x{v['size'][1]} {v['engine']}" for k, v in mine if v.get('mean_s_per_frame'))
+        dfl = rec.get('defaults', {})
+        mod = 'blender/recipes/' + re.sub(r'([A-Z])', r'_\1', rid.split('/', 1)[1].replace('art.', 'art_')).lower() + '.py'
+        add('blender', rid, rec.get('name', rid), ['blender', 'photoreal', 'plate', 'loop' if rec.get('loop') else '', 'art-loop' if rid.startswith('blender/art.') else 'product'],
+            desc=rec.get('doc', ''), thumb=thumb,
+            params={k: {kk: v[kk] for kk in ('type', 'default', 'opts', 'min', 'max', 'doc') if kk in v} for k, v in rec.get('params', {}).items()},
+            meta={k: v for k, v in {'loop': rec.get('loop'), 'defaults': f"{dfl.get('seconds')} s, {'x'.join(map(str, dfl.get('size', [])))}, {dfl.get('engine')}",
+                  'showcase render': timing or None, 'contact sheets': ', '.join(s for s in sheets if s) or None, 'cli': rec.get('cli')}.items() if v not in (None, '')},
+            use=rec.get('use'), avoid=rec.get('avoid'), file=mod if os.path.exists(os.path.join(PACK, mod)) else 'blender/run.py')
+
 # ---------- templates ----------
 TPL = {'ad': ('Ad 15/30 s: hook, problem, product, proof, CTA', 'out/ad-15.mp4', 'out/sheet.jpg'),
        'film-scene': ('Animated short-film scene', 'out/film-scene-wide.mp4', 'out/film-scene-wide-sheet.jpg'),

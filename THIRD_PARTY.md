@@ -21,6 +21,10 @@ CC0 (`LICENSE-MEDIA`). This file lists everything else the pack touches, and how
 | Google Chrome / Chromium | the user's install | vendor terms |
 | ffmpeg | the user's install | LGPL-2.1+ or GPL, depending on the build |
 | numpy, scipy, numba, soundfile (with libsndfile), Pillow, matplotlib, pytest | `pip install -r requirements.txt` | BSD-3-Clause, BSD-3-Clause, BSD-2-Clause, BSD-3-Clause (libsndfile LGPL-2.1), MIT-CMU, matplotlib licence (PSF-style), MIT |
+| Blender 5.2.x (optional, `blender/`) | the user's install; the scripts run inside it (`blender -b --factory-startup -P blender/run.py`) | GNU GPL (Blender's own licence). The `blender/` scripts import Blender's Python API and are MIT (GPL-compatible), see `blender/LICENSE`; renders are CC0 media |
+| fontTools (optional, `blender/` 3D title) | the user's Python, to cut a static weight from the variable font at run time (never redistributed) | MIT |
+| Rapier, `@dimforge/rapier3d-compat` 0.21.0 (optional, `physics/`) | `cd physics && npm install` (pinned in `physics/package-lock.json`); build time only, never loaded by a page | Apache-2.0 |
+| SVGO 4.1.0 (optional) | `npx svgo@4.1.0 --config scripts/svgo.config.mjs ...` to clean fetched icon sets | MIT |
 
 ## 3. Formulae and ideas (re-implemented, no code or data copied)
 
@@ -46,7 +50,10 @@ in `sfx/library_ext/` (gitignored).
 | Kenney audio: Interface Sounds, Impact Sounds, UI Audio, Digital Audio, Sci-fi Sounds, RPG Audio, Music Jingles | kenney.nl/assets/... (zip SHA-256 pinned) | CC0 1.0 (attribution not required; do not use the Kenney logo) |
 | OwlishMedia Sound Effects Pack | opengameart.org/content/sound-effects-pack (zip SHA-256 pinned) | CC0 1.0 |
 
-Run `scripts/fetch-external.sh --list` for the exact URLs. Category names used when importing audio:
+Run `scripts/fetch-external.sh --list` for the exact URLs. Optional, for the icon sets: clean them for draw-on animation with
+`npx svgo@4.1.0 --config scripts/svgo.config.mjs -r -f external/<set>/svg -o external/<set>/optimized` (for Fluent Emoji the SVGs
+are in `external/fluentui-emoji/flat`). The config keeps one drawable element per stroke; see its header for the measurements.
+Category names used when importing audio:
 `kenney_interface`, `kenney_ui`, `kenney_digital`, `kenney_impact`, `kenney_scifi`, `kenney_rpg`, `kenney_jingles`, `owlish_foley`.
 
 ## 5. Trademarks

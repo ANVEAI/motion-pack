@@ -36,6 +36,10 @@ jobs:
         run: node transitions/tools/lint.mjs
       - name: camera maths
         run: node camera/tests/camera.test.mjs
+      - name: physics table player (the baked table is committed; no npm install)
+        run: node physics/tests/test-player.mjs
+      - name: blender scripts compile (no Blender on CI; renders are tested locally with blender/tests/smoke.sh)
+        run: python3 -m compileall -q blender
       - name: README counts are current
         run: python3 tools/count.py --check
       - name: catalog media all resolve

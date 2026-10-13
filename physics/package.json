@@ -1,0 +1,10 @@
+{
+  "name": "motion-pack-physics",
+  "private": true,
+  "type": "module",
+  "description": "Build-time physics baking for motion-pack: run `npm install` here once, then `node bake.mjs --spec examples/scatter-drop.spec.json --out examples/scatter-drop.table.json`.",
+  "license": "MIT",
+  "devDependencies": {
+    "@dimforge/rapier3d-compat": "0.21.0"
+  }
+}

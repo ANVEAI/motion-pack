@@ -1,0 +1,92 @@
+# Verdicts: every variant measured (13 Oct 2026)
+
+66 variants across 4 lanes. Gates: G1 same twice, G2 order independent, G3 cold equals warm, G4 renders through the production path (✓ pass, ✗ fail, – not run or not applicable). ms/frame is only comparable within a lane (shared GPU). Quality is 1–5, judged at 100 %.
+
+Verdict counts: ADOPT 7, ADOPT-FOR 14, KEEP-CURRENT 10, REJECT 35.
+
+## 3D, post, physics (`a-3d`)
+
+| repo | variant | package @ version | licence | G1/G2/G3/G4 | ms/frame | Q | verdict | why |
+|---|---|---|---|---|---|---|---|---|
+| Three.js | A0-kit-baseline | three 0.160.0 | MIT | ✓/✓/✓/✓ | 44.5 | 4 | KEEP-CURRENT | the kit's own chain is the look reference, the cheapest of the lot and passes every gate; nothing tested beats it |
+| React Postprocessing (pmndr… | A1-pp | postprocessing 6.36.7 | Zlib | ✓/✓/✓/– | 53.6 | 3 | REJECT | as a replacement for the kit's bloom and DoF it needs two custom effects and per-version re-tuning to get back to the kit's look, and it is not cheap… |
+| React Postprocessing (pmndr… | A1-pp-restore | postprocessing 6.36.7 | Zlib | ✓/✓/✓/– | 61.1 | 4 | REJECT | reaches near parity only with custom effects on top, so it buys nothing over the kit's chain |
+| React Postprocessing (pmndr… | A1-pp-nodof | postprocessing 6.36.7 | Zlib | ✓/✓/✓/– |  | 3 | REJECT | diagnostic variant: shows the DoF effect is what softens text |
+| React Postprocessing (pmndr… | A1-pp-smaa | postprocessing 6.36.7 | Zlib | ✓/✓/✓/– | 14.0 | 2 | REJECT | SMAA is 3.5x cheaper than the 4-subframe jitter but loses soft shadows and motion blur as well as edge quality |
+| React Postprocessing (pmndr… | A1-pp-smaa-msaa4 | postprocessing 6.36.7 | Zlib | –/–/–/– |  | 3 | REJECT | edge quality is fine with MSAA 4, but a single sample drops the soft shadow and the motion blur that the kit's jitter gives for about 3x the time |
+| React Postprocessing (pmndr… | A1-pp-agx | postprocessing 6.36.7 | Zlib | –/–/–/– |  | 2 | REJECT | native tone mappers fight the kit's hex-faithful grade |
+| React Postprocessing (pmndr… | A1-pp-lut | postprocessing 6.36.7 | Zlib | –/–/–/– |  | 3 | REJECT | superseded by A4, where the same LUT sits on the kit's own chain |
+| Three.js | A2-addons | three (examples/jsm/postproce… 0.160.0 | MIT | ✓/✓/✓/✓ | 68.9 | 3 | REJECT | same look as the kit at a higher time per frame (BokehPass re-renders the scene for depth) with softer silhouettes and no new capability |
+| Three.js | A2-addons-smaa | three (examples/jsm/postproce… 0.160.0 | MIT | ✓/✓/✓/– | 12.6 | 2 | REJECT | same loss as the pp SMAA variant, with more aliasing |
+| Three.js | A3-three186 | three 0.186.1 | MIT | ✓/✓/✓/– | 42.0 | 3 | KEEP-CURRENT | do not bump three now: drift is far below the 40 dB bar and nothing in r186 improves our plates |
+| Three.js | A3c-three186-trim | three 0.186.1 | MIT | ✓/✓/✓/✗ | 42.0 | 4 | KEEP-CURRENT | a bump is a one-off re-grade (+7.3 % exposure, retire patchShadows) plus re-verifying every shipped spot, for no gain |
+| React Postprocessing (pmndr… | A1b-pp639-three186 | postprocessing 6.39.5 | Zlib | ✓/✓/✓/– |  | 3 | REJECT | conditional variant (drift was not negligible), run as a probe: shows pp minor versions change semantics silently |
+| React Postprocessing (pmndr… | A4-kit-plus-pp-tail | postprocessing 6.36.7 | Zlib | ✓/✓/✓/✓ | 47.6 | 4 | ADOPT-FOR per-spot LUT grade or a one-o… | 14 added lines, no change to the kit's output when off, seek-safe, one 0.6 MB ESM dependency |
+| Three.js | A2-v1-vanilla | three + postprocessing (pmndr… three 0.160.0… | MIT (three), Zlib… | ✓/✓/✓/✓ | 124.6 | 4 | ADOPT-FOR single-sample plates and quic… | Passes G1-G4 with the kit builders unmodified, 11 ms a frame, no bundler, 53 lines of variant code; needs two shader-chunk patches (kit shadows, 21-l… |
+| React Three Fiber | A2-v2-r3f | @react-three/fiber 9.8.1 | MIT | ✓/✓/✓/✓ | 120.2 | 4 | KEEP-CURRENT | R3F reproduces the vanilla frame to the last bit and passes every gate, but costs 6x the installed deps, a bundler, 2.4x the variant code and about t… |
+| Drei | A2-v2-r3f/drei | @react-three/drei 10.7.9 | MIT | ✓/✓/✓/✓ |  | 4 | ADOPT-FOR cherry-pick (port without Rea… | Most helpers duplicate the kit or three/addons, and Float, Sparkles, AccumulativeShadows and MeshTransmissionMaterial fail G3 or worse (Math.random, … |
+| React Postprocessing | A2-v2-r3f/react-postprocessing | @react-three/postprocessing 3.1.2 | MIT (postprocessi… | ✓/✓/✓/✓ |  | 4 | REJECT | Redundant with pmndrs postprocessing used directly (same pixels); inside R3F it builds its pipeline over several async cycles, hard-codes blend and m… |
+| Rapier | A3-P1-bake | @dimforge/rapier3d-compat 0.21.0 | Apache-2.0 | ✓/✓/✓/✓ | 501.3 | 4 | ADOPT-FOR multi-body physical motion (s… | A baked table is a pure function of t, so the real kit page passes G1-G3 bit-exactly and G4 cleanly for a 0.13 s bake and a 387 KB table, while naive… |
+| React Three Rapier (with Re… | A3-P2 | @react-three/rapier 2.2.0 | MIT (repo LICENSE… | ✓/✗/✓/– | 79.5 | 2 | REJECT | Fails G2 by construction (no rewind) and runs one engine step off nominal on most frames; the pinned engine (0.19.2) also gives a different, toppled … |
+| React Three Rapier (with Re… | A3-P2b | @react-three/rapier 2.2.0 | MIT (repo LICENSE… | ✓/✓/✓/– | 83.6 | 3 | REJECT | Seekable and bit-identical (remount + replay: 116-121 ms cold seek, 36 ms median rewind) but it duplicates the P1 table at 114 MB node_modules, 3.3 M… |
+| React Three Rapier (with Re… | A3-P2-default60 | @react-three/rapier 2.2.0 | MIT (repo LICENSE… | ✓/✗/✓/– | 84.3 | 1 | REJECT | timeStep 1/60 (library default) destroys the scene: card-card depth 7x thickness, cards 0.068 u under the desk, box off the desk. |
+
+## 2D engines (`b-2d`)
+
+| repo | variant | package @ version | licence | G1/G2/G3/G4 | ms/frame | Q | verdict | why |
+|---|---|---|---|---|---|---|---|---|
+| GSAP | B1-gsap | gsap (+ SplitText, MorphSVGPl… 3.15.0 | GSAP standard 'no… | ✓/✓/✓/✓ | 168.9 | 4 | ADOPT | Default 2D authoring engine in HyperFrames: 33 lines for the whole shot, native adapter, G1 to G4 pass with two documented settings (force3D false, w… |
+| Anime.js | B2-animejs | animejs 4.5.0 | MIT | ✓/✓/✓/✓ | 152.6 | 4 | ADOPT-FOR small DOM/SVG flourishes wher… | Works and is tiny, but v4 timelines need explicit initial states, a rewind before backward seeks, a warm pass and accessible:false; GSAP stays the de… |
+| Motion | B3-motion | motion 13.4.5 (14.x … | MIT; splitText, A… | ✓/✓/✓/✓ | 184.0 | 5 | REJECT | Built for realtime UI: no path morph, opacity always runs as native WAAPI (flaky screenshots), function segments need full-span hacks, no HyperFrames… |
+| Motion Canvas | B4-motion-canvas | @motion-canvas/core 3.17.2 | MIT (core, 2d, ui… | ✓/✓/✓/– | 232.0 | 5 | KEEP-CURRENT | Passes G1-G3 and matches the DOM baseline to 51-56 dB on all 120 frames, but costs a Vite build, about 106 MB of deps, 254 scene lines against 65, th… |
+| Remotion | B5-remotion | remotion 4.0.529 | Remotion License … | ✓/✓/✓/– | 31.7 | 3 | KEEP-CURRENT | Deterministic and baseline-exact (G1-G3 bit-identical, B6 parity when the morph is structure-matched), but it is a second renderer, not an HF adapter… |
+| ANVE motion pack | B6-baseline | pack type/ease.js + type/pres… pack as of 20… | owned | ✓/✓/✓/✓ | 168.1 | 5 | KEEP-CURRENT | Lowest-risk engine and the correctness reference; stays as the component layer (type, gfx, captions) while GSAP is used for authoring. |
+
+## Lottie, Rive, SVGO (`c-vector`)
+
+| repo | variant | package @ version | licence | G1/G2/G3/G4 | ms/frame | Q | verdict | why |
+|---|---|---|---|---|---|---|---|---|
+| lottie-web (baseline that d… | C1-lottie-web-svg | lottie-web 5.13.0 | MIT | ✓/✗/✓/✓ | 87.0 | 4 | ADOPT | Default Lottie player for HyperFrames: works through the native adapter with 3 lines; its only gate miss is G2 at 84.9 dB (1 to 3 pixels on a 22 %-al… |
+| lottie-web (baseline) | C1-lottie-web-canvas | lottie-web 5.13.0 | MIT | ✓/✓/✓/✓ | 89.0 | 3 | REJECT | Same speed as the SVG renderer, strictly fewer features, and it renders a BLANK video in HyperFrames unless its container has an explicit pixel size … |
+| dotLottie Web | C1-dotlottie-web | @lottiefiles/dotlottie-web 0.80.0 | MIT (ThorVG insid… | ✓/✓/✓/✓ | 83.7 | 4 | ADOPT-FOR | Use it for .lottie bundles, effect-heavy files (drop shadow, fill) and when byte-reproducible renders matter; needs a 7-line hf-seek bridge because t… |
+| dotLottie Web | C1-dotlottie-web-hf-native-adapte… | @lottiefiles/dotlottie-web 0.80.0 | MIT | –/–/–/✗ |  | 1 | REJECT | The integration the HyperFrames docs describe (register the player on window.__hfLottie) renders blank for current dotlottie-web; use the hf-seek bri… |
+| dotLottie Web | C1-dotlottie-web-webgl | @lottiefiles/dotlottie-web (d… 0.80.0 | MIT | ✓/✓/✓/– | 80.7 | 4 | REJECT | Passes all three gates headless under ANGLE-Metal but adds a GPU raster dependency for no visible gain; the software build is bit-stable and fast eno… |
+| Rive Web | C2-rive-advanced-linear-persist | @rive-app/canvas + @rive-app/… 2.43.1 | MIT (runtime). Te… | ✓/✓/✓/✓ | 83.1 | 4 | REJECT | Seeks deterministically (instance.time = 0; advance(t); apply(1); artboard.advance(0)) and renders in HyperFrames through a 15-line hf-seek bridge, b… |
+| Rive Web | C2-rive-advanced-linear-fresh | @rive-app/canvas + @rive-app/… 2.43.1 | MIT (runtime). Te… | ✓/✓/✓/– | 82.0 | 4 | REJECT | Same as the persist recipe (a new artboard + animation instance per seek: 0.6 ms of JS per seek); also deterministic. |
+| Rive Web | C2-rive-advanced-linear-settime | @rive-app/canvas + @rive-app/… 2.43.1 | MIT (runtime). Te… | ✓/✓/✓/– | 88.8 | 2 | REJECT | Do not set time directly; always advance(t) from 0 so loops wrap. |
+| Rive Web | C2-rive-advanced-sm-replay | @rive-app/canvas + @rive-app/… 2.43.1 | MIT (runtime). Te… | ✓/✓/✓/– | 81.1 | 3 | REJECT | Pure function of t only for a fixed canonical step; changing the output fps or step changes the picture, and cost grows with t. |
+| Rive Web | C2-rive-advanced-sm-incremental | @rive-app/canvas + @rive-app/… 2.43.1 | MIT (runtime). Te… | ✓/✗/✗/– | 84.1 | 1 | REJECT | Fails G2 and G3 by design; never drive a Rive state machine this way in a render. |
+| Rive Web | C2-rive-highlevel-scrub | @rive-app/canvas + @rive-app/… 2.43.1 | MIT (runtime). Te… | ✓/✓/✓/– | 82.0 | 4 | REJECT | rive.scrub() works and passes, but both scrub() and the animations parameter are deprecated and will be removed in the next major; the default Runtim… |
+| SVGO | C3-svgo-default-preset | svgo 4.1.0 | MIT | ✓/✓/✓/✓ |  | 1 | REJECT | Saves the most bytes (-40.9 % raw) but breaks stroke-by-stroke draw-on and visibly moves Fluent outlines. |
+| SVGO | C3-svgo-mergePaths-off-only | svgo 4.1.0 | MIT | –/–/–/– |  | 3 | REJECT | Not enough: convertPathData(makeArcs) also has to go (ablation of all 33 preset plugins). |
+| SVGO | C3-svgo-recommended | svgo 4.1.0 | MIT | ✓/✓/✓/✓ |  | 5 | ADOPT | Run once per icon set at import time (not per render): preset-default with mergePaths, convertShapeToPath and makeArcs off, plus prefixIds. |
+
+## covers, encoding, video, audio (`d-output`)
+
+| repo | variant | package @ version | licence | G1/G2/G3/G4 | ms/frame | Q | verdict | why |
+|---|---|---|---|---|---|---|---|---|
+| Satori | D1a-satori-resvg | satori + @resvg/resvg-js 0.33.5 + 2.6.… | MPL-2.0 + MPL-2.0 | ✓/✓/✓/– | 319.4 | 4 | ADOPT-FOR browserless runtimes (no Chro… | Close to Chrome and deterministic, but 17 of 50 probed CSS features are silently ignored and 5 throw, five workarounds were needed, and our pipeline … |
+| Satori (Chrome reference) | D1b-html-chrome-screenshot | puppeteer-core + /Application… puppeteer-cor… | Apache-2.0 + Chro… | ✓/✓/✓/✓ | 202.1 | 5 | ADOPT | Fastest warm, highest fidelity, zero workarounds, one authoring model for covers and video comps; add --disable-gpu when byte-identical stills matter. |
+| Satori (PIL reference) | D1c-pil | Pillow + numpy + fontTools (h… Pillow 10.1.0… | HPND + BSD + MIT | ✓/✓/✓/– | 549.3 | 4 | KEEP-CURRENT (pixel compositing only, n… | Eight times the code of the HTML route for the same picture; every CSS behaviour (wrap, tracking, kerning, clipping, shadows) is re-implemented by ha… |
+| FFmpeg | D2a-x264-2pass-slow-animation | ffmpeg libx264 (make_upload_c… ffmpeg 8.0.1,… | GPL-3.0-or-later … | –/–/–/✓ | 71.4 | 5 | KEEP-CURRENT | Wins H.264 quality per byte at both rates (+1.0 dB / +0.6 VMAF at 4.6 MB, +2.5 dB / +3.3 VMAF at 1.34 MB over Mediabunny at equal size), speed is not… |
+| FFmpeg | D2b-x264-1pass-veryfast | ffmpeg libx264 ffmpeg 8.0.1 | GPL-3.0-or-later … | –/–/–/– | 10.3 | 3 | REJECT | 1.7 dB worse than the two-pass recipe at the same size for 3 s instead of 21 s; nothing to gain over Mediabunny's browser encoders either. |
+| FFmpeg | D2c-ffmpeg-h264_videotoolbox | ffmpeg h264_videotoolbox ffmpeg 8.0.1 | GPL-3.0-or-later … | –/–/–/– | 6.7 | 3 | REJECT | Duplicates Mediabunny's hardware path with a bigger file and lower quality than x264. |
+| Mediabunny | D2d-mediabunny-avc-hw | mediabunny (Conversion, avc, … mediabunny 1.… | MPL-2.0 | –/–/–/– | 5.2 | 3 | ADOPT-FOR in-browser instant drafts and… | 14x faster than x264 slow (1.6 s vs 21.4 s, 190 fps decode+encode) but 1.0-2.5 dB below it at equal bytes; fine for previews, not for final upload co… |
+| Mediabunny | D2e-mediabunny-avc-sw | mediabunny (avc, software Ope… mediabunny 1.… | MPL-2.0 | –/–/–/– | 13.6 | 3 | ADOPT-FOR same niche when no hardware e… | Better VMAF than the hardware path at 5 MB, still 1.0 dB below x264 slow. |
+| Mediabunny | D2f-mediabunny-vp9 | mediabunny (vp9 software via … mediabunny 1.… | MPL-2.0 | –/–/–/– | 7.7 | 4 | REJECT | No platform we post to needs VP9 and AV1 beats it at the same speed. |
+| Mediabunny | D2g-mediabunny-av1 | mediabunny (av1 software via … mediabunny 1.… | MPL-2.0 | –/–/–/– | 7.7 | 4 | ADOPT-FOR web AV1 renditions (site hero… | AV1 in 2.3 s with 16% fewer bytes than x264 at equal VMAF, but upload targets want H.264. |
+| FFmpeg | D2h-ffmpeg-svtav1 | ffmpeg libsvtav1 -preset 6 ffmpeg 8.0.1,… | GPL-3.0-or-later … | –/–/–/– | 45.0 | 5 | ADOPT-FOR AV1 finals if AV1 is ever req… | Highest quality per byte of everything measured (+0.9 dB over Mediabunny AV1) at 13.5 s, already in our ffmpeg. |
+| FFmpeg | D2i-ffmpeg-vp9 | ffmpeg libvpx-vp9 good cpu-us… ffmpeg 8.0.1 | GPL-3.0-or-later … | –/–/–/– | 95.8 | 4 | REJECT | Dominated by SVT-AV1 and x264 on size and time. |
+| Mediabunny (control) | D3a-hyperframes-native-video | hyperframes render (framework… hyperframes 0… | see hyperframes p… | ✓/–/–/✓ | 65.0 | 5 | ADOPT | Frame-exact (300/300, offsets 90/90) and deterministic, so Mediabunny adds nothing to HyperFrames comps. |
+| Mediabunny (control) | D3b-video-element-currentTime-exa… | <video> + currentTime = N/fps Chrome 154 | n/a | ✓/✓/✓/– | 30.2 | 1 | REJECT | Silently wrong frames while passing G1-G3. |
+| Mediabunny (control) | D3c-video-element-half-frame | <video> + currentTime = (N+0.… Chrome 154 | n/a | ✓/✓/✓/– | 29.5 | 4 | REJECT | Correct but a workaround for a plain page; HyperFrames or Mediabunny do it properly. |
+| Mediabunny (control) | D3d-video-element-rvfc | <video> + requestVideoFrameCa… Chrome 154 | n/a | –/–/–/– | 182.2 | 4 | REJECT | 6x slower than Mediabunny for the same pixels. |
+| Mediabunny | D3e-mediabunny-canvassink | mediabunny CanvasSink mediabunny 1.… | MPL-2.0 | ✓/✓/✓/✓ | 21.7 | 5 | ADOPT-FOR video as a texture/canvas sou… | Exact, order-independent random access at ~22 ms; not useful inside HyperFrames, which owns <video>. |
+| Mediabunny | D3f-mediabunny-videosamplesink | mediabunny VideoSampleSink mediabunny 1.… | MPL-2.0 | ✓/✓/✓/– | 24.0 | 5 | ADOPT-FOR same niche (lower level than … | Exact and order-independent; use when you want the VideoFrame itself. |
+| Howler.js | D4a-howler-in-hyperframes | howler 2.2.4 | MIT | –/–/–/✗ |  | 1 | REJECT | Sound played through Howler never reaches the rendered MP4 and is not a pure function of t. |
+| Howler.js | D4b-hf-audio-tag | hyperframes <audio id data-st… hyperframes 0… | see hyperframes p… | –/–/–/✓ |  | 5 | ADOPT | Sample-accurate placement and no gain change for simple beds, SFX and voice-over, with nothing to install. |
+| Howler.js | D4c-offline-mixer-master | motion-pack mixer.py -> maste… mixer.py (rea… | owned | –/–/–/✓ |  | 5 | ADOPT | Already our finishing path: sample-exact, loudness-measured, survives the HyperFrames AAC encode within 0.2 dB. |
+| FFmpeg | D5a-ffmpeg-8.0.1-current | ffmpeg (Homebrew 8.0.1_4) 8.0.1 | GPL-3.0-or-later … | –/–/–/✓ |  | 5 | KEEP-CURRENT | Nothing measured in this lane beat it for finals; its gaps are covered elsewhere (DOM/PNG captions, standalone vmaf). |
+| FFmpeg | D5b-ffmpeg-full-libass-libvmaf | ffmpeg-full (Homebrew, keg-on… 9.0.2 (formul… | GPL-3.0-or-later;… | –/–/–/– |  |  | REJECT (not worth adding now) | Captions are DOM clips in HyperFrames or PNG alpha tracks, and VMAF already works through the installed standalone vmaf CLI. |
+| FFmpeg | D5c-standalone-vmaf-cli | vmaf CLI 3.0.0 (Homebrew libv… 3.0.0, model … | BSD-2-Clause-Plus… | –/–/–/– |  | 5 | ADOPT-FOR QC of encodes and codec/prese… | Gives VMAF today with zero new installs; y4m temp files are large, so delete them after each run. |
+

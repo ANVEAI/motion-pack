@@ -27,6 +27,11 @@ objects/qa/*/log.txt
 objects/tools/tmp/
 **/tmp/chrome-*/
 
+# --- Blender renders (blender/tests/showcase.sh writes ./showcase; smoke and determinism tests write blender/tests/out) ---
+/showcase/
+blender/tests/out/
+blender/.cache/
+
 # --- third-party sets fetched by scripts/fetch-external.sh (never committed) ---
 external/
 
@@ -35,7 +40,8 @@ AUDIT.md
 
 # --- tooling ---
 node_modules/
-package-lock.json
+# only the root lockfile (from optional `npm i --no-save` test tooling); physics/package-lock.json is committed
+/package-lock.json
 __pycache__/
 *.pyc
 .pytest_cache/

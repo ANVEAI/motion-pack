@@ -20,6 +20,8 @@
 #   python3 sfx/tools/catalog_import.py external/kenney/ui-audio --category kenney_ui     (writes sfx/library_ext/, gitignored)
 # Category names used by the maintainers: kenney_interface, kenney_ui, kenney_digital, kenney_impact, kenney_scifi,
 # kenney_rpg, kenney_jingles, owlish_foley.
+# Optional, icon sets only: clean the SVGs for draw-on animation (keeps one drawable element per stroke):
+#   npx svgo@4.1.0 --config scripts/svgo.config.mjs -r -f external/<set>/svg -o external/<set>/optimized
 # Needs: bash, curl, unzip, and sha256sum or shasum. Exit status 1 on any download or checksum failure.
 set -euo pipefail
 
@@ -30,7 +32,7 @@ while [ $# -gt 0 ]; do
     --dest) DEST="$2"; shift 2 ;;
     --only) ONLY+=("$2"); shift 2 ;;
     --list) LIST=1; shift ;;
-    -h|--help) sed -n '2,24p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,25p' "$0"; exit 0 ;;
     *) echo "unknown option: $1" >&2; exit 64 ;;
   esac
 done

@@ -1,0 +1,1049 @@
+{
+ "module": "blender",
+ "version": "1.0.0",
+ "schema": "motion-pack/blender@1",
+ "blender": "5.2.2 LTS (d13f752e3b9c); binary: $BLENDER or --blender, else blender on PATH or /Applications/Blender.app",
+ "license": {
+  "scripts": "MIT (GPL-compatible)",
+  "renders": "CC0 1.0 (pack media)",
+  "fonts": "SIL OFL 1.1 (pack fonts)"
+ },
+ "entry": "blender/run.py",
+ "smoke": "bash blender/tests/smoke.sh",
+ "determinism_test": "bash blender/tests/determinism.sh",
+ "id_convention": "blender/<recipe> (art loops: blender/art.<name>)",
+ "recipes": {
+  "blender/turntable": {
+   "name": "Hero turntable",
+   "doc": "Procedural device spins 360 deg (or `degrees`) on a polished dark sweep; fixed key / rim / accent; band breath.",
+   "use": "Product hero loop, launch-film reveal plate, end-card background behind type (the left third stays quiet).",
+   "avoid": "Fast cuts (one turn is slow by design); UI demos (use the three.js objects); anything that must seek live.",
+   "loop": true,
+   "defaults": {
+    "seconds": 6.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "degrees": {
+     "type": "float",
+     "default": 360.0,
+     "doc": "spin over the plate; a multiple of 360 keeps it a loop"
+    },
+    "start_deg": {
+     "type": "float",
+     "default": -30.0,
+     "doc": "device yaw at frame 0"
+    },
+    "az": {
+     "type": "float",
+     "default": 18.0,
+     "doc": "camera azimuth (deg, 0 = dead front)"
+    },
+    "el": {
+     "type": "float",
+     "default": 6.5,
+     "doc": "camera elevation (deg)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 100.0,
+     "doc": "mm on a 24 mm vertical sensor"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 7.1,
+     "doc": "aperture (the box stays sharp; the sweep falls off)"
+    },
+    "fill": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "subject fill of the limiting frame side (0 = 0.56 wide / 0.78 tall)"
+    },
+    "shift_x": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "lens shift, frame heights (+ moves the subject left)"
+    },
+    "shift_y": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "lens shift, frame heights (+ moves the subject down)"
+    },
+    "breath": {
+     "type": "float",
+     "default": 0.08,
+     "doc": "band breathing depth (0 = steady)"
+    },
+    "band_strength": {
+     "type": "float",
+     "default": null,
+     "doc": "override the preset's band strength"
+    },
+    "ignite": {
+     "type": "bool",
+     "default": false,
+     "doc": "ignite the band left-to-right over the first 0.9 s (not a loop)"
+    }
+   },
+   "id": "blender/turntable",
+   "previews": [
+    "01-turntable-16x9",
+    "07-turntable-9x16"
+   ],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/turntable --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/turntable"
+  },
+  "blender/macroSweep": {
+   "name": "Macro light sweep",
+   "doc": "Macro on the band corner; the key strip travels 1.2 m across the box (the glint sweeps the chamfers); macro slide.",
+   "use": "Hook frames, detail beats between wides, a poster still at the glint's peak, under a short super.",
+   "avoid": "Wides or establishing shots; holding it past ~4 s (macro detail tires fast); busy type over the glint.",
+   "loop": false,
+   "defaults": {
+    "seconds": 4.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "az": {
+     "type": "float",
+     "default": 38.0,
+     "doc": "camera azimuth (deg)"
+    },
+    "el": {
+     "type": "float",
+     "default": 9.0,
+     "doc": "camera elevation (deg)"
+    },
+    "dist": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "camera distance m (0 = fit ~ 20 cm of the corner across)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 100.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 8.0,
+     "doc": "aperture (f/8 keeps the band corner sharp)"
+    },
+    "slide_mm": {
+     "type": "float",
+     "default": 36.0,
+     "doc": "macro slide along the front face (mm, toward camera-left)"
+    },
+    "sweep_from": {
+     "type": "float",
+     "default": -1.0,
+     "doc": "key strip x at the start (m)"
+    },
+    "sweep_to": {
+     "type": "float",
+     "default": 0.6,
+     "doc": "key strip x at the end (m)"
+    },
+    "sweep_at": {
+     "type": "float",
+     "default": 0.3,
+     "doc": "sweep start (s)"
+    },
+    "sweep_dur": {
+     "type": "float",
+     "default": 3.2,
+     "doc": "sweep duration (s)"
+    },
+    "key_w": {
+     "type": "float",
+     "default": 70.0,
+     "doc": "key strip energy (W, all three feathers)"
+    },
+    "band_strength": {
+     "type": "float",
+     "default": null,
+     "doc": "override the preset's band strength"
+    }
+   },
+   "id": "blender/macroSweep",
+   "previews": [
+    "02-macro-16x9"
+   ],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/macroSweep --size 1920x1080 --fps 30 --seconds 4 --engine eevee --out out/macroSweep"
+  },
+  "blender/explode": {
+   "name": "Exploded view",
+   "doc": "Sealed -> cascade open -> breathing hold with a crane -> mirrored reassembly -> band flare on the seal.",
+   "use": "The 'what is inside' beat of a launch film; spec call-outs over the held stack (type from the pack).",
+   "avoid": "Showing hardware that is not real without a 'planned configuration' label; very short slots (< 3.5 s).",
+   "loop": false,
+   "defaults": {
+    "seconds": 5.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "open_at": {
+     "type": "float",
+     "default": 0.45,
+     "doc": "cascade start (s)"
+    },
+    "seal_at": {
+     "type": "float",
+     "default": 4.55,
+     "doc": "lid seats (s); <= 0 = stay open"
+    },
+    "spread": {
+     "type": "float",
+     "default": 1.0,
+     "doc": "offset scale (1 = the film's teardown)"
+    },
+    "speed": {
+     "type": "float",
+     "default": 1.15,
+     "doc": "cascade speed (1 = the film's 0.8-0.9 s per part)"
+    },
+    "az": {
+     "type": "float",
+     "default": 24.0,
+     "doc": "camera azimuth at the start (deg)"
+    },
+    "az_end": {
+     "type": "float",
+     "default": 12.0,
+     "doc": "camera azimuth at the end (deg)"
+    },
+    "el": {
+     "type": "float",
+     "default": 7.0,
+     "doc": "elevation while sealed (deg)"
+    },
+    "el_open": {
+     "type": "float",
+     "default": 15.0,
+     "doc": "elevation while exploded (deg, the crane)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 85.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 8.0,
+     "doc": "aperture"
+    },
+    "fill": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "fill of the exploded stack (0 = 0.62 wide / 0.86 tall)"
+    },
+    "band_strength": {
+     "type": "float",
+     "default": null,
+     "doc": "override the preset's band strength"
+    }
+   },
+   "id": "blender/explode",
+   "previews": [
+    "03-explode-16x9"
+   ],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/explode --size 1920x1080 --fps 30 --seconds 5 --engine eevee --out out/explode"
+  },
+  "blender/title3d": {
+   "name": "3D extruded title",
+   "doc": "Per-letter extruded title (pack OFL fonts), stagger flip-up, strip glint across chrome, violet back-glow, push-in.",
+   "use": "Launch title / logo-type beat, end card hero word, chapter cards (2-3 words max).",
+   "avoid": "Body copy or anything longer than ~14 characters per line; small type (use the pack's type/ module).",
+   "loop": false,
+   "defaults": {
+    "seconds": 4.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "text": {
+     "type": "str",
+     "default": "motion-pack",
+     "doc": "the title ('|' forces line breaks)"
+    },
+    "style": {
+     "type": "str",
+     "default": "chrome-violet",
+     "doc": "chrome-violet | chrome | violet-glow | matte"
+    },
+    "font": {
+     "type": "str",
+     "default": "templates/_shared/fonts/Manrope-Variable.ttf",
+     "doc": "TTF path (default: the pack's Manrope, OFL)"
+    },
+    "weight": {
+     "type": "float",
+     "default": 800.0,
+     "doc": "variable-font weight (cut with fontTools)"
+    },
+    "size": {
+     "type": "float",
+     "default": 0.24,
+     "doc": "em size (m)"
+    },
+    "extrude": {
+     "type": "float",
+     "default": 0.034,
+     "doc": "half-depth of the extrusion (m)"
+    },
+    "bevel": {
+     "type": "float",
+     "default": 0.0055,
+     "doc": "bevel radius (m)"
+    },
+    "stagger": {
+     "type": "float",
+     "default": 0.07,
+     "doc": "per-letter delay (s)"
+    },
+    "flip_dur": {
+     "type": "float",
+     "default": 0.75,
+     "doc": "per-letter flip (s)"
+    },
+    "in_at": {
+     "type": "float",
+     "default": -0.2,
+     "doc": "first letter starts (s; < 0 = frame 0 is already mid-flip)"
+    },
+    "sweep_at": {
+     "type": "float",
+     "default": 1.15,
+     "doc": "glint sweep start (s)"
+    },
+    "sweep_dur": {
+     "type": "float",
+     "default": 1.6,
+     "doc": "glint sweep duration (s)"
+    },
+    "accent": {
+     "type": "color",
+     "default": [
+      0.2,
+      0.011,
+      1.0
+     ],
+     "doc": "accent colour (linear RGB, AgX-lifted violet)"
+    },
+    "glow": {
+     "type": "float",
+     "default": 1.0,
+     "doc": "violet back-glow strength (0 = off)"
+    },
+    "el": {
+     "type": "float",
+     "default": 4.0,
+     "doc": "camera elevation (deg)"
+    },
+    "az": {
+     "type": "float",
+     "default": -8.0,
+     "doc": "camera azimuth at the start (deg)"
+    },
+    "az_end": {
+     "type": "float",
+     "default": 4.0,
+     "doc": "camera azimuth at the end (deg)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 85.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 5.6,
+     "doc": "aperture"
+    },
+    "fill": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "title width fill (0 = 0.74 wide / 0.86 tall)"
+    },
+    "lines": {
+     "type": "str",
+     "default": "auto",
+     "doc": "auto (split at '-' for 9:16) | one"
+    }
+   },
+   "id": "blender/title3d",
+   "previews": [
+    "04-title-16x9",
+    "08-title-9x16"
+   ],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/title3d --size 1920x1080 --fps 30 --seconds 4 --engine eevee --out out/title3d"
+  },
+  "blender/art.liquidChrome": {
+   "name": "Liquid chrome loop",
+   "doc": "Seeded metaball cluster on integer-harmonic orbits: merges and splits, polished chrome, seamless.",
+   "use": "Abstract hero loop behind a title, transition plates, music visual beds (render 2 loops for a 8 s bed).",
+   "avoid": "Product truth shots; tiny frames (needs ~40 % of the frame to read as liquid); under dense type.",
+   "loop": true,
+   "defaults": {
+    "seconds": 4.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "blobs": {
+     "type": "int",
+     "default": 11,
+     "doc": "metaball count (1 core + satellites)"
+    },
+    "size": {
+     "type": "float",
+     "default": 0.22,
+     "doc": "core radius (m)"
+    },
+    "resolution": {
+     "type": "float",
+     "default": 0.0055,
+     "doc": "render polygonisation (m); lower = smoother, slower"
+    },
+    "film": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "thin-film iridescence (nm, 0 = pure chrome; ~300 = oil slick)"
+    },
+    "tint": {
+     "type": "color",
+     "default": [
+      0.93,
+      0.93,
+      0.95
+     ],
+     "doc": "chrome base colour (linear)"
+    },
+    "rough": {
+     "type": "float",
+     "default": 0.03,
+     "doc": "roughness"
+    },
+    "turns": {
+     "type": "float",
+     "default": 1.0,
+     "doc": "slow camera yaw sway cycles per loop (integer = seamless)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 70.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 5.6,
+     "doc": "aperture"
+    },
+    "floor": {
+     "type": "bool",
+     "default": false,
+     "doc": "a polished black floor under the blob (soft reflection)"
+    },
+    "accent": {
+     "type": "color",
+     "default": [
+      0.2,
+      0.011,
+      1.0
+     ],
+     "doc": "one accent softbox colour in the dome"
+    }
+   },
+   "id": "blender/art.liquidChrome",
+   "previews": [
+    "05-liquid-16x9"
+   ],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/art.liquidChrome --size 1920x1080 --fps 30 --seconds 4 --engine eevee --out out/art.liquidChrome"
+  },
+  "blender/art.voxelWave": {
+   "name": "Voxel wave loop",
+   "doc": "Bars under travelling waves, height-coloured glowing tops; beat-reactive from a motion-pack music sidecar.",
+   "use": "Music visual beds, beat edits, the 'data / compute' metaphor behind a title, loops for socials.",
+   "avoid": "Reading as a real chart (it is not data); beat mode with a plate length that is not whole beats.",
+   "loop": true,
+   "defaults": {
+    "seconds": 4.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "grid": {
+     "type": "int",
+     "default": 26,
+     "doc": "bars per side"
+    },
+    "pitch": {
+     "type": "float",
+     "default": 0.042,
+     "doc": "bar spacing (m)"
+    },
+    "amp": {
+     "type": "float",
+     "default": 0.16,
+     "doc": "wave height (m)"
+    },
+    "low": {
+     "type": "color",
+     "default": [
+      0.2,
+      0.011,
+      1.0
+     ],
+     "doc": "colour of low tops (linear)"
+    },
+    "high": {
+     "type": "color",
+     "default": [
+      1.0,
+      0.3,
+      0.02
+     ],
+     "doc": "colour of high tops (linear)"
+    },
+    "glow": {
+     "type": "float",
+     "default": 2.4,
+     "doc": "top emission (keep <= ~3: AgX desaturates hotter tops)"
+    },
+    "beat_gain": {
+     "type": "float",
+     "default": 1.0,
+     "doc": "how hard the kicks pump (with --beats)"
+    },
+    "pulse_every": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "without --beats: a ring every N s (0 = 4 per loop)"
+    },
+    "az": {
+     "type": "float",
+     "default": 32.0,
+     "doc": "camera azimuth (deg)"
+    },
+    "el": {
+     "type": "float",
+     "default": 30.0,
+     "doc": "camera elevation (deg)"
+    },
+    "sway": {
+     "type": "float",
+     "default": 7.0,
+     "doc": "azimuth sway per loop (deg, seamless)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 60.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 4.0,
+     "doc": "aperture"
+    }
+   },
+   "id": "blender/art.voxelWave",
+   "previews": [
+    "06-voxel-16x9"
+   ],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/art.voxelWave --size 1920x1080 --fps 30 --seconds 4 --engine eevee --out out/art.voxelWave"
+  },
+  "blender/art.particleSwirl": {
+   "name": "Particle swirl loop",
+   "doc": "Seeded vortex of emissive streaks on integer-revolution orbits; palette by particle; seamless.",
+   "use": "Energy / AI / 'thinking' metaphors, backgrounds under type, transition plates, loops for socials.",
+   "avoid": "Literal data or physics claims; flashy use under body copy (keep glow low behind text).",
+   "loop": true,
+   "defaults": {
+    "seconds": 6.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "count": {
+     "type": "int",
+     "default": 2000,
+     "doc": "particles"
+    },
+    "radius": {
+     "type": "float",
+     "default": 0.62,
+     "doc": "outer radius (m)"
+    },
+    "streak": {
+     "type": "float",
+     "default": 9.0,
+     "doc": "streak length vs speed"
+    },
+    "glow": {
+     "type": "float",
+     "default": 2.6,
+     "doc": "emission"
+    },
+    "size": {
+     "type": "float",
+     "default": 0.0028,
+     "doc": "particle radius (m)"
+    },
+    "c1": {
+     "type": "color",
+     "default": [
+      0.2,
+      0.011,
+      1.0
+     ],
+     "doc": "palette 1 (linear)"
+    },
+    "c2": {
+     "type": "color",
+     "default": [
+      1.0,
+      0.3,
+      0.02
+     ],
+     "doc": "palette 2 (linear)"
+    },
+    "c3": {
+     "type": "color",
+     "default": [
+      0.55,
+      0.7,
+      1.0
+     ],
+     "doc": "palette 3 (linear)"
+    },
+    "el": {
+     "type": "float",
+     "default": 24.0,
+     "doc": "camera elevation (deg)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 50.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 2.8,
+     "doc": "aperture (shallow: near streaks bloom into bokeh)"
+    }
+   },
+   "id": "blender/art.particleSwirl",
+   "previews": [],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/art.particleSwirl --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/art.particleSwirl"
+  }
+ },
+ "library": {
+  "lib/device.py": {
+   "presets": [
+    "matte-copper (matte black, copper-amber band)",
+    "studio-white",
+    "graphite-teal",
+    "puck-violet"
+   ],
+   "api": "spec(preset, **over) -> build(D) -> set_band(D, K, level, ignite, hot), explode(D, K, t, t_open, t_seal)"
+  },
+  "lib/studio.py": {
+   "api": "cyclorama, world_dark, world_reflection (camera-dark softbox dome), area, feathered_strip, product_rig (key strip / rim / accent / fill / floor pool, light-linked), move_key"
+  },
+  "lib/materials.py": {
+   "library": [
+    "matte_coat",
+    "brushed_metal",
+    "glass",
+    "ceramic",
+    "plastic",
+    "chrome",
+    "anodised",
+    "emissive_band",
+    "floor_polished",
+    "emission",
+    "pure_emission"
+   ]
+  },
+  "lib/camera.py": {
+   "moves": [
+    "orbit",
+    "turntable",
+    "pushIn",
+    "crane",
+    "truck",
+    "macroSlide",
+    "dollyZoom",
+    "whip",
+    "rack",
+    "breathe"
+   ],
+   "framing": "fit_dist (re-layout 16:9 / 9:16 / 1:1, never crop)"
+  },
+  "lib/render.py": {
+   "presets": [
+    "eevee_plate (fast plates)",
+    "cycles_keyart (quality stills)"
+   ]
+  },
+  "lib/title.py": {
+   "api": "build(col, lines, font, weight, size, extrude, bevel, face_mat, side_mat)"
+  },
+  "lib/art.py": {
+   "loops": [
+    "liquid_chrome (metaballs)",
+    "voxel_wave (geometry nodes)",
+    "particle_swirl (geometry nodes)"
+   ]
+  },
+  "lib/beats.py": {
+   "api": "load(sidecar, fps, n, loop) -> envelope(B, f), rings(B, f)"
+  }
+ },
+ "showcase": {
+  "01-turntable-16x9": {
+   "recipe": "blender/turntable",
+   "size": [
+    1920,
+    1080
+   ],
+   "fps": 30,
+   "seconds": 6.0,
+   "frames": 180,
+   "engine": "eevee",
+   "mean_s_per_frame": 2.639,
+   "render_total_s": 475.73,
+   "status": "done",
+   "mp4": "showcase/01-turntable-16x9/turntable-1920x1080-matte-copper.mp4",
+   "sheet": "blender/previews/01-turntable-16x9-sheet.jpg",
+   "loop_check": null,
+   "preview": "blender/previews/01-turntable-16x9.jpg"
+  },
+  "02-macro-16x9": {
+   "recipe": "blender/macroSweep",
+   "size": [
+    1920,
+    1080
+   ],
+   "fps": 30,
+   "seconds": 4.0,
+   "frames": 120,
+   "engine": "eevee",
+   "mean_s_per_frame": 2.281,
+   "render_total_s": 274.26,
+   "status": "done",
+   "mp4": "showcase/02-macro-16x9/macroSweep-1920x1080-matte-copper.mp4",
+   "sheet": "blender/previews/02-macro-16x9-sheet.jpg",
+   "loop_check": null,
+   "preview": "blender/previews/02-macro-16x9.jpg"
+  },
+  "03-explode-16x9": {
+   "recipe": "blender/explode",
+   "size": [
+    1920,
+    1080
+   ],
+   "fps": 30,
+   "seconds": 5.0,
+   "frames": 150,
+   "engine": "eevee",
+   "mean_s_per_frame": 3.351,
+   "render_total_s": 502.28,
+   "status": "done",
+   "mp4": "showcase/03-explode-16x9/explode-1920x1080-matte-copper.mp4",
+   "sheet": "blender/previews/03-explode-16x9-sheet.jpg",
+   "loop_check": null,
+   "preview": "blender/previews/03-explode-16x9.jpg"
+  },
+  "04-title-16x9": {
+   "recipe": "blender/title3d",
+   "size": [
+    1920,
+    1080
+   ],
+   "fps": 30,
+   "seconds": 4.0,
+   "frames": 120,
+   "engine": "eevee",
+   "mean_s_per_frame": 2.455,
+   "render_total_s": 294.72,
+   "status": "done",
+   "mp4": "showcase/04-title-16x9/title3d-1920x1080.mp4",
+   "sheet": "blender/previews/04-title-16x9-sheet.jpg",
+   "loop_check": null,
+   "preview": "blender/previews/04-title-16x9.jpg"
+  },
+  "05-liquid-16x9": {
+   "recipe": "blender/art.liquidChrome",
+   "size": [
+    1920,
+    1080
+   ],
+   "fps": 30,
+   "seconds": 4.0,
+   "frames": 120,
+   "engine": "eevee",
+   "mean_s_per_frame": 0.493,
+   "render_total_s": 60.08,
+   "status": "done",
+   "mp4": "showcase/05-liquid-16x9/art-liquidChrome-1920x1080.mp4",
+   "sheet": "blender/previews/05-liquid-16x9-sheet.jpg",
+   "loop_check": {
+    "file_hash_equal": true,
+    "pixel_equal": true,
+    "max_abs_8bit": 0.0,
+    "changed_px_frac": 0.0,
+    "psnr_db": null,
+    "note": "frame N must equal frame 0 for a seamless loop"
+   },
+   "preview": "blender/previews/05-liquid-16x9.jpg"
+  },
+  "06-voxel-16x9": {
+   "recipe": "blender/art.voxelWave",
+   "size": [
+    1920,
+    1080
+   ],
+   "fps": 30,
+   "seconds": 4.0,
+   "frames": 120,
+   "engine": "eevee",
+   "mean_s_per_frame": 1.552,
+   "render_total_s": 187.11,
+   "status": "done",
+   "mp4": "showcase/06-voxel-16x9/art-voxelWave-1920x1080.mp4",
+   "sheet": "blender/previews/06-voxel-16x9-sheet.jpg",
+   "loop_check": {
+    "file_hash_equal": false,
+    "pixel_equal": false,
+    "max_abs_8bit": 1.0,
+    "changed_px_frac": 0.0,
+    "psnr_db": 111.3,
+    "note": "frame N must equal frame 0 for a seamless loop"
+   },
+   "preview": "blender/previews/06-voxel-16x9.jpg"
+  },
+  "07-turntable-9x16": {
+   "recipe": "blender/turntable",
+   "size": [
+    1080,
+    1920
+   ],
+   "fps": 30,
+   "seconds": 6.0,
+   "frames": 180,
+   "engine": "eevee",
+   "mean_s_per_frame": 1.844,
+   "render_total_s": 332.21,
+   "status": "done",
+   "mp4": "showcase/07-turntable-9x16/turntable-1080x1920-matte-copper.mp4",
+   "sheet": "blender/previews/07-turntable-9x16-sheet.jpg",
+   "loop_check": null,
+   "preview": "blender/previews/07-turntable-9x16.jpg"
+  },
+  "08-title-9x16": {
+   "recipe": "blender/title3d",
+   "size": [
+    1080,
+    1920
+   ],
+   "fps": 30,
+   "seconds": 4.0,
+   "frames": 120,
+   "engine": "eevee",
+   "mean_s_per_frame": 2.333,
+   "render_total_s": 279.91,
+   "status": "done",
+   "mp4": "showcase/08-title-9x16/title3d-1080x1920.mp4",
+   "sheet": "blender/previews/08-title-9x16-sheet.jpg",
+   "loop_check": null,
+   "preview": "blender/previews/08-title-9x16.jpg"
+  }
+ },
+ "determinism": [
+  {
+   "case": "eevee-turntable",
+   "frame": 90,
+   "cross_process": {
+    "pixel_equal": true,
+    "max_abs_8bit": 0.0,
+    "changed_px_frac": 0.0,
+    "psnr_db": null
+   },
+   "same_process": {
+    "file_hash_equal": true,
+    "pixel_equal": true,
+    "max_abs_8bit": 0.0,
+    "changed_px_frac": 0.0,
+    "psnr_db": null,
+    "frame": 90,
+    "render_s": [
+     0.905,
+     0.888
+    ],
+    "scope": "same process"
+   }
+  },
+  {
+   "case": "eevee-title",
+   "frame": 100,
+   "cross_process": {
+    "pixel_equal": false,
+    "max_abs_8bit": 3.0,
+    "changed_px_frac": 0.005151427469135802,
+    "psnr_db": 70.86
+   },
+   "same_process": {
+    "file_hash_equal": false,
+    "pixel_equal": false,
+    "max_abs_8bit": 2.0,
+    "changed_px_frac": 0.003743,
+    "psnr_db": 72.35,
+    "frame": 100,
+    "render_s": [
+     1.215,
+     1.249
+    ],
+    "scope": "same process"
+   }
+  },
+  {
+   "case": "eevee-voxel",
+   "frame": 30,
+   "cross_process": {
+    "pixel_equal": true,
+    "max_abs_8bit": 0.0,
+    "changed_px_frac": 0.0,
+    "psnr_db": null
+   },
+   "same_process": {
+    "file_hash_equal": true,
+    "pixel_equal": true,
+    "max_abs_8bit": 0.0,
+    "changed_px_frac": 0.0,
+    "psnr_db": null,
+    "frame": 30,
+    "render_s": [
+     0.653,
+     0.646
+    ],
+    "scope": "same process"
+   }
+  },
+  {
+   "case": "cycles-gpu-cpu-oidn",
+   "frame": 90,
+   "cross_process": {
+    "pixel_equal": false,
+    "max_abs_8bit": 1.0,
+    "changed_px_frac": 1.736111111111111e-05,
+    "psnr_db": 95.74
+   },
+   "same_process": {
+    "file_hash_equal": false,
+    "pixel_equal": false,
+    "max_abs_8bit": 1.0,
+    "changed_px_frac": 1.5e-05,
+    "psnr_db": 96.25,
+    "frame": 90,
+    "render_s": [
+     4.515,
+     5.244
+    ],
+    "scope": "same process"
+   }
+  },
+  {
+   "case": "cycles-gpu-gpu-oidn",
+   "frame": 90,
+   "cross_process": {
+    "pixel_equal": false,
+    "max_abs_8bit": 2.0,
+    "changed_px_frac": 0.0047931134259259255,
+    "psnr_db": 71.32
+   },
+   "same_process": {
+    "file_hash_equal": false,
+    "pixel_equal": false,
+    "max_abs_8bit": 1.0,
+    "changed_px_frac": 0.00452,
+    "psnr_db": 71.58,
+    "frame": 90,
+    "render_s": [
+     3.069,
+     3.312
+    ],
+    "scope": "same process"
+   }
+  },
+  {
+   "case": "eevee-title-noglow",
+   "frame": 100,
+   "cross_process": {
+    "pixel_equal": false,
+    "max_abs_8bit": 2.0,
+    "changed_px_frac": 0.003462577160493827,
+    "psnr_db": 72.71
+   },
+   "same_process": {
+    "file_hash_equal": false,
+    "pixel_equal": false,
+    "max_abs_8bit": 2.0,
+    "changed_px_frac": 0.002681,
+    "psnr_db": 73.83,
+    "frame": 100,
+    "render_s": [
+     1.065,
+     1.07
+    ],
+    "scope": "same process"
+   }
+  },
+  {
+   "case": "cycles-gpu-raw",
+   "frame": 90,
+   "cross_process": {
+    "pixel_equal": false,
+    "max_abs_8bit": 1.0,
+    "changed_px_frac": 4.822530864197531e-07,
+    "psnr_db": 111.3
+   },
+   "same_process": {
+    "file_hash_equal": false,
+    "pixel_equal": false,
+    "max_abs_8bit": 1.0,
+    "changed_px_frac": 0.0,
+    "psnr_db": 111.3,
+    "frame": 90,
+    "render_s": [
+     3.335,
+     2.773
+    ],
+    "scope": "same process"
+   }
+  }
+ ]
+}

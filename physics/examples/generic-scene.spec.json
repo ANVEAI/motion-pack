@@ -1,0 +1,16 @@
+{
+ "scene": "generic-example",
+ "time": { "physicsStep": 0.016666666666666666, "steps": 120 },
+ "world": { "gravity": [0, -9.81, 0], "substeps": 4 },
+ "statics": [
+  { "id": "floor", "shape": { "type": "cuboid", "half": [3, 0.25, 3] }, "p": [0, -0.25, 0], "friction": 0.7, "restitution": 0.1 },
+  { "id": "ramp", "shape": { "type": "cuboid", "half": [0.8, 0.05, 0.6] }, "p": [-0.8, 0.45, 0], "q": [0, 0, 0.2588190451, 0.9659258263], "friction": 0.5 }
+ ],
+ "bodies": [
+  { "id": "ball-a", "kind": "ball", "p": [-1.1, 1.6, 0], "q": [0, 0, 0, 1], "shape": { "type": "ball", "radius": 0.2 }, "density": 1, "restitution": 0.6, "events": true },
+  { "id": "ball-b", "kind": "ball", "p": [-0.7, 2.4, 0.1], "q": [0, 0, 0, 1], "linvel": [0.3, 0, 0], "shape": { "type": "ball", "radius": 0.15 }, "density": 1, "restitution": 0.4 },
+  { "id": "capsule", "kind": "capsule", "p": [0.4, 1.8, 0], "q": [0.3826834324, 0, 0, 0.9238795325], "angvel": [0, 0, 2], "shape": { "type": "capsule", "halfHeight": 0.25, "radius": 0.1 }, "density": 1 },
+  { "id": "crate", "kind": "crate", "p": [0.9, 1.0, 0], "q": [0, 0.2588190451, 0, 0.9659258263], "shape": { "type": "cuboid", "half": [0.2, 0.2, 0.2] }, "density": 2, "friction": 0.6, "restitution": 0.1, "born": 30, "events": true },
+  { "id": "late-ball", "kind": "ball", "p": [0.2, 3.0, 0.2], "q": [0, 0, 0, 1], "shape": { "type": "ball", "radius": 0.12 }, "density": 1, "restitution": 0.5, "born": 60 }
+ ]
+}
