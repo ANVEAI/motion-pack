@@ -1,0 +1,183 @@
+{
+  "title": "Brewly: before you run out",
+  "format": "ad",
+  "length_s": 15,
+  "fps": 30,
+  "aspect": "9:16",
+  "logline": "A half-awake home brewer shakes the last beans out of the bag on a workday morning, and her phone lights up to say the next bag is already at the door.",
+  "stake": "an empty coffee bag and an empty mug at 7:02 on a workday morning",
+  "turn": {
+    "at_s": 5.0,
+    "what": "the phone on the counter lights up: the next bag is already at the door"
+  },
+  "payoff": "a full, steaming mug beside the Brewly name: the empty mug from the hook, filled",
+  "sound_off": "She ran out of coffee, and Brewly had already sent the next bag.",
+  "send_line": "send this to the friend who always runs out of coffee",
+  "hooks": [
+    {
+      "id": "A",
+      "archetype": "problem-agitate",
+      "frame0": "an upside-down kraft coffee bag shakes over an empty mug; three last beans tumble in, then nothing",
+      "text": "Out of beans. Again.",
+      "poster_text": "OUT OF BEANS",
+      "first_sound": "a punchy hit with a dry paper shake"
+    },
+    {
+      "id": "B",
+      "archetype": "in-medias-res",
+      "frame0": "a thumb presses the grinder button; it whirs, coughs and stops: nothing inside",
+      "text": "Nothing left to grind.",
+      "poster_text": "NOTHING TO GRIND",
+      "first_sound": "a grinder whir that sputters out"
+    },
+    {
+      "id": "C",
+      "archetype": "curiosity-gap",
+      "frame0": "a phone face-down on the counter buzzes and creeps toward an empty mug",
+      "text": "Your coffee is texting you.",
+      "poster_text": "COFFEE TEXTED?",
+      "first_sound": "a phone buzz on the counter"
+    }
+  ],
+  "shots": [
+    {
+      "id": "s01",
+      "beat": "HOOK",
+      "role": "stake",
+      "start_s": 0.0,
+      "dur_s": 2.5,
+      "scale": "CU",
+      "action": "an upside-down kraft coffee bag shakes over an empty white mug; three last beans tumble into the mug, then the bag shakes empty",
+      "sound": "punchy hit on frame 0; dry paper shake; three small bean ticks",
+      "text": "Out of beans. Again.",
+      "text_kind": "super",
+      "honesty": null,
+      "transition": {
+        "kind": "cut",
+        "reason": null
+      },
+      "notes": "ad template section: hook (hook A, problem-agitate)"
+    },
+    {
+      "id": "s02",
+      "beat": "HOOK",
+      "role": "stake",
+      "start_s": 2.5,
+      "dur_s": 1.25,
+      "scale": "CARD",
+      "action": "a dark card: the kitchen clock reads 7:02 AM",
+      "sound": "a card pop; one clock tick",
+      "text": "7:02 AM.",
+      "text_kind": "in_world",
+      "honesty": null,
+      "transition": {
+        "kind": "cut",
+        "reason": null
+      },
+      "notes": "ad template section: problem, line 1 (card) · v1.1: smash -> hard cut after the mixer flagged hero-hit density (R4)"
+    },
+    {
+      "id": "s03",
+      "beat": "HOOK",
+      "role": "stake",
+      "start_s": 3.75,
+      "dur_s": 1.25,
+      "scale": "MCU",
+      "action": "the empty mug alone on the counter, no steam; the phone lies dark beside it",
+      "sound": "a hollow ceramic clink",
+      "text": "Empty mug.",
+      "text_kind": "super",
+      "honesty": null,
+      "transition": {
+        "kind": "cut",
+        "reason": null
+      },
+      "notes": "ad template section: problem, line 2 (scene)"
+    },
+    {
+      "id": "s04",
+      "beat": "REVEAL",
+      "role": "turn",
+      "start_s": 5.0,
+      "dur_s": 2.2,
+      "scale": "MS",
+      "action": "the phone on the counter lights up with a Brewly notification; the Brewly word mark lands above it and holds",
+      "sound": "1-bar riser ends on the cut; cinema hit and a phone buzz on the reveal",
+      "text": "Brewly. Next bag: at your door.",
+      "text_kind": "super",
+      "honesty": "Fictional app · concept",
+      "transition": {
+        "kind": "whip",
+        "reason": "ENERGY: the tension releases into the reveal"
+      },
+      "notes": "ad template section: product, reveal (hero hold)"
+    },
+    {
+      "id": "s05",
+      "beat": "REVEAL",
+      "role": "product",
+      "start_s": 7.2,
+      "dur_s": 1.8,
+      "scale": "CARD",
+      "action": "a warm card with the product line",
+      "sound": "a card pop",
+      "text": "Coffee that never runs out.",
+      "text_kind": "super",
+      "honesty": null,
+      "transition": {
+        "kind": "cut",
+        "reason": null
+      },
+      "notes": "ad template section: product, benefit line"
+    },
+    {
+      "id": "s06",
+      "beat": "FEATURE",
+      "role": "proof",
+      "start_s": 9.0,
+      "dur_s": 3.5,
+      "scale": "SCREEN",
+      "action": "the Brewly app screen: a bean gauge drains toward empty; at the low mark it flips to 'Next bag shipped' with a check",
+      "sound": "a push whoosh; soft UI ticks while the gauge drains; a success chime on the check",
+      "text": "Ships your next bag before you run out.",
+      "text_kind": "super",
+      "honesty": "Fictional app · demo screen",
+      "transition": {
+        "kind": "push",
+        "reason": "STORY: from the promise to how it works"
+      },
+      "notes": "ad template section: proof (the one feature, shown, not listed)"
+    },
+    {
+      "id": "s07",
+      "beat": "CARD",
+      "role": "payoff",
+      "start_s": 12.5,
+      "dur_s": 2.5,
+      "scale": "CARD",
+      "action": "a full, steaming mug beside the Brewly word mark; a 'Coming soon' pill; brewly.example; fine print",
+      "sound": "a two-note sonic sting; the last 0.15 s silent",
+      "text": "Brewly. Coming soon.",
+      "text_kind": "card",
+      "honesty": "Fictional brand · concept teaser",
+      "transition": {
+        "kind": "iris",
+        "reason": "REVEAL: the full mug opens out of the app screen"
+      },
+      "notes": "ad template section: cta (end card hold)"
+    }
+  ],
+  "claims": [
+    {
+      "text": "Brewly ships your next bag before you run out",
+      "source": "none: fictional product feature; labelled 'Fictional app · demo screen' in frame and 'fictional brand' in the post"
+    }
+  ],
+  "banned": [
+    "free",
+    "#1",
+    "best",
+    "guaranteed",
+    "%"
+  ]
+}

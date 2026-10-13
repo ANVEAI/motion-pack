@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "for": "shotlist.json · Brewly: before you run out (15 s ad / launch teaser, 9:16 lead; optional 16:9 re-layout)",
+  "tone": {
+    "cell": "kinetic-soft",
+    "why": "a social launch teaser with a wry gag in the hook: springy, warm shapes, one sharp hit at the reveal"
+  },
+  "motion": {
+    "personality": "The morning hurries; Brewly never does. Springy props, a hold after every key action, one wow at the reveal.",
+    "base_unit_frames": 4,
+    "easing": "soft (power2/sine) for props and cards; a back-out pop only on the reveal word mark",
+    "overshoot_max": 0.07,
+    "hold_after_key_action_frames": 12,
+    "camera_still_on_impacts": true,
+    "type_presets": {
+      "headline": "type/elasticPop",
+      "card": "type/maskRise",
+      "end": "type/elasticPop",
+      "sub": "type/blurIn"
+    }
+  },
+  "palette": {
+    "paper": "#F6EFE6",
+    "ink": "#1E1410",
+    "night": "#24170F",
+    "night_ink": "#F6EFE6",
+    "accent": "#B4410F",
+    "accent_on_night": "#F2A65A",
+    "accent_ink": "#FFFFFF",
+    "muted": "#6B5547",
+    "muted_on_night": "#C9B39F",
+    "screen": "#FFFFFF",
+    "success": "#166534",
+    "kraft": "#C49A6C",
+    "mug": "#FFFFFF"
+  },
+  "contrast": {
+    "checked_with": "scripts/contrast.py",
+    "pairs": [
+      { "fg": "ink", "bg": "paper", "use": "text" },
+      { "fg": "accent", "bg": "paper", "use": "text" },
+      { "fg": "accent_ink", "bg": "accent", "use": "text" },
+      { "fg": "muted", "bg": "paper", "use": "text" },
+      { "fg": "night_ink", "bg": "night", "use": "text" },
+      { "fg": "accent_on_night", "bg": "night", "use": "text" },
+      { "fg": "muted_on_night", "bg": "night", "use": "text" },
+      { "fg": "ink", "bg": "screen", "use": "text" },
+      { "fg": "success", "bg": "screen", "use": "text" },
+      { "fg": "accent", "bg": "screen", "use": "ui" },
+      { "fg": "kraft", "bg": "night", "use": "ui" },
+      { "fg": "mug", "bg": "night", "use": "ui" }
+    ]
+  },
+  "type": {
+    "display": { "family": "Manrope", "weight": 800, "license": "OFL-1.1", "file": "templates/_shared/fonts/Manrope-Variable.ttf" },
+    "text": { "family": "Manrope", "weight": 600, "license": "OFL-1.1", "file": "templates/_shared/fonts/Manrope-Variable.ttf" },
+    "mono": { "family": "IBM Plex Mono", "weight": 600, "license": "OFL-1.1", "file": "templates/_shared/fonts/IBMPlexMono-SemiBold.ttf" },
+    "sizes_px_at_1080": {
+      "headline_9x16": 120,
+      "card_9x16": 96,
+      "reveal_wordmark_9x16": 200,
+      "ui_9x16": 40,
+      "end_name_9x16": 180,
+      "cta_9x16": 56,
+      "label_9x16": 30,
+      "fine_print": 30,
+      "headline_16x9": 110,
+      "label_16x9": 28
+    },
+    "max_words_per_line": 6,
+    "tracking_em": { "display": -0.035, "label": 0.02 }
+  },
+  "grid": {
+    "9:16": { "safe": "conservative", "columns": 4, "gutter_px": 24, "baseline_px": 8, "text_rect": "x 65-960, y 269-1248", "hero_band": "props sit centred in y 700-1240; type sits in y 300-700" },
+    "16:9": { "margin_px": 96, "columns": 12, "gutter_px": 24, "baseline_px": 8, "hero_third": "right (props), type in the left two thirds" }
+  },
+  "safe": {
+    "platform": "reels.organic",
+    "zones_9x16": "conservative",
+    "zones_16x9": "wideTitle"
+  },
+  "look": {
+    "grade": "warm-film",
+    "finish": null,
+    "lut": null,
+    "grain": "upload-safe",
+    "vignette": 0.12,
+    "flash_max_per_s": 3,
+    "note": "flat, drawn props (no footage): the grade is recorded for consistency, but the ad template has no grade key, so only vignette + grain are applied (layers)"
+  },
+  "frames": {
+    "hero_by_shot": {
+      "s01": "the upside-down kraft bag and the three falling beans",
+      "s02": "the clock time 7:02 AM",
+      "s03": "the empty mug",
+      "s04": "the lit phone notification, then the Brewly word mark",
+      "s05": "the line 'Coffee that never runs out.'",
+      "s06": "the bean gauge flipping to 'Next bag shipped'",
+      "s07": "the full steaming mug beside 'Brewly.'"
+    },
+    "cover": { "subject": "the upside-down bag over the empty mug, beans mid-fall", "words": "OUT OF BEANS", "max_words": 4, "test_width_px": 120 },
+    "end_card": { "line": "Coming soon", "name": "Brewly", "url": "brewly.example", "hold_s": 2.5, "fine_print": "Fictional brand · concept teaser" },
+    "lower_third": null,
+    "labels": {
+      "style": "IBM Plex Mono 600, 30 px, palette.muted (muted_on_night on dark shots), letter-spacing 0.02em, bottom-left of the safe rect (x 65, baseline y 1236)",
+      "min_on_screen_s": 2.0,
+      "schedule": "one label line from the reveal (5.0 s) to the end, its text following the shot list: s04-s05 'Fictional app · concept', s06 'Fictional app · demo screen', s07 'Fictional brand · concept teaser'",
+      "deviation": "the end-card wording is on screen 2.5 s, under the 3 s fine-print default, because the ad template's 15 s CTA budget is 2.5 s; the word 'Fictional' stays on screen continuously for 10 s (5.0-15.0 s)"
+    },
+    "world": "a warm kitchen counter at dawn, drawn flat: espresso-brown night for the problem, cream paper for cards and the end card"
+  },
+  "config_map": {
+    "templates/ad": {
+      "platform": "safe.platform",
+      "brand.accent": "palette.accent",
+      "brand.ink": "palette.ink",
+      "brand.paper": "palette.paper",
+      "brand.cta": "frames.end_card.line",
+      "type.headline": "motion.type_presets.headline",
+      "type.card": "motion.type_presets.card",
+      "type.end": "motion.type_presets.end",
+      "type.sub": "motion.type_presets.sub",
+      "layers": "look (grain stock upload-safe + vignette as overlay kinds)"
+    }
+  },
+  "handoff": {
+    "template": "templates/ad (closest: hook > problem > product > proof > CTA)",
+    "cannot_express_yet": [
+      "9:16: the ad template's make.mjs is fixed at 1920x1080 and has no aspect key; motion-pack must re-lay it out for 1080x1920",
+      "the hook/problem/reveal pictures: the template plays video plates (the 'Orbit' desk demo); Brewly needs drawn props (bag, beans, mug, phone, app screen)",
+      "palette.night / accent_on_night / muted_on_night / success / kraft have no CONFIG keys",
+      "grade name (warm-film) and the label style have no CONFIG keys"
+    ]
+  }
+}

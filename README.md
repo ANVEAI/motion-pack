@@ -125,6 +125,14 @@ To make your own video:
 
 `python3 tools/check_ids.py` should report 0 unresolved.
 
+## Worked example: one prompt, 31 minutes
+
+[`examples/brewly-teaser/`](examples/brewly-teaser/README.md) is a real, unedited agent run. The prompt was:
+
+> "Make a 15-second 9:16 launch teaser for Brewly, a fictional coffee-subscription app … then draft the X post."
+
+The agent went through all the skills, from script to design, plan, render, QA and post. It produced a 9:16 teaser, a 16:9 re-layout and an X post draft. The full `RUNLOG.md` shows every command, every mistake and every fix.
+
 ## Use with Claude Code
 
 The repository is a Claude Code plugin and marketplace:

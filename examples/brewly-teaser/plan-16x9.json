@@ -1,0 +1,264 @@
+{
+ "template": "ad",
+ "fps": 30,
+ "seconds": 15,
+ "platform": "x.video",
+ "safe": {
+  "top": 0.05,
+  "bottom": 0.08,
+  "side": 0.05
+ },
+ "brandCueAt": 5,
+ "brandCueOk": true,
+ "shots": [
+  {
+   "id": "hook",
+   "sec": "hook",
+   "kind": "plate",
+   "media": null,
+   "mediaStart": 0,
+   "text": "Out of beans. *Again.*",
+   "type": "type/elasticPop",
+   "dur": 2.5,
+   "textDur": 2.5,
+   "start": 0
+  },
+  {
+   "id": "problem0",
+   "sec": "problem",
+   "kind": "card",
+   "media": null,
+   "mediaStart": 0,
+   "text": "7:02 AM.",
+   "type": "type/maskRise",
+   "dur": 1.266667,
+   "tx": "transitions/cut",
+   "txReason": null,
+   "textDur": 1.25,
+   "start": 2.5
+  },
+  {
+   "id": "problem1",
+   "sec": "problem",
+   "kind": "plate",
+   "media": null,
+   "mediaStart": 1,
+   "text": "Empty *mug*.",
+   "type": "type/maskRise",
+   "dur": 1.233333,
+   "textDur": 1.25,
+   "start": 3.766667
+  },
+  {
+   "id": "reveal",
+   "sec": "product",
+   "kind": "reveal",
+   "hold": true,
+   "media": null,
+   "mediaStart": 0,
+   "text": "Brewly",
+   "type": "type/elasticPop",
+   "dur": 2.2,
+   "tx": "transitions/whip",
+   "txReason": "ENERGY: the tension releases into the reveal",
+   "textDur": 2.2,
+   "start": 5
+  },
+  {
+   "id": "benefit",
+   "sec": "product",
+   "kind": "card",
+   "text": "Coffee that *never runs out*.",
+   "type": "type/maskRise",
+   "dur": 1.8,
+   "textDur": 1.8,
+   "start": 7.2
+  },
+  {
+   "id": "proof0",
+   "sec": "proof",
+   "kind": "proof",
+   "text": "Ships your next bag *before you run out*.",
+   "type": "type/maskRise",
+   "dur": 3.5,
+   "tx": "transitions/push",
+   "txReason": "STORY: from the promise to how it works",
+   "textDur": 3.5,
+   "start": 9
+  },
+  {
+   "id": "cta",
+   "sec": "cta",
+   "kind": "end",
+   "hold": true,
+   "text": "Coming soon",
+   "type": "type/elasticPop",
+   "dur": 2.5,
+   "tx": "transitions/iris",
+   "txReason": "REVEAL: the full mug opens out of the app screen",
+   "textDur": 2.5,
+   "start": 12.5
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/hit/punch",
+   "t": 0,
+   "gainDb": -2,
+   "why": "first-frame hook"
+  },
+  {
+   "id": "sfx/amb/studio_air",
+   "t": 0,
+   "gainDb": -22,
+   "why": "air bed (loop)",
+   "loopTo": 15
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/paper/rustle",
+   "t": 0.03,
+   "why": "s01 dry paper shake of the upside-down bag"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/glass/tap",
+   "t": 0.3,
+   "why": "s01 bean 1 lands in the mug"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/glass/tap",
+   "t": 0.63,
+   "why": "s01 bean 2 lands in the mug"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/glass/tap",
+   "t": 0.97,
+   "why": "s01 bean 3 lands in the mug"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/paper/rustle",
+   "t": 1.5,
+   "why": "s01 the bag shakes empty"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 2.566666666666667,
+   "gainDb": -8,
+   "why": "card line"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/ui/count_tick",
+   "t": 3.1,
+   "why": "s02 one clock tick"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/ceramic/clink",
+   "t": 3.8,
+   "why": "s03 hollow clink of the empty mug"
+  },
+  {
+   "id": "sfx/whoosh/whip_pan",
+   "t": 5,
+   "gainDb": -4,
+   "why": "tx transitions/whip"
+  },
+  {
+   "id": "sfx/riser/noise_1bar",
+   "t": 5,
+   "gainDb": -6,
+   "why": "riser ends on the reveal"
+  },
+  {
+   "id": "sfx/hit/cinema",
+   "t": 5,
+   "gainDb": -3,
+   "why": "reveal hit"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/device/phone_buzz",
+   "t": 5.1,
+   "why": "s04 the phone lights up"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/device/notify_soft",
+   "t": 5.5,
+   "why": "s04 the Brewly notification drops in"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 7.266666666666667,
+   "gainDb": -8,
+   "why": "card line"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 9,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 9.066666666666666,
+   "gainDb": -8,
+   "why": "card line"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/device/progress_fill",
+   "t": 9.5,
+   "why": "s06 the bean gauge drains"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/ui/success",
+   "t": 10.9,
+   "why": "s06 the gauge flips to Next bag shipped"
+  },
+  {
+   "id": "sfx/tx/iris_open",
+   "t": 12.5,
+   "gainDb": -4,
+   "why": "tx transitions/iris"
+  },
+  {
+   "gainDb": -6,
+   "id": "sfx/liquid/pour",
+   "t": 12.55,
+   "why": "s07 the full mug: the stake resolved"
+  },
+  {
+   "id": "sfx/logo/hybrid",
+   "t": 12.633333333333333,
+   "gainDb": -3,
+   "why": "sonic sting"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Ships your next bag *before you run out*."
+  }
+ ],
+ "music": "music/bed_uplift_corporate_loop8",
+ "paceRule": {
+  "aslMax": 2.5,
+  "longMax": 4.5
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 7,
+   "asl": 2.14,
+   "longest": 3.5,
+   "pass": true
+  }
+ }
+}

@@ -48,15 +48,16 @@ Every path below is relative to the pack root.
    - Run `python3 tools/check_ids.py` before rendering; it must report 0 unresolved.
 2. **Plan first.**
    - One `plan.json` drives the picture, the sound and the checks: shots, transitions with reasons, the cue sheet, and lint.
-   - Start from the closest template in `templates/` and edit only its `CONFIG` block.
+   - Start from the closest template in `templates/`. Its `CONFIG` block covers the stock structure. For another aspect (the ad template is 16:9), story-specific sound cues or new scenes, copy its `make.mjs` next to your CONFIG and extend it, keeping every reference an id.
+   - Build inside your clone of the pack, for example in `templates/<your-video>/`. Templates find the pack two folders up, and `tools/check_ids.py` only scans the pack it sits in. On macOS, `cp -c -R` makes an instant copy-on-write clone of the whole pack for a scratch build.
 3. **Default to the hard cut and motivate everything else.** Every non-cut transition carries a reason (`EMOTION`, `STORY`, `RHYTHM`, `ENERGY`, `REVEAL`, `PLACE`, ...). Lint refuses unmotivated transitions.
 4. **Sound is half the cut.**
    - A cue for visual frame F puts its anchor sample on `(F + 1) x 48000 / fps`.
    - A whoosh peaks on the cut. A riser ends one frame before the hit.
    - Every transition has a paired sweetener (`transitions/catalog.json` `sfx`, `sfx/sweeteners.json`).
 5. **Master spec:**
-   - −14 LUFS-I, and true peak ≤ −1.5 dBTP on the WAV.
-   - AAC probes ≤ −1.0 dBTP. HyperFrames lowers the whole track if the AAC goes over −1.
+   - −14 LUFS-I, and true peak ≤ −1.5 dBTP on the WAV master. Use −2.0 if clicky transients push the AAC probe over.
+   - The delivered MP4 decodes to ≤ −1.0 dBTP. HyperFrames lowers the whole track if its AAC goes over −1, so check the probe, not just the WAV.
    - The last 0.15 s is digital zero.
    - Use `music/mixer.py`. Never gain SFX by hand; the library is normalised to −6 dBFS peak.
 6. **Honesty.**
@@ -338,7 +339,7 @@ The pack ships only what it generates.
 - [ ] **Stills:**
   - Run `python3 templates/_shared/sheet.py <mp4> <sheet.jpg> <t1,t2,...>` on every cut, mid-transition, the hook, the reveal and the end card, then LOOK at the sheet.
   - Check for clipped or overlapping type, words cut by masks, and text outside the safe zones at 9:16.
-- [ ] **Loudness:** the delivered MP4 decodes to −14 ± 0.5 LUFS-I and TP ≤ −1.5 dBTP (`sheet.py` prints both).
+- [ ] **Loudness:** the delivered MP4 decodes to −14 ± 0.5 LUFS-I and TP ≤ −1.0 dBTP, with the WAV master at ≤ −1.5 (`sheet.py` prints both).
 - [ ] **Sync:** hits land on frame F + 1, risers end one frame before the hit, whooshes peak on the cut, and the last 0.15 s is silent.
 - [ ] **Legibility:**
   - Captions are at most 18 characters per line and at most 2 lines.
@@ -346,13 +347,18 @@ The pack ships only what it generates.
   - It reads at phone size (360 px wide).
 - [ ] **Honesty:** no fabricated numbers, reviews, logos or testimonials. Placeholders and concept renders are labelled.
 - [ ] **Flash safety:** no more than 3 full-frame flashes per second.
-- [ ] **Determinism:** render one frame twice and get the same bits (or run motion-stack's `seekcheck.mjs` on the composition).
+- [ ] **Determinism:**
+  - Render twice with `--format png-sequence` and compare the frames. They should be identical, or above 60 dB where blurs add GPU noise.
+  - Don't compare two MP4s: multi-threaded x264 output differs between runs (about 50 dB) even when every frame is the same.
+  - A standalone page can use motion-stack's `seekcheck.mjs`, which needs `window.__ready` and `window.__seek(t)`.
 - [ ] **Files:** the demo encode is CRF 23, and a 15 s 1080p file is a few MB.
 
 ## Gotchas (the full list is in `references/gotchas.md`)
 
 - **HyperFrames hides a timed clip outside `[data-start, data-start + data-duration]`.** Two-layer transitions need overlap windows: `templates/_shared/txplan.mjs` stretches the clips around each cut. Animate an untimed wrapper, never the timed `<video>`.
 - **HyperFrames silently lowers the whole track if the AAC is over −1 dBTP.** Use the mixer's AAC probes.
+- **GSAP in a composition:** set `gsap.config({ force3D: false })` and do one warm pass (`tl.seek(tl.duration()).seek(0)`) before registering the timeline. Without them, frames carry 1-LSB noise between renders.
+- **HyperFrames prints structure warnings** on the stock templates (`timeline_track_too_dense`, `nested_structure_needs_subcomposition`). They are advisory; the render is unaffected.
 - **`hyperframes render` defaults to CRF 16** (large files). Pass `--crf 23` for demos.
 - **Do not put `z-index` on the `#fx` container.** It kills the overlays' `mix-blend-mode`.
 - **DOM transition approximations** keep the timing, the swap frame and the sound, not the exact GL look.
