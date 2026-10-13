@@ -1,6 +1,7 @@
-<p align="center">
-  <a href="media/promo.mp4"><img src="media/promo.gif" alt="motion-pack: an agent turns one prompt into a finished, beat-synced video" width="100%"></a>
-</p>
+https://github.com/user-attachments/assets/8c99b160-6230-405f-ba1b-391b4b662612
+
+<p align="center"><sub>The 46-second showcase film (sound on). An agent made every frame with this pack: Blender 3D, GL transitions, kinetic type, synthesised music and sound.<br>
+Also in <a href="media/"><code>media/</code></a>: <a href="media/film.mp4">the film</a>, <a href="media/promo.mp4">the first promo</a> and <a href="media/promo.gif">its GIF loop</a>.</sub></p>
 
 <h1 align="center">motion-pack</h1>
 
