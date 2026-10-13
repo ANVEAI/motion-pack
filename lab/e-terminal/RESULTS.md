@@ -221,7 +221,7 @@ Never seek, play or pause the `<video>` yourself: HyperFrames owns it, and frame
 
 ## Version rule and downloads
 
-- **The 14-day version rule.** The pinned commit `fe6f9f1` was 2 days old when tested (2026-10-12), so it breaks the rule that a tested version is at least 14 days old. It turns 14 days old on **2026-10-26**.
+- **The 14-day version rule.** The pinned commit `fe6f9f1` was 2 days old when tested (2026-10-12), so it breaks the rule that a tested version is at least 14 days old. It turns 14 days old on **2026-10-26**. The exception was approved on 14 Oct 2026 after the source review below, and the module landed then.
   - The newest commit at least 14 days old is `400e7bf` (2026-09-30), and the newest release that old is 1.4.0 (`cc446fc`, 2026-09-25). Both predate `--3d` (added 2026-10-11), so the 3D murmuration could not be tested on them.
 - **Downloads made.** One source tarball for the pin (twice, for the checksum).
 

@@ -58,7 +58,7 @@ The harness is [`skills/motion-stack/scripts/seekcheck.mjs`](../skills/motion-st
 ## Honest limits
 
 - **One machine** (Apple M3 Pro, Chrome 154, ANGLE Metal), with four lanes sharing the GPU. Read ms/frame within a lane only.
-- **The version rule:** where a release was younger than 14 days at test time, we tested the newest version at least 14 days old (supply-chain caution). Each lane write-up says which. The one exception is cbirds (lane `e-terminal`): we tested a commit that was 2 days old, because its 3D mode is newer than any commit that was 14 days old.
+- **The version rule:** where a release was younger than 14 days at test time, we tested the newest version at least 14 days old (supply-chain caution). Each lane write-up says which. The one exception is cbirds (lane `e-terminal`): we tested a commit that was 2 days old, because its 3D mode is newer than any commit that was 14 days old. The maintainers approved that exception on 14 Oct 2026, after a source review of the pinned commit (no network or system calls; writes only to the output path).
 - **Content:** encoding results come from CG content, and the 2D shot is one design. Your content may rank differently, so run the harness on it.
 - **Not tested:**
   - Linux and Windows GPUs;

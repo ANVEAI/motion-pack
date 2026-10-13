@@ -74,11 +74,11 @@ t1=$(now)
 
 VF="trim=start_frame=$S:end_frame=$((S + F)),setpts=N/(30*TB),$CROP"
 if [ "$GROUND" = black ]; then
-  read -r GR GG GB < <(ffmpeg -v error -i "$GIF" -frames:v 1 -vf crop=1:1:0:0 -f rawvideo -pix_fmt rgb24 - | od -An -tu1)
+  read -r GR GG GB < <(ffmpeg -nostdin -v error -i "$GIF" -frames:v 1 -vf crop=1:1:0:0 -f rawvideo -pix_fmt rgb24 - | od -An -tu1)
   VF="${VF}lutrgb=r='clip((val-$GR)*255/(255-$GR),0,255)':g='clip((val-$GG)*255/(255-$GG),0,255)':b='clip((val-$GB)*255/(255-$GB),0,255)',"
 fi
-if [ -n "$PNG" ]; then mkdir -p "$PNG"; ffmpeg -v error -y -i "$GIF" -vf "${VF%,}" -fps_mode passthrough "$PNG/%05d.png"; fi
-ffmpeg -v error -y -i "$GIF" -vf "${VF}scale=out_color_matrix=bt709:out_range=tv:flags=accurate_rnd+full_chroma_int,format=yuv420p,setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709:range=tv" \
+if [ -n "$PNG" ]; then mkdir -p "$PNG"; ffmpeg -nostdin -v error -y -i "$GIF" -vf "${VF%,}" -fps_mode passthrough "$PNG/%05d.png"; fi
+ffmpeg -nostdin -v error -y -i "$GIF" -vf "${VF}scale=out_color_matrix=bt709:out_range=tv:flags=accurate_rnd+full_chroma_int,format=yuv420p,setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709:range=tv" \
   -fps_mode cfr -r 30 -c:v libx264 -preset slow -tune animation -crf "$CRF" -threads 1 \
   -colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv -movflags +faststart -an "$OUT"
 t2=$(now)
