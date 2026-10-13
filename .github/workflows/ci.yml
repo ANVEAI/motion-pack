@@ -28,6 +28,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: cross-module ids resolve
         run: python3 tools/check_ids.py
+      - name: build the sound library (WAV masters are not in git; regenerated bit for bit)
+        run: python3 sfx/build_library.py
       - name: python tests (cuts, sfx, music)
         run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tests
       - name: transitions core tests
