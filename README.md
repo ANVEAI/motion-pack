@@ -1,7 +1,12 @@
 https://github.com/user-attachments/assets/917b9ebc-9679-49bf-b4c8-dc9a1663dead
 
-<p align="center"><sub>The 46-second showcase film (sound on). An agent made every frame with this pack: Blender 3D, GL transitions, kinetic type, synthesised music and sound.<br>
-Also in <a href="media/"><code>media/</code></a>: <a href="media/film.mp4">the film</a>, <a href="media/promo.mp4">the first promo</a> and <a href="media/promo.gif">its GIF loop</a>.</sub></p>
+<p align="center"><sub>The 46-second showcase film (sound on). An agent made every frame with this pack: Blender 3D, GL transitions, kinetic type, synthesised music and sound. Download: <a href="media/film.mp4"><code>media/film.mp4</code></a>.</sub></p>
+
+<p align="center">
+  <a href="media/promo.mp4"><img src="media/promo.gif" alt="motion-pack: an agent turns one prompt into a finished, beat-synced video" width="100%"></a>
+</p>
+
+<p align="center"><sub>The first promo, also made with the pack. Click it for the <a href="media/promo.mp4">full 42-second MP4</a>.</sub></p>
 
 <h1 align="center">motion-pack</h1>
 

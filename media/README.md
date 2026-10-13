@@ -5,7 +5,7 @@ The film and the promo were made with this pack (HyperFrames compositions, the p
 | file | what |
 |---|---|
 | `film.mp4` | the showcase film, also the README hero: 46 s, 1920x1080, −14.1 LUFS. An agent made every frame: Blender plates, GL transitions, kinetic type, a three.js catalog fly-through, the lab scoreboard and synthesised music and sound |
-| `promo.gif` | an 8 s loop of the promo, 800x450 |
+| `promo.gif` | an 8 s loop of the promo, 800x450, shown in the README under the film |
 | `promo.mp4` | the first promo: 42 s, 1920x1080, −14 LUFS |
 | `promo-9x16.mp4` | the same promo re-laid out for 9:16 (Shorts, Reels) |
 | `poster.png` | the promo's poster frame, 1280x720 |
