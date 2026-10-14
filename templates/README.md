@@ -60,7 +60,7 @@ Run the three.js templates before `beat-edit` and `talking-head`, because those 
 | `_shared/compose.mjs` | stage a HyperFrames project: fonts, media and other modules are hard-linked into `assets/` |
 | `_shared/cues.mjs` | `node cues.mjs <dir> [--set k=v]` exports the plan without a browser |
 | `_shared/audio.py` | plan -> mix (music mixer when a bed is set; `--stem` for a stem that sits under dialogue) |
-| `_shared/render3d.sh` | three.js template end to end: plan, GPU render, mix, mux, contact sheet, loudness (`AUDIO_ONLY=1` remuxes sound only) |
+| `_shared/render3d.sh` | three.js template end to end: plan, GPU render, mix, mux, contact sheet, loudness (`AUDIO_ONLY=1` remuxes sound only). Checks puppeteer-core and Chrome first (`node tools/chrome.mjs --check`) and stops with the install line; a failed render prints the tail of `out/render-<aspect>.log` |
 | `_shared/sheet.py` | contact sheet decoded from the delivered MP4, plus LUFS and TP of its audio |
 
 ## Demo honesty
