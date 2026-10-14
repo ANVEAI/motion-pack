@@ -14,6 +14,7 @@ Numbers here are tunable defaults drawn from those films, not laws. RECIPE L in 
 | **L4** | Output montage | 45–60 s | A model or platform whose outputs are visual | Gemini "Argon" 51 s |
 | **L5** | Teaser | 6–15 s, 1:1 or 9:16 | The day before; announce a premiere time | Hark "premiering at 9am" 6 s; Comet 7 s at 1:1 |
 | **L6** | Build-in-public clip | 15–30 s, 9:16 | Pre-launch weeks, to build anticipation honestly | (pack practice) |
+| **L7** | Metaphor manifesto | 20–30 s | A brand, programme or cohort with no single product shot. An archival metaphor in three lines, then real people, then the title | Stan "Launchpad" 22 s: craft reference only, reception unproven; see `docs/research/reference-stan-launchpad-2026-10.md` |
 
 **Pair them.** A long film converts believers; a short one travels:
 - Rabbit: a 25:30 keynote plus a 57 s spot.
@@ -69,6 +70,14 @@ Times are for the stated length; scale them proportionally.
 ### L5 teaser (6–15 s)
 - The hero object or the most surprising output, plus a date or premiere time. No explanation.
 - Square or vertical. Post it from the founder's account the day before.
+
+### L7 metaphor manifesto (~22 s)
+- **0–2 s:** an archival or metaphor image in motion. Never black on frame 0.
+- **2–9 s:** three short lines, each on its own container (grid, frame, circle, dot field). Change scale between lines, and put one texture verb on each: scramble, weight jump, outline→fill, dither dissolve.
+- **9–15 s:** the payoff on real people from the brand's world, at ~0.5 s per shot, with one hard-cut brand glyph as punctuation.
+- **15–20 s:** title cards: tiny line, then wide bold name, then light date.
+- **Last 2 s:** the logo.
+- **Colour:** one accent colour across duotone archive, type and wardrobe.
 
 ### L6 build-in-public (15–30 s)
 - **Opening:** one real screen or one concept render, with a ≤7-word hook on frame 0.

@@ -167,7 +167,8 @@ Every recipe ends with the VIRALITY and QA checklists below.
    - L3 product UI film;
    - L4 output montage;
    - L5 teaser;
-   - L6 build-in-public clip.
+   - L6 build-in-public clip;
+   - L7 metaphor manifesto.
 
    Fill its beat sheet. Frame 0 is the product or the thesis. Show real UI or the reveal inside the window. Use 3 mundane demos and one defensible number.
 1. **Arc:** hook, tease, reveal, feature montage, end card. Pick one tone and commit to it.
