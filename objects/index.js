@@ -13,10 +13,13 @@ import * as PANELS from './lib/panels.js';
 import * as DEV from './lib/devices.js';
 import * as MATS from './lib/mat.js';
 import * as DOME from './lib/dome.js';
+import * as LOGO from './lib/logo.js';
+import * as FLAT from './lib/flat.js';
+import * as MASCOT from './characters/mascot2d.js';
 import * as WORKER from './characters/worker.js';
 import * as POSES from './characters/poses.js';
 
-export const O = { ...SET, ...BOX, ...CHROME, ...PAPER, ...READ, ...METER, ...PANELS, ...DEV, ...MATS, ...DOME, ...WORKER, ...POSES };
+export const O = { ...SET, ...BOX, ...CHROME, ...PAPER, ...READ, ...METER, ...PANELS, ...DEV, ...MATS, ...DOME, ...LOGO, ...FLAT, ...MASCOT, ...WORKER, ...POSES };
 
 const r = (build, tags, state, doc) => ({ build, tags, state, doc });
 export const REGISTRY = {
@@ -47,6 +50,8 @@ export const REGISTRY = {
   'objects/glass-dome': r((ctx, p, o) => DOME.makeGlassDome(ctx, p, o), ['set', 'platform', 'dome', 'glass', 'floating', 'new'], 'update(t), set({y, yaw, lift})', 'NEW floating round platform under a clear iridescent glass dome; props go in .inside'),
   'objects/icon-orbit': r((ctx, p, o) => DOME.makeIconOrbit(ctx, p, o), ['icons', 'orbit', 'apps', 'integrations', 'tiles', 'new'], 'update(t)', 'NEW generic rounded app-icon tiles (own line icons, no brand logos) orbiting on a tilted ring'),
   'objects/clay': r((_ctx, _p, o) => ({ material: DOME.makeClay(o.color, o), group: null }), ['material', 'clay', 'matte', 'subsurface', 'character', 'new'], 'material uniforms userData.clay', 'NEW clay material preset: soft matte, warm core + light-bleed rim; objects/worker takes spec.clay'),
+  'objects/mascot2d': r((ctx, p, o) => FLAT.makeMascotPlane(ctx, p, o), ['character', 'mascot', '2d', 'flat', 'narrator', 'squash-stretch', 'original', 'new'], 'mascotSVG(t, spec) | drawMascot2d(g, t, spec) | plane update(t)', 'NEW flat 2D mascot rig: bean body + sprout, eyes, mouth, blinks, hops with squash and stretch; poses idle point read cheer dive wave think; SVG, canvas or a three.js plane'),
+  'objects/logo-extrude': r((ctx, p, o) => LOGO.makeLogoExtrude(ctx, p, o), ['logo', 'mark', 'extrude', 'bevel', 'chrome', 'glass', 'iridescent', 'satin', 'brand', 'new'], 'update(t), set({yaw, tilt, slice, scale})', 'NEW three.js extrude of an SVG mark (own mark only; placeholder orbit mark) with bevel, presets chrome glass iridescent satin, optional sliced-offset beat, spin'),
   'objects/worker': r((ctx, p, o) => WORKER.makeWorker(ctx, p, o.spec || o, o.zoneX, o.rimLight), ['character', 'mascot', 'pantomime', 'original'], 'update(t) from spec {keys, path, blinks}', 'periwinkle ceramic worker: rig, hops, follow-through, blinks'),
 };
 export function create(ctx, parent, id, params = {}) { const e = REGISTRY[id]; if (!e) throw new Error('objects: unknown id ' + id + ' (have ' + Object.keys(REGISTRY).join(', ') + ')'); return e.build(ctx, parent, params); }

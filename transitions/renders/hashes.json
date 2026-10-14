@@ -967,5 +967,43 @@
   "same": true,
   "qa_hash": "4b6de4c391e7c11a",
   "qa_pass": true
+ },
+ "sharedElement": {
+  "stills": {
+   "f0009.png": {
+    "run1": "f0556ea736534ffb",
+    "run2": "f0556ea736534ffb"
+   },
+   "f0015.png": {
+    "run1": "864cd9e21dd3d951",
+    "run2": "864cd9e21dd3d951"
+   },
+   "f0021.png": {
+    "run1": "09b212881e1574b0",
+    "run2": "09b212881e1574b0"
+   }
+  },
+  "same": true,
+  "qa_hash": "f60affee6586727b",
+  "qa_pass": true
+ },
+ "sketchToRender": {
+  "stills": {
+   "f0011.png": {
+    "run1": "ae7efb00ca3a1294",
+    "run2": "ae7efb00ca3a1294"
+   },
+   "f0015.png": {
+    "run1": "57ab5f3d830ea0f5",
+    "run2": "57ab5f3d830ea0f5"
+   },
+   "f0024.png": {
+    "run1": "b0a524ad81cea96f",
+    "run2": "b0a524ad81cea96f"
+   }
+  },
+  "same": true,
+  "qa_hash": "dbac3dab0dd0229d",
+  "qa_pass": true
  }
 }

@@ -566,6 +566,46 @@
    "source": "transitions/catalog.json"
   }
  ],
+ "sharedElement": [
+  {
+   "id": "snd.ui.slide",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -1.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.tx.match_link",
+   "anchor": "end",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -2.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
+ "sketchToRender": [
+  {
+   "id": "snd.paper.rustle",
+   "anchor": "start",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": 1,
+   "gain_db": -3.0,
+   "source": "transitions/catalog.json"
+  },
+  {
+   "id": "snd.tx.mask_reveal",
+   "anchor": "peak",
+   "tier": 3,
+   "over_bed_db": null,
+   "frame_offset": -1,
+   "gain_db": -1.0,
+   "source": "transitions/catalog.json"
+  }
+ ],
  "squeeze": [
   {
    "id": "snd.tx.tape_stop",

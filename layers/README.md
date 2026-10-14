@@ -51,6 +51,26 @@ mountStack(document.getElementById('bg-1'), [{ kind: 'gridTunnel', params: { dri
 Measured (`tests/l7.test.mjs`, 20 checks, real GPU): the SVG filters on a DOM wrapper match the JS reference (duotone mean 0.7-0.9 levels; threshold with Bayer 4 / 8: 0.06% / 0.07% of pixels differ by more than 24 levels, dither none: 0); a flat grey under Bayer 4 / 8 covers exactly its level; the duotone `.cube` matches the reference within 0.01 levels (33^3, trilinear); both backgrounds draw the same calls for the same t in any order and re-render bit-identically after another t; a look on an empty or hidden layer paints nothing (every filter ends with `feComposite in=SourceGraphic`, so the generated Bayer tile cannot leak).
 Honest limits: the looks are display-referred maths on sRGB-encoded values (no linear-light option); the SVG path assumes opaque sources (feComposite runs on premultiplied colour); a threshold has no `.cube` (dithering is spatial); there is no Finisher (GLSL) pass for these two looks yet; the Bayer phase is anchored on the filtered element's top-left corner, so a moving wrapper drags its dither with it (keep the filter on a still wrapper and move the content inside, or accept it as part of the look).
 
+## Round 3 parts (2026-10-14): mesh gradient, animated grade, dot condense, hologram beam
+
+Techniques from the round-3 reference studies (craft only, nothing copied). All four are pure functions of t and mount like every other kind.
+
+| Id | File | What | Params (defaults) | Demo |
+|---|---|---|---|---|
+| `background.meshGradient` | `backgrounds.js` | soft mesh / aurora field: 3-8 colour blobs with a smooth radial falloff on closed-form Lissajous paths; `loop: L` makes every frequency a multiple of 1/L (exact repeat); optional vertical sky base; seeded grain (a 256 px noise tile re-offset per grain frame) | `palette` peach \| lilac \| sky \| dusk \| mint \| ink (or `colors` + `bg`), `blobs` 5, `size` 0.62, `travel` 0.16, `speed` 0.05 Hz, `loop` 0, `grain` 0.04, `grainFps` 24, `seed` | `demo/out/r3-sheet.jpg` |
+| `look.gradeIn` | `stylize.js` | animated look: a gradient map (luminance -> N stops; 2 = duotone) resolves to natural colour over `dur` from `at` (or the reverse). Out = w(t) map + (1 - w(t)) source. SVG filter (table transfer + arithmetic mix: only two weights change per frame), canvas, `.cube` per weight | `stops` ['#1B1340', '#E0457B', '#FFD9A8'], `at` 0, `dur` 1.2, `ease` lin \| soft \| hero \| sine \| expoOut, `reverse`, `amount` 1, `contrast`, `pivot` | `demo/out/r3-sheet.jpg` |
+| `layers.dotCondense` | `canvas2d-r3.js` | N dots drift in a field, then converge on cue into FEWER dots (merged dots grow by the square root of how many landed: ink area kept), a LINE, or a WORD (text sampled to points once, cached). Dots and targets are paired left to right so the flow reads as one motion | `n` 220, `to` fewer \| line \| word, `count`, `gap` 46, `text`, `size` 0.26, `at` 1, `dur` 1.2, `stagger` 0.45, `radius` 4, `drift` 10, `color`, `toColor`, `field` | `demo/out/r3-sheet.jpg` |
+| `overlay.hologramBeam` | `canvas2d-r3.js` | projector cone from a point (a character, a device) to a floating window or a wireframe globe: shimmer rings travelling out, a source glow, hashed flicker, the window materialising (scale, scanlines, sweep band). Screen blend: for dark or mid plates | `from` [0.2, 0.8], `rect` [0.48, 0.16, 0.4, 0.5], `mode` window \| globe, `color` #7FE7FF, `at`, `on` 0.6, `rings` 7, `scan` 140, `flicker` 0.12, `spin` (globe) | `demo/out/r3-sheet.jpg` |
+
+```js
+mountStack(el, [{ kind: 'meshGradient', params: { palette: 'peach', loop: 8 } }, { kind: 'dotCondense', params: { to: 'word', text: 'one idea', n: 300 } }], { width: 1920, height: 1080, fps: 30 });
+const g = mountGradeIn(document.getElementById('w-plate'), { stops: ['#2A1E5C', '#E0457B', '#FFE2C2'], at: 2, dur: 1.5 }); g.render(t);   // on every hf-seek
+hologramState(t, params)   // { beam, win, flick }: DOM text inside the window can follow the materialisation
+```
+
+Measured (`tests/r3.test.mjs`, 20 checks, real GPU): the gradeIn SVG filter matches the JS reference within 0.11-0.81 levels mean at map weights 1, 0.5 and 0.07 (0% of pixels off by more than 12); the gradeIn `.cube` matches within 0.00 levels; the three canvas kinds draw the same calls for the same t in any order and re-render bit-identically after another t; meshGradient with `loop: 8` repeats exactly; dotCondense keeps the total ink area exactly when 220 dots merge into 20, and every dot of a line lands on the line.
+Honest limits: meshGradient is radial gradients in sRGB (no perceptual mixing; banding is hidden by the grain, so keep `grain` above 0.02 for slow fields); the grain tile repeats every 256 px (fine at 1080p, visible as a pattern if you scale the layer up); dotCondense's word mode samples the text on a 1/4-resolution canvas (very thin fonts lose strokes; use weight 700+); the hologram is screen-blended, so it nearly vanishes on white plates; gradeIn is display-referred like duotone and needs an opaque source.
+
 ## Use
 
 ```js

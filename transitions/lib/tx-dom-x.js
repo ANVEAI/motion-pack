@@ -139,3 +139,78 @@ export const APPROX = {
   bookFlip: { via: 'cube', params: () => ({ persp: 2.4, zoom: 0.1 }) },
 };
 export const APPROX_KEYS = Object.keys(APPROX);
+
+/* ---- round 3 (2026-10-14): sharedElement (magic move) and sketchToRender, real DOM back-ends ---- */
+/* normalised spring step, same maths as the GLSL mp_spring: 0 at x <= 0, exactly 1 at x >= 1 (blended into 1 over the last 15%) */
+export function springStep(x, bounce = 0.3) {
+  if (x <= 0) return 0; if (x >= 1) return 1; const z = 1 + (0.3 - 1) * Math.min(1, Math.max(0, bounce)), w = 6.5; let s;
+  if (z > 0.999) s = 1 - Math.exp(-w * x) * (1 + w * x); else { const wd = w * Math.sqrt(1 - z * z); s = 1 - Math.exp(-z * w * x) * (Math.cos(wd * x) + z * w / wd * Math.sin(wd * x)); }
+  const k = sm(0.85, 1, x); return s + (1 - s) * k;
+}
+/* per-key progress for key i of n: delays spread over `stagger` of the window, each key springs over the rest */
+export const shareProgress = (p, i, n, P) => { const d = n > 1 ? P.stagger * i / (n - 1) : 0; return springStep((p - d) / Math.max(1e-4, 1 - P.stagger), P.bounce); };
+const STYLE_SKIP = new Set(['position', 'left', 'top', 'right', 'bottom', 'inset', 'margin', 'margin-top', 'margin-left', 'margin-right', 'margin-bottom', 'transform', 'transform-origin', 'transition', 'animation', 'visibility', 'width', 'height', 'translate', 'scale', 'rotate', 'inset-block-start', 'inset-block-end', 'inset-inline-start', 'inset-inline-end', 'margin-block-start', 'margin-block-end', 'margin-inline-start', 'margin-inline-end', 'block-size', 'inline-size']);
+function copyStyle(src, dst, root) { const cs = getComputedStyle(src); for (let i = 0; i < cs.length; i++) { const k = cs[i]; if (!(root && STYLE_SKIP.has(k))) dst.style.setProperty(k, cs.getPropertyValue(k)); } }
+/* a static clone that keeps the element's look outside its stacking context: computed styles copied node by node, canvases snapshotted */
+function cloneShared(el) {
+  const c = el.cloneNode(true), so = [el, ...el.querySelectorAll('*')], co = [c, ...c.querySelectorAll('*')];
+  so.forEach((s, i) => { copyStyle(s, co[i], i === 0); if (s.tagName === 'CANVAS') { co[i].width = s.width; co[i].height = s.height; co[i].getContext('2d').drawImage(s, 0, 0); } });
+  c.removeAttribute('id'); c.querySelectorAll('[id]').forEach((x) => x.removeAttribute('id')); c.removeAttribute('data-share');
+  c.style.setProperty('position', 'absolute'); c.style.left = '0'; c.style.top = '0'; c.style.margin = '0'; c.style.transformOrigin = '0 0'; c.style.boxSizing = 'border-box'; c.style.transition = 'none'; c.style.animation = 'none'; c.style.visibility = 'visible';
+  return c;
+}
+function rectIn(el, root) { const r = el.getBoundingClientRect(), R = root.getBoundingClientRect(), k = R.width / (root.offsetWidth || R.width || 1); return { x: (r.left - R.left) / k, y: (r.top - R.top) / k, w: r.width / k, h: r.height / k }; }
+const hideOriginal = (el) => { if (el.dataset.mptxHide == null) el.dataset.mptxHide = el.style.visibility || '-'; el.style.visibility = 'hidden'; };
+/* the sketch filter: Laplacian edges of the luma -> ink lines (alpha = edge), mixed with the (desaturated) source by an arithmetic composite */
+function sketchFilter(ov, P, h) {
+  const id = ov.dataset.uid + '-sketch'; let box = ov.querySelector(':scope > .mptx-sketch');
+  if (!box) { box = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); box.setAttribute('class', 'mptx-sketch'); box.setAttribute('width', '0'); box.setAttribute('height', '0'); box.style.position = 'absolute'; ov.appendChild(box); }
+  const ink = P.ink.replace('#', ''), n = parseInt(ink, 16), ir = ((n >> 16) & 255) / 255, ig = ((n >> 8) & 255) / 255, ib = (n & 255) / 255, k = 1 / Math.max(0.01, P.threshold), dil = Math.max(0, P.line * h / 1080 - 1);
+  const sig = [P.ink, P.threshold, P.line, h].join('|');
+  if (box.dataset.sig !== sig) { box.dataset.sig = sig;
+    box.innerHTML = `<filter id="${id}" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">` +
+      '<feColorMatrix in="SourceGraphic" type="matrix" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 0 1" result="L"/>' +
+      '<feConvolveMatrix in="L" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" divisor="1" preserveAlpha="true" result="E"/>' +
+      `<feComponentTransfer in="E" result="M"><feFuncR type="linear" slope="${k.toFixed(4)}" intercept="-0.5"/></feComponentTransfer>` +
+      (dil > 0.25 ? `<feMorphology in="M" operator="dilate" radius="${dil.toFixed(2)}" result="M"/>` : '') +
+      `<feColorMatrix in="M" type="matrix" values="0 0 0 0 ${ir.toFixed(4)} 0 0 0 0 ${ig.toFixed(4)} 0 0 0 0 ${ib.toFixed(4)} 1 0 0 0 0" result="lines"/>` +
+      '<feColorMatrix in="SourceGraphic" type="saturate" values="1" result="S"/>' +
+      '<feComposite in="lines" in2="S" operator="arithmetic" k1="0" k2="1" k3="0" k4="0"/></filter>'; }
+  return { id, sat: box.querySelector('feColorMatrix[type="saturate"]'), mix: box.querySelector('feComposite') };
+}
+Object.assign(DOM_X, {
+  /* magic move: [data-share="key"] elements found in BOTH a and b are hidden and replaced, for the window, by two static clones in the overlay
+     that spring from the A rect to the B rect (per-key stagger) and cross-fade A look -> B look; the rest of b dissolves in over a. */
+  sharedElement(p, c) {
+    const { a, b, P, root, ov } = c; let box = ov.querySelector(':scope > .mptx-share');
+    if (!box) { box = document.createElement('div'); box.className = 'mptx-share'; box.style.cssText = 'position:absolute;left:0;top:0;width:0;height:0;overflow:visible'; ov.appendChild(box); }
+    box.style.display = '';
+    const A = new Map([...a.querySelectorAll('[data-share]')].map((e) => [e.dataset.share, e])), keys = [...b.querySelectorAll('[data-share]')].map((e) => e.dataset.share).filter((k) => A.has(k));
+    const ra = keys.map((k) => rectIn(A.get(k), root)), rb = keys.map((k) => rectIn(b.querySelector(`[data-share="${CSS.escape(k)}"]`), root));
+    const sig = JSON.stringify([keys, ra, rb].map((v) => JSON.stringify(v)));
+    if (box.dataset.sig !== sig) { box.dataset.sig = sig; box.innerHTML = '';
+      keys.forEach((k) => { const w = document.createElement('div'); w.style.cssText = 'position:absolute;left:0;top:0'; w.appendChild(cloneShared(A.get(k))); w.appendChild(cloneShared(b.querySelector(`[data-share="${CSS.escape(k)}"]`))); box.appendChild(w); }); }
+    keys.forEach((k, i) => {
+      const s = shareProgress(p, i, keys.length, P), A0 = ra[i], B0 = rb[i], r = { x: A0.x + (B0.x - A0.x) * s, y: A0.y + (B0.y - A0.y) * s, w: A0.w + (B0.w - A0.w) * s, h: A0.h + (B0.h - A0.h) * s };
+      const w = box.children[i], [ca, cb] = w.children, x = sm(0.3, 0.7, s), lift = Math.sin(Math.PI * Math.min(1, Math.max(0, s)));
+      ca.style.width = A0.w + 'px'; ca.style.height = A0.h + 'px'; cb.style.width = B0.w + 'px'; cb.style.height = B0.h + 'px';
+      ca.style.transform = `translate(${r.x.toFixed(3)}px,${r.y.toFixed(3)}px) scale(${(r.w / Math.max(1e-3, A0.w)).toFixed(5)},${(r.h / Math.max(1e-3, A0.h)).toFixed(5)})`;
+      cb.style.transform = `translate(${r.x.toFixed(3)}px,${r.y.toFixed(3)}px) scale(${(r.w / Math.max(1e-3, B0.w)).toFixed(5)},${(r.h / Math.max(1e-3, B0.h)).toFixed(5)})`;
+      ca.style.opacity = (1 - x).toFixed(4); cb.style.opacity = x.toFixed(4);
+      w.style.filter = P.shadow > 0 && lift > 0.01 ? `drop-shadow(0 ${(18 * lift).toFixed(2)}px ${(30 * lift).toFixed(2)}px rgba(0,0,0,${(0.45 * P.shadow * lift).toFixed(4)}))` : '';
+      hideOriginal(A.get(k)); hideOriginal(b.querySelector(`[data-share="${CSS.escape(k)}"]`));
+    });
+    show(a, true); b.style.zIndex = '2'; b.style.opacity = sm(0.12, 0.62, p).toFixed(4);
+  },
+  /* sketch -> render: shot A fades to paper; B's Laplacian line art (SVG feConvolveMatrix) wipes on along `dir`; then the filter's arithmetic
+     composite swaps lines for the desaturated (clay) image and the saturation comes back. */
+  sketchToRender(p, c) {
+    const { a, b, P, cut, root, ov } = c, h = H(root), F = sketchFilter(ov, P, h), e = p;
+    const drawK = Math.min(1, Math.max(0, (e - 0.06) / P.draw * 1.1)), fillK = sm(0.5, 0.88, e), colK = sm(0.78, 0.97, e);
+    a.style.opacity = (1 - sm(0, cut, e)).toFixed(4); root.style.background = P.paper;
+    const L = Math.hypot(P.dir[0], P.dir[1]) || 1, deg = (Math.atan2(P.dir[1] / L, P.dir[0] / L) * 180 / Math.PI + 90), edge = drawK * 120 - 10;
+    setMask(b, drawK >= 1 ? 'none' : `linear-gradient(${deg.toFixed(2)}deg, #000 ${Math.max(0, edge - 10).toFixed(2)}%, transparent ${(edge + 10).toFixed(2)}%)`);
+    F.mix.setAttribute('k2', (1 - fillK).toFixed(4)); F.mix.setAttribute('k3', fillK.toFixed(4)); F.sat.setAttribute('values', (1 - P.tone * (1 - colK)).toFixed(4));
+    b.style.filter = e >= 0.985 ? '' : `url(#${F.id})`; b.style.zIndex = '2'; b.style.opacity = '1';
+  },
+});

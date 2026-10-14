@@ -14,26 +14,29 @@
    film:    the extracted set pieces: product box, liquid-chrome cloud, paper stack + curling sheet, meter, readout, app windows, tiles,
             stand card + puck, plug.
    cast:    the worker's 6 emotions side by side (neutral, happy, sad, surprised, angry, scheming).
-   dome:    glass-dome platform (floating) with a clay worker typing inside, the icon orbit popping on around it (2026-10-14). */
+   dome:    glass-dome platform (floating) with a clay worker typing inside, the icon orbit popping on around it (2026-10-14).
+   r3:      objects/logo-extrude in the four presets (chrome, glass, iridescent, satin; the satin one sliced and offset) spinning on a pale cyc, and the
+            flat objects/mascot2d on a plane in the scene (cheer hop then point) (2026-10-14, round 3). */
 import { runScene, U } from './kit/studio-lite.js';
 import { O } from './index.js';
 import { stageConfig, makeStage, shot } from './stage.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 const { E, seg, clamp, lerp, springU } = U;
 const q = new URLSearchParams(location.search), SHOT = q.get('shot') || 'devices';
-window.CONFIG = stageConfig({ name: 'objects-gallery-' + SHOT, seconds: 4, qaFrames: [0, 60, 119], ...(SHOT === 'dome' ? { colors: { backdrop: '#dfe6f2' }, grade: { vignette: 0.05, dofK: 22 } } : {}) });
+window.CONFIG = stageConfig({ name: 'objects-gallery-' + SHOT, seconds: 4, qaFrames: [0, 60, 119], ...(SHOT === 'dome' ? { colors: { backdrop: '#dfe6f2' }, grade: { vignette: 0.05, dofK: 22 } } : SHOT === 'r3' ? { colors: { backdrop: '#e6e1f2' }, grade: { vignette: 0.06, dofK: 14, bloom: 0.5 } } : {}) });
 const st = {};
 const SHOTS = {
   devices: { fov: 18, elev: [21, 18], az: [-15, -8], dist: [10.6, 10.0], target: [-0.05, 0.42, 0.0], screen: [960, 560], tall: { dist: [19, 18], screen: [540, 1100] } },
   film: { fov: 18, elev: [24, 22], az: [-14, -6], dist: [19.0, 18.2], target: [0, 0.55, -0.1], screen: [960, 560], tall: { dist: [40, 38.5], screen: [540, 1100] } },
   cast: { fov: 18, elev: [9, 8], az: [-4, 4], dist: [13.6, 13.2], target: [0, 0.5, 0], screen: [960, 600], tall: { dist: [34, 33], screen: [540, 1150] } },
+  r3: { fov: 22, elev: [8, 7], az: [-6, 4], dist: [10.2, 9.6], target: [0, 1.15, 0], screen: [960, 540], tall: { dist: [26, 25], screen: [540, 1000] } },
   dome: { fov: 20, elev: [10, 8], az: [-10, 6], dist: [10.5, 9.4], target: [0, 1.15, 0], screen: [960, 560], tall: { dist: [30, 28], screen: [540, 1000] } },
 };
 
 runScene({
   async build(ctx) {
     const slab = SHOT === 'film' ? [6.4, 0.64, 3.0] : SHOT === 'cast' ? [6.0, 0.64, 1.6] : [3.6, 0.64, 2.1];
-    st.stage = makeStage(ctx, SHOT === 'dome' ? { mode: 'white', paper: '#dfe6f2', cycFar: -12, cycR: 8 } : { slab }); const G = st.stage.parent;
+    st.stage = makeStage(ctx, SHOT === 'dome' ? { mode: 'white', paper: '#dfe6f2', cycFar: -12, cycR: 8 } : SHOT === 'r3' ? { mode: 'white', paper: '#e6e1f2', cycFar: -10, cycR: 7 } : { slab }); const G = st.stage.parent;
     if (SHOT === 'devices') {
       st.laptop = O.makeLaptop(ctx, G, {}); st.laptop.pose([-0.35, 0, -0.25], 0.18);
       st.phone = O.makePhone(ctx, G, {}); st.phone.pose([0.95, 0.016 + 0.0, 0.55], [-Math.PI / 2, -0.35, 0]);
@@ -55,6 +58,12 @@ runScene({
       st.puck = O.makePuck(ctx, st.card.group); st.puck.set([st.card.seat[0], st.card.seat[1], 0.04]);
       st.plug = O.makePlug(ctx, G, { label: 'API', icon: 'wave' }); st.plug.set([2.55, 0, 0.75], { led: 1 });
       ctx.probes = { box: st.box.group, meter: st.meter.disc, readout: st.readout.group };
+    } else if (SHOT === 'r3') {
+      st.logos = ['chrome', 'glass', 'iridescent', 'satin'].map((preset, i) => { const l = O.makeLogoExtrude(ctx, G, { preset, size: 1.05, depth: 0.2, spin: 0.14, yaw: -0.5 + 0.35 * i, slice: preset === 'satin' ? { y: 0.06, offset: [0.22, 0.1, 0.18] } : null, color: preset === 'satin' ? '#4a18ed' : null });
+        l.group.position.set(-2.55 + 1.45 * i + (i > 1 ? 0.5 : 0), 1.45, 0); return l; });
+      st.mascot = O.makeMascotPlane(ctx, G, { height: 1.5, spec: { keys: [[0, 'idle'], [0.4, 'cheer'], [2.2, 'point']], hops: [0.6, 1.2], blinks: [0.3, 2.6], talk: [[2.4, 3.4]] } });
+      st.mascot.mesh.position.set(0.12, 0.72, 0.6);
+      ctx.probes = { logo0: st.logos[0].probes.logo, logo3: st.logos[3].probes.logo, mascot: st.mascot.mesh };
     } else if (SHOT === 'dome') {
       st.dome = O.makeGlassDome(ctx, G, { r: 1.05, base: 1.35, y: 0.95 });
       const inner = new ctx.THREE.Group(); inner.scale.setScalar(0.62); st.dome.inside.add(inner);
@@ -89,13 +98,15 @@ runScene({
       st.readout.set(Math.min(5, 5 * seg(t, 0.4, 3.0)), '#e5483a');
       st.box.setBand(E.soft(seg(t, 1.0, 1.4))); st.box.setLeds('#34d399', t > 1.4 ? 1 : 0);
       const fl = E.soft(seg(t, 2.0, 2.6)); st.puck.set([st.card.seat[0], st.card.seat[1], 0.04], Math.PI * fl);
+    } else if (SHOT === 'r3') {
+      st.logos.forEach((l, i) => l.update(t, { slice: i === 3 ? E.soft(seg(t, 1.0, 2.2)) - E.soft(seg(t, 3.0, 3.8)) : 0 })); st.mascot.update(t);
     } else if (SHOT === 'dome') {
       st.dome.update(t); st.orbit.update(t); st.worker.update(t);
       st.laptop.set({ open: 1, screen: 1, ui: { progress: +(0.3 + 0.6 * seg(t, 0, 4)).toFixed(2), title: 'Ideas' } });
     } else st.cast.forEach((w) => w.update(t));
   },
   camera(ctx, t) { const o = q.get('cam') ? JSON.parse(q.get('cam')) : null; return shot(ctx, t, o ? { ...SHOTS[SHOT], ...o } : SHOTS[SHOT]); },   // ?cam={...} overrides (QA close-ups)
-  focus(ctx, t) { const o = q.get('cam') ? JSON.parse(q.get('cam')) : null; return o && o.target ? o.target : SHOT === 'devices' ? [0.1, 0.5, 0] : SHOT === 'dome' ? [0, 1.1, 0] : [0, 0.5, 0]; },
+  focus(ctx, t) { const o = q.get('cam') ? JSON.parse(q.get('cam')) : null; return o && o.target ? o.target : SHOT === 'devices' ? [0.1, 0.5, 0] : SHOT === 'dome' ? [0, 1.1, 0] : SHOT === 'r3' ? [0, 1.2, 0.3] : [0, 0.5, 0]; },
   subframes() { return 4; },
 });
 </script>

@@ -10,7 +10,8 @@ const cams3 = { hold: C3.hold(base), pushIn: C3.pushIn(base, { at: 1 }), pushSlo
   dollyZoom: C3.dollyZoom(base, { at: 0.5 }), whipOut: C3.whipPan(base, { at: 1 }), whipIn: C3.whipPan(base, { at: 1, mode: 'in' }), handheld: C3.handheld(base, { level: 'action', seed: 4 }), beatPunch: C3.beatPunch(base, { hits }), dutch: C3.dutch(base, { at: 1 }),
   breathe: C3.breathe(base), impactShake: C3.impactShake(base, { hits }), stacked: C3.handheld(C3.beatPunch(C3.pushIn(C3.hold(base), { at: 1 }), { hits }), { level: 'doc', seed: 2 }), kitDrift: C3.kitDrift(base, 5) };
 const cams2 = { push2d: C2.push2d(C2.ID2, { at: 1 }), pull2d: C2.pull2d(C2.ID2, { at: 1 }), pan2d: C2.pan2d(C2.ID2, { at: 1 }), whipOut: C2.whip2d(C2.ID2, { at: 1 }), whipIn: C2.whip2d(C2.ID2, { at: 1, mode: 'in' }), handheld2d: C2.handheld2d(C2.ID2, { seed: 3 }),
-  punchCadence: C2.punchCadence(C2.ID2, { boundaries: [1.2, 3.1, 6.4, 8.8] }), punchIn: C2.punchIn2d(C2.ID2, { at: 1, returnAt: 2 }), beat: C2.beatPunch2d(C2.ID2, { hits }), kenBurns: C2.kenBurns(C2.ID2, { at: 0, dur: 4 }), dutch2d: C2.dutch2d(C2.ID2, { at: 1 }), breathe2d: C2.breathe2d(C2.ID2), shake2d: C2.shake2d(C2.ID2, { hits }) };
+  punchCadence: C2.punchCadence(C2.ID2, { boundaries: [1.2, 3.1, 6.4, 8.8] }), punchIn: C2.punchIn2d(C2.ID2, { at: 1, returnAt: 2 }), beat: C2.beatPunch2d(C2.ID2, { hits }), kenBurns: C2.kenBurns(C2.ID2, { at: 0, dur: 4 }), dutch2d: C2.dutch2d(C2.ID2, { at: 1 }), breathe2d: C2.breathe2d(C2.ID2), shake2d: C2.shake2d(C2.ID2, { hits }),
+  scaleDive: C2.scaleDive(C2.ID2, { at: 0.5, dur: 3, levels: 3, ratio: [8, 6, 10], focus: [[0.6, 0.4], [0.3, 0.7], [0.5, 0.5]] }), pullbackToScreen: C2.pullbackToScreen(C2.handheld2d(C2.ID2, { level: 'subtle' }), { at: 1, dur: 2.4, quad: [[0.3, 0.28], [0.66, 0.31], [0.65, 0.6], [0.31, 0.58]] }) };
 
 /* 1-2. determinism in any order + purity (frozen base would throw on mutation) */
 const ts = Array.from({ length: 240 }, () => rng() * 9);
@@ -76,6 +77,23 @@ const calls = []; const fakeTl = { set: (tg, v, t) => { calls.push([v, t]); retu
 bakeGSAP(fakeTl, '#world', cam, { t0: 0, dur: 2, fps: 30 }); let bakeOk = calls.length === 61; calls.forEach(([v, t]) => { const e = C2.toGSAP(cam(t)); if (flat(v) !== flat(e)) bakeOk = false; });
 const css = C2.toCSS(cam(1.3)), g = C2.toGSAP(cam(1.3)); const nums = css.transform.match(/-?[\d.]+/g).map(Number);
 R.check('bakeGSAP writes one tl.set per frame (61 for 2 s) identical to toGSAP(cam(t)); CSS transform numbers match GSAP vars', bakeOk && Math.abs(nums[0] - g.x) < 1e-3 && Math.abs(nums[1] - g.y) < 1e-3 && Math.abs(nums[3] - g.scale) < 1e-4);
+/* 9b. round 3: scaleDive (exponential zoom, hidden swaps) + pullbackToScreen (comp lands on a screen quad) */
+{ const R8 = [8, 6, 10], F = [[0.6, 0.4], [0.3, 0.7], [0.5, 0.5], [0.5, 0.5]], dv = C2.scaleDive(C2.ID2, { at: 0, dur: 3, levels: 3, ratio: R8, focus: F, ease: 'lin' });
+  /* log-scale speed constant (ease lin): d ln(zoom) / dt is the same in every level */
+  const tot = Math.log(8 * 6 * 10), lnz = (t) => { const s = dv(t), done = R8.slice(0, s.dive.level).reduce((a, r) => a + Math.log(r), 0); return done + Math.log(s.scale); };
+  const sp = [0.3, 1.1, 1.9, 2.6].map((t) => (lnz(t + 0.01) - lnz(t - 0.01)) / 0.02);
+  /* hand-off: just before level i ends, the next level drawn at scale/ratio (origin focus[i]) maps its frame onto the region of level i around focus[i] */
+  let hand = true; for (const tEnd of [Math.log(8) / tot * 3, (Math.log(8) + Math.log(6)) / tot * 3]) { const a = dv(tEnd - 1e-6), b = dv(tEnd + 1e-6);
+    if (!(a.dive.next && a.dive.next.opacity > 0.999 && Math.abs(a.scale / a.dive.ratio - 1) < 1e-4 && Math.abs(b.scale - 1) < 1e-4 && b.dive.level === a.dive.level + 1)) hand = false;
+    const q = [0.13, 0.81], inner = C2.mapPoint2({ ...a, scale: a.scale / a.dive.ratio }, q), outer = C2.mapPoint2(a, [a.dive.origin[0] + (q[0] - a.dive.origin[0]) / a.dive.ratio, a.dive.origin[1] + (q[1] - a.dive.origin[1]) / a.dive.ratio]); if (Math.hypot(inner[0] - outer[0], inner[1] - outer[1]) > 1e-9) hand = false; }
+  R.check(`scaleDive: constant log-zoom speed across levels (${sp.map((v) => v.toFixed(3)).join('/')} per s, expected ${(tot / 3).toFixed(3)}); every hand-off lands the next level at scale 1 exactly where level i showed it; ends on level 3 at scale 1`,
+    sp.every((v) => Math.abs(v - tot / 3) < 1e-3) && hand && dv(3.5).dive.level === 3 && dv(3.5).scale === 1 && dv(-1).scale === 1 && dv(-1).dive.level === 0);
+  const css = C2.scaleDiveCSS(dv(0.9), 4); R.check('scaleDiveCSS: the current level visible, the next one fading in above it, the others hidden', css.length === 4 && css[dv(0.9).dive.level].opacity === '1' && css.filter((c) => c.visibility === 'visible').length <= 2);
+  const quad = [[0.3, 0.28], [0.66, 0.31], [0.65, 0.6], [0.31, 0.58]], pb = C2.pullbackToScreen(C2.ID2, { at: 1, dur: 2.4, quad, lock: 0.35 }), s0 = pb(0.5), s1 = pb(4), sm = pb(1.6);
+  const eq = (A, B) => A.every((p, i) => Math.hypot(p[0] - B[i][0], p[1] - B[i][1]) < 1e-9), mq = quad.map((q) => C2.mapPoint2(sm, q));
+  const xs = quad.map((q) => C2.mapPoint2(s0, q)[0]), ys = quad.map((q) => C2.mapPoint2(s0, q)[1]);
+  R.check(`pullbackToScreen: starts with the comp full frame and the quad's box filling the frame (${Math.min(...xs).toFixed(3)}..${Math.max(...xs).toFixed(3)} x ${Math.min(...ys).toFixed(3)}..${Math.max(...ys).toFixed(3)}), ends with the comp exactly on the quad at plate scale 1; once locked the corners ride the camera`,
+    eq(s0.pin.corners, [[0, 0], [1, 0], [1, 1], [0, 1]]) && Math.abs(Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) - 1) < 1e-9 && eq(s1.pin.corners, quad) && Math.abs(s1.scale - 1) < 1e-12 && Math.abs(s1.x) < 1e-12 && (sm.pin.lock < 1 || eq(sm.pin.corners, mq)) && eq(pb(3.0).pin.corners, quad.map((q) => C2.mapPoint2(pb(3.0), q)))); }
 /* 10. ease copies identical across modules */
 const e1 = fs.readFileSync(path.join(here, '../ease.js'), 'utf8'), e2 = fs.readFileSync(path.join(here, '../../layers/ease.js'), 'utf8'), e3 = fs.readFileSync(path.join(here, '../../type/ease.js'), 'utf8');
 R.check('ease.js is byte-identical in layers/, type/ and camera/', e1 === e2 && e2 === e3);

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>motion-pack demo-r3-fx: logo plate</title>
+<link rel="icon" href="data:,">
+<style>html,body{margin:0;padding:0;background:#1b1630;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+/* demo-r3-fx, shot 3 plate (8.7 s, 1920x1080): objects/logo-extrude (the pack's placeholder orbit mark, iridescent preset) spinning on a dark cyc,
+   one sliced-and-offset beat (2.2 -> 3.0 s open, 3.4 -> 4.0 s close), a slow push. Seek-safe: everything is a function of t. */
+import { runScene, U } from './objects/kit/studio-lite.js';
+import { O } from './objects/index.js';
+import { stageConfig, makeStage, shot } from './objects/stage.js';
+const { E, seg } = U, SEC = 8.7;
+window.CONFIG = stageConfig({ name: 'demo-r3-fx-logo', seconds: SEC, qaFrames: [0, 90, 200], colors: { backdrop: '#1b1630' }, grade: { vignette: 0.16, dofK: 10, bloom: 0.6 } });
+const st = {}, SHOT = { fov: 22, elev: [7, 6], az: [-12, 10], dist: [9.4, 8.2], target: [-0.55, 1.45, 0], screen: [960, 540], t0: 0, t1: SEC };
+runScene({
+  async build(ctx) {
+    st.stage = makeStage(ctx, { mode: 'white', paper: '#1b1630', cycFar: -9, cycR: 6 }); const G = st.stage.parent;
+    st.logo = O.makeLogoExtrude(ctx, G, { preset: 'iridescent', size: 2.3, depth: 0.32, bevel: 0.05, spin: 0.11, yaw: -0.9, tilt: 0.1, slice: { y: 0.04, offset: [0.32, 0.12, 0.26] } });
+    st.logo.group.position.set(-1.25, 1.55, 0);
+    ctx.probes = { logo: st.logo.probes.logo };
+  },
+  update(ctx, t, n, slot) { st.stage.update(n, slot, 0); st.logo.update(t, { slice: E.soft(seg(t, 2.2, 3.0)) - E.soft(seg(t, 3.4, 4.0)) }); },
+  camera(ctx, t) { return shot(ctx, t, SHOT); },
+  focus() { return [-1.25, 1.55, 0]; },
+  subframes() { return 4; },
+});
+</script>
+</body>
+</html>

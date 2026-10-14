@@ -281,4 +281,55 @@ void main(){
   vec3 col = uE < a ? A(vUv).rgb : (uE < a + u_band ? u_color : B(vUv).rgb);
   gl_FragColor = vec4(col, 1.0);
 }`,
+
+/* 2026-10-14 round 3 */
+sharedElement: `
+uniform vec4 u_rectA; uniform vec4 u_rectB; uniform float u_radius; uniform float u_bounce; uniform float u_shadow;
+/* normalised spring step: exactly 0 at x = 0 and 1 at x = 1 (blended into 1 over the last 15%); same maths as tx-dom-x.js springStep */
+float mp_spring(float x, float b){ if (x <= 0.0) return 0.0; if (x >= 1.0) return 1.0;
+  float z = mix(1.0, 0.3, clamp(b, 0.0, 1.0)), w = 6.5, s;
+  if (z > 0.999) s = 1.0 - exp(-w * x) * (1.0 + w * x);
+  else { float wd = w * sqrt(1.0 - z * z); s = 1.0 - exp(-z * w * x) * (cos(wd * x) + z * w / wd * sin(wd * x)); }
+  return mix(s, 1.0, smoothstep(0.85, 1.0, x)); }
+float mp_rrect(vec2 p, vec2 c, vec2 hs, float r){ vec2 q = abs(p - c) - hs + r; return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }
+void main(){
+  float e = uE, s = mp_spring(e, u_bounce);
+  vec4 r = mix(u_rectA, u_rectB, s); vec2 px = vec2(vUv.x, 1.0 - vUv.y), P = px * uRes;
+  /* background: B dissolves in under the travelling element; inside A's own rect the lifted element leaves no copy behind */
+  vec2 ca = (u_rectA.xy + u_rectA.zw * 0.5) * uRes, ha = u_rectA.zw * 0.5 * uRes; float ra = u_radius * min(ha.x, ha.y);
+  float holeA = 1.0 - smoothstep(-1.5, 1.5, mp_rrect(P, ca, ha, ra));
+  vec2 qa = (P - ca) / max(ha, vec2(1.0)); float la = max(abs(qa.x), abs(qa.y));   /* fill the hole from A just outside the rect (L-inf projection) */
+  vec2 Pout = ca + ha * (la > 1e-3 ? qa / la : vec2(1.0, 0.0)) * 1.25;
+  vec3 aBg = mix(A(vUv).rgb, A(tl(Pout / uRes)).rgb, holeA * smoothstep(0.0, 0.12, e));
+  vec3 bg = mix(aBg, B(vUv).rgb, smoothstep(0.15, 0.6, e));
+  vec2 C = (r.xy + r.zw * 0.5) * uRes, HS = r.zw * 0.5 * uRes; float rad = u_radius * min(HS.x, HS.y), lift = sin(PI * clamp(s, 0.0, 1.0));
+  float sh = u_shadow * lift * (1.0 - smoothstep(-0.02 * uRes.y, 0.06 * uRes.y, mp_rrect(P, C + vec2(0.0, 0.025 * uRes.y), HS, rad)));
+  bg *= 1.0 - 0.6 * sh;
+  vec2 local = (px - r.xy) / max(r.zw, vec2(1e-5));
+  vec3 el = mix(A(tl(u_rectA.xy + local * u_rectA.zw)).rgb, B(tl(u_rectB.xy + local * u_rectB.zw)).rgb, smoothstep(0.3, 0.7, s));
+  float m = 1.0 - smoothstep(-1.0, 1.0, mp_rrect(P, C, HS, rad));
+  gl_FragColor = vec4(mix(bg, el, m), 1.0);
+}`,
+
+sketchToRender: `
+uniform vec3 u_paper; uniform vec3 u_ink; uniform float u_line; uniform float u_threshold; uniform float u_draw; uniform float u_tone; uniform vec2 u_dir;
+float lB(vec2 uv){ return lum(B(uv).rgb); }
+float mp_edge(vec2 uv){ vec2 o = vec2(u_line * uRes.y / 1080.0) / uRes;
+  float a = lB(uv + vec2(-o.x, o.y)), b = lB(uv + vec2(0.0, o.y)), c = lB(uv + o), d = lB(uv - vec2(o.x, 0.0)), f = lB(uv + vec2(o.x, 0.0)), g = lB(uv - o), h = lB(uv - vec2(0.0, o.y)), i = lB(uv + vec2(o.x, -o.y));
+  float gx = (c + 2.0 * f + i) - (a + 2.0 * d + g), gy = (a + 2.0 * b + c) - (g + 2.0 * h + i); return length(vec2(gx, gy)); }
+void main(){
+  float e = uE; vec2 px = vec2(vUv.x, 1.0 - vUv.y), dir = normalize(u_dir + vec2(1e-6));
+  /* draw-on order: a directional ramp roughened by noise (0 = first stroke, 1 = last) */
+  float ord = clamp(dot(px - 0.5, dir) * 0.75 + 0.5, 0.0, 1.0) * 0.8 + 0.2 * mp_noise(px * vec2(aspect(), 1.0) * 7.0);
+  float lineK = smoothstep(ord - 0.05, ord + 0.05, (e - 0.06) / u_draw * 1.1);
+  float ed = smoothstep(u_threshold, u_threshold * 2.2, mp_edge(vUv + 0.0012 * vec2(mp_noise(px * 40.0) - 0.5, mp_noise(px * 40.0 + 9.0) - 0.5)));
+  vec3 paper = mix(A(vUv).rgb, u_paper, smoothstep(0.0, uCut, e));
+  vec3 sketch = mix(paper, u_ink, ed * lineK);
+  /* fill: the same order sweeps a grey clay tone in, then colour; the lines fade out at the end */
+  float fp = (e - 0.5) / 0.42, fillK = smoothstep(ord - 0.25, ord + 0.25, fp * 1.5 - 0.25), colK = smoothstep(0.78, 0.97, e);
+  vec3 b = B(vUv).rgb, clay = mix(vec3(lum(b)) * 0.9 + 0.08, b, 1.0 - u_tone);
+  vec3 fill = mix(clay, b, colK);
+  vec3 col = mix(sketch, mix(fill, u_ink, ed * 0.6 * (1.0 - colK)), fillK);
+  gl_FragColor = vec4(mix(col, b, smoothstep(0.96, 1.0, e)), 1.0);
+}`,
 };

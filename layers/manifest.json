@@ -2280,6 +2280,177 @@
    "test": "layers/tests/l7.test.mjs"
   },
   {
+   "id": "background.meshGradient",
+   "file": "layers/backgrounds.js",
+   "kind": "background",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "mesh",
+    "gradient",
+    "aurora",
+    "soft",
+    "background",
+    "saas",
+    "launch",
+    "calm"
+   ],
+   "params": {
+    "palette": "peach",
+    "colors": null,
+    "bg": null,
+    "base": null,
+    "blobs": 5,
+    "size": 0.62,
+    "travel": 0.16,
+    "speed": 0.05,
+    "loop": 0,
+    "seed": 3,
+    "grain": 0.04,
+    "grainFps": 24,
+    "intensity": 1
+   },
+   "doc": "palette peach | lilac | sky | dusk | mint | ink (or colors: [3-8 hex] + bg); base flat | vertical (sky); blobs = count; size = blob radius as a fraction of the frame diagonal; travel = path amplitude (fraction of H); speed = Hz of the slowest path; loop = seconds for an exact repeat (0 = free); grain = noise amount (0 = off), re-seeded grainFps times per second",
+   "demo": "layers/demo/out/r3-sheet.png",
+   "test": "layers/tests/r3.test.mjs"
+  },
+  {
+   "id": "look.gradeIn",
+   "file": "layers/stylize.js",
+   "kind": "look-filter",
+   "backend": "svg-filter | canvas | cube (per weight)",
+   "tags": [
+    "grade",
+    "gradient-map",
+    "duotone",
+    "reveal",
+    "colour",
+    "animated",
+    "launch",
+    "memory"
+   ],
+   "params": {
+    "stops": [
+     "#1B1340",
+     "#E0457B",
+     "#FFD9A8"
+    ],
+    "at": 0,
+    "dur": 1.2,
+    "ease": "soft",
+    "reverse": false,
+    "amount": 1,
+    "contrast": 1,
+    "pivot": 0.5
+   },
+   "doc": "stops = gradient-map colours from shadow to highlight (2 = duotone); the map resolves to natural colour from at over dur (reverse: natural -> map); ease lin | soft | hero | sine | expoOut; amount = map weight at full; contrast about pivot",
+   "demo": "layers/demo/out/r3-sheet.png",
+   "test": "layers/tests/r3.test.mjs"
+  },
+  {
+   "id": "layers.dotCondense",
+   "file": "layers/canvas2d-r3.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "dots",
+    "particles",
+    "condense",
+    "converge",
+    "word",
+    "data",
+    "explainer",
+    "method"
+   ],
+   "params": {
+    "n": 220,
+    "to": "fewer",
+    "count": null,
+    "cols": null,
+    "gap": 46,
+    "text": "one idea",
+    "size": 0.26,
+    "weight": 800,
+    "center": [
+     0.5,
+     0.5
+    ],
+    "line": [
+     0.2,
+     0.5,
+     0.8,
+     0.5
+    ],
+    "field": [
+     0.06,
+     0.1,
+     0.88,
+     0.8
+    ],
+    "at": 1,
+    "dur": 1.2,
+    "stagger": 0.45,
+    "ease": "hero",
+    "radius": 4,
+    "endRadius": null,
+    "drift": 10,
+    "color": "#141218",
+    "toColor": null,
+    "intensity": 1,
+    "seed": 5
+   },
+   "doc": "n dots in `field` (fractions x, y, w, h) converge from at (+ seeded delay up to stagger s) over dur: to fewer (count dots on a centred grid, gap px @1080, merged dots grow by sqrt of how many landed), line ([x0, y0, x1, y1] fractions, count points) or word (text, size = cap height fraction of H, center); radius px @1080; drift = wobble px; toColor tints arrivals",
+   "demo": "layers/demo/out/r3-sheet.png",
+   "test": "layers/tests/r3.test.mjs"
+  },
+  {
+   "id": "overlay.hologramBeam",
+   "file": "layers/canvas2d-r3.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "hologram",
+    "beam",
+    "projector",
+    "sci-fi",
+    "mascot",
+    "window",
+    "globe",
+    "glow"
+   ],
+   "params": {
+    "from": [
+     0.2,
+     0.8
+    ],
+    "rect": [
+     0.48,
+     0.16,
+     0.4,
+     0.5
+    ],
+    "mode": "window",
+    "color": "#7FE7FF",
+    "at": 0,
+    "on": 0.6,
+    "intensity": 0.85,
+    "rings": 7,
+    "speed": 0.6,
+    "scan": 140,
+    "flicker": 0.12,
+    "fps": 30,
+    "fill": 0.1,
+    "radius": 16,
+    "spin": 0.12,
+    "seed": 2
+   },
+   "doc": "from = source point (fractions); rect = window [x, y, w, h] fractions; mode window | globe (wireframe globe inscribed in rect); at / on = power-on start and length (s); rings = shimmer rings along the beam, speed = rings per second; scan = scanlines per frame height inside the window; flicker 0..1 per frame (hashed); fill = window tint alpha; radius px @1080; spin = globe turns per second",
+   "demo": "layers/demo/out/r3-sheet.png",
+   "test": "layers/tests/r3.test.mjs"
+  },
+  {
    "id": "hf.integration",
    "file": "layers/demo/hf/index.html",
    "kind": "demo",

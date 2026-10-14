@@ -95,4 +95,51 @@ export const dutchRoll = (base, { at = 0, dur = 14 / 30, deg = 6, sway = 0, peri
 export const parallaxStack = (cam, depths, { W = 1920, H = 1080 } = {}) => (t) => { const s = c2(asFn2(cam)(t));
   return depths.map((d) => toCSS({ ...s, x: s.x * d, y: s.y * d, scale: 1 + (s.scale - 1) * d, rot: s.rot * Math.min(1, d), blur: 0 }, { W, H, cover: d < 1 })); };
 
-export const PRESETS_2D = { push2d, pull2d, pan2d, whip2d, handheld2d, punchCadence, punchIn2d, beatPunch2d, kenBurns, dutch2d, breathe2d, shake2d, crashZoom, doubleTake, dollySnap, rackFocus2D, dutchRoll };
+
+/* 2026-10-14 round 3 ---------------------------------------------------------------------------------------------------------------------- */
+/* a point (fractions of the frame) through a 2D camera state: screen = origin + T + R(rot) * scale * (q - origin), computed in frame-height units */
+export function mapPoint2(st, [qx, qy], aspect = 16 / 9) {
+  const s = c2(st), ox = s.origin[0] * aspect, oy = s.origin[1], a = (s.rot * Math.PI) / 180, c = Math.cos(a), si = Math.sin(a);
+  const dx = (qx * aspect - ox) * s.scale, dy = (qy - oy) * s.scale; return [(ox + s.x + c * dx - si * dy) / aspect, oy + s.y + si * dx + c * dy];
+}
+/* powers-of-ten dive: a continuous EXPONENTIAL zoom (constant speed in log scale) through `levels` hand-offs. Level i zooms about focus[i] by its ratio;
+   at the end of a level the next level (whose full frame IS the region of level i around focus[i], 1 / ratio of the frame) fades in over `blend`
+   of the level's log span and takes over at scale 1: a hidden swap. ratio: one number or one per level. state.dive = { level, local, ratio, origin,
+   next: { level, scale, opacity } | null, speed } where speed = log-zoom per second (for a sound riser or a radial blur). Draw with scaleDiveCSS(). */
+export const scaleDive = (base, { at = 0, dur = 3, levels = 2, ratio = 8, focus = [[0.5, 0.5]], ease: e = 'sine', blend = 0.2 } = {}) => {
+  const n = Math.max(1, Math.round(levels)), R = Array.from({ length: n }, (_, i) => (Array.isArray(ratio) ? ratio[Math.min(i, ratio.length - 1)] : ratio)), F = Array.from({ length: n + 1 }, (_, i) => focus[Math.min(i, focus.length - 1)]);
+  const LN = R.map((r) => Math.log(r)), TOT = LN.reduce((a, b) => a + b, 0);
+  const where = (k) => { let pos = k * TOT, i = 0; while (i < n && pos >= LN[i] - 1e-12) { pos -= LN[i]; i++; } return i >= n ? { i: n, f: 0 } : { i, f: pos / LN[i] }; };
+  return (t) => {
+    const s = c2(asFn2(base)(t)), k = win(t, at, dur, e), { i, f } = where(k), r = i < n ? R[i] : 1, z = Math.exp(f * Math.log(r));
+    s.scale *= z; s.origin = [...F[i]];
+    const h = 1e-3, sp = Math.abs(win(t + h, at, dur, e) - win(t - h, at, dur, e)) / (2 * h) * TOT;
+    s.dive = { level: i, local: +f.toFixed(9), ratio: r, origin: [...F[i]], next: i < n ? { level: i + 1, scale: z / r, opacity: seg(f, 1 - blend, 1) ** 2 * (3 - 2 * seg(f, 1 - blend, 1)) } : null, speed: sp };
+    return s; };
+};
+/* CSS per level for scaleDive (one wrapper per level, stacked; level 0 at the bottom): the current level, the next one fading in on top, the rest hidden */
+export function scaleDiveCSS(st, nLevels, { W = 1920, H = 1080 } = {}) {
+  const d = st.dive, out = [];
+  for (let L = 0; L < nLevels; L++) {
+    if (L === d.level) out.push({ ...toCSS(st, { W, H }), opacity: '1', visibility: 'visible' });
+    else if (d.next && L === d.next.level) out.push({ ...toCSS({ ...st, scale: st.scale / d.ratio }, { W, H }), opacity: d.next.opacity.toFixed(4), visibility: d.next.opacity > 0 ? 'visible' : 'hidden' });
+    else out.push({ transform: 'none', transformOrigin: '50% 50%', filter: 'none', opacity: '0', visibility: 'hidden' });
+  }
+  return out;
+}
+/* pull back to a screen: start on a full-frame comp, pull back (log-scale ease) until the comp sits on a screen quad inside an environment plate.
+   quad = the screen's corners in the PLATE, fractions [TL, TR, BR, BL]. The camera state moves the plate wrapper (start: the quad's bounding box fills
+   the frame; end: scale `to`); state.pin = { corners: [[x, y] x4] frame fractions, lock } is where the comp's corners go at t: the full frame at the start,
+   locked onto the quad (through the same camera) by `lock` of the move. Feed corners to layout.cornerPin (units 'frac') for the comp layer. */
+export const pullbackToScreen = (base, { at = 0, dur = 2.4, quad = [[0.36, 0.3], [0.64, 0.3], [0.64, 0.58], [0.36, 0.58]], to = 1, ease: e = 'cam', lock = 0.35, aspect = 16 / 9 } = {}) => {
+  const xs = quad.map((q) => q[0]), ys = quad.map((q) => q[1]), bw = Math.max(1e-4, Math.max(...xs) - Math.min(...xs)), bh = Math.max(1e-4, Math.max(...ys) - Math.min(...ys));
+  const cx = (Math.max(...xs) + Math.min(...xs)) / 2, cy = (Math.max(...ys) + Math.min(...ys)) / 2, S0 = Math.min(1 / bw, 1 / bh), FR = [[0, 0], [1, 0], [1, 1], [0, 1]];
+  return (t) => {
+    const s = c2(asFn2(base)(t)), k = win(t, at, dur, e), S = Math.exp((1 - k) * Math.log(S0) + k * Math.log(to));
+    s.scale *= S; s.x += (cx - 0.5) * (to * k - S) * aspect; s.y += (cy - 0.5) * (to * k - S); s.origin = [0.5, 0.5];
+    const lk = seg(k, 0, lock), l = lk * lk * (3 - 2 * lk), qs = quad.map((q) => mapPoint2(s, q, aspect));
+    s.pin = { corners: FR.map((f, i) => [lerp(f[0], qs[i][0], l), lerp(f[1], qs[i][1], l)]), lock: l };
+    return s; };
+};
+
+export const PRESETS_2D = { push2d, pull2d, pan2d, whip2d, handheld2d, punchCadence, punchIn2d, beatPunch2d, kenBurns, dutch2d, breathe2d, shake2d, crashZoom, doubleTake, dollySnap, rackFocus2D, dutchRoll, scaleDive, pullbackToScreen };

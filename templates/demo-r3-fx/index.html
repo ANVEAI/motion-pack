@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack demo: round-3 parts</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #efe8dc; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #efe8dc; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.sc { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.cv { position: absolute; inset: 0; }
+.box { position: absolute; }
+#pill { position: absolute; left: 630px; top: 429.59999999999997px; width: 660px; height: 156px; border-radius: 78px; background: #FFFFFF; color: #4A18ED; font-weight: 800; font-size: 104px; letter-spacing: -0.035em; display: flex; align-items: center; justify-content: center; box-shadow: 0 18px 50px rgba(74,24,237,0.16); }
+#card { position: absolute; left: 330px; top: 230px; width: 820px; height: 580px; border-radius: 40px; background: #FFFFFF; box-shadow: 0 30px 80px rgba(40,20,90,0.16); }
+#cardTitle { position: absolute; left: 56px; top: 48px; height: 96px; padding: 0 34px; border-radius: 48px; background: #4A18ED; color: #FFFFFF; font-weight: 800; font-size: 60px; letter-spacing: -0.03em; display: flex; align-items: center; }
+.row { position: absolute; left: 56px; width: 708px; height: 92px; border-top: 2px solid #EFEAF7; display: flex; align-items: center; gap: 26px; font-weight: 700; font-size: 46px; color: #1E1B26; }
+.row i { width: 46px; height: 46px; border-radius: 50%; border: 5px solid #CFC6EA; box-sizing: border-box; display: block; position: relative; }
+.row i b { position: absolute; inset: -5px; border-radius: 50%; background: #2FA866; transform: scale(0); }
+#holo { position: absolute; left: 1075.2px; top: 216px; width: 691.1999999999999px; height: 367.20000000000005px; display: flex; flex-direction: column; justify-content: center; padding: 0 56px; box-sizing: border-box; color: #CFF8FF; font-weight: 700; font-size: 58px; line-height: 1.12; letter-spacing: -0.02em; text-shadow: 0 0 18px rgba(127,231,255,0.6); }
+#holo small { font: 600 26px "IBM Plex Mono", monospace; letter-spacing: 0.04em; color: #7FE7FF; margin-bottom: 18px; }
+#endline { position: absolute; left: 0; right: 0; top: 70px; text-align: center; font-weight: 800; font-size: 92px; letter-spacing: -0.035em; color: #1E1B26; }
+#endsub { position: absolute; left: 0; right: 0; top: 182px; text-align: center; font-weight: 600; font-size: 34px; color: #5D5470; }
+#world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+#world img { position: absolute; inset: 0; width: 100%; height: 100%; }
+#s3 { transform-origin: 0 0; }
+
+</style>
+</head>
+<body>
+<div id="root" style="width:1920px;height:1080px" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="15">
+<div id="stage" class="clip" data-start="0" data-duration="15" data-track-index="0">
+  <div class="sc" id="s4"><div id="world"><div id="envlook" class="cv"><img src="assets/media/plate-env.jpg" alt=""></div></div><div id="endline">Made of parts.</div><div id="endsub">Every frame, a function of time.</div><div class="box" id="m4" style="left:1500px;top:520px;width:340px;height:400px"></div></div>
+  <div class="sc" id="s1"><div class="cv" id="bg1"></div><div id="pill" data-share="title">one idea</div><div class="box" id="m1" data-share="mascot" style="left:150px;top:600px;width:360px;height:400px"></div></div>
+  <div class="sc" id="s2"><div class="cv" id="bg2"></div><div id="card"><div id="cardTitle" data-share="title">one idea</div><div class="row" id="r0" style="top:190px"><i><b></b></i>Sketch it</div><div class="row" id="r1" style="top:302px"><i><b></b></i>Shape it</div><div class="row" id="r2" style="top:414px"><i><b></b></i>Ship it</div></div><div class="box" id="m2" data-share="mascot" style="left:1260px;top:420px;width:300px;height:333px"></div></div>
+  <div class="sc" id="s3"><video class="clip fill" id="logo" src="assets/media/plate-logo.mp4" muted playsinline data-start="6.4" data-duration="8.6" data-media-start="0" data-track-index="1"></video><div class="cv" id="fx3"></div>
+    <div id="holo"><small>HOLOGRAM WINDOW</small>Every frame,<br>a function of time.</div><div class="box" id="m3" style="left:150px;top:610px;width:300px;height:340px"></div></div>
+</div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="15" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module">
+import { mountStack } from './assets/mp/layers/overlay.js';
+import { mountGradeIn } from './assets/mp/layers/stylize.js';
+import { hologramState } from './assets/mp/layers/canvas2d-r3.js';
+import { applyDom } from './assets/mp/transitions/lib/tx-dom.js';
+import { pullbackToScreen, toCSS, ID2 } from './assets/mp/camera/cam2d.js';
+import { matrix3d } from './assets/mp/type/gfx/cornerpin.js';
+import { mascotSVG } from './assets/mp/objects/mascot2d.js';
+const W = 1920, H = 1080, $ = (id) => document.getElementById(id), sc = [$('s1'), $('s2'), $('s3'), $('s4')], root = $('stage');
+const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), sm = (a, b, x) => { const u = cl((x - a) / (b - a)); return u * u * (3 - 2 * u); };
+const st1 = mountStack($('bg1'), [{ kind: 'meshGradient', params: { palette: 'peach', speed: 0.06, seed: 7 } },
+  { kind: 'dotCondense', params: { to: 'word', text: 'one idea', n: 300, size: 0.2, weight: 800, center: [0.5, 0.47], at: 0.85, dur: 1.15, stagger: 0.35, radius: 3.6, color: '#3A2F55', toColor: '#4A18ED', field: [0.06, 0.08, 0.88, 0.84], drift: 14, seed: 11 } }], { width: W, height: H, fps: 30, seed: 4 });
+const st2 = mountStack($('bg2'), [{ kind: 'meshGradient', params: { palette: 'lilac', speed: 0.06, seed: 5 } }], { width: W, height: H, fps: 30, seed: 5 });
+const HOLO = { from: [0.221, 0.69], rect: [0.56, 0.2, 0.36, 0.34], at: 8.7, on: 0.6, color: '#7FE7FF', intensity: 0.9 };
+const st3 = mountStack($('fx3'), [{ kind: 'hologramBeam', params: HOLO }, { kind: 'vignette', params: { amount: 0.12 } }], { width: W, height: H, fps: 30, seed: 6 });
+const grade = mountGradeIn($('envlook'), { stops: ['#2A1E5C', '#E0457B', '#FFE2C2'], at: 10.7, dur: 1.5, ease: 'soft' });
+const CAM = pullbackToScreen(ID2, { at: 10.4, dur: 2.2, quad: [[0.34362,0.33185],[0.57968,0.32278],[0.58876,0.58152],[0.349,0.59619]], lock: 0.3, ease: 'cam' });
+/* mascots: each box draws the rig in its own 1080-unit space (k = box height / 1080); the shared ones hold still inside the magic-move window */
+const M = (id, w, h, size, spec) => ({ el: $(id), w, h, spec: { size, path: [[0, [w / 2 * 1080 / h, (h - 12) * 1080 / h]]], ...spec } });
+const m1 = M('m1', 360, 400, 3.9, { keys: [[0, 'idle'], [0.2, 'cheer'], [1.1, 'point'], [2.55, 'dive']], scale: [[0, 0.2], [0.02, 1]], hops: [0.35], blinks: [0.95, 2.1], aim: [2100, -260] });
+const m2 = M('m2', 300, 333, 3.9, { keys: [[0, 'read']], blinks: [4.9, 5.9], talk: [] });
+const m3 = M('m3', 300, 340, 3.9, { keys: [[0, 'idle'], [8.3, 'cheer'], [8.62, 'wave']], scale: [[0, 0.001], [8.28, 0.001], [8.3, 1]], hops: [8.42], blinks: [9.6] });
+const m4 = M('m4', 340, 400, 3.9, { keys: [[0, 'idle'], [12.9, 'cheer'], [13.15, 'wave']], scale: [[0, 0.001], [12.88, 0.001], [12.9, 1]], hops: [13.0], blinks: [14.2], talk: [[13.3, 13.9]] });
+const drawM = (m, t) => { m.el.innerHTML = mascotSVG(t, m.spec, { W: m.w, H: m.h }); };
+const WINS = [{ key: 'sharedElement', a: 0, b: 1, t0: 3.0, t1: 3.8, params: { bounce: 0.35, stagger: 0.12, shadow: 0.4 } }, { key: 'sketchToRender', a: 1, b: 2, t0: 6.4, t1: 8.0, params: { paper: '#F4F1EA', ink: '#241E33', threshold: 0.11, line: 1.6 } }];
+function draw(t) {
+  /* scene content (always drawn; cheap) */
+  st1.render(t, { frame: Math.round(t * 30) }); st1.layers[1].canvas.style.opacity = (1 - sm(2.3, 2.6, t)).toFixed(4);
+  $('pill').style.opacity = sm(2.3, 2.6, t).toFixed(4); $('pill').style.transform = 'scale(' + (0.9 + 0.1 * sm(2.3, 2.7, t)).toFixed(4) + ')';
+  st2.render(t, { frame: Math.round(t * 30) }); st3.render(t, { frame: Math.round(t * 30) });
+  [4.3, 4.65, 5.0].forEach((a, i) => { const k = sm(a, a + 0.18, t); $('r' + i).querySelector('b').style.transform = 'scale(' + k.toFixed(4) + ')'; });
+  drawM(m1, Math.min(t, 3.0)); drawM(m2, Math.max(t, 3.8)); drawM(m3, t); drawM(m4, t);
+  const hs = hologramState(t, HOLO); $('holo').style.opacity = (t >= HOLO.at ? hs.win * hs.flick : 0).toFixed(4); $('holo').style.transform = 'scaleY(' + Math.max(0.02, hs.win).toFixed(4) + ')';
+  /* edit: transition windows, else one scene (s3 stays on top of s4 from 10.4 and rides the camera onto the screen) */
+  const w = WINS.find((x) => t >= x.t0 && t < x.t1);
+  for (const x of WINS) applyDom(x.key, 1, { a: sc[x.a], b: sc[x.b], root });   // reset every window's styles first (endpoint = shot B, no overlay)
+  sc.forEach((s) => { s.style.opacity = '0'; s.style.transform = ''; s.style.zIndex = ''; });
+  if (w) { applyDom(w.key, (t - w.t0) / (w.t1 - w.t0), { a: sc[w.a], b: sc[w.b], root, params: w.params }); }
+  else { const cur = t < 3.0 ? 0 : t < 6.4 ? 1 : 2; sc[cur].style.opacity = '1'; sc[cur].style.zIndex = '2'; }
+  if (t >= 10.4) { const s = CAM(t), c = toCSS(s, { W, H }); sc[3].style.opacity = '1'; sc[3].style.zIndex = '1'; $('world').style.transform = c.transform; $('world').style.transformOrigin = c.transformOrigin;
+    sc[2].style.opacity = '1'; sc[2].style.zIndex = '2'; sc[2].style.transform = matrix3d(W, H, s.pin.corners.map(([x, y]) => [x * W, y * H])); }
+  grade.render(t);
+  const e = sm(12.4, 12.95, t); $('endline').style.opacity = e.toFixed(4); $('endline').style.transform = 'translateY(' + ((1 - e) * 28).toFixed(2) + 'px)';
+  const e2 = sm(12.6, 13.15, t); $('endsub').style.opacity = e2.toFixed(4); $('endsub').style.transform = 'translateY(' + ((1 - e2) * 20).toFixed(2) + 'px)';
+}
+window.addEventListener('hf-seek', (e) => draw(e.detail.time)); draw(window.__hfThreeTime || 0);
+const tl = gsap.timeline({ paused: true }); tl.set({}, {}, 15); window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl; window.__ready = true;   // __ready: dev previews through layers/tests/harness.mjs
+</script>
+</body>
+</html>

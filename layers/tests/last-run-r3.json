@@ -1,0 +1,107 @@
+{
+ "name": "layers round 3",
+ "total": 20,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "gradeIn weight: 1 before at, 0 after at + dur, 0.5 at the midpoint (soft ease); reverse mirrors it; amount scales it",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "gradient map: black -> first stop, white -> last stop, mid grey -> the middle stop (3 stops), any t after the window returns the source exactly",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "gradeIn .cube at weight 0.5 matches the JS reference within 0.00 levels; the SVG uses a table transfer and an arithmetic mix",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "gradeIn refuses one stop and an unknown ease",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "meshGradient, dotCondense, hologramBeam: the same t draws the same calls in any order (no history, no clock)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "meshGradient loop 8: every blob repeats exactly after 8 s; without loop the field moves (t 0 != t 3)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dotCondense fewer: 220 dots before the cue, 20 after; merged dots keep the total ink area (1.000 of the start)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dotCondense line: every dot lands on the line between its ends; nothing mid-flight after at + stagger + dur",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hologramBeam: off before at, beam and window fully on after at + on; all kinds mount through overlay.js",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "gradeIn at t -0.5 (map weight 1.00): SVG filter vs JS reference mean 0.81 levels, 0.000% pixels off by > 12",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "gradeIn at t 0.6 (map weight 0.50): SVG filter vs JS reference mean 0.70 levels, 0.000% pixels off by > 12",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "gradeIn at t 1 (map weight 0.07): SVG filter vs JS reference mean 0.11 levels, 0.000% pixels off by > 12",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "meshGradient peach + grain: mounted via mountStack (meshGradient), bit-identical at t 2 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "meshGradient dusk: mounted via mountStack (meshGradient), bit-identical at t 4 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "meshGradient sky (vertical base): mounted via mountStack (meshGradient), bit-identical at t 1 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dotCondense fewer, mid-flight: mounted via mountStack (meshGradient + dotCondense), bit-identical at t 1.15 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dotCondense word, landed: mounted via mountStack (meshGradient + dotCondense), bit-identical at t 3 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hologramBeam window: mounted via mountStack (meshGradient + hologramBeam), bit-identical at t 1.4 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hologramBeam globe: mounted via mountStack (meshGradient + hologramBeam), bit-identical at t 2.2 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no console errors",
+   "pass": true,
+   "detail": "[]"
+  }
+ ]
+}
