@@ -48,7 +48,8 @@ const FILLER = /^(?:n\/?a|na|none|nil|null|undefined|nan|tbd|tba|todo|xx+|test(?
 /* '' when `v` is plausible text, else why not. A source may be one name ("OECD", "run 4"); a method is a fragment ("mean of the runs"): at least two words and eight letters */
 export function weak(kind, v) {
   const s = String(v ?? '').trim().replace(/\s+/g, ' '), letters = s.toLowerCase().match(/\p{L}/gu) || [], distinct = new Set(letters).size, words = s.split(' ').length;
-  if (FILLER.test(s)) return `"${s}" is filler, not ${kind === 'source' ? 'a source' : 'a method'}`;
+  const ws = s.toLowerCase().split(' ');   // "test test test" and "lorem ipsum dolor sit" are filler too: one repeated word, or the old dummy-text opening
+  if (FILLER.test(s) || /^lorem ipsum\b/i.test(s) || (ws.length > 1 && new Set(ws).size === 1)) return `"${s}" is filler, not ${kind === 'source' ? 'a source' : 'a method'}`;
   if (kind === 'source' ? letters.length < 2 || distinct < 2 : letters.length < 8 || distinct < 4 || words < 2) return `"${s}" is too short to be ${kind === 'source' ? 'a source (name where the number comes from)' : 'a method (say how it was measured or computed, in a few words)'}`;
   return '';
 }
@@ -89,7 +90,8 @@ export function proseFields(C, voWords = []) {
 }
 /* is the film labelled illustrative? (the frame prints ILLUSTRATIVE on every number panel) */
 const SRC_TAG = /illustrative|placeholder/i;
-export const isIllustrative = (C) => C.illustrative === true || numberFields(C).some((n) => SRC_TAG.test(String(n.source ?? '')));
+const says = (n) => SRC_TAG.test(String(n.source ?? '')) || SRC_TAG.test(String(n.method ?? ''));   // a source OR a method that says "placeholder" / "illustrative" makes the film illustrative
+export const isIllustrative = (C) => C.illustrative === true || numberFields(C).some(says);
 
 /* a list the config must give as a list (a string where a list belongs would otherwise be iterated letter by letter or crash) */
 const LISTS = ['setting.rows', 'setting.numbers', 'numbers.items', 'cards', 'end.chips', 'h2h.rows', 'h2h.columns', 'builder.scatter.points', 'builder.scatter.hero.callout', 'builder.table.rows', 'builder.table.columns', 'builder.trace.input.lines', 'builder.trace.lanes', 'builder.trace.decision.forks'];
@@ -134,7 +136,7 @@ function check(C, ctx) {
     if (hit) p.push(mode === 'voice' ? `${path} ("${v}"${t !== undefined ? ` at ${t} s` : ''}): the voice says a number ("${hit}") that has no source or method on screen: say it without the figure ("a lower cost") and put the number in a number field {value, source, method}`
       : `${path}: "${v}" has a number in prose ("${hit}"): put the number in a number field {value, source, method} so its source prints with it`);
   }
-  if (C.illustrative === false) for (const n of numberFields(C)) if (SRC_TAG.test(String(n.source ?? ''))) { p.push(`${n.path}: illustrative is false but the source still says "${n.source}"`); break; }
+  if (C.illustrative === false) for (const n of numberFields(C)) if (says(n)) { p.push(`${n.path}: illustrative is false but the ${SRC_TAG.test(String(n.source ?? '')) ? 'source' : 'method'} still says "${SRC_TAG.test(String(n.source ?? '')) ? n.source : n.method}"`); break; }
   return [...new Set(p)];
 }
 /* ctx.voWords: the VO transcript [{w, s, e}] (config.mjs gateProblems reads it from vo.words) */

@@ -61,6 +61,10 @@ for (const [kind, val] of [['source', '.'], ['source', 'n/a'], ['source', 'N/A']
 { const C = W('wide'); C.cards[1].method = C.cards[1].source = 'OECD survey'; check('a method that repeats the source is refused', problems(C).some((m) => m.startsWith('cards[1].method:') && /repeats the source/.test(m)));
   const D = W('wide'); D.cards[1].source = 'UN'; D.cards[1].method = 'mean of the graded runs'; check('a short real source ("UN") passes', problems(D).length === 0); }
 { const C = W('wide'); C.illustrative = 'false'; check('illustrative must be true or false', problems(C).some((m) => m.startsWith('illustrative:'))); }
+for (const [kind, val] of [['source', 'lorem ipsum dolor sit amet'], ['source', 'test test test'], ['method', 'blah blah blah'], ['method', 'Lorem Ipsum dolor sit amet consectetur']]) {
+  const C = W('wide'); C.cards[2][kind] = val; const p = problems(C); check(`${kind} "${val}" on cards[2] is refused as filler`, p.some((m) => m.startsWith(`cards[2].${kind}:`) && /filler/.test(m)), p.join(' | ').slice(0, 160)); }
+{ const C = W('wide'); C.illustrative = false; const fix = (o) => { if (o && typeof o === 'object') { if ('source' in o) o.source = 'Acme Reader benchmark run, March'; Object.values(o).forEach(fix); } }; fix(C.setting); fix(C.builder); fix(C.h2h); fix(C.numbers); fix(C.cards);
+  const p = problems(C); check('illustrative: false with real sources but a method that still says "placeholder" is refused (the method names the field)', p.some((m) => /illustrative is false but the method still says/.test(m)), p.join(' | ').slice(0, 200)); }
 check('weak() accepts real text and refuses filler', weak('source', 'internal run 4') === '' && weak('method', 'mean of three graded runs') === '' && weak('source', '...') !== '' && weak('method', 'ok') !== '');
 /* claim */
 const claimCase = (text) => { const C = W('wide'); C.claim = text; return problems(C).filter((m) => m.startsWith('claim')); };
