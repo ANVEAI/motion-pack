@@ -10,7 +10,7 @@ permissions:
 jobs:
   test:
     # Headless checks that need no GPU. The browser tests (layers/tests/run-all.sh) and renders need a hardware GPU
-    # and run locally; see CONTRIBUTING.md.
+    # and run locally; docs/testing.md lists what CI covers and what it cannot.
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -45,14 +45,16 @@ jobs:
         run: python3 music/qa.py
       - name: the layers / type / camera manifests match their generator
         run: node layers/tests/make-manifests.mjs && python3 tools/check_generated.py layers/manifest.json type/manifest.json camera/manifest.json
-      - name: python tests (cuts, sfx, music, refstudy smoke test)
-        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
+      - name: python tests (cuts, sfx, music, tools incl. the no-clock gate and the run-all / CI suite lists, cloud, blender recipes vs manifest)
+        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests blender/tests
       - name: ears tests (automated listening, synthetic signals)
         run: python3 -m pytest -q ears/tests
       - name: transitions core tests
         run: node transitions/tests/core.test.mjs
       - name: transitions lint
         run: node transitions/tools/lint.mjs
+      - name: every transition id resolves to a back-end that can play it (GL-only ids have a DOM approximation; node, no browser)
+        run: node transitions/tests/backends.test.mjs
       - name: camera maths
         run: node camera/tests/camera.test.mjs
       - name: type DOM bake and drive agree for any t0 (node, fake timeline and elements)
@@ -73,6 +75,8 @@ jobs:
         run: node tools/tests/fuzz-params.test.mjs
       - name: cross-process determinism (every gfx id, Canvas2D kind, background, camera preset, type preset and caption style hash the same in two fresh processes with different call histories)
         run: node tools/tests/xproc-hash.test.mjs
+      - name: every template with a config builds its plan without a browser, passes its lints, and matches the committed out/plan.json
+        run: node tools/tests/template-plans.test.mjs
       - name: proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)
         run: node templates/proof-film/proof-film.test.mjs
       - name: physics table player (the baked table is committed; no npm install)

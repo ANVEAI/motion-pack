@@ -219,7 +219,7 @@ Audio enters the sound catalogue only through `sfx/tools/check_origin.py` and `c
 | Browser tests on a real GPU | `bash layers/tests/run-all.sh` |
 | Terminal bake is reproducible | `bash terminal/tests/smoke.sh` |
 
-CI runs the checks that need no GPU on every push.
+CI runs the checks that need no GPU on every push; [docs/testing.md](docs/testing.md) lists what it covers and what runs only on a machine with a GPU.
 
 ## Licences
 
