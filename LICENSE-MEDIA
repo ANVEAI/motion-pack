@@ -29,7 +29,8 @@ What this file does NOT cover
     licences (see THIRD_PARTY.md) and are never committed to this repository as files.
   * The lab contact sheets (lab/*/sheets/*): they are renders of those fetched icon
     and emoji sets (Lucide ISC / Feather MIT, Phosphor MIT, Microsoft Fluent Emoji
-    MIT) and of other test inputs. They stay under the upstream licences, whose
+    MIT), of cbirds output (MIT, lab/e-terminal) and of other test inputs
+    (lab/provenance.json says which image shows which). They stay under the upstream licences, whose
     notices are in licenses/ and listed in THIRD_PARTY.md section 1b. The
     "rendered previews" and "contact sheets" in the list above mean the pack's own
     renders, not these.

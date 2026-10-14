@@ -14,7 +14,7 @@ On 13 Oct 2026 we took a widely shared list of 20 GitHub repos "for an AI motion
 
 The verdicts for all 75 variants are in [`results.json`](results.json), and as a readable table in [`../skills/motion-stack/references/verdicts.md`](../skills/motion-stack/references/verdicts.md).
 
-**Licence of the sheets.** The images in `*/sheets/` are measurement evidence, and some render third-party artwork (Lucide, Phosphor and Fluent Emoji icons; test inputs for the other lanes). They are not CC0: see [`../THIRD_PARTY.md`](../THIRD_PARTY.md) section 1b and [`../licenses/`](../licenses/README.md).
+**Licence of the sheets.** The images in `*/sheets/` are measurement evidence, and some render third-party artwork (Lucide, Phosphor and Fluent Emoji icons, and cbirds' bird drawings in `e-terminal/`; `provenance.json` lists which image shows which). They are not CC0: see [`../THIRD_PARTY.md`](../THIRD_PARTY.md) section 1b and [`../licenses/`](../licenses/README.md).
 
 ## How every variant was judged
 

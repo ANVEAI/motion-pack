@@ -61,3 +61,30 @@ def test_readme_does_not_send_users_to_a_stale_release_as_the_default():
     assert re.search(r'Release zips lag', r) and 'python3 sfx/build_library.py' in r and 'python3 music/build_music.py' in r
     i = r.index('# 1. Build the sound library')
     assert 'supported path' in r[i:i + 200]
+
+
+def test_every_committed_lab_image_has_a_provenance_row_and_only_permissive_credited_sets():
+    """audit H3 + verifier: a committed sheet showed a third-party sample whose licence is not stated. lab/provenance.json now lists every tracked lab
+    image and the third-party sets it shows; each set needs a permissive licence, its notice in licenses/ and a row in THIRD_PARTY.md section 1b"""
+    import json
+    prov = json.loads(read('lab/provenance.json'))
+    imgs = {p for p in tracked() if p.startswith('lab/') and p.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.mp4', '.webm'))}
+    listed = set(prov['images'])
+    assert imgs - listed == set(), 'tracked lab images with no row in lab/provenance.json: ' + str(sorted(imgs - listed))
+    assert listed - imgs == set(), 'lab/provenance.json lists images that are not tracked: ' + str(sorted(listed - imgs))
+    allowed, sets = set(prov['allowed_licences']), prov['sets']
+    assert allowed <= {'CC0-1.0', 'MIT', 'ISC', 'Apache-2.0', 'OFL-1.1'}
+    tp, lr = read('THIRD_PARTY.md'), read('licenses/README.md')
+    sec = tp[tp.index('## 1b.'):tp.index('## 2.')]
+    for sid, s in sets.items():
+        assert s['licence'] and set(s['licence']) <= allowed, f'{sid}: licence {s["licence"]} is not permissive; do not commit a render of it'
+        assert os.path.isfile(os.path.join(ROOT, s['notice'])) and s['notice'] in tracked(), f'{sid}: notice {s["notice"]} is not tracked'
+        base = os.path.basename(s['notice'])
+        assert base in sec and base in lr, f'{sid}: {base} must be named in THIRD_PARTY.md section 1b and licenses/README.md'
+    for img, shown in prov['images'].items():
+        assert set(shown) <= set(sets), f'{img}: unknown set {set(shown) - set(sets)}'
+        for sid in shown:
+            assert os.path.basename(img) in sec or os.path.dirname(img) + '/' in sec, f'{img} shows {sid} but THIRD_PARTY.md 1b does not name it or its folder'
+    used = {sets[s]['notice'] for v in prov['images'].values() for s in v}
+    notices = {p for p in tracked() if p.startswith('licenses/') and p.endswith('.txt')}
+    assert notices == used, 'licenses/ and lab/provenance.json disagree: ' + str(sorted(notices ^ used))

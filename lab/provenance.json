@@ -1,0 +1,106 @@
+{
+  "_doc": [
+    "Provenance of every committed image under lab/: which third-party artwork each one shows ([] = only the pack's own renders, CC0 as parts).",
+    "tools/tests/test_licences.py fails if a tracked lab image is missing here, if a set has no notice in licenses/ or no row in THIRD_PARTY.md section 1b,",
+    "or if its licence is not one of the permissive ids below. A set with no stated licence, a share-alike or a no-redistribution licence cannot be listed:",
+    "do not commit a render of it (audit H3: the Rive sample sheet was removed for this reason). Add a set here, in THIRD_PARTY.md 1b and in licenses/ together."
+  ],
+  "allowed_licences": [
+    "CC0-1.0",
+    "MIT",
+    "ISC",
+    "Apache-2.0",
+    "OFL-1.1"
+  ],
+  "sets": {
+    "lucide": {
+      "name": "Lucide icons",
+      "licence": [
+        "ISC",
+        "MIT"
+      ],
+      "notice": "licenses/lucide-ISC-and-feather-MIT.txt"
+    },
+    "phosphor": {
+      "name": "Phosphor icons",
+      "licence": [
+        "MIT"
+      ],
+      "notice": "licenses/phosphor-MIT.txt"
+    },
+    "fluent-emoji": {
+      "name": "Microsoft Fluent Emoji",
+      "licence": [
+        "MIT"
+      ],
+      "notice": "licenses/fluent-emoji-MIT.txt"
+    },
+    "cbirds": {
+      "name": "cbirds bird and sprite drawings",
+      "licence": [
+        "MIT"
+      ],
+      "notice": "licenses/cbirds-MIT.txt"
+    }
+  },
+  "images": {
+    "lab/a-3d/sheets/00-overview.jpg": [],
+    "lab/a-3d/sheets/A2-react-v1-vs-v2.jpg": [],
+    "lab/a-3d/sheets/A3-physics-P1-P2-P2b.jpg": [],
+    "lab/a-3d/sheets/crop-band.jpg": [],
+    "lab/a-3d/sheets/crop-edges.jpg": [],
+    "lab/a-3d/sheets/crop-text.jpg": [],
+    "lab/a-3d/sheets/probe-hop-motion-blur.png": [],
+    "lab/a-3d/sheets/probe-shadow-softness.png": [],
+    "lab/a-3d/sheets/wide-aspect.jpg": [],
+    "lab/b-2d/sheets/crop-counter-chip-f96.jpg": [],
+    "lab/b-2d/sheets/crop-headline-f117.jpg": [],
+    "lab/b-2d/sheets/frame-060.jpg": [],
+    "lab/b-2d/sheets/morph-mid-frames.jpg": [],
+    "lab/b-2d/sheets/overview.jpg": [],
+    "lab/c-vector/sheets/c1-fidelity-1080.jpg": [],
+    "lab/c-vector/sheets/c1-hf-4k-sharpness.jpg": [],
+    "lab/c-vector/sheets/c1-hf-dl-native-adapter-probe.jpg": [],
+    "lab/c-vector/sheets/c1-repeater-trim-isolation.jpg": [],
+    "lab/c-vector/sheets/c3-drawon-before-after.jpg": [
+      "lucide"
+    ],
+    "lab/c-vector/sheets/c3-fidelity-worst.jpg": [
+      "lucide",
+      "phosphor",
+      "fluent-emoji"
+    ],
+    "lab/c-vector/sheets/c3-g4-hf-drawon.jpg": [
+      "lucide"
+    ],
+    "lab/d-output/sheets/sheet-cover-all.jpg": [
+      "fluent-emoji"
+    ],
+    "lab/d-output/sheets/sheet-css-1.jpg": [
+      "fluent-emoji"
+    ],
+    "lab/d-output/sheets/sheet-css-2.jpg": [
+      "fluent-emoji"
+    ],
+    "lab/d-output/sheets/sheet-d2-crops-1100.jpg": [],
+    "lab/d-output/sheets/sheet-hf-vs-ref.jpg": [],
+    "lab/d-output/sheets/sheet-thumb-all.jpg": [
+      "fluent-emoji"
+    ],
+    "lab/e-terminal/sheets/demo-orbit-title-16x9.jpg": [
+      "cbirds"
+    ],
+    "lab/e-terminal/sheets/e-terminal-crops-100pct.jpg": [
+      "cbirds"
+    ],
+    "lab/e-terminal/sheets/e-terminal-variants-1080x1920.jpg": [
+      "cbirds"
+    ],
+    "lab/e-terminal/sheets/g4-plate-vs-hyperframes.jpg": [
+      "cbirds"
+    ],
+    "lab/e-terminal/sheets/shapes-100pct.jpg": [
+      "cbirds"
+    ]
+  }
+}
