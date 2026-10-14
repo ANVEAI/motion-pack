@@ -35,11 +35,14 @@ Comparisons use decoded pixels. PNG metadata stamps are off, so equal pixels als
   - It is **not** the alpha-blended halo card: with `glow=0` it still drifts (72.7 dB).
   - Candidates I did not have time to separate: the chrome letters raytraced in the polished floor (screen-space tracing with temporal and bilateral denoise), the reflection-dome world, and the title's light-linked strips. The turntable uses the same floor and render settings and is bit-exact, so the chrome and dome pairing is the main suspect.
 - **EEVEE across renders in one process.** The voxel seam differed by 1/255 on one pixel while every animated value was identical. Some renderer state carries over between renders in one process, probably cached virtual shadow-map pages. It is invisible, but it is not bit-exact.
+- **Cycles on the CPU, measured on 14 Oct 2026 (Blender 5.2.2, `blender/cableTangle` frame 48, 854x480, 16 samples, OIDN on the CPU):** two separate processes gave the same PNG file hash, and one process (frame 48, another frame, frame 48 again) gave identical pixels and the same hash. Before the fix described below the pixels were equal but the file hashes were not.
+  - **Cause of the hash difference:** Cycles writes `cycles.ViewLayer.total_time`, `render_time` and `synchronization_time` into every PNG as tEXt chunks, whatever the stamp settings. `run.py` now removes every `cycles.*_time` chunk after each render (`lib/util.py` `strip_png_timing`); the pixel data is untouched.
+  - Only cableTangle was measured on the CPU; do not assume it for the other recipes.
 - **Cycles on the GPU (Metal) is never bit-exact on the full scene.**
   - With no denoiser, 1 pixel in 518,400 differs by 1/255 (PSNR 111 dB), so GPU path tracing itself drifts slightly. A simple 64-sample probe scene was bit-exact.
   - CPU OIDN spreads that to about 9 pixels (96 dB).
   - GPU OIDN gives 0.48 % of pixels at up to 2/255 (71 dB).
-  - For hash-level Cycles reproducibility, render on the CPU. That case is not measured here.
+  - For hash-level Cycles reproducibility, render on the CPU (`--device cpu`); measured for cableTangle only (above).
 
 Practical meaning: every plate re-renders **visually** identically. The worst measured case is about 71 dB with at most 3/255 on 0.5 % of pixels, which cannot be seen.
 

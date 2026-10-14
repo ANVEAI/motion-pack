@@ -195,7 +195,7 @@ Per-piece studies, source links and tiers: `docs/research/reference-round45-2026
 | **Bass share by role** (< 150 Hz) | median 33%. Proof and explainer beds 20–36%; hype and trailer 50–61%; VO documentaries 15–34% | pick the bed by role; round 3's 52–87% was the hype case, not a default (`ears/listen.py --role`) |
 | Cuts on an onset (≥ 10 cuts) | 24–73%, median 47.5% | **did not predict reach**: the 73% pieces are tier C, tier-A VO films sit at 40–59%. The ≥ 60% rule applies to music-led, cut-driven pieces only (`critic.md`) |
 | Cuts under a voice | 61–89% of cuts in VO documentaries fall inside a speech line | the voice is the continuity: judge VO films by speech continuity, not cut sync |
-| Continuous pieces | 7 of 29 have ≤ 4 cuts; 5 of those 7 are tier A or A− | score them by **motion events on onsets** (`refstudy` `motion.sync`; e.g. 0.61 on a fidelity ladder, 0.31–0.44 on the proof films) |
+| Continuous pieces | 7 of 29 have ≤ 4 cuts; 5 of those 7 are tier A or A− | score them by **motion events on onsets** (`refstudy` `motion.sync`, tested on synthetic clips; not yet measured on these references) |
 | VO rate | 99 (one line per rung) · 158–177 (explainer) · 184–193 (founders) | the tier-A explainer is the sparsest VO: a 0.3–0.5 s gap every ~4 s, and the diagram advances in it |
 
 **Sound shapes:**

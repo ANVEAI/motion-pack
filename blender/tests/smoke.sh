@@ -1,6 +1,6 @@
 #!/bin/bash
 # motion-pack/blender smoke test: py_compile on every file, then 3 frames (first, middle, last) at 480p per recipe in
-# EEVEE, plus one Cycles recipe, plus the post tools. Exit 1 on any failure.
+# EEVEE, plus two Cycles recipes (turntable, cableTangle), plus the post tools. Exit 1 on any failure.
 #   bash blender/tests/smoke.sh [--blender PATH] [--out DIR]
 # Blender: --blender > $BLENDER > blender on PATH > /Applications > ~/Applications.
 set -u
@@ -41,6 +41,7 @@ for ps in xray clay; do SUFFIX=$ps run blender/passReveal eevee --param pass=$ps
 for sc in campfire island; do SUFFIX=$sc run blender/diorama eevee --param scene=$sc; done              # the other two vignettes
 echo "== Cycles (key-art path)"
 run blender/turntable cycles
+run blender/cableTangle cycles                                                                     # the metaphor plate is a Cycles recipe (transparent glass, point-light bulbs)
 echo "== post tools"
 python3 "$HERE/tools/post.py" compare "$OUT/blender-turntable-eevee/frames/f0000.png" "$OUT/blender-turntable-eevee/frames/f0000.png" | grep -q '"pixel_equal": true' \
   && echo "ok   post.py compare" || { echo "FAIL post.py compare"; fail=1; }

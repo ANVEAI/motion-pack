@@ -229,11 +229,18 @@ def motion_events(url, cut_times=(), fps=MOTION_FPS, k=6.0):
     F = _frames(url, fps)
     if len(F) < 3:
         return {"error": "no video frames", "events": []}
-    X = F.astype(np.float32)
-    change = np.concatenate([[0.0], np.abs(np.diff(X, axis=0)).mean(axis=(1, 2, 3))])
-    Y = X @ np.array([0.299, 0.587, 0.114], np.float32)
-    gx = np.abs(np.diff(Y, axis=2))[:, :-1, :]; gy = np.abs(np.diff(Y, axis=1))[:, :, :-1]
-    edges = ((gx + gy) > 24).mean(axis=(1, 2))
+    n, change, edges = len(F), np.zeros(len(F)), np.zeros(len(F))
+    for a in range(0, n, 1024):                                              # in chunks (one frame of overlap): a long film stays out of float32 RAM
+        b = min(n, a + 1024)
+        X = F[max(0, a - 1):b].astype(np.float32)
+        if a > 0:
+            change[a:b] = np.abs(np.diff(X, axis=0)).mean(axis=(1, 2, 3))
+            X = X[1:]
+        else:
+            change[1:b] = np.abs(np.diff(X, axis=0)).mean(axis=(1, 2, 3))
+        Y = X @ np.array([0.299, 0.587, 0.114], np.float32)
+        gx = np.abs(np.diff(Y, axis=2))[:, :-1, :]; gy = np.abs(np.diff(Y, axis=1))[:, :, :-1]
+        edges[a:b] = ((gx + gy) > 24).mean(axis=(1, 2))
     text = np.concatenate([[0.0], np.abs(np.diff(edges))]) * 100.0          # percentage points of the frame
     pc = _peaks(change, k, 2.0, 3); pt = _peaks(text, k, 0.5, 3)
     idx = sorted(set(pc) | set(pt)); ev = []

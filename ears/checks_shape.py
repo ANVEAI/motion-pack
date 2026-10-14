@@ -147,6 +147,20 @@ def structure(ctx):
         round(sp['late_drop_share'] * 100), sp['breath_min_s'], sp['breath_max_s'], SPEC['quiet']['unplanned_warn_s'], ', a seamless loop' if ctx.get('loop') else ''), issues, notes)
 
 
+def _sustained_sub(y, below_hz=150, share_min=0.85, level_min_dbfs=-60.0):
+    """the ending that sits on one held low note: the last 2 s (before the digital-zero 0.15 s) have at least share_min of their energy under below_hz
+    and are audible (above level_min_dbfs). Round 3's 'sustained sub' end next to the quiet hold and the pre-sting silence; None when it is not."""
+    seg = y[-int(2.15 * SR):-int(0.15 * SR)]
+    if len(seg) < int(1.5 * SR):
+        return None
+    S, _, f = stft_power(seg, 2048, 512)
+    low = float((band(S, f, 0, below_hz) / (S.sum(1) + 1e-12)).mean())
+    lvl = float(10 * np.log10(np.mean(np.asarray(seg, float) ** 2) + 1e-12))
+    if low >= share_min and lvl > level_min_dbfs:
+        return {'low_share': round(low, 3), 'below_hz': below_hz, 'level_dbfs': round(lvl, 1)}
+    return None
+
+
 def _kind(a, b, dur):
     return 'open' if a <= BLOCK else ('hold' if b >= dur - BLOCK else 'dip')
 
@@ -204,7 +218,13 @@ def _quiet(ctx, lev, bt, dur, m, issues, notes):
     if sh:
         m['quiet_shape'] = sh
         m['end_shape'] = sh['end_shape']
-        if sh['end_shape'] == 'quiet hold':
+        sub = _sustained_sub(ctx['y'])
+        if sub:
+            m['end_shape'] = 'sustained sub'                                # the refstudy loudness curve cannot tell a held low note from a decay or a hold
+            m['sustained_sub'] = sub
+            notes.append('ending: sustained sub (the last 2 s hold one low note: %.0f%% of the energy under %d Hz at %.0f dBFS), round 3\'s end shape for music-led, moody films' % (
+                sub['low_share'] * 100, sub['below_hz'], sub['level_dbfs']))
+        elif sh['end_shape'] == 'quiet hold':
             notes.append('ending: quiet hold (the last 2 s %.0f dB under the body), a first-class end for explainers and partnership posts%s' % (
                 -sh['tail_2s_vs_body_db'], '' if any(r['planned'] and r['kind'] == 'hold' for r in rows) else '; mark it in plan.audio.quiet (kind hold) so it reads as intended'))
         else:

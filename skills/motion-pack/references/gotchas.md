@@ -43,6 +43,11 @@
   - IG, TikTok, X and LinkedIn publish no loudness spec (grade D).
   - The house master is -14 LUFS-I with TP <= -1.5.
   - Festival and broadcast is -23 LUFS / -1 dBTP as a separate master.
+- **Quiet you meant looks like a fault until you plan it.** `ears` warns of "dead air" for 2 s or more of near-silence (>= 20 dB under the programme) and of "first audible sound" after frame 3. A quiet open (<= 2 s), a reset dip or trailer gap (<= 4 s) and an end-card hold (<= 9 s) are first-class shapes: mark them in `plan.audio.quiet` `[{t: [a, b], kind: open|dip|gap|hold, why}]` and ears judges them as intended, leaves them out of the loudness range, and reports the ending shape. A planned region longer than its house maximum still warns.
+- **Cut sync is not one rule.** The >= 60% of cuts within 2 frames of an onset rule is for music-led, cut-driven pieces. For a VO-led film set `plan.audio.mode: "vo"` (cuts under the voice, none inside a word; needs word timings) and for a few-cut film `"continuous"` (motion events on onsets). Scoring a VO documentary or a no-cut proof film in `music` mode produces a failing sync score that means nothing (round 4/5: the tier-A VO films sat at 40-59%).
+- **`music/bed_trailer_arc` is not a loop and cannot be trimmed anywhere.** Never loop or crossfade it into itself and never cut inside or after `gap_start`: the gap, crescendo, hit and hold keep fixed beat lengths. Fit a cut by re-rendering with `render_trailer(act_bars=(a1, a2, a3))` (whole bars, acts 1-3). Its loudness range is wide by design (13.5 LU without the planned regions; ears warns above 10): that is the build, not a mix fault.
+- **Count crackle in the band it lives in.** An onset counter on the full signal counts the electric buzz's own pulses: on the zap-off it rose (25 then 47 onsets per half) while the sparks thinned from 80 to 4 per quarter second. Test sparks as impulsive energy above 3 kHz (`sfx/tests/test_elec.py`: high-band kurtosis per half second, and 1 ms envelope peaks over a file-wide median).
+- **Most pack beds are bass-heavy.** Measured with the `ears` / refstudy definition (energy under 150 Hz), only a few beds sit in the 20-36% range of the proof and explainer references (`music/README.md`: playful_bounce, chiptune, comedy_pizzicato sting, tabla keherwa / dadra and the like); the corporate, ambient and cinematic beds are 48-70%. Check with `ears/listen.py --role proof`.
 - **HyperFrames sound integration is mode A only:** one baked `mix.wav` at 0. Per-clip `<audio>` with `data-start = (F + 1)/fps` is not built yet.
 - **Talking-head demo.** The SFX stem sits under the input's own audio, so its LUFS is low on purpose (around -37 for the stem alone).
 
@@ -85,6 +90,9 @@
 
 - **EEVEE drops the emission of a fully transparent surface.** In the default dithered mode, `Add(Emission, Transparent)` renders nothing: the pixel is discarded before its emission counts. For glows on see-through surfaces, mix Transparent and Emission by a coverage factor (`blender/lib/kit.py` x-ray pass), or set the material to `BLENDED` (`materials.pure_emission`).
 - **Keyed values inside a shader node group animate fine** (`kit.pass_group` keys one `stage` value for every pass material), but check a frame from each state: a wrong blend shows up as the previous pass, not as an error.
+
+- **Cycles writes timing into the PNG.** `cycles.ViewLayer.*_time` tEXt chunks (total, render, synchronization time) land in every frame whatever the stamp settings, so two renders with equal pixels hashed differently. `run.py` now strips them after each render (`lib/util.py` `strip_png_timing`; the pixel data is untouched). With that, Cycles on the CPU (`--device cpu`) gives the same file hash in two separate processes (cableTangle, frame 48, 480p, 16 samples; `blender/tests/cable_tangle.sh`). The GPU stays visually, not bit, identical (`DETERMINISM.md`).
+- **Measure a bulb-out plate in the PNGs, not the keys.** The recipe keys the light and filament per whole frame, but the denoised pixels fade over a few frames after the key (an afterglow at 0.32, then a decay), so the test looks for the first frame from which the bulb stays dimmer, not for a single-frame jump. The 2-frame flicker before a bulb dies recovers on purpose and must not count.
 
 ## Environment and process
 

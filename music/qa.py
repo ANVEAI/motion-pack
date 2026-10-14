@@ -66,6 +66,15 @@ def seam_flux_ratio(y, bar_samples):
     return float(seam / (np.max(others) + 1e-12)), float(np.max(others) / (np.median(others) + 1e-12))
 
 
+def bass_share(y):
+    """share of the energy under 150 Hz, the way tools/refstudy.py and ears measure it (STFT 2048 / hop 512, the mean of the per-frame share, mono mix):
+    information for choosing a bed by role (round 4/5: proof and explainer 20-36%, hype and trailer 50-61%, VO documentary 15-34%), not a pass / fail"""
+    sys.path.insert(0, os.path.dirname(HERE))
+    from ears.core import stft_power, band
+    S, _, f = stft_power(y.mean(axis=1) if y.ndim > 1 else y, 2048, 512)
+    return float((band(S, f, 0, 150) / (S.sum(1) + 1e-12)).mean())
+
+
 def trailer_checks(it, y, row, F):
     """the planned shape of a trailer arc, measured on the master: markers, gap depth, crescendo, quiet hold, digital-zero tail"""
     side = json.load(open(os.path.join(HERE, it["sidecar"])))
@@ -150,6 +159,7 @@ def main():
             share, top = chroma_share(y, it["_key_pc"] if "_key_pc" in it else (PRESETS[it["preset"]]["key"] if it["preset"] in PRESETS else 9), it["scale"])
             row["inscale_share"] = round(share, 2)
             row["top_pc"] = top
+            row["bass_share"] = round(bass_share(y), 2)
             if share < 0.7:
                 W("in-scale chroma share %.2f" % share)
             if it["loop"]:

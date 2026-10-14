@@ -29,6 +29,9 @@ def loudness(ctx):
     st_t, st = short_term(x, 3.0, 0.5)
     _, mom = short_term(x, 0.4, 0.1)
     L = lra(x)
+    planned = [q['t'] for q in (ctx.get('quiet') or [])]
+    L_plan = lra(x, planned) if planned else None                  # planned quiet (open, dip, gap, hold) is shape: the range is judged without it
+    L_judged = L if L_plan is None else L_plan
     spk = meter.sample_peak_db(x)
     env = tp_envelope(x)
     tp = float(20 * np.log10(env.max() + 1e-20))
@@ -43,15 +46,18 @@ def loudness(ctx):
                             'remaster through music/mixer.py (master.lufs %.0f); never gain stems by hand' % tgt,
                             ('It plays %.1f dB louder than other videos until the platform turns it down.' % d) if d > 0 else
                             ('It sounds %.1f dB quieter than other videos; YouTube and most apps will not turn it up.' % -d)))
-    if tp > tp_lim:
+    if tp > tp_lim + sp.get('tp_tolerance_db', 0.0):                    # the mixer's limiter sits exactly on the ceiling; 4x oversampling reads it 1e-6 dB over
         over = tp - tp_lim
         rs = runs(env > 10 ** (tp_lim / 20), np.arange(len(env)) / SR, 0.0, 0.25)
         issues.append(issue('warn' if over <= sp['tp_warn_margin_db'] else 'fail', rs[0] if rs else None,
                             'true peak %.2f dBTP is over the %.1f dBTP %s ceiling at %s' % (tp, tp_lim, 'master' if master else 'delivered', fmt_ranges(rs)),
                             'keep the WAV master at -1.5 dBTP (-2.0 to -2.5 for click-dense UI mixes: plan.ceilingDb) and check the AAC probe',
                             'Peaks may crunch on phone speakers, and HyperFrames may lower the whole track.'))
-    if L is not None and L > sp['lra_max_lu']:
-        issues.append(issue('warn', None, 'loudness range %.1f LU is wide for short-form (house max %.0f LU)' % (L, sp['lra_max_lu']),
+    if planned and L is not None:
+        notes.append('loudness range %.1f LU over the whole file, %s' % (L, 'and too little is left without the planned quiet regions (plan.audio.quiet): the whole file is judged'
+                     if L_plan is None else '%.1f LU without the planned quiet regions (plan.audio.quiet): the range is judged on the latter' % L_plan))
+    if L_judged is not None and L_judged > sp['lra_max_lu']:
+        issues.append(issue('warn', None, 'loudness range %.1f LU is wide for short-form (house max %.0f LU)' % (L_judged, sp['lra_max_lu']),
                             'even out the quiet and loud sections: raise the quiet bed or shorten the silent stretch; check the short-term curve',
                             'Some parts are much quieter than others; on a phone the quiet parts get lost.'))
     # the last 0.15 s must be digital zero (AAC smears about one frame of 1024 samples into it, so a coded file skips the first 25 ms)
@@ -70,7 +76,7 @@ def loudness(ctx):
         plats[name] = {'target_lufs': p['lufs'], 'playback_gain_db': round(off if (off < 0 or p['boosts_quiet']) else 0.0, 1), 'grade': p['grade']}
     notes.append('platform playback offsets (negative = turned down): ' + ', '.join('%s %+.1f dB' % (k, v['playback_gain_db']) for k, v in plats.items()))
     m = {'integrated_lufs': round(I, 2), 'short_term_max_lufs': round(float(st.max()), 2), 'momentary_max_lufs': round(float(mom.max()), 2),
-         'lra_lu': None if L is None else round(L, 1), 'sample_peak_dbfs': round(spk, 2), 'true_peak_dbtp': round(tp, 2), 'plr_lu': round(tp - I, 1),
+         'lra_lu': None if L is None else round(L, 1), 'lra_without_planned_quiet_lu': None if L_plan is None else round(L_plan, 1), 'sample_peak_dbfs': round(spk, 2), 'true_peak_dbtp': round(tp, 2), 'plr_lu': round(tp - I, 1),
          'tail_peak_dbfs': round(tail_db, 1), 'short_term_curve': [[round(float(a), 1), round(float(b), 1)] for a, b in zip(st_t, st)],
          'platforms': plats, 'master_spec': 'wav master' if master else 'delivered file'}
     return result('ears/loudness', 'loudness', m, '%.0f +- %.1f LUFS-I, TP <= %.1f dBTP, LRA <= %.0f LU, last %.2f s silent' % (

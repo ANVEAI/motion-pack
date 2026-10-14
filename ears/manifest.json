@@ -13,7 +13,7 @@
   "ears/tone": {"category": "tone", "doc": "band energy per octave relative to the 500 Hz-2 kHz mid band: sub, low, mud, mid, presence, sibilance, air; mud / boomy / thin / harsh / sibilant / dull flags with time ranges", "source": "house default target curve (see spec.tone)"},
   "ears/speech": {"category": "speech", "doc": "speech regions (energy + spectral VAD, or a transcript), speech-to-music ratio in 300 Hz-3.4 kHz, ducking depth, masking, words per minute", "source": "music/mixer.py R5 (duck 9 dB) + house defaults"},
   "ears/sync": {"category": "sync", "doc": "tempo + confidence, beat grid, onsets and hits, audible event on frames 0-3, cuts within 2 frames of an onset or beat, cue anchors on F + 1, risers ending one frame before the hit; mode music | vo | continuous decides what the edit is scored on (cuts on onsets, speech continuity, or motion events on onsets); a planned quiet open (plan.audio.quiet) waives the frame-0 event", "source": "SKILL.md hard rule 4, music/README.md R1 / R10, references/critic.md"},
-  "ears/structure": {"category": "structure", "doc": "energy and novelty curves, sections (intro / build / drop / body / outro), drop time as a share of the runtime, the breath before the final sting, loop seam, near-silent stretches (dead air unless planned in plan.audio.quiet) and the ending shape (slam, quiet hold, decay, level)", "source": "references/launch-playbook.md (silence before the payoff), SKILL.md virality checklist"},
+  "ears/structure": {"category": "structure", "doc": "energy and novelty curves, sections (intro / build / drop / body / outro), drop time as a share of the runtime, the breath before the final sting, loop seam, near-silent stretches (dead air unless planned in plan.audio.quiet) and the ending shape (slam, sustained sub, quiet hold, decay, level)", "source": "references/launch-playbook.md (silence before the payoff), SKILL.md virality checklist"},
   "ears/repetition": {"category": "variety", "doc": "the same SFX-like onset (spectrally near-identical, not on the music's beat) repeated too often in a window; same cue id repeated in the plan", "source": "sfx/README.md round robin, music/README.md R9"},
   "ears/stereo": {"category": "stereo", "doc": "L/R correlation, mono-compatibility (loudness lost when summed to mono), width (side vs mid)", "source": "house default"},
   "ears/compare": {"category": "compare", "doc": "with --ref study.json files (tools/refstudy.py): loudness-curve shape, band shares, tempo, brightness, cuts on onsets, quiet open and quiet tail against the references; with plan.audio.role (or --role) the bass share against the round 4/5 range for that role", "source": "references/reference-intake.md"},
@@ -21,7 +21,7 @@
  },
  "spec": {
   "loudness": {"target_lufs": -14.0, "pass_lu": 0.5, "warn_lu": 1.5,
-               "tp_delivered_dbtp": -1.0, "tp_master_dbtp": -1.5, "tp_warn_margin_db": 0.5,
+               "tp_delivered_dbtp": -1.0, "tp_master_dbtp": -1.5, "tp_tolerance_db": 0.01, "tp_warn_margin_db": 0.5,
                "lra_max_lu": 10.0, "lra_note": "house default for short-form social; linkedin.video wants <= 7 LU",
                "tail_s": 0.15, "tail_codec_skip_s": 0.025, "tail_digital_zero_dbfs": -90.0, "tail_near_zero_dbfs": -60.0,
                "platforms": {"youtube": {"lufs": -14.0, "boosts_quiet": false, "grade": "B"},

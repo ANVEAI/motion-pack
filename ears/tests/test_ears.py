@@ -320,6 +320,44 @@ def test_a_planned_quiet_hold_passes_and_the_same_file_unmarked_warns():
     assert 'longer than the house max 9 s' in whats(long)
 
 
+def test_planned_quiet_is_left_out_of_the_loudness_range():
+    """a mid-file planned hold of 6 s widens the whole-file LRA (18 LU, over the house 10); judged without the planned region it is not a fault"""
+    a, b = s.mix_like(8.0, 21), s.mix_like(8.0, 22)
+    hold = 10 ** (-45 / 20) * np.random.default_rng(5).standard_normal(int(6.0 * s.SR))
+    y = np.concatenate([a, hold, b]); y[-int(0.15 * s.SR):] = 0
+    bare = check(analyze(s.st(y)), 'loudness')
+    assert bare['measured']['lra_lu'] > 10 and 'loudness range' in whats(bare)
+    planned = check(analyze(s.st(y), quiet=[{'t': [8.0, 14.0], 'kind': 'hold', 'why': 'a held reset'}]), 'loudness')
+    assert planned['measured']['lra_lu'] == bare['measured']['lra_lu']                   # the whole-file figure is still reported
+    assert planned['measured']['lra_without_planned_quiet_lu'] < 3.0 and 'loudness range' not in whats(planned)
+    assert any('without the planned quiet regions' in n for n in planned['notes'])
+
+
+def test_a_master_exactly_on_the_ceiling_is_not_over_it():
+    """the mixer's limiter sits on -1.5 dBTP and a 4x oversampled meter reads it a hair over: that is the ceiling, not a breach"""
+    y = s.mix_like(8, 31)
+    y = y / core.tp_envelope(s.st(y)).max() * 10 ** (-1.495 / 20)                        # true peak 0.005 dB over the ceiling: a rounding hair
+    y[-int(0.15 * s.SR):] = 0
+    c = check(analyze(s.st(y), is_master=True), 'loudness')
+    assert not any('true peak' in i['what'] for i in c['issues']), whats(c)
+    hot = check(analyze(s.st(y * 10 ** (1.0 / 20)), is_master=True), 'loudness')
+    assert any('true peak' in i['what'] for i in hot['issues'])                                # 1 dB over still warns
+
+
+def test_ending_shapes_include_the_sustained_sub():
+    body = np.concatenate([s.mix_like(3, 11) * 0.3, s.mix_like(7, 12)])
+    sub = 10 ** (-24 / 20) * np.sin(2 * np.pi * 55 * s.t_(4.0))
+    y = np.concatenate([body, sub])
+    y[-int(0.15 * s.SR):] = 0
+    e = check(analyze(s.st(y)), 'structure')['measured']
+    assert e['end_shape'] == 'sustained sub' and e['sustained_sub']['low_share'] > 0.95            # a held low note, even at body level (the loudness curve alone says slam)
+    hold = check(analyze(s.st(_with_hold())), 'structure')['measured']
+    assert hold['end_shape'] == 'quiet hold' and 'sustained_sub' not in hold                # room-tone noise is not a held low note
+    slam = np.concatenate([body, s.mix_like(0.5, 13) * 2.0])
+    slam[-int(0.15 * s.SR):] = 0
+    assert check(analyze(s.st(slam)), 'structure')['measured']['end_shape'] == 'slam'
+
+
 def test_a_planned_quiet_open_waives_the_frame_0_event():
     y = np.concatenate([np.zeros(int(1.5 * s.SR)), s.click_track(120, 6)])
     assert 'first audible sound' in whats(check(analyze(s.st(y)), 'sync'))

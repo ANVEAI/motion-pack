@@ -171,8 +171,12 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | a different music genre | `music/bed_*_loop8` (lo-fi jazz, synthwave, deep house, dnb, ambient pad, chiptune, folk pluck, marimba, orchestral epic, jazz walk, comedy pizzicato, corporate bright, suspense pulse) and length-fitted cuts | all are generic library beds; listen once before a hero use |
 | a SaaS / AI product film sound | bundle `saas_launch`: `sfx/paper/card_riffle`, `card_shuffle_settle`, `sfx/ui/scan_sweep`, `sfx/ui/agent_working` (4 s loop), `sfx/tx/pixel_dissolve`, `sfx/sparkle/letter_assemble`, `sfx/hit/brand_field_slam` | stop the working loop on the result frame: mixer `add_cue(..., until_frame=F)` |
 | a story shape | `cuts/story/*`: `interruptOpen`, `verbLadder`, `mockumentaryReaction`, `sentenceLed` (`cutgen.py interrupt-open / verbs / mockumentary / sentence`); bundle `mockumentary` for doc-parody comedy | `cutgen.py snap` puts cuts on onsets (target 60% within 2 frames, for music-led cut pieces; VO-led and continuous films: `references/critic.md`) |
+| a trailer: a build, a planned valley, a crescendo, one title hit | `music/bed_trailer_arc` (act 1 drone, act 2 ostinato, act 3 wall, a 3 s sub-only gap, a 2-bar crescendo, a hard-stop hit, a quiet hold; every marker in its sidecar in frames) | NOT a loop: fit a cut with `trailer.render_trailer(act_bars=...)`, never by trimming past `gap_start`; cut the picture to black on `visual_cut_frame` (hit - 1); mark the gap and the hold in `plan.audio.quiet` |
+| an electric / neon outline, a power-on or a light dying | bundle `neon_power_on`: `sfx/elec/arc` (zap, `rr:4`), `sfx/elec/crackle_loop` (4 s loop under the lit sign, end it with `until_frame`), `sfx/elec/zap_off` (power-down, anchor on the frame the light dies) | arc on the frame the stroke strikes; the zap-off anchor is its opening snap, so put it on the frame the light dies; synthesised, never auditioned by a human: listen once before a hero use |
+| a quiet open, a mid-film reset dip or a quiet end-card hold | `plan.audio.quiet` `[{t: [a, b], kind, why}]` with kind open, dip, gap or hold (open <= 2 s, dip / gap <= 4 s, hold <= 9 s), and `plan.audio.mode` music, vo or continuous for what the critic scores | `ears` then reads the quiet as shape; it still warns on unplanned dead air and on a region over its maximum |
 | a tempo build into a drop | `music/bed_anthem_ramp16` (100 → 128 BPM; real beat frames in its sidecar) and `music/tempo_maps.json` | cut from the sidecar, not from a constant BPM |
 | a photoreal product shot or 3D title | `blender/turntable`, `blender/macroSweep`, `blender/explode`, `blender/title3d`; art loops `blender/art.*` | EEVEE for motion plates, Cycles for key-art stills |
+| an "everything is connected" problem beat (one dependency pulled, the system goes dark; or the fix) | `blender/cableTangle` (`mode=off`: the bulbs go out in sequence on plan frames; `mode=on`: it untangles and they light; `--beats` puts the changes on sound hits) then an abstract untangle diagram | a metaphor, not wiring advice; needs >= 3 s of air; Cycles, so a 1080p plate is slow (about 1.8 s/frame at 480p, 12 samples); `--device cpu` for a hash-level repeat |
 
 ## RECIPES
 
@@ -436,7 +440,7 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
   - mud, harshness and dullness, with time ranges;
   - ducking and masking under a voice (with a transcript);
   - the edit by mode (`--mode music|vo|continuous`, default `plan.audio.mode`, else music): cuts on onsets, speech continuity (no cut inside a word), or motion events on onsets; and every plan cue on F + 1 (it finds the mixer's exact take, to the sample);
-  - a flat mix (the blindfold test), late drops, the breath before the final sting, dead air, and the ending shape (slam, quiet hold, decay);
+  - a flat mix (the blindfold test), late drops, the breath before the final sting, dead air, and the ending shape (slam, sustained sub, quiet hold, decay);
   - planned quiet is shape, not a fault: mark a quiet open (≤ 2 s), a reset dip or trailer gap (≤ 4 s) or an end-card quiet hold (≤ 9 s) in `plan.audio.quiet` `[{t: [a, b], kind, why}]`;
   - with `--role proof|explainer|hype|trailer|vo_doc` (or `plan.audio.role`), the bed's bass share against the round 4/5 range for that role;
   - repeated SFX and mono compatibility.

@@ -64,24 +64,17 @@ There are 29 studies here: 9 from round 4 and 20 from round 5. All were measured
 | [kenbwork](https://x.com/kenbwork/status/2110071571713061145) | **A** | 26,272 views, 3.31x, like 1.25%, bm 1.00% | 80 s, 0 cuts | -16.2 LUFS, bass 24%, open -39 / tail -64 dB, quiet hold | clinical-benchmark explainer: one diagram grows, the VO leaves a gap every ~4 s and the diagram advances in it; a wrong fork turns red and the red propagates; 9 s silent end-card hold |
 | [kiteai](https://x.com/gokiteai/status/2109993390964355489) | **C** | 8,491 views, 0.01x, like 0.80%, bm 0.08% | 67 s, 0 cuts | -14.4 LUFS, bass 43%, open +8 / tail -15 dB, decay | agent-to-agent booking walkthrough: headline left, real screen right, honestly framed; clean but no stake |
 
-## Motion sync on the continuous pieces (re-measured with the new refstudy)
+## Motion sync on the continuous pieces (not yet measured on the real files)
 
-The cut sync returns n/a for a piece with no cuts. `refstudy.py` now detects visual events (frame-difference and colour-change peaks, new text via edge-density jumps, 30 fps at 96x54) and reports the share within 2 frames of an audio onset. Four of the continuous pieces were downloaded again and re-measured on 14 Oct 2026 (`--whisper none`):
+The cut sync returns n/a for a piece with no cuts. `refstudy.py` now detects visual events (frame-difference and colour-change peaks, new text via edge-density jumps, 30 fps at 96x54) and reports the share within 2 frames of an audio onset (`motion.sync.share_on_onset`; with a transcript, also the share inside speech gaps). It is tested on synthetic clips with known flashes: events land within one frame, and a continuous clip with no cuts returns a sync value (`tools/tests/test_refstudy.py`).
 
-| piece | tier | cuts | motion events | events / min | motion events on an onset |
-|---|---|---|---|---|---|
-| fofrai (fidelity ladder) | A | 0 | 41 | 41 | 61% |
-| xadisingh (proof film) | A | 4 | 61 | 101 | 44% |
-| spacex (bundle construction) | A | 0 | 22 | 132 | 32% |
-| kenbwork (diagram explainer, VO) | A | 0 | 32 | 24 | 31% |
-
-Read these as the edit's rhythm, not a score: the music-led fidelity ladder puts most accents on the music, while the VO-led diagram explainer advances its diagram in speech gaps rather than on onsets (its quiet open is −39 dB and it ends on a 9 s quiet hold).
+**It has not been run on the continuous references themselves.** Re-measuring them means downloading each video again, and the studies in the intake folder were made before the motion measure existed. To fill this section, run `python3 tools/refstudy.py <source link above> refs/<name> --whisper none` on fofrai, xadisingh, spacex, kenbwork and firecrawl (the five tier-A and A- continuous pieces) and read `study.json` `motion`. Until then, treat "score continuous pieces by motion events on onsets" as a rule from the pieces' structure (5 of 7 are tier A or A-, and the cut sync is n/a for them), not as a measured benchmark.
 
 ## What changed in the pack
 
 | rule change | where it landed |
 |---|---|
-| Cut sync (≥ 60% on an onset) applies to music-led, cut-driven pieces only; VO-led films are judged by speech continuity; continuous films by motion events | `references/critic.md` (sync modes table), `ears/listen.py --mode music|vo|continuous` (default `plan.audio.mode`, else music), `SKILL.md` QA and ears sections |
+| Cut sync (≥ 60% on an onset) applies to music-led, cut-driven pieces only; VO-led films are judged by speech continuity; continuous films by motion events | `references/critic.md` (sync modes table), `ears/listen.py --mode` (music, vo or continuous; default `plan.audio.mode`, else music), `SKILL.md` QA and ears sections |
 | Hook: a small product-name super over moving footage is not a bumper; the sound may enter 1–2 s after a moving frame 0 | `SKILL.md` virality checklist, `references/virality.md`, `references/critic.md`; ears waives the frame-0 event for a planned quiet open |
 | Quiet hold is a first-class end shape | `references/launch-playbook.md` rule 15 (four end shapes); ears reports the end shape |
 | Bed bass share by role | `music/README.md`, `references/launch-playbook.md` sound levels, `ears/listen.py --role` |

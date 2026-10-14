@@ -5,6 +5,7 @@ import math
 import os
 import json
 import hashlib
+import struct
 
 import bpy
 import bmesh
@@ -248,6 +249,30 @@ def set_interpolation(ids, kind="LINEAR"):
 
 
 # ------------------------------------------------------------------------------------------------ files
+def strip_png_timing(path):
+    """Cycles writes its timings (cycles.ViewLayer.total_time, render_time, synchronization_time, ...) into the PNG as tEXt chunks, whatever the
+    stamp settings: two renders with equal pixels then hash differently. Drop every cycles.*_time chunk in place (the pixel data is untouched).
+    Returns True when a chunk was removed."""
+    with open(path, "rb") as fh:
+        d = fh.read()
+    if d[:8] != b"\x89PNG\r\n\x1a\n":
+        return False
+    out, i, dropped = [d[:8]], 8, False
+    while i + 12 <= len(d):
+        n = struct.unpack(">I", d[i:i + 4])[0]
+        typ, body = d[i + 4:i + 8], d[i + 8:i + 8 + n]
+        kw = body.split(b"\0", 1)[0]
+        if typ == b"tEXt" and kw.startswith(b"cycles.") and kw.endswith(b"_time"):
+            dropped = True
+        else:
+            out.append(d[i:i + 12 + n])
+        i += 12 + n
+    if dropped:
+        with open(path, "wb") as fh:
+            fh.write(b"".join(out))
+    return dropped
+
+
 def sha256_file(path, n=16):
     h = hashlib.sha256()
     with open(path, "rb") as fh:

@@ -26,7 +26,7 @@ if HERE not in sys.path:
 
 import bpy                                   # noqa: E402
 from lib import render as RD                 # noqa: E402
-from lib.util import Keyer, sha256_file, write_json   # noqa: E402
+from lib.util import Keyer, sha256_file, strip_png_timing, write_json   # noqa: E402
 import recipes                               # noqa: E402
 
 
@@ -107,7 +107,10 @@ def render_to(sc, f, path):
     sc.render.filepath = path
     t = time.time()
     bpy.ops.render.render(write_still=True)
-    return round(time.time() - t, 3)
+    dt = round(time.time() - t, 3)
+    if path.lower().endswith(".png") and os.path.exists(path):
+        strip_png_timing(path)                # Cycles' per-render timing chunks would make equal pixels hash differently
+    return dt
 
 
 def main():

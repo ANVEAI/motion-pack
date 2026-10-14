@@ -306,11 +306,17 @@ def short_term(x, win=3.0, hop=0.1):
     return ends / SR, -0.691 + 10 * np.log10(ms + 1e-20)
 
 
-def lra(x):
-    """loudness range, EBU Tech 3342: short-term (3 s, 10 Hz) values gated at -70 LUFS absolute and -20 LU relative; P95 - P10"""
+def lra(x, skip=None):
+    """loudness range, EBU Tech 3342: short-term (3 s, 10 Hz) values gated at -70 LUFS absolute and -20 LU relative; P95 - P10.
+    skip: [[a, b], ...] seconds (planned quiet regions): short-term windows that overlap one are left out, so intended shape is not a range fault"""
     if len(x) < 3 * SR:
         return None
-    _, st = short_term(x, 3.0, 0.1)
+    t, st = short_term(x, 3.0, 0.1)
+    if skip:
+        keep = np.ones(len(t), bool)
+        for a, b in skip:
+            keep &= ~((t > a) & (t - 3.0 < b))                  # the window (t - 3, t] overlaps (a, b)
+        t, st = t[keep], st[keep]
     st = st[st > -70]
     if len(st) < 2:
         return None

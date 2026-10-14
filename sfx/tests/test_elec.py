@@ -36,6 +36,29 @@ def _onsets(y, hop_ms=2, rise_db=6.0):
     return int(np.sum((e[1:] - e[:-1]) >= rise_db))
 
 
+def _hp(x, fc=3000.0):
+    """the crackle band: above 3 kHz, where the sparks and the noise burst live (the buzz is below ~2 kHz)"""
+    from scipy import signal
+    return signal.sosfilt(signal.butter(4, fc, "hp", fs=SR, output="sos"), x)
+
+
+def _kurt(x):
+    x = x - x.mean()
+    return float((x ** 4).mean() / ((x ** 2).mean() ** 2 + 1e-30))
+
+
+def _sparks(x, thr=4.0, win_ms=1.0, gap_ms=3.0):
+    """count 1 ms envelope peaks of a (high-passed) signal that stand more than thr x over its median, at least gap_ms apart"""
+    w = dsp.ms(win_ms)
+    e = np.sqrt(np.convolve(x ** 2, np.ones(w) / w, "same"))
+    pk = np.where((e[1:-1] > thr * np.median(e)) & (e[1:-1] >= e[:-2]) & (e[1:-1] >= e[2:]))[0] + 1
+    keep = []
+    for i in pk:
+        if not keep or i - keep[-1] > dsp.ms(gap_ms):
+            keep.append(int(i))
+    return keep
+
+
 def _f0(x, lo=25.0, hi=160.0):
     """autocorrelation pitch of a low-passed mono segment"""
     x = dsp.lp(x - x.mean(), 700)
@@ -124,7 +147,11 @@ def test_crackle_loop_is_seamless():
     lv = [meter.k_level(two, i, blk) for i in range(0, len(two) - blk, blk // 2)]
     seam = meter.k_level(two, len(a) - blk // 2, blk)
     assert min(lv) - 0.5 <= seam <= max(lv) + 0.5, (seam, min(lv), max(lv))
-    assert _onsets(a) >= 40                                                          # sparks keep crackling all the way through
+    h = _hp(m)                                                                       # sparks keep crackling all the way through: every half second of the
+    k = [_kurt(h[i:i + SR // 2]) for i in range(0, len(h) - SR // 2 + 1, SR // 2)]    # crackle band is impulsive (hiss alone is Gaussian, kurtosis 3), and
+    assert min(k) >= 3.5, k                                                          # never drops out (loudest half second within 12 dB of the quietest)
+    r = [float(np.sqrt(np.mean(h[i:i + SR // 2] ** 2))) for i in range(0, len(h) - SR // 2 + 1, SR // 2)]
+    assert 20 * np.log10(max(r) / min(r)) <= 12.0, r
 
 
 def test_arc_shape():
@@ -151,8 +178,10 @@ def test_zap_off_falls_thins_and_dies():
     early, late = _f0(m[sec_(0.12):sec_(0.32)]), _f0(m[sec_(0.65):sec_(0.85)])
     assert early > 1.4 * late, (early, late)                                         # the buzz pitch falls
     assert 70 < early < 115 and 30 < late < 70, (early, late)
-    n1, n2 = _onsets(a[sec_(0.05):sec_(0.55)], 2, 4.0), _onsets(a[sec_(0.55):], 2, 4.0)
-    assert n1 > n2, (n1, n2)                                                         # crackles thin out
+    h = _hp(m)                                                                       # crackles thin out: sparks in the 3 kHz+ band per half of the fall
+    t = np.array(_sparks(h)) / SR                                                    # (one threshold for the whole file, taken from its own median)
+    n1, n2 = int(((t >= 0.05) & (t < 0.55)).sum()), int(((t >= 0.55) & (t < 1.05)).sum())
+    assert n1 > 2 * n2 and n2 >= 1, (n1, n2)
     w = sec_(0.1)
     rms = [np.sqrt(np.mean(m[i:i + w] ** 2)) for i in range(sec_(0.05), len(m) - w, w)]
     assert rms[-1] < 0.1 * max(rms)                                                  # it powers down (and test_one_shots... checks the digital zero)

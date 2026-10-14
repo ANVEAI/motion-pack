@@ -48,7 +48,7 @@ def main():
         rec["id"] = rid
         rec["previews"] = [p for p, v in plates.items() if v["recipe"] == rid]
         rec["cli"] = ("blender -b --factory-startup -P blender/run.py -- --recipe %s --size 1920x1080 --fps 30 "
-                      "--seconds %g --engine eevee --out out/%s" % (rid, rec["defaults"]["seconds"], rid.split("/")[1]))
+                      "--seconds %g --engine %s --out out/%s" % (rid, rec["defaults"]["seconds"], rec["defaults"].get("engine", "eevee"), rid.split("/")[1]))
     old_p = os.path.join(HERE, "manifest.json")
     old = json.load(open(old_p)) if os.path.exists(old_p) else {}
     if not plates and old.get("showcase"):      # no showcase renders on this machine: keep the measured rows already committed
@@ -61,6 +61,7 @@ def main():
         "blender": "5.2.2 LTS (d13f752e3b9c); binary: $BLENDER or --blender, else blender on PATH or /Applications/Blender.app",
         "license": {"scripts": "MIT (GPL-compatible)", "renders": "CC0 1.0 (pack media)", "fonts": "SIL OFL 1.1 (pack fonts)"},
         "entry": "blender/run.py", "smoke": "bash blender/tests/smoke.sh", "determinism_test": "bash blender/tests/determinism.sh",
+        "cable_tangle_test": "bash blender/tests/cable_tangle.sh",
         "id_convention": "blender/<recipe> (art loops: blender/art.<name>)",
         "recipes": recipes,
         "library": {
