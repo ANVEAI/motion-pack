@@ -225,7 +225,7 @@ CI runs the checks that need no GPU on every push.
 
 - **Code, shaders and skills:** MIT, see [LICENSE](LICENSE). Copyright (c) 2026 Anveshana Futurecorp Pvt Ltd (ANVE).
 - **Media the pack generates** (synthesised SFX and music, renders and previews, images, LUT `.cube` files): CC0 1.0, see [LICENSE-MEDIA](LICENSE-MEDIA). Use them in anything, with no credit line. **Exception:** the lab contact sheets (`lab/*/sheets/`) show renders of third-party icon and emoji sets (Lucide, Phosphor, Fluent Emoji; all MIT or ISC) and keep their licences, with the notices in [`licenses/`](licenses/README.md).
-- **Fonts** (Manrope, IBM Plex Mono): SIL Open Font License 1.1, with the licence text next to each font.
+- **Fonts** (bundled, unmodified, not MIT and not CC0): Manrope 4.505, IBM Plex Mono 2.3 and STIX Two Text 2.13, all SIL Open Font License 1.1, with the licence text next to each font (`objects/kit/fonts/`, `templates/_shared/fonts/`); sources and copyright lines in [THIRD_PARTY.md](THIRD_PARTY.md) section 1.
 - **Trademarks:** the ANVE name and logo are not covered by either licence, see [TRADEMARKS.md](TRADEMARKS.md).
 - **Third-party:** runtime libraries and the optional fetched sets keep their own licences, see [THIRD_PARTY.md](THIRD_PARTY.md).
 

@@ -96,7 +96,7 @@ rep = m.render('out_dir')                        # master.wav -14 LUFS / -1.5 dB
   - `music/stingers.py`.
   - `music/trailer.py`: `render_trailer('trailer_arc', fps, seed, act_bars=(4, 4, 4))` -> `{stems, mix, events, meta, markers}`: act 1 drone, act 2 rising ostinato, act 3 wall, a planned sub-only gap, a crescendo, a hard-stop title hit, a quiet hold. NOT a loop; every marker is a whole frame (`markers(name, fps, act_bars)`); the pack bed is `music/bed_trailer_arc` and its sidecar `bed_trailer_arc.json` has `markers`, `visual_cut_frame` (hit - 1) and the length rule. Mark the gap and the hold in `plan.audio.quiet`.
   - `Mix.add_bed(loop=True)` now tiles stereo beds correctly (fixed 2026-10-13).
-- **Outside audio:** nothing third-party is vendored. `scripts/fetch-external.sh` fetches the CC0 subsets (Kenney audio, OwlishMedia SFX) into a folder outside git; then `python3 sfx/tools/check_origin.py DIR` and `python3 sfx/tools/catalog_import.py DIR --category NAME [--dry]` import them into `sfx/library_ext/` (tagged `source:ext`), never `sfx/manifest.json`.
+- **Outside audio:** no third-party audio is vendored. `scripts/fetch-external.sh` fetches the CC0 subsets (Kenney audio, OwlishMedia SFX) into a folder outside git; then `python3 sfx/tools/check_origin.py DIR` and `python3 sfx/tools/catalog_import.py DIR --category NAME [--dry]` import them into `sfx/library_ext/` (tagged `source:ext`), never `sfx/manifest.json`.
 
 ## Layers
 

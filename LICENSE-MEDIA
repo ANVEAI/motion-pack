@@ -22,8 +22,9 @@ neighbouring rights to these works. The full legal code follows below.
 What this file does NOT cover
 -----------------------------
   * Source code, shaders and skills: MIT, see LICENSE.
-  * Fonts (Manrope, IBM Plex Mono): SIL Open Font License 1.1; the licence text
-    sits next to each font file (objects/kit/fonts, templates/_shared/fonts).
+  * Fonts (Manrope, IBM Plex Mono, STIX Two Text; bundled, unmodified): SIL Open
+    Font License 1.1; the licence text sits next to each font file
+    (objects/kit/fonts, templates/_shared/fonts); see THIRD_PARTY.md section 1.
   * Third-party assets fetched by scripts/fetch-external.sh: they keep their own
     licences (see THIRD_PARTY.md) and are never committed to this repository as files.
   * The lab contact sheets (lab/*/sheets/*): they are renders of those fetched icon

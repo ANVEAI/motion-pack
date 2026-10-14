@@ -383,7 +383,7 @@ Every recipe ends with the VIRALITY and QA checklists below.
 
 ## Outside assets (optional, never vendored)
 
-The pack ships only what it generates.
+The pack ships what it generates, plus three bundled OFL font families (Manrope, IBM Plex Mono, STIX Two Text; `THIRD_PARTY.md` section 1). It ships no third-party icon, emoji, audio or library file.
 - **Third-party CC0/MIT/ISC sets:**
   - Fluent Emoji (MIT), Lucide (ISC), Phosphor (MIT);
   - Kenney audio (CC0), OwlishMedia foley (CC0).
