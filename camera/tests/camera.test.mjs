@@ -1,7 +1,7 @@
 /* camera module tests (pure math, node): determinism, purity, dolly-zoom width invariance, whip timing, handheld bounds + spectrum, envelopes, lock, lint, cover scale, bake equivalence.
    run: node camera/tests/camera.test.mjs   (exit 1 on failure) */
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
-import * as C3 from '../cam3d.js'; import * as C2 from '../cam2d.js'; import { bakeGSAP } from '../bake.js'; import { reporter } from '../../layers/tests/harness.mjs';
+import * as C3 from '../cam3d.js'; import * as C2 from '../cam2d.js'; import { bakeGSAP, driveSeek } from '../bake.js'; import { reporter } from '../../layers/tests/harness.mjs';
 const R = reporter('camera'); const here = path.dirname(fileURLToPath(import.meta.url));
 const flat = (s) => JSON.stringify(s), freeze = (o) => { Object.values(o).forEach((v) => v && typeof v === 'object' && freeze(v)); return Object.freeze(o); };
 const base = freeze(structuredClone(C3.KIT.wide)), rng = (() => { let a = 12345; return () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; })();
@@ -77,6 +77,19 @@ const calls = []; const fakeTl = { set: (tg, v, t) => { calls.push([v, t]); retu
 bakeGSAP(fakeTl, '#world', cam, { t0: 0, dur: 2, fps: 30 }); let bakeOk = calls.length === 61; calls.forEach(([v, t]) => { const e = C2.toGSAP(cam(t)); if (flat(v) !== flat(e)) bakeOk = false; });
 const css = C2.toCSS(cam(1.3)), g = C2.toGSAP(cam(1.3)); const nums = css.transform.match(/-?[\d.]+/g).map(Number);
 R.check('bakeGSAP writes one tl.set per frame (61 for 2 s) identical to toGSAP(cam(t)); CSS transform numbers match GSAP vars', bakeOk && Math.abs(nums[0] - g.x) < 1e-3 && Math.abs(nums[1] - g.y) < 1e-3 && Math.abs(nums[3] - g.scale) < 1e-4);
+/* 9a. bake and drive are the same picture: t0 is the start of the window on the COMPOSITION timeline and cam is a function of composition time (like drawType / the canvas and three paths), so
+   bakeGSAP at t0 and driveSeek at t0 must agree at every timeline position T, for any t0 (they used opposite signs of t0 until 2026-10-15). Before the window both hold the T = t0 state; after it
+   bake holds the last sample (driveSeek holds it too when dur is given). */
+{ const camT = C2.handheld2d(C2.push2d(C2.ID2, { at: 1, dur: 1.2, to: 1.12 }), { seed: 5 }), fps = 30, dur = 2.4, parse = (tf) => tf.match(/-?\d*\.?\d+(?:e-?\d+)?/g).map(Number);
+  let worst = 0, n = 0, moved = 0, nonzero = 0;
+  for (const t0 of [0, 0.4, 2, 3.5, 7.25]) {
+    const sets = []; const tl = { set: (tg, v, t) => { sets.push([t, v]); return tl; }, fromTo: (tg, v, to, t) => { sets.push([t, v]); return tl; } };
+    bakeGSAP(tl, '#world', camT, { t0, dur, fps }); sets.sort((a, b) => a[0] - b[0]);
+    const el = { style: {} }; const saved = globalThis.window; globalThis.window = { addEventListener() {} }; const drive = driveSeek(el, camT, { t0, dur }); globalThis.window = saved;
+    const baked = (T) => { let v = sets[0][1]; for (const [pt, vars] of sets) if (pt <= T + 1e-9) v = vars; return v; };
+    for (let i = -6; i <= Math.round(dur * fps) + 6; i += 1) { const T = t0 + i / fps; drive(T); const [x, y, rot, sc] = parse(el.style.transform), b = baked(T);
+      worst = Math.max(worst, Math.abs(x - b.x), Math.abs(y - b.y), Math.abs(rot - b.rotation), Math.abs(sc - b.scale) * 100); n++; if (el.style.transformOrigin !== b.transformOrigin) worst = Infinity; if (t0 > 0 && Math.abs(b.scale - 1) > 1e-3) moved++; if (t0 > 0) nonzero++; } }
+  R.check(`bakeGSAP vs driveSeek agree at every timeline position for t0 = 0, 0.4, 2, 3.5, 7.25 (${n} positions incl. before and after the window; worst deviation ${worst.toExponential(1)}); the t0 > 0 runs really move (${moved} of ${nonzero} positions off scale 1)`, worst < 1e-3 && moved > 100); }
 /* 9b. round 3: scaleDive (exponential zoom, hidden swaps) + pullbackToScreen (comp lands on a screen quad) */
 { const R8 = [8, 6, 10], F = [[0.6, 0.4], [0.3, 0.7], [0.5, 0.5], [0.5, 0.5]], dv = C2.scaleDive(C2.ID2, { at: 0, dur: 3, levels: 3, ratio: R8, focus: F, ease: 'lin' });
   /* log-scale speed constant (ease lin): d ln(zoom) / dt is the same in every level */

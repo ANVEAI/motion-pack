@@ -27,6 +27,8 @@ drawCaptions(g, chunks, t, CAPTION_STYLES.karaoke, { W, H, platform: 'conservati
 // HyperFrames: m = mountType(el, spec); bakeType(tl, m, spec, {dur}); cm = mountCaptions(el, chunks, style, {W,H}); bakeCaptions(tl, cm, chunks, {dur})
 ```
 
+`t0` (default 0) is the start of the bake / drive window on the composition timeline; `spec.at`, `spec.out` and caption chunk times are composition seconds in every renderer (canvas, `bake*`, `drive*`), so `bakeType(tl, m, spec, { t0, dur })` and `driveType(m, spec, { t0, dur })` give the same states at every timeline position (likewise the caption pair). Test: `type/tests/dom-t0.test.mjs` (until 2026-10-15 the drive functions subtracted `t0`).
+
 ## Expansion (2026-10-13): editor-staple graphics (`gfx/`), 56 owned stickers, layouts, draw-on
 
 `gfx/index.js`: `renderSVG(id, t, {at, dur, params}, {W, H, platform})` -> full-frame SVG string; `mountGfx(root, items)` + `bindHF()` for HyperFrames. Every item has an entrance / hold / exit (`gfx/core.js life()`), sits inside the platform safe rect, and is a pure function of t. `GFX_SFX` / `sfxFor(id)` give each one a default sound by id.

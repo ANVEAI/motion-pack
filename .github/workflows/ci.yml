@@ -40,6 +40,8 @@ jobs:
         run: node transitions/tools/lint.mjs
       - name: camera maths
         run: node camera/tests/camera.test.mjs
+      - name: type DOM bake and drive agree for any t0 (node, fake timeline and elements)
+        run: node type/tests/dom-t0.test.mjs
       - name: UI kit + closed-form springs (node, no browser)
         run: node type/tests/ui.test.mjs
       - name: round-3 type + layout parts (node, no browser)
