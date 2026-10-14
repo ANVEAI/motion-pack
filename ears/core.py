@@ -140,8 +140,9 @@ def plan_audio(plan):
     a = plan.get('audio') if isinstance(plan.get('audio'), dict) else {}
     fps = float(plan.get('fps') or 30)
     ev = a.get('events', plan.get('motionEvents'))
-    return {'mode': a.get('mode', plan.get('audioMode')), 'quiet': quiet_from(a.get('quiet', plan.get('quiet'))),
-            'events': events_from(ev, fps) if ev is not None else None, 'role': a.get('role', plan.get('audioRole'))}
+    word = lambda x: x.strip().lower() if isinstance(x, str) and x.strip() else x                  # 'VO' and ' Continuous ' mean what they say
+    return {'mode': word(a.get('mode', plan.get('audioMode'))), 'quiet': quiet_from(a.get('quiet', plan.get('quiet'))),
+            'events': events_from(ev, fps) if ev is not None else None, 'role': word(a.get('role', plan.get('audioRole')))}
 
 
 def quiet_from(obj):

@@ -52,12 +52,12 @@ def analyze(x, fps=30.0, is_master=False, channels=2, plan=None, cuts=None, tran
            'transcript': transcript, 'cues': core.plan_cues(plan, fps) if plan else [],
            'cuts': cuts if cuts is not None else (core.cuts_from(plan, fps) if plan else None)}
     pa = core.plan_audio(plan)
-    ctx['mode'] = mode or pa['mode'] or 'music'
+    ctx['mode'] = mode.strip().lower() if isinstance(mode, str) and mode.strip() else (pa['mode'] or 'music')
     if ctx['mode'] not in ('music', 'vo', 'continuous'):
         raise ValueError('ears: mode must be music, vo or continuous, not %r' % ctx['mode'])
     ctx['quiet'] = core.quiet_from(quiet) if quiet is not None else pa['quiet']
     ctx['events'] = events if events is not None else pa['events']
-    ctx['words'], ctx['role'] = words, role or pa['role']
+    ctx['words'], ctx['role'] = words, (role.strip().lower() if isinstance(role, str) and role.strip() else pa['role'])
     if target_lufs is not None:
         ctx['target_lufs'] = float(target_lufs)
     ctx['S'] = core.stft_power(y, 2048, 480)

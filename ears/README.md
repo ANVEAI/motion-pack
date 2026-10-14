@@ -60,7 +60,9 @@ Other flags:
 | `audio.events` | the picture's motion events in seconds, `{t}` or `{frame}` (for `continuous`) |
 | `audio.role` | `proof`, `explainer`, `hype`, `trailer` or `vo_doc`: the bed's bass share (< 150 Hz) is reported against the round 4/5 range for that role (20-36, 20-36, 50-61, 50-61 and 15-34%); information, not a verdict |
 
-Backward compatible: with none of these fields, mode is `music`, no quiet is planned, and every earlier verdict is unchanged.
+Backward compatible: with none of these fields, mode is `music`, no quiet is planned, and every earlier verdict is unchanged. `audio.mode` and `audio.role` are not case-sensitive (`"VO"` is `vo`); an unknown mode still raises.
+
+**Chance level.** `ears/sync` reports `cuts_on_onset_chance` / `events_on_onset_chance` (the fraction of the timeline inside the 2-frame onset windows) and adds a note when the share is within chance of it (a binomial z under 2, at 4 or more cuts or events). A busy bed at 4 onsets a second puts about half the timeline inside the windows, so 50% "on an onset" is luck. The pass/fail thresholds are unchanged; the note says when a pass is not evidence.
 
 A `.wav`, `.flac` or `.aif` input is judged as a master (true peak ≤ −1.5 dBTP, a digitally silent tail); anything else as a delivered file (≤ −1.0 dBTP, near-silent tail).
 
@@ -114,7 +116,7 @@ It loads with `local_files_only=True` and `HF_HUB_OFFLINE=1`. Without all three,
 - **Planned quiet and modes (round 4/5, 14 Oct 2026, synthetic signals plus the trailer bed).**
   - A fixture with a planned 6 s end-card hold passes `ears/structure`; the same file without the marker warns of dead air; an 11 s hold warns that it is over the 9 s maximum (`ears/tests`).
   - `music/bed_trailer_arc`, mixed through `music/mixer.py` to −14.03 LUFS-I (true peak −1.5 dBTP): with its gap and hold marked, structure passes; `ears` finds the 3 s valley at 24.0–27.0 s and the crescendo at 27.0 s, the marker times, and reports the ending as a quiet hold. Unmarked, it warns of dead air at 24.0–27.0 s and 32.5–35.5 s. The loudness range stays a warning (15.9 LU whole file, 13.5 LU without the planned regions): the act-1 drone is about 16 LU under the wall by design.
-  - The mode `continuous` is tested on lavfi clips with known flashes (events measured by `tools/refstudy.py`, then scored against the clicks). It has not been run on real reference films.
+  - The mode `continuous` is tested on lavfi clips with known flashes (events measured by `tools/refstudy.py`, then scored against the clicks). It has not been run on real reference films. On the pack's own local demos the continuous mode's chance level reads 35-64% at 2.7-5 onsets a second (`docs/research/reference-round45-2026-10.md`), which is why it reports it.
 
 ## Limits
 

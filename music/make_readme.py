@@ -116,8 +116,8 @@ A("|---|---|---|---|")
 share = {b["id"]: rows.get(b["id"], {}).get("bass_share") for b in beds}
 fit = lambda lo, hi: ", ".join("`%s` %d%%" % (i.replace("music.", ""), round(v * 100)) for i, v in sorted(share.items(), key=lambda kv: kv[1] or 0) if v is not None and lo <= round(v * 100) <= hi) or "none"
 A("| proof / explainer (numbers and VO sit on top) | **20-36%%** | six tier-A pieces: 21, 24, 24, 31, 32, 36%% | %s |" % fit(20, 36))
-A("| hype / trailer | **50-61%%** | anabology 58, netflix 61, google-a 55 | %s |" % fit(50, 61))
-A("| VO documentary | **15-34%%** | alexandr-wang 18, google-b 15, ramp 33 | %s |" % fit(15, 34))
+A("| hype / trailer | **50-61%%** | three trailer-style pieces: 58, 61, 55%% | %s |" % fit(50, 61))
+A("| VO documentary | **15-34%%** | three VO documentaries: 18, 15, 33%% | %s |" % fit(15, 34))
 A("")
 A("Most of the pack's beds sit above the proof / explainer range (the bass-led `corporate_bright`, `ambient_pad` and `uplift_corporate` beds measure 48-70%). For a proof film or an explainer, pick one from the first row, or check yours: `python3 ears/listen.py master.wav --role proof|explainer|hype|trailer|vo_doc` (or `plan.audio.role`) says below, inside or above the range. It is information, not a verdict. A bed that is lean in the bass and still sounds like a corporate explainer bed is a gap in the library.")
 A("")

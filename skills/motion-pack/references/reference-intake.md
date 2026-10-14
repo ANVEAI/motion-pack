@@ -6,12 +6,13 @@ A shared reference (a post, a launch film, a breakdown) is **craft to learn from
 
 ```bash
 python3 tools/refstudy.py <x-status-url | mp4-url | file.mp4> refs/<name> [--whisper base|small|none]
+python3 tools/refstudy.py motion <local copy.mp4> refs/<name> --write   # add or refresh `motion` in an old study from a local copy (nothing is downloaded)
 ```
 
 - Needs ffmpeg (`FFMPEG` to override), numpy and matplotlib. Speech needs the openai-whisper CLI (`WHISPER_BIN`); use `--whisper none` without it.
 - It writes `sheet.jpg` (contact sheet), `timeline.png` (loudness, bands, onsets, beats, cuts, motion events, speech on one axis), `study.json` (every number) and `meta.json` (post reach when the source is an X post).
 - `study.json` also carries:
-  - `motion`: visual events (frame-difference and colour-change peaks, new text via edge-density jumps) from a fixed 30 fps, 96x54 pass, and `motion.sync.share_on_onset`, the share within 2 frames of an audio onset. This is the sync number for **continuous** pieces, where the cut sync is n/a. With a transcript, `share_in_speech_gaps` says whether the picture advances between lines.
+  - `motion`: visual events (frame-difference and colour-change peaks, new text via edge-density jumps) from a fixed 30 fps, 96x54 pass, and `motion.sync.share_on_onset`, the share within 2 frames (of the file's own frame rate) of an audio onset. This is the sync number for **continuous** pieces, where the cut sync is n/a. **Read it against `chance_share`, `lift` and `reading`**: on a busy soundtrack (3+ onsets a second) a third to two thirds of the timeline is inside the windows, so a 40-65% share can be pure coincidence (`reading: near chance`, z < 2). The cut sync carries the same check (`audio.sync.vs_chance_onset`). With a transcript, `share_in_speech_gaps` says whether the picture advances between lines.
   - `quiet`: the quiet open (`open_vs_body_db`, the quieter of the first two seconds) and the quiet tail (`tail_2s_vs_body_db`, also `tail_3s`) against the body median, `quiet_open` (≤ −6 dB), `quiet_tail` (≤ −10 dB), `sound_enters_s` and `end_shape` (slam, quiet hold, decay, level).
   - `evidence`: the reach tier (below).
 - Keep `refs/` **out of the repository**: stills and transcripts are third-party material. Commit only the written study.
@@ -30,6 +31,8 @@ python3 tools/refstudy.py <x-status-url | mp4-url | file.mp4> refs/<name> [--whi
 ```bash
 python3 tools/refstudy.py grade refs/*/ [--write] [--json] [--tiers my_tiers.json]
 ```
+
+A path that is not a study folder, or a folder with no `meta.json`, is reported and the exit status is 1. A `meta.json` with no `likes` count is tier **D** (no data), never boosted; a missing bookmark count simply cannot lift a tier.
 
 | tier | rule (percentages are of views; v/f = views ÷ followers) | read |
 |---|---|---|

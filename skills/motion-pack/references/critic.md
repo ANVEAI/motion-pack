@@ -40,7 +40,7 @@ Write the score and the evidence (file and timestamp) for every row of `review.m
 |---|---|---|
 | `music` (the default) | music-led and cut-driven: a montage, a beat edit, a hero sizzle | at least 60% of cuts within 2 frames of an onset |
 | `vo` | VO-led: a founder film, an explainer, a documentary | **speech continuity**: cuts sit under the voice (61-89% of cuts in the reference documentaries fell inside a line), no cut inside a word, and a diagram or UI advances in a speech gap. Cut sync is information only. Needs a transcript with word timings (`words.json`) |
-| `continuous` | few or no cuts: a camera glide, a diagram that grows, a proof film | at least 60% of the **motion events** (things appearing, flashes, large changes; `tools/refstudy.py` measures them) within 2 frames of an onset |
+| `continuous` | few or no cuts: a camera glide, a diagram that grows, a proof film | at least 60% of the **motion events** (things appearing, flashes, large changes; `tools/refstudy.py` measures them) within 2 frames of an onset (ears also prints the chance level: on a busy bed 50% on an onset is luck, and a pass near the chance level is not evidence of sync) |
 
 `ears` scores the mode it is given; `tools/critic_pack.sh` passes the refstudy motion events, and `EARS_MODE=vo|continuous` overrides the plan.
 

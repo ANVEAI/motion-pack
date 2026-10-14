@@ -255,6 +255,29 @@ def _align(y, c, exp, search, yh=None):
     return (lo + lag * 48) / SR + pre, (float(rs[lag]) if rs[lag] >= 0.5 else 0.0)
 
 
+def _chance_share(on, tol, dur):
+    """the chance level of 'within tol of an onset': the fraction of the timeline inside the merged +/- tol windows around the onsets.
+    A cut or an event placed at random in time lands inside with this probability (a busy bed at 4 onsets/s makes it 40-60%)."""
+    if dur <= 0 or not len(on):
+        return 0.0
+    cover, end = 0.0, 0.0
+    for a, b in zip(np.clip(np.sort(np.asarray(on, float)) - tol, 0.0, dur), np.clip(np.sort(np.asarray(on, float)) + tol, 0.0, dur)):
+        a = max(a, end)
+        if b > a:
+            cover += b - a
+            end = b
+    return min(1.0, cover / dur)
+
+
+def _chance_note(share, n, chance, what):
+    """a plain sentence when a sync share is within chance of what luck gives (a binomial z < 2 above it)"""
+    z = (share * n - chance * n) / np.sqrt(n * chance * (1 - chance)) if 0 < chance < 1 else None
+    if z is None or z >= 2:
+        return None
+    return 'chance level: %d%% of the timeline is inside the onset windows, so %d%% of %s on an onset is %s (z %.1f); it is not evidence of sync' % (
+        round(chance * 100), round(share * 100), what, 'about what luck gives' if z > -2 else 'below what luck gives', z)
+
+
 def sync(ctx):
     y, fps, sp = ctx['y'], ctx['fps'], SPEC['sync']
     on, strg = ctx['onsets'], ctx['strengths']
@@ -301,7 +324,10 @@ def sync(ctx):
                          'on_onset': n_on is not None and abs(n_on - c) <= tol, 'on_beat': n_b is not None and abs(n_b - c) <= tol, 'nearest_onset': n_on})
         share = sum(r['on_onset'] for r in rows) / len(rows)
         share_b = sum(r['on_beat'] for r in rows) / len(rows)
-        m.update(cuts=len(rows), cuts_on_onset=round(share, 2), cuts_on_beat=round(share_b, 2))
+        m.update(cuts=len(rows), cuts_on_onset=round(share, 2), cuts_on_beat=round(share_b, 2), cuts_on_onset_chance=round(_chance_share(on, tol, dur), 2))
+        nt = _chance_note(share, len(rows), m['cuts_on_onset_chance'], 'cuts') if len(rows) >= 4 else None
+        if nt and mode == 'music':
+            notes.append(nt)
         if mode != 'music':
             notes.append('mode %s: cuts on onsets %d%% is information only (the >= %d%% rule applies to music-led, cut-driven pieces; references/critic.md)'
                          % (mode, round(share * 100), round(sp['cuts_on_onset_min'] * 100)))
@@ -396,7 +422,12 @@ def _motion_sync(ctx, on, tol, m, issues, notes):
         rows.append({'t': round(e, 3), 'onset_dt_frames': None if n_on is None else round((n_on - e) * ctx['fps'], 1), 'on_onset': n_on is not None and abs(n_on - e) <= tol,
                      'nearest_onset': n_on})
     share = sum(r['on_onset'] for r in rows) / len(rows)
-    m.update(motion_events=len(rows), events_on_onset=round(share, 2), event_rows=[{k: v for k, v in r.items() if k != 'nearest_onset'} for r in rows])
+    dur = len(ctx['y']) / SR
+    m.update(motion_events=len(rows), events_on_onset=round(share, 2), events_on_onset_chance=round(_chance_share(on, tol, dur), 2),
+             event_rows=[{k: v for k, v in r.items() if k != 'nearest_onset'} for r in rows])
+    nt = _chance_note(share, len(rows), m['events_on_onset_chance'], 'motion events') if len(rows) >= 4 else None
+    if nt:
+        notes.append(nt)
     if share < sp['cuts_on_onset_min']:
         off = [r for r in rows if not r['on_onset']]
         fix = '; '.join('%.2f s -> %.2f s (%+.0f f)' % (r['t'], r['nearest_onset'], r['onset_dt_frames']) for r in off[:4] if r['nearest_onset'] is not None)

@@ -491,9 +491,11 @@ def build(ctx):
     ctx.report["bulb_px"] = []
     ctx.report["cables"] = {"bulb": n, "loose": max(0, int(p["cables"])), "feed_m": round(Lf, 3), "knot_m": round(knot_len, 3)}
     ctx.report["look"] = ctx.preset or "tungsten"
-    return {"bulbs": bulbs, "frames": frames, "psp": psp, "path": path, "cum": cum, "s_ctl": s_ctl, "pull": pull,
-            "relaxed": relaxed, "lift": lift, "plug": plug, "cam": CM.make(), "s0": s0, "Lf": Lf, "s_entry": s_entry,
-            "note": "dist %.3f m, el %.1f, %d bulbs" % (hi_d, el, n)}
+    H = {"bulbs": bulbs, "frames": frames, "psp": psp, "path": path, "cum": cum, "s_ctl": s_ctl, "pull": pull,
+         "relaxed": relaxed, "lift": lift, "plug": plug, "cam": CM.make(), "s0": s0, "Lf": Lf, "s_entry": s_entry,
+         "note": "dist %.3f m, el %.1f, %d bulbs" % (hi_d, el, n)}
+    H["q_plug"] = _plug_quats(H, p, ctx.N)
+    return H
 
 
 # ------------------------------------------------------------------------------------------------ per frame
@@ -522,6 +524,20 @@ def _feed_points(H, p, f):
     return out
 
 
+def _plug_quats(H, p, N):
+    """the plug's rotation for every keyed whole frame (-1..N, as run.py bakes them), chained into one hemisphere: q and -q are one
+    rotation, but the keys interpolate component by component, so a sign flip would swing the motion-blur sub-frames. Built once
+    here from the frame index alone, so frame() looks its quaternion up by f and carries no state between calls."""
+    out, prev = {}, None
+    for f in range(-1, N + 1):
+        pts = _feed_points(H, p, f)
+        qn = (pts[-1] - pts[-2]).normalized().to_track_quat("Z", "Y")
+        if prev is not None and qn.dot(prev) < 0:
+            qn.negate()
+        out[f] = prev = qn
+    return out
+
+
 def frame(H, ctx, f, K):
     p = ctx.p
     pts = _feed_points(H, p, f)
@@ -530,10 +546,8 @@ def frame(H, ctx, f, K):
     tip, prev = pts[-1], pts[-2]
     tdir = (tip - prev).normalized()
     K.set(H["plug"], "location", tip + tdir * 0.010)
-    qn = tdir.to_track_quat("Z", "Y")
-    if H.get("q_prev") is not None and qn.dot(H["q_prev"]) < 0:   # keep one hemisphere so keys interpolate the short way
-        qn.negate()
-    H["q_prev"] = qn.copy()
+    qn = H["q_plug"].get(f)                                  # one hemisphere across the keyed frames (_plug_quats)
+    qn = qn.copy() if qn is not None else tdir.to_track_quat("Z", "Y")   # a frame outside the keyed range: canonical sign
     K.set(H["plug"], "rotation_quaternion", qn)
     for b, f0 in zip(H["bulbs"], H["frames"]):
         lv = level(p["mode"], f, f0, p["flicker"])

@@ -79,10 +79,19 @@ def test_planned_shape_on_the_master():
 
 
 def test_bed_in_the_library_matches_its_sidecar():
+    """The committed manifest row must match the code's markers; the sidecar and WAV (music/library/ is gitignored, so absent on a clean checkout,
+    present after build_music.py) are checked too when they exist."""
     man = json.load(open(os.path.join(HERE, "manifest.json")))["items"]
     it = {i["id"]: i for i in man}["music.bed_trailer_arc"]
-    side = json.load(open(os.path.join(HERE, it["sidecar"])))
-    assert it["loop"] is False and side["loop"] is False and "non-loop" in it["tags"]
+    mk = TR.markers("trailer_arc", it["fps"])
+    assert it["loop"] is False and "non-loop" in it["tags"] and it["sidecar"].endswith("bed_trailer_arc.json")
+    assert it["markers"] == mk["frames"] and it["act_bars"] == list(mk["act_bars"])                    # the manifest is what the code computes
+    assert it["markers"]["visual_cut_frame"] == it["markers"]["hit"] - 1 and "never loop" in it["length_rule"]
+    path = os.path.join(HERE, it["sidecar"])
+    if not os.path.exists(path):
+        return                                                                                          # clean checkout: the library is built locally, not in CI
+    side = json.load(open(path))
+    assert side["loop"] is False
     assert side["markers"] == it["markers"] and side["hit_frame"] == it["markers"]["hit"]
     assert side["markers"]["visual_cut_frame"] == side["markers"]["hit"] - 1
     assert "never loop" in side["length_rule"] and set(side["marker_doc"]) >= set(side["markers"])

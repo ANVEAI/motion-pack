@@ -394,6 +394,27 @@ def test_mode_continuous_scores_motion_events_on_onsets():
     assert any('no motion events' in n for n in none['notes'])
 
 
+def test_a_dense_bed_makes_a_half_hit_rate_chance_not_sync():
+    y = s.click_track(240.0, 8.0, offset=0.02)                                   # 4 onsets a second: about half the timeline is inside the 2-frame windows
+    on = [0.02 + 0.25 * k for k in range(1, 28)]
+    ev = [on[0], on[3] + 0.125, on[6], on[9] + 0.125, on[12], on[15] + 0.125, on[18], on[21] + 0.125]      # half on an onset, half between two
+    sy = check(analyze(s.st(y), mode='continuous', events=ev), 'sync')
+    m = sy['measured']
+    assert m['events_on_onset'] == 0.5 and 0.4 < m['events_on_onset_chance'] < 0.65, m
+    assert any('not evidence of sync' in n for n in sy['notes']), sy['notes']
+    sparse = check(analyze(s.st(s.click_track(120.0, 8.0, offset=0.02)), mode='continuous', events=[0.52, 1.52, 2.52, 3.52, 4.52]), 'sync')
+    assert not any('not evidence of sync' in n for n in sparse['notes'])           # 5 of 5 against a quarter of the timeline: that is sync
+
+
+def test_mode_and_role_words_are_not_case_sensitive():
+    y = s.click_track(120.0, 6.0, offset=0.02)
+    assert analyze(s.st(y), mode='VO')['mode'] == 'vo'
+    assert analyze(s.st(y), plan={'audio': {'mode': ' Continuous ', 'role': 'Trailer'}})['mode'] == 'continuous'
+    assert check(analyze(s.st(y), plan={'audio': {'role': 'Trailer'}}), 'compare')['measured']['role'] == 'trailer'
+    with pytest.raises(ValueError):
+        analyze(s.st(y), mode='loud')
+
+
 def test_bass_share_by_role_and_reference_quiet_shape():
     y = s.mix_like(10, 4)
     c = check(analyze(s.st(y), role='trailer'), 'compare')
