@@ -29,7 +29,7 @@ AI agents can now write the code for a video. Making it *good* is still hard. Yo
 - **a story** worth watching;
 - **a look** that holds together;
 - **motion and sound** cut to the beat;
-- **a render** that comes out the same every time;
+- **a render** that draws frame N from N alone, so any frame can be re-rendered, in any order;
 - **a post** that fits each platform.
 
 **motion-pack gives an agent all five:**
@@ -49,7 +49,15 @@ Every component here draws frame N from N alone. So you can:
 - re-render one shot;
 - split work across machines;
 
-and get the same pixels and the same audio every time. We tested exactly this against 20 popular motion libraries (below).
+and get the same frames (to within GPU noise) and bit-identical audio. We tested exactly this against 20 popular motion libraries (below).
+
+### What is and is not deterministic
+
+Measured on 15 Oct 2026 with `templates/ad` at 15 s (HyperFrames 0.8.142, Chrome 152, an Apple M3 Pro GPU), rendering the same page several times:
+- **The plan, the mix and the audio are bit-identical.** `plan.json` and `mix.wav` are pure functions of the CONFIG and the pinned Python stack, and the AAC stream of every MP4 decoded to the same MD5.
+- **The page is deterministic: frame N is drawn from N alone.** The GPU rasteriser still adds noise: two `--format png-sequence` renders differed in 59 of 450 frames, by at most 2/255 in a channel, on under 0.01% of a frame's pixels. That is the check the skill asks for (`skills/motion-pack/SKILL.md`, QA "Determinism").
+- **The MP4 is not byte-identical by default.** The encoder carries those tiny capture differences on to the next keyframe: two default renders (4 workers) differed in 136 of 450 decoded frames, up to 56/255 in a channel on a few pixels (lowest frame PSNR 44 dB, and 85% of the differing values within 2/255). Do not compare two MP4s to test a part.
+- **`--workers 1` is usually, not always, byte-identical.** Three of four single-worker renders were the same file; the fourth differed in 64 frames, one keyframe interval. HyperFrames also offers `--docker` "for deterministic render"; we have not tested it.
 
 ## The skills
 

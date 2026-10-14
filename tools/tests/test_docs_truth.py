@@ -230,7 +230,7 @@ def test_one_python_version_everywhere():
 def test_the_readme_says_what_is_and_is_not_deterministic():
     readme = read("README.md")
     sec = readme.split("What is and is not deterministic", 1)[1].split("\n## ", 1)[0]
-    for must in ("--workers 1", "2/255", "audio", "frame N", "GPU"):
+    for must in ("--workers 1", "2/255", "audio", "frame N", "GPU", "png-sequence", "not byte-identical", "usually, not always"):
         assert must in sec, f"the determinism section must mention {must!r}"
     assert "the same pixels and the same audio every time" not in readme and "comes out the same every time" not in readme
     assert "What is and is not deterministic" in read("skills/motion-pack/SKILL.md")

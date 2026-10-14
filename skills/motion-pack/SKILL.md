@@ -456,7 +456,7 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 - [ ] **Flash safety:** no more than 3 full-frame flashes per second.
 - [ ] **Determinism:**
   - Render twice with `--format png-sequence` and compare the frames. They should be identical, or above 60 dB where blurs add GPU noise.
-  - Don't compare two MP4s: multi-threaded x264 output differs between runs (about 50 dB) even when every frame is the same.
+  - Don't compare two MP4s: the encoder carries GPU capture noise (at most 2/255) to the next keyframe, so two default renders differ (about 44-50 dB) even though every page frame is the same; `--workers 1` is usually but not always byte-identical. The measured numbers are in the README section "What is and is not deterministic".
   - A standalone page can use motion-stack's `seekcheck.mjs`, which needs `window.__ready` and `window.__seek(t)`.
 - [ ] **Files:** the demo encode is CRF 23, and a 15 s 1080p file is a few MB.
 
