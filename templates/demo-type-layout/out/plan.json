@@ -1,0 +1,385 @@
+{
+ "template": "demo-type-layout",
+ "fps": 30,
+ "seconds": 17.5,
+ "music": "music/bed_corporate_bright_loop8",
+ "size": [
+  1920,
+  1080
+ ],
+ "bpm": 120,
+ "beatSec": 0.5,
+ "shots": [
+  {
+   "id": "collage",
+   "part": "layout.scatterCollage",
+   "params": {
+    "text": "Your team dreams big",
+    "size": 70,
+    "explodeAt": 0.9
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 3,
+   "tx": "transitions/cut",
+   "start": 0
+  },
+  {
+   "id": "wheel",
+   "part": "type/wordWheel",
+   "params": {
+    "words": [
+     "Plans",
+     "Docs",
+     "Sites",
+     "Build it all.",
+     "Design",
+     "Data",
+     "Automations"
+    ],
+    "steps": [
+     [
+      0,
+      0
+     ],
+     [
+      0.3,
+      1
+     ],
+     [
+      0.6,
+      2
+     ],
+     [
+      0.9,
+      3
+     ]
+    ],
+    "move": 0.26,
+    "size": 92
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 2,
+   "tx": "transitions/cut",
+   "start": 3
+  },
+  {
+   "id": "inline",
+   "part": "type/inlineMedia",
+   "params": {
+    "text": "Every [stack] idea, in [photo] *one* place",
+    "size": 80
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 2.5,
+   "tx": "transitions/cut",
+   "start": 5
+  },
+  {
+   "id": "mosaic",
+   "part": "layout.mosaicBurst",
+   "params": {
+    "fly": 0.7,
+    "spread": 0.45
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 1.5,
+   "tx": "transitions/cut",
+   "start": 7.5
+  },
+  {
+   "id": "orbit",
+   "part": "layout.orbitRing",
+   "params": {
+    "text": "Every task, connected.",
+    "size": 58,
+    "iconStart": 0.35
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 2.5,
+   "tx": "transitions/cut",
+   "start": 9
+  },
+  {
+   "id": "marquee",
+   "part": "type/marquee",
+   "params": {
+    "text": "all in one place ·",
+    "accent": "one",
+    "accentStyle": "pixel",
+    "size": 0.4,
+    "speed": 0.55
+   },
+   "bg": "ink",
+   "hold": false,
+   "dur": 1.5,
+   "tx": "transitions/cut",
+   "start": 11.5
+  },
+  {
+   "id": "connect",
+   "part": "callout.connectorLabel",
+   "params": {
+    "items": [
+     {
+      "label": "From the first idea",
+      "at": [
+       0.3,
+       0.36
+      ],
+      "tint": "#FFD8C2",
+      "ink": "#3A1E10"
+     },
+     {
+      "label": "to the final launch",
+      "at": [
+       0.5,
+       0.6
+      ],
+      "tint": "#D9D2FF",
+      "ink": "#1C1050"
+     }
+    ],
+    "origin": [
+     0.2,
+     0.14
+    ],
+    "step": 0.55,
+    "draw": 0.38,
+    "size": 46
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 1.5,
+   "tx": "transitions/cut",
+   "start": 13
+  },
+  {
+   "id": "end",
+   "part": "type/glyphMorphCursor",
+   "params": {
+    "text": "Build it all",
+    "size": 92,
+    "charRate": 0.06666666666666667,
+    "blink": 0.25,
+    "shapes": [
+     "circle",
+     "square"
+    ],
+    "morph": 0.18,
+    "hold": 0.08,
+    "color": "#FFFFFF",
+    "accent": "#FFFFFF",
+    "glyph": 1.1
+   },
+   "bg": "brand",
+   "hold": true,
+   "dur": 3,
+   "tx": "transitions/cut",
+   "start": 14.5
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/ui/type_key",
+   "t": 0,
+   "gainDb": 0,
+   "why": "collage word 1"
+  },
+  {
+   "id": "sfx/device/keyboard_mech_soft",
+   "t": 0.166667,
+   "gainDb": 0,
+   "why": "collage word 2"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 0.333333,
+   "gainDb": 0,
+   "why": "collage word 3"
+  },
+  {
+   "id": "sfx/device/keyboard_mech_soft",
+   "t": 0.5,
+   "gainDb": 0,
+   "why": "collage word 4"
+  },
+  {
+   "id": "sfx/whoosh/whoosh_m",
+   "t": 0.9,
+   "gainDb": 0,
+   "why": "collage explodes"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 1.2,
+   "gainDb": 0,
+   "why": "collage field lands"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 3,
+   "gainDb": 0,
+   "why": "cut to the wheel"
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 3.3,
+   "gainDb": 0,
+   "why": "wheel step 1"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 3.6,
+   "gainDb": 0,
+   "why": "wheel step 2"
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 3.9,
+   "gainDb": 0,
+   "why": "wheel step 3"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 4.16,
+   "gainDb": 0,
+   "why": "wheel lands on the key line"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 5.166667,
+   "gainDb": 0,
+   "why": "stack slot opens"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 5.666667,
+   "gainDb": 0,
+   "why": "photo slot opens"
+  },
+  {
+   "id": "sfx/device/card_flip",
+   "t": 5.943333,
+   "gainDb": 0,
+   "why": "stack riffle 1"
+  },
+  {
+   "id": "sfx/device/card_flip",
+   "t": 6.443333,
+   "gainDb": 0,
+   "why": "stack riffle 2"
+  },
+  {
+   "id": "sfx/device/card_flip",
+   "t": 6.943333,
+   "gainDb": 0,
+   "why": "stack riffle 3"
+  },
+  {
+   "id": "sfx/whoosh/whoosh_l",
+   "t": 7.5,
+   "gainDb": 0,
+   "why": "mosaic bursts on the cut"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 9,
+   "gainDb": 0,
+   "why": "rings draw"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 9.35,
+   "gainDb": 0,
+   "why": "icon 1 enters"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 9.616667,
+   "gainDb": 0,
+   "why": "icon 3 enters"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 9.883333,
+   "gainDb": 0,
+   "why": "icon 5 enters"
+  },
+  {
+   "id": "sfx/whoosh/swish_xs",
+   "t": 11.5,
+   "gainDb": 0,
+   "why": "cut to the marquee"
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 13,
+   "gainDb": 0,
+   "why": "connector 1 draws"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 13.323,
+   "gainDb": 0,
+   "why": "tag 1 lands"
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 13.55,
+   "gainDb": 0,
+   "why": "connector 2 draws"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 13.873,
+   "gainDb": 0,
+   "why": "tag 2 lands"
+  },
+  {
+   "id": "sfx/ui/typing_burst",
+   "t": 14.5,
+   "gainDb": 0,
+   "why": "typing"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 15.55,
+   "gainDb": 0,
+   "why": "caret morphs 1"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 15.81,
+   "gainDb": 0,
+   "why": "caret morphs 2"
+  },
+  {
+   "id": "sfx/logo/two_note",
+   "t": 16.07,
+   "gainDb": 0,
+   "why": "the mark lands"
+  }
+ ],
+ "claims": [],
+ "ceilingDb": -2,
+ "fadeInMs": 40,
+ "paceRule": {
+  "aslMax": 2.5,
+  "longMax": 3.1
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 8,
+   "asl": 2.19,
+   "longest": 3,
+   "pass": true
+  }
+ }
+}

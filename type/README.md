@@ -71,6 +71,27 @@ Measured (`tests/ui.test.mjs`, 45 checks, node only, runs in CI): every class gi
 
 Honest limits: text widths are estimated (no DOM measurement), so very long chip or card labels can overrun (check the sheet); `ui.isometricTilt` is affine (isometric, no perspective foreshortening) in SVG, while `isoTiltCss` gives true perspective for DOM panels; the colour morph interpolates in RGB, so blue -> green passes through teal for a few frames.
 
+## Expansion (2026-10-14): sentence-led kinetic pieces and field layouts (`gfx/kinetic.js`, `gfx/collage.js`, `gfx/media.js`)
+
+Same gfx contract (pure SVG from `t`, `renderSVG` / `mountGfx` + `hf-seek`). Word and letter positions come from `measure()` (canvas `measureText` in the browser, an estimate in node), so reflow follows the real font. The `type.*` ids also resolve as `type/<name>` (`tools/check_ids.py`, and the template type adapter `templates/_shared/adapters/type.mjs`). Craft learned from public launch films; no reference wording, brand, footage or sequence is reproduced.
+
+| Id | What | Key params | Default sound |
+|---|---|---|---|
+| `type.wordWheel` | vertical list scrolls; active word bold and opaque, neighbours fade by distance | `words`, `steps: [[t, index], ...]`, `move`, `prefix`, `rows`, `falloff` | `sfx/ui/tick` per step |
+| `type.inlineMedia` | a sentence with image / card-stack slots that open and reflow the words; words build one by one; the stack riffles | `text` (`[photo]`, `[stack]`, `*pill*`, `\|` line break), `media: [{href} \| {svg} \| {cards: [...]}]`, `riffle`, `reflow` | `sfx/ui/pop` |
+| `type.letterAssemble` | letters scattered with small coloured dots converge into a word; dots line up beside it, then vanish | `text`, `spread`, `hold0`, `fly`, `dots`, `dotColors`, `seed` | `sfx/whoosh/magic_swirl` |
+| `type.glyphMorphCursor` | monospace typing; the caret morphs caret -> circle -> square -> triangle -> your mark | `text`, `charRate`, `shapes`, `mark` (SVG path, 100 box; default: an owned spark), `glyph` | `sfx/ui/typing_burst` |
+| `type.marquee` | giant monospace full-bleed horizontal scroll; one word in an accent colour or an owned 5x7 pixel face | `text`, `accent`, `accentStyle: 'color' \| 'pixel'`, `size` (x H), `speed` (x W / s), `dir`, `bg` | `sfx/whoosh/swish_s` |
+| `type.bleedWord` | oversized word cropped by the frame edges, sliding | `text`, `size` (x H), `from` / `to` ([x, baseline] fractions) | `sfx/whoosh/whip_pan` |
+| `layout.scatterCollage` | a centred sentence builds, then explodes into a seeded field of words, stickers, small photos, numbered dots and a hand-drawn arrow, and settles | `text`, `explodeAt`, `fly`, `stickers`, `photos`, `dots`, `arrow`, `media`, `cols` x `rows`, `seed` | `sfx/whoosh/whoosh_m` at the explosion |
+| `layout.mosaicBurst` | dozens of thumbnails burst from the centre into a grid, staggered by distance | `cols`, `rows`, `fly`, `spread`, `media`, `kinds`, `seed` | `sfx/whoosh/whoosh_l` |
+| `layout.logoWall` | headline plus a grid of logo SLOTS fading in with a seeded stagger | `headline`, `source`, `logos: [{svg} \| {href}]`, `cols`, `rows`, `placeholderNote` | `sfx/ui/pop` |
+| `layout.orbitRing` | centred phrase, concentric rings that draw on, icon slots that spiral in and orbit | `text`, `rings`, `speed` (deg/s per ring), `icons: [{name \| svg \| href, label, ring, angle}]` | `sfx/whoosh/swish_s` |
+| `callout.connectorLabel` | small tinted tags with elbow connectors that draw on, chained A -> B -> C, over a light grid | `items: [{label, at, tint, ink}]`, `origin`, `step`, `draw`, `grid`, `paper` | `sfx/ui/slide` |
+
+Placeholders (`gfx/media.js`): `photoTile` (seeded abstract art: landscape, shape blocks, a UI card), `MARKS` + `placeholderLogo` (generic geometric marks labelled `LOGO nn`, with a `PLACEHOLDER LOGOS` note), `DEFAULT_MARK`. Never ship third-party logos or real people in a slot without the rights; a digit in a logo-wall headline needs a `source`. Demo sheets: `demo/out/gfx-kinetic.jpg`, `demo/out/gfx-collage.jpg`; worked example: `templates/demo-type-layout` (17.5 s, 8 parts, hard cuts on a 120 BPM grid).
+Honest limits: `<image href>` slots re-render each frame, so preload real images (or hand HyperFrames a promise through `hf-seek` `waitUntil`) before a render; the node fallback of `measure()` is an estimate, so judge reflow in the browser; `glyphMorphCursor` morphs point sets for the built-in shapes and pops your mark in (an arbitrary logo path is not point-morphed); the pixel face covers A-Z, 0-9 and `. , - ! ? ' ·`.
+
 ## Measured (`tests/type.test.mjs`, 28 checks)
 Determinism in any order for all 15 presets; every timing contract above asserted; captions (5 styles x 6 tall platforms x 70 times) never leave the safe zone; DOM bake under random-access seeks equals the pure function (deviation 0) for 8 presets (incl. the `--mp-fill` of `outlineFill`); `outlineFill` timing and its reading-time lint asserted; caption bake within 2%.
 

@@ -111,6 +111,11 @@ uiCues('ui.promptBar', { at: 0, params: { text: 'Plan the week', sendAt: 1.8 } }
 import { springTrack, spring, springSettle, SPRING } from './type/ease.js';   // springTrack(t, [[t0, v0], [t1, v1], ...], 'ui' | 'panel' | 'camera' | 'headline' | 'mascot' | { zeta, f })
 ```
 
+SVG kinetic pieces and field layouts (`type/gfx/kinetic.js`, `type/gfx/collage.js`) use the gfx contract: `renderSVG(id, t, { at, dur, params })` or `mountGfx(root, items)` re-rendered on `hf-seek`. The `type.*` ones also resolve as `type/<name>` ids through the template type adapter (`MP.type(tl, 'type/wordWheel', '#el', { at, dur, params, W, H })`).
+
+- `type.wordWheel` (`words`, `steps: [[t, index], ...]`), `type.inlineMedia` (`text` with `[photo]`, `[stack]`, `*pill*`, `|`; `media: [{href} | {svg} | {cards}]`), `type.letterAssemble`, `type.glyphMorphCursor` (`mark`: an SVG path in a 100 box), `type.marquee` (`accent`, `accentStyle: 'color' | 'pixel'`), `type.bleedWord`.
+- `layout.scatterCollage`, `layout.mosaicBurst`, `layout.logoWall` (placeholder marks only; `logos: [{svg} | {href}]`; a digit in `headline` needs `source`), `layout.orbitRing` (`icons: [{name | svg | href, label, ring, angle}]`), `callout.connectorLabel` (`items: [{label, at, tint, ink}]`, chained).
+
 ## Camera
 
 ```js
