@@ -26,8 +26,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
       - name: python packages
         run: pip install -r requirements.txt
-      - name: cross-module ids resolve
-        run: python3 tools/check_ids.py
+      - name: cross-module ids resolve (code, config, data and Markdown)
+        run: python3 tools/check_ids.py --docs
       - name: build the sound library (WAV masters are not in git; regenerated bit for bit)
         run: python3 sfx/build_library.py
       - name: python tests (cuts, sfx, music, refstudy smoke test)

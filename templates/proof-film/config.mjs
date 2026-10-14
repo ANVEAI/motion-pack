@@ -166,7 +166,7 @@ export function buildPlan(C) {
   if (quiet.at(-1).t[1] - quiet.at(-1).t[0] < 3 - 1e-6 || quiet.at(-1).t[1] - quiet.at(-1).t[0] > 9 + 1e-6) warnings.push(`the near-silent end hold is ${(quiet.at(-1).t[1] - quiet.at(-1).t[0]).toFixed(1)} s: the studied proof films hold 3-9 s`);
   /* numbers for the gate record, the claims lint and the sheet */
   const fields = numberFields(C), claims = fields.map((n) => ({ text: `${n.label}: ${n.value}`, source: n.source, method: n.method }));
-  const shots = stages.map((s) => ({ id: s.kind, start: s.t0, dur: +((s.until ?? seconds) - s.t0).toFixed(4), ...(s.hold ? { hold: true } : {}), move: s.cut ? 'cut' : s.i ? 'cam2d.pan' : 'cam2d.push' }));   // stages, not cuts: nothing cuts unless `cut` says so
+  const shots = stages.map((s) => ({ id: s.kind, start: s.t0, dur: +((s.until ?? seconds) - s.t0).toFixed(4), ...(s.hold ? { hold: true } : {}), move: s.cut ? 'cut' : s.i ? 'cam2d.pan2d' : 'cam2d.push2d' }));   // stages, not cuts: nothing cuts unless `cut` says so
   const events = [...new Set([...stages.slice(1).map((s) => s.t0), ...stages.map((s) => s.at), ...cues.map((c) => c.t)].map((t) => +t.toFixed(3)))].sort((a, b) => a - b);
   if (seconds < T.minS - 1e-6 || seconds > T.maxS + 1e-6) warnings.push(`the film runs ${seconds.toFixed(1)} s, outside the ${T.minS}-${T.maxS} s window of a proof film${hasVo ? ': the voice sets the length, so lengthen or shorten the words' : ''}`);
   if (hasVo) { for (const w of voSt.warnings || []) warnings.push('vo: ' + w);

@@ -49,11 +49,11 @@ Every path below is relative to the pack root.
 
 1. **Ids, not copies.**
    - Reference parts as `transitions/<name>`, `sfx/<cat>/<name>`, `music/<id>`, `type/<preset>`, `layers/<kind>`, `objects/<name>`, `blender/<recipe>`, `cam2d.*` / `cam3d.*` and `cuts/<group>/<name>`.
-   - Run `python3 tools/check_ids.py` before rendering; it must report 0 unresolved.
+   - Run `python3 tools/check_ids.py` before rendering; it must report 0 unresolved. It resolves all nine families above (and `templates/<name>`) in code, config and data; `--docs` also reads the `code spans` of Markdown. It does not scan the part ids of `type/gfx` (`ui.*`, `counter.*`, `layout.*`, ...): a wrong one throws `unknown gfx <id>` when the page draws it, while `gfxCues` quietly returns a generic pop cue for it, so look at the stills.
 2. **Plan first.**
    - One `plan.json` drives the picture, the sound and the checks: shots, transitions with reasons, the cue sheet, and lint.
    - Start from the closest template in `templates/`. Its `CONFIG` block covers the stock structure. For another aspect (the ad template is 16:9), story-specific sound cues or new scenes, copy its `make.mjs` next to your CONFIG and extend it, keeping every reference an id.
-   - Build inside your clone of the pack, for example in `templates/<your-video>/`. Templates find the pack two folders up, and `tools/check_ids.py` only scans the pack it sits in. On macOS, `cp -c -R` makes an instant copy-on-write clone of the whole pack for a scratch build.
+   - Build inside your clone of the pack, for example in `templates/<your-video>/`. Templates find the pack two folders up, and `tools/check_ids.py` scans the pack it sits in (pass a folder path to scan a build kept elsewhere). On macOS, `cp -c -R` makes an instant copy-on-write clone of the whole pack for a scratch build.
 3. **Default to the hard cut and motivate everything else.** Every non-cut transition carries a reason (`EMOTION`, `STORY`, `RHYTHM`, `ENERGY`, `REVEAL`, `PLACE`, ...). Lint refuses unmotivated transitions: `make.mjs` exits 2 before it builds anything (`--allow-lint` waives it and records the waiver in `plan.lint.allowed`).
 4. **Sound is half the cut.**
    - A cue for visual frame F puts its anchor sample on `(F + 1) x 48000 / fps`.

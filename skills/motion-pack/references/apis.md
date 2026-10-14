@@ -203,7 +203,7 @@ python3 ears/listen.py out/film.mp4 --plan out/plan.json [--mode music|vo|contin
 ## Checks
 
 ```bash
-python3 tools/check_ids.py
+python3 tools/check_ids.py --docs
 python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
 python3 -m pytest -q ears/tests
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs

@@ -446,50 +446,50 @@
    "id": "claim",
    "start": 0,
    "dur": 4,
-   "move": "cam2d.push"
+   "move": "cam2d.push2d"
   },
   {
    "id": "name",
    "start": 4,
    "dur": 3.5,
-   "move": "cam2d.pan"
+   "move": "cam2d.pan2d"
   },
   {
    "id": "setting",
    "start": 7.5,
    "dur": 4.5,
-   "move": "cam2d.pan"
+   "move": "cam2d.pan2d"
   },
   {
    "id": "builder",
    "start": 12,
    "dur": 6,
-   "move": "cam2d.pan"
+   "move": "cam2d.pan2d"
   },
   {
    "id": "h2h",
    "start": 18,
    "dur": 4.5,
-   "move": "cam2d.pan"
+   "move": "cam2d.pan2d"
   },
   {
    "id": "numbers",
    "start": 22.5,
    "dur": 4.5,
-   "move": "cam2d.pan"
+   "move": "cam2d.pan2d"
   },
   {
    "id": "cards",
    "start": 27,
    "dur": 5,
-   "move": "cam2d.pan"
+   "move": "cam2d.pan2d"
   },
   {
    "id": "end",
    "start": 32,
    "dur": 5.6,
    "hold": true,
-   "move": "cam2d.pan"
+   "move": "cam2d.pan2d"
   }
  ],
  "cues": [
