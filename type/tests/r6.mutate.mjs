@@ -1,0 +1,68 @@
+/* mutation proof for type/tests/r6.test.mjs: node type/tests/r6.mutate.mjs
+   A check that cannot fail proves nothing. This copies type/ (+ sfx/manifest.json) to a temp dir, runs the test once clean (must be green), then for each mutation below breaks ONE
+   thing in the copied code under test (a wrong formula, a removed guard, a skipped clamp, a cut instead of a spring), runs the test again and demands that the INTENDED check goes red.
+   A mutation whose text no longer matches the code, or whose intended check stays green, fails the run (exit 1). The real files are never touched. */
+import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path'; import { spawnSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
+const here = path.dirname(fileURLToPath(import.meta.url)), ROOT = path.resolve(here, '../..'), tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-r6-mut-'));
+fs.cpSync(path.join(ROOT, 'type'), path.join(tmp, 'type'), { recursive: true, filter: (s) => !/type\/demo\/out|type\/demo\/.*\.png/.test(s) }); fs.mkdirSync(path.join(tmp, 'sfx')); fs.copyFileSync(path.join(ROOT, 'sfx/manifest.json'), path.join(tmp, 'sfx/manifest.json'));
+const TEST = path.join(tmp, 'type/tests/r6.test.mjs'), run = () => { const r = spawnSync(process.execPath, [TEST], { encoding: 'utf8', timeout: 170000, maxBuffer: 1 << 26 }); return { code: r.status, out: (r.stdout || '') + (r.stderr || ''), timedOut: r.error && r.error.code === 'ETIMEDOUT' }; };
+const R = 'gfx/r6.js', P = 'gfx/ui-proof.js';
+const MUT = [
+  { n: 'dock: linear falloff instead of cosine', f: R, from: '0.5 * (1 + Math.cos(Math.PI * d))', to: '1 - d', expect: /icon width = base x/ },
+  { n: 'dock: dock wider than the safe rect (fit factor)', f: R, from: 'S.w * 0.96 / umax', to: 'S.w * 4 / umax', expect: /dock panel stays inside the safe rect/ },
+  { n: 'dock: the window starts from the wrong rect (not the clicked icon)', f: R, from: 'icons[p.target], mk = E.hero', to: 'icons[0], mk = E.hero', expect: /window IS the clicked icon/ },
+  { n: 'dock: the window ends off the box', f: R, from: 'r = { x: lerp(R0.x, wx, mk)', to: 'r = { x: lerp(R0.x, wx + 9, mk)', expect: /expansion ends on the window box/ },
+  { n: 'dock: the dock never fades', f: R, from: 'dockOp = (1 - E.soft(seg(u, Q + 0.1, Q + 0.5)))', to: 'dockOp = (1 - 0 * E.soft(seg(u, Q + 0.1, Q + 0.5)))', expect: /dock is there before the click, gone/ },
+  { n: 'dock: click cue off the click', f: R, from: "out.push({ t: p.clickAt, id: 'sfx/device/mouse_click'", to: "out.push({ t: p.clickAt + 0.1, id: 'sfx/device/mouse_click'", expect: /click cue lands exactly on clickAt/ },
+  { n: 'dock: window grows with an overshoot (non-monotone)', f: R, from: 'mk = E.hero(seg(u, Q + 0.05, Q + 0.05 + p.expandDur))', to: 'mk = 1.2 * Math.sin(Math.PI * seg(u, Q + 0.05, Q + 0.05 + p.expandDur) * 0.9)', expect: /grows monotonically|expansion ends|IS the clicked/ },
+  { n: 'hover: delta computed backwards', f: R, from: '(slots[i].value - slots[i - 1].value) / Math.abs(slots[i - 1].value) * 100', to: '(slots[i - 1].value - slots[i].value) / Math.abs(slots[i - 1].value) * 100', expect: /chip names the bar under the cursor/ },
+  { n: 'hover: bar width differs from chart.bar', f: R, from: 'bw = w / n * 0.62', to: 'bw = w / n * 0.6', expect: /slots equal chart\.bar/ },
+  { n: 'hover: the lifted bar sinks instead of lifting', f: R, from: 'q.top - lift, q.w, q.base - q.top + lift', to: 'q.top + lift, q.w, q.base - q.top - lift', expect: /exactly the hovered bar lifts/ },
+  { n: 'hover: nearest slot is always the first', f: R, from: 'if (d < bd) { bd = d; bi = i; } } return bi; };\nconst MAXN', to: 'if (d > bd) { bd = d; bi = i; } } return bi; };\nconst MAXN', expect: /chip (always )?names the nearest bar|chip names the bar under/ },
+  { n: 'hover: a blank source is not refused', f: R, from: "if (noSrc(p.source)) return `<g${fadeIO(L)", to: "if (false) return `<g${fadeIO(L)", expect: /blank source is refused/ },
+  { n: 'hover: the chip is not clamped into the safe rect', f: R, from: 'clamp(slots[i].cx - chipW / 2, S.x0, Math.max(S.x0, S.x1 - chipW))', to: 'slots[i].cx - chipW / 2', expect: /chip stays inside the safe rect/ },
+  { n: 'hover: method text missing from the chip', f: R, from: "(p.method ? text(p.method, px + padc", to: "(false ? text(p.method, px + padc", expect: /illustrative data" and the method in frame/ },
+  { n: 'hover: the line marker does not interpolate', f: R, from: 'ym = lerp(slots[i - 1].top, slots[i].top, seg(xm, slots[i - 1].cx, slots[i].cx))', to: 'ym = slots[i].top', expect: /scrub marker sits on the polyline/ },
+  { n: 'hover: the tick cue lands late', f: R, from: "out.push({ t: q.t, id: 'sfx/ui/tick', why: 'bar '", to: "out.push({ t: q.t + 0.2, id: 'sfx/ui/tick', why: 'bar '", expect: /one tick per bar entered/ },
+  { n: 'hover: ui.dataTable bar geometry drifts from what the tooltip reads', f: P, from: 'top: by - 30 * s - (bh - 96 * s) * v / mx,', to: 'top: by - 30 * s - (bh - 96 * s) * v / mx - 5,', expect: /hoverTooltip\(table\)/ },
+  { n: 'verbCard: the big word settles 5 px off the line', f: R, from: 'lerp(G.big0.x, G.big1.x, sk)', to: 'lerp(G.big0.x, G.big1.x + 5, sk)', expect: /settles exactly on the first word/ },
+  { n: 'verbCard: the giant word is not fitted to the safe width', f: R, from: 'Math.min(p.bigSize * s, fitW / (m1(w.big, 100) / 100), S.h * 0.5)', to: 'Math.min(p.bigSize * s, S.h * 0.5)', expect: /verbCard .*long word/ },
+  { n: 'verbCard: the sweep is drawn outside the boundaries', f: R, from: 'if (k <= 0 || k >= 1) continue;', to: 'if (k >= 1) continue;', expect: /gradient sweep exists around each chapter boundary/ },
+  { n: 'verbCard: the rest of the line shows before the word settles', f: R, from: 'rk = seg(lo, p.settleAt + 0.2, p.settleAt + 0.55)', to: 'rk = seg(lo, 0, 0.3)', expect: /rest of the line is invisible/ },
+  { n: 'verbCard: the cue for each sweep is missing', f: R, from: "if (i) out.push({ t: +Math.max(0, T.sweep(i)).toFixed(4), id: 'sfx/whoosh/swish_s'", to: "if (false) out.push({ t: +Math.max(0, T.sweep(i)).toFixed(4), id: 'sfx/whoosh/swish_s'", expect: /soft hit on each giant word/ },
+  { n: 'connectRows: every row flips at the first click', f: R, from: 'dx = clamp(seg(u, Tm.click[i] + 0.1, Tm.click[i] + 0.28))', to: 'dx = clamp(seg(u, Tm.click[0] + 0.1, Tm.click[0] + 0.28))', expect: /reads "Connect" before its click/ },
+  { n: 'connectRows: the cursor stops short of the button', f: R, from: 'return [lerp(f[0], to[0], k), lerp(f[1], to[1], k)]', to: 'return [lerp(f[0], to[0], k * 0.98), lerp(f[1], to[1], k * 0.98)]', expect: /cursor tip is on the centre of that row/ },
+  { n: 'connectRows: the panel does not shift as rows arrive', f: R, from: 'y = (S.y0 + S.y1) / 2 - H / 2, bh = 46 * q', to: 'y = (S.y0 + S.y1) / 2 - 200 * q, bh = 46 * q', expect: /rows stack with a small shift/ },
+  { n: 'connectRows: the Thinking line starts too early', f: R, from: 'click[n - 1] + 0.75', to: 'click[0] + 0.75', expect: /Thinking line appears after the last click/ },
+  { n: 'connectRows: no fit to the safe rect', f: R, from: 'S.h * 0.94 / maxH0', to: 'S.h * 9 / maxH0', expect: /panel stays inside the safe rect/ },
+  { n: 'connectRows: a real brand name as a default row', f: R, from: "name: 'Service C', icon: 'box'", to: "name: 'Google Ads', icon: 'box'", expect: /default names are placeholders|no third-party brand/ },
+  { n: 'diagram: the worried preset drifts', f: R, from: 'worried: [-0.35, 0.8,', to: 'worried: [-0.35, 0.5,', expect: /settles on its mood presets/ },
+  { n: 'diagram: a cut instead of a spring', f: R, from: 'v = springTrack(u, p.beats.map((b, i) => ({ t: i ? b.at : 0, v: beatVec(b) })), p.cls)', to: 'v = ((ch) => ch.filter((q) => u >= q.t).at(-1).v)(p.beats.map((b, i) => ({ t: i ? b.at : 0, v: beatVec(b) })))', expect: /a beat is not a cut/ },
+  { n: 'diagram: reduced motion still blurs', f: R, from: 'bs = p.reduced ? 0 : bl', to: 'bs = bl', expect: /reduced motion has no blur/ },
+  { n: 'diagram: reduced motion still jitters', f: R, from: 'const bx = boxes.map((b) => ({ ...b, px: G.cx + b.x * U, py: G.cy + b.y * U, r: b.sz * U })), jit = (k) => (p.reduced ? [0, 0] :', to: 'const bx = boxes.map((b) => ({ ...b, px: G.cx + b.x * U, py: G.cy + b.y * U, r: b.sz * U })), jit = (k) => (false ? [0, 0] :', expect: /reduced motion has no blur/ },
+  { n: 'diagram: beats are not sorted', f: R, from: 'prev = o; return o; }).sort((a, b) => a.at - b.at);', to: 'prev = o; return o; });', expect: /out of order render exactly as sorted/ },
+  { n: 'diagram: the broken beat loses its connector gap', f: R, from: "broken: [1, 0.2, 1, 1]", to: "broken: [1, 0.2, 0, 1]", expect: /connectors break on the last problem beat/ },
+  { n: 'diagram: boxes overflow the safe rect', f: R, from: 'A.w / (2 * ex + 0.3), A.h / (2 * ey + 0.3 + (ret ? 1.2 : 0)), p.maxUnit * s)', to: 'A.w / (2 * ex + 0.3) * 3, A.h / (2 * ey + 0.3 + (ret ? 1.2 : 0)) * 3, p.maxUnit * s * 3)', expect: /boxes stay inside the safe rect/ },
+  { n: 'diagram: split-box clip ids shared between instances', f: R, from: 'clipPath id="${id}L${k}"', to: 'clipPath id="dgL${k}"', expect: /clipPaths of two instances never share an id|share no SVG id/ },
+  { n: 'diagram: the marks are not reset on a new layout', f: R, from: "(b?.layout && b.layout !== prev.layout ? [] : prev.marks)", to: "prev.marks", expect: /recovers into tidy arrangements/ },
+  { n: 'pill: a different monospace advance', f: R, from: 'ADV = 0.6,', to: 'ADV = 0.64,', expect: /grows by one monospace advance per character/ },
+  { n: 'pill: the width snaps per character', f: R, from: 'const tf = clamp((u - p.typeAt) * p.cps, 0, n)', to: 'const tf = Math.floor(clamp((u - p.typeAt) * p.cps, 0, n))', expect: /width follows the typed fraction continuously/ },
+  { n: 'pill: no fit to the safe rect', f: R, from: 'S.w * 0.97 / finalE', to: 'S.w * 9 / finalE', expect: /96-character command still fits/ },
+  { n: 'pill: the outline is always fully drawn', f: R, from: 'dk = clamp(seg(u, p.drawAt, p.drawAt + p.drawDur))', to: 'dk = 1', expect: /outline draws on/ },
+  { n: 'pill: the caret never blinks', f: R, from: 'Math.floor((u - p.typeAt - p.text.length / p.cps) * 2) % 2 === 0', to: 'true', expect: /caret is solid while typing and blinks/ },
+  { n: 'pill: key ticks not thinned', f: R, from: "(out.length < 2 || t - out.at(-1).t > 0.07)", to: "true", expect: /soft key ticks while typing/ },
+  { n: 'all: ids ignore the item index', f: R, from: "c.item ?? 0", to: "0", expect: /share no SVG id/ },
+  { n: 'all: output depends on a random value (not a pure function of t)', f: R, from: "const s = [name, L.at,", to: "const s = [name, Math.random(), L.at,", expect: /identical SVG in forward and shuffled seek order|second node process/ },
+  { n: 'all: guards removed (NaN passes through num())', f: R, from: 'return Number.isFinite(x) ? clamp(x, lo, hi) : d; };', to: 'return x; };', expect: /hostile param sets|hostile NESTED|finite numbers/ },
+  { n: 'all: prototype names accepted as icons / layouts', f: R, from: "typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k)", to: "typeof k === 'string' && k in o", expect: /hostile NESTED/ },
+  { n: 'all: unbounded param hashing', f: R, from: 'const s = [name, L.at, c.item ?? 0, c.W, c.H, sigOf(p)].join(\'|\');', to: 'const s = JSON.stringify([name, L.at, c.item ?? 0, c.W, c.H, p]);', expect: /hostile NESTED/ },
+  { n: 'all: a non-well-formed SVG (diagram defs left open)', f: R, from: "return `<defs>${defs}</defs><g${L.out > 0.001 || L.in < 0.999 ? ` opacity=\"${f2(clamp(L.in * 1.5) * (1 - L.out))}\"` : ''}>${o}</g>`; } },\n\n  'type.commandPill'", to: "return `<defs>${defs}<g${L.out > 0.001 || L.in < 0.999 ? ` opacity=\"${f2(clamp(L.in * 1.5) * (1 - L.out))}\"` : ''}>${o}</g>`; } },\n\n  'type.commandPill'", expect: /well-formed XML/ },
+];
+let base = run(); if (base.code !== 0) { console.log(base.out.split('\n').filter((l) => /^FAIL/.test(l)).slice(0, 5).join('\n')); console.log('BASELINE IS NOT GREEN'); process.exit(1); }
+console.log('baseline: green (' + (base.out.match(/(\d+) passed/) || [])[1] + ' checks)\n'); let bad = 0;
+for (const m of MUT) { const file = path.join(tmp, 'type', m.f), orig = fs.readFileSync(file, 'utf8'), n = orig.split(m.from).length - 1;
+  if (n !== 1) { console.log(`STALE  ${m.n}: mutation text found ${n} times`); bad++; continue; }
+  fs.writeFileSync(file, orig.replace(m.from, () => m.to)); const r = run(); fs.writeFileSync(file, orig);
+  const fails = r.out.split('\n').filter((l) => /^FAIL/.test(l)), hit = fails.find((l) => m.expect.test(l)), crashed = r.code !== 0 && fails.length === 0;
+  if (hit) console.log(`caught ${m.n}\n         -> ${hit.slice(5, 150)}`); else { bad++; console.log(`MISSED ${m.n}: ${r.timedOut ? 'timed out' : crashed ? 'test crashed: ' + (r.out.split('\n').find((l) => /Error/.test(l)) || '').slice(0, 100) : fails.length ? 'other checks failed: ' + fails[0].slice(0, 100) : 'every check stayed green'}`); } }
+console.log(`\n${MUT.length - bad}/${MUT.length} mutations caught by the intended check` + (bad ? `, ${bad} not` : '')); process.exit(bad ? 1 : 0);

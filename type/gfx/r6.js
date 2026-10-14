@@ -31,10 +31,14 @@ const RED = '#E5484D';
 export const num = (v, d, lo = -1e9, hi = 1e9) => { const x = v == null || v === '' || typeof v === 'boolean' ? NaN : +v; return Number.isFinite(x) ? clamp(x, lo, hi) : d; };
 export const str = (v, d = '', max = 120) => (v == null ? d : String(v).replace(/[\u0000-\u001f]/g, ' ').slice(0, max));
 export const list = (v, max) => (Array.isArray(v) ? v.slice(0, max) : []);
+const own = (o, k) => typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k);   // never o['__proto__'] / o['constructor']
 const hexOk = (v, d) => (typeof v === 'string' && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v) ? (v.length === 4 ? '#' + [...v.slice(1)].map((x) => x + x).join('') : v) : d);
 const box4 = (v, d) => { const b = Array.isArray(v) && v.length >= 4 ? v.slice(0, 4).map((x, i) => num(x, d[i], -2, 3)) : d.slice(); b[2] = Math.max(0.05, b[2]); b[3] = Math.max(0.05, b[3]); return b; };
 const sc = (c) => (c.H > c.W ? c.W / 1080 : c.s);   // type scale from the SHORTER frame side
-export const rid = (name, L, p, c) => { const s = JSON.stringify([name, L.at, c.item ?? 0, c.W, c.H, p]); let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return name + h.toString(36); };
+/* a bounded structural signature of the params (strings: length + first 48 chars; lists: length + first 24 entries; objects: first 40 keys), so hashing never walks a hostile 100,000-entry param */
+const sigOf = (v, d = 0) => { if (v == null) return 'n'; const t = typeof v; if (t === 'number') return Number.isFinite(v) ? String(Math.round(v * 1000) / 1000) : 'x'; if (t === 'string') return v.length + ':' + v.slice(0, 48); if (t === 'boolean') return v ? 'T' : 'F'; if (d > 4) return '~';
+  if (Array.isArray(v)) return '[' + v.length + ':' + v.slice(0, 24).map((q) => sigOf(q, d + 1)).join(',') + ']'; if (t === 'object') return '{' + Object.keys(v).slice(0, 40).sort().map((q) => q + '=' + sigOf(v[q], d + 1)).join(',') + '}'; return '?'; };
+export const rid = (name, L, p, c) => { const s = [name, L.at, c.item ?? 0, c.W, c.H, sigOf(p)].join('|'); let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return name + h.toString(36); };
 const fadeIO = (L) => clamp(L.in * 1.5) * (1 - L.out);
 const refuse = (c, x, y, w, msg) => { const s = sc(c), h = 120 * s; return rect(x, y, w, h, 18 * s, '#FFFFFF', `stroke="${RED}" stroke-width="${f2(3 * s)}"`) +
   text('needs a source', x + 28 * s, y + 48 * s, { size: 28 * s, weight: 800, fill: RED }) + text(msg, x + 28 * s, y + 88 * s, { size: 20 * s, weight: 600, fill: '#16151B' }); };
@@ -104,7 +108,7 @@ const DOCK_ICONS = ['chart', 'mail', 'doc', 'spark', 'play', 'box'];
 const DOCK_D = { icons: DOCK_ICONS.map((ic, i) => ({ name: 'App ' + 'ABCDEF'[i], icon: ic, color: DOCK_PAL[i] })), target: 3, clickAt: 3.2, expandDur: 0.6, path: null, size: 84, magnify: 1.85, radius: 2.3, window: [0.1, 0.1, 0.8, 0.62],
   theme: 'dark', cursor: true, label: 'illustrative: placeholder icons and window', scale: 1 };
 export function dockP(raw = {}) {
-  const p = { ...DOCK_D, ...raw }; p.icons = list(raw.icons ?? DOCK_D.icons, 12).map((q, i) => ({ name: str(q?.name, 'App ' + (i + 1), 24), icon: ICON[q?.icon] ? q.icon : DOCK_ICONS[i % 6], color: hexOk(q?.color, DOCK_PAL[i % 12]) }));
+  const p = { ...DOCK_D, ...raw }; p.icons = list(raw.icons ?? DOCK_D.icons, 12).map((q, i) => ({ name: str(q?.name, 'App ' + (i + 1), 24), icon: own(ICON, q?.icon) ? q.icon : DOCK_ICONS[i % 6], color: hexOk(q?.color, DOCK_PAL[i % 12]) }));
   if (!p.icons.length) p.icons = DOCK_D.icons.slice(0, 1); p.target = Math.round(num(p.target, 3, 0, p.icons.length - 1)); p.clickAt = num(p.clickAt, 3.2, 0.3, 120); p.expandDur = num(p.expandDur, 0.6, 0.1, 5);
   p.size = num(p.size, 84, 24, 300); p.magnify = num(p.magnify, 1.85, 1, 3); p.radius = num(p.radius, 2.3, 0.8, 5); p.scale = num(p.scale, 1, 0.3, 4); p.window = box4(p.window, DOCK_D.window); p.path = p.path == null ? null : cleanPath(p.path);
   p.theme = p.theme === 'light' ? 'light' : 'dark'; p.cursor = p.cursor !== false; p.label = str(p.label, '', 80); return p;
@@ -159,7 +163,7 @@ const CONN_PAL = ['#4F6BFF', '#16A37F', '#E8742C', '#B14AD9', '#2F9BD8', '#D9486
 const CONN_D = { rows: [{ name: 'Service A', icon: 'chart', color: CONN_PAL[0] }, { name: 'Service B', icon: 'mail', color: CONN_PAL[1] }, { name: 'Service C', icon: 'box', color: CONN_PAL[2] }], rowsAt: 0.25, clickAt: 1.5, clickGap: 1.5,
   reveal: 'sequence', thinking: 'Thinking', thinkAt: null, theme: 'dark', accent: '#5B6BFF', connect: 'Connect', done: 'Connected', note: 'illustrative: placeholder services', cursor: true, scale: 1 };
 export function connP(raw = {}) {
-  const p = { ...CONN_D, ...raw }; p.rows = list(raw.rows ?? CONN_D.rows, 12).map((r, i) => ({ name: str(r?.name, 'Service ' + (i + 1), 28), icon: ICON[r?.icon] ? r.icon : ['chart', 'mail', 'box', 'user', 'db', 'send'][i % 6], color: hexOk(r?.color, CONN_PAL[i % 6]) }));
+  const p = { ...CONN_D, ...raw }; p.rows = list(raw.rows ?? CONN_D.rows, 12).map((r, i) => ({ name: str(r?.name, 'Service ' + (i + 1), 28), icon: own(ICON, r?.icon) ? r.icon : ['chart', 'mail', 'box', 'user', 'db', 'send'][i % 6], color: hexOk(r?.color, CONN_PAL[i % 6]) }));
   if (!p.rows.length) p.rows = CONN_D.rows.slice(0, 1); p.rowsAt = num(p.rowsAt, 0.25, 0, 120); p.clickAt = num(p.clickAt, 1.5, 0.2, 120); p.clickGap = num(p.clickGap, 1.5, 1, 30); p.reveal = p.reveal === 'together' ? 'together' : 'sequence';
   p.thinking = p.thinking == null || p.thinking === false ? null : str(p.thinking, 'Thinking', 40); p.thinkAt = p.thinkAt == null ? null : num(p.thinkAt, null, 0, 300); p.theme = p.theme === 'light' ? 'light' : 'dark'; p.accent = hexOk(p.accent, CONN_D.accent);
   p.connect = str(p.connect, 'Connect', 20); p.done = str(p.done, 'Connected', 20); p.note = str(p.note, '', 80); p.cursor = p.cursor !== false; p.scale = num(p.scale, 1, 0.3, 4); return p;
@@ -201,8 +205,8 @@ const DIAG_BEATS = [
 const DIAG_D = { beats: DIAG_BEATS, cls: 'panel', ink: '#EDEDF2', ok: '#4BE08F', bad: '#FF6B6B', captionSize: 64, maxUnit: 150, swap: 0.5, reduced: false, ret: [2, 0], scale: 1 };
 export function diagP(raw = {}) {
   const p = { ...DIAG_D, ...raw }; let prev = { layout: 'trio', mood: 'calm', links: 'line', marks: [], caption: '' };
-  const bs = list(raw.beats ?? DIAG_BEATS, 24).map((b, i) => { const o = { at: num(b?.at, i * 1.8, 0, 600), caption: b?.caption == null ? prev.caption : str(b.caption, '', 60), layout: DLAY[b?.layout] ? b.layout : prev.layout, mood: MOODS[b?.mood] ? b.mood : prev.mood,
-    links: LINKS[b?.links] ? b.links : prev.links, marks: b?.marks === undefined ? (b?.layout && b.layout !== prev.layout ? [] : prev.marks) : list(b.marks, MAXB).map((m) => (+m > 0 ? 1 : +m < 0 ? -1 : 0)) }; prev = o; return o; }).sort((a, b) => a.at - b.at);
+  const bs = list(raw.beats ?? DIAG_BEATS, 24).map((b, i) => { const o = { at: num(b?.at, i * 1.8, 0, 600), caption: b?.caption == null ? prev.caption : str(b.caption, '', 60), layout: own(DLAY, b?.layout) ? b.layout : prev.layout, mood: own(MOODS, b?.mood) ? b.mood : prev.mood,
+    links: own(LINKS, b?.links) ? b.links : prev.links, marks: b?.marks === undefined ? (b?.layout && b.layout !== prev.layout ? [] : prev.marks) : list(b.marks, MAXB).map((m) => (+m > 0 ? 1 : +m < 0 ? -1 : 0)) }; prev = o; return o; }).sort((a, b) => a.at - b.at);
   p.beats = bs.length ? bs : DIAG_BEATS.map((b) => ({ marks: [], ...b })); p.beats[0] = { ...p.beats[0], at: 0 }; p.cls = ['ui', 'panel', 'camera'].includes(p.cls) ? p.cls : 'panel'; p.ink = hexOk(p.ink, '#EDEDF2'); p.ok = hexOk(p.ok, '#4BE08F'); p.bad = hexOk(p.bad, '#FF6B6B');
   p.captionSize = num(p.captionSize, 64, 12, 300); p.maxUnit = num(p.maxUnit, 150, 20, 600); p.swap = num(p.swap, 0.5, 0.05, 5); p.reduced = p.reduced === true; p.scale = num(p.scale, 1, 0.3, 4);
   p.ret = Array.isArray(p.ret) ? p.ret.slice(0, 2).map((v) => Math.round(num(v, 0, 0, MAXB - 1))) : [2, 0]; if (p.ret.length < 2) p.ret = [2, 0]; return p;
