@@ -1,0 +1,140 @@
+{
+ "file": "layers/backgrounds-r6.js",
+ "test": [
+  "node",
+  "layers/tests/r6.test.mjs"
+ ],
+ "timeout": 300,
+ "mutants": [
+  {
+   "name": "riseAt ignored (always risen)",
+   "find": "return p.loop > 0 ? 1 : E.hero(seg(t, p.riseAt, p.riseAt + p.rise)); }",
+   "replace": "return 1; }"
+  },
+  {
+   "name": "a loop gets the one-shot rise",
+   "find": "return p.loop > 0 ? 1 : E.hero(",
+   "replace": "return E.hero("
+  },
+  {
+   "name": "additive blend never restored",
+   "find": "g.globalCompositeOperation = 'source-over';",
+   "replace": "g.globalCompositeOperation = 'lighter';"
+  },
+  {
+   "name": "loop frequencies not whole cycles",
+   "find": "return p.loop > 0 ? Math.max(1, Math.round(f * p.loop)) / p.loop : f; };",
+   "replace": "return f; };"
+  },
+  {
+   "name": "colour weight drift not looped",
+   "find": "const c = 0.5 + 0.42 * Math.sin(TAU * (i / n + 0.2 * hashf(p.seed, i, 8) + f * t));",
+   "replace": "const c = 0.5 + 0.42 * Math.sin(TAU * (i / n + 0.2 * hashf(p.seed, i, 8) + p.speed * 0.7 * t));"
+  },
+  {
+   "name": "grain index not wrapped by the loop",
+   "find": "if (p.loop > 0) { const F = Math.max(1, Math.round(p.loop * p.fps))",
+   "replace": "if (false) { const F = Math.max(1, Math.round(p.loop * p.fps))"
+  },
+  {
+   "name": "grainFps ignored",
+   "find": "return Math.floor((f * p.grainFps) / p.fps + 1e-9); }",
+   "replace": "return f; }"
+  },
+  {
+   "name": "grain from Math.random",
+   "find": "Math.floor(hashf(p.seed, gi, q, 1) * W)",
+   "replace": "Math.floor(Math.random() * W)"
+  },
+  {
+   "name": "grain cap removed",
+   "find": "Math.min(12000, Math.round(",
+   "replace": "Math.min(1e9, Math.round("
+  },
+  {
+   "name": "column cap raised to 20000",
+   "find": "res: [8, 1024]",
+   "replace": "res: [8, 20000]"
+  },
+  {
+   "name": "waves clamp loosened",
+   "find": "waves: [1, 5]",
+   "replace": "waves: [1, 50]"
+  },
+  {
+   "name": "NaN parameters accepted",
+   "find": "if (typeof v !== 'number' || Number.isNaN(v)) throw",
+   "replace": "if (false) throw"
+  },
+  {
+   "name": "colour validation removed",
+   "find": "if (!/^[0-9a-fA-F]{6}$/.test(f)) throw",
+   "replace": "if (false) throw"
+  },
+  {
+   "name": "more than 5 colours kept",
+   "find": "p.colors = p.colors.slice(0, 5);",
+   "replace": "p.colors = p.colors.slice(0, 7);"
+  },
+  {
+   "name": "frame size guard removed",
+   "find": "if (!(W > 0 && H > 0 && Number.isFinite(W) && Number.isFinite(H))) throw",
+   "replace": "if (false) throw"
+  },
+  {
+   "name": "t guard removed",
+   "find": "if (!Number.isFinite(t)) throw new Error('auroraRibbon: t must be a finite number');",
+   "replace": ""
+  },
+  {
+   "name": "off-frame margin too small",
+   "find": "const off = H * (p.spread * ZMAX + p.crest + 0.04);",
+   "replace": "const off = H * (p.spread * 2.0 + p.crest + 0.04);"
+  },
+  {
+   "name": "crest not normalised",
+   "find": "- (p.crest * H * c) / norm",
+   "replace": "- (p.crest * H * c)"
+  },
+  {
+   "name": "shear missing (gradient does not follow the line)",
+   "find": "g.transform(1, slope, 0, 1, 0, ya - slope * xa);",
+   "replace": "g.transform(1, 0, 0, 1, 0, ya);"
+  },
+  {
+   "name": "no fade-in of the weight",
+   "find": "* Math.min(1, k * 1.6)",
+   "replace": "* 1"
+  },
+  {
+   "name": "colour weights out of range",
+   "find": "return 0.22 + 0.78 * Math.exp",
+   "replace": "return 0.22 + 1.78 * Math.exp"
+  },
+  {
+   "name": "pivot cue after the rise",
+   "find": "p.riseAt - p.lead",
+   "replace": "p.riseAt + p.lead"
+  },
+  {
+   "name": "flash never decays",
+   "find": "Math.exp(-4 * (t - p.riseAt) / p.kickDur) * (1 - seg(t, p.riseAt, p.riseAt + p.kickDur))",
+   "replace": "1"
+  },
+  {
+   "name": "hidden state in the hash",
+   "find": "function hashf(...k) { let h = 2166136261 >>> 0;",
+   "replace": "let _n = 0; function hashf(...k) { let h = (2166136261 + (_n++ >> 12)) >>> 0;"
+  },
+  {
+   "name": "strands collapse onto one line",
+   "find": "fx = 0.55 + 0.6 * j + 0.15 * hashf(p.seed, i, j, 5), ph = hashf(p.seed, i, j, 6) + 0.07 * i;",
+   "replace": "fx = 0.55 + 0.6 * j, ph = hashf(p.seed, 0, j, 6);"
+  },
+  {
+   "name": "halo ignores the rise",
+   "find": "0.34 * p.halo * I * k * (1 - u) ** 2.2",
+   "replace": "0.34 * p.halo * I * (1 - u) ** 2.2"
+  }
+ ]
+}
