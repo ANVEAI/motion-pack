@@ -32,6 +32,8 @@ jobs:
         run: python3 sfx/build_library.py
       - name: python tests (cuts, sfx, music, refstudy smoke test)
         run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tests tools/tests cloud/tests
+      - name: ears tests (automated listening, synthetic signals)
+        run: python3 -m pytest -q ears/tests
       - name: transitions core tests
         run: node transitions/tests/core.test.mjs
       - name: transitions lint

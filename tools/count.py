@@ -64,6 +64,9 @@ def counts():
     if os.path.isdir(pdir):
         c['physics_specs'] = sum(1 for f in os.listdir(pdir) if f.endswith('.spec.json'))
         c['physics_tables'] = sum(1 for f in os.listdir(pdir) if f.endswith('.table.json'))
+    em = os.path.join(REPO, 'ears/manifest.json')
+    if os.path.exists(em):
+        c['ears_checks'] = len(json.load(open(em))['checks'])
     tdir = os.path.join(REPO, 'terminal')
     if os.path.exists(os.path.join(tdir, 'manifest.json')):
         c['terminal_recipes'] = len(json.load(open(os.path.join(tdir, 'manifest.json')))['recipes'])
@@ -99,6 +102,9 @@ def table(c):
     if 'terminal_recipes' in c:
         rows.append(('`terminal/`', f"{c['terminal_recipes']} baked flock looks (cbirds, fetched and built at a pinned commit): "
                      "flock, braille, a word the flock writes, 3D murmuration, code that flies", '`terminal/README.md`'))
+    if 'ears_checks' in c:
+        rows.append(('`ears/`', f"automated listening and critique of a delivered MP4 or WAV: {c['ears_checks']} checks (loudness, clipping, tone, speech, sync, "
+                                "structure, repetition, stereo, reference comparison, optional mood), each with a fix and timestamps", '`ears/README.md`'))
     if os.path.isdir(os.path.join(REPO, 'cloud')):
         rows.append(('`cloud/`', "optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, "
                      "Gemini Live voiceover with a word-for-word check, a Gemini mood judge", '`cloud/README.md`'))

@@ -47,6 +47,8 @@ with the stems summing exactly. The mood judge rated the bed "confident, driving
   checks with Whisper. Re-run any line that fails rather than editing around it.
 - **The mood judge is for feel, not timing.** It invented a fade-out at 0:50 on a 32.8 s clip. Take BPM, onsets and loudness from local DSP
   (`cuts/cutgen.py beats`, `music/qa.py`). `gemini_mood.py` asks for no timestamps and drops any it gets.
+- **The mood judge varies run to run.** The same 19 s clip judged twice at temperature 0 gave energy 6 then 4 and different mood words; brief fit held at 8. Treat it as a rough second opinion: compare takes in one batch, and trust a gap of 3+ points, not 1.
+- **It may return mood words as one string** ("Techy, Clean, Positive"); `gemini_mood.py` normalises that to a list.
 - **Hold a reference to the genai client.** A temporary `genai.Client(...)` can be closed before the request is sent
   ("Cannot send a request, as the client has been closed").
 - **Only some Live model ids exist on Vertex.** `gemini-live-2.5-flash`, `gemini-live-2.5-flash-preview` and

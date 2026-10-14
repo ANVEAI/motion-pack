@@ -410,6 +410,7 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
   - Check for clipped or overlapping type, words cut by masks, and text outside the safe zones at 9:16.
 - [ ] **Loudness:** the delivered MP4 decodes to −14 ± 0.5 LUFS-I and TP ≤ −1.0 dBTP, with the WAV master at ≤ −1.5 (`sheet.py` prints both).
 - [ ] **Sync:** hits land on frame F + 1, risers end one frame before the hit, whooshes peak on the cut, and the last 0.15 s is silent.
+- [ ] **Ears:** `ears/listen.py` on the delivered MP4 shows no fail, and you listened once at phone size.
 - [ ] **Legibility:**
   - Captions are at most 18 characters per line and at most 2 lines.
   - The active word is exactly the spoken word.
@@ -421,6 +422,23 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
   - Don't compare two MP4s: multi-threaded x264 output differs between runs (about 50 dB) even when every frame is the same.
   - A standalone page can use motion-stack's `seekcheck.mjs`, which needs `window.__ready` and `window.__seek(t)`.
 - [ ] **Files:** the demo encode is CRF 23, and a 15 s 1080p file is a few MB.
+
+## Ears: judge the sound you cannot hear
+
+`python3 ears/listen.py out/<video>.mp4 --plan out/plan.json [--transcript words.json] --md ears.md` (`ears/README.md`). `tools/critic_pack.sh` runs it on every review.
+
+- **Mood (optional):** `--mood gemini --brief "..."` adds a whole-track mood and brief-fit read through `cloud/` (paid, sends audio to Google, opt-in only); it varies run to run, so trust only big gaps. Local CLAP via `EARS_CLAP_MODEL` is the free alternative.
+- **When:** on every delivered render, before the critic loop, and again after each sound fix. Run it on the WAV master too when the delivered file drifts.
+- **What it judges:**
+  - loudness, true peak, LRA and the silent tail;
+  - clipping and intersample overs;
+  - mud, harshness and dullness, with time ranges;
+  - ducking and masking under a voice (with a transcript);
+  - cuts on onsets, and every plan cue on F + 1 (it finds the mixer's exact take, to the sample);
+  - a flat mix (the blindfold test), late drops and the breath before the final sting;
+  - repeated SFX and mono compatibility.
+- **What it cannot judge:** taste, mood without a local CLAP model, whether a sound fits the picture, or a voice's naturalness.
+- **It measures; it does not replace one human listen** at phone size and on headphones. Its sound score is a ceiling: listen, then lower it for what you hear.
 
 ## Gotchas (the full list is in `references/gotchas.md`)
 
@@ -450,5 +468,6 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 | Objects and the character | `objects/index.js`, `objects/characters/poses.js` |
 | Blender recipes | `blender/run.py`, `blender/README.md`, `blender/manifest.json` |
 | Gallery | `catalog/index.html` |
+| Automated listening and critique of the sound | `ears/listen.py`, `ears/README.md`, thresholds in `ears/manifest.json` |
 | Outside assets | `scripts/fetch-external.sh`, `THIRD_PARTY.md` |
 | Research behind the defaults | `docs/research/` |

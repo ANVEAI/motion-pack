@@ -43,6 +43,9 @@ def judge(path, brief=""):
         config=types.GenerateContentConfig(response_mime_type="application/json", temperature=0))
     out = json.loads(r.text)
     out.pop("structure", None)
+    mw = out.get("mood_words")
+    if isinstance(mw, str):  # the model sometimes returns "Techy, Clean, Positive" instead of a list
+        out["mood_words"] = [w.strip() for w in mw.split(",") if w.strip()]
     out["duration_s"] = duration(path)
     out["model"] = MODEL
     return out

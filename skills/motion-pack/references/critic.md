@@ -15,6 +15,7 @@ bash tools/critic_pack.sh out/film-9x16.mp4 reviews/r1 [templates/<your-video>]
 | `phone/*.png` | 360 px wide frames: the hook, the quarters and the end. Every word must read at this size |
 | `loop2x.mp4`, `seam.jpg` | the clip played twice, and last frame next to first. Does the wrap jump? (`loop_seam_psnr_db` in `critic.json`) |
 | `refstudy/timeline.png`, `refstudy/study.json` | loudness, onsets, cuts and the share of cuts within 2 frames of an onset |
+| `ears/ears.md` (+ `ears.json`) | the sound, check by check: loudness, clipping, tone, speech and ducking, sync (cue anchors on F + 1), structure, repetition, stereo. The top 3 things a listener would notice, with fixes and timestamps, and a 1-10 score per category (`ears/README.md`) |
 | `det/report.txt` | only with a composition directory: two `png-sequence` renders, frame hashes compared; the first differing frame's PSNR |
 | `critic.json`, `review.md` | the numbers in one place, and the rubric to fill in |
 
@@ -28,10 +29,16 @@ Determinism renders the composition twice, so it is slow; run it once per review
 | **Phone readability** | every word reads at 360 px; at most 2 caption lines; text inside the 9:16 safe zone; contrast holds over motion | `phone/` |
 | **Motion** | eases have intent (snap, settle, glide, land), no linear drift, no pops or smears in the strip, nothing everything-fades-in | `motion_strip.jpg`, `loop2x.mp4` |
 | **Variety** | something visibly changes every 2-4 s; no three same-scale shots in a row; the interrupt ladder holds | `sheet_2fps.jpg` |
-| **Sound sync** | at least 60% of cuts within 2 frames of an onset; hits on F + 1; the loudness is −14 ± 0.5 LUFS-I and no clipping; the audio has shape on its own (the blindfold test) | `critic.json` `sound_sync`, `loudness`; `refstudy/timeline.png` |
+| **Sound sync** | at least 60% of cuts within 2 frames of an onset; hits on F + 1; the loudness is −14 ± 0.5 LUFS-I and no clipping; the audio has shape on its own (the blindfold test) | `ears/ears.md`: start from its suggested score (`critic.json` `ears.scores.critic_sound_sync`, the minimum of its loudness, cleanliness, sync and structure scores); `refstudy/timeline.png` |
 | **Brand accuracy** | the real logo, palette, type and product UI; real numbers with a source; placeholders labelled | sheet, end card, `phone/` |
 
 Write the score and the evidence (file and timestamp) for every row of `review.md`. A score without evidence does not count.
+
+**The sound score uses ears.**
+- `ears` measures what a meter can: level, peaks, balance, masking, ducking, placement and shape. Its suggested score is a ceiling, not the score.
+- Then listen once at phone size and once on headphones. Lower the score for anything you hear that ears cannot judge: a sound that does not fit the picture, a cheesy bed, an unnatural voice.
+- Never score above ears without fixing the measured issue first.
+- Without a transcript, ears measures speech but does not judge it. Pass the composition's `words.json` (critic_pack does this when it exists) or a Whisper JSON.
 
 ## 3. Fix the worst three, locally
 
@@ -50,4 +57,7 @@ Write the score and the evidence (file and timestamp) for every row of `review.m
 | everything fades in | give each element one entrance verb (mask, slide, scale) and let some arrive by cut |
 | a loop that jumps | make the last state equal the first (`loop2x.mp4`, `seam.jpg`) |
 | clipping, or quiet | remaster through `music/mixer.py`; never gain by hand |
+| a cue off its frame (`ears/sync` cue rows) | place it through `templates/_shared/audio.py` / `music/mixer.py`, which put the anchor on (F + 1) x 48000 / fps |
+| voice masked, or the bed not ducked (`ears/speech`) | add the voice as the plan's VO so the mixer ducks 9 dB; carve 1-4 kHz in the bed under the line |
+| muddy, harsh or dull (`ears/tone`, with time ranges) | change the bed preset or the brightest sweetener in that range; then re-run ears |
 | invented UI or numbers | replace them with the real asset, or label the placeholder |

@@ -9,11 +9,13 @@
 #   phone/*.png         360 px wide frames (hook, quarters, end): read every word at this size or it fails phone readability
 #   loop2x.mp4          the video played twice (watch the wrap); seam.jpg = last frame | first frame, seam PSNR in critic.json
 #   refstudy/           tools/refstudy.py on the delivered file: loudness, onsets, cuts and the share of cuts within 2 frames of an onset
+#   ears/               ears/listen.py on the delivered file: ears.md (what a listener would notice, sound scores, every check with fixes) + ears.json;
+#                       with composition_dir it reads <dir>/out/plan.json (cuts, cue anchors) and <dir>/words.json (transcript) when they exist
 #   det/                (only with composition_dir) two HyperFrames png-sequence renders and a frame-hash comparison (det/report.txt)
 #   critic.json         the numbers above in one place
 #   review.md           the rubric to fill in (skills/motion-pack/references/critic.md)
 #
-# Environment: FFMPEG, FFPROBE (default: on PATH), PYTHON (default python3, needs numpy + matplotlib for refstudy),
+# Environment: FFMPEG, FFPROBE (default: on PATH), PYTHON (default python3, needs numpy + matplotlib for refstudy, numpy + scipy for ears),
 #              HF (default "npx -y hyperframes@0.8.142") for the determinism renders.
 set -euo pipefail
 
@@ -27,7 +29,7 @@ PYTHON=${PYTHON:-python3}
 HF=${HF:-npx -y hyperframes@0.8.142}
 PACK=$(cd "$(dirname "$0")/.." && pwd)
 [ -f "$IN" ] || { echo "no such video: $IN" >&2; exit 2; }
-mkdir -p "$OUT/phone"
+mkdir -p "$OUT/phone" "$OUT/ears"
 ff() { "$FFMPEG" -v error -nostdin -y "$@"; }
 
 # ---- probe
@@ -46,6 +48,14 @@ awk -v n="$N2" 'BEGIN{for (i = 0; i < n; i++) printf "tile %d (row %d, col %d) =
 
 # ---- 2. sound and edit first (its cut list keeps hard cuts out of the motion pick): loudness, onsets, cuts on onsets
 "$PYTHON" "$PACK/tools/refstudy.py" "$IN" "$OUT/refstudy" --whisper none > "$OUT/refstudy.txt" 2>&1 || echo "refstudy failed: see $OUT/refstudy.txt" >&2
+
+# ---- 2b. ears: the sound judged check by check (loudness, clipping, tone, speech, sync, structure, repetition, stereo)
+EARS_ARGS=()
+if [ -n "$COMP" ] && [ -f "$COMP/out/plan.json" ]; then EARS_ARGS+=(--plan "$COMP/out/plan.json")
+elif [ -f "$OUT/refstudy/study.json" ]; then EARS_ARGS+=(--cuts "$OUT/refstudy/study.json"); fi
+[ -n "$COMP" ] && [ -f "$COMP/words.json" ] && EARS_ARGS+=(--transcript "$COMP/words.json")
+"$PYTHON" "$PACK/ears/listen.py" "$IN" ${EARS_ARGS[@]+"${EARS_ARGS[@]}"} --json "$OUT/ears/ears.json" --md "$OUT/ears/ears.md" > "$OUT/ears.txt" 2>&1 \
+  || echo "ears failed: see $OUT/ears.txt" >&2
 
 # ---- 3. 12 consecutive frames around the fastest motion (largest mean frame difference that is not a hard cut)
 "$FFMPEG" -v error -nostdin -i "$IN" -an -vf "scale=160:-2,format=gray,tblend=all_mode=difference,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-" -f null - \
@@ -115,19 +125,31 @@ summary = {"video": src, "size": [int(w), int(h)], "fps": float(fps), "duration_
            "fastest_motion": {"frame": int(peak), "time_s": round(int(peak) / float(fps), 3), "mean_abs_diff": float(score)},
            "loop_seam_psnr_db": seam, "loudness": st.get("loudness"), "cuts": st.get("cuts"), "edit": st.get("edit"),
            "sound_sync": a.get("sync"), "onsets": len(a.get("onsets") or []), "determinism": json.loads(det)}
+ep = os.path.join(out, "ears", "ears.json")
+ears = json.load(open(ep)) if os.path.exists(ep) else None
+if ears:
+    summary["ears"] = {"scores": ears["scores"], "top_issues": ears["top_issues"], "status": {c["id"]: c["status"] for c in ears["checks"]},
+                       "mood": ears["mood"]["text"]}
 json.dump(summary, open(os.path.join(out, "critic.json"), "w"), indent=1)
 sync = (a.get("sync") or {}).get("share_on_onset")
 lo = (st.get("loudness") or {})
 rows = ["hook in 2 s", "phone readability", "motion", "variety", "sound sync", "brand accuracy"]
 md = ["# Critic review: " + os.path.basename(src), "",
-      "Evidence: `sheet_2fps.jpg` (+ `sheet_index.txt`), `motion_strip.jpg` (`motion.txt`), `phone/`, `loop2x.mp4` + `seam.jpg`, `refstudy/timeline.png`, `critic.json`.",
+      "Evidence: `sheet_2fps.jpg` (+ `sheet_index.txt`), `motion_strip.jpg` (`motion.txt`), `phone/`, `loop2x.mp4` + `seam.jpg`, `refstudy/timeline.png`, `ears/ears.md`, `critic.json`.",
       "Rubric and fix loop: `skills/motion-pack/references/critic.md`. Iterate until every score is >= 8.", "",
       "Measured: %s s at %s fps; LUFS-I %s, peak %s dBFS; cuts on an onset (+-2 frames): %s; loop seam PSNR %s dB; determinism: %s" % (
           round(float(dur), 2), fps, lo.get("integrated_lufs"), lo.get("peak_dbfs"), "n/a" if sync is None else "%d%%" % round(sync * 100), seam,
           "not run" if det == "null" else det), "",
-      "| criterion | score 1-10 | evidence (file, timestamp) |", "|---|---|---|"] + ["| %s |  |  |" % r for r in rows] + [
+      "| criterion | score 1-10 | evidence (file, timestamp) |", "|---|---|---|"] + [
+      "| %s | %s | %s |" % (r, "ears suggests %s" % ears["scores"]["critic_sound_sync"] if (r == "sound sync" and ears and ears["scores"].get("critic_sound_sync") is not None) else "",
+                            "`ears/ears.md`; then listen once at phone size" if (r == "sound sync" and ears) else "") for r in rows] + [
       "", "## 3 worst defects", "", "| # | timestamp | defect | local fix |", "|---|---|---|---|", "| 1 |  |  |  |", "| 2 |  |  |  |", "| 3 |  |  |  |"]
+if ears:
+    ts = lambda t: "whole mix" if not t else ("%.2f s" % t[0] if abs(t[1] - t[0]) < 1e-3 else "%.2f-%.2f s" % tuple(t))
+    md += ["", "## Ears: what a listener would notice (`ears/ears.md`)", ""]
+    md += ["%d. %s (%s, %s) Fix: %s" % (k, i["listener"], i["severity"], ts(i["t"]), i["fix"]) for k, i in enumerate(ears["top_issues"], 1)] or ["Nothing measurable stands out; still listen once."]
+    md += ["", "Sound scores: " + ", ".join("%s %s" % (k, "n/a" if v is None else v) for k, v in ears["scores"].items())]
 open(os.path.join(out, "review.md"), "w").write("\n".join(md) + "\n")
-print(json.dumps({k: summary[k] for k in ("duration_s", "fastest_motion", "loop_seam_psnr_db", "loudness", "sound_sync", "determinism")}, indent=1))
+print(json.dumps({k: summary.get(k) for k in ("duration_s", "fastest_motion", "loop_seam_psnr_db", "loudness", "sound_sync", "determinism")} | ({"ears_scores": ears["scores"]} if ears else {}), indent=1))
 PY
 echo "critic pack: $OUT (fill in $OUT/review.md)"
