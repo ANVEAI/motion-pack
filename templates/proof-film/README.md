@@ -55,7 +55,7 @@ Two nested cam2d state functions. `pan` (the world) is one `pan2d` leg per stage
 
 ## Sound
 
-- **Bed:** `music/bed_playful_bounce_loop8` (120 BPM; bass share 33% in the delivered mix against 20-36% for a proof bed). Stages start on its beats.
+- **Bed:** `music/bed_playful_bounce_loop8` (120 BPM; bass share 34% in the delivered mix against 20-36% for a proof bed). Stages start on its beats.
 - **Cues** (`sfx/` ids from the `saas_launch` / `product_ad` palette): a quiet UI tick per state change, a slide per camera move, the parts' own per-action cues, ONE soft hit (`sfx/hit/soft`) on the number reveal, **nothing on the end card but a tick and the room tone under the hold**. Every cue time is a whole frame.
 - **Planned shape** (`plan.audio.quiet`): a quiet open (the picture moves from frame 0, the first sound is the accent word at 1.2 s) and a quiet hold (the bed lifts for 0.8 s, then falls to -40 dB while `sfx/amb/room_tone` takes over: 4.0 s under the end card, no stinger). The room tone is what makes the hold read as a hold: a kick-pulsing bed that only falls is a decay to `ears` (its pulse is 10 dB at any level; refstudy wants the last 2 s flat within 8 dB). `tail.roomDb` (-26) is the room tone's level under the un-dipped bed (plan cue `overBedDb`, passed through `templates/_shared/audio.py`). `plan.audio.mode` is `continuous`, `role` is `proof`.
 - **Master:** -14 LUFS-I; `ceilingDb` is -3.0. At -2.0 and -2.5 HyperFrames logged `Audio lowered` for this cue list (delivered -15.2 and -14.9 LUFS): grep the render log after every change.
@@ -64,17 +64,19 @@ Two nested cam2d state functions. `pan` (the world) is one `pan2d` leg per stage
 
 Off by default. `--set vo.words=/abs/words.json` (`[{w, s, e}]` in seconds, or `{words: [...]}`; whisper output works) turns it on, `--set vo.audio=/abs/voice.wav` is your recording (decoded from 0 s; without it `vo.py` builds a labelled guide signal for a dry run, never a voice). `cuts/cutgen.py walkthrough` then puts every stage change in a speech gap (never inside a word, one sentence per stage; the camera leaves for the end card after the last word), the bed ducks `duckDb` (16) dB under the voice, and every cue under a word sits under the voice (`overVoDb`). `plan.audio.mode` becomes `vo`; run `ears` with `--transcript out/transcript.json`. `words.example.json` is hand-timed placeholder text at about 160 wpm with a 1.1 s breath after each sentence. A synthetic voice is AI content: say so in the post. Nothing here calls a speech service.
 
-## Measured (the demo, 2026-10-14)
+## Measured (the demo, 2026-10-14, after the verifier's fixes)
 
-- 37.6 s, 1920 x 1080 and 1080 x 1920, 30 fps, CRF 23 (8.7 MB and 8.2 MB; the MP4s are not in git, `out/plan*.json` and `out/sheet*.jpg` are).
-- Decoded from the delivered files: **-14.23 LUFS-I, -1.29 dBTP**, nothing lowered by HyperFrames.
-- `ears` (with the plan): every check passes on both, sound scores 10, cue anchors on F + 1 for 100% of the cues it can find, the planned open and hold recognised.
-- Determinism (`tools/critic_pack.sh` double render, 1128 frames): 241 frames differ by at most 2 of 255 per pixel (worst PSNR 88.7 dB: GPU blur noise, the pack's bar is 60 dB). `seekcheck.mjs`: same twice and cold = warm pass, the shuffled-order differences are 95-116 dB.
-- `node proof-film.test.mjs`: 216 checks.
+- 37.6 s, 1920 x 1080 and 1080 x 1920, 30 fps, CRF 23 (9.4 MB and 8.9 MB; the MP4s are not in git, `out/plan*.json` and `out/sheet*.jpg` are). The table builder runs 36.6 s on both aspects (`timing.minS` lengthens the dwell), the trace builder 38.1 s on 16:9 only.
+- Decoded from the delivered files (ffmpeg ebur128 and `sheet.py`): **-14.2 LUFS-I, -1.9 dBTP, LRA 2.1 LU** on both, nothing lowered by HyperFrames (0 `lowered` lines in either render log). `hyperframes lint` on `.` and on `tall/`: 0 errors, 1 warning (`nested_structure_needs_subcomposition`: the one `#stage` page with its camera wrappers).
+- `ears` with the plan, both files: every check passes, sound scores 10, first audible frame 36 (the planned quiet open), cue anchors on F + 1 for 100%, bass share 34% against 20-36% for a proof bed, and **the ending reads `quiet hold`** (the last 2 s are 23.7 dB under the body). The planned hold is declared in `plan.audio.quiet`.
+- Determinism, `tools/critic_pack.sh` double png-sequence render of 1128 frames: 16:9 240 frames differ, worst PSNR 88.8 dB, at most 2 of 255 per pixel; 9:16 137 frame hashes differ (136 by pixels), worst PSNR 91.0 dB, at most 2 of 255. That is GPU blur noise (the pack's bar is 60 dB), not bit-identical. `seekcheck.mjs` on both pages: same twice passes; the order-independent and cold = warm gates print `FAIL (noise only)` (worst 96.4 and 97.7 dB on 16:9, 99.0 and 105.7 dB on 9:16). The node tests pin the other half: every panel's SVG and the camera are string-identical in forward and shuffled seek order.
+- `node proof-film.test.mjs`: 332 checks, and the in-frame ones were mutation-tested (pill removed, pill late, pill 17 px, number rules off, VO check off, filler check off: each fails the suite).
 
 ## Honest limits
 
-- The sound is measured, not auditioned: listen once on a phone before you post.
-- `ears` reads the ending as a decay (29 dB under the body) rather than a quiet hold, because the bed's kick still pulses 10 dB at that level and its classifier wants a flat tail; the planned hold passes.
-- With a VO, `ears` reads the duck in the band under 100 Hz and the bed's bass pulses: the demo master measures a 11.6 dB median duck with one line warned, and cues under a voice read as masked rather than late.
+- The sound is measured, not auditioned: listen once on a phone before you post. The `critic_pack` `review.md` 1-10 rubric is not filled in (no human scoring).
+- The VO path builds (46.1 s, no warnings) and was mixed and measured once with the guide signal; it was not re-rendered in the last pass and no real recording was tried. With a VO, `ears` reads the duck in the band under 100 Hz and the bed's bass pulses: the demo master measured a 11.6 dB median duck with one line warned, and cues under a voice read as masked rather than late.
+- `ears` reports speech on the no-VO film (its detector takes the bed and the cues for speech: "speech s 21.1"). It is not template specific and does not change a score.
+- The honesty label is 28 px (30 px on 9:16) everywhere. The source / method fine print drawn here is 24 px (30 px on 9:16); the scatter, table and trace parts print their own source note at 17-19 px (the trace diagram's labels are 15 px at 1080), which is the pack's convention for those parts.
+- The 9:16 re-layout covers scatter and table. `ui.branchTrace` is landscape-only, so trace is refused on 9:16 rather than shown as a scaled plate; the tall trace was not looked at because it cannot be built.
 - The head-to-head and builder numbers are placeholders by design; the template cannot tell a real number from a made-up one, only that it has a source and a method.
