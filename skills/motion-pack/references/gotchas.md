@@ -124,6 +124,7 @@
 
 ## Environment and process
 
+- **A demo MP4 that is on your disk leaks into the committed catalog.** `catalog/build.py` links a template's `out/<name>.mp4` when the file exists, but the MP4s are gitignored, so a catalog built next to them fails `tools/pages_site.py` on a clean clone (`MISSING templates/proof-film/out/proof-film.mp4`). Move the MP4s away, run `catalog/build.py` and `tools/count.py --write`, then put them back.
 - **Leave disk headroom for renders.** `templates/_shared/render3d.sh` prints free space first and asks the renderer to stop under 10 GiB free. On macOS a render killed with exit code 143 often means the disk filled up.
 - **A hidden browser pane throttles animations.** `document.hidden` freezes counters and reveals, so check `visibilityState` before debugging. A hidden Chrome also stalls X and LinkedIn video uploads.
 - **A demo page opened in a plain Chrome tab has a zero-height `#root`.** `#root { height: 100% }` collapses without HyperFrames sizing it, so a screenshot is blank paper. Add `html, body, #root { width: 1920px; height: 1080px }` before screenshotting, then dispatch `hf-seek` events to step time (the same frame comes out in any seek order: `templates/demo-r45-ui` was checked forward and reversed in two browser sessions).
