@@ -52,3 +52,12 @@ def test_sets_shown_in_committed_images_have_notices_and_the_cc0_grant_excludes_
     assert '1b' in tp and 'lab' in lm and re.search(r'lab/\*/sheets', lm) and 'not cover' in lm.lower()
     for f, needle in (('licenses/lucide-ISC-and-feather-MIT.txt', 'ISC License'), ('licenses/phosphor-MIT.txt', 'Phosphor Icons'), ('licenses/fluent-emoji-MIT.txt', 'Microsoft Corporation')):
         assert needle in read(f) and os.path.basename(f) in tp, f
+
+
+def test_readme_does_not_send_users_to_a_stale_release_as_the_default():
+    """audit H4 / D5 / C9: the Release WAV zips lag main (288 / 64 vs 301 / 65 when found); the README must say the build scripts are the version-matched path"""
+    r = read('README.md')
+    assert 'download the WAV masters from the latest Release' not in r
+    assert re.search(r'Release zips lag', r) and 'python3 sfx/build_library.py' in r and 'python3 music/build_music.py' in r
+    i = r.index('# 1. Build the sound library')
+    assert 'supported path' in r[i:i + 200]
