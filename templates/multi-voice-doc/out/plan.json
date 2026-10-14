@@ -1,0 +1,1019 @@
+{
+ "template": "multi-voice-doc",
+ "fps": 30,
+ "seconds": 29.5333,
+ "size": [
+  1920,
+  1080
+ ],
+ "safe": {
+  "top": 0.05,
+  "bottom": 0.08,
+  "side": 0.05
+ },
+ "music": "music/bed_documentary_marimba_loop8",
+ "musicGainDb": 0,
+ "ceilingDb": -2,
+ "vo": "vo.wav",
+ "bedAutomation": [
+  {
+   "frame": 0,
+   "gain_db": 0
+  },
+  {
+   "frame": 796,
+   "gain_db": 0
+  },
+  {
+   "frame": 814,
+   "gain_db": -30
+  }
+ ],
+ "open": {
+  "seconds": 5.6333,
+  "faces": 6
+ },
+ "audio": [
+  {
+   "clip": "a",
+   "src": null,
+   "start": 0,
+   "end": 29,
+   "src_in": 1.882,
+   "src_out": 2.8487,
+   "text": "noticing was how",
+   "role": "face"
+  },
+  {
+   "clip": "b",
+   "src": null,
+   "start": 29,
+   "end": 57,
+   "src_in": 2.526,
+   "src_out": 3.4593,
+   "text": "to remember the",
+   "role": "face"
+  },
+  {
+   "clip": "c",
+   "src": null,
+   "start": 57,
+   "end": 85,
+   "src_in": 1.298,
+   "src_out": 2.2313,
+   "text": "it every single",
+   "role": "face"
+  },
+  {
+   "clip": "d",
+   "src": null,
+   "start": 85,
+   "end": 113,
+   "src_in": 1.954,
+   "src_out": 2.8873,
+   "text": "the patience it",
+   "role": "face"
+  },
+  {
+   "clip": "e",
+   "src": null,
+   "start": 113,
+   "end": 141,
+   "src_in": 0.666,
+   "src_out": 1.5993,
+   "text": "felt less like",
+   "role": "face"
+  },
+  {
+   "clip": "p",
+   "src": null,
+   "start": 141,
+   "end": 169,
+   "src_in": 1.334,
+   "src_out": 2.2673,
+   "text": "hunting for the",
+   "role": "face"
+  },
+  {
+   "clip": "lead",
+   "src": null,
+   "start": 169,
+   "end": 244,
+   "src_in": 0.37,
+   "src_out": 2.87,
+   "text": "We built Orbit so your notes find you.",
+   "lead": true,
+   "role": "thesis"
+  },
+  {
+   "clip": "a",
+   "src": null,
+   "start": 253,
+   "end": 364,
+   "src_in": 4.658,
+   "src_out": 8.358,
+   "text": "Every note lived somewhere else. Now the pieces become one.",
+   "role": "chapter"
+  },
+  {
+   "clip": "b",
+   "src": null,
+   "start": 373,
+   "end": 490,
+   "src_in": 4.574,
+   "src_out": 8.474,
+   "text": "It keeps the papers you forget. Then it lays them out.",
+   "role": "chapter"
+  },
+  {
+   "clip": "c",
+   "src": null,
+   "start": 499,
+   "end": 606,
+   "src_in": 4.288,
+   "src_out": 7.8547,
+   "text": "Each step slides into place. You see what it did.",
+   "role": "chapter"
+  },
+  {
+   "clip": "p",
+   "src": null,
+   "start": 615,
+   "end": 702,
+   "src_in": 0.37,
+   "src_out": 3.27,
+   "text": "Our team stopped hunting for the same answer twice.",
+   "role": "proof"
+  },
+  {
+   "clip": "lead",
+   "src": null,
+   "start": 711,
+   "end": 787,
+   "src_in": 5.892,
+   "src_out": 8.4253,
+   "text": "We cannot wait to hear what you remember.",
+   "role": "close"
+  }
+ ],
+ "base": [
+  {
+   "clip": "a",
+   "start": 0,
+   "end": 33,
+   "role": "face",
+   "mediaStart": 1.882
+  },
+  {
+   "clip": "b",
+   "start": 33,
+   "end": 61,
+   "role": "face",
+   "mediaStart": 2.6593
+  },
+  {
+   "clip": "c",
+   "start": 61,
+   "end": 89,
+   "role": "face",
+   "mediaStart": 1.4313
+  },
+  {
+   "clip": "d",
+   "start": 89,
+   "end": 117,
+   "role": "face",
+   "mediaStart": 2.0873
+  },
+  {
+   "clip": "e",
+   "start": 117,
+   "end": 145,
+   "role": "face",
+   "mediaStart": 0.7993
+  },
+  {
+   "clip": "p",
+   "start": 145,
+   "end": 173,
+   "role": "face",
+   "mediaStart": 1.4673
+  },
+  {
+   "clip": "lead",
+   "start": 173,
+   "end": 248,
+   "role": "lead",
+   "mediaStart": 0.5033
+  },
+  {
+   "clip": "a",
+   "start": 248,
+   "end": 368,
+   "role": "chapter",
+   "mediaStart": 4.4913,
+   "chapter": 1
+  },
+  {
+   "clip": "b",
+   "start": 368,
+   "end": 494,
+   "role": "chapter",
+   "mediaStart": 4.4073,
+   "chapter": 2
+  },
+  {
+   "clip": "c",
+   "start": 494,
+   "end": 610,
+   "role": "chapter",
+   "mediaStart": 4.1213,
+   "chapter": 3
+  },
+  {
+   "clip": "p",
+   "start": 610,
+   "end": 706,
+   "role": "proof",
+   "mediaStart": 0.2033
+  },
+  {
+   "clip": "lead",
+   "start": 706,
+   "end": 796,
+   "role": "close",
+   "mediaStart": 5.7253
+  },
+  {
+   "clip": null,
+   "start": 796,
+   "end": 886,
+   "role": "end",
+   "hold": true
+  }
+ ],
+ "overlays": [
+  {
+   "kind": "insert",
+   "insert": "network",
+   "line": "many notes, one place",
+   "start": 306,
+   "end": 345,
+   "chapter": 1
+  },
+  {
+   "kind": "broll",
+   "label": "hands sorting paper notes",
+   "src": null,
+   "mediaStart": 0,
+   "start": 345,
+   "end": 368,
+   "chapter": 1
+  },
+  {
+   "kind": "insert",
+   "insert": "tiles",
+   "line": "everything you kept",
+   "start": 426,
+   "end": 465,
+   "chapter": 2
+  },
+  {
+   "kind": "broll",
+   "label": "a desk at night",
+   "src": null,
+   "mediaStart": 0,
+   "start": 465,
+   "end": 494,
+   "chapter": 2
+  },
+  {
+   "kind": "insert",
+   "insert": "blocks",
+   "line": "step by step",
+   "start": 552,
+   "end": 591,
+   "chapter": 3
+  },
+  {
+   "kind": "broll",
+   "label": "the product on a laptop",
+   "src": null,
+   "mediaStart": 0,
+   "start": 591,
+   "end": 610,
+   "chapter": 3
+  },
+  {
+   "kind": "card",
+   "text": "Fewer repeat questions, every week",
+   "source": "placeholder: put the measured figure and its source here",
+   "start": 659,
+   "end": 706
+  },
+  {
+   "kind": "availability",
+   "line": "Available today",
+   "sub": "example.com",
+   "start": 706,
+   "end": 748
+  }
+ ],
+ "supers": [
+  {
+   "clip": "lead",
+   "at": 188,
+   "dur": 60,
+   "name": "Your Lead",
+   "role": "Lead role goes here",
+   "tag": "one personal detail here"
+  },
+  {
+   "clip": "a",
+   "at": 264,
+   "dur": 42,
+   "name": "Speaker One",
+   "role": "Role goes here",
+   "tag": "one personal detail here"
+  },
+  {
+   "clip": "b",
+   "at": 384,
+   "dur": 42,
+   "name": "Speaker Two",
+   "role": "Role goes here",
+   "tag": "one personal detail here"
+  },
+  {
+   "clip": "c",
+   "at": 510,
+   "dur": 42,
+   "name": "Speaker Three",
+   "role": "Role goes here",
+   "tag": "one personal detail here"
+  },
+  {
+   "clip": "p",
+   "at": 626,
+   "dur": 33,
+   "name": "Placeholder Customer",
+   "role": "Customer, placeholder",
+   "tag": ""
+  }
+ ],
+ "transcript": [
+  {
+   "w": "noticing",
+   "s": 0.02,
+   "e": 0.338,
+   "clip": "a"
+  },
+  {
+   "w": "was",
+   "s": 0.378,
+   "e": 0.636,
+   "clip": "a"
+  },
+  {
+   "w": "how",
+   "s": 0.676,
+   "e": 0.934,
+   "clip": "a"
+  },
+  {
+   "w": "to",
+   "s": 0.987,
+   "e": 1.233,
+   "clip": "b"
+  },
+  {
+   "w": "remember",
+   "s": 1.273,
+   "e": 1.591,
+   "clip": "b"
+  },
+  {
+   "w": "the",
+   "s": 1.631,
+   "e": 1.889,
+   "clip": "b"
+  },
+  {
+   "w": "it",
+   "s": 1.92,
+   "e": 2.166,
+   "clip": "c"
+  },
+  {
+   "w": "every",
+   "s": 2.206,
+   "e": 2.488,
+   "clip": "c"
+  },
+  {
+   "w": "single",
+   "s": 2.528,
+   "e": 2.822,
+   "clip": "c"
+  },
+  {
+   "w": "the",
+   "s": 2.853,
+   "e": 3.111,
+   "clip": "d"
+  },
+  {
+   "w": "patience",
+   "s": 3.151,
+   "e": 3.469,
+   "clip": "d"
+  },
+  {
+   "w": "it",
+   "s": 3.509,
+   "e": 3.755,
+   "clip": "d"
+  },
+  {
+   "w": "felt",
+   "s": 3.787,
+   "e": 4.057,
+   "clip": "e"
+  },
+  {
+   "w": "less",
+   "s": 4.097,
+   "e": 4.367,
+   "clip": "e"
+  },
+  {
+   "w": "like",
+   "s": 4.407,
+   "e": 4.677,
+   "clip": "e"
+  },
+  {
+   "w": "hunting",
+   "s": 4.72,
+   "e": 5.026,
+   "clip": "p"
+  },
+  {
+   "w": "for",
+   "s": 5.066,
+   "e": 5.324,
+   "clip": "p"
+  },
+  {
+   "w": "the",
+   "s": 5.364,
+   "e": 5.622,
+   "clip": "p"
+  },
+  {
+   "w": "We",
+   "s": 5.663,
+   "e": 5.909,
+   "clip": "lead"
+  },
+  {
+   "w": "built",
+   "s": 5.949,
+   "e": 6.231,
+   "clip": "lead"
+  },
+  {
+   "w": "Orbit",
+   "s": 6.271,
+   "e": 6.553,
+   "clip": "lead"
+  },
+  {
+   "w": "so",
+   "s": 6.593,
+   "e": 6.839,
+   "clip": "lead"
+  },
+  {
+   "w": "your",
+   "s": 6.879,
+   "e": 7.149,
+   "clip": "lead"
+  },
+  {
+   "w": "notes",
+   "s": 7.189,
+   "e": 7.471,
+   "clip": "lead"
+  },
+  {
+   "w": "find",
+   "s": 7.511,
+   "e": 7.781,
+   "clip": "lead"
+  },
+  {
+   "w": "you.",
+   "s": 7.821,
+   "e": 8.079,
+   "clip": "lead"
+  },
+  {
+   "w": "Every",
+   "s": 8.463,
+   "e": 8.745,
+   "clip": "a"
+  },
+  {
+   "w": "note",
+   "s": 8.785,
+   "e": 9.055,
+   "clip": "a"
+  },
+  {
+   "w": "lived",
+   "s": 9.095,
+   "e": 9.377,
+   "clip": "a"
+  },
+  {
+   "w": "somewhere",
+   "s": 9.417,
+   "e": 9.747,
+   "clip": "a"
+  },
+  {
+   "w": "else.",
+   "s": 9.787,
+   "e": 10.057,
+   "clip": "a"
+  },
+  {
+   "w": "Now",
+   "s": 10.557,
+   "e": 10.815,
+   "clip": "a"
+  },
+  {
+   "w": "the",
+   "s": 10.855,
+   "e": 11.113,
+   "clip": "a"
+  },
+  {
+   "w": "pieces",
+   "s": 11.153,
+   "e": 11.447,
+   "clip": "a"
+  },
+  {
+   "w": "become",
+   "s": 11.487,
+   "e": 11.781,
+   "clip": "a"
+  },
+  {
+   "w": "one.",
+   "s": 11.821,
+   "e": 12.079,
+   "clip": "a"
+  },
+  {
+   "w": "It",
+   "s": 12.463,
+   "e": 12.709,
+   "clip": "b"
+  },
+  {
+   "w": "keeps",
+   "s": 12.749,
+   "e": 13.031,
+   "clip": "b"
+  },
+  {
+   "w": "the",
+   "s": 13.071,
+   "e": 13.329,
+   "clip": "b"
+  },
+  {
+   "w": "papers",
+   "s": 13.369,
+   "e": 13.663,
+   "clip": "b"
+  },
+  {
+   "w": "you",
+   "s": 13.703,
+   "e": 13.961,
+   "clip": "b"
+  },
+  {
+   "w": "forget.",
+   "s": 14.001,
+   "e": 14.295,
+   "clip": "b"
+  },
+  {
+   "w": "Then",
+   "s": 14.795,
+   "e": 15.065,
+   "clip": "b"
+  },
+  {
+   "w": "it",
+   "s": 15.105,
+   "e": 15.351,
+   "clip": "b"
+  },
+  {
+   "w": "lays",
+   "s": 15.391,
+   "e": 15.661,
+   "clip": "b"
+  },
+  {
+   "w": "them",
+   "s": 15.701,
+   "e": 15.971,
+   "clip": "b"
+  },
+  {
+   "w": "out.",
+   "s": 16.011,
+   "e": 16.269,
+   "clip": "b"
+  },
+  {
+   "w": "Each",
+   "s": 16.663,
+   "e": 16.933,
+   "clip": "c"
+  },
+  {
+   "w": "step",
+   "s": 16.973,
+   "e": 17.243,
+   "clip": "c"
+  },
+  {
+   "w": "slides",
+   "s": 17.283,
+   "e": 17.577,
+   "clip": "c"
+  },
+  {
+   "w": "into",
+   "s": 17.617,
+   "e": 17.887,
+   "clip": "c"
+  },
+  {
+   "w": "place.",
+   "s": 17.927,
+   "e": 18.209,
+   "clip": "c"
+  },
+  {
+   "w": "You",
+   "s": 18.709,
+   "e": 18.967,
+   "clip": "c"
+  },
+  {
+   "w": "see",
+   "s": 19.007,
+   "e": 19.265,
+   "clip": "c"
+  },
+  {
+   "w": "what",
+   "s": 19.305,
+   "e": 19.575,
+   "clip": "c"
+  },
+  {
+   "w": "it",
+   "s": 19.615,
+   "e": 19.861,
+   "clip": "c"
+  },
+  {
+   "w": "did.",
+   "s": 19.901,
+   "e": 20.159,
+   "clip": "c"
+  },
+  {
+   "w": "Our",
+   "s": 20.53,
+   "e": 20.788,
+   "clip": "p"
+  },
+  {
+   "w": "team",
+   "s": 20.828,
+   "e": 21.098,
+   "clip": "p"
+  },
+  {
+   "w": "stopped",
+   "s": 21.138,
+   "e": 21.444,
+   "clip": "p"
+  },
+  {
+   "w": "hunting",
+   "s": 21.484,
+   "e": 21.79,
+   "clip": "p"
+  },
+  {
+   "w": "for",
+   "s": 21.83,
+   "e": 22.088,
+   "clip": "p"
+  },
+  {
+   "w": "the",
+   "s": 22.128,
+   "e": 22.386,
+   "clip": "p"
+  },
+  {
+   "w": "same",
+   "s": 22.426,
+   "e": 22.696,
+   "clip": "p"
+  },
+  {
+   "w": "answer",
+   "s": 22.736,
+   "e": 23.03,
+   "clip": "p"
+  },
+  {
+   "w": "twice.",
+   "s": 23.07,
+   "e": 23.352,
+   "clip": "p"
+  },
+  {
+   "w": "We",
+   "s": 23.73,
+   "e": 23.976,
+   "clip": "lead"
+  },
+  {
+   "w": "cannot",
+   "s": 24.016,
+   "e": 24.31,
+   "clip": "lead"
+  },
+  {
+   "w": "wait",
+   "s": 24.35,
+   "e": 24.62,
+   "clip": "lead"
+  },
+  {
+   "w": "to",
+   "s": 24.66,
+   "e": 24.906,
+   "clip": "lead"
+  },
+  {
+   "w": "hear",
+   "s": 24.946,
+   "e": 25.216,
+   "clip": "lead"
+  },
+  {
+   "w": "what",
+   "s": 25.256,
+   "e": 25.526,
+   "clip": "lead"
+  },
+  {
+   "w": "you",
+   "s": 25.566,
+   "e": 25.824,
+   "clip": "lead"
+  },
+  {
+   "w": "remember.",
+   "s": 25.864,
+   "e": 26.182,
+   "clip": "lead"
+  }
+ ],
+ "placeholders": 15,
+ "shots": [
+  {
+   "id": "face-a",
+   "start": 0,
+   "dur": 1.1,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "face-b",
+   "start": 1.1,
+   "dur": 0.9333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "face-c",
+   "start": 2.0333,
+   "dur": 0.9333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "face-d",
+   "start": 2.9667,
+   "dur": 0.9333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "face-e",
+   "start": 3.9,
+   "dur": 0.9333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "face-p",
+   "start": 4.8333,
+   "dur": 0.9333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "lead-lead",
+   "start": 5.7667,
+   "dur": 2.5,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "chapter-a",
+   "start": 8.2667,
+   "dur": 1.9333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "insert1",
+   "start": 10.2,
+   "dur": 1.3,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "broll1",
+   "start": 11.5,
+   "dur": 0.7667,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "chapter-b",
+   "start": 12.2667,
+   "dur": 1.9333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "insert2",
+   "start": 14.2,
+   "dur": 1.3,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "broll2",
+   "start": 15.5,
+   "dur": 0.9667,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "chapter-c",
+   "start": 16.4667,
+   "dur": 1.9333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "insert3",
+   "start": 18.4,
+   "dur": 1.3,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "broll3",
+   "start": 19.7,
+   "dur": 0.6333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "proof-p",
+   "start": 20.3333,
+   "dur": 1.6333,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "card",
+   "start": 21.9667,
+   "dur": 1.5667,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "availability",
+   "start": 23.5333,
+   "dur": 1.4,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "close-lead",
+   "start": 24.9333,
+   "dur": 1.6,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "end",
+   "start": 26.5333,
+   "dur": 3,
+   "hold": true,
+   "tx": "transitions/cut"
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 6.2667,
+   "why": "name super Your Lead"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 8.8,
+   "why": "name super Speaker One"
+  },
+  {
+   "id": "sfx/paper/rustle",
+   "t": 10.2,
+   "why": "chapter 1: flat 2D insert (network)"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 12.8,
+   "why": "name super Speaker Two"
+  },
+  {
+   "id": "sfx/paper/rustle",
+   "t": 14.2,
+   "why": "chapter 2: flat 2D insert (tiles)"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 17,
+   "why": "name super Speaker Three"
+  },
+  {
+   "id": "sfx/paper/rustle",
+   "t": 18.4,
+   "why": "chapter 3: flat 2D insert (blocks)"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 20.8667,
+   "why": "name super Placeholder Customer"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 21.9667,
+   "why": "proof card"
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 23.5333,
+   "why": "availability card"
+  },
+  {
+   "id": "sfx/logo/pulse_pad",
+   "t": 26.5333,
+   "why": "end card on the quiet hold"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Fewer repeat questions, every week",
+   "source": "placeholder: put the measured figure and its source here"
+  }
+ ],
+ "lint_vo": [],
+ "warnings": [],
+ "paceRule": {
+  "aslMax": 4.5,
+  "longMax": 6
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 21,
+   "asl": 1.41,
+   "longest": 2.5,
+   "pass": true
+  }
+ }
+}

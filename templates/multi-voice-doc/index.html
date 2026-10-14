@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack multi-voice documentary</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #111; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #111; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.ph { display: flex; align-items: center; justify-content: center; }
+.ph .box { position: absolute; inset: 7% 8%; border: 3px dashed rgba(243,239,230,.32); border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+.ph .t { font-weight: 800; font-size: 74px; letter-spacing: -0.025em; color: #F3EFE6; }
+.ph .m { font-family: "IBM Plex Mono"; font-size: 26px; color: rgba(243,239,230,.66); }
+.ph .q { font-size: 34px; font-weight: 500; color: rgba(243,239,230,.85); max-width: 70%; text-align: center; }
+.ph.light .box { border-color: rgba(29,27,25,.28); } .ph.light .t { color: #1D1B19; } .ph.light .m { color: rgba(29,27,25,.6); }
+.paper { background: #F3EFE6; }
+.ins svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ins .cap { position: absolute; left: 134px; bottom: 97px; font-family: "IBM Plex Mono"; font-size: 28px; color: rgba(29,27,25,.7); }
+.card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+.card .big { font-weight: 800; font-size: 92px; letter-spacing: -0.035em; color: #1D1B19; text-align: center; max-width: 80%; line-height: 1.04; }
+.card .src { font-family: "IBM Plex Mono"; font-size: 24px; color: rgba(29,27,25,.55); }
+.card .sub { font-family: "IBM Plex Mono"; font-size: 34px; color: #4A18ED; }
+.end .mark { display: flex; align-items: center; gap: 26px; font-weight: 800; font-size: 128px; letter-spacing: -0.04em; color: #1D1B19; }
+.end .mark i { width: 96px; height: 96px; border-radius: 50%; border: 22px solid #4A18ED; box-sizing: border-box; }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="29.5333">
+<section class="clip ph" id="ph0" style="background:#2B2622" data-start="0.0000" data-duration="1.1000" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“noticing was how”</div><div class="m">clip a · face · source 1.88 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph1" style="background:#22282B" data-start="1.1000" data-duration="0.9333" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“to remember the”</div><div class="m">clip b · face · source 2.66 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph2" style="background:#2A2430" data-start="2.0333" data-duration="0.9333" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“it every single”</div><div class="m">clip c · face · source 1.43 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph3" style="background:#24291F" data-start="2.9667" data-duration="0.9333" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“the patience it”</div><div class="m">clip d · face · source 2.09 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph4" style="background:#2E2620" data-start="3.9000" data-duration="0.9333" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“felt less like”</div><div class="m">clip e · face · source 0.80 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph5" style="background:#1F2630" data-start="4.8333" data-duration="0.9333" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“hunting for the”</div><div class="m">clip p · face · source 1.47 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph6" style="background:#2B2228" data-start="5.7667" data-duration="2.5000" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“We built Orbit so your notes find you.”</div><div class="m">clip lead · lead · source 0.50 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph7" style="background:#2B2622" data-start="8.2667" data-duration="4.0000" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“Every note lived somewhere else. Now the pieces become one.”</div><div class="m">clip a · chapter · source 4.49 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph8" style="background:#22282B" data-start="12.2667" data-duration="4.2000" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“It keeps the papers you forget. Then it lays them out.”</div><div class="m">clip b · chapter · source 4.41 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph9" style="background:#2A2430" data-start="16.4667" data-duration="3.8667" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“Each step slides into place. You see what it did.”</div><div class="m">clip c · chapter · source 4.12 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph10" style="background:#1F2630" data-start="20.3333" data-duration="3.2000" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“Our team stopped hunting for the same answer twice.”</div><div class="m">clip p · proof · source 0.20 s · set src in clips.json</div></div></section>
+<section class="clip ph" id="ph11" style="background:#2B2228" data-start="23.5333" data-duration="3.0000" data-track-index="0"><div class="box"><div class="t">your interview clip here</div><div class="q">“We cannot wait to hear what you remember.”</div><div class="m">clip lead · close · source 5.73 s · set src in clips.json</div></div></section>
+<section class="clip paper card end" id="end" data-start="26.5333" data-duration="3.0000" data-track-index="0"><div class="mark" id="end-m"><i></i>Orbit</div><div class="sub" id="end-u">example.com</div></section>
+<section class="clip paper ins" id="ov0" data-start="10.2000" data-duration="1.3000" data-track-index="1"><svg viewBox="0 0 1920 1080"><line id="in0l0" x1="960" y1="518.4" x2="1205.1" y2="501.0" stroke="#1D1B19" stroke-width="3" stroke-dasharray="245.7" stroke-dashoffset="245.7"/><circle id="in0n0" cx="1205.1" cy="501.0" r="0" fill="none" stroke="#1D1B19" stroke-width="3"/><line id="in0l1" x1="960" y1="518.4" x2="1202.4" y2="594.7" stroke="#1D1B19" stroke-width="3" stroke-dasharray="254.2" stroke-dashoffset="254.2"/><circle id="in0n1" cx="1202.4" cy="594.7" r="0" fill="#8F8A80" stroke="#1D1B19" stroke-width="0"/><line id="in0l2" x1="960" y1="518.4" x2="1034.3" y2="714.7" stroke="#1D1B19" stroke-width="3" stroke-dasharray="209.9" stroke-dashoffset="209.9"/><circle id="in0n2" cx="1034.3" cy="714.7" r="0" fill="none" stroke="#1D1B19" stroke-width="3"/><line id="in0l3" x1="960" y1="518.4" x2="935.2" y2="731.6" stroke="#1D1B19" stroke-width="3" stroke-dasharray="214.6" stroke-dashoffset="214.6"/><circle id="in0n3" cx="935.2" cy="731.6" r="0" fill="#8F8A80" stroke="#1D1B19" stroke-width="0"/><line id="in0l4" x1="960" y1="518.4" x2="693.8" y2="746.1" stroke="#1D1B19" stroke-width="3" stroke-dasharray="350.3" stroke-dashoffset="350.3"/><circle id="in0n4" cx="693.8" cy="746.1" r="0" fill="#8F8A80" stroke="#1D1B19" stroke-width="0"/><line id="in0l5" x1="960" y1="518.4" x2="710.2" y2="570.5" stroke="#1D1B19" stroke-width="3" stroke-dasharray="255.2" stroke-dashoffset="255.2"/><circle id="in0n5" cx="710.2" cy="570.5" r="0" fill="none" stroke="#1D1B19" stroke-width="3"/><line id="in0l6" x1="960" y1="518.4" x2="712.2" y2="470.0" stroke="#1D1B19" stroke-width="3" stroke-dasharray="252.5" stroke-dashoffset="252.5"/><circle id="in0n6" cx="712.2" cy="470.0" r="0" fill="none" stroke="#1D1B19" stroke-width="3"/><line id="in0l7" x1="960" y1="518.4" x2="776.2" y2="407.1" stroke="#1D1B19" stroke-width="3" stroke-dasharray="214.9" stroke-dashoffset="214.9"/><circle id="in0n7" cx="776.2" cy="407.1" r="0" fill="none" stroke="#1D1B19" stroke-width="3"/><line id="in0l8" x1="960" y1="518.4" x2="955.1" y2="306.8" stroke="#1D1B19" stroke-width="3" stroke-dasharray="211.7" stroke-dashoffset="211.7"/><circle id="in0n8" cx="955.1" cy="306.8" r="0" fill="none" stroke="#1D1B19" stroke-width="3"/><line id="in0l9" x1="960" y1="518.4" x2="1164.2" y2="231.8" stroke="#1D1B19" stroke-width="3" stroke-dasharray="351.9" stroke-dashoffset="351.9"/><circle id="in0n9" cx="1164.2" cy="231.8" r="0" fill="#8F8A80" stroke="#1D1B19" stroke-width="0"/><line id="in0l10" x1="960" y1="518.4" x2="1204.6" y2="370.3" stroke="#1D1B19" stroke-width="3" stroke-dasharray="286.0" stroke-dashoffset="286.0"/><circle id="in0n10" cx="1204.6" cy="370.3" r="0" fill="#8F8A80" stroke="#1D1B19" stroke-width="0"/><circle id="in0c" cx="960" cy="518.4" r="20" fill="#4A18ED"/></svg><div class="cap" id="ovc0">many notes, one place</div></section>
+<section class="clip ph light" id="ov1" style="background:#D8D2C6" data-start="11.5000" data-duration="0.7667" data-track-index="1"><div class="box"><div class="t">your B-roll here</div><div class="m">hands sorting paper notes · chapter 1</div></div></section>
+<section class="clip paper ins" id="ov2" data-start="14.2000" data-duration="1.3000" data-track-index="1"><svg viewBox="0 0 1920 1080"><g transform="translate(337.0 256.0)"><g id="in2p0"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="153" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="161" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="144" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="108" width="64" height="30" rx="6" fill="#4A18ED"/></g></g><g transform="translate(591.0 256.0)"><g id="in2p1"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="154" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="176" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="150" height="9" rx="4.5" fill="#C9C2B4"/><circle cx="184" cy="120" r="18" fill="none" stroke="#1D1B19" stroke-width="3"/></g></g><g transform="translate(845.0 256.0)"><g id="in2p2"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="156" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="172" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="151" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="108" width="64" height="30" rx="6" fill="#4A18ED"/></g></g><g transform="translate(1099.0 256.0)"><g id="in2p3"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="136" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="137" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="146" height="9" rx="4.5" fill="#C9C2B4"/><circle cx="184" cy="120" r="18" fill="none" stroke="#1D1B19" stroke-width="3"/></g></g><g transform="translate(1353.0 256.0)"><g id="in2p4"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="161" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="130" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="127" height="9" rx="4.5" fill="#C9C2B4"/><circle cx="184" cy="120" r="18" fill="none" stroke="#1D1B19" stroke-width="3"/></g></g><g transform="translate(337.0 440.0)"><g id="in2p5"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="138" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="154" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="125" height="9" rx="4.5" fill="#C9C2B4"/><circle cx="184" cy="120" r="18" fill="none" stroke="#1D1B19" stroke-width="3"/></g></g><g transform="translate(591.0 440.0)"><g id="in2p6"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="164" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="163" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="170" height="9" rx="4.5" fill="#C9C2B4"/><circle cx="184" cy="120" r="18" fill="none" stroke="#1D1B19" stroke-width="3"/></g></g><g transform="translate(845.0 440.0)"><g id="in2p7"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="112" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="157" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="105" height="9" rx="4.5" fill="#C9C2B4"/><circle cx="184" cy="120" r="18" fill="none" stroke="#1D1B19" stroke-width="3"/></g></g><g transform="translate(1099.0 440.0)"><g id="in2p8"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="174" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="170" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="121" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="108" width="64" height="30" rx="6" fill="#4A18ED"/></g></g><g transform="translate(1353.0 440.0)"><g id="in2p9"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="98" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="157" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="174" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="108" width="64" height="30" rx="6" fill="#4A18ED"/></g></g><g transform="translate(337.0 624.0)"><g id="in2p10"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="95" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="145" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="134" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="108" width="64" height="30" rx="6" fill="#4A18ED"/></g></g><g transform="translate(591.0 624.0)"><g id="in2p11"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="97" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="152" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="172" height="9" rx="4.5" fill="#C9C2B4"/><circle cx="184" cy="120" r="18" fill="none" stroke="#1D1B19" stroke-width="3"/></g></g><g transform="translate(845.0 624.0)"><g id="in2p12"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="129" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="136" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="117" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="108" width="64" height="30" rx="6" fill="#4A18ED"/></g></g><g transform="translate(1099.0 624.0)"><g id="in2p13"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="120" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="138" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="175" height="9" rx="4.5" fill="#C9C2B4"/><circle cx="184" cy="120" r="18" fill="none" stroke="#1D1B19" stroke-width="3"/></g></g><g transform="translate(1353.0 624.0)"><g id="in2p14"><rect width="230" height="160" rx="8" fill="#FFFFFF" stroke="#D8D2C6" stroke-width="2"/><rect x="22" y="24" width="108" height="12" rx="6" fill="#8F8A80"/><rect x="22" y="52" width="142" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="72" width="137" height="9" rx="4.5" fill="#C9C2B4"/><rect x="22" y="108" width="64" height="30" rx="6" fill="#4A18ED"/></g></g></svg><div class="cap" id="ovc2">everything you kept</div></section>
+<section class="clip ph light" id="ov3" style="background:#D8D2C6" data-start="15.5000" data-duration="0.9667" data-track-index="1"><div class="box"><div class="t">your B-roll here</div><div class="m">a desk at night · chapter 2</div></div></section>
+<section class="clip paper ins" id="ov4" data-start="18.4000" data-duration="1.3000" data-track-index="1"><svg viewBox="0 0 1920 1080"><g id="in4b0"><rect x="2000" y="124" width="204" height="197" fill="#4A18ED"/></g><g id="in4b1"><rect x="2150" y="665" width="341" height="312" fill="#1D1B19"/></g><g id="in4b2"><rect x="2300" y="891" width="277" height="126" fill="#8F8A80"/></g><g id="in4b3"><circle cx="2546" cy="134.5" r="47" fill="none" stroke="#1D1B19" stroke-width="5"/></g><g id="in4b4"><rect x="2600" y="426" width="250" height="168" fill="#4A18ED"/></g><g id="in4b5"><rect x="2750" y="541" width="256" height="273" fill="#1D1B19"/></g><g id="in4b6"><rect x="2900" y="200" width="216" height="296" fill="#8F8A80"/></g><g id="in4b7"><circle cx="3230.5" cy="209" r="109" fill="none" stroke="#1D1B19" stroke-width="5"/></g><g id="in4b8"><rect x="3200" y="300" width="369" height="389" fill="#4A18ED"/></g></svg><div class="cap" id="ovc4">step by step</div></section>
+<section class="clip ph light" id="ov5" style="background:#D8D2C6" data-start="19.7000" data-duration="0.6333" data-track-index="1"><div class="box"><div class="t">your B-roll here</div><div class="m">the product on a laptop · chapter 3</div></div></section>
+<section class="clip paper card" id="ov6" data-start="21.9667" data-duration="1.5667" data-track-index="1"><div class="big" id="ovt6">Fewer repeat questions, every week</div><div class="src">source: placeholder: put the measured figure and its source here</div></section>
+<section class="clip paper card" id="ov7" data-start="23.5333" data-duration="1.4000" data-track-index="1"><div class="big" id="ovt7">Available today</div><div class="sub">example.com</div></section>
+<div id="g" class="clip" data-start="0" data-duration="29.5333" data-track-index="4"></div>
+<div id="fx" class="clip" data-start="0" data-duration="29.5333" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="29.5333" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module" src="assets/mp/adapters/type.mjs"></script>
+<script type="module" src="assets/mp/adapters/transitions.mjs"></script>
+<script type="module">
+import { MP } from './assets/mp/pack.mjs';
+import { mountGfx } from './assets/mp/type/gfx/index.js';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"vignette","params":{"amount":0.06}},{"kind":"grain","params":{"stock":"digital-soft"}}], { width: 1920, height: 1080, fps: 30, seed: 7 }), { fps: 30 });
+const gfx = mountGfx(document.getElementById('g'), [{"id":"lowerThird.docSuper","at":6.2667,"dur":2,"params":{"size":64,"roleSize":26,"scrim":0.35,"name":"Your Lead","role":"Lead role goes here · one personal detail here","pos":"bl"}},{"id":"lowerThird.docSuper","at":8.8,"dur":1.4,"params":{"size":64,"roleSize":26,"scrim":0.35,"name":"Speaker One","role":"Role goes here · one personal detail here","pos":"bl"}},{"id":"lowerThird.docSuper","at":12.8,"dur":1.4,"params":{"size":64,"roleSize":26,"scrim":0.35,"name":"Speaker Two","role":"Role goes here · one personal detail here","pos":"bl"}},{"id":"lowerThird.docSuper","at":17,"dur":1.4,"params":{"size":64,"roleSize":26,"scrim":0.35,"name":"Speaker Three","role":"Role goes here · one personal detail here","pos":"bl"}},{"id":"lowerThird.docSuper","at":20.8667,"dur":1.1,"params":{"size":64,"roleSize":26,"scrim":0.35,"name":"Placeholder Customer","role":"Customer, placeholder","pos":"bl"}}], { W: 1920, H: 1080 });   // name supers: lowerThird.docSuper (swap in lowerThird.personalTag in CONFIG once it lands)
+window.addEventListener('hf-seek', (e) => gfx.render(e.detail.time)); gfx.render(window.__hfThreeTime || 0);
+const tl = gsap.timeline({ paused: true });
+  MP.type(tl, 'type/blurIn', '#end-m', { at: 26.6333, dur: 2.9000, fps: 30 });
+  tl.to('#in0l0', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.2000);
+  tl.to('#in0n0', { attr: { r: 12 }, duration: 0.22, ease: 'back.out(2)' }, 10.3200);
+  tl.to('#in0n0', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l0', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l1', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.2400);
+  tl.to('#in0n1', { attr: { r: 11 }, duration: 0.22, ease: 'back.out(2)' }, 10.3600);
+  tl.to('#in0n1', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l1', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l2', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.2800);
+  tl.to('#in0n2', { attr: { r: 20 }, duration: 0.22, ease: 'back.out(2)' }, 10.4000);
+  tl.to('#in0n2', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l2', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l3', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.3200);
+  tl.to('#in0n3', { attr: { r: 11 }, duration: 0.22, ease: 'back.out(2)' }, 10.4400);
+  tl.to('#in0n3', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l3', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l4', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.3600);
+  tl.to('#in0n4', { attr: { r: 14 }, duration: 0.22, ease: 'back.out(2)' }, 10.4800);
+  tl.to('#in0n4', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l4', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l5', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.4000);
+  tl.to('#in0n5', { attr: { r: 15 }, duration: 0.22, ease: 'back.out(2)' }, 10.5200);
+  tl.to('#in0n5', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l5', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l6', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.4400);
+  tl.to('#in0n6', { attr: { r: 11 }, duration: 0.22, ease: 'back.out(2)' }, 10.5600);
+  tl.to('#in0n6', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l6', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l7', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.4800);
+  tl.to('#in0n7', { attr: { r: 14 }, duration: 0.22, ease: 'back.out(2)' }, 10.6000);
+  tl.to('#in0n7', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l7', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l8', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.5200);
+  tl.to('#in0n8', { attr: { r: 17 }, duration: 0.22, ease: 'back.out(2)' }, 10.6400);
+  tl.to('#in0n8', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l8', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l9', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.5600);
+  tl.to('#in0n9', { attr: { r: 11 }, duration: 0.22, ease: 'back.out(2)' }, 10.6800);
+  tl.to('#in0n9', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l9', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l10', { attr: { 'stroke-dashoffset': 0 }, duration: 0.3, ease: 'power2.out' }, 10.6000);
+  tl.to('#in0n10', { attr: { r: 21 }, duration: 0.22, ease: 'back.out(2)' }, 10.7200);
+  tl.to('#in0n10', { attr: { cx: 960, cy: 518.4, r: 4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0l10', { attr: { x2: 960, y2: 518.4 }, duration: 0.42, ease: 'power3.inOut' }, 10.8240);
+  tl.to('#in0c', { attr: { r: 118 }, duration: 0.38, ease: 'back.out(1.6)' }, 11.1840);
+  tl.fromTo('#ovc0', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.4000);
+  tl.fromTo('#in2p0', { x: -384, y: 964, rotation: -13, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.2000);
+  tl.fromTo('#in2p1', { x: 1130, y: -793, rotation: 9, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.2450);
+  tl.fromTo('#in2p2', { x: -240, y: -990, rotation: 10, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.2900);
+  tl.fromTo('#in2p3', { x: -729, y: -932, rotation: 13, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.3350);
+  tl.fromTo('#in2p4', { x: 793, y: 949, rotation: 25, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.3800);
+  tl.fromTo('#in2p5', { x: -1021, y: -765, rotation: -7, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.4250);
+  tl.fromTo('#in2p6', { x: 1093, y: 725, rotation: 34, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.4700);
+  tl.fromTo('#in2p7', { x: -1207, y: 723, rotation: -24, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.5150);
+  tl.fromTo('#in2p8', { x: -762, y: 718, rotation: 19, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.5600);
+  tl.fromTo('#in2p9', { x: 1103, y: -747, rotation: 5, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.6050);
+  tl.fromTo('#in2p10', { x: -1290, y: -731, rotation: 16, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.6500);
+  tl.fromTo('#in2p11', { x: 1264, y: -977, rotation: 4, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.6950);
+  tl.fromTo('#in2p12', { x: -388, y: -968, rotation: -21, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.7400);
+  tl.fromTo('#in2p13', { x: 107, y: -954, rotation: -6, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.7850);
+  tl.fromTo('#in2p14', { x: 784, y: 928, rotation: -5, svgOrigin: '115 80' }, { x: 0, y: 0, rotation: 0, duration: 0.5, ease: 'power3.out' }, 14.8300);
+  tl.fromTo('#ovc2', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 14.4000);
+  tl.fromTo('#in4b0', { x: 0 }, { x: -2820, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#in4b1', { x: 0 }, { x: -2970, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#in4b2', { x: 0 }, { x: -3120, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#in4b3', { x: 0 }, { x: -3270, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#in4b4', { x: 0 }, { x: -3420, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#in4b5', { x: 0 }, { x: -3570, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#in4b6', { x: 0 }, { x: -3720, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#in4b7', { x: 0 }, { x: -3870, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#in4b8', { x: 0 }, { x: -4020, duration: 1.5000, ease: 'none' }, 18.3000);
+  tl.fromTo('#ovc4', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 18.6000);
+  MP.type(tl, 'type/maskRise', '#ovt6', { at: 21.9667, dur: 1.5667, fps: 30 });
+  MP.type(tl, 'type/maskRise', '#ovt7', { at: 23.5333, dur: 1.4000, fps: 30 });
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>
