@@ -10,7 +10,7 @@
      ui.stateMorph     ONE container morphs size, radius, colour and content through a list of states, driven by a cursor path with real clicks; loops when last = first
    Round 3 (same contract, same KIT): ui-data.js (liveTranscript, wordRegenerate, receiptCompare, failoverRoute, fileChip), ui-nav.js (pageFlythrough, tabPillNav, windowWall, optionPicker).
    Size: `scale` multiplies the size unit (see the loop under UI). Sound: uiCues(id, params) -> [{ t, id: 'sfx/<cat>/<name>', why }] in the item's local time (add the item's `at`); index.js exposes it with the at applied. */
-import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, INK, PAPER, esc, f2, text, textW, dash, hashf } from './core.js';
+import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, INK, PAPER, esc, f2, text, textW, dash, hashf, measure, wobblePath } from './core.js';
 import { springTrack, spring } from '../ease.js';
 
 /* ---------- shared pieces ---------- */
@@ -68,6 +68,24 @@ function mapCard(L, p, c, card) {
 }
 /* ---------- 2. prompt bar ---------- */
 const promptTimes = (p) => { const typeEnd = p.typeAt + String(p.text).length / p.cps, sendAt = p.sendAt ?? typeEnd + 0.45; return { typeEnd, sendAt, moveAt: sendAt - 0.75 }; };
+/* attachment (round 4+5, `attach` param, default null = the plain bar): a thumbnail sits at `from` (frame fractions), the cursor grabs it at dropAt - dragDur,
+   drags it along a quadratic bezier (lifted mid-point) as a pure function of t, and at dropAt it docks as a chip at the left of the bar; the typed text then starts
+   right of the chip. kind 'sketch' | 'image' | 'file' draws owned placeholder art; `href` uses your own image instead. */
+export const ATTACH = { kind: 'sketch', name: 'banner-sketch.png', from: [0.3, 0.17], size: 200, dropAt: 1.15, dragDur: 0.85, href: null };
+function thumbArt(a, x, y, w, h, T, id) { const r = Math.min(w, h) * 0.08, q = w / 200;
+  if (a.href) return `<clipPath id="${id}"><rect x="${f2(x)}" y="${f2(y)}" width="${f2(w)}" height="${f2(h)}" rx="${f2(r)}"/></clipPath><image href="${esc(a.href)}" x="${f2(x)}" y="${f2(y)}" width="${f2(w)}" height="${f2(h)}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${id})"/>`;
+  if (a.kind === 'image') return rect(x, y, w, h, r, '#BFD3F2') + `<circle cx="${f2(x + w * 0.72)}" cy="${f2(y + h * 0.3)}" r="${f2(h * 0.12)}" fill="#FFD66B"/>` +
+    `<path d="M${f2(x)} ${f2(y + h * 0.78)} Q${f2(x + w * 0.3)} ${f2(y + h * 0.48)} ${f2(x + w * 0.55)} ${f2(y + h * 0.72)} T${f2(x + w)} ${f2(y + h * 0.6)} V${f2(y + h - r)} Q${f2(x + w)} ${f2(y + h)} ${f2(x + w - r)} ${f2(y + h)} H${f2(x + r)} Q${f2(x)} ${f2(y + h)} ${f2(x)} ${f2(y + h - r)} Z" fill="#5E9C6E"/>`;
+  if (a.kind === 'file') return rect(x, y, w, h, r, T.chip) + icon('doc', x + w * 0.22, y + h * 0.18, Math.min(w, h) * 0.6, T.muted, Math.max(1, 3 * q));
+  const pen = `fill="none" stroke="#3A3946" stroke-width="${f2(Math.max(0.8, 2.4 * q))}" stroke-linecap="round" stroke-linejoin="round"`, P = (fx, fy) => [x + w * fx, y + h * fy];
+  return rect(x, y, w, h, r, '#FFFFFF', `stroke="${T.line}" stroke-width="${f2(Math.max(0.6, 1.5 * q))}"`) + `<path d="${wobblePath([P(0.1, 0.16), P(0.9, 0.16), P(0.9, 0.84), P(0.1, 0.84), P(0.1, 0.16)], 3, 4 * q)}" ${pen}/>` +
+    `<path d="${wobblePath([P(0.18, 0.34), P(0.6, 0.34)], 5, 3 * q)} ${wobblePath([P(0.18, 0.48), P(0.5, 0.48)], 6, 3 * q)}" ${pen}/>` + `<circle cx="${f2(x + w * 0.72)}" cy="${f2(y + h * 0.58)}" r="${f2(h * 0.13)}" ${pen}/>` +
+    rect(x + w * 0.18, y + h * 0.62, w * 0.26, h * 0.12, h * 0.06, 'none', pen); }
+function attachGeo(p, x, y, w, h, s, c) { const a = p.attach, ts = a.size * s, th0 = ts * 0.75, cs = 22 * s, chH = h * 0.62, tw = chH * 0.8, cw = tw + measure(a.name, cs, { weight: 600 }) + 34 * s, cx = x + 20 * s, cy = y + (h - chH) / 2;
+  const from = [a.from[0] * c.W, a.from[1] * c.H], dock = [cx + 6 * s + tw / 2, cy + chH / 2], grabAt = a.dropAt - a.dragDur; return { a, ts, th0, cs, chH, tw, cw, cx, cy, from, dock, grabAt }; }
+/* where the dragged thumbnail is at u: centre, width, height (k = 0 at grab -> 1 docked); pure, quadratic bezier with a lifted mid-point */
+function attachAt(G, u) { const k = E.move(seg(u, G.grabAt, G.a.dropAt)), m = 1 - k, mid = [(G.from[0] + G.dock[0]) / 2, Math.min(G.from[1], G.dock[1]) - G.ts * 0.6];
+  return { k, x: m * m * G.from[0] + 2 * m * k * mid[0] + k * k * G.dock[0], y: m * m * G.from[1] + 2 * m * k * mid[1] + k * k * G.dock[1], w: lerp(G.ts, G.tw, k * k), h: lerp(G.th0, G.tw * 0.75, k * k) }; }
 /* ---------- 4. node graph geometry ---------- */
 const NG = { w: 400, h: 112 };
 const KIND = { trigger: { label: 'TRIGGER', icon: 'play', col: (p) => p.accent }, action: { label: 'ACTION', icon: 'bolt', col: () => GREEN }, condition: { label: 'CONDITION', icon: 'branch', col: () => AMBER } };
@@ -133,16 +151,24 @@ export const UI = {
       return `<defs>${fade}</defs><g${op(clamp(L.in * 1.5) * (1 - L.out))}><g mask="url(#${id}m)" transform="translate(0 ${f2(14 * s * (1 - spring(L.u, 'ui')))})">${rows}</g></g>` + (p.card ? mapCard(L, p, c, p.card) : ''); } },
 
   'ui.promptBar': { tags: ['ui', 'prompt', 'chat', 'input', 'cursor', 'click'], dur: 3.2, inF: 10, outF: 8,
-    d: { box: [0.2, 0.45, 0.6, 0.11], text: "Plan next week's restock", placeholder: 'Ask Acme anything…', typeAt: 0.45, cps: 22, sendAt: null, title: 'What should we work on?', chip: 'Suggested: restock plan', theme: 'light', accent: BRAND, cursor: true },
+    d: { box: [0.2, 0.45, 0.6, 0.11], text: "Plan next week's restock", placeholder: 'Ask Acme anything…', typeAt: 0.45, cps: 22, sendAt: null, title: 'What should we work on?', chip: 'Suggested: restock plan', theme: 'light', accent: BRAND, cursor: true, attach: null },
     svg(L, p, c) { const T = th(p), s = c.s, [x, y, w, h] = bx(p.box, c), u = L.u, { sendAt, moveAt } = promptTimes(p), ty = typed(p.text, u, p.typeAt, p.cps), full = ty.length >= String(p.text).length, sent = u >= sendAt, id = uid('pb', x, y, w);
-      const k = spring(u, 'panel'), bs = h * 0.62, bx_ = x + w - h * 0.19 - bs, by_ = y + (h - bs) / 2, bcx = bx_ + bs / 2, bcy = by_ + bs / 2, pr = pressAt(u, sendAt), fs = 34 * s;
-      const cur = p.cursor ? (() => { const [qx, qy] = springTrack(u, [[0, [bcx + 330 * s, bcy + 230 * s]], [moveAt, [bcx + 4 * s, bcy + 6 * s]]], 'panel'); return u > moveAt - 0.4 ? cursorSvg(qx, qy, 1.5 * s, pr) : ''; })() : '';
+      const k = spring(u, 'panel'), bs = h * 0.62, bx_ = x + w - h * 0.19 - bs, by_ = y + (h - bs) / 2, bcx = bx_ + bs / 2, bcy = by_ + bs / 2, fs = 34 * s, G = p.attach ? attachGeo(p, x, y, w, h, s, c) : null, A = G ? attachAt(G, u) : null;
+      const pr = Math.max(pressAt(u, sendAt), G ? clamp(seg(u, G.grabAt - 0.08, G.grabAt)) * (1 - seg(u, G.a.dropAt, G.a.dropAt + 0.08)) : 0), docked = G && u >= G.a.dropAt;
+      const cur = p.cursor ? (() => { if (!G) { const [qx, qy] = springTrack(u, [[0, [bcx + 330 * s, bcy + 230 * s]], [moveAt, [bcx + 4 * s, bcy + 6 * s]]], 'panel'); return u > moveAt - 0.4 ? cursorSvg(qx, qy, 1.5 * s, pr) : ''; }
+        const [qx, qy] = u < G.grabAt ? springTrack(u, [[0, [G.from[0] + 260 * s, G.from[1] + 220 * s]], [G.grabAt - 0.6, [G.from[0] + 6 * s, G.from[1] + 8 * s]]], 'panel') : u < G.a.dropAt ? [A.x + 6 * s, A.y + 8 * s] : springTrack(u, [[0, [G.dock[0] + 6 * s, G.dock[1] + 8 * s]], [moveAt, [bcx + 4 * s, bcy + 6 * s]]], 'panel');
+        return u > 0.15 ? cursorSvg(qx, qy, 1.5 * s, pr) : ''; })() : '';
       const btn = `<g transform="translate(${f2(bcx)} ${f2(bcy)}) scale(${f2(1 - 0.12 * pr)}) translate(${f2(-bcx)} ${f2(-bcy)})">${rect(bx_, by_, bs, bs, bs / 2, full || sent ? p.accent : T.chip)}` +
         (sent ? spinner(bcx, bcy, bs * 0.22, u - sendAt, '#FFFFFF', 3.4 * s) : icon('send', bcx - bs * 0.24, bcy - bs * 0.24, bs * 0.48, full ? '#FFFFFF' : T.muted, 2.8 * s)) + '</g>';
-      const tx = `<text x="${f2(x + 40 * s)}" y="${f2(y + h / 2 + fs * 0.35)}" font-family="${esc(FONT)}" font-size="${f2(fs)}" font-weight="600" fill="${ty ? T.ink : T.muted}"${sent ? ` opacity="${f2(1 - 0.5 * seg(u, sendAt, sendAt + 0.3))}"` : ''}>${esc(ty || p.placeholder)}${sent ? '' : caret(u, u >= p.typeAt && !full, p.accent)}</text>`;
+      const shift = G ? Math.max(0, springTrack(u, [[0, 0], [G.a.dropAt, G.cw + 4 * s]], 'ui')) : 0;
+      const att = !G ? '' : docked ? (() => { const ck = spring(u - G.a.dropAt, 'headline'), ccx = G.cx + G.cw / 2, ccy = G.cy + G.chH / 2; return `<g transform="translate(${f2(ccx)} ${f2(ccy)}) scale(${f2(Math.max(0.001, ck))}) translate(${f2(-ccx)} ${f2(-ccy)})">${rect(G.cx, G.cy, G.cw, G.chH, 12 * s, T.chip, `stroke="${T.line}" stroke-width="${f2(1.2 * s)}"`)}` +
+        thumbArt(G.a, G.cx + 6 * s, G.cy + (G.chH - G.tw * 0.75) / 2, G.tw, G.tw * 0.75, T, id + 'c') + text(G.a.name, G.cx + 16 * s + G.tw, G.cy + G.chH / 2 + G.cs * 0.36, { size: G.cs, weight: 600, fill: T.ink }) + '</g>'; })() : '';
+      const tile = G && !docked ? (() => { const pk = spring(u - 0.1, 'ui'); if (pk <= 0) return ''; const sh = 1 - A.k; return `<g${op(clamp(pk * 1.5))}>${sh > 0.02 ? `<g opacity="${f2(0.5 * sh)}" filter="url(#${id})">${rect(A.x - A.w / 2, A.y - A.h / 2 + 12 * s, A.w, A.h, A.w * 0.08, 'rgba(22,20,34,0.25)')}</g>` : ''}` +
+        `<g transform="translate(${f2(A.x)} ${f2(A.y)}) rotate(${f2(-4 * Math.sin(Math.PI * A.k))}) translate(${f2(-A.x)} ${f2(-A.y)})">${thumbArt(G.a, A.x - A.w / 2, A.y - A.h / 2, A.w, A.h, T, id + 't')}</g></g>`; })() : '';
+      const tx = `<text x="${f2(x + 40 * s + shift)}" y="${f2(y + h / 2 + fs * 0.35)}" font-family="${esc(FONT)}" font-size="${f2(fs)}" font-weight="600" fill="${ty ? T.ink : T.muted}"${sent ? ` opacity="${f2(1 - 0.5 * seg(u, sendAt, sendAt + 0.3))}"` : ''}>${esc(ty || p.placeholder)}${sent ? '' : caret(u, u >= p.typeAt && !full, p.accent)}</text>`;
       const chip = p.chip ? (() => { const cs = 24 * s, cw = textW(p.chip, cs, 0.55) + 56 * s, cx = x + 30 * s, cy = y + h + 26 * s, kk = spring(u - 0.2, 'ui') * (1 - seg(u, sendAt, sendAt + 0.25)); return kk <= 0.001 ? '' : `<g${op(kk)} transform="translate(0 ${f2(10 * s * (1 - kk))})">${rect(cx, cy, cw, 50 * s, 25 * s, T.chip)}${icon('spark', cx + 14 * s, cy + 13 * s, 24 * s, p.accent, 2.2 * s)}${text(p.chip, cx + 46 * s, cy + 33 * s, { size: cs, weight: 600, fill: T.ink })}</g>`; })() : '';
       const title = p.title ? text(p.title, x + w / 2, y - 56 * s, { size: 40 * s, weight: 700, fill: T.ink, anchor: 'middle', op: clamp(k * 1.4) }) : '';
-      return `<defs>${shadowDef(id, s)}</defs><g${op(clamp(L.in * 1.5) * (1 - L.out))} transform="translate(0 ${f2(16 * s * (1 - k))})">${title}${softShadow(id, x, y, w, h, h / 2, s)}${rect(x, y, w, h, Math.min(h / 2, 28 * s), T.panel, `stroke="${T.line}" stroke-width="${f2(1.5 * s)}"`)}${tx}${btn}${ripple(bcx, bcy, u - sendAt, s, p.accent)}${chip}</g>` + `<g${op(1 - L.out)}>${cur}</g>`; } },
+      return `<defs>${shadowDef(id, s)}</defs><g${op(clamp(L.in * 1.5) * (1 - L.out))} transform="translate(0 ${f2(16 * s * (1 - k))})">${title}${softShadow(id, x, y, w, h, h / 2, s)}${rect(x, y, w, h, Math.min(h / 2, 28 * s), T.panel, `stroke="${T.line}" stroke-width="${f2(1.5 * s)}"`)}${att}${tx}${btn}${ripple(bcx, bcy, u - sendAt, s, p.accent)}${chip}</g>` + `<g${op(1 - L.out)}>${tile}${cur}</g>`; } },
 
   'ui.checklist': { tags: ['ui', 'checklist', 'progress', 'ai-at-work', 'building'], dur: 3.8, inF: 10, outF: 8,
     d: { box: [0.3, 0.24, 0.4, 0.52], title: 'Acme is working', steps: ['Building…', 'Connecting to database', 'Syncing assets', 'Preparing preview'], start: 0.35, step: 0.62, progress: true, theme: 'light', accent: BRAND, card: true },
@@ -227,7 +253,8 @@ export const UI_CUES = {
   'ui.agentActivity': (p) => [...p.steps.map((_, i) => ({ t: p.start + i * p.step, id: rr(TICKS, i), why: 'step ' + (i + 1) + ' becomes active' })), { t: p.start + p.steps.length * p.step, id: 'sfx/ui/success', why: 'last step done' },
     ...(p.card ? (p.card.points || []).map((_, i) => ({ t: (p.card.at ?? p.start) + 0.25 + i * (p.card.pointStep ?? p.step * 0.7), id: 'sfx/ui/blip', why: 'map point' })).filter((_, i) => i % 2 === 0) : [])],
   'ui.promptBar': (p) => { const { sendAt, typeEnd } = promptTimes(p), out = [{ t: 0, id: 'sfx/ui/slide', why: 'bar lands' }]; for (let t = p.typeAt; t < typeEnd - 0.1; t += 1.0) out.push({ t, id: 'sfx/ui/typing_burst', why: 'typing' });
-    return [...out, { t: sendAt, id: 'sfx/ui/click', why: 'send click' }, { t: sendAt + 0.08, id: 'sfx/device/message_sent', why: 'prompt sent' }]; },
+    if (p.attach) { const a = p.attach, g = a.dropAt - a.dragDur; out.push({ t: g, id: 'sfx/device/mouse_click', why: 'thumbnail grabbed' }, { t: g + 0.1, id: 'sfx/whoosh/swish_xs', why: 'thumbnail dragged' }, { t: a.dropAt, id: 'sfx/ui/pop', why: 'attachment docks' }); }
+    return [...out, { t: sendAt, id: 'sfx/ui/click', why: 'send click' }, { t: sendAt + 0.08, id: 'sfx/device/message_sent', why: 'prompt sent' }].sort((a, b) => a.t - b.t); },
   'ui.checklist': (p) => [...p.steps.map((_, i) => ({ t: p.start + (i + 1) * p.step, id: rr(POPS, i), why: 'step ' + (i + 1) + ' ticked' })), { t: p.start + p.steps.length * p.step + 0.05, id: 'sfx/ui/success', why: 'all done' }],
   'ui.nodeGraph': (p) => { const at = graphTimes(p); return p.nodes.map((n, i) => ({ t: at[n.id], id: n.kind === 'condition' ? 'sfx/ui/toggle_on' : rr(POPS, i), why: n.kind + ' card lands' })); },
   'ui.scanOverlay': (p) => [{ t: p.lockAt, id: 'sfx/ui/camera_ping', why: 'brackets lock' }, { t: p.sweepAt, id: 'sfx/device/progress_fill', why: 'sweep starts' }, { t: p.sweepAt + p.sweepDur, id: 'sfx/ui/success', why: 'scan done' }],
