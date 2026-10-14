@@ -1,7 +1,7 @@
 {
  "template": "proof-film",
  "fps": 30,
- "seconds": 42.9,
+ "seconds": 39.3,
  "format": "wide",
  "size": [
   1920,
@@ -64,8 +64,8 @@
    "id": "name",
    "kind": "name",
    "t0": 4,
-   "at": 5,
-   "until": 8.5,
+   "at": 4.4,
+   "until": 8,
    "data": {
     "intro": "Introducing",
     "brand": "Acme Reader",
@@ -76,9 +76,9 @@
    "i": 2,
    "id": "setting",
    "kind": "setting",
-   "t0": 8.5,
-   "at": 9.5,
-   "until": 13.5,
+   "t0": 8,
+   "at": 8.4,
+   "until": 12.5,
    "data": {
     "title": "How we measured",
     "rows": [
@@ -124,17 +124,17 @@
    "i": 3,
    "id": "builder",
    "kind": "builder",
-   "t0": 13.5,
-   "at": 14.5,
-   "until": 20,
+   "t0": 12.5,
+   "at": 12.9,
+   "until": 18.5,
    "part": {
     "id": "chart.scatterFrontier",
     "params": {
      "box": [
-      0.06,
-      0.07,
-      0.88,
-      0.86
+      0.0652173913043478,
+      0.0652173913043478,
+      0.8695652173913044,
+      0.8695652173913044
      ],
      "title": "Score against cost per task",
      "points": [
@@ -213,6 +213,10 @@
      "accent": "#4a18ed",
      "theme": "light",
      "note": "illustrative data",
+     "calloutOffset": [
+      -200,
+      110
+     ],
      "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring",
      "hero": {
       "label": "Acme Reader",
@@ -231,19 +235,19 @@
    "i": 4,
    "id": "h2h",
    "kind": "h2h",
-   "t0": 20,
-   "at": 21,
-   "until": 25.5,
+   "t0": 18.5,
+   "at": 18.9,
+   "until": 23.5,
    "part": {
     "id": "ui.dataTable",
     "params": {
      "box": [
-      0.07,
-      0.06,
-      0.86,
-      0.74
+      0.0652173913043478,
+      0.0652173913043478,
+      0.8695652173913044,
+      0.6608695652173913
      ],
-     "scale": 1.08,
+     "scale": 1.4,
      "finding": "Same tasks, same budget. Acme Reader answered more, for less.",
      "columns": [
       {
@@ -298,9 +302,9 @@
    "i": 5,
    "id": "numbers",
    "kind": "numbers",
-   "t0": 25.5,
-   "at": 26.5,
-   "until": 31,
+   "t0": 23.5,
+   "at": 23.9,
+   "until": 28.5,
    "data": {
     "items": [
      {
@@ -326,9 +330,9 @@
    "i": 6,
    "id": "cards",
    "kind": "cards",
-   "t0": 31,
-   "at": 32,
-   "until": 36.5,
+   "t0": 28.5,
+   "at": 28.9,
+   "until": 33.5,
    "data": [
     {
      "label": "Better",
@@ -369,9 +373,9 @@
    "i": 7,
    "id": "end",
    "kind": "end",
-   "t0": 36.5,
-   "at": 37.5,
-   "until": 42.9,
+   "t0": 33.5,
+   "at": 33.9,
+   "until": 39.3,
    "hold": true,
    "data": {
     "brand": "Acme Reader",
@@ -382,8 +386,9 @@
   }
  ],
  "camera": {
-  "travelS": 1,
-  "dip": 0.07,
+  "travelS": 1.1,
+  "ease": "soft",
+  "dip": 0.08,
   "push": 0.035,
   "pitch": [
    1920,
@@ -394,43 +399,43 @@
     "from": 0,
     "to": 1,
     "t0": 4,
-    "dur": 1
+    "dur": 1.1
    },
    {
     "from": 1,
     "to": 2,
-    "t0": 8.5,
-    "dur": 1
+    "t0": 8,
+    "dur": 1.1
    },
    {
     "from": 2,
     "to": 3,
-    "t0": 13.5,
-    "dur": 1
+    "t0": 12.5,
+    "dur": 1.1
    },
    {
     "from": 3,
     "to": 4,
-    "t0": 20,
-    "dur": 1
+    "t0": 18.5,
+    "dur": 1.1
    },
    {
     "from": 4,
     "to": 5,
-    "t0": 25.5,
-    "dur": 1
+    "t0": 23.5,
+    "dur": 1.1
    },
    {
     "from": 5,
     "to": 6,
-    "t0": 31,
-    "dur": 1
+    "t0": 28.5,
+    "dur": 1.1
    },
    {
     "from": 6,
     "to": 7,
-    "t0": 36.5,
-    "dur": 1
+    "t0": 33.5,
+    "dur": 1.1
    }
   ]
  },
@@ -446,43 +451,43 @@
   {
    "id": "name",
    "start": 4,
-   "dur": 4.5,
+   "dur": 4,
    "move": "cam2d.pan"
   },
   {
    "id": "setting",
-   "start": 8.5,
-   "dur": 5,
+   "start": 8,
+   "dur": 4.5,
    "move": "cam2d.pan"
   },
   {
    "id": "builder",
-   "start": 13.5,
-   "dur": 6.5,
+   "start": 12.5,
+   "dur": 6,
    "move": "cam2d.pan"
   },
   {
    "id": "h2h",
-   "start": 20,
-   "dur": 5.5,
+   "start": 18.5,
+   "dur": 5,
    "move": "cam2d.pan"
   },
   {
    "id": "numbers",
-   "start": 25.5,
-   "dur": 5.5,
+   "start": 23.5,
+   "dur": 5,
    "move": "cam2d.pan"
   },
   {
    "id": "cards",
-   "start": 31,
-   "dur": 5.5,
+   "start": 28.5,
+   "dur": 5,
    "move": "cam2d.pan"
   },
   {
    "id": "end",
-   "start": 36.5,
-   "dur": 6.4,
+   "start": 33.5,
+   "dur": 5.8,
    "hold": true,
    "move": "cam2d.pan"
   }
@@ -500,157 +505,157 @@
   },
   {
    "id": "sfx/ui/tick",
-   "t": 5.05,
+   "t": 4.45,
    "why": "name lands"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 8.55,
+   "t": 8.05,
    "why": "camera leaves for setting"
   },
   {
    "id": "sfx/ui/tick",
-   "t": 9.55,
+   "t": 8.45,
    "why": "setting lands"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 13.55,
+   "t": 12.55,
    "why": "camera leaves for builder"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 14.55,
+   "t": 12.95,
    "why": "builder: axes draw on"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 15.05,
+   "t": 13.45,
    "why": "builder: point 1 drops in"
   },
   {
    "id": "sfx/device/card_flip",
-   "t": 15.21,
+   "t": 13.61,
    "why": "builder: point 2 drops in"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 15.37,
+   "t": 13.77,
    "why": "builder: point 3 drops in"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 15.53,
+   "t": 13.93,
    "why": "builder: point 4 drops in"
   },
   {
    "id": "sfx/device/card_flip",
-   "t": 15.69,
+   "t": 14.09,
    "why": "builder: point 5 drops in"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 15.85,
+   "t": 14.25,
    "why": "builder: point 6 drops in"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 16.01,
+   "t": 14.41,
    "why": "builder: point 7 drops in"
   },
   {
    "id": "sfx/ui/scan_sweep",
-   "t": 16.32,
+   "t": 14.72,
    "why": "builder: frontier draws"
   },
   {
    "id": "sfx/sparkle/shimmer",
-   "t": 17.32,
+   "t": 15.72,
    "why": "builder: hero point + star"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 17.62,
+   "t": 16.02,
    "why": "builder: callout"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 20.05,
+   "t": 18.55,
    "why": "camera leaves for h2h"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 21.25,
+   "t": 19.15,
    "why": "h2h: header slides in"
   },
   {
    "id": "sfx/ui/tick",
-   "t": 21.5,
+   "t": 19.4,
    "why": "h2h: row 1"
   },
   {
    "id": "sfx/ui/count_run",
-   "t": 21.53,
+   "t": 19.43,
    "why": "h2h: numbers count up"
   },
   {
    "id": "sfx/ui/count_tick",
-   "t": 21.64,
+   "t": 19.54,
    "why": "h2h: row 2"
   },
   {
    "id": "sfx/device/loading_tick",
-   "t": 21.78,
+   "t": 19.68,
    "why": "h2h: row 3"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 22.88,
+   "t": 20.78,
    "why": "h2h: highlight pulses"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 25.55,
+   "t": 23.55,
    "why": "camera leaves for numbers"
   },
   {
    "id": "sfx/hit/soft",
-   "t": 26.6,
+   "t": 24,
    "why": "ONE soft hit on the number reveal"
   },
   {
    "id": "sfx/ui/count_run",
-   "t": 26.7,
+   "t": 24.1,
    "why": "numbers count up"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 31.05,
+   "t": 28.55,
    "why": "camera leaves for cards"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 32.2,
+   "t": 29.1,
    "why": "stat card 1"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 32.5,
+   "t": 29.4,
    "why": "stat card 2"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 32.8,
+   "t": 29.7,
    "why": "stat card 3"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 36.55,
+   "t": 33.55,
    "why": "camera leaves for end"
   },
   {
    "id": "sfx/ui/tick",
-   "t": 37.55,
+   "t": 33.95,
    "why": "end card lands (a tick, no stinger: the quiet hold follows)"
   }
  ],
@@ -672,11 +677,11 @@
    "gain_db": 0
   },
   {
-   "frame": 1149,
+   "frame": 1041,
    "gain_db": 0
   },
   {
-   "frame": 1167,
+   "frame": 1059,
    "gain_db": -30
   }
  ],
@@ -693,8 +698,8 @@
    },
    {
     "t": [
-     38.9,
-     42.9
+     35.3,
+     39.3
     ],
     "kind": "hold",
     "why": "end card on near-silence: no stinger, the URL holds"
@@ -705,50 +710,50 @@
    1.2,
    4,
    4.05,
-   5,
-   5.05,
-   8.5,
-   8.55,
-   9.5,
-   9.55,
-   13.5,
-   13.55,
-   14.5,
-   14.55,
-   15.05,
-   15.21,
-   15.37,
-   15.53,
-   15.69,
-   15.85,
-   16.01,
-   16.32,
-   17.32,
-   17.62,
-   20,
-   20.05,
-   21,
-   21.25,
-   21.5,
-   21.53,
-   21.64,
-   21.78,
-   22.88,
-   25.5,
-   25.55,
-   26.5,
-   26.6,
-   26.7,
-   31,
-   31.05,
-   32,
-   32.2,
-   32.5,
-   32.8,
-   36.5,
-   36.55,
-   37.5,
-   37.55
+   4.4,
+   4.45,
+   8,
+   8.05,
+   8.4,
+   8.45,
+   12.5,
+   12.55,
+   12.9,
+   12.95,
+   13.45,
+   13.61,
+   13.77,
+   13.93,
+   14.09,
+   14.25,
+   14.41,
+   14.72,
+   15.72,
+   16.02,
+   18.5,
+   18.55,
+   18.9,
+   19.15,
+   19.4,
+   19.43,
+   19.54,
+   19.68,
+   20.78,
+   23.5,
+   23.55,
+   23.9,
+   24,
+   24.1,
+   28.5,
+   28.55,
+   28.9,
+   29.1,
+   29.4,
+   29.7,
+   33.5,
+   33.55,
+   33.9,
+   33.95
   ],
   "role": "proof"
  },
@@ -1166,8 +1171,8 @@
   "unmotivatedTransitions": [],
   "pace": {
    "shots": 8,
-   "asl": 5.36,
-   "longest": 6.5,
+   "asl": 4.91,
+   "longest": 6,
    "pass": true
   }
  }

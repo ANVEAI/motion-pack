@@ -9,6 +9,7 @@
    the frame centre when the camera rests (mapCell is the test of that). The same module runs in the page (assets/mp/templates/proof-film/) and in node: it only imports pack
    modules by relative paths that exist in both layouts. */
 import { E, clamp, seg, FONT, MONO, f2, text, measure, ctxFor } from '../../type/gfx/core.js';
+import { safeRect } from '../../type/safezones.js';
 import { spring } from '../../type/ease.js';
 import { KIT } from '../../type/gfx/ui.js';
 import { renderInner, fmtUnit } from '../../type/gfx/index.js';
@@ -17,8 +18,13 @@ import { E as CE } from '../../camera/ease.js';
 const { rect, softShadow, shadowDef, op } = KIT;
 
 /* ---------- layout + palette ---------- */
+/* the platform safe rect, pulled in by the camera's dwell push: a point at x lands at W/2 + s * (x - W/2) after a push of s, so the content may only use the part of the safe rect that still fits then */
+export function safeInset(zone, W, H, push = 0) {
+  const S = safeRect(zone, W, H), s = 1 + push, x0 = W / 2 + (S.x0 - W / 2) / s, x1 = W / 2 + (S.x1 - W / 2) / s, y0 = H / 2 + (S.y0 - H / 2) / s, y1 = H / 2 + (S.y1 - H / 2) / s;
+  return { x0, y0, x1, y1, w: x1 - x0, h: y1 - y0, scale: S.scale };
+}
 export function layout(plan) {
-  const { W, H } = plan, ctx = ctxFor(W, H, plan.safeZone, 1), S = ctx.safe, u = Math.min(W, H) / 1080, B = plan.brand;
+  const { W, H } = plan, S = safeInset(plan.safeZone, W, H, plan.camera.push), ctx = { ...ctxFor(W, H, plan.safeZone, 1), safe: S }, u = Math.min(W, H) / 1080, B = plan.brand;
   const T = { ink: B.ink, muted: B.muted, accent: B.accent, paper: B.paper, panel: '#FFFFFF', line: '#E3E0E7', faint: '#C8C5CE', chip: '#F0EEF4' };
   return { W, H, u, ctx, S, T, tall: H > W, plan, cx: (S.x0 + S.x1) / 2, cy: (S.y0 + S.y1) / 2 };
 }
@@ -121,7 +127,7 @@ function numbersP(L, d, u) {
 /* ---------- 5. three stat cards: better / leaner / cheaper ---------- */
 function cardsP(L, d, u) {
   const s = L.u, T = L.T, id = 'pc' + L.W, n = d.length, gap = 34 * s, pad = 30 * s, R = room(L, d, { source: false, method: false }); let o = `<defs>${shadowDef(id, s)}</defs>`;
-  const cw = L.tall ? L.S.w : (L.S.w - gap * (n - 1)) / n, ch = L.tall ? 292 * s : 580 * s, h = L.tall ? n * ch + gap * (n - 1) : ch, ours = L.plan.brand.name, F = fit(R, h);
+  const cw = L.tall ? L.S.w : (L.S.w - gap * (n - 1)) / n, ch = L.tall ? 292 * s : 640 * s, h = L.tall ? n * ch + gap * (n - 1) : ch, ours = L.plan.brand.name, F = fit(R, h);
   d.forEach((it, i) => { const t0 = 0.15 + 0.3 * i, k = spring(u - t0, 'panel'), x = L.tall ? L.S.x0 : L.S.x0 + i * (cw + gap), y = L.tall ? i * (ch + gap) : 0;
     const v = it.value * E.expoOut(seg(u, t0 + 0.1, t0 + 1.1)), vs = (L.tall ? 100 : 150) * s, mx = Math.max(it.value, it.alt ?? 0) || 1, bk = E.expoOut(seg(u, t0 + 0.7, t0 + 1.4)), bw = L.tall ? 330 * s : cw - 2 * pad - 130 * s, bh = 28 * s;
     let g = `<g${fade(k * 1.6)} transform="translate(0 ${f2(50 * s * (1 - k))})">${cardBox(L, id, x, y, cw, ch, 24 * s)}${rect(x, y, cw, 10 * s, 5 * s, T.accent)}`;
@@ -177,8 +183,8 @@ export const cellVisible = (plan, st, t) => t >= st.t0 - 0.05 && t < (st.until ?
 /* ---------- the camera ---------- */
 export function cameraFor(plan) {
   const { H } = plan, cam = plan.camera, [px, py] = cam.pitch, legs = cam.legs, st = plan.stages, A = cam.push, D = cam.dip;
-  let pan = ID2; for (const lg of legs) pan = pan2d(pan, { at: lg.t0, dur: lg.dur, dx: -px / H, dy: -py / H, ease: 'cam' });   // dx, dy in frame HEIGHTS: the content moves against the camera
-  const k = (lg, t) => CE.cam(seg(t, lg.t0, lg.t0 + lg.dur)), leg = (i) => legs.find((l) => l.from === i);
+  let pan = ID2; for (const lg of legs) pan = pan2d(pan, { at: lg.t0, dur: lg.dur, dx: -px / H, dy: -py / H, ease: cam.ease });   // dx, dy in frame HEIGHTS: the content moves against the camera
+  const ease = CE[cam.ease] || CE.soft, k = (lg, t) => ease(seg(t, lg.t0, lg.t0 + lg.dur)), leg = (i) => legs.find((l) => l.from === i);
   const zoom = (t) => { let push = 0, dip = 0;
     st.forEach((s, i) => { const lg = leg(i); push += CE.sine(seg(t, s.at, lg ? lg.t0 : plan.seconds)) * (lg ? 1 - k(lg, t) : 1); });   // a slow push while a stage dwells, released as the camera leaves
     for (const lg of legs) dip += Math.sin(Math.PI * k(lg, t));                                                                         // a dip while it travels

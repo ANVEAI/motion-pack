@@ -10,6 +10,7 @@
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
 import { PLATFORMS, SIZES, beatGrid } from '../_shared/plan.mjs';
 import { GFX, gfxCues, scatterTimes, tableTimes, traceTimes } from '../../type/gfx/index.js';
+import { safeInset } from './panels.mjs';
 import { assertHonest, numberFields, isIllustrative, claimWords, blank } from './honesty.mjs';
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 
@@ -50,34 +51,35 @@ export const CONFIG = {
     { label: 'Cheaper', value: 3.6, dec: 2, unit: '$', line: 'cost per task', alt: 9.1, altLabel: 'alternative', source: SRC, method: 'list price x tokens, placeholder run' }],
   end: { line: 'Replace every placeholder before you publish.', chips: [] },   // the URL is brand.url; chips are benefit pills without digits
   tail: { holdS: 5.4, liftS: 0.8, fadeMs: 600, bedDb: -30 },   // end card: quiet hold (plan.audio.quiet kind hold): the bed lifts liftS, then drops to bedDb; NO stinger. The near-silent part must be 3 to 9 s
-  timing: { travelS: 1.0, enterS: 0.35, dip: 0.07, push: 0.035, holdS: 1.4, claim: 2.4, name: 1.8, setting: 2.6, numbers: 2.8, cards: 3.0, endBuild: 1.2, quietOpenS: 1.2 },   // seconds of build per stage; stages are rounded up to whole beats; a stage's content starts `enterS` after the camera leaves for it (the camera is still settling); the camera dips `dip` in a move and pushes `push` while it dwells
+  timing: { travelS: 1.1, enterS: 0.4, ease: 'soft', dip: 0.08, push: 0.035, holdS: 1.4, claim: 2.4, name: 1.8, setting: 2.6, numbers: 2.8, cards: 3.0, endBuild: 1.2, quietOpenS: 1.2 },   // seconds of build per stage; stages are rounded up to whole beats; a stage's content starts `enterS` after the camera leaves for it (the camera is still settling); the camera dips `dip` in a move and pushes `push` while it dwells
   cut: {},                                           // a motivated hard cut instead of a camera move: { 'builder>h2h': 'EMOTION: ...' } (a boundary 'from>to'; the reason is required)
-  vo: null,                                          // optional sparse VO: { audio: '/abs/voice.wav' | null, words: '/abs/words.json' } (null audio = a labelled guide signal for a dry run)
-  music: 'music/bed_playful_bounce_loop8', bpm: 120, musicGainDb: 0, ceilingDb: -2.0, fadeInMs: 40, duckDb: 12,   // bpm = the bed's snapped tempo (music/manifest.json); stages start on its beats
+  vo: { words: null, audio: null },                  // optional sparse VO: words = a words.json [{w, s, e}] (seconds) turns it on; audio = your recording (null = a labelled guide signal for a dry run)
+  music: 'music/bed_playful_bounce_loop8', bpm: 120, musicGainDb: 0, ceilingDb: -2.0, fadeInMs: 40, duckDb: 16, sfxUnderVoDb: -22,   // bpm = the bed's snapped tempo (music/manifest.json); stages start on its beats
   layers: [{ kind: 'grain', params: { stock: 'digital-soft' } }],
   sfx: { claim: 'sfx/ui/tick', travel: 'sfx/ui/slide', arrive: 'sfx/ui/tick', numbers: 'sfx/hit/soft', count: 'sfx/ui/count_run', card: 'sfx/ui/pop', cut: 'sfx/tx/cut_tick' },   // saas_launch / product_ad palette; no end sting
 };
 /* ============================================================================== */
 
-const FORMAT = {
-  wide: { W: 1920, H: 1080, platform: 'x.video', zone: 'wideTitle', pitch: [1920, 0], scatterBox: [0.06, 0.07, 0.88, 0.86], calloutOffset: [-200, 110], traceBox: [0.04, 0.07, 0.92, 0.84], tableBox: [0.07, 0.06, 0.86, 0.74], tableScale: 1.4 },
-  tall: { W: 1080, H: 1920, platform: 'reels.organic', zone: 'conservative', pitch: [0, 1920], scatterBox: [0.0602, 0.14, 0.8287, 0.51], calloutOffset: [-380, -60], traceBox: [0.04, 0.07, 0.92, 0.84], tableBox: [0.0602, 0.14, 0.8287, 0.4], tableScale: 1.12 },   // conservative 9:16 union: x 65-960, y 269-1248
+const FORMAT = {   // box = [x, y, w, h] as fractions of the safe rect (pulled in by the camera push: panels.mjs safeInset); the callout offset is for the scatter's starred point
+  wide: { W: 1920, H: 1080, platform: 'x.video', zone: 'wideTitle', pitch: [1920, 0], box: { scatter: [0, 0, 1, 1], trace: [0, 0, 1, 1], table: [0, 0, 1, 0.76] }, tableScale: 1.4, calloutOffset: [-200, 110] },
+  tall: { W: 1080, H: 1920, platform: 'reels.organic', zone: 'conservative', pitch: [0, 1920], box: { scatter: [0, 0, 1, 1], trace: [0, 0, 1, 1], table: [0, 0, 1, 0.72] }, tableScale: 1.12, calloutOffset: [-380, -60] },   // 'conservative' 9:16 union: x 65-960, y 269-1248
 };
+const boxFor = (fm, push, key) => { const S = safeInset(fm.zone, fm.W, fm.H, push), r = fm.box[key]; return [(S.x0 + r[0] * S.w) / fm.W, (S.y0 + r[1] * S.h) / fm.H, (r[2] * S.w) / fm.W, (r[3] * S.h) / fm.H]; };
 export const STAGE_KINDS = (C) => ['claim', 'name', 'setting', 'builder', ...(C.builder.kind === 'table' ? [] : ['h2h']), 'numbers', 'cards', 'end'];
 const distinct = (a) => [...new Set(a.filter((v) => !blank(v)).map((v) => String(v).trim()))];
 
 /* ---------- the builder + head-to-head parts: gfx ids and params (the parts print their own source / method / illustrative notes) ---------- */
 function tableParams(C, fm, t, extra = {}) {
   const row = (r) => ({ label: r.label, unit: r.unit ?? '', dec: r.dec, values: r.values });
-  return { box: fm.tableBox, scale: fm.tableScale, finding: t.finding, columns: t.columns, rows: t.rows.map(row), highlight: t.highlight, source: distinct([t.source, ...t.rows.map((r) => r.source)]).join(' · '), accent: C.brand.accent, theme: 'light', ...extra };
+  return { box: boxFor(fm, C.timing.push, 'table'), scale: fm.tableScale, finding: t.finding, columns: t.columns, rows: t.rows.map(row), highlight: t.highlight, source: distinct([t.source, ...t.rows.map((r) => r.source)]).join(' · '), accent: C.brand.accent, theme: 'light', ...extra };
 }
 export function builderPart(C, fm) {
   const b = C.builder, ill = isIllustrative(C);
   if (b.kind === 'scatter') { const s = b.scatter, nums = [...s.points, ...(s.hero ? [s.hero] : [])];
-    const params = { box: fm.scatterBox, title: s.title, points: s.points.map((p) => ({ label: p.label, x: p.x, y: p.y, source: p.source ?? s.source })), x: s.x, y: s.y, accent: C.brand.accent, theme: 'light', note: ill ? 'illustrative data' : '', calloutOffset: fm.calloutOffset,
+    const params = { box: boxFor(fm, C.timing.push, 'scatter'), title: s.title, points: s.points.map((p) => ({ label: p.label, x: p.x, y: p.y, source: p.source ?? s.source })), x: s.x, y: s.y, accent: C.brand.accent, theme: 'light', note: ill ? 'illustrative data' : '', calloutOffset: fm.calloutOffset,
       method: distinct([s.method, ...nums.map((p) => p.method)]).join(' · '), ...(s.hero ? { hero: { label: s.hero.label, x: s.hero.x, y: s.hero.y, source: s.hero.source ?? s.source, callout: s.hero.callout } } : { hero: null }) };
     const tm = scatterTimes({ ...GFX['chart.scatterFrontier'].d, ...params }); return { id: 'chart.scatterFrontier', params, settleS: tm.calloutAt + 0.9 }; }
-  if (b.kind === 'trace') { const t = b.trace, params = { box: fm.traceBox, input: t.input, lanes: t.lanes, decision: t.decision, run: t.run, note: ill ? 'illustrative run' : '', accent: C.brand.accent, theme: 'light' };
+  if (b.kind === 'trace') { const t = b.trace, params = { box: boxFor(fm, C.timing.push, 'trace'), input: t.input, lanes: t.lanes, decision: t.decision, run: t.run, note: ill ? 'illustrative run' : '', accent: C.brand.accent, theme: 'light' };
     const tm = traceTimes({ ...GFX['ui.branchTrace'].d, ...params }); return { id: 'ui.branchTrace', params, settleS: tm.outcomeAt + 0.9 }; }
   const params = tableParams(C, fm, b.table, b.table.bars ? { bars: b.table.bars } : {}), tm = tableTimes({ ...GFX['ui.dataTable'].d, ...params });
   return { id: 'ui.dataTable', params, settleS: tm.hlAt + 0.9 };
@@ -94,14 +96,16 @@ const loadWords = (C) => { const j = JSON.parse(fs.readFileSync(path.resolve(HER
 export function buildPlan(C) {
   assertHonest(C);
   const fps = C.fps, fm = FORMAT[C.format], T = C.timing, kinds = STAGE_KINDS(C), q = (s) => Math.round(s * fps) / fps, sec = (f) => +(f / fps).toFixed(4);
-  const grid = beatGrid(C.bpm, fps, 600), fpb = grid.framesPerBeat, warnings = [], ill = isIllustrative(C), cw = claimWords(C.claim);
+  const hasVo = !!(C.vo && C.vo.words), grid = beatGrid(C.bpm, fps, 600), fpb = grid.framesPerBeat, warnings = [], ill = isIllustrative(C), cw = claimWords(C.claim);
   const part = (k) => (k === 'builder' ? builderPart(C, fm) : k === 'h2h' ? h2hPart(C, fm) : null);
   const build = { claim: T.claim, name: T.name, setting: T.setting, numbers: T.numbers, cards: T.cards, end: T.endBuild }, travel = Math.round(T.travelS * fps);
   /* stage start frames t0 (the camera leaves for it; stage 0 starts at frame 0) and the content-start frame `at` (t0 + the travel) */
   const need = kinds.map((k, i) => { const p = part(k); return q((i ? T.enterS : 0) + (p ? p.settleS : build[k]) + (k === 'end' ? 0 : T.holdS)); });
   let t0 = [], vo = null, endF = null, voSt = null;
-  if (C.vo) {
-    const W = loadWords(C), st = voSteps(C, kinds.length - 1, fps); voSt = st; vo = { words: W, audio: C.vo.audio ?? null };
+  if (hasVo) {
+    const W = loadWords(C), st = voSteps(C, kinds.length - 1, fps); voSt = st;
+    if (st.steps.length !== kinds.length - 1) throw new Error(`vo: ${st.steps.length} stage changes fit the speech gaps, ${kinds.length - 1} are needed (${kinds.slice(0, -1).join(', ')}): leave a pause of 0.25 s or more between the sentences, one sentence per stage`);
+    vo = { words: W, audio: C.vo.audio ?? null };
     t0 = st.steps.map((r) => r.frame); t0.push(Math.round(W.at(-1).e * fps) + 2);   // the end card: the camera leaves for it once the last word is out
   } else { let f = 0; need.forEach((n, i) => { t0.push(f); f += Math.ceil(n * fps / fpb - 1e-9) * fpb; }); endF = f; }
   const cutAt = (i) => (i > 0 ? C.cut[`${kinds[i - 1]}>${kinds[i]}`] : null);
@@ -115,7 +119,7 @@ export function buildPlan(C) {
     end: { brand: C.brand.name, url: C.brand.url, line: C.end.line, chips: C.end.chips || [] } };
   for (const s of stages) if (data[s.kind]) s.data = data[s.kind];
   /* the camera: one move per boundary (or a motivated hard cut); focus = the cell centre of each stage */
-  const camera = { travelS: sec(travel), dip: T.dip, push: T.push, pitch: fm.pitch, legs: stages.slice(1).map((s) => ({ from: s.i - 1, to: s.i, t0: s.t0, dur: s.cut ? 0 : sec(travel) })) };
+  const camera = { travelS: sec(travel), ease: T.ease, dip: T.dip, push: T.push, pitch: fm.pitch, legs: stages.slice(1).map((s) => ({ from: s.i - 1, to: s.i, t0: s.t0, dur: s.cut ? 0 : sec(travel) })) };
   /* ---- sound: a quiet UI tick per state change, one soft hit on the number reveal, nothing on the end card ---- */
   const X = C.sfx, cues = [], add = (id, t, why) => { if (id) cues.push({ id, t: +t.toFixed(4), why }); };
   const claimSt = stages[0]; add(X.claim, claimSt.at + T.quietOpenS, 'accent word underlined: the sound enters on the first visual event');
@@ -126,8 +130,10 @@ export function buildPlan(C) {
     else if (s.kind !== 'end') add(X.arrive, s.at + 0.05, `${s.kind} lands`);
     else add(X.arrive, s.at + 0.05, 'end card lands (a tick, no stinger: the quiet hold follows)'); }
   cues.sort((a, b) => a.t - b.t);
+  /* under a voice the cue sits relative to the VOICE (the mixer's default is over the un-ducked bed, which is as loud as the bed was before it ducked) */
+  if (hasVo) for (const c of cues) if (vo.words.some((w) => c.t >= w.s - 0.1 && c.t <= w.e + 0.15)) c.overVoDb = C.sfxUnderVoDb;
   /* bed automation: a planned quiet open, then the end card's lift and the quiet hold (frames, linear in dB) */
-  const openF = C.vo ? 0 : Math.round(T.quietOpenS * fps), lift = Math.round(C.tail.liftS * fps), fade = Math.round(C.tail.fadeMs / 1000 * fps), tail0 = Math.round(last.at * fps);
+  const openF = hasVo ? 0 : Math.round(T.quietOpenS * fps), lift = Math.round(C.tail.liftS * fps), fade = Math.round(C.tail.fadeMs / 1000 * fps), tail0 = Math.round(last.at * fps);
   const bedAutomation = [...(openF ? [{ frame: 0, gain_db: -40 }, { frame: Math.max(1, openF - 12), gain_db: -40 }, { frame: openF + 18, gain_db: 0 }] : [{ frame: 0, gain_db: 0 }]), { frame: tail0 + lift, gain_db: 0 }, { frame: tail0 + lift + fade, gain_db: C.tail.bedDb }];
   const quiet = [...(openF ? [{ t: [0, sec(openF)], kind: 'open', why: 'the picture moves from frame 0; the sound enters on the first visual event (the accent word)' }] : []), { t: [sec(tail0 + lift + fade), seconds], kind: 'hold', why: 'end card on near-silence: no stinger, the URL holds' }];
   if (quiet.at(-1).t[1] - quiet.at(-1).t[0] < 3 - 1e-6 || quiet.at(-1).t[1] - quiet.at(-1).t[0] > 9 + 1e-6) warnings.push(`the near-silent end hold is ${(quiet.at(-1).t[1] - quiet.at(-1).t[0]).toFixed(1)} s: the studied proof films hold 3-9 s`);
@@ -136,11 +142,12 @@ export function buildPlan(C) {
   const shots = stages.map((s) => ({ id: s.kind, start: s.t0, dur: +((s.until ?? seconds) - s.t0).toFixed(4), ...(s.hold ? { hold: true } : {}), move: s.cut ? 'cut' : s.i ? 'cam2d.pan' : 'cam2d.push' }));   // stages, not cuts: nothing cuts unless `cut` says so
   const events = [...new Set([...stages.slice(1).map((s) => s.t0), ...stages.map((s) => s.at), ...cues.map((c) => c.t)].map((t) => +t.toFixed(3)))].sort((a, b) => a - b);
   if (C.format === 'tall' && C.builder.kind === 'trace') warnings.push('ui.branchTrace is a landscape diagram: on 9:16 it sits on a 16:9 plate scaled to the frame width, so its type is small on a phone. Prefer scatter or table for 9:16.');
-  if (C.vo) { for (const w of voSt.warnings || []) warnings.push('vo: ' + w); }
+  if (hasVo) { for (const w of voSt.warnings || []) warnings.push('vo: ' + w);
+    stages.slice(0, -1).forEach((s, i) => { const want = need[i] - (i ? T.enterS : 0) - T.holdS, got = s.until - s.at; if (got < want - 1e-6) warnings.push(`vo: the ${s.kind} stage gets ${got.toFixed(1)} s of speech, its build needs ${want.toFixed(1)} s: lengthen that sentence or the pause after it`); }); }
   const plan = { template: 'proof-film', fps, seconds, format: C.format, size: SIZES[PLATFORMS[fm.platform].aspect], W: fm.W, H: fm.H, platform: fm.platform, safe: PLATFORMS[fm.platform].safe, safeZone: fm.zone, illustrative: ill,
     brand: C.brand, claim: { text: C.claim, words: cw.words, accent: cw.accent }, stages, camera, bpm: grid.bpm, framesPerBeat: fpb, shots, cues,
-    music: C.music, musicGainDb: C.musicGainDb, ceilingDb: C.ceilingDb, fadeInMs: C.fadeInMs, bedAutomation, ...(C.vo ? { vo: 'vo.wav', duckDb: C.duckDb, voice: vo } : {}),
-    audio: { mode: C.vo ? 'vo' : 'continuous', quiet, events, role: 'proof' },
+    music: C.music, musicGainDb: C.musicGainDb, ceilingDb: C.ceilingDb, fadeInMs: C.fadeInMs, bedAutomation, ...(hasVo ? { vo: 'vo.wav', duckDb: C.duckDb, voice: vo } : {}),
+    audio: { mode: hasVo ? 'vo' : 'continuous', quiet, events, role: 'proof' },
     honesty: { numbers: fields.map((n) => ({ path: n.path, label: n.label, value: n.value, source: n.source, method: n.method })), illustrative: ill, gate: 'passed' }, claims, warnings,
     paceRule: { aslMax: 8, longMax: 12 } };
   return plan;
