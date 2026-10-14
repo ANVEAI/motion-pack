@@ -1,4 +1,4 @@
-# --- generated heavy media (regenerate, or download from the GitHub Release) ---
+# --- generated heavy media: regenerate with sfx/build_library.py and music/build_music.py (version-matched). The GitHub Release zips are a v0.1.0-only copy that lags main ---
 sfx/library/
 sfx/library_ext/
 music/library/

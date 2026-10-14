@@ -63,6 +63,24 @@ def test_readme_does_not_send_users_to_a_stale_release_as_the_default():
     assert 'supported path' in r[i:i + 200]
 
 
+def test_release_lag_statement_cannot_go_stale():
+    """verifier: a hand-written "main has 301 and 65" goes stale as sounds are added. The README states only the Release's fixed counts and points at the
+    generated table; the Release counts must stay below the manifests (else "lags" is false), and no file that mentions the Release may hand-write main's counts"""
+    import json
+    r = read('README.md')
+    m = re.search(r'holds (\d+) sound effects and (\d+) music pieces', r)
+    assert m, 'README "Heavy media" must state the Release counts'
+    sfx = len(json.loads(read('sfx/manifest.json'))['sounds'])
+    music = len(json.loads(read('music/manifest.json'))['items'])
+    assert (int(m.group(1)), int(m.group(2))) != (sfx, music) and int(m.group(1)) <= sfx and int(m.group(2)) <= music, 'the Release no longer lags main: fix README "Heavy media"'
+    for p in ('README.md', '.gitignore', 'tools/make_previews.py', 'sfx/README.md', 'music/README.md', 'LICENSE-MEDIA'):
+        t = read(p)
+        assert not re.search(r'`?main`? has \d+', t), f'{p}: hand-written count for main; point at the generated table instead'
+        for hit in re.finditer(r'(?i)(?:download[^.\n]{0,40}GitHub Release|from the (?:latest )?Release)', t):
+            ctx = t[max(0, hit.start() - 300):hit.end() + 300]
+            assert re.search(r'(?i)lags? main|v0\.1\.0', ctx), f'{p}: points at the Release without saying it lags main: {hit.group()!r}'
+
+
 def test_every_committed_lab_image_has_a_provenance_row_and_only_permissive_credited_sets():
     """audit H3 + verifier: a committed sheet showed a third-party sample whose licence is not stated. lab/provenance.json now lists every tracked lab
     image and the third-party sets it shows; each set needs a permissive licence, its notice in licenses/ and a row in THIRD_PARTY.md section 1b"""
