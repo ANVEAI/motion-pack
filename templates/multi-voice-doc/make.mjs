@@ -73,7 +73,7 @@ function insertSVG(o, k) {
     const cols = [ACC, INK, '#8F8A80', '#C9C2B4'];
     for (let i = 0; i < 9; i++) { const w = 120 + Math.round(r() * 260), h = 90 + Math.round(r() * 330), y = Math.round(r() * (H - h)), c = cols[i % cols.length], x0 = W + 80 + i * 150;
       svg += `<g id="${id}b${i}">${i % 4 === 3 ? `<circle cx="${x0 + w / 2}" cy="${y + h / 2}" r="${Math.round(Math.min(w, h) / 2.4)}" fill="none" stroke="${INK}" stroke-width="5"/>` : `<rect x="${x0}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`}</g>`;
-      tl += `\n  tl.fromTo('#${id}b${i}', { x: 0 }, { x: ${-(W + 900 + i * 150)}, duration: ${f(d + 0.2)}, ease: 'none' }, ${f(t0 - 0.1)});`; }
+      tl += `\n  tl.fromTo('#${id}b${i}', { x: 0 }, { x: -3500, duration: 1.4583, ease: 'none' }, ${f(t0 - 0.3)});`; }   // one conveyor speed (2400 px/s): the stream is still full when the insert ends
   }
   return { svg: `<svg viewBox="0 0 ${W} ${H}">${svg}</svg>`, tl };
 }
@@ -99,7 +99,8 @@ plan.overlays.forEach((o, k) => {
   else if (o.kind === 'card') { body += `\n<section class="clip paper card" id="ov${k}" ${at}><div class="big" id="ovt${k}">${esc(o.text)}</div><div class="src">source: ${esc(o.source || 'MISSING')}</div></section>`; tl += `\n  MP.type(tl, 'type/maskRise', '#ovt${k}', { at: ${f(s(o.start))}, dur: ${f(s(o.end - o.start))}, fps: ${F} });`; }
   else if (o.kind === 'availability') { body += `\n<section class="clip paper card" id="ov${k}" ${at}><div class="big" id="ovt${k}">${esc(o.line)}</div><div class="sub">${esc(o.sub || '')}</div></section>`; tl += `\n  MP.type(tl, 'type/maskRise', '#ovt${k}', { at: ${f(s(o.start))}, dur: ${f(s(o.end - o.start))}, fps: ${F} });`; }
 });
-const supers = plan.supers.map((x) => ({ id: C.supers.part, at: +s(x.at).toFixed(4), dur: +s(x.dur).toFixed(4), params: { ...C.supers.params, name: x.name, role: [x.role, x.tag].filter(Boolean).join(' · '), pos: C.supers.pos } }));
+/* gfx dur = the hold: the part also spends its inF + outF frames (docSuper 4 + 6) around it, so subtract them (CONFIG.supers.edgeF) or the super fades out over the next shot */
+const supers = plan.supers.map((x) => ({ id: C.supers.part, at: +s(x.at).toFixed(4), dur: +Math.max(0.2, s(x.dur) - C.supers.edgeF / F).toFixed(4), params: { ...C.supers.params, name: x.name, role: [x.role, x.tag].filter(Boolean).join(' · '), pos: C.supers.pos } }));
 const html = `${head({ W, H, title: 'motion-pack multi-voice documentary', bg: '#111', css })}
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-width="${W}" data-height="${H}" data-duration="${T}">${body}

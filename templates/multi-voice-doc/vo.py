@@ -44,7 +44,8 @@ def main():
     a = ap.parse_args()
     P = json.load(open(a.plan))
     here = os.path.dirname(os.path.abspath(__file__))
-    clips = {c['id']: c for c in json.load(open(os.path.join(here, 'clips.json')))['clips']}
+    cp = P.get('clips') or 'clips.json'   # plan.clips = CONFIG.clips (relative to this folder)
+    clips = {c['id']: c for c in json.load(open(cp if os.path.isabs(cp) else os.path.join(here, cp)))['clips']}
     fps, N = P['fps'], int(round(P['seconds'] * SR))
     out = np.zeros((N, 2))
     rep = []

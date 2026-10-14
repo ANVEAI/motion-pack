@@ -59,6 +59,29 @@ def test_duck_depth_and_lookahead():
     assert env[int(3.5 * SR)] > 0.975                    # recovered (within 0.2 dB after about 4 release constants)
 
 
+def test_duck_depth_param_and_bed_automation():
+    vo = np.zeros((SR * 4, 2))
+    t = np.arange(SR) / SR
+    vo[SR:2 * SR, 0] = 0.3 * np.sin(2 * np.pi * 220 * t)
+    assert abs(20 * np.log10(mixer.duck_envelope(vo, depth_db=12.0)[int(1.6 * SR)]) + 12.0) < 0.5
+    assert np.array_equal(mixer.duck_envelope(vo), mixer.duck_envelope(vo, depth_db=9.0))     # the default is unchanged
+    m = mixer.Mix(30, 4.0, lib=object())
+    assert m.duck_db == 9.0 and np.all(m.bed_gain() == 1.0)                                   # no duck_db / automation: as before
+    m.automate_bed([{"frame": 30, "gain_db": 0.0}, {"frame": 60, "gain_db": -20.0}])
+    gdb = 20 * np.log10(m.bed_gain())
+    assert abs(gdb[0]) < 1e-9 and abs(gdb[int(1.5 * SR)] + 10.0) < 0.2 and abs(gdb[int(3.5 * SR)] + 20.0) < 1e-6   # linear in dB between breakpoints, held outside
+    import tempfile
+    import soundfile as sf
+    with tempfile.TemporaryDirectory() as td:                                                 # the cue sheet carries both through
+        sf.write(os.path.join(td, "bed.wav"), 0.1 * np.ones((SR * 4, 2)), SR)
+        sf.write(os.path.join(td, "vo.wav"), vo, SR)
+        sheet = {"fps": 30, "length_s": 4.0, "bed": {"file": "bed.wav", "loop": False, "automation": [{"frame": 0, "gain_db": 0}, {"frame": 90, "gain_db": -30}]},
+                 "vo": {"file": "vo.wav", "duck_db": 12}}
+        m2 = mixer.mix_from_cuesheet(sheet, td)
+        assert m2.duck_db == 12.0 and m2.bed_auto is not None
+        assert mixer.mix_from_cuesheet({k: v for k, v in sheet.items() if k != "vo"}, td).duck_db == 9.0
+
+
 def test_cue_lint():
     cues = [{"id": "snd.hit.cinema", "frame": 10, "tier": 1}, {"id": "snd.hit.sub_drop", "frame": 60, "tier": 1, "over_bed_db": 7.0}]
     iss = mixer.lint_cues(cues, 30)

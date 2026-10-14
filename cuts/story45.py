@@ -5,7 +5,7 @@ VO-led shapes read word timings (words.json: [{w, s, e}] or {"words": [...]}, se
 (a time t is inside a word when s < t < e). Frames are round-half-up (cutgen.frame_of). Cue rows: visual_frame + anchor_frame (= visual + 1).
 
   walkthrough     --words words.json [--steps N] [--regions a,b,c] [--end-hold 5]          diagramWalkthrough: advances in the speech gaps
-  query-ladder    --dur 45 [--rungs 5 | --rungs "video:1,podcast:2,pdf:3"] [--bpm 120] [--words words.json] [--intro 0]   queryLadder
+  query-ladder    --dur 45 [--rungs 5 | --rungs "video:1,podcast:2,pdf:3"] [--bpm 120 | --sidecar bed.json] [--words words.json] [--intro 0]   queryLadder
   fidelity-ladder --bpm 99 [--steps 4 | --params 3,10,36,1024] [--bars-per-step 1] [--dropout-s 3]          fidelityLadder (+ bed automation)
   voices-open     --clips clips.json                                                         voicesColdOpen: mid-sentence faces, J audio, lead super
   command-burst   --words words.json [--burst-start S]                                       commandRapidFire: response on word_end frame + 1
@@ -190,10 +190,24 @@ def _downbeats(bpm, fps, n, offset=0.0):
     return [frame_of(offset + k * bar, fps) for k in range(int(n / fps / bar) + 2)]
 
 
-def query_ladder(duration_s, fps=30, rungs=None, bpm=None, words=None, intro_s=None, pullback_s=None, end_s=None, offset=0.0):
+def load_downbeats(src, fps=None):
+    """a music bed sidecar (music/library/beds/<id>.json: bar_frames, real bar starts even through a tempo ramp), a list of frames, or a path to a JSON list"""
+    if isinstance(src, str):
+        with open(src) as f:
+            src = json.load(f)
+    if isinstance(src, dict):
+        sf = (src.get("meta") or {}).get("fps")
+        if fps is not None and sf is not None and abs(float(sf) - float(fps)) > 1e-9:
+            raise ValueError("the sidecar is %s fps, the plan is %s fps" % (sf, fps))
+        src = src.get("bar_frames", [])
+    return sorted({int(round(x)) for x in src})
+
+
+def query_ladder(duration_s, fps=30, rungs=None, bpm=None, words=None, intro_s=None, pullback_s=None, end_s=None, offset=0.0, downbeats=None):
     """story.queryLadder: [intro] -> N rungs (type <= 1.2 s, resolve 0.4 s, hit) -> pullback with chips -> URL. Sections are contiguous and sum to
     the duration. Rungs are sorted by difficulty (hardest last). With bpm, every rung starts on a downbeat (bar line). With words (one VO sentence per
-    rung, in order), each rung starts in the speech gap before its line (a downbeat inside the gap when there is one) and never inside a word."""
+    rung, in order), each rung starts in the speech gap before its line (a downbeat inside the gap when there is one) and never inside a word.
+    downbeats: a list of real bar-start frames (a bed sidecar's bar_frames, or load_downbeats) instead of a constant bpm, so a tempo ramp still lands on bar lines."""
     p = STORY["queryLadder"]
     R = _rungs_arg(rungs)
     warn = []
@@ -212,17 +226,22 @@ def query_ladder(duration_s, fps=30, rungs=None, bpm=None, words=None, intro_s=N
     intro = frame_of(p["intro_s"] if intro_s is None else intro_s, fps)
     pb_s = p["pullback_s"] if pullback_s is None else pullback_s
     en_s = p["end_s"] if end_s is None else end_s
-    DB = _downbeats(bpm, fps, n, offset) if bpm else None
+    DB = sorted(int(x) for x in downbeats) if downbeats else (_downbeats(bpm, fps, n, offset) if bpm else None)
     starts = []
     if W is None:
         body_end = duration_s - pb_s - en_s
         L = (body_end - intro / float(fps)) / len(R)
         for k in range(len(R) + 1):
             t = intro / float(fps) + k * L
+            if downbeats and k > 0:
+                starts.append(min(DB, key=lambda d: (abs(d - t * fps), d)))              # the nearest real bar line
+                continue
             if bpm and k > 0:
                 bar = 4 * 60.0 / bpm
                 t = offset + round((t - offset) / bar) * bar
             starts.append(intro if k == 0 else frame_of(t, fps))
+        if downbeats and any(b <= a for a, b in zip(starts, starts[1:])):
+            raise ValueError("two rungs land on the same bar line: fewer rungs or a longer film")
     else:
         S = sentences(W)
         if len(S) < len(R):
@@ -293,7 +312,7 @@ def query_ladder(duration_s, fps=30, rungs=None, bpm=None, words=None, intro_s=N
     sfx += [_cue(p["pullback_sfx"], pb, -2.0), _cue(p["end_sfx"], en, 0.0)]
     if W is not None:
         warn += _check_cuts([s["start"] for s in sections if s["start"] > 0], W, fps, "cut")
-    return {"pattern": "queryLadder", "fps": fps, "frames": n, "bpm": bpm, "sections": sections, "rungs": rows, "sfx": sfx, "warnings": warn}
+    return {"pattern": "queryLadder", "fps": fps, "frames": n, "bpm": bpm, "downbeats": "list" if downbeats else ("bpm" if bpm else None), "sections": sections, "rungs": rows, "sfx": sfx, "warnings": warn}
 
 
 # ---------------------------------------------------------------------------------------------------------- fidelityLadder
@@ -664,6 +683,7 @@ def add_parsers(sub):
     w.add_argument("--regions", default=""); w.add_argument("--end-hold", type=float); w.add_argument("--min-gap", type=float)
     q = sub.add_parser("query-ladder"); q.add_argument("--dur", type=float, required=True); q.add_argument("--fps", type=float, default=30); q.add_argument("--rungs", default="")
     q.add_argument("--bpm", type=float); q.add_argument("--words"); q.add_argument("--intro", type=float); q.add_argument("--pullback", type=float); q.add_argument("--end", type=float)
+    q.add_argument("--sidecar", help="a music bed sidecar JSON: rungs start on its real bar_frames (a tempo ramp included)"); q.add_argument("--downbeats", default="", help="bar-start frames, comma separated")
     f = sub.add_parser("fidelity-ladder"); f.add_argument("--bpm", type=float, required=True); f.add_argument("--fps", type=float, default=30); f.add_argument("--steps", type=int)
     f.add_argument("--params", default=""); f.add_argument("--bars-per-step", type=float); f.add_argument("--dropout-s", type=float); f.add_argument("--reveal-bars", type=float); f.add_argument("--start-bar", type=float, default=0)
     v = sub.add_parser("voices-open"); v.add_argument("--clips", required=True); v.add_argument("--fps", type=float, default=30); v.add_argument("--max-open", type=float); v.add_argument("--j-ms", type=float)
@@ -683,7 +703,8 @@ def run(a):
     if a.cmd == "query-ladder":
         r = lst(a.rungs)
         rungs = int(r[0]) if len(r) == 1 and r[0].isdigit() else (r or None)
-        return query_ladder(a.dur, fps, rungs, a.bpm, a.words, a.intro, a.pullback, a.end)
+        db = load_downbeats(a.sidecar, fps) if a.sidecar else ([int(x) for x in lst(a.downbeats)] or None)
+        return query_ladder(a.dur, fps, rungs, a.bpm, a.words, a.intro, a.pullback, a.end, downbeats=db)
     if a.cmd == "fidelity-ladder":
         return fidelity_ladder(a.bpm, fps, a.steps, [float(x) for x in lst(a.params)] or None, a.bars_per_step, a.dropout_s, a.reveal_bars, start_bar=a.start_bar)
     if a.cmd == "voices-open":

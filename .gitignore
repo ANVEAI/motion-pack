@@ -66,3 +66,5 @@ templates/demo-r3-fx/out/*.mp4
 templates/demo-r3-fx/out/env/
 templates/demo-r3-fx/out/plate-env.jpg
 templates/demo-r3-fx/out/*.frames.json
+# --- multi-voice-doc: the placeholder demo MP4 stays out of git (plan.json, transcript.json and sheet.jpg are committed; vo.wav is covered by templates/.gitignore) ---
+templates/multi-voice-doc/out/*.mp4

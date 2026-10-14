@@ -1,12 +1,14 @@
 """cuts/test_story45.py: the round-4/5 story shapes (story45.py) on synthetic word timings: every shape, determinism, no cut inside a word,
 timing bounds, CLI. Run: python3 -m pytest -q cuts/test_story45.py"""
-import json, math, os, subprocess, sys, tempfile, unittest
+import json, math, os, shutil, subprocess, sys, tempfile, unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import story45 as S  # noqa: E402
 import cutgen  # noqa: E402
 
-CUTGEN = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cutgen.py")
+REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+CUTGEN = os.path.join(REPO, "cuts", "cutgen.py")
+TPL = os.path.join(REPO, "templates", "multi-voice-doc")
 
 
 def say(text, t0=0.0, word=0.22, space=0.04, gap=0.4):
@@ -79,6 +81,25 @@ class QueryLadder(unittest.TestCase):
         r = S.query_ladder(48, 30, rungs=5, bpm=120)                            # 8.1 s rungs: still on downbeats, but warned as too long
         self.assertTrue(all(abs(g["downbeat_delta_frames"]) <= 2 for g in r["rungs"]))
         self.assertTrue(any("holds" in w for w in r["warnings"]))
+
+    def test_tempo_ramp_downbeats(self):
+        bars = [0, 72, 144]                                                       # a ramp: bars shorten 72 -> 68 -> 64 frames (a bed sidecar's bar_frames)
+        L = 72
+        while bars[-1] < 1300:
+            L = max(60, L - 2)
+            bars.append(bars[-1] + L)
+        r = S.query_ladder(40, 30, rungs=5, downbeats=bars)
+        for g in r["rungs"]:
+            self.assertIn(g["start"], bars)                                       # every rung starts exactly on a real bar line
+            self.assertEqual(g["downbeat_delta_frames"], 0)
+        self.assertEqual(r["sections"][-1]["end"], 1200)
+        with tempfile.TemporaryDirectory() as td:
+            side = os.path.join(td, "bed.json")
+            json.dump({"meta": {"fps": 30}, "bar_frames": bars}, open(side, "w"))
+            out = subprocess.run([sys.executable, CUTGEN, "query-ladder", "--dur", "40", "--rungs", "5", "--sidecar", side], capture_output=True, text=True, check=True).stdout
+            self.assertEqual(json.loads(out)["rungs"], r["rungs"])
+            json.dump({"meta": {"fps": 24}, "bar_frames": bars}, open(side, "w"))
+            self.assertNotEqual(subprocess.run([sys.executable, CUTGEN, "query-ladder", "--dur", "40", "--sidecar", side], capture_output=True, text=True).returncode, 0)   # fps mismatch refused
 
     def test_vo_led(self):
         W = say("a dog barking on the beach. | where they talk about sleep. | the clause about pets in the lease. | a zebra in another language. | code that retries with backoff.",
@@ -270,33 +291,126 @@ class Cli(unittest.TestCase):
 
 
 class MixerAutomation(unittest.TestCase):
-    """the dropout / question automation measured on a rendered bed (music/mixer.py bed automation)"""
+    """the dropout / question automation measured on a rendered bed (music/mixer.py bed automation), levels read with ears' own spectrogram"""
     def test_bed_automation_depth(self):
         try:
-            sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "music"))
+            sys.path.insert(0, os.path.join(REPO, "music"))
+            sys.path.insert(0, REPO)
             import numpy as np
             import mixer
+            from ears import core
         except Exception as e:                                                   # pragma: no cover
-            self.skipTest("music mixer not importable: %s" % e)
-        r = S.fidelity_ladder(100, 30, steps=4)
-        m = mixer.Mix(30, r["frames"] / 30.0, lib=object())
-        n = m.n
-        t = np.arange(n) / 48000.0
-        m.add_bed(np.stack([0.3 * np.sin(2 * np.pi * 220 * t)] * 2, 1), loop=False)
+            self.skipTest("music mixer / ears not importable: %s" % e)
+
+        def level_db(y, a_s, b_s):
+            """mean total power (dB) of the ears STFT between a_s and b_s seconds"""
+            P, tt, _ = core.stft_power(core.mono(y), 4096, 1024)
+            sel = (tt >= a_s) & (tt < b_s)
+            return float(core.db(P[sel].sum(axis=1).mean()))
+
+        fps = 30
+        r = S.fidelity_ladder(100, fps, steps=4)
+        m = mixer.Mix(fps, r["frames"] / 30.0, lib=object())
+        t = np.arange(m.n) / 48000.0
+        noise = np.random.default_rng(3).standard_normal((m.n, 2)) * 0.1 + np.stack([0.3 * np.sin(2 * np.pi * 220 * t)] * 2, 1)
+        m.add_bed(noise, loop=False)
         m.automate_bed(r["bed_automation"])
-        y = m.bed[:, 0] * m.bed_gain()
+        y = m.bed * m.bed_gain()[:, None]
         d = next(s for s in r["sections"] if s["role"] == "dropout")
-        rms = lambda a, b: float(np.sqrt(np.mean(y[int(a * 1600):int(b * 1600)] ** 2)))
-        body = rms(r["steps"][1]["start"], r["steps"][2]["start"])
-        dip = rms(d["start"] + 3, d["end"] - 6)
-        self.assertGreaterEqual(20 * np.log10(body / dip), 20.0)                # >= 20 dB under the body
-        tr = S.trailer(60, 30)
-        m2 = mixer.Mix(30, 60, lib=object())
+        body = level_db(y, r["steps"][1]["start"] / fps, r["steps"][2]["start"] / fps)
+        dip = level_db(y, (d["start"] + 5) / fps, (d["end"] - 5) / fps)
+        self.assertGreaterEqual(body - dip, 20.0)                                # the dropout is >= 20 dB under the body
+        self.assertGreaterEqual(body - level_db(y, d["end"] / fps + 0.2, d["end"] / fps + 0.8), -1.0)   # and the bed is back at the reveal
+        tr = S.trailer(60, fps)
+        m2 = mixer.Mix(fps, 60, lib=object())
+        m2.add_bed(np.random.default_rng(4).standard_normal((m2.n, 2)) * 0.1, loop=False)
         m2.automate_bed(tr["bed_automation"])
-        g = 20 * np.log10(m2.bed_gain())
+        y2 = m2.bed * m2.bed_gain()[:, None]
         q = next(s for s in tr["sections"] if s["role"] == "question")
         w = next(s for s in tr["sections"] if s["role"] == "wall")
-        self.assertGreaterEqual(np.median(g[w["start"] * 1600:w["end"] * 1600]) - np.max(g[q["start"] * 1600 + 1:q["end"] * 1600 - 1]), 30.0)
+        self.assertGreaterEqual(level_db(y2, w["start"] / fps + 1, w["end"] / fps - 1) - level_db(y2, q["start"] / fps + 0.1, q["end"] / fps - 0.1), 30.0)   # the question is >= 30 dB under the wall
+
+
+@unittest.skipUnless(shutil.which("node"), "node is needed to build the template plan")
+class MultiVoiceDocTemplate(unittest.TestCase):
+    """templates/multi-voice-doc: the plan with its placeholder clips, and with a real MP4 supplied (a synthetic test pattern: never a person)"""
+
+    @staticmethod
+    def build(*extra):
+        name = "_t_plan"
+        subprocess.run(["node", os.path.join(REPO, "templates", "_shared", "cues.mjs"), TPL, "--name", name] + list(extra), check=True, capture_output=True, text=True,
+                       env=dict(os.environ, PYTHON=sys.executable))
+        path = os.path.join(TPL, "out", name + ".json")
+        try:
+            with open(path) as f:
+                return json.load(f)
+        finally:
+            os.remove(path)
+
+    def test_placeholder_plan(self):
+        P = self.build()
+        self.assertLessEqual(P["seconds"], 30.0)
+        self.assertTrue(4 <= P["open"]["faces"] <= 6 and P["open"]["seconds"] <= 6.0)
+        self.assertEqual(P["lint_vo"], [])
+        self.assertEqual(P["lint"]["claimsWithoutSource"], [])
+        self.assertEqual(P["lint"]["unmotivatedTransitions"], [])
+        self.assertTrue(P["lint"]["pace"]["pass"])
+        # no speaker, B-roll-free cut inside a word of the voice track: every base cut after the opener sits between words
+        n_open = P["open"]["faces"] + 1
+        for b in P["base"][n_open:]:
+            self.assertFalse(inside(b["start"] / P["fps"], P["transcript"]), b)
+        self.assertEqual([o["kind"] for o in P["overlays"]].count("insert"), 3)             # three chapters, each with a flat 2D insert and a B-roll
+        self.assertEqual([o["kind"] for o in P["overlays"]].count("broll"), 3)
+        self.assertEqual(P["supers"][0]["clip"], "lead")                                    # no name before the lead
+        self.assertEqual(min(x["at"] for x in P["supers"]), P["supers"][0]["at"])
+        self.assertTrue(4.0 <= P["supers"][0]["at"] / P["fps"] <= 7.0)
+        self.assertLessEqual(min(p["gain_db"] for p in P["bedAutomation"]), -30)           # the quiet tail
+        self.assertEqual(P["base"][-1]["role"], "end")
+        self.assertGreater(P["placeholders"], 0)
+        self.assertEqual(json.dumps(P), json.dumps(self.build()))                            # deterministic
+
+    @unittest.skipUnless(shutil.which("ffmpeg"), "ffmpeg is needed to make and decode the test clip")
+    def test_real_footage_path(self):
+        with tempfile.TemporaryDirectory() as td:
+            clip = os.path.join(td, "clip.mp4")
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc=size=320x180:rate=30:duration=10", "-f", "lavfi", "-i", "sine=frequency=220:duration=10",
+                            "-shortest", "-pix_fmt", "yuv420p", clip], check=True)
+            doc = json.load(open(os.path.join(TPL, "clips.json")))
+            for c in doc["clips"]:
+                c["src"] = clip
+            cp = os.path.join(td, "clips.json")
+            json.dump(doc, open(cp, "w"))
+            P = self.build("--set", "clips=" + cp)
+            self.assertTrue(all(a["src"] == clip for a in P["audio"]))
+            self.assertEqual(P["placeholders"], 3)                                          # only the B-roll slots are still labelled cards
+            pp = os.path.join(td, "plan.json")
+            json.dump(P, open(pp, "w"))
+            out = os.path.join(td, "vo.wav")
+            subprocess.run([sys.executable, os.path.join(TPL, "vo.py"), pp, out], check=True, capture_output=True)
+            import numpy as np
+            import soundfile as sf
+            y, sr = sf.read(out)
+            self.assertEqual(len(y), int(round(P["seconds"] * sr)))
+            rep = json.load(open(out + ".json"))["segments"]
+            self.assertTrue(rep and all(r["kind"] == "clip" for r in rep))                  # the real clip's audio, not the guide signal
+            for a in P["audio"]:
+                seg = y[int(a["start"] * sr / P["fps"]) + int(0.02 * sr):int(a["end"] * sr / P["fps"]) - int(0.02 * sr)]
+                self.assertGreater(float(np.sqrt(np.mean(seg ** 2))), 0.01)
+            a0, a1 = P["audio"][-2]["end"], P["audio"][-1]["start"]                          # the breath between two segments is silent
+            self.assertLess(float(np.abs(y[int(a0 * sr / P["fps"]) + 5:int(a1 * sr / P["fps"]) - 5]).max()), 1e-6)
+
+    def test_placeholder_voice_is_a_guide_signal(self):
+        if not shutil.which("ffmpeg"):
+            self.skipTest("ffmpeg")
+        with tempfile.TemporaryDirectory() as td:
+            P = self.build()
+            pp = os.path.join(td, "plan.json")
+            json.dump(P, open(pp, "w"))
+            out = os.path.join(td, "vo.wav")
+            subprocess.run([sys.executable, os.path.join(TPL, "vo.py"), pp, out], check=True, capture_output=True)
+            self.assertTrue(all("guide" in r["kind"] for r in json.load(open(out + ".json"))["segments"]))
+            subprocess.run([sys.executable, os.path.join(TPL, "vo.py"), pp, out, "--placeholder", "none"], check=True, capture_output=True)
+            self.assertEqual(json.load(open(out + ".json"))["segments"], [])
 
 
 if __name__ == "__main__":

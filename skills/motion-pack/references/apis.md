@@ -5,7 +5,7 @@ All paths are relative to the repository root. Each module README holds the full
 ## Templates (start here)
 
 ```bash
-cd templates/<ad|beat-edit|talking-head>  && node make.mjs [--set key=value ...]   # plan.json + mix.wav + index.html (+ out/tx.json windows)
+cd templates/<ad|beat-edit|talking-head|multi-voice-doc>  && node make.mjs [--set key=value ...]   # plan.json + mix.wav + index.html (+ out/tx.json windows)
 npx --yes hyperframes@0.8.142 render . -o out/<name>.mp4 --crf 23
 bash templates/_shared/render3d.sh templates/<film-scene|character-spot> scene.html <wide|tall> [crf]   # three.js: plan, GPU render, mix, mux, sheet
 node templates/_shared/cues.mjs <dir> [--set k=v]       # export the plan only (no browser)
@@ -55,7 +55,16 @@ python3 cuts/cutgen.py beats   --bpm 128 --fps 30 --pattern every_2 --bars 8 [--
 python3 cuts/cutgen.py section --bpm 120 --fps 30 --plan build_accelerate
 python3 cuts/cutgen.py split   --mode J --cut-frame 120 --fps 30
 python3 cuts/cutgen.py talking | smash | interrupts ...      # see cuts/README.md
+python3 cuts/cutgen.py walkthrough --words words.json [--steps N]        # round 4/5 story shapes (cuts/story45.py): words.json = [{w, s, e}] in seconds
+python3 cuts/cutgen.py query-ladder --dur 45 --rungs "video:1,pdf:3" [--bpm 120] [--words words.json]
+python3 cuts/cutgen.py fidelity-ladder --bpm 99 --params 3,10,36,1024 [--dropout-s 3]
+python3 cuts/cutgen.py voices-open --clips clips.json                # [{id, src, words, name, role, tag, lead?}]
+python3 cuts/cutgen.py command-burst --words words.json | anaphora --words words.json --token here
+python3 cuts/cutgen.py trailer --dur 60 [--dialogue lines.json] | style-ladder --looks live,look.pastel --bpm 120
 ```
+
+- **Library:** `import story45; story45.walkthrough(words, fps, steps, regions)`, `query_ladder`, `fidelity_ladder`, `voices_open`, `command_burst`, `anaphora`, `trailer`, `style_ladder` return plain dicts (a `warnings` list, `sfx` cue rows with `visual_frame` / `anchor_frame`, and `bed_automation` where the shape has a dropout or a quiet hold); `story45.inside_word(t, words)` is the no-cut-inside-a-word test.
+- **Bed automation and duck depth (mixer cue sheet):** `"bed": {"automation": [{"frame": f, "gain_db": g}]}` (linear in dB, held outside) and `"vo": {"file": ..., "duck_db": 12}`; `templates/_shared/audio.py` passes `plan.bedAutomation`, `plan.vo` (a WAV relative to the plan) and `plan.duckDb`.
 
 ## Sound (`sfx/`, `music/`)
 
@@ -150,7 +159,7 @@ const worker = create(ctx, parent, 'objects/worker', { spec: { keys: keysOf(ACTS
 
 ```bash
 python3 tools/check_ids.py
-python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tests
+python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs
 node camera/tests/camera.test.mjs; node type/tests/type.test.mjs; bash layers/tests/run-all.sh
 python3 sfx/qa.py; python3 music/qa.py

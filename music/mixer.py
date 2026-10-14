@@ -11,6 +11,7 @@ The v9 hit contract, generalised (ported from ideas in the ANVE v9 launch-film m
     last 0.15 s digital zero; limiter gain reduction per cue is budgeted (<= 1.5 dB tier 1-2, <= 1.0 dB tier 3) and the offender is lowered, not the limiter
   * bed automation (optional): "bed": {"automation": [{"frame": f, "gain_db": g}, ...]} breakpoints, linear in dB between them, held outside them;
     applied after the voice-relative bed level and before the duck (dropouts, a trailer's near-silent question, a quiet end-card hold: cuts/story45.py)
+  * duck depth (optional): "vo": {"duck_db": 12} (default 9; ears measures the duck against the bed next to the line, so a documentary mix wants a little margin over 9)
   * stems: music.wav + sfx.wav + vo.wav sum EXACTLY to the master pre-limiter; nomusic.wav for re-scoring; phone-voiced check of every cue
 usage:  python3 mixer.py cuesheet.json --out DIR
 cue sheet:  {"fps":30,"length_s":20,"bed":{"file":"...wav","gain_db":0,"loop":true,"start_frame":0},"vo":{"file":"...","start_frame":0},
@@ -179,6 +180,7 @@ class Mix:
         self.counts = {}
         self.bed_lufs = None
         self.bed_auto = None
+        self.duck_db = 9.0                   # depth of the duck under the voice (cue sheet "vo": {"duck_db": 12}: a VO-led documentary carries a deeper duck than the 9 dB minimum)
         self.bed_rel_vo_lu = -1.0          # un-ducked bed integrated loudness relative to the voice (ducked another 9 dB under speech => about -10 LU under the voice)
 
     # -- inputs
@@ -328,9 +330,9 @@ class Mix:
         if self.bed_auto:
             bed = bed * self.bed_gain()[:, None]
         if duck and has_vo:
-            env = duck_envelope(self.vo)
+            env = duck_envelope(self.vo, depth_db=self.duck_db)
             carved = dsp.biquad(dsp.biquad(bed, "peak", 250.0, 0.9, -3.0), "peak", 3000.0, 1.0, -3.5)
-            w = (1 - env) / max(1e-9, 1 - dsp.db(-9.0))
+            w = (1 - env) / max(1e-9, 1 - dsp.db(-self.duck_db))
             w = np.clip(w, 0, 1)[:, None]
             bed = (bed * (1 - w) + carved * w) * env[:, None]
         bed_v = self._bed_with_vacuum(bed)
@@ -488,6 +490,8 @@ def mix_from_cuesheet(sheet, base_dir="."):
     v = sheet.get("vo")
     if v:
         m.add_vo(rd(v["file"]), v.get("start_frame", 0), v.get("gain_db", 0.0))
+        if v.get("duck_db") is not None:
+            m.duck_db = float(v["duck_db"])
     for c in sheet.get("cues", []):
         m.add_cue(c["id"], c["frame"], c.get("tier"), c.get("over_bed_db"), c.get("over_vo_db"), c.get("gain_db", 0.0), c.get("pan", 0.0), c.get("seed"), c.get("why", ""), c.get("until_frame"))
     for t in sheet.get("transitions", []):
