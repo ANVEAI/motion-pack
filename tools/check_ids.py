@@ -45,7 +45,8 @@ def families(B, E):
       ('music', re.compile(B + r"(music[/.](?:bed|sting|logo)_[a-z0-9_]+)" + E)), ('tx', re.compile(B + r"(transitions/[A-Za-z0-9_-]+)" + E)),
       ('type', re.compile(B + r"(type/[A-Za-z0-9_]+)" + E)),
       ('blender', re.compile(B + r"(blender/(?:art\.)?[a-z][A-Za-z0-9]*)" + E)),   # recipe ids only: file paths (blender/run.py) never match
-      ('layers', re.compile(B + r"(layers/[A-Za-z][A-Za-z0-9_-]*)" + E)), ('objects', re.compile(B + r"(objects/[a-z][a-z0-9-]*)" + E)),
+      # layers ids may be dotted (layers/overlay.grain) and objects ids are matched in any case (objects/logoExtrude), so an off-style typo is reported, never skipped
+      ('layers', re.compile(B + r"(layers/[A-Za-z][A-Za-z0-9_-]*(?:\.[A-Za-z][A-Za-z0-9_-]*)?)" + E)), ('objects', re.compile(B + r"(objects/[A-Za-z][A-Za-z0-9_-]*(?:\.[A-Za-z0-9]+)?)" + E)),
       ('cam', re.compile(B + r"(cam[23]d\.[A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z][A-Za-z0-9_]*)?)" + E)),
       ('cuts', re.compile(B + r"(cuts/[A-Za-z_]+(?:/[A-Za-z][A-Za-z0-9_-]*)?)" + E)), ('templates', re.compile(B + r"(templates/[A-Za-z0-9_-]+)" + E))]
 RX, RX_MD = families(*Q), families(*MD)
@@ -61,6 +62,7 @@ def ok(kind, v):
     if kind == 'tx': return n in TXOK or isdir('transitions', n)
     if kind == 'type': return n in TYPE or isdir('type', n)
     if kind == 'blender': return v in BLENDER
+    if kind in ('layers', 'objects') and n.rsplit('.', 1)[-1] in FILE_EXT and '.' in n: return True   # a path (layers/README.md, objects/index.js), not an id
     if kind == 'layers': return n in LAYERS or exists('layers', n)
     if kind == 'objects': return n in OBJECTS or exists('objects', n)
     if kind == 'cam': return v in CAM or v.split('.')[1] in FILE_EXT   # cam2d.js, cam3d.js: the camera/ source files, not moves

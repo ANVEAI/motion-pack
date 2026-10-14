@@ -16,9 +16,10 @@ REPO = os.path.dirname(TOOLS)
 CHECK = os.path.join(TOOLS, "check_ids.py")
 BAD = {   # family -> a plausible but wrong id
     "transitions": "transitions/nope", "sfx": "sfx/hit/nope", "music": "music/bed_nope_loop8", "type": "type/nope", "blender": "blender/nopeRecipe",
-    "layers": "layers/nope", "objects": "objects/does-not-exist", "cuts (group)": "cuts/nope/x", "cuts (name)": "cuts/story/nope", "cuts (retime)": "cuts/retime/nope",
+    "layers": "layers/nope", "objects": "objects/does-not-exist",
+    "layers (dotted)": "layers/overlay.nope", "objects (camelCase)": "objects/doesNotExist", "objects (capital)": "objects/Laptop", "cuts (group)": "cuts/nope/x", "cuts (name)": "cuts/story/nope", "cuts (retime)": "cuts/retime/nope",
     "cam3d": "cam3d.noSuchMove", "cam2d": "cam2d.noSuchMove", "templates": "templates/nope"}
-GOOD = ["transitions/whip", "sfx/hit/punch", "music/bed_tech_pulse_loop8", "type/scaleSlam", "blender/turntable", "layers/vignette", "layers/grain", "objects/laptop", "cuts/story/interruptOpen",
+GOOD = ["transitions/whip", "sfx/hit/punch", "music/bed_tech_pulse_loop8", "type/scaleSlam", "blender/turntable", "layers/vignette", "layers/grain", "layers/overlay.grain", "layers/README.md", "objects/laptop", "objects/index.js", "cuts/story/interruptOpen",
         "cuts/sections/build_accelerate", "cuts/retime/heroRamp", "cuts/interrupts", "cam3d.pushIn", "cam2d.push2d", "cam2d.dutchRoll.presets", "templates/ad"]
 
 
@@ -79,6 +80,15 @@ def test_markdown_is_read_only_with_docs_and_only_inside_code(probe):
     for want in ("transitions/nope", "sfx/hit/nope", "music/bed_nope_loop8"):
         assert want in r.stdout
     assert "not-in-backticks" not in r.stdout and "index" not in r.stdout.split("unresolved")[-2][-400:]
+
+
+def test_off_style_ids_are_reported_in_markdown_too(probe):
+    """the verifier's C5 probe: a camelCase objects id and a dotted layers id used to match no pattern, so a typo in either passed silently in code and in Markdown"""
+    md = write(probe, "offstyle.md", "Use `objects/doesNotExist`, `objects/logoExtrude` and `layers/look.nope`; `layers/overlay.grain` and `objects/logo-extrude` are real.\n")
+    r = run("--docs", md)
+    assert r.returncode == 1 and "unresolved: 3" in r.stdout, r.stdout[-600:]
+    for want in ("objects/doesNotExist", "objects/logoExtrude", "layers/look.nope"):
+        assert want in r.stdout
 
 
 def test_the_pack_is_clean_in_both_modes():
