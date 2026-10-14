@@ -94,6 +94,7 @@ STALE = [
     (r"adds 25 \(merged\)|the 25 added transitions|11 more real DOM back-ends", "tx-shaders-x adds 27, registry-x has 27, tx-dom-x has 13 real back-ends"),
     (r"The 14 presets are", "type/presets.js has 15 presets (outlineFill)"),
     (r"\b15 (recent )?launch(es| films)\b", "the research table lists 20 launch films"),
+    (r"count\.py` does not (list|count) them", "tools/count.py counts every demo-* folder as a part demo (README table)"),
 ]
 
 
