@@ -14,7 +14,7 @@
                    reduced motion has no blur and no jitter; unsorted beats equal sorted ones; boxes stay inside the safe rect
      commandPill   the pill width grows by exactly one monospace advance per typed character; the outline draws on; the pill fits the safe rect; caret blinks after typing
    Shipped files carry no third-party brand or product name (lint over r6.js and the demo template). */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
+import fs from 'node:fs'; import path from 'node:path'; import { execFileSync, spawnSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
 import { GFX, renderSVG, renderInner, gfxCues, sfxFor } from '../gfx/index.js';
 import { ctxFor, measure } from '../gfx/core.js';
 import { E, sstep } from '../ease.js';
@@ -70,18 +70,9 @@ for (const id of IDS) {
     check(`${id}: ${MODES.length} hostile param sets x 4 times (${MODES.join(', ')}) never throw, hang (< 4 s) or exceed 4 MB`, probs.length === 0, probs.slice(0, 3).join(' | ')); }
   console.log(`  hostile renders: ${total}, slowest ${worst} ms (${worstId})`); }
 
-/* hostile NESTED params: the keys the generic walk cannot reach (chart data, rows, icons, beats, paths) */
-{ const big = (n, f) => Array.from({ length: n }, f), X = 'x'.repeat(1e6), junk = [NaN, Infinity, -1, 0, 1e300, null, 'q', {}, [], true];
-  const CASES = [['chart.hoverTooltip', { chart: { values: big(1e5, () => 1e12), labels: big(1e5, () => X.slice(0, 1e4)), box: [NaN, Infinity, -5, 0], unit: X } }], ['chart.hoverTooltip', { target: 'line', chart: { values: junk, box: [9e9, -9e9, 0, 0] } }], ['chart.hoverTooltip', { target: 'line', chart: { values: [] } }], ['chart.hoverTooltip', { chart: { values: [0, 0, 0] } }],
-    ['chart.hoverTooltip', { target: 'table', chart: { rows: big(1e5, () => ({ label: X, values: junk })), columns: big(1e5, () => ({ label: X })), bars: { row: 1e9 } } }], ['chart.hoverTooltip', { path: big(1e5, (_, i) => [i, NaN, i]), visit: junk, source: X }], ['chart.hoverTooltip', { path: [[0, 0.5, 0.5]], lift: -1e9, scale: 1e9 }],
-    ['ui.dockLaunch', { icons: big(1e5, (_, i) => (i % 2 ? junk : { name: X, icon: '__proto__', color: 'red' })), target: 1e9, clickAt: NaN, path: big(1e5, () => [NaN, NaN, NaN]) }], ['ui.dockLaunch', { icons: [], size: -1, magnify: 1e9, radius: 0 }], ['ui.dockLaunch', { window: [NaN, NaN, 1e9, -1], path: [[1e9, 5, 5]] }],
-    ['title.verbCard', { words: big(1e5, () => ({ big: X, rest: X })), chapterDur: 0, sweepDur: -1 }], ['title.verbCard', { words: [], bigSize: 1e12, lineSize: 0 }], ['title.verbCard', { words: [{ big: '', rest: '' }, null, 7], colors: junk }],
-    ['ui.connectRows', { rows: big(1e5, () => ({ name: X, icon: 'constructor', color: '#zzz' })), thinkAt: NaN, clickGap: 0 }], ['ui.connectRows', { rows: [], thinking: X, clickAt: -1e9 }],
-    ['layout.degradingDiagram', { beats: big(1e5, (_, i) => ({ at: NaN, layout: 'row6', mood: '__proto__', marks: junk, caption: X })), ret: [NaN, 1e9] }], ['layout.degradingDiagram', { beats: [{ at: 1e12, layout: 'nope' }, { at: -5, marks: 'abc' }], captionSize: 1e12, maxUnit: 0 }], ['layout.degradingDiagram', { beats: [] }],
-    ['type.commandPill', { text: X, prompt: X, size: 0, cps: 0, drawDur: 0 }], ['type.commandPill', { text: '', pos: junk, stroke: 1e9, cps: 1e12 }]];
-  const probs = []; let worstMs = 0; for (const [id, params] of CASES) for (const t of [0.2, 1.7, 3.3, 6.1, 12]) { const t0 = Date.now(); let out = '', err = null; try { out = renderSVG(id, t, { at: 0, dur: 30, params }, { W: 1080, H: 1920 }); } catch (e) { err = e.message; } const ms = Date.now() - t0; worstMs = Math.max(worstMs, ms);
-    if (err || ms > 4000 || out.length > 4e6 || /NaN|undefined|Infinity|\[object/.test(out)) probs.push(`${id} ${JSON.stringify(Object.keys(params))}@${t}: ${err || (ms > 4000 ? ms + ' ms' : out.length > 4e6 ? out.length + ' B' : 'NaN in output')}`); }
-  check(`hostile NESTED params (${CASES.length} cases x 5 times: 100,000-entry lists, 1,000,000-char strings, NaN / Infinity / null / prototype names in chart data, rows, icons, beats, paths) never throw, hang (slowest ${worstMs} ms) or emit NaN`, probs.length === 0, probs.slice(0, 3).join(' | ')); }
+/* hostile NESTED params: the keys the generic walk cannot reach (chart data, rows, icons, beats, paths); type/tests/r6.hostile.mjs runs in a child process with a 60 s wall limit (a hang cannot be interrupted in-process) */
+{ const hr = spawnSync(process.execPath, [path.join(path.dirname(fileURLToPath(import.meta.url)), 'r6.hostile.mjs')], { encoding: 'utf8', timeout: 60000, maxBuffer: 1 << 24 }); let info = {}; try { info = JSON.parse((hr.stdout || '').trim().split('\n').pop()); } catch { /* no result line: the child died or hung */ }
+  check(`hostile NESTED params (${info.cases ?? '?'} cases x 5 times: 100,000-entry lists, 1,000,000-char strings, NaN / Infinity / null / prototype names in chart data, rows, icons, beats, paths) never throw, hang (slowest ${info.worstMs ?? '?'} ms, 60 s wall limit) or emit NaN`, hr.status === 0 && !hr.error && !(info.probs || []).length, hr.error ? 'child timed out or failed: ' + hr.error.code : (info.probs || []).join(' | ') || 'child exit ' + hr.status); }
 /* ============================ chart.hoverTooltip ============================ */
 const barRects = (svg, s = 1) => tagsOf(svg, /<rect x="[^"]*" y="[^"]*" width="[^"]*" height="[^"]*" rx="[^"]*" fill="[^"]*"\s*\/>/g).filter((r) => near(+r.rx, 8 * s, 0.01) && +r.height > 3);
 const PD = { chart: { labels: ['A1', 'A2', 'A3', 'A4', 'A5'], values: [100, 150, 75, 75, 300], unit: '' } };

@@ -60,7 +60,8 @@ const MUT = [
 ];
 let base = run(); if (base.code !== 0) { console.log(base.out.split('\n').filter((l) => /^FAIL/.test(l)).slice(0, 5).join('\n')); console.log('BASELINE IS NOT GREEN'); process.exit(1); }
 console.log('baseline: green (' + (base.out.match(/(\d+) passed/) || [])[1] + ' checks)\n'); let bad = 0;
-for (const m of MUT) { const file = path.join(tmp, 'type', m.f), orig = fs.readFileSync(file, 'utf8'), n = orig.split(m.from).length - 1;
+const ONLY = process.env.MUT_ONLY ? new RegExp(process.env.MUT_ONLY) : null;   // MUT_ONLY='unbounded' re-runs just the mutations whose name matches
+for (const m of MUT.filter((q) => !ONLY || ONLY.test(q.n))) { const file = path.join(tmp, 'type', m.f), orig = fs.readFileSync(file, 'utf8'), n = orig.split(m.from).length - 1;
   if (n !== 1) { console.log(`STALE  ${m.n}: mutation text found ${n} times`); bad++; continue; }
   fs.writeFileSync(file, orig.replace(m.from, () => m.to)); const r = run(); fs.writeFileSync(file, orig);
   const fails = r.out.split('\n').filter((l) => /^FAIL/.test(l)), hit = fails.find((l) => m.expect.test(l)), crashed = r.code !== 0 && fails.length === 0;
