@@ -17,7 +17,9 @@ What it measures:
 - **speech:** an optional Whisper transcript with timestamps, giving voiceover presence and words per minute.
 
 Nothing here listens like a person. Treat tempo and hits as hints and check them against the frames.
-The video is streamed for analysis; only the stills and a temporary mono WAV are written, and the WAV is deleted.
+A remote video is downloaded ONCE to a temporary file (curl with retries, a 10-minute cap and a minimum-speed abort), every
+analysis reads that local copy, and the temporary folder is deleted at the end; only the stills and the JSON stay.
+(Streaming the URL into each ffmpeg pass used to hang for an hour on a stalled CDN read, with no timeout.)
 
 Environment:
   FFMPEG       the ffmpeg binary (default: `ffmpeg` on PATH)
@@ -52,6 +54,19 @@ def resolve(src):
                     duration=v.get("duration"))
         return v["url"], meta
     return src, meta
+
+
+def fetch(url, tmpdir):
+    """download a remote video once (bounded in time); a local path is returned unchanged"""
+    if not re.match(r"https?://", url):
+        return url
+    dst = os.path.join(tmpdir, "reference.mp4")
+    r = subprocess.run(["curl", "-sSL", "--fail", "--retry", "3", "--retry-delay", "3", "--connect-timeout", "20",
+                        "--max-time", "600", "--speed-limit", "20000", "--speed-time", "60", "-o", dst, url],
+                       capture_output=True, text=True)
+    if r.returncode != 0 or not os.path.exists(dst) or os.path.getsize(dst) == 0:
+        raise SystemExit(f"download failed (curl exit {r.returncode}): {r.stderr.strip()[:200]}")
+    return dst
 
 
 def duration_of(url):
@@ -214,6 +229,11 @@ def main():
     wmodel = sys.argv[sys.argv.index("--whisper") + 1] if "--whisper" in sys.argv else "base"
     os.makedirs(out, exist_ok=True)
     url, meta = resolve(src)
+    with tempfile.TemporaryDirectory(prefix="refstudy-") as td:
+        run(fetch(url, td), meta, out, wmodel)
+
+
+def run(url, meta, out, wmodel):
     dur = meta.get("duration") or duration_of(url); meta["duration"] = dur
     study = {"meta": meta}
     study["sheet_fps"] = contact_sheet(url, dur, os.path.join(out, "sheet.jpg"))
