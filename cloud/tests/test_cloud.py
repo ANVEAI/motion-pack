@@ -50,11 +50,14 @@ def test_verbatim_normaliser():
 
 # ---------------------------------------------------------------- no project ids, keys or tokens in the repo (audit H5, D14)
 # The old test looked for two hard-coded names (and published them). This one knows the SHAPE of a Google Cloud project id (6-30 chars: a letter, then
-# letters / digits / hyphens, ending in a letter or digit) and refuses one that is assigned, passed as a keyword, defaulted in an env lookup or written into
-# an endpoint in any cloud/*.py. The maintainers' own project names live in tools/name_denylist.txt as hashes (tools/check_names.py), so no name is in this file.
+# letters / digits / hyphens, ending in a letter or digit) and refuses one that is assigned to a project/gcp-named variable, passed as a keyword, defaulted
+# in an env lookup or written into an endpoint, plus ANY string literal in the generated "<words>-<4+ digits>" form whatever it is assigned to, in every .py
+# file under cloud/ at any depth (cloud/tests is skipped: it holds the deliberate bad examples below). Limit: a hand-picked id with no digit suffix
+# ("my-sandbox") assigned to a neutral name cannot be told from any other string, so the rule stays "read the environment only". The maintainers' own project names live in tools/name_denylist.txt as hashes (tools/check_names.py), so no name is in this file.
 PID = r"[a-z][a-z0-9-]{4,28}[a-z0-9]"
 PID_RULES = [
-    ("a project id assigned or passed as a literal", re.compile(r"""(?i)\b\w*project\w*["']?\s*[:=]\s*["']%s["']""" % PID)),
+    ("a project id assigned or passed as a literal", re.compile(r"""(?i)\b\w*(?:project|gcp)\w*["']?\s*[:=]\s*["']%s["']""" % PID)),
+    ("a literal in the generated project-id form (words-123456)", re.compile(r"""["'][a-z][a-z0-9]*(?:-[a-z0-9]+)*-[0-9]{4,10}["']""")),
     ("a non-empty default for MP_GCP_PROJECT", re.compile(r"""(?:environ\.get|getenv)\(\s*["']MP_GCP_PROJECT["']\s*,\s*["'][^"']+["']""")),
     ("a literal project in an endpoint", re.compile(r"projects/(?![%{$<])" + PID + r"/(?:locations|models)")),
 ]
@@ -77,10 +80,31 @@ def test_project_id_rules_catch_the_audit_repro_and_leave_the_real_code_alone():
     assert not any(pid_problems(s) for s in ok), [s for s in ok if pid_problems(s)]
 
 
+def cloud_modules(root):
+    """every .py under root at any depth, except the tests folder (its fixtures are deliberate bad examples)"""
+    out = []
+    for d, dirs, files in os.walk(root):
+        dirs[:] = sorted(x for x in dirs if x not in ("tests", "__pycache__"))
+        out += [os.path.join(d, f) for f in sorted(files) if f.endswith(".py")]
+    return out
+
+
 def test_no_project_id_in_any_cloud_module():
-    for f in sorted(os.listdir(HERE)):
-        if f.endswith(".py"):
-            assert not pid_problems(open(os.path.join(HERE, f)).read()), f
+    mods = cloud_modules(HERE)
+    assert len(mods) >= 4
+    for f in mods:
+        assert not pid_problems(open(f).read()), f
+
+
+def test_the_scan_reaches_subfolders_and_ids_assigned_to_neutral_names(tmp_path):
+    """verifier: GCP = "acme-prod-482113" in _gcp.py and P = "acme-prod-482113" in cloud/sub/x.py used to pass"""
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "x.py").write_text('P = "acme-prod-482113"\n')
+    assert any(pid_problems(open(f).read()) for f in cloud_modules(str(tmp_path)))
+    for s in ['GCP = "acme-prod-482113"', "P='my-sandbox-20481'", 'gcp_id = "demo-proj"', 'run(x, "acme-482113")']:
+        assert pid_problems(s), s
+    for s in ['MODEL = "lyria-002"', 'm = "gemini-2.5-flash-preview-tts"', 'loc = "us-central1"', 'v = "2026-10-13"']:
+        assert not pid_problems(s), s
 
 
 def test_appending_a_project_id_to_a_real_module_is_caught(tmp_path):

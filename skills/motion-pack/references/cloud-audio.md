@@ -20,7 +20,7 @@ export MP_GCP_PROJECT=<your-project-id>          # Vertex AI API enabled, billin
 export MP_GCP_LOCATION=us-central1               # optional, this is the default
 ```
 
-Never commit a project id, key or token. The tools read the environment only. `cloud/tests` fails if a project-id-shaped string is assigned or defaulted in `cloud/*.py`, or if a key, token, private-key or billing-account shape appears in any tracked file; `tools/check_names.py` also refuses the maintainers' own project names (hashes only). It cannot recognise an id that does not look like one, so the rule stays "environment only".
+Never commit a project id, key or token. The tools read the environment only. `cloud/tests` fails if a project-id-shaped string is assigned to a project- or gcp-named variable, passed, defaulted or put in an endpoint, or if any literal has the generated `<words>-<4+ digits>` id form, in any `.py` under `cloud/` (any depth, `cloud/tests` excepted), or if a key, token, private-key or billing-account shape appears in any tracked file; `tools/check_names.py` also refuses the maintainers' own project names (hashes only). It cannot recognise a hand-picked id with no digit suffix assigned to a neutral name, so the rule stays "environment only".
 Check that Vertex AI is on without spending anything: a `countTokens` call returns 200, or 403 `SERVICE_DISABLED` when the API is off.
 
 ## The pipeline
