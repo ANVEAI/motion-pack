@@ -108,5 +108,12 @@
   "layout.mockupInContext": 1.5,
   "layout.typeSpecimen": 1.4,
   "layout.backdropSwap": 0.6,
-  "layout.lineup": 1.6
+  "layout.lineup": 1.6,
+  "title.partnerLockup": 1.5,
+  "layout.iconMergeLockup": 1.75,
+  "type.asciiMosaic": 2.9,
+  "type.textOnPath": 1.4,
+  "type.flankWords": 1,
+  "type.electricOutline": 1.2,
+  "type.behindSubject": 1
 }

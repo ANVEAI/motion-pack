@@ -15,6 +15,7 @@ window.stack = (layers, t = 1, w = 960, h = 540, plate = '#0B1210') => { if (st)
 window.again = (t) => { st.render(t, { frame: Math.round(t * 30) }); return true; };
 const rb = document.createElement('canvas'); rb.width = 960; rb.height = 540; const rg = rb.getContext('2d', { willReadFrequently: true });
 window.pixels = () => { rg.clearRect(0, 0, 960, 540); for (const l of st.layers) rg.drawImage(l.canvas, 0, 0, 960, 540); return b64(new Uint8Array(rg.getImageData(0, 0, 960, 540).data.buffer)); };
-window.timeIt = (t0 = 1, n = 30) => { const a = performance.now(); for (let i = 0; i < n; i++) { st.render(t0 + i / 30, { frame: Math.round((t0 + i / 30) * 30) }); st.layers[0].g.getImageData(0, 0, 1, 1); } return (performance.now() - a) / n; };
-await document.fonts.ready; window.__ready = true;
+window.timeIt = (t0 = 1, n = 30) => { const a = performance.now(); for (let i = 0; i < n; i++) { st.render(t0 + i / 30, { frame: Math.round((t0 + i / 30) * 30) }); st.layers[0].g.getImageData(0, 0, 1, 1); } return (performance.now() - a) / n; };   // the 1 px readback forces the GPU canvas to finish each frame (Chrome logs a willReadFrequently note: the test filters it)
+/* canvas text starts the font download on first use and draws the fallback until it lands: load the faces before the first frame (gotchas.md) */
+await Promise.all([document.fonts.load('600 26px Manrope'), document.fonts.load('600 24px "IBM Plex Mono"')]); await document.fonts.ready; window.__ready = true;
 </script></body></html>

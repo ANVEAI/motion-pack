@@ -30,14 +30,14 @@ const THUMB_PAL = [['#F7D9B5', '#FF7A3D', '#3E7C59'], ['#CFE6FF', '#FFD23A', '#2
 /* ---------------- embeddingCloud ---------------- */
 const cloudPlans = new Map();
 export function cloudPlan(p, W, H) {
-  const key = JSON.stringify([p.n, p.clusters, p.spread, p.thumbs, p.seed, p.queryCluster, p.k, p.to, p.markSize, p.center, W, H]); if (cloudPlans.has(key)) return cloudPlans.get(key);
+  const key = JSON.stringify([p.n, p.clusters, p.spread, p.thumbs, p.seed, p.queryCluster, p.k, p.to, p.markSize, p.mark, p.center, W, H]); if (cloudPlans.has(key)) return cloudPlans.get(key);
   const nT = Math.min(48, Math.max(0, Math.round(p.thumbs))), n = Math.max(1, Math.round(p.n)) + nT, C = Math.max(1, Math.round(p.clusters)), s = p.seed;
   const cen = Array.from({ length: C }, (_, j) => { const a = TAU * hashf(s, j, 1), b = Math.acos(2 * hashf(s, j, 2) - 1), r = 0.62 * Math.cbrt(0.35 + 0.65 * hashf(s, j, 3)); return [r * Math.sin(b) * Math.cos(a), r * Math.cos(b) * 0.8, r * Math.sin(b) * Math.sin(a)]; });
   const pts = Array.from({ length: n }, (_, i) => { const j = i % C, o = [0, 1, 2].map((d) => gauss(hashf(s, i, 10 + d), hashf(s, i, 20 + d)) * p.spread); return { pos: cen[j].map((v, d) => v + o[d]), cl: j, thumb: i >= n - nT, pal: Math.floor(hashf(s, i, 30) * THUMB_PAL.length) }; });
   const qc = cen[(p.queryCluster ?? 0) % C], q = qc.map((v, d) => v + 0.4 * p.spread * gauss(hashf(s, 99, d), hashf(s, 98, d)));
   const order = pts.map((pt, i) => [Math.hypot(pt.pos[0] - q[0], pt.pos[1] - q[1], pt.pos[2] - q[2]), i]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
   const nn = order.slice(0, Math.max(1, Math.round(p.k))).map(([, i]) => i), rank = new Map(nn.map((i, r) => [i, r]));
-  const S = H / 1080, cx = p.center[0] * W, cy = p.center[1] * H, m = arcTable(flattenPath(DEFAULT_MARK, { seg: 16 }), true), ms = (p.markSize * H) / 100;
+  const S = H / 1080, cx = p.center[0] * W, cy = p.center[1] * H, m = arcTable(flattenPath(p.mark || DEFAULT_MARK, { seg: 16 }), true), ms = (p.markSize * H) / 100;
   const tgt = resample(m, n).map(([x, y]) => [cx + (x - 50) * ms, cy + (y - 50) * ms]);
   const out = { pts, q, nn, rank, tgt, S }; cloudPlans.set(key, out); return out;
 }
@@ -61,11 +61,14 @@ const dftCache = new Map(), curveCache = new Map();
 export function epicycleDFT(p, W, H) {
   const d = Array.isArray(p.path) ? null : PATHS[p.path] || p.path, key = JSON.stringify([d || p.path, p.samples, p.pathBox, p.closed, p.scale, p.center, W, H]); if (dftCache.has(key)) return dftCache.get(key);
   const [bw, bh] = p.pathBox, s = Math.min(W / bw, H / bh) * p.scale, ox = p.center[0] * W - (bw * s) / 2, oy = p.center[1] * H - (bh * s) / 2;
-  const raw = (Array.isArray(p.path) ? p.path : flattenPath(d, { seg: 48 })).map(([x, y]) => [ox + x * s, oy + y * s]), M = Math.max(8, Math.round(p.samples)), pts = resample(arcTable(raw, p.closed !== false), M);
+  const raw = (Array.isArray(p.path) ? p.path : flattenPath(d, { seg: 48 })).map(([x, y]) => [ox + x * s, oy + y * s]), M = Math.max(8, 2 * Math.round(p.samples / 2));
+  /* a Fourier series is periodic: a closed outline is sampled once round; an OPEN path (closed: false) is traced there and back along itself, so no chord is drawn between its ends */
+  const closed = p.closed === 'auto' || p.closed == null ? (d ? /z\s*$/i.test(d.trim()) : false) || Math.hypot(raw[0][0] - raw.at(-1)[0], raw[0][1] - raw.at(-1)[1]) < 1 : p.closed !== false;
+  let pts; if (closed) pts = resample(arcTable(raw, true), M); else { const f = resample(arcTable(raw, false), M / 2 + 1); pts = [...f, ...f.slice(1, -1).reverse()]; }
   const coef = []; for (let k = -Math.floor(M / 2); k < Math.ceil(M / 2); k++) { let re = 0, im = 0; for (let n = 0; n < M; n++) { const a = (-TAU * k * n) / M, c = Math.cos(a), sn = Math.sin(a); re += pts[n][0] * c - pts[n][1] * sn; im += pts[n][0] * sn + pts[n][1] * c; } coef.push({ k, re: re / M, im: im / M, amp: Math.hypot(re, im) / M }); }
   coef.sort((a, b) => (a.k === 0 ? -1 : b.k === 0 ? 1 : b.amp - a.amp || a.k - b.k));
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity; for (const [x, y] of pts) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
-  const out = { coef, M, pts, size: Math.hypot(x1 - x0, y1 - y0), key }; dftCache.set(key, out); return out;
+  const out = { coef, M, pts, closed, size: Math.hypot(x1 - x0, y1 - y0), key }; dftCache.set(key, out); return out;
 }
 /* tip of the first N terms at phase phi (0..1, one trace) */
 export function epicycleTip(D, N, phi) { let x = 0, y = 0; for (let j = 0; j < Math.min(N, D.coef.length); j++) { const c = D.coef[j], a = TAU * c.k * phi, cs = Math.cos(a), sn = Math.sin(a); x += c.re * cs - c.im * sn; y += c.re * sn + c.im * cs; } return [x, y]; }
@@ -134,10 +137,10 @@ export function convergeState(t, pIn, { W = 1920, H = 1080 } = {}) {
 const hexPath = (g, x, y, r, sx = 1) => { g.beginPath(); for (let k = 0; k < 6; k++) { const a = Math.PI / 6 + (k * Math.PI) / 3; const px = x + r * Math.cos(a) * sx, py = y + r * Math.sin(a); if (k) g.lineTo(px, py); else g.moveTo(px, py); } g.closePath(); };
 export const K2D_R45 = {
   embeddingCloud: { blend: 'normal', order: 40, tags: ['embedding', 'vector-space', 'point-cloud', '3d', 'search', 'retrieval', 'nearest-neighbours', 'ai', 'explainer'],
-    d: { n: 260, clusters: 6, spread: 0.13, thumbs: 22, thumbSize: 30, dot: 2.6, radius: 0.42, center: [0.5, 0.52], spin: 0.03, loop: 0, fps: 30, tilt: 0.28, fov: 2.6, color: '#9FE3B4', accent: '#FFE07A',
+    d: { n: 260, clusters: 6, spread: 0.13, thumbs: 22, thumbSize: 34, dot: 2.8, radius: 0.55, center: [0.5, 0.52], spin: 0.03, loop: 0, fps: 30, tilt: 0.28, fov: 2.6, color: '#9FE3B4', accent: '#FFE07A',
       query: 'a dog on the beach', queryAt: 1.0, queryDur: 0.7, liftDur: 0.6, k: 6, lift: 0.45, queryCluster: 0, lines: true, chipBg: 'rgba(14,20,16,0.82)', chipInk: '#FFFFFF',
-      collapseAt: null, collapse: 0.9, markSize: 0.34, images: [], intensity: 1, seed: 3 },
-    doc: 'n dots + thumbs (<= 48) media tiles in `clusters` seeded gaussian clusters (spread), radius = cloud radius (fraction of H), spin turns/s (or loop: L s per exact turn), tilt rad, fov camera distance in radii; query chip text flies in at queryAt, the k nearest neighbours (precomputed) lift by `lift` toward the camera with lines; collapseAt: every point lands on the pack mark outline (markSize fraction of H); images: optional thumbnail sources',
+      collapseAt: null, collapse: 0.9, markSize: 0.34, mark: null, images: [], intensity: 1, seed: 3 },
+    doc: 'n dots + thumbs (<= 48) media tiles in `clusters` seeded gaussian clusters (spread), radius = cloud radius (fraction of H), spin turns/s (or loop: L s per exact turn), tilt rad, fov camera distance in radii; query chip text flies in at queryAt, the k nearest neighbours (precomputed) lift by `lift` toward the camera with lines; collapseAt: every point lands on the outline of `mark` (an SVG path d in a 100 box, e.g. your icon or logo; null = the pack placeholder mark; markSize = its height as a fraction of H); images: optional thumbnail sources',
     draw(g, W, H, t, p) {
       const st = embeddingState(t, p, { W, H }), S = H / 1080, C = hexRGB(p.color), A = hexRGB(p.accent), I = p.intensity;
       g.fillStyle = rgba(C, 0.8 * I); g.beginPath(); let any = false;
@@ -154,14 +157,14 @@ export const K2D_R45 = {
           g.restore(); if (q.lit > 0.01) { g.strokeStyle = rgba(A, q.lit * I); g.lineWidth = 2 * S; g.beginPath(); g.roundRect(q.x - w / 2, q.y - h / 2, w, h, 3 * S); g.stroke(); } }
         else { g.fillStyle = rgba(mixC(C, A, q.lit), 1); g.beginPath(); g.arc(q.x, q.y, q.r * (1 + q.lit), 0, TAU); g.fill(); if (q.lit > 0.05) { g.fillStyle = rgba(A, 0.25 * q.lit); g.beginPath(); g.arc(q.x, q.y, q.r * 4, 0, TAU); g.fill(); } } }
       g.globalAlpha = 1;
-      if (p.queryAt != null && st.kq > 0 && p.query) { const px = 26 * S, fh = 30 * S, w = textW(g, p.query, px) + 2 * fh, x = st.chip.x - w / 2, y = st.chip.y - fh, a = clamp(st.kq * 2) * I * (1 - (p.collapseAt == null ? 0 : seg(t, p.collapseAt, p.collapseAt + 0.3)));
+      if (p.queryAt != null && st.kq > 0 && p.query) { const px = 26 * S, fh = 30 * S; g.font = `600 ${px.toFixed(1)}px ${SANS}`; const w = textW(g, p.query, px) + 2 * fh, x = st.chip.x - w / 2, y = st.chip.y - fh, a = clamp(st.kq * 2) * I * (1 - (p.collapseAt == null ? 0 : seg(t, p.collapseAt, p.collapseAt + 0.3)));
         if (a > 0.004) { g.globalAlpha = a; g.fillStyle = p.chipBg; g.beginPath(); g.roundRect(x, y, w, 2 * fh, fh); g.fill(); g.strokeStyle = rgba(A, 0.7); g.lineWidth = 1.5 * S; g.stroke();
           g.fillStyle = p.chipInk; g.font = `600 ${px.toFixed(1)}px ${SANS}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(p.query, st.chip.x, st.chip.y + 1 * S); g.globalAlpha = 1; } }
     } },
   epicycleDraw: { blend: 'normal', order: 56, tags: ['epicycles', 'fourier', 'math', 'drawing', 'line-art', 'fidelity-ladder', 'explainer', 'glow'],
-    d: { path: 'bird', pathBox: [1920, 1080], closed: true, scale: 0.9, center: [0.5, 0.48], samples: 512, terms: 64, steps: null, period: 4, at: 0, loop: false, fps: 30, trail: 1, progressive: true,
-      circles: true, maxCircles: 80, arms: true, inset: null, insetZoom: 4, color: '#8FDBFF', circleColor: '#8FDBFF', width: 2.2, glow: 10, readout: true, readColor: '#CFEFFF', intensity: 1 },
-    doc: 'path = an SVG d string, a preset (wave, arc, swoop, loop, spiral, bird) or [[x, y], ...] in pathBox px; samples = DFT size (resampled by arc length); terms N (or steps [[t, N | "full"], ...]: each step re-traces at higher fidelity); period = s per trace; loop (single step: exact repeat every period); trail = fraction of the figure kept behind the tip (1 = all); circles / arms / inset [x, y, w, h] fractions + insetZoom; readout prints N and the mean error',
+    d: { path: 'bird', pathBox: [1920, 1080], closed: 'auto', scale: 0.9, center: [0.5, 0.48], samples: 1024, terms: 64, steps: null, period: 4, at: 0, loop: false, fps: 30, trail: 1, progressive: true,
+      circles: true, maxCircles: 80, arms: true, inset: null, insetZoom: 4, color: '#8FDBFF', circleColor: '#8FDBFF', width: 2.2, glow: 10, readout: true, readColor: '#CFEFFF', source: 'computed from the path drawn here', intensity: 1 },
+    doc: 'path = an SVG d string, a preset (wave, arc, swoop, loop, spiral, bird) or [[x, y], ...] in pathBox px; closed auto (default: closed when the path ends in z or returns to its start) | true = a closed outline | false = an open path traced there and back (a Fourier series is periodic); samples = DFT size, even (resampled by arc length; sharp corners round off by under 1 px at 1024); terms N (or steps [[t, N | "full"], ...]: each step re-traces at higher fidelity); period = s per trace; loop (single step: exact repeat every period); trail = fraction of the figure kept behind the tip (1 = all); circles / arms / inset [x, y, w, h] fractions + insetZoom; readout prints N, the mean error at the sampled points and a `source` note',
     draw(g, W, H, t, p) {
       const st = epicycleState(t, p, { W, H }); if (!st.on) return; const D = st.D, S = H / 1080, C = hexRGB(p.color), CC = hexRGB(p.circleColor), I = p.intensity, cv = epicycleCurve(D, st.N), R = cv.R;
       const phi = st.phi, f = phi % 1, i1 = Math.floor(f * R), lo = st.first && p.progressive ? Math.max(0, f - p.trail) : f - p.trail;
@@ -184,7 +187,8 @@ export const K2D_R45 = {
         g.strokeStyle = rgba(C, 0.9 * I); g.lineWidth = p.width * S; g.beginPath(); for (let q = -60; q <= 0; q++) { const qq = (((i1 + q) % R) + R) % R, pt = tr(...cv.pts[qq]); if (q === -60) g.moveTo(...pt); else g.lineTo(...pt); } g.stroke();
         chain(tr, z, 1 * S); g.restore(); }
       if (p.readout) { g.fillStyle = rgba(hexRGB(p.readColor), 0.9 * I); g.font = `600 ${(24 * S).toFixed(1)}px ${MONO}`; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
-        g.fillText(`N = ${st.N}`, W / 2, H - 92 * S); g.font = `500 ${(17 * S).toFixed(1)}px ${MONO}`; g.fillText(`${st.N} rotating circles  ·  mean error ${cv.err.toFixed(2)}% of size`, W / 2, H - 62 * S); }
+        g.fillText(`N = ${st.N}`, W / 2, H - 100 * S); g.font = `500 ${(17 * S).toFixed(1)}px ${MONO}`; g.fillText(`${st.N} rotating circles  ·  mean error ${cv.err.toFixed(2)}% of size`, W / 2, H - 72 * S);
+        if (p.source) { g.fillStyle = rgba(hexRGB(p.readColor), 0.55 * I); g.font = `500 ${(14 * S).toFixed(1)}px ${MONO}`; g.fillText(p.source, W / 2, H - 48 * S); } }
     } },
   hexMosaic: { blend: 'normal', order: 1, tags: ['hex', 'mosaic', 'tiles', 'texture', 'background', 'brand-texture', 'flip', 'wave', 'engraved'],
     d: { radius: 64, gap: 5, faces: ['color', 'engrave'], palette: ['#3557D6', '#F2B33D', '#E4572E', '#2BB673', '#9B5DE5', '#00A6A6', '#F3F1EC'], texBg: '#E7E4DC', texInk: '#3B3B44', images: [],
@@ -222,3 +226,13 @@ export const K2D_R45 = {
       g.globalAlpha = I; g.fillStyle = p.dotColor; g.beginPath(); const n = st.nodes[0]; g.arc(n.x, n.y, st.hub, 0, TAU); g.fill(); g.globalAlpha = 1;
     } },
 };
+/* one sound per action, as local seconds from the layer's own t (the plan adds the layer's start): cuesR45(kind, params) -> [{ t, id: 'sfx/<cat>/<name>', why }].
+   Hit contract: t is the frame of the visual event; the mixer anchors the sample one frame later (gotchas.md). hexMosaic with loop gives none (a background). */
+export const CUES_R45 = {
+  embeddingCloud: (p) => [...(p.queryAt == null ? [] : [{ t: p.queryAt, id: 'sfx/ui/slide', why: 'the query chip flies in' }, { t: +(p.queryAt + p.queryDur * 0.6 + p.liftDur * 0.5).toFixed(4), id: 'sfx/ui/pop', why: 'the nearest neighbours light up and lift' }]),
+    ...(p.collapseAt == null ? [] : [{ t: p.collapseAt, id: 'sfx/sparkle/letter_assemble', why: 'the cloud collapses into the mark' }])],
+  epicycleDraw: (p) => (p.steps && p.steps.length ? p.steps : [[0, p.terms]]).map(([t], i) => ({ t: +(p.at + t).toFixed(4), id: i ? 'sfx/ui/tick' : 'sfx/whoosh/swish_xs', why: i ? `step ${i + 1}: the drawing re-traces with more circles` : 'the drawing starts' })),
+  hexMosaic: (p) => (p.loop > 0 ? [] : p.waves.map((w) => ({ t: w.at, id: 'sfx/whoosh/swish_s', why: 'a wave flips the tiles' }))),
+  convergeToDot: (p) => (p.reverse ? [{ t: p.at, id: 'sfx/whoosh/swish_s', why: 'the dot blooms into a network' }] : [{ t: p.at, id: 'sfx/whoosh/swish_s', why: 'the network starts to contract' }, { t: +(p.at + p.stagger + p.dur).toFixed(4), id: 'sfx/hit/soft', why: 'the last node lands: one dot' }]),
+};
+export const cuesR45 = (kind, params = {}) => { const f = CUES_R45[kind]; if (!f) throw new Error('no round-4/5 cues for ' + kind); return f({ ...K2D_R45[kind].d, ...params }); };

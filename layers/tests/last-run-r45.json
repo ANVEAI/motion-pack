@@ -1,0 +1,312 @@
+{
+ "name": "layers round 4/5",
+ "total": 61,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "the four kinds are merged into K2D (same objects as K2D_R45), reachable through overlay.js ALL_KINDS, and the round-3 kinds are still there",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "layers/manifest.json lists layers.embeddingCloud, .epicycleDraw, .hexMosaic, .convergeToDot with file, tags, params, doc and this test (node make-manifests.mjs rewrites it)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cuesR45: every cue of the four layers resolves in sfx/manifest.json, has a time >= 0 and a reason (2, 1, 1, 3, 1, 0, 2, 1 cues over 8 param sets)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: defaults draw at 2.2 s (922 canvas calls, finite numbers)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: defaults draw at 2 s (1939 canvas calls, finite numbers)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: defaults draw at 0.8 s (5310 canvas calls, finite numbers)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot: defaults draw at 1.2 s (209 canvas calls, finite numbers)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: 13 param variants all change the draw and stay finite",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: 13 param variants all change the draw and stay finite",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: 9 param variants all change the draw and stay finite",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot: 11 param variants all change the draw and stay finite",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud 16:9: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud 9:16: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw 16:9: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw 9:16: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic 16:9: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic 9:16: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot 16:9: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot 9:16: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: nothing is drawn before at (t -1 and at - 1 frame make no canvas call); it draws from at",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: before queryAt the frame is exactly the cloud without a query (no chip text, no neighbour lines, no lit points); 0.5 s after it the chip and lines are there",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: before the first wave (0.3 s) all 315 tiles show face 0, full width, no flip in progress",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot: before at every node is home (k = 0, only the slow wobble moves it) and the dot has its start radius",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud loop 6: frame t and t + 6 s are identical (5 times); a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw loop 4: frame t and t + 4 s are identical (5 times); a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic loop 6: frame t and t + 6 s are identical (5 times); a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud without loop: it keeps rotating (frame t and t + 6 s differ)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: the 6 lit points are exactly the 6 nearest to the query vector (brute-force check on 282 points), computed once in the plan",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: the thumbnail count is capped at 48 (render time), however many are asked for",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: after the lift every neighbour sits exactly lift (0.45) closer to the camera than before and every other point is unchanged",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud collapse: after collapseAt + spread + collapse every one of the 282 points lies on the mark outline (worst 1.1e-13 px off)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: with all 1024 terms the chain tip passes through its 1024 path samples (worst 1.2e-10 px); the coefficients are computed once and cached",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw N = full: the trace matches the input path at 1080p, Hausdorff bird 0.69, wave 0.56, spiral 0.64, swoop 0.56 px (< 1; closed outline sampled once, open paths traced there and back)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: the mean error falls as terms are added (N = 4, 16, 64, full: 7.55%, 1.23%, 0.14%, 0.00% of the figure size)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw steps: the term count follows the step table and every step re-traces from phase 0 (N 4 -> 16 -> 64)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw trail: the first trace is drawn only up to the tip (1473 segments at half a trace, 2913 once it closed); a short trail keeps 469 segments, read from the analytic curve",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: 315 tiles on an axial hex lattice (row step 1.5 r, column step sqrt(3) r, odd rows offset half a column) and the field covers the frame (farthest of 300 random points is 61.4 px from a centre, r = 64)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: each tile starts to flip at wave time + distance / speed (+ at most 0.08 s of seeded jitter): 315 tiles, lag 0.000..0.083 s",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: a wave front is a band (14 of 315 tiles mid-flip at 0.5 s) and after it every tile shows face 1 at full width",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic flip: the face changes exactly at the narrowest point of the flip (sx near 0, face switches at k 0.5)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot: after at + stagger + dur all 24 nodes sit on the centre (0.0e+0 px off) and the dot has grown to 56 px",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot order: outside-in leaves the farthest node first (k 0.02 vs nearest 0.00 at 0.15 s); inside-out reverses it (0.00 vs 0.00)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot: the 0 drawn lines have both ends on the node positions of that same frame (recomputed every frame, no stored state), lines whose end reached the dot are dropped",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot reverse (one dot blooming into a network): before at only the solid dot is on screen (1 arc), after at + stagger + dur every node is back home",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: query + neighbours: mounted via mountStack (embeddingCloud), bit-identical at t 2.4 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: collapsed into the mark: mounted via mountStack (embeddingCloud), bit-identical at t 5.4 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: N = 4: mounted via mountStack (epicycleDraw), bit-identical at t 2.2 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: N = 64: mounted via mountStack (epicycleDraw), bit-identical at t 8.6 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: full + inset: mounted via mountStack (epicycleDraw), bit-identical at t 4.2 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: wave front + panel: mounted via mountStack (hexMosaic), bit-identical at t 0.6 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: engraved: mounted via mountStack (hexMosaic), bit-identical at t 2 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot: network: mounted via mountStack (convergeToDot), bit-identical at t 0.4 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot: contracting: mounted via mountStack (convergeToDot), bit-identical at t 1.3 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud: pixels identical when the same 6 times are rendered again in shuffled order",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw: pixels identical when the same 6 times are rendered again in shuffled order",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic: pixels identical when the same 6 times are rendered again in shuffled order",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "convergeToDot: pixels identical when the same 6 times are rendered again in shuffled order",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic at 4K (3840 x 2160, wave + panel): 16.9 ms per frame (budget 120 ms)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud at 1080p (420 dots + 48 thumbnails): 1.4 ms per frame (budget 40 ms)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw at 1080p (all terms, inset): 1.7 ms per frame (budget 40 ms)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no console errors",
+   "pass": true,
+   "detail": "[]"
+  }
+ ]
+}

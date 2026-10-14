@@ -25,7 +25,7 @@ export const LUM_PLATES = {
     const nk = Math.abs(X) < 0.08 && Y > 0.5 && Y < 0.66; if (nk) v = Math.max(v, 0.32 - 0.6 * X);
     const sy = Y - 0.98, sw = 0.46, se = (X / sw) ** 2 + (sy / 0.36) ** 2; if (se < 1 && Y > 0.62) v = Math.max(v, 0.22 + 0.55 * clamp(0.6 - 0.9 * (X / sw) - 0.4 * se));
     return clamp(v); },
-  spark(x, y, a) { const X = Math.abs((x - 0.5) * a) / 0.42, Y = Math.abs(y - 0.5) / 0.42, q = Math.sqrt(X) + Math.sqrt(Y); return q < 1 ? clamp(0.35 + 0.65 * (1 - q) * 1.6 - 0.25 * (x - 0.5)) : 0.04; },
+  spark(x, y, a) { const X = Math.abs((x - 0.5) * a) / 0.42, Y = Math.abs(y - 0.5) / 0.42, q = Math.sqrt(X) + Math.sqrt(Y); return q < 1 ? clamp(0.35 + 0.65 * (1 - q) * 1.6 - 0.25 * (x - 0.5)) : 0.07 + 0.06 * (1 - Math.hypot(x - 0.5, y - 0.5)); },
 };
 /* browser: a luminance grid (rows x cols, 0..1) from an <img> / <canvas> / ImageBitmap, sampled once (cache it in params, never per frame) */
 export function lumGrid(img, cols, rows) {
@@ -70,7 +70,7 @@ export function textOnPathState(u, p, c) {
   const adv = chars.map((ch) => measure(ch, S, fo) + ls), tot = adv.reduce((a, b) => a + b, 0), off = []; let acc = 0; for (const w of adv) { off.push(acc + w / 2); acc += w; }
   let s0, lead = null, head = Infinity; const fadePx = p.fade * S;
   if (p.mode === 'travel') s0 = p.start * L + p.speed * c.s * u;
-  else if (p.mode === 'trail') { const sl = lerp(p.start * L, p.end * L, E[p.ease] ? E[p.ease](seg(u, p.delay, p.delay + p.travel)) : seg(u, p.delay, p.delay + p.travel)); lead = { ...pointAt(tab, sl), s: sl }; s0 = sl - p.gap * S - tot; }
+  else if (p.mode === 'trail') { const sl = lerp(p.start * L, p.end * L, E[p.ease] ? E[p.ease](seg(u, p.delay, p.delay + p.travel)) : seg(u, p.delay, p.delay + p.travel)); lead = { ...pointAt(tab, sl), s: sl }; s0 = sl - (p.leader ? p.leaderSize * S * 0.5 : 0) - p.gap * S - tot; }
   else { s0 = p.start * L; head = E.soft(seg(u, p.delay, p.delay + p.travel)) * (tot + fadePx); }
   const glyphs = chars.map((ch, i) => { const s = s0 + off[i], q = pointAt(tab, s); let o = 1;
     if (!tab.closed) o *= clamp(s / fadePx) * clamp((L - s) / fadePx);

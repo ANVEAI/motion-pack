@@ -77,14 +77,18 @@ for (const image of ['bust', 'orb', 'spark']) { const p = P('type.asciiMosaic', 
   check('behindSubject: plate -> type -> plate masked by the matte; a hard edge thresholds the matte alpha at 0.5 (discrete 0 1)', i1 > 0 && it > i1 && im > it && i2 > im && s.includes('tableValues="0 1"') && s.includes('mask-type:alpha'));
   const v = renderSVG('type.behindSubject', 1, { params: { matte: { frames: 'm/f_%04d.png', fps: 30, count: 90 } } });
   check('behindSubject: without a plate the type is masked by the INVERTED matte (the video underneath shows the subject); frame sequences pick frame floor(u * fps) + 1',
-    v.includes('tableValues="1 0"') && v.includes('m/f_0016.png') && !v.includes('class="mp-type"')); }
+    v.includes('tableValues="1 0"') && v.includes('m/f_0031.png') && !v.includes('class="mp-type"')); }
 
+{ const man = JSON.parse(fs.readFileSync(path.join(ROOT, 'type/manifest.json'), 'utf8')).components, rows = IDS.map((i) => man.find((c) => c.id === i));
+  check('type/manifest.json lists all 7 ids with file, tags, params, a default sound and the r45type sheet (node layers/tests/make-manifests.mjs rewrites it)',
+    rows.every((r, i) => r && /type\/gfx\/r45-(type|glyph)\.js$/.test(r.file) && r.tags.length >= 5 && r.params && r.sfx && r.demo === 'type/demo/out/gfx-r45type.png' && r.test === 'type/tests/gfx-sheet.mjs')); }
 if (process.argv.includes('--chrome')) {
   const { open, png, decodePNG } = await import('../../layers/tests/harness.mjs'); const h = await open('/type/demo/gfx.html'); await h.page.setViewport({ width: 1920, height: 1080 });
   const W = 1920, H = 1080, grad = Buffer.alloc(W * H * 4); for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const v = Math.round((x / (W - 1)) * 255), i = (y * W + x) * 4; grad[i] = grad[i + 1] = grad[i + 2] = v; grad[i + 3] = 255; }
   const black = Buffer.alloc(W * H * 4); for (let i = 3; i < black.length; i += 4) black[i] = 255;
   const url = (b) => 'data:image/png;base64,' + png(W, H, b).toString('base64'), plate = { svg: `<rect width="${W}" height="${H}" fill="#0000FF"/>`, viewBox: `0 0 ${W} ${H}` };
-  const shot = async (matte) => { await h.page.evaluate((p) => { document.getElementById('bg').style.background = '#000'; document.getElementById('ov').innerHTML = window.__r(p); }, { plate, matte: { href: matte }, matteMode: 'luminance', edge: 'hard', color: '#FF0000', steps: [[0, 'WWWWWW']], size: 520 }).catch(() => null);
+  const shot = async (matte) => { await h.page.evaluate((p) => { Object.assign(document.getElementById('root').style, { width: '1920px', height: '1080px' }); document.getElementById('bg').style.background = '#000'; document.getElementById('ov').innerHTML = window.__r(p); }, { plate, matte: { href: matte }, matteMode: 'luminance', edge: 'hard', color: '#FF0000', steps: [[0, 'WWWWWW']], size: 520 });
+    await new Promise((r) => setTimeout(r, 500));   // the matte is a data-URL <image>: let it decode before the screenshot
     return decodePNG(await h.page.screenshot({ clip: { x: 0, y: 0, width: W, height: H } })).rgba; };
   await h.page.evaluate(async () => { const m = await import('/type/gfx/index.js'); window.__r = (params) => m.renderSVG('type.behindSubject', 1, { params }, { W: 1920, H: 1080 }); });
   const A = await shot(url(grad)), C = await shot(url(black)); let bad = 0, n = 0;

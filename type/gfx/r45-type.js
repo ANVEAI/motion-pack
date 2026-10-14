@@ -114,10 +114,11 @@ export function srcAt(src, u, c) {
   return '';
 }
 /* owned procedural subject: a faceless figure (head, neck, shoulders) on a backdrop; its matte is the same figure in white. Pure function of u (slow sway). */
-export function figurePlate(u, c, { bg = ['#3A322B', '#6B5A4A'], skin = ['#5A4638', '#17120F'], cloth = '#120F0E', rim = '#F2C79A', sway = 1 } = {}) {
+export function figurePlate(u, c, { bg = ['#3A322B', '#6B5A4A'], skin = ['#6A5444', '#2B221B'], cloth = '#120F0E', rim = '#F2C79A', sway = 1 } = {}) {
   const s = c.s, x = c.W * 0.5 + Math.sin(TAU * 0.18 * u) * 6 * s * sway, hy = c.H * 0.37, hr = c.H * 0.17, id = 'fp' + c.W + 'x' + c.H;
-  const fig = (fill1, fill2, fill3) => `<ellipse cx="${f2(x)}" cy="${f2(hy)}" rx="${f2(hr * 0.84)}" ry="${f2(hr)}" fill="${fill1}"/><rect x="${f2(x - hr * 0.32)}" y="${f2(hy + hr * 0.6)}" width="${f2(hr * 0.64)}" height="${f2(hr * 0.9)}" fill="${fill2}"/>` +
-    `<path d="M${f2(x - hr * 2.6)} ${c.H} C${f2(x - hr * 2.4)} ${f2(c.H * 0.76)} ${f2(x - hr * 1.2)} ${f2(c.H * 0.68)} ${f2(x)} ${f2(c.H * 0.68)} C${f2(x + hr * 1.2)} ${f2(c.H * 0.68)} ${f2(x + hr * 2.4)} ${f2(c.H * 0.76)} ${f2(x + hr * 2.6)} ${c.H} Z" fill="${fill3}"/>`;
+  const sh = hy + hr * 1.5, fig = (fill1, fill2, fill3) => `<ellipse cx="${f2(x)}" cy="${f2(hy)}" rx="${f2(hr * 0.84)}" ry="${f2(hr)}" fill="${fill1}"/>` +
+    `<path d="M${f2(x - hr * 0.34)} ${f2(hy + hr * 0.62)} L${f2(x + hr * 0.34)} ${f2(hy + hr * 0.62)} C${f2(x + hr * 0.36)} ${f2(hy + hr * 1.1)} ${f2(x + hr * 0.5)} ${f2(sh - hr * 0.1)} ${f2(x + hr * 0.62)} ${f2(sh + hr * 0.2)} L${f2(x - hr * 0.62)} ${f2(sh + hr * 0.2)} C${f2(x - hr * 0.5)} ${f2(sh - hr * 0.1)} ${f2(x - hr * 0.36)} ${f2(hy + hr * 1.1)} ${f2(x - hr * 0.34)} ${f2(hy + hr * 0.62)} Z" fill="${fill2}"/>` +
+    `<path d="M${f2(x - hr * 2.6)} ${c.H} C${f2(x - hr * 2.4)} ${f2(sh + c.H * 0.08)} ${f2(x - hr * 1.2)} ${f2(sh)} ${f2(x)} ${f2(sh)} C${f2(x + hr * 1.2)} ${f2(sh)} ${f2(x + hr * 2.4)} ${f2(sh + c.H * 0.08)} ${f2(x + hr * 2.6)} ${c.H} Z" fill="${fill3}"/>`;
   return { defs: `<linearGradient id="${id}b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${bg[0]}"/><stop offset="1" stop-color="${bg[1]}"/></linearGradient><radialGradient id="${id}s" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="${skin[0]}"/><stop offset="1" stop-color="${skin[1]}"/></radialGradient>`,
     plate: `<rect width="${c.W}" height="${c.H}" fill="url(#${id}b)"/>` + fig(`url(#${id}s)`, skin[1], cloth) +
       `<path d="M${f2(x - hr * 0.8)} ${f2(hy - hr * 0.35)} A${f2(hr * 0.84)} ${f2(hr)} 0 0 1 ${f2(x - hr * 0.1)} ${f2(hy - hr * 0.99)}" fill="none" stroke="${rim}" stroke-width="${f2(5 * s)}" stroke-linecap="round" opacity="0.7"/>`, matte: fig('#FFFFFF', '#FFFFFF', '#FFFFFF') };
@@ -155,7 +156,7 @@ export const TYPE_R45 = {
 
   'type.flankWords': { file: 'type/gfx/r45-type.js', tags: ['type', 'flank', 'product', 'negative-space', 'split', 'sentence-across-cuts', 'feature-super'], dur: 2.4, inF: 8, outF: 8,
     d: { words: ['All-day', 'comfort'], split: null, subject: { box: [0.41, 0.2, 0.18, 0.6], arriveAt: 0, arrive: 0.6 }, margin: 44, size: 92, weight: 700, ls: -0.02, font: FONT, color: INK, row: null,
-      stagger: 0.06, rise: 0.25, drawSubject: false, subjectColor: '#E9E4DA', shot: 0 },
+      stagger: 0.06, rise: 0.25, drawSubject: false, subjectColor: '#DCD5C6', shot: 0 },
     svg(L, p, c) {
       const S = p.size * c.s, st = flankState(L.u, p, c), B = st.box, id = uidOf('flankWords', p); let out = '';
       if (p.drawSubject && B.w > 1) out += `<defs><linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.45"/><stop offset="0.4" stop-color="#FFFFFF" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.22"/></linearGradient></defs>` +

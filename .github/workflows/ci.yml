@@ -44,6 +44,10 @@ jobs:
         run: node type/tests/ui.test.mjs
       - name: round-3 type + layout parts (node, no browser)
         run: node type/tests/r3.test.mjs
+      - name: round-4/5 type parts (node, no browser)
+        run: node type/tests/r45type.test.mjs
+      - name: round-4/5 layers (Canvas2D on a recording context, node, no browser)
+        run: node layers/tests/r45.test.mjs
       - name: physics table player (the baked table is committed; no npm install)
         run: node physics/tests/test-player.mjs
       - name: blender scripts compile (no Blender on CI; renders are tested locally with blender/tests/smoke.sh)
