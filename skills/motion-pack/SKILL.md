@@ -255,10 +255,10 @@ Every recipe ends with the VIRALITY and QA checklists below.
 
 ### RECIPE I: proof film, template `templates/proof-film`
 
-1. **Only with measured numbers.** Every number field needs a `source` AND a `method`: `node make.mjs` exits 2 naming the field when one is missing (`honesty.mjs`). No numbers yet: stop and measure. The demo is a labelled placeholder ("Acme Reader", fictional); never borrow a real brand's numbers.
+1. **Only with measured numbers.** Every number field needs a `source` AND a `method` that say something (not "n/a", not the same text twice), and a number never sits in prose, the brand, an axis unit or the voice transcript (a digit in any script, a currency sign, a number word): `node make.mjs` exits 2 naming the field (`honesty.mjs`). No numbers yet: stop and measure. The demo is a labelled placeholder ("Acme Reader", fictional); never borrow a real brand's numbers.
 2. **Edit the CONFIG of `templates/proof-film/config.mjs`:** the claim (at most 6 words, one `*accent*` word), the method card, ONE builder (`builder.kind` `scatter` = `chart.scatterFrontier`, `trace` = `ui.branchTrace` with one wrong fork turning red, `table` = `ui.dataTable`), the head-to-head rows, 1-3 big numbers, exactly three stat cards, the URL.
 3. **A camera, not cuts.** One cam2d world carries every panel; a hard cut needs its reason (`CONFIG.cut`). Sound: a proof bed (20-36% bass share), a tick per state change, ONE soft hit on the number reveal, a planned quiet open and a quiet hold on the end card, no stinger (`plan.audio.quiet`).
-4. **Aspects:** `node make.mjs --set format=tall` re-lays the panels for 9:16 inside the conservative safe zone; `ui.branchTrace` is landscape and sits on a 16:9 plate there, so prefer scatter or table. Render it with `-c index-tall.html`.
+4. **Aspects:** `node make.mjs --set format=tall` re-lays the panels for 9:16 inside the conservative safe zone and writes its own project, `tall/index.html`; `ui.branchTrace` is landscape-only, so the gate refuses `trace` on 9:16 (use scatter or table). Render it with `(cd tall && npx -y hyperframes@0.8.142 render . -o ../out/proof-film-tall.mp4 --crf 23)`.
 5. **Sparse VO (optional):** `--set vo.words=/abs/words.json` (+ `vo.audio`) puts every stage change in a speech gap (`cutgen.py walkthrough`) and the cues under the voice. Run `ears` with `--transcript out/transcript.json`.
 6. **Check:** `node templates/proof-film/proof-film.test.mjs`, `templates/_shared/sheet.py`, `ears/listen.py out/proof-film.mp4 --plan out/plan.json`.
 

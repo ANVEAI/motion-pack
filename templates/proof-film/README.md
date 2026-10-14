@@ -7,10 +7,10 @@ Its one rule: **every number needs a source AND a method, or the build fails.**
 ```bash
 node make.mjs                                   # gate -> plan -> mix -> index.html (16:9)
 npx -y hyperframes@0.8.142 render . -o out/proof-film.mp4 --crf 23
-node make.mjs --set format=tall                 # the 9:16 re-layout -> index-tall.html, out/plan-tall.json
-npx -y hyperframes@0.8.142 render . -c index-tall.html -o out/proof-film-tall.mp4 --crf 23
-node make.mjs --set builder.kind=trace          # or table
-node proof-film.test.mjs                        # the gate, plan, camera, safe zone and VO mechanics (CI runs it)
+node make.mjs --set format=tall                 # the 9:16 re-layout -> tall/index.html (its own HyperFrames project), out/plan-tall.json
+(cd tall && npx -y hyperframes@0.8.142 render . -o ../out/proof-film-tall.mp4 --crf 23)
+node make.mjs --set builder.kind=trace          # or table (trace is 16:9 only)
+node proof-film.test.mjs                        # the gate, plan, camera, labels, safe zone and VO mechanics (CI runs it)
 python3 ../../ears/listen.py out/proof-film.mp4 --plan out/plan.json
 ```
 
@@ -31,22 +31,23 @@ python3 ../../ears/listen.py out/proof-film.mp4 --plan out/plan.json
 
 ## The honesty gate (`honesty.mjs`)
 
-- **Every number field has a `source` and a `method`.** A number field is a setting count, a scatter point (`x`, `y`), a table value, a big number, a stat card (and its `alt`). A field inherits from its container (`builder.scatter.source`, `h2h.method`, a row may override with its own). A missing, `''`, whitespace-only or non-string value counts as missing.
-- **`node make.mjs` exits 2** with every problem, each naming the field (`cards[1] ("Leaner"): no `method`...`), before it stages, mixes or writes anything. `cues.mjs` and `buildPlan` fail the same way (`HonestyError`).
-- **A digit only appears through a number field.** A digit in the claim, a label, a card line or diagram text has no source line, so the gate points at it. `unit` is a token the parts format (`'' K M % $ s ms dur`), not prose.
-- **The claim** is at most 6 words with exactly one accent word. **Three** stat cards, **one** builder of a known kind, `illustrative: false` only when no source still says placeholder.
-- **In frame:** the source and method print beside the numbers (the scatter and table parts print their own footnote; the method line under the table, the cards, the numbers and the method card is drawn here), and a pill reads `ILLUSTRATIVE · PLACEHOLDER DATA` while `illustrative` holds. The demo is "Acme Reader", a fictional brand, with the source `illustrative placeholder, replace` on every number. To go real: write the real source and method on every field, set `illustrative: false`, rebuild.
-- **Not detected:** numbers spelled out in words ("six systems") and a made-up brand. Read the sheet before you publish.
+- **Every number field has a `source` and a `method` that say something.** A number field is a setting count, a scatter point (`x`, `y`), a table value, a big number, a stat card (and its `alt`). A field inherits from its container (`builder.scatter.source`, `h2h.method`; a row may override with its own). Missing, `''`, whitespace-only and non-string values count as missing; so do filler (`n/a`, `tbd`, `.`, `xxxx`), a source under two distinct letters, a method under eight letters or two words, and a method that repeats the source (`weak()`). A filler on a container is one message naming the container.
+- **`node make.mjs` exits 2** with every problem, each naming the field (`cards[1] ("Leaner"): no `method`...`), before it stages, mixes or writes anything. `cues.mjs` and `buildPlan` fail the same way (`HonestyError`); a CONFIG of the wrong shape (a string where a list belongs, `hero.callout: 'text'`) is a message too, never a stack trace.
+- **A number only appears through a number field.** Not in the claim, the brand name, the URL, a label, a card line, diagram text, a table bar title, an axis prefix or suffix, and not in the VOICE. "A number" is a digit in ANY script (`6`, `６`, `٦`, `६`, `²`, `½`, `①`, `Ⅷ`), a currency sign, a percent sign, or a number word (`sixty`, `ten-times`, `percent`, `twice`, `double`, `half`, `tenfold`, `zero`). `one` is allowed (it is a pronoun as often as a count), as are ordinals. A domain with a digit in it (`forms2go.example`) needs `brand.urlHasNumber: true`. `unit` is a token the parts format (`'' K M % $ s ms dur`), not prose.
+- **The voice is checked too.** `config.mjs gateProblems` reads `vo.words` (the transcript you give) and refuses any spoken number: `vo.words[12] ("sixty" at 4.2 s)`. Say it without the figure ("a lower cost") and let the number sit on screen with its source and method. The gate reads the transcript, not the audio: a recording that says more than its words.json is on you.
+- **The claim** is at most 6 words with exactly one accent word. **Three** stat cards, **one** builder of a known kind, `illustrative: false` only when no source still says placeholder, a hard cut only with a Murch reason (`EMOTION: ...`, one of EMOTION, STORY, RHYTHM, ENERGY, REVEAL, PLACE, EYE_TRACE, SCREEN_PLANE, SPACE, and a why of a few words).
+- **In frame:** the source and method print beside the numbers (the scatter and table parts print their own footnote at 17-19 px; the method line, the cards, the numbers and the method card are drawn here at 24 px, 30 px on 9:16), and the honesty label `ILLUSTRATIVE · PLACEHOLDER DATA` is drawn on EVERY number panel, the builder (scatter, trace or table) and the end card: a mono pill, **28 px on 16:9 and 30 px on 9:16** (frame-design frames.md section 5), at the same spot (bottom-left of the safe rect), in before the first number is on screen, held for the whole panel. The sources and methods are fully visible 1.2 s after a panel starts. The demo is "Acme Reader", a fictional brand, with the source `illustrative placeholder, replace` on every number. To go real: write the real source and method on every field, set `illustrative: false`, rebuild (the pill then draws nowhere).
+- **Not detected (limits):** whether a source is TRUE (the gate refuses empty, filler and repeated text, not lies), a made-up brand, `one`, ordinals and vague quantities ("a lot cheaper"), and anything a recording says beyond its transcript. Read the sheet before you publish and listen once.
 
 ## Config (the CONFIG block of `config.mjs`)
 
-`format`, `brand` (`accent` / `ink` / `paper` / `muted` map to frame-design's `palette`, see `skills/frame-design/references/design-json.md`), `claim`, `name`, `setting`, `builder` (`kind` plus one block per kind), `h2h`, `numbers`, `cards`, `end`, `tail` (the hold), `timing` (the camera's `travelS`, `ease`, `dip`, `push`, `enterS`, and the seconds of build per stage; stages round up to whole beats of the bed), `cut`, `vo`, `music` + `bpm`, `sfx`, `layers`. Everything the film shows is in it.
+`format`, `brand` (`accent` / `ink` / `paper` / `muted` map to frame-design's `palette`, see `skills/frame-design/references/design-json.md`; `urlHasNumber`), `claim`, `name`, `setting`, `builder` (`kind` plus one block per kind), `h2h`, `numbers`, `cards`, `end`, `tail` (the hold: `holdS`, the bed's `bedDb` and the room tone's `roomDb`), `timing` (the camera's `travelS`, `ease`, `dip`, `push`, `enterS`, the seconds of build per stage; stages round up to whole beats of the bed; `minS` 36 and `maxS` 60 are the window of a proof film: a film shorter than `minS`, such as a table builder that skips the head-to-head stage, gets its dwell lengthened across the content stages), `cut`, `vo`, `music` + `bpm`, `sfx`, `layers`. Everything the film shows is in it.
 
 ## 16:9 and 9:16
 
-9:16 is a **re-layout**: the panels are re-composed for a tall frame inside the conservative safe zone (x 65-960, y 269-1248 of 1080 x 1920), and the camera travels down instead of across. The timeline is identical, so one stage list and one mix serve both (`out/plan.json`, `out/plan-tall.json`). The fine print is 1.35x on 9:16 so it still reads on a phone. The camera's slow dwell push moves a point at the edge of a safe rect out of it, so the content uses the rect pulled in by `1 + push` (`panels.mjs safeInset`).
+9:16 is a **re-layout**: the panels are re-composed for a tall frame inside the conservative safe zone (x 65-960, y 269-1248 of 1080 x 1920), and the camera travels down instead of across. The timeline is identical, so one stage list and one mix serve both (`out/plan.json`, `out/plan-tall.json`). The fine print is 30 px on 9:16 (24 px on 16:9), the pill 30 px (28 px). The camera's slow dwell push moves a point at the edge of a safe rect out of it, so the content uses the rect pulled in by `1 + push` (`panels.mjs safeInset`). Every variant (scatter, table; 16:9 and 9:16) runs 36-60 s, tested. The 9:16 page is its own HyperFrames project, `tall/index.html` with its own `assets/`: two root compositions in one folder are a `hyperframes lint` error.
 
-**`ui.branchTrace` is landscape-only.** On 9:16 the template puts it on a 16:9 plate scaled to the frame width; its type is then small on a phone and the plan says so (a warning). Choose `scatter` or `table` for a 9:16 post.
+**`ui.branchTrace` is landscape-only, so `builder.kind: trace` is 16:9 only: the gate refuses it on 9:16** (on a 1080 px wide frame its 15 px labels would print at 7 px). Use `scatter` or `table` for a 9:16 post, or post the 16:9 master. The trace builder on 16:9 prints its labels at 15 px at 1080: fine on a TV or a laptop, small on a phone.
 
 ## Camera (`panels.mjs cameraFor`)
 
@@ -55,8 +56,8 @@ Two nested cam2d state functions. `pan` (the world) is one `pan2d` leg per stage
 ## Sound
 
 - **Bed:** `music/bed_playful_bounce_loop8` (120 BPM; bass share 33% in the delivered mix against 20-36% for a proof bed). Stages start on its beats.
-- **Cues** (`sfx/` ids from the `saas_launch` / `product_ad` palette): a quiet UI tick per state change, a slide per camera move, the parts' own per-action cues, ONE soft hit (`sfx/hit/soft`) on the number reveal, **nothing on the end card but a tick**. Every cue time is a whole frame.
-- **Planned shape** (`plan.audio.quiet`): a quiet open (the picture moves from frame 0, the first sound is the accent word at 1.2 s) and a quiet hold (the bed lifts for 0.8 s, then falls 30 dB: 4.0 s near the silence under the end card). `plan.audio.mode` is `continuous`, `role` is `proof`.
+- **Cues** (`sfx/` ids from the `saas_launch` / `product_ad` palette): a quiet UI tick per state change, a slide per camera move, the parts' own per-action cues, ONE soft hit (`sfx/hit/soft`) on the number reveal, **nothing on the end card but a tick and the room tone under the hold**. Every cue time is a whole frame.
+- **Planned shape** (`plan.audio.quiet`): a quiet open (the picture moves from frame 0, the first sound is the accent word at 1.2 s) and a quiet hold (the bed lifts for 0.8 s, then falls to -40 dB while `sfx/amb/room_tone` takes over: 4.0 s under the end card, no stinger). The room tone is what makes the hold read as a hold: a kick-pulsing bed that only falls is a decay to `ears` (its pulse is 10 dB at any level; refstudy wants the last 2 s flat within 8 dB). `tail.roomDb` (-26) is the room tone's level under the un-dipped bed (plan cue `overBedDb`, passed through `templates/_shared/audio.py`). `plan.audio.mode` is `continuous`, `role` is `proof`.
 - **Master:** -14 LUFS-I; `ceilingDb` is -3.0. At -2.0 and -2.5 HyperFrames logged `Audio lowered` for this cue list (delivered -15.2 and -14.9 LUFS): grep the render log after every change.
 
 ## Optional sparse VO

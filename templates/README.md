@@ -46,7 +46,7 @@ Run the three.js templates before `beat-edit` and `talking-head`, because those 
 ## Lint (in `cues.mjs`, results written into `plan.json`)
 
 - **`lint.proof`:** every claim that contains a digit needs a `source`. There are no fabricated stats. The ad demo uses copy with no numbers.
-- **Honesty gate (`proof-film/honesty.mjs`):** stricter, because a proof film is made of numbers. Every number field needs a `source` AND a `method` (blank counts as missing), a digit may only appear through a number field, the claim is at most 6 words with one accent word, and `node make.mjs` exits 2 naming the field before it builds anything. It feeds `lint.proof` too.
+- **Honesty gate (`proof-film/honesty.mjs`):** stricter, because a proof film is made of numbers. Every number field needs a `source` AND a `method` that say something (blank, filler such as "n/a" and a method that repeats the source count as missing), a number may only appear through a number field (never in prose, the brand name, the URL, an axis unit or the VO transcript: a digit in any script, a currency or percent sign, a number word), the claim is at most 6 words with one accent word, `trace` is refused on 9:16, and `node make.mjs` exits 2 naming the field before it builds anything. It feeds `lint.proof` too.
 - **Transitions:** any transition other than a hard cut needs a `txReason`, written as a Murch reason.
 - **`lint.pace`:** checks ASL and the longest shot. Shots marked `hold: true`, such as the hero reveal and the end card, are exempt from the longest-shot check.
 - **Ad brand cue:** the ad also reports `brandCueAt` against the platform's `brandCueBy`.
