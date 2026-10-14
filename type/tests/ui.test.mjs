@@ -45,8 +45,12 @@ for (const id of UIIDS) {
   const times = Array.from({ length: 60 }, (_, i) => -1 + i * 0.22), a = times.map((t) => renderSVG(id, t, { at: 0 })), order = shuffle(times.map((_, i) => i)), b = []; for (const i of order) b[i] = renderSVG(id, times[i], { at: 0 });
   const bad = a.find((s) => /NaN|undefined|Infinity|\[object/.test(s));
   check(`${id}: non-empty at hero ${HERO[id]} s, empty before at, same SVG in shuffled seek order, no NaN/undefined over [-1, 12] s`, renderSVG(id, HERO[id], { at: 0 }).length > 500 && renderSVG(id, -0.3, { at: 0 }) === '' && a.every((s, i) => s === b[i]) && !bad, bad ? bad.slice(0, 120) : '');
-  const big = renderSVG(id, HERO[id], { at: 0, params: { scale: 1.5 } }), sz = (s) => Math.max(...[...s.matchAll(/font-size="([\d.]+)"/g)].map((m) => +m[1]), 0);
-  check(`${id}: scale 1.5 grows the type (${sz(renderSVG(id, HERO[id], { at: 0 }))} -> ${sz(big)} px)`, sz(big) > sz(renderSVG(id, HERO[id], { at: 0 })) * 1.4 || ['ui.isometricTilt', 'ui.pageFlythrough'].includes(id) && big !== renderSVG(id, HERO[id], { at: 0 }));
+  const big = renderSVG(id, HERO[id], { at: 0, params: { scale: 1.5 } });
+  /* two parts carry no font-size of their own: ui.isometricTilt's placeholder panel has no text (its size unit shows in the title-bar dot radius, 8 * s) and ui.pageFlythrough scales the page
+     through its camera transform (`rotate(..) scale(z)`, z = zoom * s); for them the check measures that unit instead, so it fails when `scale` stops reaching the drawing */
+  const UNIT = { 'ui.isometricTilt': ['title-bar dot radius', /<circle [^>]*?r="([\d.]+)"/g], 'ui.pageFlythrough': ['page zoom', /rotate\([-\d.]+\) scale\(([\d.]+)\)/g] }, [what, re] = UNIT[id] || ['type', /font-size="([\d.]+)"/g];
+  const sz = (s) => Math.max(...[...s.matchAll(re)].map((m) => +m[1]), 0), s0 = sz(renderSVG(id, HERO[id], { at: 0 })), s1 = sz(big);
+  check(`${id}: scale 1.5 grows the ${what} (${s0} -> ${s1}${UNIT[id] ? '' : ' px'})`, s0 > 0 && s1 > s0 * 1.4 && s1 < s0 * 1.6);
   const cues = uiCues(id, { at: 2 }), miss = cues.filter((c) => !sfx.has('snd.' + c.id.split('/').slice(1).join('.')));
   check(`${id}: uiCues gives ${cues.length} cues, all sfx ids resolve, all after the item's at`, cues.length > 0 && !miss.length && cues.every((c) => c.t >= 2 - 1e-9 && c.why), miss.map((c) => c.id).join(' '));
 }
