@@ -17,7 +17,7 @@ const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES },
 const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES) }; import { DOC } from './doc.js';
 import { SWAP, SWAP_CUES } from './swap.js'; import { BADGES, BADGE_CUES } from './badges.js'; import { BRAND_LAYOUTS, BRAND_CUES } from './brand.js';
 export { stepAt, mixHex } from './swap.js'; export { selectionZoom, selectionZoomCss } from './badges.js'; export { CIRCLE4, SPARK4, PLATES } from './brand.js';
-export { nodeGraphCam, isoTiltCss, ATTACH } from './ui.js'; export { frontierOf, fmtUnit, keysAt, trackAt, scatterTimes, tableTimes, readoutGeo } from './ui-proof.js'; export { lintBranchTrace, traceTimes, traceCaptions, captionAt, bubbleGeo } from './ui-trace.js'; export { pageFlyCam } from './ui-nav.js'; export { wrapWords } from './ui-data.js';
+export { nodeGraphCam, isoTiltCss, ATTACH, attachList } from './ui.js'; export { frontierOf, fmtUnit, keysAt, trackAt, niceTicks, noSrc, scatterTimes, tableTimes, readoutGeo } from './ui-proof.js'; export { lintBranchTrace, traceTimes, traceCaptions, captionAt, bubbleGeo } from './ui-trace.js'; export { pageFlyCam } from './ui-nav.js'; export { wrapWords } from './ui-data.js';
 export { SHAPES, PIXEL5x7, pixelGlyph, tokenize } from './kinetic.js'; export { photoTile, slotMedia, placeholderLogo, MARKS, DEFAULT_MARK } from './media.js'; export { measure } from './core.js';
 export { CARDS, CARD_IDS, cardsAt, stackFlipTimes, drawCards, renderCards, mountCards, placeholderCard, placeholderCards, loadImages } from './cards.js';
 export { BOARD, BOARD_D, boardAt, drawBoard, mountBoard } from './board.js';
@@ -56,6 +56,7 @@ export const GFX_SFX = {
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 export function renderInner(id, t, { at = 0, dur, params = {} } = {}, ctx) {
   const g = GFX[id]; if (!g) throw new Error('unknown gfx ' + id); const p = { ...g.d, ...params }, L = life(t, at, dur ?? p.dur ?? g.dur, g.inF ?? 12, g.outF ?? 9);
+  L.t = t; L.at = at;   // composition time and the item's start: lets a part follow layout.cornerPin data, whose keys are in composition time (ui.costTicker, caption.sceneBubble anchors)
   return L.on ? g.svg(L, p, ctx) : '';
 }
 export function renderSVG(id, t, opts = {}, { W = 1920, H = 1080, platform = null, seed = 1 } = {}) {

@@ -3513,12 +3513,7 @@
    "in_frames": 8,
    "out_frames": 8,
    "params": {
-    "box": [
-     0.1,
-     0.1,
-     0.8,
-     0.8
-    ],
+    "box": null,
     "finding": "Week 3 resolved more calls in the call, at a lower cost per call.",
     "columns": [
      {
@@ -3604,7 +3599,7 @@
     "source": "illustrative data",
     "theme": "light",
     "accent": "#4A18ED",
-    "scale": 1
+    "scale": null
    },
    "tags": [
     "ui",
@@ -5802,7 +5797,7 @@
     "plate": false,
     "slide": 0.18,
     "source": "illustrative values",
-    "font": "'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Latin Modern Math', 'Times New Roman', Times, serif",
+    "font": "'STIX Two Text', 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', 'Times New Roman', Times, serif",
     "scale": 1
    },
    "tags": [

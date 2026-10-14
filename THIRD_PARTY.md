@@ -9,6 +9,7 @@ CC0 (`LICENSE-MEDIA`). This file lists everything else the pack touches, and how
 |---|---|---|---|
 | Manrope 4.505 (variable) | `objects/kit/fonts/`, `templates/_shared/fonts/` | SIL OFL 1.1 | Copyright 2019 The Manrope Project Authors. Licence text: `OFL-Manrope.txt` next to the font. Unmodified. |
 | IBM Plex Mono 2.3 (Medium, SemiBold) | same folders | SIL OFL 1.1 | Copyright 2017 IBM Corp., Reserved Font Name "Plex". Licence text: `OFL-IBMPlexMono.txt`. Unmodified. |
+| STIX Two Text 2.13 (Regular + Italic, variable) | `templates/_shared/fonts/` | SIL OFL 1.1 | Copyright 2001-2021 The STIX Fonts Project Authors (https://github.com/stipub/stixfonts). Licence text: `OFL-STIXTwo.txt`. Unmodified. Used by `type.paramReadout` for its math-style italic. |
 
 ## 2. Loaded at use time (never vendored)
 
