@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack demo: round 4+5 proof parts (illustrative data)</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #F4F2EE; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F4F2EE; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#bg { z-index: 0; } #stage { z-index: 2; } #fx { pointer-events: none; } #fx canvas { z-index: 5; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="19.5">
+<div id="bg" class="clip" data-start="0" data-duration="19.5" data-track-index="0"></div>
+<div id="stage" class="clip" data-start="0" data-duration="19.5" data-track-index="1"></div>
+<div id="fx" class="clip" data-start="0" data-duration="19.5" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="19.5" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module">
+import { renderInner } from './assets/mp/type/gfx/index.js';
+import { ctxFor, text, f2 } from './assets/mp/type/gfx/core.js';
+import { KIT } from './assets/mp/type/gfx/ui.js';
+import { spring } from './assets/mp/type/ease.js';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+const C = {"W":1920,"H":1080,"scenes":[{"id":"frontier","start":0,"end":4.5,"bg":"paper","why":"claim by chart: points drop in, the frontier draws through the best, the starred point lands last (axes already drawing on frame 0)","items":[{"id":"chart.scatterFrontier","at":-0.2,"params":{"box":[0.06,0.07,0.88,0.86]}}]},{"id":"trace","start":4.5,"end":9.5,"bg":"paper","why":"method: three checks run side by side; one wrong pick turns red and the red runs down the line to the result","items":[{"id":"ui.branchTrace","at":4.5,"params":{"box":[0.04,0.06,0.92,0.86]}}]},{"id":"table","start":9.5,"end":13.5,"bg":"paper","why":"numbers: a table builds under its finding, the bars share its data, one cell pulses","items":[{"id":"ui.dataTable","at":9.5,"params":{"box":[0.08,0.05,0.84,0.9],"bars":{"row":0,"title":"Calls handled per week","h":0.26}}}]},{"id":"speaker","start":13.5,"end":18,"bg":"night","plate":true,"why":"live voice: the words fill a bubble beside the speaker on their own timestamps, tick Captured, and dock into a list; a usage chip is pinned to the scene","items":[{"id":"caption.sceneBubble","at":13.5,"params":{"anchor":[[0,0.345,0.43337],[0.25,0.34639,0.43398],[0.5,0.34765,0.43373],[0.75,0.34864,0.43266],[1,0.34928,0.43102],[1.25,0.3495,0.42915],[1.5,0.34928,0.42747],[1.75,0.34864,0.42634],[2,0.34765,0.42601],[2.25,0.34639,0.42655],[2.5,0.345,0.42784],[2.75,0.34361,0.4296],[3,0.34235,0.43145],[3.25,0.34136,0.43299],[3.5,0.34072,0.43387],[3.75,0.3405,0.43391],[4,0.34072,0.4331],[4.25,0.34136,0.43161],[4.5,0.34235,0.42977]],"side":"right","offset":[64,-170],"scale":1.5,"speaker":"Speaker","dock":{"at":3.35,"to":[0.64,0.17],"scale":0.62,"title":"Reminders"}}},{"id":"ui.costTicker","at":13.5,"params":{"anchor":[0.62,0.62],"offset":[10,90],"scale":1.45,"mode":"zero","counters":[{"label":"tokens","keys":[[0.5,0],[2.9,1240]],"dec":0},{"label":"cost","keys":[[0.5,0],[2.9,0]],"prefix":"$","dec":2}]}}]},{"id":"name","start":18,"end":19.5,"bg":"brand","why":"end card: the name and one line, held quiet","card":{"name":"motion-pack","line":"Proof parts. Data on screen is illustrative."},"items":[]}],"colors":{"paper":"#F4F2EE","night":"#121118","brand":"#4A18ED","ink":"#16151B"}};
+const { rect } = KIT, headAt = (u) => [0.345 + 0.0045 * Math.sin(2 * Math.PI * 0.2 * u), 0.43 + 0.004 * Math.sin(2 * Math.PI * 0.3 * u + 1)];
+const ctx = ctxFor(C.W, C.H, null, 1), bg = document.getElementById('bg'), stage = document.getElementById('stage');
+/* end card: the name lands on the headline spring, the line follows 0.25 s later */
+const card = (cd, u) => { const k1 = spring(u, 'headline'), k2 = spring(u - 0.25, 'panel');
+  return '<g opacity="' + f2(Math.min(1, u / 0.1)) + '" transform="translate(0 ' + f2(30 * (1 - k1)) + ')">' + text(cd.name, C.W / 2, C.H * 0.47, { size: 150, weight: 800, fill: '#FFFFFF', anchor: 'middle', ls: -4 }) + '</g>' +
+    (u > 0.25 ? '<g opacity="' + f2(Math.min(1, (u - 0.25) / 0.15)) + '" transform="translate(0 ' + f2(20 * (1 - k2)) + ')">' + text(cd.line, C.W / 2, C.H * 0.47 + 110, { size: 52, weight: 600, fill: '#FFFFFF', anchor: 'middle', op: 0.85 }) + '</g>' : ''); };
+/* the placeholder plate: a dim room, a window glow, a desk, a laptop and a generic silhouette (head + shoulders) that sways a little; all procedural, all labelled */
+const plate = (u) => { const [hx, hy] = headAt(u), X = hx * C.W, Y = hy * C.H, r = 74;
+  return '<defs><linearGradient id="pl-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C2723"/><stop offset="1" stop-color="#14110F"/></linearGradient><radialGradient id="pl-g" cx="0.78" cy="0.3" r="0.55"><stop offset="0" stop-color="#7FA6D8" stop-opacity="0.45"/><stop offset="1" stop-color="#7FA6D8" stop-opacity="0"/></radialGradient></defs>' +
+    rect(0, 0, C.W, C.H, 0, 'url(#pl-w)') + rect(0, 0, C.W, C.H, 0, 'url(#pl-g)') + rect(C.W * 0.74, C.H * 0.1, C.W * 0.2, C.H * 0.3, 8, '#9DBBE0', 'opacity="0.2"') +
+    rect(0, C.H * 0.8, C.W, C.H * 0.2, 0, '#1B1715') + rect(0, C.H * 0.8, C.W, 4, 0, '#3A322D') +
+    '<path d="M' + f2(X - 300) + ' ' + f2(C.H * 0.82) + ' Q' + f2(X - 300) + ' ' + f2(Y + r + 80) + ' ' + f2(X - 170) + ' ' + f2(Y + r + 56) + ' L' + f2(X - 56) + ' ' + f2(Y + r + 30) + ' L' + f2(X + 56) + ' ' + f2(Y + r + 30) + ' L' + f2(X + 170) + ' ' + f2(Y + r + 56) + ' Q' + f2(X + 300) + ' ' + f2(Y + r + 80) + ' ' + f2(X + 300) + ' ' + f2(C.H * 0.82) + ' Z" fill="#3B3633"/>' +
+    rect(X - 30, Y + r - 10, 60, 70, 20, '#4A4440') + '<ellipse cx="' + f2(X) + '" cy="' + f2(Y) + '" rx="' + r * 0.86 + '" ry="' + r + '" fill="#4A4440"/>' +
+    '<path d="M' + f2(X + r * 0.5) + ' ' + f2(Y - r * 0.9) + ' A' + r * 0.86 + ' ' + r + ' 0 0 1 ' + f2(X + r * 0.86) + ' ' + f2(Y) + '" fill="none" stroke="#7FA6D8" stroke-width="3" opacity="0.45"/>' +
+    '<g transform="translate(' + f2(C.W * 0.62) + ' ' + f2(C.H * 0.58) + ')"><path d="M-170 0 L170 0 L150 -190 L-150 -190 Z" fill="#262321" stroke="#3E3834" stroke-width="3"/><path d="M-150 -170 L150 -170 L136 -20 L-136 -20 Z" fill="#6E8CB8" opacity="0.28"/><path d="M-210 0 L210 0 L196 30 L-196 30 Z" fill="#332E2B"/></g>' +
+    text('placeholder plate: a procedural silhouette, not a real recording', 56, C.H - 52, { size: 24, weight: 600, fill: '#FFFFFF', op: 0.6 }); };
+function frame(t) {
+  const sc = C.scenes.find((s) => t >= s.start && t < s.end) || C.scenes.at(-1); bg.style.background = C.colors[sc.bg];
+  let svg = sc.plate ? plate(t - sc.start) : sc.card ? card(sc.card, t - sc.start) : '';
+  for (const it of sc.items) svg += renderInner(it.id, t, { at: it.at, dur: 1e6, params: it.params }, ctx);
+  stage.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + C.W + ' ' + C.H + '" width="' + C.W + '" height="' + C.H + '" style="position:absolute;inset:0">' + svg + '</svg>';
+}
+/* measure() reads canvas text metrics, so load the weights the kit uses up front and repaint the current frame once they are in (same wrap on every frame) */
+let last = window.__hfThreeTime || 0; window.addEventListener('hf-seek', (e) => frame((last = e.detail.time))); frame(last);
+Promise.all(['600', '700', '800'].map((w) => document.fonts.load(w + ' 30px Manrope'))).then(() => frame(last));
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"grain","params":{"stock":"digital-soft"}}], { width: 1920, height: 1080, fps: 30, seed: 7 }), { fps: 30 });
+const tl = gsap.timeline({ paused: true }); tl.set({}, {}, 19.5);
+window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

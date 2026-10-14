@@ -2455,6 +2455,7 @@
     "theme": "light",
     "accent": "#4A18ED",
     "cursor": true,
+    "attach": null,
     "scale": 1
    },
    "tags": [
@@ -3497,6 +3498,436 @@
     "product-film"
    ],
    "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.dataTable",
+   "file": "type/gfx/ui-proof.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 7,
+    "gain_db": -3
+   },
+   "dur_s": 4.6,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": null,
+    "finding": "Week 3 resolved more calls in the call, at a lower cost per call.",
+    "columns": [
+     {
+      "label": "Metric"
+     },
+     {
+      "label": "Week 1"
+     },
+     {
+      "label": "Week 2"
+     },
+     {
+      "label": "Week 3"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Calls handled",
+      "unit": "K",
+      "values": [
+       12400,
+       15800,
+       18100
+      ]
+     },
+     {
+      "label": "Resolved in the call",
+      "unit": "%",
+      "values": [
+       71.2,
+       76.5,
+       81.9
+      ]
+     },
+     {
+      "label": "Average handle time",
+      "unit": "dur",
+      "values": [
+       434,
+       398,
+       371
+      ]
+     },
+     {
+      "label": "Passed to a person",
+      "unit": "%",
+      "values": [
+       18.4,
+       14.1,
+       11.6
+      ]
+     },
+     {
+      "label": "Cost per call",
+      "unit": "$",
+      "values": [
+       0.42,
+       0.38,
+       0.35
+      ]
+     },
+     {
+      "label": "Median reply time",
+      "unit": "ms",
+      "values": [
+       590,
+       530,
+       505
+      ]
+     }
+    ],
+    "highlight": {
+     "row": 1,
+     "col": 3
+    },
+    "headerAt": 0.25,
+    "rowsAt": 0.5,
+    "stagger": 0.14,
+    "countDur": 0.9,
+    "hlAt": null,
+    "bars": null,
+    "barsAt": null,
+    "source": "illustrative data",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": null
+   },
+   "tags": [
+    "ui",
+    "table",
+    "data",
+    "finding",
+    "count-up",
+    "benchmark",
+    "proof",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-r45ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.costTicker",
+   "file": "type/gfx/ui-proof.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 10,
+    "gain_db": -4
+   },
+   "dur_s": 3.8,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "anchor": [
+     0.56,
+     0.62
+    ],
+    "offset": [
+     44,
+     -190
+    ],
+    "counters": [
+     {
+      "label": "tokens",
+      "keys": [
+       [
+        0.35,
+        0
+       ],
+       [
+        3.1,
+        48200
+       ]
+      ],
+      "dec": 0
+     },
+     {
+      "label": "cost",
+      "keys": [
+       [
+        0.35,
+        0
+       ],
+       [
+        3.1,
+        0.97
+       ]
+      ],
+      "prefix": "$",
+      "dec": 2,
+      "warn": 0.5
+     }
+    ],
+    "mode": "count",
+    "zero": {
+     "value": "$0",
+     "label": "per query · on device"
+    },
+    "source": "illustrative values",
+    "dot": true,
+    "accent": "#4A18ED",
+    "warnColor": "#E39A12",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "cost",
+    "tokens",
+    "ticker",
+    "usage",
+    "counter",
+    "tracked",
+    "footage",
+    "proof"
+   ],
+   "demo": "type/demo/out/gfx-r45ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.branchTrace",
+   "file": "type/gfx/ui-trace.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/toggle_on",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 6.4,
+   "in_frames": 8,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.04,
+     0.08,
+     0.92,
+     0.82
+    ],
+    "input": {
+     "title": "Request",
+     "lines": [
+      "\"Move my booking",
+      "to Friday morning\""
+     ],
+     "icon": "mail"
+    },
+    "lanes": [
+     {
+      "label": "Intent",
+      "icon": "search",
+      "steps": [
+       {
+        "label": "Classify",
+        "forks": [
+         {
+          "id": "in-move",
+          "label": "Reschedule"
+         },
+         {
+          "id": "in-cancel",
+          "label": "Cancel"
+         }
+        ],
+        "correct": "in-move"
+       },
+       {
+        "label": "Details",
+        "forks": [
+         {
+          "id": "in-keep",
+          "label": "Same party size"
+         },
+         {
+          "id": "in-size",
+          "label": "New party size"
+         }
+        ],
+        "correct": "in-keep"
+       }
+      ]
+     },
+     {
+      "label": "Identity",
+      "icon": "user",
+      "steps": [
+       {
+        "label": "Verify",
+        "forks": [
+         {
+          "id": "id-code",
+          "label": "Code matches"
+         },
+         {
+          "id": "id-name",
+          "label": "Name only"
+         }
+        ],
+        "correct": "id-code"
+       },
+       {
+        "label": "Account",
+        "forks": [
+         {
+          "id": "id-found",
+          "label": "Booking found"
+         },
+         {
+          "id": "id-guest",
+          "label": "Guest booking"
+         }
+        ],
+        "correct": "id-found"
+       }
+      ]
+     },
+     {
+      "label": "Calendar",
+      "icon": "clock",
+      "steps": [
+       {
+        "label": "Read",
+        "forks": [
+         {
+          "id": "ca-read",
+          "label": "Read the slots"
+         },
+         {
+          "id": "ca-guess",
+          "label": "Guess a slot"
+         }
+        ],
+        "correct": "ca-read"
+       },
+       {
+        "label": "Slot",
+        "forks": [
+         {
+          "id": "ca-free",
+          "label": "Fri 10:00 free"
+         },
+         {
+          "id": "ca-taken",
+          "label": "Fri 10:00 taken"
+         }
+        ],
+        "correct": "ca-free"
+       }
+      ]
+     }
+    ],
+    "decision": {
+     "title": "Decision",
+     "forks": [
+      {
+       "id": "d-move",
+       "label": "Move the booking"
+      },
+      {
+       "id": "d-human",
+       "label": "Pass to a person"
+      }
+     ],
+     "correct": "d-move"
+    },
+    "run": [
+     "id-name"
+    ],
+    "lanesAt": 0.35,
+    "laneStagger": 0.12,
+    "runAt": 1.3,
+    "stepDur": 0.8,
+    "laneLag": 0.1,
+    "edgeDur": 0.3,
+    "delay": 0.3,
+    "outcome": {
+     "pass": "Pass",
+     "fail": "Fail"
+    },
+    "caption": true,
+    "captions": null,
+    "note": "illustrative run",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "diagram",
+    "pipeline",
+    "decision",
+    "branches",
+    "failure",
+    "explainer",
+    "trust",
+    "benchmark"
+   ],
+   "demo": "type/demo/out/gfx-r45ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.promptBar.attach",
+   "file": "type/gfx/ui.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/mouse_click",
+    "offset_f": 9,
+    "gain_db": -2
+   },
+   "dur_s": 4.4,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.2,
+     0.45,
+     0.6,
+     0.11
+    ],
+    "text": "Turn this sketch into a banner",
+    "placeholder": "Describe what you want…",
+    "typeAt": 1.55,
+    "cps": 22,
+    "sendAt": null,
+    "title": "What should we make?",
+    "chip": null,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "cursor": true,
+    "attach": {
+     "kind": "sketch",
+     "name": "banner-sketch.png",
+     "from": [
+      0.3,
+      0.17
+     ],
+     "size": 200,
+     "dropAt": 1.15,
+     "dragDur": 0.85,
+     "href": null
+    },
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "prompt",
+    "chat",
+    "input",
+    "cursor",
+    "click",
+    "attach",
+    "drag",
+    "image",
+    "sketch"
+   ],
+   "demo": "type/demo/out/gfx-r45ui.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -5143,6 +5574,374 @@
     "end-card"
    ],
    "demo": "type/demo/out/gfx-r3layout.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "chart.scatterFrontier",
+   "file": "type/gfx/ui-proof.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 5.2,
+   "in_frames": 8,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.07,
+     0.08,
+     0.86,
+     0.82
+    ],
+    "title": "Score against cost per task",
+    "points": [
+     {
+      "label": "Model A",
+      "x": 11.8,
+      "y": 58.2,
+      "source": "illustrative"
+     },
+     {
+      "label": "Model B",
+      "x": 9.4,
+      "y": 55,
+      "source": "illustrative"
+     },
+     {
+      "label": "Model C",
+      "x": 6.1,
+      "y": 49.5,
+      "source": "illustrative"
+     },
+     {
+      "label": "Model D",
+      "x": 3.2,
+      "y": 41,
+      "source": "illustrative"
+     },
+     {
+      "label": "Model E",
+      "x": 2.1,
+      "y": 33.8,
+      "source": "illustrative"
+     },
+     {
+      "label": "Model F",
+      "x": 8,
+      "y": 44.2,
+      "source": "illustrative"
+     },
+     {
+      "label": "Model G",
+      "x": 4.6,
+      "y": 36,
+      "source": "illustrative"
+     }
+    ],
+    "hero": {
+     "label": "Acme",
+     "x": 3.9,
+     "y": 62.4,
+     "source": "illustrative",
+     "callout": [
+      "Highest score",
+      "under $4 a task"
+     ]
+    },
+    "x": {
+     "min": 0,
+     "max": 14,
+     "ticks": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14
+     ],
+     "prefix": "$",
+     "label": "Cost per task  ·  cheaper →",
+     "invert": true
+    },
+    "y": {
+     "min": 30,
+     "max": 70,
+     "ticks": [
+      30,
+      40,
+      50,
+      60,
+      70
+     ],
+     "label": "Score"
+    },
+    "better": {
+     "x": "low",
+     "y": "high"
+    },
+    "quadrant": {
+     "x": 6,
+     "y": 52,
+     "label": "better"
+    },
+    "frontier": true,
+    "axesAt": 0.05,
+    "axesDur": 0.6,
+    "pointsAt": 0.55,
+    "stagger": 0.16,
+    "frontierAt": null,
+    "frontierDur": 0.8,
+    "heroAt": null,
+    "calloutOffset": [
+     -200,
+     110
+    ],
+    "note": "illustrative data",
+    "method": "frontier: no other point is both cheaper and higher scoring",
+    "panel": true,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "chart",
+    "scatter",
+    "frontier",
+    "pareto",
+    "benchmark",
+    "cost",
+    "proof",
+    "data"
+   ],
+   "demo": "type/demo/out/gfx-r45ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.paramReadout",
+   "file": "type/gfx/ui-proof.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_tick",
+    "offset_f": 6,
+    "gain_db": -5
+   },
+   "dur_s": 3.2,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "center": [
+     0.5,
+     0.86
+    ],
+    "size": 44,
+    "fields": [
+     {
+      "name": "N",
+      "label": "terms",
+      "keys": [
+       [
+        0.2,
+        0
+       ],
+       [
+        1.6,
+        1024
+       ]
+      ],
+      "dec": 0
+     },
+     {
+      "name": "error",
+      "label": "residual",
+      "keys": [
+       [
+        0.2,
+        2.1
+       ],
+       [
+        1.8,
+        0.33
+       ]
+      ],
+      "dec": 2,
+      "unit": "%"
+     },
+     {
+      "name": "θ",
+      "label": "angle",
+      "keys": [
+       [
+        0.2,
+        0
+       ],
+       [
+        0.9,
+        22.5
+       ],
+       [
+        1.6,
+        37.5
+       ]
+      ],
+      "dec": 1,
+      "unit": "°",
+      "mode": "step"
+     }
+    ],
+    "color": "#FFFFFF",
+    "labelColor": "rgba(255,255,255,0.6)",
+    "plate": false,
+    "slide": 0.18,
+    "source": "illustrative values",
+    "font": "'STIX Two Text', 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', 'Times New Roman', Times, serif",
+    "scale": 1
+   },
+   "tags": [
+    "type",
+    "hud",
+    "readout",
+    "math",
+    "parameters",
+    "numbers",
+    "figure",
+    "proof"
+   ],
+   "demo": "type/demo/out/gfx-r45ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.sceneBubble",
+   "file": "type/gfx/ui-trace.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 7,
+    "gain_db": -4
+   },
+   "dur_s": 4.6,
+   "in_frames": 4,
+   "out_frames": 8,
+   "params": {
+    "words": [
+     {
+      "w": "Remind",
+      "s": 0.35,
+      "e": 0.57
+     },
+     {
+      "w": "me",
+      "s": 0.62,
+      "e": 0.84
+     },
+     {
+      "w": "to",
+      "s": 0.89,
+      "e": 1.11
+     },
+     {
+      "w": "call",
+      "s": 1.16,
+      "e": 1.38
+     },
+     {
+      "w": "the",
+      "s": 1.43,
+      "e": 1.65
+     },
+     {
+      "w": "venue",
+      "s": 1.7,
+      "e": 1.92
+     },
+     {
+      "w": "before",
+      "s": 1.97,
+      "e": 2.19
+     },
+     {
+      "w": "five",
+      "s": 2.24,
+      "e": 2.46
+     }
+    ],
+    "anchor": [
+     0.4,
+     0.3
+    ],
+    "side": "right",
+    "offset": [
+     36,
+     -150
+    ],
+    "size": 30,
+    "maxW": 540,
+    "speaker": "Speaker",
+    "ai": false,
+    "aiLabel": "AI voice",
+    "capturedLabel": "Captured",
+    "capturedAt": null,
+    "dock": null,
+    "fill": "rgba(32,30,28,0.58)",
+    "ink": "#FFFFFF",
+    "accent": "#7FE3A6",
+    "scale": 1
+   },
+   "tags": [
+    "caption",
+    "speech-bubble",
+    "transcript",
+    "voice",
+    "footage",
+    "tracked",
+    "speaker",
+    "honesty"
+   ],
+   "demo": "type/demo/out/gfx-r45ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "lowerThird.personalTag",
+   "file": "type/gfx/ui-trace.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 3.6,
+   "in_frames": 12,
+   "out_frames": 9,
+   "params": {
+    "name": "Maya Rao",
+    "role": "Research lead",
+    "personal": "Off duty: restores old radios",
+    "chip": {
+     "initials": "MR",
+     "href": null,
+     "icon": null
+    },
+    "pos": "bl",
+    "accent": "#4A18ED",
+    "tierAt": 0.3,
+    "tierLeadOut": 0.35,
+    "panel": "rgba(12,12,18,0.74)",
+    "color": "#FFFFFF",
+    "scale": 1
+   },
+   "tags": [
+    "lower-third",
+    "name",
+    "documentary",
+    "team",
+    "personal",
+    "interview",
+    "humanise"
+   ],
+   "demo": "type/demo/out/gfx-r45ui.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {

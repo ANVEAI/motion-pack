@@ -1,0 +1,318 @@
+{
+ "template": "demo-r45-ui",
+ "fps": 30,
+ "seconds": 19.5,
+ "W": 1920,
+ "H": 1080,
+ "music": "music/bed_corporate_bright_loop8",
+ "musicGainDb": 0,
+ "ceilingDb": -2.5,
+ "fadeInMs": 40,
+ "shots": [
+  {
+   "id": "frontier",
+   "start": 0,
+   "dur": 4.5,
+   "parts": [
+    "chart.scatterFrontier"
+   ],
+   "transition": "transitions/cut",
+   "why": "claim by chart: points drop in, the frontier draws through the best, the starred point lands last (axes already drawing on frame 0)"
+  },
+  {
+   "id": "trace",
+   "start": 4.5,
+   "dur": 5,
+   "parts": [
+    "ui.branchTrace"
+   ],
+   "transition": "transitions/cut",
+   "why": "method: three checks run side by side; one wrong pick turns red and the red runs down the line to the result"
+  },
+  {
+   "id": "table",
+   "start": 9.5,
+   "dur": 4,
+   "parts": [
+    "ui.dataTable"
+   ],
+   "transition": "transitions/cut",
+   "why": "numbers: a table builds under its finding, the bars share its data, one cell pulses"
+  },
+  {
+   "id": "speaker",
+   "start": 13.5,
+   "dur": 4.5,
+   "parts": [
+    "caption.sceneBubble",
+    "ui.costTicker"
+   ],
+   "transition": "transitions/cut",
+   "why": "live voice: the words fill a bubble beside the speaker on their own timestamps, tick Captured, and dock into a list; a usage chip is pinned to the scene"
+  },
+  {
+   "id": "name",
+   "start": 18,
+   "dur": 1.5,
+   "parts": [],
+   "transition": "transitions/cut",
+   "why": "end card: the name and one line, held quiet"
+  }
+ ],
+ "cues": [
+  {
+   "t": 0.35,
+   "id": "sfx/ui/pop",
+   "why": "point 1 drops in",
+   "scene": "frontier"
+  },
+  {
+   "t": 0.51,
+   "id": "sfx/device/card_flip",
+   "why": "point 2 drops in",
+   "scene": "frontier"
+  },
+  {
+   "t": 0.67,
+   "id": "sfx/ui/blip",
+   "why": "point 3 drops in",
+   "scene": "frontier"
+  },
+  {
+   "t": 0.83,
+   "id": "sfx/ui/pop",
+   "why": "point 4 drops in",
+   "scene": "frontier"
+  },
+  {
+   "t": 0.99,
+   "id": "sfx/device/card_flip",
+   "why": "point 5 drops in",
+   "scene": "frontier"
+  },
+  {
+   "t": 1.15,
+   "id": "sfx/ui/blip",
+   "why": "point 6 drops in",
+   "scene": "frontier"
+  },
+  {
+   "t": 1.31,
+   "id": "sfx/ui/pop",
+   "why": "point 7 drops in",
+   "scene": "frontier"
+  },
+  {
+   "t": 1.62,
+   "id": "sfx/ui/scan_sweep",
+   "why": "frontier draws",
+   "scene": "frontier"
+  },
+  {
+   "t": 2.62,
+   "id": "sfx/sparkle/shimmer",
+   "why": "hero point + star",
+   "scene": "frontier"
+  },
+  {
+   "t": 2.92,
+   "id": "sfx/ui/blip",
+   "why": "callout",
+   "scene": "frontier"
+  },
+  {
+   "t": 4.5,
+   "id": "sfx/tx/cut_tick",
+   "why": "cut: lands on the cut",
+   "scene": "trace"
+  },
+  {
+   "t": 4.85,
+   "id": "sfx/ui/pop",
+   "why": "lane 1 lands",
+   "scene": "trace"
+  },
+  {
+   "t": 4.97,
+   "id": "sfx/device/card_flip",
+   "why": "lane 2 lands",
+   "scene": "trace"
+  },
+  {
+   "t": 5.09,
+   "id": "sfx/ui/blip",
+   "why": "lane 3 lands",
+   "scene": "trace"
+  },
+  {
+   "t": 6.1,
+   "id": "sfx/ui/tick",
+   "why": "step 1 resolves",
+   "scene": "trace"
+  },
+  {
+   "t": 6.2,
+   "id": "sfx/ui/error",
+   "why": "wrong pick turns red",
+   "scene": "trace"
+  },
+  {
+   "t": 6.9,
+   "id": "sfx/ui/count_tick",
+   "why": "step 2 resolves",
+   "scene": "trace"
+  },
+  {
+   "t": 7.9,
+   "id": "sfx/ui/toggle_on",
+   "why": "decision",
+   "scene": "trace"
+  },
+  {
+   "t": 8.35,
+   "id": "sfx/hit/low_thump",
+   "why": "run fails",
+   "scene": "trace"
+  },
+  {
+   "t": 9.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: lands on the cut",
+   "scene": "table"
+  },
+  {
+   "t": 9.75,
+   "id": "sfx/ui/slide",
+   "why": "header slides in",
+   "scene": "table"
+  },
+  {
+   "t": 10,
+   "id": "sfx/ui/tick",
+   "why": "row 1",
+   "scene": "table"
+  },
+  {
+   "t": 10.03,
+   "id": "sfx/ui/count_run",
+   "why": "numbers count up",
+   "scene": "table"
+  },
+  {
+   "t": 10.05,
+   "id": "sfx/device/progress_fill",
+   "why": "bars grow",
+   "scene": "table"
+  },
+  {
+   "t": 10.14,
+   "id": "sfx/ui/count_tick",
+   "why": "row 2",
+   "scene": "table"
+  },
+  {
+   "t": 10.28,
+   "id": "sfx/device/loading_tick",
+   "why": "row 3",
+   "scene": "table"
+  },
+  {
+   "t": 10.42,
+   "id": "sfx/ui/tick",
+   "why": "row 4",
+   "scene": "table"
+  },
+  {
+   "t": 10.56,
+   "id": "sfx/ui/count_tick",
+   "why": "row 5",
+   "scene": "table"
+  },
+  {
+   "t": 10.7,
+   "id": "sfx/device/loading_tick",
+   "why": "row 6",
+   "scene": "table"
+  },
+  {
+   "t": 11.8,
+   "id": "sfx/ui/blip",
+   "why": "highlight pulses",
+   "scene": "table"
+  },
+  {
+   "t": 13.5,
+   "id": "sfx/tx/cut_tick",
+   "why": "cut: lands on the cut",
+   "scene": "speaker"
+  },
+  {
+   "t": 13.73,
+   "id": "sfx/ui/pop",
+   "why": "bubble appears",
+   "scene": "speaker"
+  },
+  {
+   "t": 13.75,
+   "id": "sfx/ui/success",
+   "why": "zero cost per query",
+   "scene": "speaker"
+  },
+  {
+   "t": 14,
+   "id": "sfx/ui/count_run",
+   "why": "counters run",
+   "scene": "speaker"
+  },
+  {
+   "t": 16.26,
+   "id": "sfx/ui/success",
+   "why": "captured",
+   "scene": "speaker"
+  },
+  {
+   "t": 16.85,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "bubble docks into the card",
+   "scene": "speaker"
+  },
+  {
+   "t": 18,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: lands on the cut",
+   "scene": "name"
+  },
+  {
+   "t": 18.12,
+   "id": "sfx/logo/ascend_land",
+   "why": "sonic logo on the name",
+   "scene": "name"
+  }
+ ],
+ "honesty": "every number is illustrative and labelled so in frame by the part itself; the speaker plate is a procedural placeholder (labelled in frame); no real recording, no quotes, no third-party marks",
+ "claims": [
+  {
+   "text": "Highest score under $4 a task (the starred point)",
+   "source": "illustrative data, printed in the chart footnote"
+  },
+  {
+   "text": "Week 3 resolved more calls in the call, at a lower cost per call",
+   "source": "illustrative data, printed under the table"
+  },
+  {
+   "text": "$0 per query on device (the usage chip)",
+   "source": "illustrative values, printed under the chip"
+  }
+ ],
+ "lint": {
+  "cutsOnBeat": true,
+  "partsUsed": [
+   "chart.scatterFrontier",
+   "ui.branchTrace",
+   "ui.dataTable",
+   "caption.sceneBubble",
+   "ui.costTicker"
+  ],
+  "everyClaimHasSource": true
+ }
+}
