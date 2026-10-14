@@ -47,8 +47,15 @@ def test_run_mode_does_not_join_across_spaces_or_punctuation():
     assert hits('the next word, pair them up') == []
     assert hits('a word pair is two words') == []
     assert hits('grim vestor and grim, vestor') == []
-    assert hits('zor blaxo') == []
     assert hits('x.com/word_pair/status') == ['handle']                # the real handle, with its underscore, is still caught
+
+
+def test_a_one_word_brand_is_also_caught_in_its_spaced_form_but_a_handle_is_not():
+    """verifier finding: a brand stored as one run ("zorblaxo") must not evade the gate as "Zor Blaxo"; a handle of ordinary words still never flags prose"""
+    assert hits('Zor Blaxo launched a film') == ['brand']
+    assert hits('zor\tblaxo') == ['brand'] and hits('Zor - Blaxo') == ['brand']
+    assert hits('zor, blaxo') == [] and hits('zor\nblaxo') == [] and hits('zor/blaxo') == []
+    assert hits('a word pair is two words') == []                     # handle: tight only
 
 
 def test_phrase_mode_needs_all_the_words_but_any_gap():

@@ -17,6 +17,9 @@ HOW A NAME IS MATCHED
   * Tokenise each shipped file (and each file path) into runs of a-z0-9. Two modes, stored next to each hash:
       run     a handle, or a brand written as one word: matches a token, or consecutive tokens joined ONLY by _ - . (no space, comma or slash), so
               "a_b_c", "a-b-c" and "a.b" match but "a, b" does not. A handle built from ordinary words ("word_word") therefore never flags prose.
+              A run entry tagged brand or person (not handle) also matches its spaced form ("Zor Blaxo" for "zorblaxo"): parts separated by spaces
+              tabs or the handle joiners only, never across a comma, a slash or a line break. So one entry covers "ZorBlaxo", "Zor-Blaxo"
+              and "Zor Blaxo"; a brand spelled with any other gap needs its own phrase entry.
       phrase  a multi-word brand or a person: matches 2 to 4 consecutive tokens with anything between them ("Name Surname", "Name\nSurname").
   * A path into docs/research (docs/research/<file>) is removed before tokenising, so a shipped file may POINT at a study whose file name carries a name.
     Plain text outside such a path may not.
@@ -48,6 +51,7 @@ MAX_BYTES = 8_000_000                            # text files only; skip anythin
 WORDS = '/usr/share/dict/words'
 DOCS_PATH = re.compile(r'docs/research/[A-Za-z0-9_.\-/]*')
 JOINERS = set('_-.')                             # the only characters a handle may have between its parts
+SPACES = set(' \t')                              # a one-word brand may also be written spaced ("Zor Blaxo"); a handle may not
 
 
 def norm(s):
@@ -79,12 +83,14 @@ def scan_text(text, deny):
     toks = [(m.group(), m.start(), m.end()) for m in re.finditer(r'[a-z0-9]+', text)]
     hits, cache, seen = [], {}, set()
     for i, (t0, pos, end) in enumerate(toks):
-        acc, tight = t0, True
+        acc, tight, spaced = t0, True, True
         for k in range(MAX_WINDOW):
             if k:
                 if i + k >= len(toks):
                     break
-                tight = tight and set(text[toks[i + k - 1][2]:toks[i + k][1]]) <= JOINERS
+                gap = set(text[toks[i + k - 1][2]:toks[i + k][1]])
+                tight = tight and gap <= JOINERS
+                spaced = spaced and gap <= JOINERS | SPACES
                 acc += toks[i + k][0]
             if len(acc) > MAX_LEN:
                 break
@@ -95,7 +101,7 @@ def scan_text(text, deny):
                 h = cache[acc] = hashlib.sha256(acc.encode()).hexdigest()
             if h in deny:
                 mode, tag = deny[h]
-                if (mode == 'run' and tight) or (mode == 'phrase' and k >= 1):
+                if (mode == 'run' and (tight or (spaced and tag != 'handle'))) or (mode == 'phrase' and k >= 1):
                     if (pos, h) not in seen:
                         seen.add((pos, h))
                         hits.append((text.count('\n', 0, pos) + 1, h, tag))
