@@ -3501,7 +3501,7 @@
   },
   {
    "id": "type.wordWheel",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/kinetic.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/tick",
@@ -3569,7 +3569,7 @@
   },
   {
    "id": "type.inlineMedia",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/kinetic.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/pop",
@@ -3615,7 +3615,7 @@
   },
   {
    "id": "type.letterAssemble",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/kinetic.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/whoosh/magic_swirl",
@@ -3666,7 +3666,7 @@
   },
   {
    "id": "type.glyphMorphCursor",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/kinetic.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/typing_burst",
@@ -3714,7 +3714,7 @@
   },
   {
    "id": "type.marquee",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/kinetic.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/whoosh/swish_s",
@@ -3753,7 +3753,7 @@
   },
   {
    "id": "type.bleedWord",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/kinetic.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/whoosh/whip_pan",
@@ -3793,7 +3793,7 @@
   },
   {
    "id": "layout.scatterCollage",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/collage.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/whoosh/whoosh_m",
@@ -3856,7 +3856,7 @@
   },
   {
    "id": "layout.mosaicBurst",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/collage.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/whoosh/whoosh_l",
@@ -3898,7 +3898,7 @@
   },
   {
    "id": "layout.logoWall",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/collage.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/pop",
@@ -3945,7 +3945,7 @@
   },
   {
    "id": "layout.orbitRing",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/collage.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/whoosh/swish_s",
@@ -4035,7 +4035,7 @@
   },
   {
    "id": "callout.connectorLabel",
-   "file": "type/gfx/callouts.js",
+   "file": "type/gfx/collage.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/slide",
@@ -4171,6 +4171,978 @@
     "gag"
    ],
    "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.accentSwap",
+   "file": "type/gfx/swap.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_xs",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3.2,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "prefix": "Make videos you can",
+    "words": [
+     "design",
+     "edit",
+     "ship"
+    ],
+    "steps": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "suffix": "",
+    "swap": 0.34,
+    "size": 84,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "color": "#0E0E14",
+    "accent": "#FF5A1F",
+    "italic": true,
+    "weight": 800,
+    "accentWeight": 800,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "ls": -0.02,
+    "blur": 9,
+    "rise": 0.42,
+    "align": "center",
+    "stack": false,
+    "lineGap": 1.15,
+    "underline": false
+   },
+   "tags": [
+    "type",
+    "sentence",
+    "accent",
+    "swap",
+    "reflow",
+    "feature-list",
+    "hook"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.wordSplitMedia",
+   "file": "type/gfx/swap.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 11,
+    "gain_db": -3
+   },
+   "dur_s": 3,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "word": "introducing",
+    "split": 5,
+    "openAt": 0.35,
+    "open": 0.5,
+    "closeAt": 2.2,
+    "close": 0.4,
+    "size": 132,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "slotW": 2.3,
+    "slotH": 0.98,
+    "pad": 0.12,
+    "radius": 0.16,
+    "media": null,
+    "kind": null,
+    "seed": 3,
+    "color": "#0E0E14",
+    "weight": 800,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "ls": -0.03
+   },
+   "tags": [
+    "type",
+    "word",
+    "split",
+    "inline-media",
+    "reveal",
+    "hook",
+    "intro"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.imageFill",
+   "file": "type/gfx/swap.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/mask_reveal",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 14,
+   "out_frames": 9,
+   "params": {
+    "text": "MOMENTS",
+    "size": 300,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "weight": 800,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "ls": -0.04,
+    "media": null,
+    "tiles": [
+     6,
+     3
+    ],
+    "gap": 4,
+    "gapColor": "#FFFFFF",
+    "drift": 0.16,
+    "zoom": 0.12,
+    "seed": 2,
+    "outline": null,
+    "outlineW": 0.006,
+    "shadow": true
+   },
+   "tags": [
+    "type",
+    "mask",
+    "image-fill",
+    "photo",
+    "mosaic",
+    "headline",
+    "texture"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.strikeOut",
+   "file": "type/gfx/swap.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/zip",
+    "offset_f": 21,
+    "gain_db": -4
+   },
+   "dur_s": 2.6,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "items": [
+     "Slow renders",
+     "Manual edits",
+     "Guesswork"
+    ],
+    "strikes": [
+     0.7,
+     1.1,
+     1.5
+    ],
+    "style": "hand",
+    "layout": "column",
+    "size": 68,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "color": "#0E0E14",
+    "strike": "#E5322D",
+    "grey": "#9A9AA4",
+    "dim": 0.6,
+    "draw": 0.26,
+    "stagger": 0.08,
+    "gap": 0.8,
+    "lineGap": 1.5,
+    "seed": 5,
+    "weight": 700,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "sw": 0.085,
+    "markColor": "#6B6B76"
+   },
+   "tags": [
+    "type",
+    "strike",
+    "cross-out",
+    "versus",
+    "before-after",
+    "comparison",
+    "draw-on"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.glowWord",
+   "file": "type/gfx/swap.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/sparkle/shimmer",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 18,
+   "out_frames": 10,
+   "params": {
+    "text": "Intelligence",
+    "size": 150,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "weight": 800,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "ls": -0.03,
+    "color": "#FFFFFF",
+    "colors": [
+     "#7A5CFF",
+     "#FF4FA3",
+     "#FFB23F",
+     "#2BD9C9"
+    ],
+    "halo": 1,
+    "haloOp": 0.85,
+    "blur": 64,
+    "breathe": 0.35,
+    "amp": 0.07,
+    "drift": 0.12
+   },
+   "tags": [
+    "type",
+    "glow",
+    "halo",
+    "gradient",
+    "keynote",
+    "ai-feature",
+    "title"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.ledDigits",
+   "file": "type/gfx/swap.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/loading_tick",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "text": "0%",
+    "steps": [],
+    "size": 220,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "lit": "#FFB23A",
+    "unlit": "rgba(255,255,255,0.07)",
+    "cell": "dot",
+    "fill": 0.78,
+    "panel": "#141210",
+    "pad": 1.2,
+    "flicker": 0.5,
+    "flip": 0.22,
+    "glow": true,
+    "seed": 9
+   },
+   "tags": [
+    "type",
+    "led",
+    "pixel",
+    "numerals",
+    "scoreboard",
+    "retro",
+    "counter"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.selectionBox",
+   "file": "type/gfx/badges.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 3,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "text": "Great videos take weeks",
+    "texts": [],
+    "size": 76,
+    "weight": 800,
+    "color": "#0E0E14",
+    "at": [
+     0.5,
+     0.5
+    ],
+    "box": null,
+    "pad": 0.34,
+    "accent": "#2F80FF",
+    "handle": 13,
+    "sw": 2.5,
+    "draw": 0.4,
+    "handlesAt": 0.3,
+    "cursor": true,
+    "cursorAt": 0.8,
+    "cursorFrom": [
+     0.8,
+     0.88
+    ],
+    "cursorColor": "#FFFFFF",
+    "bezier": false,
+    "label": true,
+    "zoomAt": null,
+    "zoom": 1.5,
+    "zoomDur": 0.8,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "mono": "'IBM Plex Mono', ui-monospace, Menlo, monospace"
+   },
+   "tags": [
+    "callout",
+    "selection",
+    "bounding-box",
+    "handles",
+    "design-tool",
+    "cursor",
+    "hook",
+    "resize"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "counter.scoreIterate",
+   "file": "type/gfx/badges.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_tick",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 3.4,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "label": "Design score",
+    "steps": [
+     {
+      "v": 7.2,
+      "reason": "first pass"
+     },
+     {
+      "v": 7.7,
+      "reason": "tighter spacing"
+     },
+     {
+      "v": 7.8,
+      "reason": "clearer hierarchy"
+     }
+    ],
+    "start": 0.55,
+    "every": 0.85,
+    "roll": 0.3,
+    "decimals": 1,
+    "max": 10,
+    "scale": 1,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "theme": "light",
+    "accent": "#18A058",
+    "source": "illustrative values",
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "mono": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
+    "blur": 8
+   },
+   "tags": [
+    "counter",
+    "score",
+    "self-check",
+    "agent-at-work",
+    "proof",
+    "reasons",
+    "iterate"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "counter.stepPill",
+   "file": "type/gfx/badges.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_tick",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "steps": [
+     [
+      0,
+      33
+     ],
+     [
+      0.9,
+      93
+     ],
+     [
+      1.8,
+      100
+     ]
+    ],
+    "prefix": "",
+    "suffix": "+",
+    "phrase": "ways to start",
+    "size": 72,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "pill": "#FF5A1F",
+    "pillInk": "#FFFFFF",
+    "color": "#0E0E14",
+    "roll": 0.3,
+    "layout": "row",
+    "weight": 800,
+    "phraseWeight": 700,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "gap": 0.32,
+    "pulse": 0.08,
+    "blur": 8,
+    "source": null
+   },
+   "tags": [
+    "counter",
+    "pill",
+    "badge",
+    "feature-count",
+    "step",
+    "odometer",
+    "cross-scene"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.speakerTag",
+   "file": "type/gfx/badges.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/mic_on",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 3.6,
+   "in_frames": 4,
+   "out_frames": 6,
+   "params": {
+    "speaker": "AI voice",
+    "badge": "TTS",
+    "lines": [
+     {
+      "t": 0.1,
+      "e": 1.7,
+      "text": "This voice is synthetic."
+     },
+     {
+      "t": 1.9,
+      "e": 3.4,
+      "text": "The label stays on while it speaks."
+     }
+    ],
+    "size": 48,
+    "pos": [
+     0.5,
+     0.86
+    ],
+    "maxChars": 34,
+    "color": "#FFFFFF",
+    "scrim": "#000000",
+    "scrimOp": 0.55,
+    "accent": "#7A5CFF",
+    "wave": true,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "mono": "'IBM Plex Mono', ui-monospace, Menlo, monospace"
+   },
+   "tags": [
+    "caption",
+    "speaker",
+    "label",
+    "tts",
+    "ai-voice",
+    "honesty",
+    "disclosure"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.timeCard",
+   "file": "type/gfx/badges.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/cartoon/surprise_sting",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "dur_s": 1.8,
+   "in_frames": 1,
+   "out_frames": 5,
+   "params": {
+    "text": "A LITTLE LATER...",
+    "colors": [
+     "#FFD23A",
+     "#FF8A1F"
+    ],
+    "ink": "#FFFFFF",
+    "outline": "#1A1022",
+    "size": 150,
+    "rays": 16,
+    "spin": 14,
+    "wobble": 2,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "weight": 800,
+    "stroke": 0.14,
+    "maxW": 0.84
+   },
+   "tags": [
+    "title",
+    "time-skip",
+    "comedy",
+    "cartoon",
+    "card",
+    "sting",
+    "full-frame"
+   ],
+   "demo": "type/demo/out/gfx-r3type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.paletteColumns",
+   "file": "type/gfx/brand.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 3.2,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "swatches": [
+     {
+      "hex": "#4A18ED",
+      "name": "Violet"
+     },
+     {
+      "hex": "#FF5A1F",
+      "name": "Ember"
+     },
+     {
+      "hex": "#FFD23A",
+      "name": "Sun"
+     },
+     {
+      "hex": "#18A058",
+      "name": "Leaf"
+     },
+     {
+      "hex": "#0E0E14",
+      "name": "Ink"
+     },
+     {
+      "hex": "#F3F1EC",
+      "name": "Paper"
+     }
+    ],
+    "area": [
+     0.06,
+     0.1,
+     0.88,
+     0.8
+    ],
+    "stagger": 0.07,
+    "rise": 1,
+    "stretchAt": 1.7,
+    "stretch": 0.6,
+    "gap": 0,
+    "radius": 0,
+    "labels": true,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "mono": "'IBM Plex Mono', ui-monospace, Menlo, monospace"
+   },
+   "tags": [
+    "layout",
+    "palette",
+    "colour",
+    "swatch",
+    "brand-system",
+    "hex",
+    "stripes"
+   ],
+   "demo": "type/demo/out/gfx-r3layout.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.logoConstruction",
+   "file": "type/gfx/brand.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/sparkle/letter_assemble",
+    "offset_f": 30,
+    "gain_db": -4
+   },
+   "dur_s": 3.2,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "from": [
+     [
+      50,
+      4,
+      75.4058,
+      4,
+      96,
+      24.5942
+     ],
+     [
+      96,
+      50,
+      96,
+      75.4058,
+      75.4058,
+      96
+     ],
+     [
+      50,
+      96,
+      24.5942,
+      96,
+      4,
+      75.4058
+     ],
+     [
+      4,
+      50,
+      4,
+      24.5942,
+      24.5942,
+      4
+     ]
+    ],
+    "to": [
+     [
+      50,
+      4,
+      54,
+      34,
+      66,
+      46
+     ],
+     [
+      96,
+      50,
+      66,
+      54,
+      54,
+      66
+     ],
+     [
+      50,
+      96,
+      46,
+      66,
+      34,
+      54
+     ],
+     [
+      4,
+      50,
+      34,
+      46,
+      46,
+      34
+     ]
+    ],
+    "size": 0.6,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "guide": "rgba(255,255,255,0.3)",
+    "ink": "#FFFFFF",
+    "accent": "#FFD23A",
+    "fill": "#FFFFFF",
+    "grid": 0.6,
+    "shapeAt": 0.45,
+    "morphAt": 1,
+    "morph": 0.9,
+    "guidesOutAt": 2,
+    "fillAt": 2.1,
+    "cursor": true
+   },
+   "tags": [
+    "layout",
+    "logo",
+    "construction-grid",
+    "bezier",
+    "pen-tool",
+    "mark",
+    "brand-system"
+   ],
+   "demo": "type/demo/out/gfx-r3layout.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.mockupInContext",
+   "file": "type/gfx/brand.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_in_m",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3.4,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "scene": "billboard",
+    "inner": null,
+    "media": null,
+    "screenBg": "#4A18ED",
+    "screenText": "Your poster here",
+    "screenInk": "#FFFFFF",
+    "push": 0.05,
+    "walker": true,
+    "walkerAt": 0.5,
+    "walkSpeed": 0.34,
+    "glow": "#5B7CFF",
+    "occluder": null,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif"
+   },
+   "tags": [
+    "layout",
+    "mockup",
+    "billboard",
+    "stage",
+    "crt",
+    "occlusion",
+    "in-context",
+    "brand-system"
+   ],
+   "demo": "type/demo/out/gfx-r3layout.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.typeSpecimen",
+   "file": "type/gfx/brand.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/tick",
+    "offset_f": 11,
+    "gain_db": -4
+   },
+   "dur_s": 3.4,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "text": "Manrope",
+    "weights": [
+     200,
+     300,
+     400,
+     500,
+     600,
+     700,
+     800
+    ],
+    "size": 96,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "color": "#0E0E14",
+    "dim": 0.2,
+    "start": 0.35,
+    "every": 0.26,
+    "collapseAt": 2.3,
+    "collapse": 0.55,
+    "final": 800,
+    "lineGap": 1.08,
+    "labels": true,
+    "accent": "#4A18ED",
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "mono": "'IBM Plex Mono', ui-monospace, Menlo, monospace"
+   },
+   "tags": [
+    "layout",
+    "type-specimen",
+    "weights",
+    "font",
+    "brand-system",
+    "variable-font"
+   ],
+   "demo": "type/demo/out/gfx-r3layout.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.backdropSwap",
+   "file": "type/gfx/brand.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/cut_tick",
+    "offset_f": 15,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 4,
+   "out_frames": 6,
+   "params": {
+    "text": "wordmark",
+    "mark": "M50 4 C54 34 66 46 96 50 C66 54 54 66 50 96 C46 66 34 54 4 50 C34 46 46 34 50 4 Z",
+    "backs": [
+     {
+      "kind": "grid",
+      "bg": "#F3F1EC"
+     },
+     {
+      "kind": "solid",
+      "bg": "#4A18ED"
+     },
+     {
+      "kind": "solid",
+      "bg": "#0E0E14"
+     },
+     {
+      "kind": "photo",
+      "seed": 5
+     },
+     {
+      "kind": "solid",
+      "bg": "#FFD23A"
+     }
+    ],
+    "every": 0.5,
+    "start": 0,
+    "loop": true,
+    "size": 120,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "ink": "auto",
+    "gridStep": 48,
+    "weight": 800,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "ls": -0.03
+   },
+   "tags": [
+    "layout",
+    "lockup",
+    "backdrop",
+    "beat",
+    "brand-system",
+    "contrast",
+    "swap"
+   ],
+   "demo": "type/demo/out/gfx-r3layout.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.lineup",
+   "file": "type/gfx/brand.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 3.4,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "items": [
+     {
+      "color": "#4A18ED",
+      "label": "Violet"
+     },
+     {
+      "color": "#FF5A1F",
+      "label": "Ember"
+     },
+     {
+      "color": "#18A058",
+      "label": "Leaf"
+     },
+     {
+      "color": "#E9E4DA",
+      "label": "Chalk"
+     },
+     {
+      "color": "#1A1A22",
+      "label": "Ink"
+     }
+    ],
+    "shape": "capsule",
+    "title": "One shape, every finish",
+    "sub": "Available in every colour",
+    "area": [
+     0.1,
+     0.27,
+     0.8,
+     0.48
+    ],
+    "stagger": 0.09,
+    "slide": 0.6,
+    "titleAt": 0.85,
+    "color": "#0E0E14",
+    "muted": "#6B6B76",
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif"
+   },
+   "tags": [
+    "layout",
+    "lineup",
+    "colourway",
+    "product",
+    "row",
+    "availability",
+    "end-card"
+   ],
+   "demo": "type/demo/out/gfx-r3layout.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
