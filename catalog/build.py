@@ -218,8 +218,10 @@ for k, (name, vid, sheet) in TPL.items():
 
 counts = {}
 for it in items: counts[it['cat']] = counts.get(it['cat'], 0) + 1
+LABEL = {'sfx': 'SFX', 'sfx bundles': 'SFX bundles', 'blender': 'Blender plates', 'terminal': 'terminal looks', 'music': 'music items', 'type': 'type parts', 'camera': 'camera moves and helpers', 'templates': 'templates and part demos'}
+BREAKDOWN = ', '.join(f'{n} {LABEL.get(k, k)}' for k, n in counts.items())   # the header says what the total is made of, from the same counts (never typed)
 data = json.dumps({'items': items, 'counts': counts, 'aliases': sorted(aliases)}, separators=(',', ':')).replace('</', '<\\/')
-page = open(os.path.join(PACK, 'catalog', 'page.html')).read().replace('/*__DATA__*/null', data).replace('__TOTAL__', str(len(items)))
+page = open(os.path.join(PACK, 'catalog', 'page.html')).read().replace('/*__DATA__*/null', data).replace('__TOTAL__', str(len(items))).replace('__BREAKDOWN__', BREAKDOWN)
 assert not re.search(r'src=["\']https?:|<link[^>]+href=["\']https?:', page), 'external resource in the catalog page (plain links are fine)'
 open(OUT, 'w').write(page)
 print('catalog', OUT, len(items), 'components', counts, f'{len(page) / 1024:.0f} KiB')
