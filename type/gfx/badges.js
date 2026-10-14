@@ -6,7 +6,7 @@
      caption.speakerTag    captions with a speaker label chip ("AI voice", "TTS") that stays on for the whole item: the honesty label lives in the caption itself
      title.timeCard        full-frame comedic time-skip card ("A LITTLE LATER...") in a loud cartoon style: sunburst, outlined bouncing words
    Craft learned from public launch films (round-3 study, October 2026): techniques only; no brand, footage, wording or sequence is reproduced. Owned code. */
-import { E, clamp, lerp, seg, TAU, FONT, MONO, INK, PAPER, f2, esc, text, measure, uidOf, blurDef, blurAttr } from './core.js';
+import { E, clamp, lerp, seg, TAU, FONT, MONO, INK, PAPER, f2, esc, text, measure, uidOf, blurDef, blurAttr, srcOf } from './core.js';
 import { spring, springTrack } from '../ease.js';
 import { stepAt } from './swap.js';
 
@@ -79,7 +79,7 @@ export const BADGES = {
 
   'counter.stepPill': { file: 'type/gfx/badges.js', tags: ['counter', 'pill', 'badge', 'feature-count', 'step', 'odometer', 'cross-scene'], dur: 3, inF: 10, outF: 8,
     d: { steps: [[0, 33], [0.9, 93], [1.8, 100]], prefix: '', suffix: '+', phrase: 'ways to start', size: 72, at: [0.5, 0.5], pill: '#FF5A1F', pillInk: '#FFFFFF', color: INK, roll: 0.3, layout: 'row',
-      weight: 800, phraseWeight: 700, font: FONT, gap: 0.32, pulse: 0.08, blur: 8, source: null },
+      weight: 800, phraseWeight: 700, font: FONT, gap: 0.32, pulse: 0.08, blur: 8, source: 'placeholder data' },   // the count is a placeholder until you pass the real source
     svg(L, p, c) {
       const S = p.size * c.s, u = L.u, id = uidOf('stepPill', p), st = stepAt(p.steps, u, p.roll), k = E.move(st.k), str = (v) => `${p.prefix}${v}${p.suffix}`, fo = { weight: p.weight, font: p.font };
       const padX = S * 0.42, pw = lerp(measure(str(st.prev), S, fo), measure(str(st.cur), S, fo), k) + 2 * padX, ph = S * 1.3, phw = measure(p.phrase, S, { weight: p.phraseWeight, font: p.font });
@@ -91,7 +91,7 @@ export const BADGES = {
       let out = `<g transform="translate(${f2(pcx)} ${f2(pcy)}) scale(${sc.toFixed(4)}) translate(${f2(-pcx)} ${f2(-pcy)})">${inner}</g></g>`;
       const kp = E.hero(seg(L.u, 0.08, 0.5)), tx = row ? px + pw + p.gap * S : cx - phw / 2, ty = row ? cy + S * 0.35 : cy + S * 1.0;
       out += `<g opacity="${f2(kp)}">${text(p.phrase, tx + (1 - kp) * S * 0.3, ty, { size: S, weight: p.phraseWeight, fill: p.color, font: p.font })}</g>`;
-      if (p.source) out += text('source: ' + p.source, cx, Math.max(py + ph, ty) + S * 0.75, { size: S * 0.28, weight: 500, fill: p.color, anchor: 'middle', font: MONO, op: 0.6 });
+      out += text('source: ' + srcOf(p), cx, Math.max(py + ph, ty) + S * 0.75, { size: Math.max(S * 0.28, 16 * c.s), weight: 500, fill: p.color, anchor: 'middle', font: MONO, op: 0.7 });
       return `<g opacity="${f2(1 - L.out)}">${out}</g>`; } },
 
   'caption.speakerTag': { file: 'type/gfx/badges.js', tags: ['caption', 'speaker', 'label', 'tts', 'ai-voice', 'honesty', 'disclosure'], dur: 3.6, inF: 4, outF: 6,

@@ -48,6 +48,8 @@ jobs:
         run: node type/tests/r45ui.test.mjs
       - name: round-4/5 type parts (node, no browser)
         run: node type/tests/r45type.test.mjs
+      - name: honesty defaults (every registered gfx part and layers kind, rendered with its defaults, shows no digit without a placeholder label; node, no browser)
+        run: node type/tests/honesty-defaults.test.mjs
       - name: round-4/5 layers (Canvas2D on a recording context, node, no browser)
         run: node layers/tests/r45.test.mjs
       - name: proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)

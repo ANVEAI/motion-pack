@@ -21,8 +21,11 @@ export function beatGrid(bpm, fps, seconds, offset = 0) {
   for (let f = Math.round(offset * fps); f / fps < seconds - 1e-9; f += fpb) beats.push(+(f / fps).toFixed(6));
   return { bpm: +snap.toFixed(4), framesPerBeat: fpb, beatSec: fpb / fps, beats };
 }
-/* lint.proof (edit.md 4): every claim containing a digit needs a source */
-export const lintClaims = (claims) => (claims || []).filter((c) => /\d/.test(c.text) && !c.source);
+/* lint.proof (edit.md 4): every claim containing a digit needs a source that SAYS where the number comes from. Missing, blank, filler ("n/a", "x", "tbd", "trust me") and generic
+   ("internal benchmark", "our data", "research") sources are refused. Limit, stated: this checks the form of a source, not its truth: a made-up sentence still passes. */
+export const GENERIC_SOURCE = /^(?:internal(?: (?:benchmarks?|data|numbers|study|studies|testing|tests?|research|metrics?))?|our (?:data|numbers|research|benchmarks?|metrics?)|company (?:data|numbers)|benchmarks?|data|numbers|stats?|statistics|research|studies|a study|surveys?|source|n\/?a|none|nil|tbd|tba|todo|unknown|various|misc|trust me|see above|same|x+|test(?:ing)?|asdf+|foo|bar|[-.?!_*#/\\]+)$/i;
+export const sourceOk = (s) => { const t = String(s ?? '').normalize('NFKC').replace(/[\u200b-\u200d\ufeff]/g, '').trim().replace(/[.\s]+$/, ''); return t !== '' && !GENERIC_SOURCE.test(t); };
+export const lintClaims = (claims) => (claims || []).filter((c) => /\d/.test(c.text) && !sourceOk(c.source));
 /* lint.pace: average shot length + longest shot */
 export function lintPace(shots, { aslMax = 2.5, longMax = 4.5 } = {}) {   // shots marked hold: true (hero reveal, end card) are exempt from longMax
   const d = shots.map((s) => s.dur), asl = d.reduce((a, b) => a + b, 0) / Math.max(1, d.length), lg = Math.max(0, ...shots.filter((s) => !s.hold).map((s) => s.dur));

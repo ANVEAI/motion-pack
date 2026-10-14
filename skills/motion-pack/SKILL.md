@@ -65,7 +65,8 @@ Every path below is relative to the pack root.
    - The last 0.15 s is digital zero.
    - Use `music/mixer.py`. Never gain SFX by hand; the library is normalised to −6 dBFS peak.
 6. **Honesty.**
-   - No invented stats, quotes, reviews or logos. A claim containing a digit needs a `source` (`lint.proof`).
+   - No invented stats, quotes, reviews or logos. A claim containing a digit needs a `source` that says where the number comes from (`lint.proof` refuses a blank, filler or generic one such as "internal benchmark"; it checks the form, not the truth).
+   - Part defaults are never findings: a part that ships a default number prints `source: placeholder data` in frame until you pass a real `source` (`node type/tests/honesty-defaults.test.mjs`).
    - Label placeholders and concept renders where a viewer could mistake them for real.
    - Use original characters only. References are craft to learn from, never designs to copy.
 7. **Measure the delivered file, not dev stills.**
@@ -130,7 +131,7 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | you need | reach for | notes |
 |---|---|---|
 | a name on screen | `type/gfx` `lowerThird.cleanBar` (interview), `.accentRule` (premium), `.softPill` (creator), `.boldBlock` (ad), `.newsBar` (comedy "breaking"), `.neonBorder` (gaming/night) | sits in the platform safe rect (`params.platform`) |
-| a number to land | `counter.countUp` / `.statCard` (needs `source`), `.ring` (percent), `.wheel` (year / odometer), `.priceSlash` (offer) | digits need a source |
+| a number to land | `counter.countUp` / `.statCard` (needs `source`), `.ring` (percent), `.wheel` (year / odometer), `.priceSlash` (offer) | digits need a source: every counter prints `source: placeholder data` until you pass the real `source` (a blank one falls back to it), so a default can never pass for a finding |
 | point at something | `callout.scribbleCircle`, `.handArrow`, `.underline`, `.bracket`, `.pinLeader`, `.spotlight` | sound: `sfxFor(id)` |
 | a comedy beat | `fx.emotion.*` (sweat, vein, heartBurst, question, exclaim, dizzy, sparkle, zzz, bulb), `fx.impact.*` (onomatopoeia, speedLines, dustPoof, star, smear) | one mark per gag |
 | reels furniture | `social.*` (follow, reply bubble, notification, typing, chat), `caption.meme` / `.replyCard` / `.oneWordSlam`, `sticker.place` / `reaction.place` / `reaction.burst` | for real emoji, fetch Fluent Emoji (see Outside assets) |

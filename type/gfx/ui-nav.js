@@ -5,7 +5,7 @@
      ui.tabPillNav      panel with a tab row; the active pill slides tab to tab on the ui spring (white label revealed under the pill) while the body cross-swaps its list
      ui.windowWall      a wall of browser windows, each running its own looping mini task (typing, cart, chart, list, form, call), the camera tracking across them
      ui.optionPicker    "picks a ...:" slot: option pills spin on a vertical drum and lock on the target (mode 'arc'), or quiz chips get a cursor click (mode 'chips') */
-import { E, clamp, lerp, seg, TAU, BRAND, f2, text, hashf, measure } from './core.js';
+import { E, clamp, lerp, seg, TAU, BRAND, f2, text, hashf, measure, srcOf } from './core.js';
 import { springTrack, spring } from '../ease.js';
 import { KIT, rr, TICKS, POPS } from './ui.js';
 const { th, GREEN, AMBER, SPOT, bx, uid, op, rect, shadowDef, softShadow, icon, spinner, checkBadge, cursorSvg, ripple, pressAt } = KIT;
@@ -74,7 +74,7 @@ export const UI3 = {
         `<g clip-path="url(#${id}c)"${fade(L)}>${p.bg ? rect(vx, vy, vw, vh, 0, p.bg) : ''}${shadow}${body}</g>`; } },
 
   'ui.tabPillNav': { file: 'type/gfx/ui-nav.js', tags: ['ui', 'tabs', 'navigation', 'feature-tour', 'pill', 'panel', 'cursor', 'product-film'], dur: 4.6, inF: 8, outF: 8,
-    d: { box: [0.2, 0.15, 0.6, 0.7], title: 'Acme Voice', tabs: TABS, steps: [[1.0, 1], [1.9, 2], [2.8, 3]], first: 0, cursor: true, theme: 'light', accent: BRAND },
+    d: { box: [0.2, 0.15, 0.6, 0.7], title: 'Acme Voice', tabs: TABS, steps: [[1.0, 1], [1.9, 2], [2.8, 3]], first: 0, cursor: true, theme: 'light', accent: BRAND, source: 'illustrative data' },
     svg(L, p, c) { const T = th(p), s = c.s, u = L.u, [x, y, w, h] = bx(p.box, c), id = uid('tp', x, y, w, h), pad = 34 * s, k = spring(u, 'panel'), ty = y + 92 * s, th2 = 56 * s, G = tabGeo(p, s, x + pad + 8 * s);
       const ch = [{ t: 0, v: p.first }, ...p.steps.map(([t, i]) => ({ t, v: i }))], track = (f) => springTrack(u, ch.map((q) => ({ t: q.t, v: f(G[q.v]) })), 'ui'), px = track((g) => g.x), pw = track((g) => g.w);
       let ai = p.first, ti = 0; p.steps.forEach(([t, i], j) => { if (u >= t) { ai = i; ti = j + 1; } }); const prevI = ti > 0 ? (ti > 1 ? p.steps[ti - 2][1] : p.first) : null, uc = ti > 0 ? u - p.steps[ti - 1][0] : u, dir = prevI == null ? 1 : Math.sign(ai - prevI) || 1;
@@ -88,10 +88,11 @@ export const UI3 = {
         const pr = p.steps.reduce((a, [t]) => Math.max(a, pressAt(u, t)), 0), co = seg(u, 0.2, 0.45) * (1 - seg(u, p.steps.at(-1)[0] + 0.4, p.steps.at(-1)[0] + 0.7)); return co > 0 ? `<g${op(co)}>${cursorSvg(qx, qy, 1.4 * s, pr)}</g>` : ''; })() : '';
       const rip = p.steps.map(([t, i]) => ripple(tg(i)[0], tg(i)[1], u - t, s, p.accent)).join('');
       return `<defs>${shadowDef(id + 's', s)}<clipPath id="${id}b"><rect x="${f2(x)}" y="${f2(ty + th2 + 20 * s)}" width="${f2(w)}" height="${f2(y + h - ty - th2 - 20 * s)}"/></clipPath></defs><g${fade(L)} transform="translate(0 ${f2(20 * s * (1 - k))})">${softShadow(id + 's', x, y, w, h, 28 * s, s)}${rect(x, y, w, h, 28 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.5 * s)}"`)}` +
-        [0, 1, 2].map((j) => `<circle cx="${f2(x + (32 + 24 * j) * s)}" cy="${f2(y + 40 * s)}" r="${f2(7 * s)}" fill="${T.faint}"/>`).join('') + text(p.title, x + w / 2, y + 48 * s, { size: 22 * s, weight: 700, fill: T.muted, anchor: 'middle' }) + tabRow + `<g clip-path="url(#${id}b)">${body}</g>${rip}</g><g${op(1 - L.out)}>${cur}</g>`; } },
+        [0, 1, 2].map((j) => `<circle cx="${f2(x + (32 + 24 * j) * s)}" cy="${f2(y + 40 * s)}" r="${f2(7 * s)}" fill="${T.faint}"/>`).join('') + text(p.title, x + w / 2, y + 48 * s, { size: 22 * s, weight: 700, fill: T.muted, anchor: 'middle' }) + tabRow + `<g clip-path="url(#${id}b)">${body}</g>${rip}` +
+        text('source: ' + srcOf(p, 'illustrative data'), x + w - 6 * s, y + h + 36 * s, { size: Math.max(18 * s, 16 * c.s), weight: 600, fill: T.muted, anchor: 'end' }) + `</g><g${op(1 - L.out)}>${cur}</g>`; } },
 
   'ui.windowWall': { file: 'type/gfx/ui-nav.js', tags: ['ui', 'browser', 'agents', 'parallel', 'wall', 'camera', 'ai-at-work', 'product-film'], dur: 5.4, inF: 8, outF: 8,
-    d: { box: [0, 0.14, 1, 0.72], count: 9, kinds: KINDS, winW: 560, winH: 380, gap: 44, period: 2.2, panAt: 0.2, panDur: 4.6, label: '9 tasks running in parallel', url: 'acme.example', theme: 'light', accent: BRAND },
+    d: { box: [0, 0.14, 1, 0.72], count: 9, kinds: KINDS, winW: 560, winH: 380, gap: 44, period: 2.2, panAt: 0.2, panDur: 4.6, label: '9 tasks running in parallel', url: 'acme.example', theme: 'light', accent: BRAND, source: 'illustrative data' },
     svg(L, p, c) { const T = th(p), s = c.s, u = L.u, [vx, vy, vw, vh] = bx(p.box, c), id = uid('ww', vx, vy, vw, vh), ww = p.winW * s, wh = p.winH * s, gap = p.gap * s, total = p.count * ww + (p.count - 1) * gap;
       const pan = E.cam(seg(u, p.panAt, p.panAt + p.panDur)), x0 = vx + (vw - ww) / 2 - lerp(0, Math.max(0, total - ww), pan) + lerp(vw * 0.18, 0, E.enter(seg(u, 0, 0.8))), cy = vy + vh / 2 + 20 * s;
       let o = ''; for (let i = 0; i < p.count; i++) { const wx = x0 + i * (ww + gap), wy = cy - wh / 2 + (i % 2 ? 26 : -26) * s; if (wx > vx + vw + 40 * s || wx + ww < vx - 40 * s) continue; const kk = spring(u - 0.05 - i * 0.07, 'ui'); if (kk <= 0) continue;
@@ -103,7 +104,7 @@ export const UI3 = {
           `<g${op(rst)}>${winContent(kind, wx, wy + 48 * s, ww, wh - 48 * s, ph < 0 ? 0 : lk / 0.85, s, T, p.accent, i + 1)}</g></g>`; }
       const lk2 = spring(u - 0.3, 'ui'), lw = p.label ? measure(p.label, 24 * s, { weight: 700 }) + 70 * s : 0, lx = vx + vw / 2 - lw / 2;
       const lab = p.label ? `<g${op(lk2)}>${pill(lx, vy - 10 * s, lw, 50 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.4 * s)}"`)}${spinner(lx + 27 * s, vy + 15 * s, 9 * s, (((u / p.period) % 1) + 1) % 1 * SPIN3, p.accent, 2.8 * s)}${text(p.label, lx + 50 * s, vy + 23 * s, { size: 24 * s, weight: 700, fill: T.ink })}</g>` : '';
-      return `<defs>${shadowDef(id + 's', s)}</defs><g${fade(L)}>${o}${lab}</g>`; } },
+      return `<defs>${shadowDef(id + 's', s)}</defs><g${fade(L)}>${o}${lab}${text('source: ' + srcOf(p, 'illustrative data'), vx + vw / 2, vy + vh - 14 * s, { size: Math.max(20 * s, 16 * c.s), weight: 600, fill: T.muted, anchor: 'middle' })}</g>`; } },
 
   'ui.optionPicker': { file: 'type/gfx/ui-nav.js', tags: ['ui', 'picker', 'options', 'choice', 'quiz', 'chips', 'slot', 'cursor', 'product-film'], dur: 3.4, inF: 8, outF: 8,
     d: { center: [0.5, 0.5], prompt: 'Acme Voice picks a tone:', options: ['Warm', 'Calm', 'Upbeat', 'Formal', 'Playful', 'Concise'], target: 1, mode: 'arc', spinAt: 0.35, lockAt: 1.75, turns: 2, cursor: true, theme: 'light', accent: BRAND },

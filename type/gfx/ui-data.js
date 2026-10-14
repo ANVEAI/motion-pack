@@ -6,7 +6,7 @@
      ui.receiptCompare  2-3 option cards with line items; fees tick in red on one card while the other total stays flat; optional error chip (e.g. 429)
      ui.failoverRoute   hub-and-spoke routing: request packets flow along lit connectors; one provider goes down, packets hold at the hub, then re-route to the next node
      ui.fileChip        file chip (type tile, name, size) with a Download button: cursor click -> progress -> check -> "Open" */
-import { E, clamp, lerp, seg, TAU, FONT, BRAND, f2, text, hashf, measure } from './core.js';
+import { E, clamp, lerp, seg, TAU, FONT, BRAND, f2, text, hashf, measure, srcOf } from './core.js';
 import { springTrack, spring } from '../ease.js';
 import { KIT, rr, TICKS } from './ui.js';
 const { th, GREEN, AMBER, bx, uid, op, rect, shadowDef, softShadow, icon, spinner, checkBadge, cursorSvg, ripple, pressAt, typed } = KIT;
@@ -88,7 +88,7 @@ export const UI2 = {
         `<g${fade(L)} transform="translate(0 ${f2(20 * s * (1 - k))})">${softShadow(id + 's', x, y, w, h, 26 * s, s, 1, 'rgba(0,0,0,0.30)')}${rect(x, y, w, h, 26 * s, panelFill, `stroke="${p.theme === 'dark' ? 'rgba(255,255,255,0.14)' : T.line}" stroke-width="${f2(1.5 * s)}"`)}${p.glass ? rect(x, y, w, h, 26 * s, `url(#${id}g)`) : ''}${hdr}<g clip-path="url(#${id}c)">${body}</g>${src}</g>`; } },
 
   'ui.wordRegenerate': { file: 'type/gfx/ui-data.js', tags: ['ui', 'voice', 'tts', 'edit', 'waveform', 'regenerate', 'word', 'product-film'], dur: 4.2, inF: 8, outF: 8,
-    d: { box: [0.12, 0.3, 0.76, 0.4], title: 'Script · line 2', words: 'Your table for four is booked for Friday at eight.', target: 7, replacement: 'Saturday', selectAt: 0.45, clickAt: 1.1, replaceAt: 1.45, cps: 13, playAt: null, playDur: 1.3,
+    d: { box: [0.12, 0.3, 0.76, 0.4], title: 'Script · voice line', words: 'Your table for four is booked for Friday at eight.', target: 7, replacement: 'Saturday', selectAt: 0.45, clickAt: 1.1, replaceAt: 1.45, cps: 13, playAt: null, playDur: 1.3,
       button: 'Regenerate', cursor: true, waveform: true, theme: 'light', accent: BRAND },
     svg(L, p, c) { const T = th(p), s = c.s, u = L.u, [x, y, w, h] = bx(p.box, c), id = uid('wr', x, y, w, h), pad = 44 * s, fs = 46 * s, words = p.words.split(/\s+/), { typeEnd, playAt } = regenTimes(p), cur = regenWord(p, u), k = spring(u, 'panel');
       const strs = words.map((wd, i) => (i === p.target ? cur.str : wd)), sp = measure(' ', fs, { weight: 700 }), ws = strs.map((wd, i) => Math.max(i === p.target ? 6 * s : 0, measure(wd, fs, { weight: 700 }))), total = ws.reduce((a, v) => a + v, 0) + sp * (ws.length - 1);
@@ -152,7 +152,7 @@ export const UI2 = {
       return `<g${fade(L)} transform="translate(0 ${f2(16 * s * (1 - kin))})">${o}${nodes}${status}${p.note ? text(p.note, bx0, by0 + bh0, { size: 18 * s, weight: 600, fill: T.muted }) : ''}</g>`; } },
 
   'ui.fileChip': { file: 'type/gfx/ui-data.js', tags: ['ui', 'file', 'download', 'export', 'progress', 'cursor', 'click'], dur: 3.4, inF: 8, outF: 8,
-    d: { center: [0.5, 0.5], name: 'acme-voice-calls.csv', size: '4.8 MB', ext: 'CSV', kind: 'Spreadsheet', clickAt: 0.95, dlDur: 1.15, button: 'Download', doneLabel: 'Open', cursor: true, source: null, theme: 'light', accent: BRAND },
+    d: { center: [0.5, 0.5], name: 'acme-voice-calls.csv', size: '4.8 MB', ext: 'CSV', kind: 'Spreadsheet', clickAt: 0.95, dlDur: 1.15, button: 'Download', doneLabel: 'Open', cursor: true, source: 'placeholder data', theme: 'light', accent: BRAND },   // the file name and size are placeholders until you name a real source
     svg(L, p, c) { const T = th(p), s = c.s, u = L.u, cw = 720 * s, ch = 128 * s, x = p.center[0] * c.W - cw / 2, y = p.center[1] * c.H - ch / 2, id = uid('fc', x, y, cw), k = spring(u, 'panel'), done = p.clickAt + p.dlDur, [sv, su] = sizeOf(p.size);
       const prog = clamp(E.soft(seg(u, p.clickAt + 0.05, done))), dl = u >= p.clickAt, fin = u >= done, pr = pressAt(u, p.clickAt), extC = { CSV: GREEN, PDF: RED, ZIP: AMBER }[p.ext] || p.accent;
       const tile = rect(x + 22 * s, y + 22 * s, 84 * s, 84 * s, 18 * s, extC, 'opacity="0.12"') + icon('doc', x + 38 * s, y + 34 * s, 52 * s, extC, 2.4 * s) + pill(x + 40 * s, y + 70 * s, 48 * s, 24 * s, extC) + text(p.ext, x + 64 * s, y + 87 * s, { size: 14 * s, weight: 800, fill: '#FFFFFF', anchor: 'middle' });
@@ -165,7 +165,7 @@ export const UI2 = {
       const cur = p.cursor ? (() => { const [qx, qy] = springTrack(u, [[0, [bcx + 300 * s, bcy + 240 * s]], [p.clickAt - 0.6, [bcx + 4 * s, bcy + 6 * s]], [done, [bcx + 160 * s, bcy + 220 * s]]], 'panel'), co = seg(u, 0.1, 0.3) * (1 - seg(u, done + 0.2, done + 0.5)); return co > 0 ? `<g${op(co)}>${cursorSvg(qx, qy, 1.4 * s, pr)}</g>` : ''; })() : '';
       return `<defs>${shadowDef(id + 's', s)}</defs><g${fade(L)} transform="translate(0 ${f2(20 * s * (1 - k))})">${softShadow(id + 's', x, y, cw, ch, 24 * s, s)}${rect(x, y, cw, ch, 24 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.5 * s)}"`)}${tile}` +
         text(p.name, x + 128 * s, y + 58 * s, { size: 27 * s, weight: 700, fill: T.ink }) + text(meta, x + 128 * s, y + 92 * s, { size: 20 * s, weight: 600, fill: fin ? GREEN : T.muted, extra: 'font-variant-numeric="tabular-nums"' }) + bar + btn + ripple(bcx, bcy, u - p.clickAt, s, p.accent) +
-        (p.source ? text(p.source, x, y + ch + 36 * s, { size: 17 * s, weight: 600, fill: T.muted }) : '') + `</g><g${op(1 - L.out)}>${cur}</g>`; } },
+        text(srcOf(p), x, y + ch + 36 * s, { size: Math.max(17 * s, 16 * c.s), weight: 600, fill: T.muted }) + `</g><g${op(1 - L.out)}>${cur}</g>`; } },
 };
 for (const g of Object.values(UI2)) { const f = g.svg; g.d.scale = 1; g.svg = (L, p, c) => f(L, p, p.scale && p.scale !== 1 ? { ...c, s: c.s * p.scale } : c); }
 

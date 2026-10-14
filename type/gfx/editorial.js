@@ -1,6 +1,6 @@
 /* motion-pack / type / gfx / editorial.js: lower thirds (6), counters (5), titles and HUD (7). See core.js for the contract.
    Lower thirds sit inside the platform safe rect (p.platform, default wideTitle / reels) so nothing lands under platform UI. */
-import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, INK, PAPER, esc, f2, tf, text, textW, clipRect, dash, anchor } from './core.js';
+import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, INK, PAPER, esc, f2, tf, text, textW, clipRect, dash, anchor, srcOf } from './core.js';
 
 const LT = (d) => ({ name: 'Maya Rao', role: 'Founder, Orbit', pos: 'bl', accent: BRAND, ...d });
 const nameSz = (c) => 54 * c.s, roleSz = (c) => 30 * c.s;
@@ -46,33 +46,35 @@ export const EDITORIAL = {
         `<rect x="${f2(x)}" y="${f2(y)}" width="${f2(w)}" height="${f2(h)}" rx="${f2(14 * c.s)}" fill="none" stroke="${p.accent}" stroke-width="${f2(4 * c.s)}" filter="url(#neon)" ${dash(per, d)} opacity="${f2(fl)}"/>` +
         text(p.name, x + 36 * c.s, y + 26 * c.s + ns * 0.8, { size: ns, weight: 800, fill: PAPER, op: tk }) + text(p.role, x + 36 * c.s, y + 36 * c.s + ns + rs * 0.8, { size: rs, weight: 600, fill: p.accent, op: tk }) + '</g>'; } },
 
-  'counter.countUp': { tags: ['counter', 'number', 'stat', 'kpi', 'explainer'], dur: 2.5, inF: 30, outF: 9, d: { from: 0, to: 12500, dec: 0, prefix: '', suffix: '+', label: 'happy teams', pos: 'c', size: 180, color: PAPER, accent: BRAND, source: '' },
+  'counter.countUp': { tags: ['counter', 'number', 'stat', 'kpi', 'explainer'], dur: 2.5, inF: 30, outF: 9, d: { from: 0, to: 12500, dec: 0, prefix: '', suffix: '+', label: 'happy teams', pos: 'c', size: 180, color: PAPER, accent: BRAND, source: 'placeholder data' },   // source prints under the number (blank = the placeholder label)
     svg(L, p, c) { const v = lerp(p.from, p.to, E.expoOut(L.in)), sz = p.size * c.s, str = p.prefix + fmt(v, p.dec) + p.suffix, w = textW(p.prefix + fmt(p.to, p.dec) + p.suffix, sz, 0.6), [x, y] = anchor(p.pos, c, w, sz * 1.5), o = 1 - L.out;
       return `<g opacity="${f2(o)}">` + text(str, x + w / 2, y + sz, { size: sz, weight: 800, fill: p.color, anchor: 'middle', extra: 'font-variant-numeric="tabular-nums"' }) + text(p.label, x + w / 2, y + sz * 1.42, { size: sz * 0.22, weight: 600, fill: p.accent === BRAND ? p.color : p.accent, anchor: 'middle', op: seg(L.u, 0.4, 0.8) }) +
-        (p.source ? text(p.source, x + w / 2, y + sz * 1.62, { size: sz * 0.1, weight: 500, fill: p.color, anchor: 'middle', op: 0.6 }) : '') + '</g>'; } },
-  'counter.wheel': { tags: ['counter', 'odometer', 'number', 'rolling', 'retro'], dur: 2.5, inF: 36, outF: 9, d: { to: 2026, digits: 4, pos: 'c', size: 200, color: PAPER, bg: 'rgba(0,0,0,0.55)', stagger: 4 },
+        text(srcOf(p), x + w / 2, y + sz * 1.62, { size: Math.max(sz * 0.1, 16 * c.s), weight: 500, fill: p.color, anchor: 'middle', op: 0.7 }) + '</g>'; } },
+  'counter.wheel': { tags: ['counter', 'odometer', 'number', 'rolling', 'retro'], dur: 2.5, inF: 36, outF: 9, d: { to: 2026, digits: 4, pos: 'c', size: 200, color: PAPER, bg: 'rgba(0,0,0,0.55)', stagger: 4, source: 'placeholder data' },
     svg(L, p, c) { const sz = p.size * c.s, cw = sz * 0.68, n = p.digits, W = cw * n, [x, y] = anchor(p.pos, c, W, sz * 1.2), ds = String(Math.round(p.to)).padStart(n, '0'); let out = `<defs>${clipRect('odo', x, y, W, sz * 1.2)}</defs><rect x="${f2(x)}" y="${f2(y)}" width="${f2(W)}" height="${f2(sz * 1.2)}" rx="${f2(sz * 0.1)}" fill="${p.bg}"/><g clip-path="url(#odo)">`;
       for (let i = 0; i < n; i++) { const tgt = +ds[i] + 10 * (n - i), k = E.hero(seg(L.u, i * p.stagger / 30, i * p.stagger / 30 + 1.0)), pos = tgt * k, dy = (pos % 10);
         for (const dd of [0, 1]) { const dig = (Math.floor(pos) + dd) % 10; out += text(String(dig), x + cw * (i + 0.5), y + sz * 0.98 - (dy - Math.floor(dy) - dd) * sz * 1.2 + 0 * dd, { size: sz, weight: 800, fill: p.color, anchor: 'middle', extra: 'font-variant-numeric="tabular-nums"' }); } }
-      return `<g opacity="${f2(1 - L.out)}">${out}</g></g>`; } },
-  'counter.statCard': { tags: ['counter', 'stat', 'card', 'kpi', 'saas'], dur: 3, inF: 24, outF: 9, d: { to: 487, suffix: ' ms', label: 'P50 voice latency', delta: '-38%', good: true, pos: 'c', accent: BRAND, source: 'internal benchmark' },
+      return `<g opacity="${f2(1 - L.out)}">${out}</g></g>` + `<g opacity="${f2(0.8 * (1 - L.out))}">` + text('source: ' + srcOf(p), x + W / 2, y + sz * 1.2 + 30 * c.s, { size: Math.max(sz * 0.1, 16 * c.s), weight: 500, fill: p.color, anchor: 'middle', font: MONO }) + '</g>'; } },
+  'counter.statCard': { tags: ['counter', 'stat', 'card', 'kpi', 'saas'], dur: 3, inF: 24, outF: 9, d: { to: 1234, suffix: '', label: 'Your metric', delta: '+12%', good: true, pos: 'c', accent: BRAND, source: 'placeholder data' },   // neutral on purpose: the old defaults (487 ms, -38%, 'internal benchmark') read as a real measurement
     svg(L, p, c) { const w = 560 * c.s, h = 300 * c.s, [x, y] = anchor(p.pos, c, w, h), k = E.pop(seg(L.u, 0, 0.35)) * (1 - E.exit(L.out)), v = Math.round(p.to * E.expoOut(seg(L.u, 0.15, 0.9))), cx = x + w / 2, cy = y + h / 2, col = p.good ? '#14B86A' : '#E3122E';
       return `<g transform="translate(${f2(cx)} ${f2(cy)}) scale(${Math.max(0.001, k).toFixed(4)}) translate(${f2(-cx)} ${f2(-cy)})"><rect x="${f2(x)}" y="${f2(y)}" width="${f2(w)}" height="${f2(h)}" rx="${f2(28 * c.s)}" fill="${PAPER}"/>` +
         `<rect x="${f2(x)}" y="${f2(y)}" width="${f2(w)}" height="${f2(10 * c.s)}" rx="${f2(5 * c.s)}" fill="${p.accent}"/>` + text(p.label, x + 40 * c.s, y + 70 * c.s, { size: 30 * c.s, weight: 600, fill: '#555566' }) +
         text(fmt(v) + p.suffix, x + 40 * c.s, y + 190 * c.s, { size: 110 * c.s, weight: 800, fill: INK }) + `<rect x="${f2(x + 40 * c.s)}" y="${f2(y + 218 * c.s)}" width="${f2(textW(p.delta, 30 * c.s) + 30 * c.s)}" height="${f2(46 * c.s)}" rx="${f2(23 * c.s)}" fill="${col}" opacity="${f2(seg(L.u, 0.7, 0.9))}"/>` +
-        text(p.delta, x + 55 * c.s, y + 252 * c.s, { size: 30 * c.s, weight: 800, op: seg(L.u, 0.7, 0.9) }) + (p.source ? text('source: ' + p.source, x + w - 30 * c.s, y + h - 24 * c.s, { size: 18 * c.s, weight: 500, fill: '#8888A0', anchor: 'end' }) : '') + '</g>'; } },
-  'counter.ring': { tags: ['counter', 'ring', 'progress', 'percent', 'dashboard'], dur: 2.5, inF: 36, outF: 9, d: { value: 92, suffix: '%', label: 'accuracy', pos: 'c', radius: 150, accent: BRAND, track: 'rgba(255,255,255,0.18)', color: PAPER },
+        text(p.delta, x + 55 * c.s, y + 252 * c.s, { size: 30 * c.s, weight: 800, op: seg(L.u, 0.7, 0.9) }) + text('source: ' + srcOf(p), x + w - 30 * c.s, y + h - 24 * c.s, { size: 18 * c.s, weight: 600, fill: '#6B6B7B', anchor: 'end' }) + '</g>'; } },
+  'counter.ring': { tags: ['counter', 'ring', 'progress', 'percent', 'dashboard'], dur: 2.5, inF: 36, outF: 9, d: { value: 92, suffix: '%', label: 'accuracy', pos: 'c', radius: 150, accent: BRAND, track: 'rgba(255,255,255,0.18)', color: PAPER, source: 'placeholder data' },
     svg(L, p, c) { const R = p.radius * c.s, [x, y] = anchor(p.pos, c, 2 * R, 2 * R), cx = x + R, cy = y + R, k = E.hero(L.in), per = TAU * R, o = 1 - L.out;
       return `<g opacity="${f2(o)}"><circle cx="${f2(cx)}" cy="${f2(cy)}" r="${f2(R)}" fill="none" stroke="${p.track}" stroke-width="${f2(R * 0.14)}"/>` +
         `<circle cx="${f2(cx)}" cy="${f2(cy)}" r="${f2(R)}" fill="none" stroke="${p.accent}" stroke-width="${f2(R * 0.14)}" stroke-linecap="round" transform="rotate(-90 ${f2(cx)} ${f2(cy)})" ${dash(per, k * p.value / 100)}/>` +
-        text(Math.round(p.value * k) + p.suffix, cx, cy + R * 0.18, { size: R * 0.55, weight: 800, fill: p.color, anchor: 'middle' }) + text(p.label, cx, cy + R * 0.5, { size: R * 0.16, weight: 600, fill: p.color, anchor: 'middle', op: 0.75 }) + '</g>'; } },
-  'counter.priceSlash': { tags: ['price', 'sale', 'offer', 'ad', 'cta'], dur: 3, inF: 30, outF: 9, d: { was: '₹4,999', now: '₹2,499', label: 'launch price', pos: 'c', accent: '#FFC83D', color: PAPER },
+        text(Math.round(p.value * k) + p.suffix, cx, cy + R * 0.18, { size: R * 0.55, weight: 800, fill: p.color, anchor: 'middle' }) + text(p.label, cx, cy + R * 0.5, { size: R * 0.16, weight: 600, fill: p.color, anchor: 'middle', op: 0.75 }) +
+        text('source: ' + srcOf(p), cx, cy + R * 1.0 + Math.max(R * 0.2, 24 * c.s), { size: Math.max(R * 0.11, 16 * c.s), weight: 500, fill: p.color, anchor: 'middle', font: MONO, op: 0.75 }) + '</g>'; } },
+  'counter.priceSlash': { tags: ['price', 'sale', 'offer', 'ad', 'cta'], dur: 3, inF: 30, outF: 9, d: { was: '₹4,999', now: '₹2,499', label: 'launch price', pos: 'c', accent: '#FFC83D', color: PAPER, source: 'placeholder data' },
     svg(L, p, c) { const s1 = 90 * c.s, s2 = 170 * c.s, w = Math.max(textW(p.was, s1), textW(p.now, s2)), [x, y] = anchor(p.pos, c, w, s1 + s2 + 40 * c.s), cx = x + w / 2, ww = textW(p.was, s1), o = 1 - L.out;
       const sl = E.soft(seg(L.u, 0.35, 0.6)), pop = E.pop(seg(L.u, 0.6, 0.9)), ny = y + s1 + s2 * 0.95;
       return `<g opacity="${f2(o)}">` + text(p.was, cx, y + s1 * 0.85, { size: s1, weight: 700, fill: p.color, anchor: 'middle', op: 1 - 0.45 * sl }) +
         `<line x1="${f2(cx - ww / 2 - 10)}" y1="${f2(y + s1 * 0.55)}" x2="${f2(cx - ww / 2 - 10 + (ww + 20) * sl)}" y2="${f2(y + s1 * 0.4)}" stroke="#E3122E" stroke-width="${f2(10 * c.s)}" stroke-linecap="round"/>` +
         `<g transform="translate(${f2(cx)} ${f2(ny - s2 * 0.35)}) scale(${Math.max(0.001, pop).toFixed(4)}) translate(${f2(-cx)} ${f2(-(ny - s2 * 0.35))})">${text(p.now, cx, ny, { size: s2, weight: 800, fill: p.accent, anchor: 'middle' })}` +
-        text(p.label.toUpperCase(), cx, ny + 50 * c.s, { size: 34 * c.s, weight: 700, fill: p.color, anchor: 'middle', ls: 4 * c.s }) + '</g></g>'; } },
+        text(p.label.toUpperCase(), cx, ny + 50 * c.s, { size: 34 * c.s, weight: 700, fill: p.color, anchor: 'middle', ls: 4 * c.s }) + '</g>' +
+        text('source: ' + srcOf(p), cx, ny + 106 * c.s, { size: 20 * c.s, weight: 500, fill: p.color, anchor: 'middle', font: MONO, op: 0.75 }) + '</g>'; } },
 
   'title.chapterCard': { tags: ['title', 'chapter', 'section', 'film', 'explainer'], dur: 2, inF: 18, outF: 12, d: { kicker: 'Chapter 02', title: 'The night before the audit', bg: 'rgba(8,8,12,0.92)', accent: BRAND },
     svg(L, p, c) { const k = E.soft(L.in) * (1 - E.exit(L.out)), cy = c.H / 2, ts = (c.tall ? 72 : 96) * c.s, r = E.hero(seg(L.u, 0.15, 0.6));
