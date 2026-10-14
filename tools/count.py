@@ -5,10 +5,23 @@
     python3 tools/count.py --json     # the raw counts
     python3 tools/count.py --write    # rewrite the table between <!-- counts:start --> and <!-- counts:end --> in README.md
     python3 tools/count.py --check    # exit 1 if README.md is out of date (CI runs this)"""
-import json, os, re, sys
+import json, os, re, subprocess, sys
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 J = lambda p: json.load(open(os.path.join(REPO, p), encoding='utf-8'))
+
+
+def _tracked(rel):
+    """True unless git says the file is untracked (private or local work in an ignored folder must not change the public counts).
+    Outside a git checkout everything counts."""
+    try:
+        r = subprocess.run(['git', '-C', REPO, 'ls-files', '--error-unmatch', rel], capture_output=True)
+    except OSError:
+        return True
+    if r.returncode == 0:
+        return True
+    inside = subprocess.run(['git', '-C', REPO, 'rev-parse', '--is-inside-work-tree'], capture_output=True)
+    return inside.returncode != 0
 
 
 def counts():
@@ -39,7 +52,8 @@ def counts():
     c['lut_files'] = len([f for f in os.listdir(os.path.join(REPO, 'layers/looks')) if f.endswith('.cube')])
     src = open(os.path.join(REPO, 'objects/index.js'), encoding='utf-8').read()
     c['objects'] = len(re.findall(r"'(objects/[a-z0-9-]+)': r\(", src))
-    c['templates'] = sorted(d for d in os.listdir(os.path.join(REPO, 'templates')) if os.path.exists(os.path.join(REPO, 'templates', d, 'config.mjs')))
+    c['templates'] = sorted(d for d in os.listdir(os.path.join(REPO, 'templates'))
+                            if os.path.exists(os.path.join(REPO, 'templates', d, 'config.mjs')) and _tracked(f'templates/{d}/config.mjs'))
     if os.path.exists(os.path.join(REPO, 'blender/manifest.json')):
         bm = J('blender/manifest.json')
         c['blender_recipes'] = len(bm['recipes'])
