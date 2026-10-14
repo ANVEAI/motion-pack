@@ -108,6 +108,8 @@ The 14 presets are maskRise, charRise, wordStagger, charStagger, blurIn, scaleSl
 import { renderSVG, mountGfx, bindHF, uiCues, nodeGraphCam, isoTiltCss } from './type/gfx/index.js';   // editor graphics + the ui.* kit
 renderSVG('ui.promptBar', t, { at: 0, params: { text: 'Plan the week', sendAt: 1.8, scale: 1.4 } }, { W: 1920, H: 1080 });   // full-frame SVG string ('' off screen)
 uiCues('ui.promptBar', { at: 0, params: { text: 'Plan the week', sendAt: 1.8 } });   // [{ t, id: 'sfx/ui/click', why }] -> plan cues
+renderSVG('ui.liveTranscript', t, { at: 0, params: { turns: [{ speaker: 'Caller', text: '…', at: 0.2 }, { speaker: 'Acme Voice', ai: true, text: '…', at: 1.2, latency: 0.34 }], source: 'latency values illustrative' } });   // round 3: ui-data.js / ui-nav.js
+import { pageFlyCam } from './type/gfx/index.js'; pageFlyCam(t, { stops: [[0.1, 0.1], [1.0, 0.4]], pullAt: 2 });   // { focus, zoom, pull, blur, transform } for a DOM page screenshot (true CSS perspective)
 import { springTrack, spring, springSettle, SPRING } from './type/ease.js';   // springTrack(t, [[t0, v0], [t1, v1], ...], 'ui' | 'panel' | 'camera' | 'headline' | 'mascot' | { zeta, f })
 ```
 

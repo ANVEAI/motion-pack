@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack demo: UI kit round 3 (fictional product Acme Voice)</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #F4F2EE; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F4F2EE; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#bg { z-index: 0; } #stage { z-index: 2; } #fx { pointer-events: none; } #fx canvas { z-index: 5; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="17.5">
+<div id="bg" class="clip" data-start="0" data-duration="17.5" data-track-index="0"></div>
+<div id="stage" class="clip" data-start="0" data-duration="17.5" data-track-index="1"></div>
+<div id="fx" class="clip" data-start="0" data-duration="17.5" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="17.5" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module">
+import { renderInner } from './assets/mp/type/gfx/index.js';
+import { ctxFor, text, f2 } from './assets/mp/type/gfx/core.js';
+import { spring } from './assets/mp/type/ease.js';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+const C = {"W":1920,"H":1080,"scenes":[{"id":"call","start":0,"end":3,"bg":"night","why":"hook: a live call is already streaming on frame 0; the latency badge is the proof beat","items":[{"id":"ui.liveTranscript","at":-0.45,"params":{"box":[0.2,0.14,0.6,0.72],"scale":1.5,"wps":4.2,"source":"latency values illustrative","turns":[{"speaker":"Caller","text":"Hi, can I move my table to Saturday?","at":0.35},{"speaker":"Acme Voice","ai":true,"text":"Of course. Saturday at eight works.","at":1.45,"latency":0.34,"tags":["Booking"]},{"speaker":"Caller","text":"Perfect, thanks!","at":2.6}]}}]},{"id":"fix","start":3,"end":5.5,"bg":"paper","why":"control: fix one word of the script and regenerate only that word","items":[{"id":"ui.wordRegenerate","at":3,"params":{"box":[0.08,0.28,0.84,0.44],"scale":1.3,"selectAt":0.25,"clickAt":0.75,"replaceAt":1,"cps":15,"playDur":0.9}}]},{"id":"tone","start":5.5,"end":7.5,"bg":"paper","why":"choice: the voice picks a tone and locks","items":[{"id":"ui.optionPicker","at":5.5,"params":{"scale":1.25,"spinAt":0.15,"lockAt":1.25,"turns":2,"target":0}}]},{"id":"route","start":7.5,"end":10,"bg":"night","why":"reliability: a provider fails mid-call and traffic re-routes","items":[{"id":"ui.failoverRoute","at":7.5,"params":{"scale":1.15,"start":0,"rate":0.14,"travel":0.7,"failAt":0.95,"rerouteAt":1.3,"status":["Routing calls","Provider A down","Rerouted to Provider B"]}}]},{"id":"tour","start":10,"end":12,"bg":"paper","why":"breadth: the dashboard tour as sliding tabs","items":[{"id":"ui.tabPillNav","at":10,"params":{"box":[0.17,0.17,0.66,0.66],"scale":1.3,"steps":[[0.5,1],[1,2],[1.5,3]]}}]},{"id":"export","start":12,"end":13.5,"bg":"paper","why":"output: the call log is yours to take","items":[{"id":"ui.fileChip","at":12,"params":{"scale":1.45,"clickAt":0.45,"dlDur":0.6}}]},{"id":"site","start":13.5,"end":16,"bg":"lilac","why":"the world: glide down the product page, then pull out to all of it","items":[{"id":"ui.pageFlythrough","at":13.5,"params":{"stops":[[0.05,0.1],[0.6,0.33],[1.1,0.56]],"pullAt":1.55,"zoom":1.3,"fit":0.38}}]},{"id":"name","start":16,"end":17.5,"bg":"brand","why":"end card: the name and one promise","card":{"name":"Acme Voice","line":"Every call, answered."},"items":[]}],"colors":{"paper":"#F4F2EE","night":"#121118","lilac":"#E9E6F2","brand":"#4A18ED","ink":"#16151B"}};
+const ctx = ctxFor(C.W, C.H, null, 1), bg = document.getElementById('bg'), stage = document.getElementById('stage');
+/* end card: the name lands on the headline spring, the promise follows 0.25 s later */
+const card = (cd, u) => { const k1 = spring(u, 'headline'), k2 = spring(u - 0.25, 'panel');
+  return '<g opacity="' + f2(Math.min(1, u / 0.1)) + '" transform="translate(0 ' + f2(30 * (1 - k1)) + ')">' + text(cd.name, C.W / 2, C.H * 0.47, { size: 150, weight: 800, fill: '#FFFFFF', anchor: 'middle', ls: -4 }) + '</g>' +
+    (u > 0.25 ? '<g opacity="' + f2(Math.min(1, (u - 0.25) / 0.15)) + '" transform="translate(0 ' + f2(20 * (1 - k2)) + ')">' + text(cd.line, C.W / 2, C.H * 0.47 + 110, { size: 56, weight: 600, fill: '#FFFFFF', anchor: 'middle', op: 0.85 }) + '</g>' : ''); };
+function frame(t) {
+  const sc = C.scenes.find((s) => t >= s.start && t < s.end) || C.scenes.at(-1); bg.style.background = C.colors[sc.bg];
+  let svg = sc.card ? card(sc.card, t - sc.start) : '';
+  for (const it of sc.items) svg += renderInner(it.id, t, { at: it.at, dur: 1e6, params: it.params }, ctx);
+  stage.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + C.W + ' ' + C.H + '" width="' + C.W + '" height="' + C.H + '" style="position:absolute;inset:0">' + svg + '</svg>';
+}
+/* measure() reads canvas text metrics, so load the weights the kit uses up front and repaint the current frame once they are in (same wrap on every frame) */
+let last = window.__hfThreeTime || 0; window.addEventListener('hf-seek', (e) => frame((last = e.detail.time))); frame(last);
+Promise.all(['600', '700', '800'].map((w) => document.fonts.load(w + ' 30px Manrope'))).then(() => frame(last));
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"grain","params":{"stock":"digital-soft"}}], { width: 1920, height: 1080, fps: 30, seed: 7 }), { fps: 30 });
+const tl = gsap.timeline({ paused: true }); tl.set({}, {}, 17.5);
+window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

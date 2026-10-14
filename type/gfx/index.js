@@ -3,14 +3,15 @@
      mountGfx(root, items, { W, H, platform })   items = [{ id, at, dur?, params? }]  -> { render(t) }   (one absolutely positioned <svg> per root)
      bindHF(stack) re-renders on every 'hf-seek' (HyperFrames contract).
    Families: lowerThird.* counter.* title.* (editorial.js), lowerThird.docSuper + caption.subtitleSpeedGag (doc.js), callout.* fx.emotion.* fx.impact.* (callouts.js), social.* device.* caption.* chart.* map.route (social.js),
-   sticker.place / reaction.place / reaction.burst (stickers.js), ui.* (ui.js: the UI kit, with uiCues for per-action sound),
+   sticker.place / reaction.place / reaction.burst (stickers.js), ui.* (ui.js + ui-data.js + ui-nav.js: the UI kit, with uiCues for per-action sound),
    type.wordWheel / inlineMedia / letterAssemble / glyphMorphCursor / marquee / bleedWord (kinetic.js),
    layout.scatterCollage / mosaicBurst / logoWall / orbitRing + callout.connectorLabel (collage.js; SVG fields, not DOM-shot layouts). Layouts (layout.js, incl. layout.cornerPin from cornerpin.js) and draw-on (drawon.js) act on DOM shots and are exported here too.
    Card systems (canvas): layout.cardStack + layout.cardRiver (cards.js), layout.evidenceBoard (board.js): mountCards / mountBoard -> { render(t) }. */
 import { EDITORIAL } from './editorial.js'; import { CALLOUTS } from './callouts.js'; import { SOCIAL } from './social.js'; import { STICKER_GFX, STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource } from './stickers.js';
 import { KINETIC } from './kinetic.js'; import { COLLAGE } from './collage.js';
-import { life, ctxFor } from './core.js'; import { UI, UI_CUES, hooks as uiHooks } from './ui.js'; import { DOC } from './doc.js';
-export { nodeGraphCam, isoTiltCss } from './ui.js';
+import { life, ctxFor } from './core.js'; import { UI as UI1, UI_CUES as UI1_CUES, hooks as uiHooks } from './ui.js'; import { UI2, UI2_CUES } from './ui-data.js'; import { UI3, UI3_CUES } from './ui-nav.js';
+const UI = { ...UI1, ...UI2, ...UI3 }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES }; import { DOC } from './doc.js';
+export { nodeGraphCam, isoTiltCss } from './ui.js'; export { pageFlyCam } from './ui-nav.js'; export { wrapWords } from './ui-data.js';
 export { SHAPES, PIXEL5x7, pixelGlyph, tokenize } from './kinetic.js'; export { photoTile, slotMedia, placeholderLogo, MARKS, DEFAULT_MARK } from './media.js'; export { measure } from './core.js';
 export { CARDS, CARD_IDS, cardsAt, stackFlipTimes, drawCards, renderCards, mountCards, placeholderCard, placeholderCards, loadImages } from './cards.js';
 export { BOARD, BOARD_D, boardAt, drawBoard, mountBoard } from './board.js';
@@ -31,6 +32,8 @@ export const GFX_SFX = {
   device: ['sfx/ui/click', 1, -3], caption: ['sfx/ui/blip', 0, -8], 'caption.oneWordSlam': ['sfx/hit/punch', 1, 0], 'caption.meme': ['sfx/cartoon/record_scratch', 0, -2], chart: ['sfx/ui/count_run', 1, -3],
   'map.route': ['sfx/whoosh/swish_s', 12, -3], 'sticker.place': ['sfx/ui/pop', 1, -1], 'reaction.place': ['sfx/ui/pop', 1, -1], 'reaction.burst': ['sfx/cartoon/boing', 1, -4], layout: ['sfx/whoosh/swish_s', 0, -2], 'layout.freezeFrame': ['sfx/cartoon/record_scratch', 0, 0],
   ui: ['sfx/ui/pop', 1, -2], 'ui.promptBar': ['sfx/ui/click', 1, -2], 'ui.checklist': ['sfx/ui/pop', 1, -2], 'ui.scanOverlay': ['sfx/ui/camera_ping', 1, -2], 'ui.isometricTilt': ['sfx/whoosh/swish_xs', 0, -3], 'ui.stateMorph': ['sfx/ui/click', 1, -2],
+  'ui.liveTranscript': ['sfx/ui/ai_reply', 1, -3], 'ui.wordRegenerate': ['sfx/ui/click', 1, -2], 'ui.receiptCompare': ['sfx/device/card_flip', 1, -3], 'ui.failoverRoute': ['sfx/ui/toggle_on', 1, -3],
+  'ui.fileChip': ['sfx/ui/pop', 1, -2], 'ui.pageFlythrough': ['sfx/whoosh/swish_s', 0, -3], 'ui.tabPillNav': ['sfx/ui/slide', 1, -3], 'ui.windowWall': ['sfx/whoosh/whoosh_l', 0, -3], 'ui.optionPicker': ['sfx/ui/tick', 1, -3],
   'type.wordWheel': ['sfx/ui/tick', 1, -4], 'type.inlineMedia': ['sfx/ui/pop', 1, -3], 'type.letterAssemble': ['sfx/whoosh/magic_swirl', 12, -4], 'type.glyphMorphCursor': ['sfx/ui/typing_burst', 0, -6],
   'type.marquee': ['sfx/whoosh/swish_s', 0, -4], 'type.bleedWord': ['sfx/whoosh/whip_pan', 0, -2], 'layout.scatterCollage': ['sfx/whoosh/whoosh_m', 34, -2], 'layout.mosaicBurst': ['sfx/whoosh/whoosh_l', 0, -2],
   'layout.logoWall': ['sfx/ui/pop', 9, -4], 'layout.orbitRing': ['sfx/whoosh/swish_s', 13, -3], 'callout.connectorLabel': ['sfx/ui/slide', 1, -3],

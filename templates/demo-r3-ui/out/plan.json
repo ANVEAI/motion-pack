@@ -1,0 +1,346 @@
+{
+ "template": "demo-r3-ui",
+ "fps": 30,
+ "seconds": 17.5,
+ "W": 1920,
+ "H": 1080,
+ "music": "music/bed_corporate_bright_loop8",
+ "musicGainDb": 0,
+ "ceilingDb": -2.5,
+ "fadeInMs": 40,
+ "shots": [
+  {
+   "id": "call",
+   "start": 0,
+   "dur": 3,
+   "parts": [
+    "ui.liveTranscript"
+   ],
+   "transition": "transitions/cut",
+   "why": "hook: a live call is already streaming on frame 0; the latency badge is the proof beat"
+  },
+  {
+   "id": "fix",
+   "start": 3,
+   "dur": 2.5,
+   "parts": [
+    "ui.wordRegenerate"
+   ],
+   "transition": "transitions/cut",
+   "why": "control: fix one word of the script and regenerate only that word"
+  },
+  {
+   "id": "tone",
+   "start": 5.5,
+   "dur": 2,
+   "parts": [
+    "ui.optionPicker"
+   ],
+   "transition": "transitions/cut",
+   "why": "choice: the voice picks a tone and locks"
+  },
+  {
+   "id": "route",
+   "start": 7.5,
+   "dur": 2.5,
+   "parts": [
+    "ui.failoverRoute"
+   ],
+   "transition": "transitions/cut",
+   "why": "reliability: a provider fails mid-call and traffic re-routes"
+  },
+  {
+   "id": "tour",
+   "start": 10,
+   "dur": 2,
+   "parts": [
+    "ui.tabPillNav"
+   ],
+   "transition": "transitions/cut",
+   "why": "breadth: the dashboard tour as sliding tabs"
+  },
+  {
+   "id": "export",
+   "start": 12,
+   "dur": 1.5,
+   "parts": [
+    "ui.fileChip"
+   ],
+   "transition": "transitions/cut",
+   "why": "output: the call log is yours to take"
+  },
+  {
+   "id": "site",
+   "start": 13.5,
+   "dur": 2.5,
+   "parts": [
+    "ui.pageFlythrough"
+   ],
+   "transition": "transitions/cut",
+   "why": "the world: glide down the product page, then pull out to all of it"
+  },
+  {
+   "id": "name",
+   "start": 16,
+   "dur": 1.5,
+   "parts": [],
+   "transition": "transitions/cut",
+   "why": "end card: the name and one promise"
+  }
+ ],
+ "cues": [
+  {
+   "t": 1,
+   "id": "sfx/ui/ai_reply",
+   "why": "AI turn 2 starts",
+   "scene": "call"
+  },
+  {
+   "t": 1.05,
+   "id": "sfx/ui/tick",
+   "why": "latency badge",
+   "scene": "call"
+  },
+  {
+   "t": 2.15,
+   "id": "sfx/ui/blip",
+   "why": "caller turn 3 starts",
+   "scene": "call"
+  },
+  {
+   "t": 3,
+   "id": "sfx/tx/cut_tick",
+   "why": "cut: lands on the cut",
+   "scene": "fix"
+  },
+  {
+   "t": 3.25,
+   "id": "sfx/ui/slide",
+   "why": "word selected",
+   "scene": "fix"
+  },
+  {
+   "t": 3.75,
+   "id": "sfx/ui/click",
+   "why": "Regenerate clicked",
+   "scene": "fix"
+  },
+  {
+   "t": 3.81,
+   "id": "sfx/ui/ai_think_pulse",
+   "why": "regenerating",
+   "scene": "fix"
+  },
+  {
+   "t": 4.16,
+   "id": "sfx/ui/typing_burst",
+   "why": "new word typed",
+   "scene": "fix"
+  },
+  {
+   "t": 4.6933,
+   "id": "sfx/ui/success",
+   "why": "word replaced",
+   "scene": "fix"
+  },
+  {
+   "t": 5.1433,
+   "id": "sfx/ui/blip",
+   "why": "playback",
+   "scene": "fix"
+  },
+  {
+   "t": 5.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: lands on the cut",
+   "scene": "tone"
+  },
+  {
+   "t": 5.6667,
+   "id": "sfx/ui/tick",
+   "why": "option passes the slot",
+   "scene": "tone"
+  },
+  {
+   "t": 5.75,
+   "id": "sfx/ui/count_tick",
+   "why": "option passes the slot",
+   "scene": "tone"
+  },
+  {
+   "t": 5.8333,
+   "id": "sfx/device/loading_tick",
+   "why": "option passes the slot",
+   "scene": "tone"
+  },
+  {
+   "t": 5.95,
+   "id": "sfx/ui/tick",
+   "why": "option passes the slot",
+   "scene": "tone"
+  },
+  {
+   "t": 6.05,
+   "id": "sfx/ui/count_tick",
+   "why": "option passes the slot",
+   "scene": "tone"
+  },
+  {
+   "t": 6.75,
+   "id": "sfx/ui/success",
+   "why": "option locks",
+   "scene": "tone"
+  },
+  {
+   "t": 7.5,
+   "id": "sfx/ui/toggle_on",
+   "why": "traffic starts",
+   "scene": "route"
+  },
+  {
+   "t": 7.5,
+   "id": "sfx/tx/cut_tick",
+   "why": "cut: lands on the cut",
+   "scene": "route"
+  },
+  {
+   "t": 8.45,
+   "id": "sfx/ui/error",
+   "why": "provider goes down",
+   "scene": "route"
+  },
+  {
+   "t": 8.8,
+   "id": "sfx/tx/match_link",
+   "why": "re-route",
+   "scene": "route"
+  },
+  {
+   "t": 9.15,
+   "id": "sfx/ui/success",
+   "why": "traffic restored",
+   "scene": "route"
+  },
+  {
+   "t": 10,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: lands on the cut",
+   "scene": "tour"
+  },
+  {
+   "t": 10.5,
+   "id": "sfx/ui/click",
+   "why": "tab 2 picked",
+   "scene": "tour"
+  },
+  {
+   "t": 10.54,
+   "id": "sfx/ui/slide",
+   "why": "pill slides, list swaps",
+   "scene": "tour"
+  },
+  {
+   "t": 11,
+   "id": "sfx/device/mouse_click",
+   "why": "tab 3 picked",
+   "scene": "tour"
+  },
+  {
+   "t": 11.04,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "pill slides, list swaps",
+   "scene": "tour"
+  },
+  {
+   "t": 11.5,
+   "id": "sfx/ui/click",
+   "why": "tab 4 picked",
+   "scene": "tour"
+  },
+  {
+   "t": 11.54,
+   "id": "sfx/ui/slide",
+   "why": "pill slides, list swaps",
+   "scene": "tour"
+  },
+  {
+   "t": 12,
+   "id": "sfx/ui/pop",
+   "why": "chip lands",
+   "scene": "export"
+  },
+  {
+   "t": 12,
+   "id": "sfx/tx/cut_tick",
+   "why": "cut: lands on the cut",
+   "scene": "export"
+  },
+  {
+   "t": 12.45,
+   "id": "sfx/ui/click",
+   "why": "download click",
+   "scene": "export"
+  },
+  {
+   "t": 12.53,
+   "id": "sfx/device/progress_fill",
+   "why": "downloading",
+   "scene": "export"
+  },
+  {
+   "t": 13.05,
+   "id": "sfx/ui/success",
+   "why": "download done",
+   "scene": "export"
+  },
+  {
+   "t": 13.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: lands on the cut",
+   "scene": "site"
+  },
+  {
+   "t": 14.1,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "camera glides to the next section",
+   "scene": "site"
+  },
+  {
+   "t": 14.6,
+   "id": "sfx/whoosh/swish_s",
+   "why": "camera glides to the next section",
+   "scene": "site"
+  },
+  {
+   "t": 15.05,
+   "id": "sfx/whoosh/whoosh_m",
+   "why": "pull out to the whole page",
+   "scene": "site"
+  },
+  {
+   "t": 16,
+   "id": "sfx/tx/cut_tick",
+   "why": "cut: lands on the cut",
+   "scene": "name"
+  },
+  {
+   "t": 16.12,
+   "id": "sfx/logo/ascend_land",
+   "why": "sonic logo on the name",
+   "scene": "name"
+  }
+ ],
+ "honesty": "fictional product (Acme Voice); placeholder copy; latency badges and failover timings labelled illustrative in frame",
+ "lint": {
+  "cutsOnBeat": true,
+  "partsUsed": [
+   "ui.liveTranscript",
+   "ui.wordRegenerate",
+   "ui.optionPicker",
+   "ui.failoverRoute",
+   "ui.tabPillNav",
+   "ui.fileChip",
+   "ui.pageFlythrough"
+  ]
+ }
+}
