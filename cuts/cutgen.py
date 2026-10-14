@@ -14,6 +14,10 @@ Subcommands (all print JSON):
   verbs      --verbs "Build it all.,Expand.,Automate.,Multiply." --bpm 120 --fps 30 [--start-beat 0] [--snap]   one verb per beat
   mockumentary --lines 0:75,90:160,170:260 --fps 30 [--payoff -1]                  interview lines (start:end frames) -> reaction inserts -> payoff hold
   sentence   --words "Your clients dream big" --bpm 120 --fps 30 [--start-beat 0] [--snap]   word-by-word build, hold, result on the next downbeat
+  late-drop  --duration 30 --fps 30 [--turn-frame 240 | --share 0.25 --bpm 120] [--gap-ms 700] [--ticks 30,60] [--riser auto|on|off] [--riser-end F]
+  pre-sting  --lockup-frame 600 --fps 30 [--hold 1.5] [--silence 2.0] [--sting-hold 1.0]     lockup -> bed out -> 1-3 s near-silence -> final sting
+  handoff    --line 0:75:180 --fps 30 [--exit 1.5] [--consent] [--demo-frame 200]          presenter -> synthetic voice handoff, caption tags, label
+  pipeline   --duration 45 --fps 30 [--bpm 120] [--steps prompt,plan,passes,teardown,file,world,title] [--breakdown 3]
   snap       --cuts 0,44,91 --fps 30 (--onsets 1.5,3.0 | --study study.json [--use onsets|beats]) [--tol 2]   snap cuts to sound onsets
 Library use: import cutgen; cutgen.beat_cuts(...)."""
 import argparse, json, math, os, sys
@@ -287,6 +291,169 @@ def sentence_led(words, bpm, fps, start_beat=0.0, snap=False, offset=0.0):
             "result": {"beat": result, "start": fr(result), "end": fr(res_end), "note": p["result_on"]}, "sfx": sfx, "warnings": warn}
 
 
+# ---------------------------------------------------------------------------------------------------------- story shapes, round 3 (2026-10-14)
+def _bar_snap(t, bpm):
+    bar = 4 * 60.0 / bpm
+    return round(t / bar) * bar
+
+
+def late_drop(duration_s, fps, turn_frame=None, share=None, bpm=None, gap_ms=None, ticks=(), riser=None, riser_end_frame=None):
+    """story.lateDrop: the problem runs on UI ticks + texture only, an optional 0.5-1 s speech gap, then the beat drops on the turn line.
+    turn_frame (the first frame of the turn line / product name) wins; otherwise the drop sits at share x duration, on a bar line when bpm is given.
+    riser: None = the pattern default (a riser only when there is no gap). riser_end_frame: the anchor frame your plan gives the riser's end, checked
+    against the rule (it must land ONE frame before the hit anchor, i.e. on the drop frame itself). Cues: texture loop, ticks, riser, drop hit."""
+    p = PATTERNS["story"]["lateDrop"]
+    n = frame_of(duration_s, fps)
+    warn = []
+    if turn_frame is None:
+        t = (p["drop_share"] if share is None else share) * duration_s
+        drop = frame_of(_bar_snap(t, bpm) if bpm else t, fps)
+    else:
+        drop = int(turn_frame)
+    sh = drop / float(n) if n else 0.0
+    lo, hi = p["drop_share_range"]
+    if not lo <= sh <= hi:
+        warn.append("drop at %.0f%% of the runtime: the studied late drops sit at %d-%d%%" % (sh * 100, lo * 100, hi * 100))
+    if bpm and turn_frame is not None:
+        bar_f = 4 * 60.0 / bpm * fps
+        off = (drop % bar_f) if bar_f else 0
+        if min(off, bar_f - off) > 0.5:
+            warn.append("start the bed %.2f s early (or late) so a bar line lands on the drop frame" % (off / fps))
+    g = frame_of((p["speech_gap_ms"] if gap_ms is None else gap_ms) / 1000.0, fps)
+    if g:
+        glo, ghi = p["speech_gap_range_ms"]
+        if not glo <= g * 1000.0 / fps <= ghi + 1000.0 / fps:
+            warn.append("speech gap %d ms: the studied gaps run %d-%d ms" % (round(g * 1000.0 / fps), glo, ghi))
+    pre_end = drop - g
+    if pre_end / float(fps) < p["min_pre_s"]:
+        warn.append("only %.1f s before the drop: under %.1f s the drop is not late, it is the opening" % (pre_end / float(fps), p["min_pre_s"]))
+    use_riser = (not g or p["riser_with_gap"]) if riser is None else bool(riser)
+    if use_riser and g:
+        warn.append("a riser fills the speech gap: keep one of the two (the silence is the tension)")
+    sfx = [_cue(p["texture_sfx"], 0, -6.0, until_frame=pre_end, note="the problem bed: texture only, no beat")]
+    kept = [int(f) for f in ticks if int(f) < pre_end]
+    if len(kept) < len(list(ticks)):
+        dropped = [int(f) for f in ticks if pre_end <= int(f) < drop]
+        if dropped:
+            warn.append("%d tick(s) fall inside the speech gap: removed" % len(dropped))
+    sfx += [_cue(p["tick_sfx"], f, -3.0) for f in kept]
+    sfx += [_cue(p["tick_sfx"], int(f), -3.0) for f in ticks if int(f) >= drop]
+    check = None
+    if use_riser:
+        c = _cue(p["riser_sfx"], drop, 0.0, note="riser: the mixer applies the manifest anchor_frame_offset -1, so its end lands on the drop frame")
+        c["anchor_frame"] = drop
+        sfx.append(c)
+    if riser_end_frame is not None:
+        check = {"riser_end_frame": int(riser_end_frame), "required": drop, "ok": int(riser_end_frame) == drop,
+                 "rule": "riser end anchor = drop frame = one frame before the hit anchor (drop + 1)"}
+        if not check["ok"]:
+            warn.append("riser ends on frame %d: it must end on frame %d (one frame before the hit)" % (riser_end_frame, drop))
+    sfx.append(_cue(p["drop_sfx"], drop, 0.0, note="the drop hit; the bed's downbeat lands here too"))
+    sfx.sort(key=lambda c: c["anchor_frame"])
+    sections = [{"role": "problem", "start": 0, "end": pre_end, "audio": p["pre_bed"]}]
+    if g:
+        sections.append({"role": "speech_gap", "start": pre_end, "end": drop, "audio": "near-silence: texture and ticks out, room tone at most"})
+    sections.append({"role": "drop", "start": drop, "end": n, "audio": "full bed from its drop downbeat"})
+    return {"pattern": "lateDrop", "fps": fps, "frames": n, "drop_frame": drop, "drop_share": round(sh, 4), "sections": sections,
+            "bed": {"enter_frame": drop, "downbeat_frame": drop, "note": "start the music (or its drop section) so a downbeat lands on drop_frame"},
+            "sfx": sfx, "riser_check": check, "warnings": warn, "note": p["drop_on"]}
+
+
+def pre_sting_silence(lockup_frame, fps, hold_s=None, silence_s=None, sting_hold_s=None, sr=48000):
+    """story.preStingSilence: lockup holds with the bed, the bed fades out, 1-3 s of near-silence (room tone at most) while the picture holds, then one
+    sting cuts to the giant cropped mark / end card. The last tail_zero_s of the film is digital zero (the master rule)."""
+    p = PATTERNS["story"]["preStingSilence"]
+    L = int(lockup_frame)
+    sil_s = p["silence_s"] if silence_s is None else silence_s
+    s0 = L + frame_of(p["lockup_hold_s"] if hold_s is None else hold_s, fps)
+    sting = s0 + frame_of(sil_s, fps)
+    end = sting + frame_of(p["sting_hold_s"] if sting_hold_s is None else sting_hold_s, fps)
+    warn = []
+    lo, hi = p["silence_range_s"]
+    if sil_s < lo:
+        warn.append("%.2f s of silence is a gag pause: use cuts smash (200 ms) for that, or give the end 1-3 s" % sil_s)
+    elif sil_s > hi:
+        warn.append("%.1f s of silence: past 3 s the viewer scrolls before the sting" % sil_s)
+    fade = int(round(p["bed_fade_ms"] / 1000.0 * sr))
+    a = int(round(s0 * sr / fps))
+    b = int(round((sting + 1) * sr / fps))
+    sfx = [_cue(p["room_tone"], s0, -12.0, until_frame=sting, note="room tone at most (<= %d dBFS); never digital zero mid-film" % p["room_tone_max_dbfs"]),
+           _cue(p["sting_sfx"], sting, 0.0, alt=p["sting_alt"], note="the only sound after the silence")]
+    return {"pattern": "preStingSilence", "fps": fps,
+            "shots": [{"role": "lockup", "start": L, "end": sting, "hold_still_from": s0, "note": p["picture"]}, {"role": "sting", "start": sting, "end": end}],
+            "bed": {"fade_out_samples": [a - fade, a], "out_frame": s0},
+            "silence": {"start": s0, "end": sting, "start_sample": a, "end_sample": b, "seconds": round((sting - s0) / float(fps), 4)},
+            "tail_zero": {"start_frame": end - frame_of(p["tail_zero_s"], fps), "end_frame": end, "note": "digital zero (house master rule)"},
+            "sfx": sfx, "warnings": warn}
+
+
+def voice_handoff(line_start, handoff, line_end, fps, exit_s=None, consent=False, demo_frame=None, sr=48000):
+    """story.voiceHandoff: presenter speaks [line_start, handoff), the synthetic voice continues [handoff, line_end] while the presenter walks out;
+    captions flip their speaker tag on the handoff frame and the honesty label is on screen for every synthetic frame. consent must be True."""
+    p = PATTERNS["story"]["voiceHandoff"]
+    a, h, e = int(line_start), int(handoff), int(line_end)
+    warn = []
+    if not consent:
+        warn.append("no recorded consent for the cloned voice: get it in writing before any render (%s)" % "; ".join(p["requires"]))
+    if not a < h < e:
+        raise ValueError("need line_start < handoff < line_end")
+    if (h - a) / float(fps) < p["min_presenter_s"]:
+        warn.append("the presenter speaks %.1f s: under %.1f s the viewer never registers the real voice" % ((h - a) / float(fps), p["min_presenter_s"]))
+    ex = h + frame_of(p["exit_s"] if exit_s is None else exit_s, fps)
+    if ex > e:
+        warn.append("the presenter is still leaving when the line ends: shorten exit_s or lengthen the line")
+    xf = int(round(p["crossfade_ms"] / 1000.0 * sr))
+    hs = int(round(h * sr / fps))
+    demo = e if demo_frame is None else int(demo_frame)
+    return {"pattern": "voiceHandoff", "fps": fps,
+            "audio": {"presenter": {"start": a, "end": h}, "synthetic": {"start": h, "end": e}, "crossfade_samples": [hs - xf // 2, hs + xf - xf // 2],
+                      "room_tone": {"sfx": p["room_tone"], "start": a, "end": e, "note": "one room tone under both voices so the handoff has no room change"}},
+            "captions": [{"speaker": "presenter", "tag": p["tag_human"], "start": a, "end": h}, {"speaker": "synthetic", "tag": p["tag_synthetic"], "start": h, "end": e}],
+            "label": {"text": p["label"], "start": h, "end": e, "rule": p["label_rule"]},
+            "picture": {"presenter_exit": [h, ex], "demo_start": demo},
+            "sfx": [_cue(p["room_tone"], a, -12.0, until_frame=e)], "warnings": warn}
+
+
+def pipeline_reveal(duration_s, fps, bpm=None, steps=None, breakdown_s=None):
+    """story.pipelineReveal: shots per step from their weights (on bar lines when bpm is given), one cue per step, and the music breakdown before the
+    world shot with a riser that ends one frame before it (the drop back in)."""
+    p = PATTERNS["story"]["pipelineReveal"]
+    st = p["steps"] if steps is None else [s if isinstance(s, dict) else next(x for x in p["steps"] if x["role"] == s) for s in steps]
+    n = frame_of(duration_s, fps)
+    tot = sum(s["weight"] for s in st)
+    edges, acc = [0.0], 0.0
+    for s in st:
+        acc += s["weight"] / tot * duration_s
+        edges.append(acc)
+    if bpm:
+        edges = [0.0] + [_bar_snap(t, bpm) for t in edges[1:-1]] + [duration_s]
+    fr = [frame_of(t, fps) for t in edges]
+    warn = []
+    shots = []
+    for i, s in enumerate(st):
+        a, b = fr[i], fr[i + 1]
+        if b <= a:
+            raise ValueError("step %r has no frames left: lengthen the film or drop a step" % s["role"])
+        if (b - a) / float(fps) < p["min_shot_s"] - 1e-9:
+            warn.append("%s holds %.2f s: under %.1f s a pipeline step does not read" % (s["role"], (b - a) / float(fps), p["min_shot_s"]))
+        shots.append({"i": i, "role": s["role"], "start": a, "end": b, "part": s["part"], **({"alt": s["alt"]} if s.get("alt") else {})})
+    sfx = [_cue(s["sfx"], sh["start"], 0.0, role=s["role"]) for s, sh in zip(st, shots)]
+    world = next((sh for sh in shots if sh["role"] == p["breakdown_before"]), None)
+    bed = [{"state": "full", "start": 0, "end": n}]
+    if world is not None:
+        bd = frame_of(p["breakdown_s"] if breakdown_s is None else breakdown_s, fps)
+        b0 = max(0, world["start"] - bd)
+        bed = [{"state": "full", "start": 0, "end": b0}, {"state": "breakdown: drums and bass out, pad or texture only", "start": b0, "end": world["start"]},
+               {"state": "full: the drop", "start": world["start"], "end": n}]
+        c = _cue(p["riser_sfx"], world["start"], 0.0, note="ends one frame before the world hit (mixer applies anchor_frame_offset -1)")
+        c["anchor_frame"] = world["start"]
+        sfx.append(c)
+    else:
+        warn.append("no %r step: the breakdown has nowhere to land" % p["breakdown_before"])
+    sfx.sort(key=lambda c: c["anchor_frame"])
+    return {"pattern": "pipelineReveal", "fps": fps, "frames": n, "shots": shots, "bed": bed, "sfx": sfx, "warnings": warn}
+
+
 def snap_cuts_to_onsets(cut_frames, onsets_s, fps, tol_frames=None):
     """move each cut to the nearest onset frame within +-tol frames (onset_snap.tolerance_frames, default 2). A snap that would collide with or
     cross a neighbouring cut is refused. Returns per-cut rows and the shares on an onset before and after."""
@@ -335,6 +502,15 @@ def main(argv=None):
     mk = sub.add_parser("mockumentary"); mk.add_argument("--lines", required=True); mk.add_argument("--fps", type=float, default=30); mk.add_argument("--payoff", type=int, default=-1)
     se = sub.add_parser("sentence"); se.add_argument("--words", required=True); se.add_argument("--bpm", type=float, required=True); se.add_argument("--fps", type=float, default=30)
     se.add_argument("--start-beat", type=float, default=0.0); se.add_argument("--snap", action="store_true")
+    ld = sub.add_parser("late-drop"); ld.add_argument("--duration", type=float, required=True); ld.add_argument("--fps", type=float, default=30)
+    ld.add_argument("--turn-frame", type=int); ld.add_argument("--share", type=float); ld.add_argument("--bpm", type=float); ld.add_argument("--gap-ms", type=float)
+    ld.add_argument("--ticks", default=""); ld.add_argument("--riser", choices=["auto", "on", "off"], default="auto"); ld.add_argument("--riser-end", type=int)
+    ps = sub.add_parser("pre-sting"); ps.add_argument("--lockup-frame", type=int, required=True); ps.add_argument("--fps", type=float, default=30)
+    ps.add_argument("--hold", type=float); ps.add_argument("--silence", type=float); ps.add_argument("--sting-hold", type=float)
+    vh = sub.add_parser("handoff"); vh.add_argument("--line", required=True, help="start:handoff:end frames"); vh.add_argument("--fps", type=float, default=30)
+    vh.add_argument("--exit", type=float); vh.add_argument("--consent", action="store_true"); vh.add_argument("--demo-frame", type=int)
+    pr = sub.add_parser("pipeline"); pr.add_argument("--duration", type=float, required=True); pr.add_argument("--fps", type=float, default=30)
+    pr.add_argument("--bpm", type=float); pr.add_argument("--steps", default=""); pr.add_argument("--breakdown", type=float)
     sn = sub.add_parser("snap"); sn.add_argument("--cuts", required=True); sn.add_argument("--fps", type=float, default=30); sn.add_argument("--onsets", default="")
     sn.add_argument("--study"); sn.add_argument("--use", default="onsets", choices=["onsets", "beats", "hits_top10pct"]); sn.add_argument("--tol", type=int)
     a = ap.parse_args(argv)
@@ -359,6 +535,15 @@ def main(argv=None):
         r = mockumentary([tuple(int(y) for y in x.split(":")) for x in a.lines.split(",") if x.strip()], a.fps, a.payoff)
     elif a.cmd == "sentence":
         r = sentence_led(a.words.split(), a.bpm, a.fps, a.start_beat, a.snap)
+    elif a.cmd == "late-drop":
+        r = late_drop(a.duration, a.fps, a.turn_frame, a.share, a.bpm, a.gap_ms, ints(a.ticks), {"auto": None, "on": True, "off": False}[a.riser], a.riser_end)
+    elif a.cmd == "pre-sting":
+        r = pre_sting_silence(a.lockup_frame, a.fps, a.hold, a.silence, a.sting_hold)
+    elif a.cmd == "handoff":
+        x, y, z = (int(v) for v in a.line.split(":"))
+        r = voice_handoff(x, y, z, a.fps, a.exit, a.consent, a.demo_frame)
+    elif a.cmd == "pipeline":
+        r = pipeline_reveal(a.duration, a.fps, a.bpm, [x.strip() for x in a.steps.split(",") if x.strip()] or None, a.breakdown)
     else:
         if a.study:
             with open(a.study) as f:

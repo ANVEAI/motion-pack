@@ -1,5 +1,5 @@
 {
- "count": 295,
+ "count": 298,
  "categories": [
   "ambience",
   "camera",
@@ -144,6 +144,15 @@
    "seed_corr": 0.045,
    "ffmpeg_I": -18.7,
    "dI": 0.04
+  },
+  {
+   "id": "snd.amb.projector",
+   "ok": true,
+   "notes": [],
+   "seam_ratio": 0.01,
+   "seed_corr": 0.449,
+   "ffmpeg_I": -24.2,
+   "dI": 0.01
   },
   {
    "id": "snd.amb.rain",
@@ -900,6 +909,14 @@
    "ok": true,
    "notes": [],
    "seed_corr": 0.009
+  },
+  {
+   "id": "snd.foley.typewriter",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.146,
+   "ffmpeg_I": -21.0,
+   "dI": 0.05
   },
   {
    "id": "snd.foley.zipper",
@@ -1889,6 +1906,14 @@
     "warn two seeds correlate 0.62"
    ],
    "seed_corr": 0.62
+  },
+  {
+   "id": "snd.ui.hologram_beam",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.36,
+   "ffmpeg_I": -17.4,
+   "dI": 0.02
   },
   {
    "id": "snd.ui.listening_loop",

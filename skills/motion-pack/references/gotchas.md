@@ -79,6 +79,11 @@
 - **logo-extrude slices are hollow.** The sliced beat uses two clipping planes, so the cut face shows the inside of the extrusion (no cap). Fine at speed, not for a long hold. Clipping planes live in world space; `set()` recomputes them from the part's matrix every frame.
 - **Run the 3D templates before `beat-edit` and `talking-head`,** which use their renders as footage.
 
+## Blender
+
+- **EEVEE drops the emission of a fully transparent surface.** In the default dithered mode, `Add(Emission, Transparent)` renders nothing: the pixel is discarded before its emission counts. For glows on see-through surfaces, mix Transparent and Emission by a coverage factor (`blender/lib/kit.py` x-ray pass), or set the material to `BLENDED` (`materials.pure_emission`).
+- **Keyed values inside a shader node group animate fine** (`kit.pass_group` keys one `stage` value for every pass material), but check a frame from each state: a wrong blend shows up as the previous pass, not as an error.
+
 ## Environment and process
 
 - **Leave disk headroom for renders.** `templates/_shared/render3d.sh` prints free space first and asks the renderer to stop under 10 GiB free. On macOS a render killed with exit code 143 often means the disk filled up.

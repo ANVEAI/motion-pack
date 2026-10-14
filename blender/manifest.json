@@ -658,6 +658,399 @@
    "id": "blender/art.particleSwirl",
    "previews": [],
    "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/art.particleSwirl --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/art.particleSwirl"
+  },
+  "blender/passReveal": {
+   "name": "Render-pass reveal",
+   "doc": "Wireframe -> x-ray -> clay -> full material on one model, each step a soft wipe; or one pass per plate (pass=...).",
+   "use": "The 'how it is made' beat of an AI-builder or 3D-tool launch; a sketch-to-render reveal; per-pass plates for a wipe.",
+   "avoid": "Implying a real product pipeline you do not have; a pass shown so briefly it reads as a glitch (< 0.6 s).",
+   "loop": false,
+   "defaults": {
+    "seconds": 6.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "pass": {
+     "type": "str",
+     "default": "",
+     "doc": "'' = timed progression; wire | xray | clay | full = hold that pass"
+    },
+    "steps": {
+     "type": "list",
+     "default": [
+      0.9,
+      2.1,
+      3.3
+     ],
+     "doc": "start of each wipe (s): wire->xray | xray->clay | clay->full"
+    },
+    "wipe": {
+     "type": "float",
+     "default": 0.7,
+     "doc": "seconds per wipe"
+    },
+    "orbit": {
+     "type": "float",
+     "default": 40.0,
+     "doc": "camera orbit over the plate (deg)"
+    },
+    "az": {
+     "type": "float",
+     "default": 28.0,
+     "doc": "camera azimuth at the start (deg)"
+    },
+    "el": {
+     "type": "float",
+     "default": 16.0,
+     "doc": "camera elevation (deg)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 60.0,
+     "doc": "mm on a 24 mm vertical sensor"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 8.0,
+     "doc": "aperture"
+    },
+    "fill": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "model fill of the limiting frame side (0 = 0.62 wide / 0.86 tall)"
+    },
+    "wire_mm": {
+     "type": "float",
+     "default": 1.6,
+     "doc": "wire thickness (mm; the model spans 660 mm)"
+    },
+    "body": {
+     "type": "color",
+     "default": [
+      0.62,
+      0.57,
+      0.48
+     ],
+     "doc": "body colour of the full pass (linear)"
+    },
+    "accent": {
+     "type": "color",
+     "default": [
+      0.2,
+      0.011,
+      1.0
+     ],
+     "doc": "accent colour of the full pass (linear; default brand violet)"
+    },
+    "bg": {
+     "type": "float",
+     "default": 0.0016,
+     "doc": "world / backdrop level (linear grey)"
+    }
+   },
+   "id": "blender/passReveal",
+   "previews": [],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/passReveal --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/passReveal"
+  },
+  "blender/knolling": {
+   "name": "Knolling flat-lay",
+   "doc": "Exploded parts settle into an overhead flat-lay grid (camera cranes to top-down), hold, then reassemble.",
+   "use": "'Every part is separate / editable' proof beats, teardown and bill-of-parts moments, product anatomy posts.",
+   "avoid": "Presenting concept parts as a real bill of materials (label it); slots shorter than ~4 s (the move needs air).",
+   "loop": false,
+   "defaults": {
+    "seconds": 6.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "open_at": {
+     "type": "float",
+     "default": 0.4,
+     "doc": "parts start to separate (s)"
+    },
+    "settle_at": {
+     "type": "float",
+     "default": 1.0,
+     "doc": "first part leaves for its slot (s)"
+    },
+    "settle_dur": {
+     "type": "float",
+     "default": 1.8,
+     "doc": "from the first part leaving to the last part landing (s)"
+    },
+    "fly": {
+     "type": "float",
+     "default": 0.75,
+     "doc": "flight time of one part (s)"
+    },
+    "reassemble_at": {
+     "type": "float",
+     "default": 3.9,
+     "doc": "first part leaves the grid (s); <= 0 = stay laid out"
+    },
+    "reassemble_dur": {
+     "type": "float",
+     "default": 1.6,
+     "doc": "from first leaving to last seated (s)"
+    },
+    "spread": {
+     "type": "float",
+     "default": 0.7,
+     "doc": "explode distance (x the part's offset from the centre)"
+    },
+    "arc": {
+     "type": "float",
+     "default": 0.07,
+     "doc": "lift of each flight (m)"
+    },
+    "gap": {
+     "type": "float",
+     "default": 0.03,
+     "doc": "space between laid-out parts (m)"
+    },
+    "az": {
+     "type": "float",
+     "default": 32.0,
+     "doc": "3/4 camera azimuth (deg)"
+    },
+    "el": {
+     "type": "float",
+     "default": 20.0,
+     "doc": "3/4 camera elevation (deg)"
+    },
+    "el_top": {
+     "type": "float",
+     "default": 88.0,
+     "doc": "overhead elevation (deg; < 90 keeps the frame upright)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 50.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 11.0,
+     "doc": "aperture"
+    },
+    "floor": {
+     "type": "color",
+     "default": [
+      0.22,
+      0.22,
+      0.23
+     ],
+     "doc": "table colour (linear)"
+    },
+    "body": {
+     "type": "color",
+     "default": [
+      0.62,
+      0.57,
+      0.48
+     ],
+     "doc": "body colour (linear)"
+    },
+    "accent": {
+     "type": "color",
+     "default": [
+      0.2,
+      0.011,
+      1.0
+     ],
+     "doc": "accent colour (linear)"
+    }
+   },
+   "id": "blender/knolling",
+   "previews": [],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/knolling --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/knolling"
+  },
+  "blender/cloudFlight": {
+   "name": "Cloud-sea flight",
+   "doc": "Sunset cloud sea, volumetric haze, sun flare and a chase camera tracking the hero as it flies, banks and bobs.",
+   "use": "The 'product used in the world' climax; a hero-in-context plate behind a title; the payoff after a teardown.",
+   "avoid": "Real aircraft, liveries or markings; claiming a render is footage; very long holds (the cloud sea is one tile).",
+   "loop": false,
+   "defaults": {
+    "seconds": 6.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "eevee",
+    "motion_blur": true
+   },
+   "params": {
+    "speed": {
+     "type": "float",
+     "default": 2.4,
+     "doc": "flight speed (m/s; the hero spans 0.66 m)"
+    },
+    "altitude": {
+     "type": "float",
+     "default": 1.7,
+     "doc": "hero height above the cloud datum (m)"
+    },
+    "bank": {
+     "type": "float",
+     "default": 14.0,
+     "doc": "peak bank angle (deg)"
+    },
+    "bob": {
+     "type": "float",
+     "default": 0.05,
+     "doc": "vertical bob (m)"
+    },
+    "prop_rps": {
+     "type": "float",
+     "default": 7.3,
+     "doc": "propeller turns per second (motion blur reads the rest)"
+    },
+    "az": {
+     "type": "float",
+     "default": 205.0,
+     "doc": "chase azimuth around the hero at the start (deg; 180 = dead behind)"
+    },
+    "az_end": {
+     "type": "float",
+     "default": 150.0,
+     "doc": "chase azimuth at the end (deg)"
+    },
+    "el": {
+     "type": "float",
+     "default": 9.0,
+     "doc": "chase elevation (deg)"
+    },
+    "dist": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "chase distance (m; 0 = fit the hero to ~0.42 of the frame)"
+    },
+    "push": {
+     "type": "float",
+     "default": 0.82,
+     "doc": "distance at the end / at the start (a slow push in)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 40.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 4.0,
+     "doc": "aperture"
+    },
+    "sun_el": {
+     "type": "float",
+     "default": 5.0,
+     "doc": "sun elevation (deg)"
+    },
+    "sun_az": {
+     "type": "float",
+     "default": 12.0,
+     "doc": "sun azimuth (deg; 0 = ahead of the hero)"
+    },
+    "haze": {
+     "type": "float",
+     "default": 0.005,
+     "doc": "haze density (per m)"
+    },
+    "clouds": {
+     "type": "float",
+     "default": 2.2,
+     "doc": "cloud billow height (m)"
+    },
+    "flare": {
+     "type": "float",
+     "default": 5.0,
+     "doc": "streak strength (0 = off)"
+    },
+    "body": {
+     "type": "color",
+     "default": [
+      0.62,
+      0.57,
+      0.48
+     ],
+     "doc": "hero body colour (linear)"
+    },
+    "accent": {
+     "type": "color",
+     "default": [
+      0.2,
+      0.011,
+      1.0
+     ],
+     "doc": "hero accent colour (linear)"
+    }
+   },
+   "id": "blender/cloudFlight",
+   "previews": [],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/cloudFlight --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/cloudFlight"
+  },
+  "blender/diorama": {
+   "name": "Low-poly diorama",
+   "doc": "Stylised low-poly vignette (lighthouse | campfire | island): one prop, mood light, sky; seamless loop, disc-insert framing.",
+   "use": "Windows / circular inserts in an accelerating montage, a mood beat between UI sections, story vignettes for a short.",
+   "avoid": "Photoreal claims; busy edges (the frame is cropped to a disc); cutting faster than ~0.12 s (it reads as noise).",
+   "loop": true,
+   "defaults": {
+    "seconds": 6.0,
+    "size": [
+     1080,
+     1080
+    ],
+    "engine": "eevee"
+   },
+   "params": {
+    "scene": {
+     "type": "str",
+     "default": "lighthouse",
+     "doc": "lighthouse | campfire | island"
+    },
+    "fill": {
+     "type": "float",
+     "default": 0.62,
+     "doc": "subject size as a share of the inscribed circle"
+    },
+    "az": {
+     "type": "float",
+     "default": null,
+     "doc": "camera azimuth (deg; default per scene)"
+    },
+    "el": {
+     "type": "float",
+     "default": null,
+     "doc": "camera elevation (deg; default per scene)"
+    },
+    "sway": {
+     "type": "float",
+     "default": 6.0,
+     "doc": "azimuth sway per loop (deg, seamless)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 50.0,
+     "doc": "mm"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 5.6,
+     "doc": "aperture"
+    }
+   },
+   "id": "blender/diorama",
+   "previews": [],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/diorama --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/diorama"
   }
  },
  "library": {
@@ -721,6 +1114,20 @@
   },
   "lib/beats.py": {
    "api": "load(sidecar, fps, n, loop) -> envelope(B, f), rings(B, f)"
+  },
+  "lib/kit.py": {
+   "model": "flyer: 21 primitive parts (no real aircraft or markings)",
+   "api": "build(col, mat_for) -> parts; pass_group / pass_material / wire_material / add_wires (render passes); knolling_layout(parts, gap, aspect) -> slots + flat rotations"
+  },
+  "lib/env.py": {
+   "api": "sky_world (gradient + sun glow + stars), sun, point, haze_volume, eevee_volumes, cloud_sea, flare_card + face_card, flat_mat, ico, frustum (low-poly)"
+  },
+  "lib/diorama.py": {
+   "scenes": [
+    "lighthouse",
+    "campfire",
+    "island"
+   ]
   }
  },
  "showcase": {
