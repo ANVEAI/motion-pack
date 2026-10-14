@@ -1,6 +1,6 @@
 /* camera 3D tests in a real browser with real three.js (local build served read-only): the kit rig math in applyToThree + determinism of rendered frames.
    run: node camera/tests/camera3d.test.mjs */
-import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url'; import { open, reporter } from '../../layers/tests/harness.mjs';
+import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url'; import { open, reporter, pageErrors } from '../../layers/tests/harness.mjs';
 const R = reporter('camera3d'), here = path.dirname(fileURLToPath(import.meta.url));
 const h = await open('/camera/demo/three.html', 'w=640&h=360'), pg = h.page;
 R.check('three.js page ready on a hardware GPU', !/SwiftShader|llvmpipe/i.test(h.gpu), h.gpu);
@@ -24,5 +24,5 @@ R.check(`positive roll rotates the picture clockwise (like CSS rotate) by exactl
 R.check(`dolly zoom in real three: subject width ${r.dollyW[0].toFixed(2)}..${r.dollyW[1].toFixed(2)} px (spread ${(100 * (r.dollyW[1] / r.dollyW[0] - 1)).toFixed(2)}%), near plane pulled in to ${r.dollyNear.toFixed(2)}`, r.dollyW[1] / r.dollyW[0] - 1 < 0.01 && r.dollyNear < 4.1 * 0.5 + 0.5);
 R.check(`shake px shifts the image by exactly that many output px (${r.shake.map((v) => v.toFixed(2))}: expect 10.00,-4.00)`, Math.abs(r.shake[0] - 10) < 0.05 && Math.abs(r.shake[1] + 4) < 0.05);
 R.check('rendered frame identical after another frame in between; blurred whip identical; blur actually differs from the sharp frame', r.h1 === r.h2 && r.b1 === r.b2 && r.b1 !== r.sharp, JSON.stringify([r.h1, r.b1, r.sharp]));
-R.check('no console errors', h.errors.filter((e) => !/favicon|404/.test(e)).length === 0, JSON.stringify(h.errors.slice(0, 2)));
+R.check('no console errors', pageErrors(h.errors).length === 0, JSON.stringify(h.errors.slice(0, 2)));
 await h.close(); const res = R.done(); fs.writeFileSync(path.join(here, 'last-run3d.json'), JSON.stringify(res, null, 1)); process.exit(R.failed ? 1 : 0);

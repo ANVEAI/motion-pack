@@ -1,6 +1,6 @@
 /* usage: node layers/tests/overlay2-sheet.mjs   -> layers/demo/out/fx2-<group>.png (one tile per expansion kind over the demo plate, real DOM blend)
    Also a smoke test: exit 1 on any page error, any kind that fails to mount, or a tile identical to the bare plate. */
-import fs from 'node:fs'; import { execFileSync } from 'node:child_process'; import path from 'node:path'; import os from 'node:os'; import crypto from 'node:crypto'; import { open, ROOT } from './harness.mjs';
+import fs from 'node:fs'; import { execFileSync } from 'node:child_process'; import path from 'node:path'; import os from 'node:os'; import crypto from 'node:crypto'; import { open, ROOT, pageErrors } from './harness.mjs';
 const T = 1.4, GROUPS = {
   lens: [['flareStreak', {}], ['flareGhosts', {}], ['starburst', {}], ['lensDirt', {}], ['rainGlass', {}], ['fog', {}], ['godRays', {}], ['burnEdge', {}], ['vhs', {}]],
   comic: [['halftone', {}], ['speedLines', {}], ['impactFrame', { at: T }], ['noiseMap', {}], ['paperFold', {}], ['crumple', {}], ['cardboard', {}], ['canvas', {}], ['cloth', {}], ['concrete', {}], ['brushedMetal', {}], ['tornEdge', {}]],
@@ -31,6 +31,6 @@ for i, (n, f) in enumerate(items):
 S.save(sys.argv[1]); print('sheet', sys.argv[1], S.size)`;
   console.log(execFileSync('python3', ['-I', '-c', py, out, JSON.stringify(files)]).toString().trim());
 }
-/* same filter as layers.test.mjs (the plate's font probe 404s) */
-const errs = h.errors.filter((e) => !/favicon|404/.test(e)); if (errs.length) { console.log('page errors:', errs.slice(0, 5)); fail++; }
+/* every recorded error fails (pageErrors drops only the favicon request), so a missing module, texture or font shows up here */
+const errs = pageErrors(h.errors); if (errs.length) { console.log('page errors:', errs.slice(0, 5)); fail++; }
 await h.close(); console.log(fail ? `FAIL ${fail}` : 'overlay2: all kinds mounted, rendered and visible'); process.exit(fail ? 1 : 0);

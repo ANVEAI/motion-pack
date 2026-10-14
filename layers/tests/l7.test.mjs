@@ -4,7 +4,7 @@
    after another t; writes the preview sheet layers/demo/out/l7-sheet.png.   run: node layers/tests/l7.test.mjs */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
 import { bayer, stylizePixel, toCube, toSVGFilter, ditherAt, STYLIZE } from '../stylize.js'; import { cubeLookup } from '../grade.js'; import { BG } from '../backgrounds.js'; import { ALL_KINDS } from '../overlay.js';
-import { open, reporter, decodePNG, ROOT } from './harness.mjs';
+import { open, reporter, decodePNG, ROOT, pageErrors } from './harness.mjs';
 const R = reporter('layers L7'), here = path.dirname(fileURLToPath(import.meta.url)), near = (a, b, e = 1e-6) => Math.abs(a - b) <= e;
 /* 1. node: maths */
 const m4 = bayer(4), m8 = bayer(8);
@@ -47,7 +47,7 @@ for (const [kind, params, label] of [['gridTunnel', {}, 'gridTunnel (accent on p
   R.check(`${label}: mounted via mountStack (${kinds}), bit-identical at t 1.3 after rendering t 3.7`, kinds[0] === kind && a === b);
   tiles.push([label, await shot(kind + tiles.length)]);
 }
-const errs = h.errors.filter((e) => !/favicon|404/.test(e)); R.check('no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
+const errs = pageErrors(h.errors); R.check('no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
 const out = path.join(ROOT, 'layers/demo/out/l7-sheet.png');
 const py = `
 import sys, json

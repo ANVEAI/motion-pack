@@ -1,6 +1,6 @@
 {
  "name": "layers round 4/5",
- "total": 75,
+ "total": 78,
  "failed": 0,
  "rows": [
   {
@@ -189,6 +189,21 @@
    "detail": ""
   },
   {
+   "label": "brandField URL logo: after stack.ready() the first frame already draws the logo (6 of 6 fresh logos) and the same frame is identical once any late load would have landed (6 of 6); the kind lists the source in assets()",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "brandField URL logo that fails to load: ready() still resolves, the placeholder mark is drawn, and it stays the same frame (never a half state)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "brandField with an already decoded logo object draws it on the first frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
    "label": "epicycleDraw readout: three lines (N = 64 | 64 rotating circles  ·  mean error 0.08% of size | mean distance of the drawn curve from the input path), type 22..38 px at 1080p (note >= 22, never the 14 px of before), the same px on a 1080 x 1920 frame (shorter side); an empty or null source falls back to the default note (a printed number is never unlabelled); a custom source replaces it; readout: false prints nothing",
    "pass": true,
    "detail": ""
@@ -274,7 +289,7 @@
    "detail": ""
   },
   {
-   "label": "convergeToDot: the 0 drawn lines have both ends on the node positions of that same frame (recomputed every frame, no stored state), lines whose end reached the dot are dropped",
+   "label": "convergeToDot: at 0.97 s after at the 23 drawn lines are exactly the 23 live edges of 24, both ends on that frame's node positions (recomputed every frame, no stored state); lines whose end reached the dot are dropped",
    "pass": true,
    "detail": ""
   },
@@ -359,17 +374,17 @@
    "detail": ""
   },
   {
-   "label": "hexMosaic at 4K (3840 x 2160, wave + panel): 15.5 ms per frame (budget 120 ms)",
+   "label": "hexMosaic at 4K (3840 x 2160, wave + panel): 16.8 ms per frame (budget 120 ms)",
    "pass": true,
    "detail": ""
   },
   {
-   "label": "embeddingCloud at 1080p (420 dots + 48 thumbnails): 1.1 ms per frame (budget 40 ms)",
+   "label": "embeddingCloud at 1080p (420 dots + 48 thumbnails): 1.3 ms per frame (budget 40 ms)",
    "pass": true,
    "detail": ""
   },
   {
-   "label": "epicycleDraw at 1080p (all terms, inset): 1.5 ms per frame (budget 40 ms)",
+   "label": "epicycleDraw at 1080p (all terms, inset): 1.7 ms per frame (budget 40 ms)",
    "pass": true,
    "detail": ""
   },

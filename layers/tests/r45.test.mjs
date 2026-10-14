@@ -165,7 +165,7 @@ const hausdorff = (name, closed) => { const p = { ...K2D.epicycleDraw.d, path: n
 
 /* 10. Chrome (hardware GPU not needed for Canvas2D, but the harness refuses software GL): mounts, pixels, budgets */
 if (CHROME) {
-  const { open, decodePNG, png } = await import('./harness.mjs'); const h = await open('/layers/demo/r45.html'); await h.page.setViewport({ width: 960, height: 540 }); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-r45-')), tiles = [];
+  const { open, decodePNG, png, pageErrors } = await import('./harness.mjs'); const h = await open('/layers/demo/r45.html'); await h.page.setViewport({ width: 960, height: 540 }); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-r45-')), tiles = [];
   const shot = async (name) => { const f = path.join(dir, name + '.png'); await h.page.screenshot({ path: f, clip: { x: 0, y: 0, width: 960, height: 540 } }); return f; };
   const STACKS = [
     ['embeddingCloud: query + neighbours', [{ kind: 'embeddingCloud', params: {} }], 2.4, '#0B1210'], ['embeddingCloud: collapsed into the mark', [{ kind: 'embeddingCloud', params: { collapseAt: 3.0 } }], 5.4, '#0B1210'],
@@ -201,7 +201,7 @@ if (CHROME) {
   const msC = await h.page.evaluate(() => window.timeIt(2, 24)); R.check(`embeddingCloud at 1080p (420 dots + 48 thumbnails): ${msC.toFixed(1)} ms per frame (budget 40 ms)`, msC < 40);
   await h.page.evaluate((l) => window.stack(l, 1, 1920, 1080, '#000'), [{ kind: 'epicycleDraw', params: { steps: [[0, 'full']], inset: [0.7, 0.06, 0.26, 0.3] } }]); await h.page.evaluate(() => window.timeIt(2, 4));
   const msE = await h.page.evaluate(() => window.timeIt(2, 24)); R.check(`epicycleDraw at 1080p (all terms, inset): ${msE.toFixed(1)} ms per frame (budget 40 ms)`, msE < 40);
-  const errs = h.errors.filter((e) => !/favicon|404|willReadFrequently/.test(e)); R.check('no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
+  const errs = pageErrors(h.errors, [/willReadFrequently/]); R.check('no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
   const out = path.join(ROOT, 'layers/demo/out/r45-sheet.png');
   const py = `
 import sys, json

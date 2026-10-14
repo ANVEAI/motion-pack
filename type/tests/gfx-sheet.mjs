@@ -1,7 +1,7 @@
 /* usage: node type/tests/gfx-sheet.mjs   -> type/demo/out/gfx-<family>.png contact sheets (one tile per gfx id at a hero time) + a smoke test:
    every registered gfx / layout id renders non-empty at its hero time, renders EMPTY before its start, is identical when rendered twice at the
    same t (seek-safe), and the page logs no errors. Also writes type/demo/out/gfx-hero.json (id -> hero t) for the manifest. exit 1 on failure. */
-import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { open, ROOT } from '../../layers/tests/harness.mjs';
+import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { open, ROOT, pageErrors } from '../../layers/tests/harness.mjs';
 const HERO = { 'title.countdown321': 1.1, 'title.slate': 0.75, 'caption.oneWordSlam': 1.1, 'social.chatBubbles': 3.4, 'chart.race': 3.2, 'map.route': 2.6, 'reaction.burst': 1.4, 'fx.emotion.heartBurst': 0.6,
   'social.followButton': 1.0, 'counter.priceSlash': 1.2, 'fx.impact.smear': 0.05, 'fx.impact.star': 0.12, 'fx.impact.dustPoof': 0.35, 'fx.impact.speedLines': 0.3, 'lowerThird.newsBar': 1.2, 'callout.pinLeader': 1.0, 'device.laptop': 1.6, 'device.phone': 1.05,
   'ui.agentActivity': 1.75, 'ui.promptBar': 1.95, 'ui.checklist': 1.75, 'ui.nodeGraph': 2.9, 'ui.scanOverlay': 1.1, 'ui.isometricTilt': 1.4, 'ui.stateMorph': 6.1,
@@ -43,7 +43,7 @@ for (const id of ids) for (const params of PARAMS[id] || [{}]) {
   (groups[fam(id)] ||= []).push([id + (params.name || params.mode ? ' ' + (params.name || params.mode) : params.inner ? ' + ' + params.inner.id : params.scene ? ' ' + params.scene : params.shape ? ' ' + params.shape : params.style ? ' ' + params.style : params.theme ? ' ' + params.theme : params.texts ? ' resize' : params.cell ? ' ' + params.cell : params.card ? ' + card' : params.bg ? ' + bg' : params.run ? ' run ' + (params.run.length ? 'fail' : 'pass') : params.bars ? ' + bars' : params.ai ? ' ai voice' : ''), f]); hero[id] = t;
 }
 const nSt = await h.page.evaluate('window.stickerSheet()'); await h.page.screenshot({ path: path.join(ROOT, 'type/demo/out/gfx-sticker-grid.png'), clip: { x: 0, y: 0, width: 1920, height: 1080 } }); console.log('sticker grid', nSt, 'stickers -> type/demo/out/gfx-sticker-grid.png');
-const errs = h.errors.filter((e) => !/favicon|404/.test(e)); if (errs.length) { console.log('page errors:', errs.slice(0, 5)); fail++; } await h.close();
+const errs = pageErrors(h.errors); if (errs.length) { console.log('page errors:', errs.slice(0, 5)); fail++; } await h.close();
 const py = `
 import sys, json
 from PIL import Image, ImageDraw

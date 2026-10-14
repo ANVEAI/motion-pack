@@ -5,7 +5,7 @@
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
 import { gradeInWeight, gradeInPixel, gradientMap, gradeInSVG, gradeInCube, GRADE_IN, hexRGB } from '../stylize.js'; import { cubeLookup } from '../grade.js';
 import { BG, meshBlob } from '../backgrounds.js'; import { K2D } from '../canvas2d.js'; import { dotCondenseState, hologramState } from '../canvas2d-r3.js'; import { ALL_KINDS } from '../overlay.js';
-import { open, reporter, decodePNG, ROOT } from './harness.mjs';
+import { open, reporter, decodePNG, ROOT, pageErrors } from './harness.mjs';
 const R = reporter('layers round 3'), here = path.dirname(fileURLToPath(import.meta.url)), near = (a, b, e = 1e-6) => Math.abs(a - b) <= e;
 /* 1. node */
 R.check('gradeIn weight: 1 before at, 0 after at + dur, 0.5 at the midpoint (soft ease); reverse mirrors it; amount scales it',
@@ -55,7 +55,7 @@ for (const [label, layers, t] of STACKS) {
   R.check(`${label}: mounted via mountStack (${kinds.join(' + ')}), bit-identical at t ${t} after rendering t 0.37`, kinds.length === layers.length && a === b);
   tiles.push([label + ` t=${t}`, await shot('s' + tiles.length)]);
 }
-const errs = h.errors.filter((e) => !/favicon|404/.test(e)); R.check('no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
+const errs = pageErrors(h.errors); R.check('no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
 const out = path.join(ROOT, 'layers/demo/out/r3-sheet.png');
 const py = `
 import sys, json

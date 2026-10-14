@@ -172,7 +172,7 @@ for (const [W2, H2, name] of FRAMES) { const c = ctxFor(W2, H2, null, 1), sx0 = 
   check('type/manifest.json lists all 7 ids with file, tags, params, a default sound and the r45type sheet (node layers/tests/make-manifests.mjs rewrites it)',
     rows.every((r, i) => r && /type\/gfx\/r45-(type|glyph)\.js$/.test(r.file) && r.tags.length >= 5 && r.params && r.sfx && r.demo === 'type/demo/out/gfx-r45type.png' && r.test === 'type/tests/gfx-sheet.mjs')); }
 if (process.argv.includes('--chrome')) {
-  const { open, png, decodePNG } = await import('../../layers/tests/harness.mjs'); const h = await open('/type/demo/gfx.html'); await h.page.setViewport({ width: 1920, height: 1080 });
+  const { open, png, decodePNG, pageErrors } = await import('../../layers/tests/harness.mjs'); const h = await open('/type/demo/gfx.html'); await h.page.setViewport({ width: 1920, height: 1080 });
   const W = 1920, H = 1080, grad = Buffer.alloc(W * H * 4); for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const v = Math.round((x / (W - 1)) * 255), i = (y * W + x) * 4; grad[i] = grad[i + 1] = grad[i + 2] = v; grad[i + 3] = 255; }
   const black = Buffer.alloc(W * H * 4); for (let i = 3; i < black.length; i += 4) black[i] = 255;
   const url = (b) => 'data:image/png;base64,' + png(W, H, b).toString('base64'), plate = { svg: `<rect width="${W}" height="${H}" fill="#0000FF"/>`, viewBox: `0 0 ${W} ${H}` };
@@ -216,7 +216,7 @@ if (process.argv.includes('--chrome')) {
   { const h2 = await open('/layers/demo/r45.html'); await h2.page.setViewport({ width: 960, height: 540 }); const pe = P('type.electricOutline', { text: '24' }), cw = ctxFor(1920, 1080, null, 1), pools = electricGlowPools(pe, cw), g0 = electricGeo(pe, cw);
     const b64 = await h2.page.evaluate((pl) => { window.stack([{ kind: 'glow', params: { pools: pl } }], 0, 960, 540, '#000'); return window.pixels(); }, pools), d = Buffer.from(b64, 'base64'); let sx = 0, sy = 0, sw = 0; for (let y = 0; y < 540; y++) for (let x = 0; x < 960; x++) { const v = d[(y * 960 + x) * 4]; sx += x * v; sy += y * v; sw += v; }
     const mx = (sx / sw) * 2, my = (sy / sw) * 2; check(`chrome electric halo: the overlay glow's light centroid (${mx.toFixed(0)}, ${my.toFixed(0)}) is on the numerals (${g0.cx.toFixed(0)}, ${g0.cy.toFixed(0)}) at 1920 x 1080 (y of the pool is measured from the bottom)`, Math.abs(mx - g0.cx) < 20 && Math.abs(my - g0.cy) < 20 && sw > 0);
-    const e2 = h2.errors.filter((e) => !/favicon|404|willReadFrequently/.test(e)); check('chrome: the glow page has no console errors', e2.length === 0, JSON.stringify(e2.slice(0, 3))); await h2.close(); }
-  const errs = h.errors.filter((e) => !/favicon|404/.test(e)); check('chrome: no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
+    const e2 = pageErrors(h2.errors, [/willReadFrequently/]); check('chrome: the glow page has no console errors', e2.length === 0, JSON.stringify(e2.slice(0, 3))); await h2.close(); }
+  const errs = pageErrors(h.errors); check('chrome: no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
 }
 console.log(`\nr45 type: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

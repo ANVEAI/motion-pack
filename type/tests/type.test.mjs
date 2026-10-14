@@ -2,7 +2,7 @@
    run: node type/tests/type.test.mjs */
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
 import { PRESETS, PRESET_IDS, unitStates, holdTime, lintType, lintPiece } from '../presets.js'; import { chunkWords, normalizeWords, captionFrame, CAPTION_STYLES, lintCaptions } from '../captions.js'; import { SAFE, PLATFORMS, safeRect, captionBox, lintRect, lintCaptionStyle } from '../safezones.js'; import { ICONS, iconFor, scribbleCircle } from '../icons.js';
-import { open, reporter } from '../../layers/tests/harness.mjs';
+import { open, reporter, pageErrors } from '../../layers/tests/harness.mjs';
 const R = reporter('type'), here = path.dirname(fileURLToPath(import.meta.url)), F = 1 / 30, near = (a, b, e = 1e-6) => Math.abs(a - b) <= e;
 /* 1. determinism for every preset: any order, repeated */
 const texts = ['Voice', 'that', 'sells'], rng = (() => { let a = 99; return () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; })(); let det = true, fin = true, bad = '';
@@ -58,5 +58,5 @@ for (const [preset, text, lines] of [['maskRise', 'Voice that sells', null], ['c
   const spec = { preset, text: text || lines.join(' '), lines: lines || undefined, at: 0.1, out: 2.0 }, n = await hd.page.evaluate((s) => window.setup(s, 3), spec), ts = [0, 0.1, 0.15, 0.33, 0.4, 0.77, 1.2, 2.0, 2.2, 2.5, 3, 0.2, 0.53].map((x) => Math.round(x * 30) / 30), r = await hd.page.evaluate((ts) => window.check(ts), ts); domMsg.push(`${preset}:${r.worst.toExponential(1)}`); if (r.worst > 0.02) domOk = false; }
 R.check('DOM bakeType: random-access seeks reproduce the pure states for 8 presets (opacity, x, y, scale; --mp-fill for outlineFill)', domOk, domMsg.join(' '));
 const cr = await hd.page.evaluate((w, ts) => window.capCheck(w, 'karaoke', ts), words, [0, 0.2, 0.5, 0.9, 1.4, 2.0, 3.3, 5.0, 7, 0.5333333, 0.2].map((x) => Math.round(x * 30) / 30)); R.check(`DOM bakeCaptions: random-access seeks match captionFrame (worst ${cr.worst.toExponential(1)}, ${cr.shown} live chunk checks)`, cr.worst < 0.02 && cr.shown > 5);
-R.check('no console errors (dom page)', hd.errors.filter((e) => !/favicon|404/.test(e)).length === 0, JSON.stringify(hd.errors.slice(0, 2))); await hd.close();
+R.check('no console errors (dom page)', pageErrors(hd.errors).length === 0, JSON.stringify(hd.errors.slice(0, 2))); await hd.close();
 const res = R.done(); fs.writeFileSync(path.join(here, 'last-run.json'), JSON.stringify(res, null, 1)); process.exit(R.failed ? 1 : 0);
