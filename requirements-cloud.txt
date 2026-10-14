@@ -1,0 +1,3 @@
+# Optional: only for cloud/ (Google Cloud audio back-ends, billed to your own project). The rest of the pack does not need these.
+google-genai>=1.30
+google-auth>=2.30
