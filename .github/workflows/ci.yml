@@ -56,6 +56,8 @@ jobs:
         run: node type/tests/ids.test.mjs
       - name: no part hangs or exhausts memory on 0, -1, NaN, Infinity, 1e9 or 1e-6 params (every gfx id, Canvas2D kind and background; node, watchdog per render)
         run: node tools/tests/fuzz-params.test.mjs
+      - name: cross-process determinism (every gfx id, Canvas2D kind, background, camera preset, type preset and caption style hash the same in two fresh processes with different call histories)
+        run: node tools/tests/xproc-hash.test.mjs
       - name: proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)
         run: node templates/proof-film/proof-film.test.mjs
       - name: physics table player (the baked table is committed; no npm install)
