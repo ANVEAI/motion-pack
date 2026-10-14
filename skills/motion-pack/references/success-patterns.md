@@ -1,6 +1,6 @@
 # What makes these launch and motion films work: hooks, sound, motion, storyboard, climax, CTA
 
-These patterns come from the founder's 10 shared references (13–14 Oct 2026) plus the 15-launch study in `docs/research/launch-films-2026.md`.
+These patterns come from the founder's 10 shared references (13–14 Oct 2026) plus the 15-launch study in `docs/research/launch-films-2026.md`. Section 8 adds round 3: 25 more references studied on 14 Oct 2026 (`docs/research/reference-round3-2026-10.md`).
 
 **Evidence tiers:**
 - **Proven reach:** Clueso, 742K views and 1.3K bookmarks.
@@ -112,3 +112,52 @@ Craft-only references teach technique, not reach.
 - **Pre-launch hype:** the sentence-led film (pattern A) with honest labels, and the mockumentary (pattern B) for the Munshi-ji universe. Clueso shows that office-pain comedy plus a documentary parody travels.
 - **Agent-at-work UI** is the strongest honest motion for an AI box: real steps from the product's own call log.
 - **Avoid:** clipping, 1.5 s black opens, fake UI, invented proof numbers.
+
+## 8. Round 3 (25 references, 14 Oct 2026)
+
+Per-piece studies with source links: `docs/research/reference-round3-2026-10.md`. Reach is judged against followers; bookmarks are the "save to learn" signal.
+
+**Evidence tiers for this batch:**
+
+| tier | pieces | read |
+|---|---|---|
+| **A. Proven organic** (>= 1.5x followers, or >= 1.5% bookmarks at a healthy like rate) | lexnlin (43K, 3.8% bm), kevin-t-ngo (41K, 2.0x, 1.9% bm), kaif9998 (1.55x), motionbyleo (2.8% bm), austinbauwens (3.1% bm), cleeeeeeeeement (1.9% bm), emmanuel-2m (27K, 1.6% bm) | Technique makers save. Many are "made with a model" posts, so the savers are creators, not buyers |
+| **B. Huge reach, boosted-looking** (100-280x followers, 0.15-0.27% likes) | fishaudio (8.9M), fishaudio-2 (6.3M), mutchtaba2 (536K) | The format travelled, but paid or celebrity distribution cannot be separated out; bookmarks and replies are the real signals |
+| **B'. Strong for a keynote** | hark-labs (169K, 10x) | An 8-minute film still reached 10x; saves were low (0.29%) |
+| **C. Weak or neutral** | hyperframes, motion-so, hanifproduktif | Polish alone did not travel |
+| **D. Craft-only** | wolffifx, motionbyflox, quickyaep, shajareditx, athrix-codes, titouangillet, madebykframe, artecapp, isaacedits, notalexdev, imranuxi | Learn the move; ignore the numbers |
+
+**What changed or was added:**
+
+- **Hooks still hold** (frame 0 in motion, <= 7 words, no logo bumper). New: a sentence that turns *on the beat drop* (A), motif before meaning (A), a hero-detail cold open (A), a combative claim to camera (B), a personal confession in a void (B'), demo-as-gag (B).
+- **New storyboard shapes:**
+  - **E. Brand-system tour** (A on saves): construction grid -> mark -> mark on an object -> type specimen -> palette -> in-use mock-ups -> lockup -> **3 s silence** -> a giant cropped sting.
+  - **F. Founder live-demo film** (B): talent to camera, a live demo as the spine with explanatory overlays (transcripts, latency badges, receipts), proof over people, offer, a comedic tag. The only seven-figure shape here, and it is talent-led.
+  - **G. Accelerando motif film** (A): one motif, windows into vignettes, cuts accelerating 1 -> 0.5 -> 0.25 -> 0.125 s, a mosaic of everything, a 1 s dip, the wordmark (`cuts/sections/build_accelerate`, `blender/diorama`).
+  - **H. Pipeline reveal** (A): prompt -> agent plan -> wireframe -> clay -> colour -> exploded, knolled -> file chip -> variants -> the product used in the world -> title (`cuts/story/pipelineReveal`, `blender/passReveal`, `blender/knolling`, `blender/cloudFlight`).
+  - Pattern A (sentence-led) holds, upgraded with a late drop and visible self-checks (a score stepping up with its reason).
+- **Shot economy:** four pieces have zero hard cuts; continuity comes from shared elements and camera glides (proven by kaif9998). Not sufficient alone (motion-so, C).
+- **Motion vocabulary (craft-only unless noted):** accent-word swaps, words split around media, pill counters, strike-outs; tab-pill navigation, live transcripts with per-turn latency, walls of parallel browser windows, failover routing, receipt compares; construction grids, palette columns, backdrop swaps; powers-of-ten dives, pull back to a screen in a room; **soft mesh-gradient fields** (the default background in 6 pieces), grade-in, **sketch / wireframe -> render**; a 2D mascot narrator.
+
+**Sound, measured (22 with audio):**
+
+| measure | this batch | take |
+|---|---|---|
+| Integrated loudness | -22.5 to -8.1 LUFS, median -16.1; 7 peak at or above 0 dBFS | Keep the -14 LUFS / <= -1 dBTP master; copy neither end |
+| Bass share (<150 Hz) | two clusters: music-led motion 52-87%, VO-led live action 14-22% | Pick the bed by format |
+| Cuts on an onset | median 40%; tier A music pieces 61-83% | The >= 60% target stands for cut-driven pieces; with few cuts, motion hits carry the sync |
+| Tempo (conf >= 0.5) | 60-108 BPM | Half-time feels of 120-180 BPM beds; hits every 1.5-1.7 s suit a 1.5-3 s beat cadence |
+| VO rate | 87 (ad read), 145-163 (explainer), 176-188 (founder to camera) | Text-led A pieces use no VO |
+
+- **Late drop** (proven: 2 tier A pieces, 6 in all). The opening runs on UI ticks and texture only and the beat lands on the turn line or product name, at 10-60% of the runtime (lexnlin 25%, kaif9998 58%); two pieces put a 0.5-1 s speech gap before it. Pack: `cuts/story/lateDrop`.
+- **Silence before the sting** (A on saves): 1-3 s of near-silence after the lockup, then one sting (motionbyleo 3.0 s, fishaudio-2 ~3 s, kevin-t-ngo a 1 s dip). An end device, unlike the 200 ms smash gag. Pack: `cuts/story/preStingSilence`.
+- **Sustained sub under the end card** (lexnlin, motionbyflox): the logo sits on a held low note, not a hit.
+
+**Climax and end:**
+- The result arriving still holds. New: **the product used in the world** (A), a mosaic of everything then quiet (A), a visible self-check (A), one word changes (B). Self-referential climaxes ("this film is the tool") have not travelled: use them as a tag.
+- End: an install command typed on the end card (developer CTA), a date teaser, an "A x B" partner lockup, a pull-back so the end card plays on a screen in a room. Comment-gated offers drive replies, not purchases (B): use only with a real offer and an honest label.
+
+**Ranked, proven to craft-only:** (1) late drop on the turn line; (2) accelerando montage into a mosaic; (3) continuous no-cut film; (4) visible agent pipeline; (5) brand-system tour with a silent pre-sting; (6) founder live demo + overlays (boosted-looking); (7) live transcript with latency badges (B); (8) mesh gradients, accent-word swaps, pill counters, selection-box hooks (craft-only); (9) 2D mascot, pull-back into a TV, sketch -> render (craft-only).
+
+**For ANVE:** use the late drop on the turn line, an agent pipeline reveal built from the box's real call log, and live transcripts with **measured** per-turn latency (P50 487 ms). A voice-handoff gag (`cuts/story/voiceHandoff`) needs a consented voice and the "(AI voice)" label on every synthetic frame. Avoid clipping, boosted-reach envy, comment gates without a real offer, and self-referential climaxes as the payoff.
+

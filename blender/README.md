@@ -1,6 +1,6 @@
 # motion-pack / blender
 
-This module renders photoreal plates in Blender 5.2: a procedural product device in a dark photo studio, macro light sweeps, an exploded view, a 3D chrome title, and three seamless abstract loops.
+This module renders photoreal plates in Blender 5.2: a procedural product device in a dark photo studio, macro light sweeps, an exploded view, a 3D chrome title, three seamless abstract loops, and (round 3, 14 Oct 2026) a pipeline-reveal set on a 21-part procedural model: render passes, knolling, a cloud-sea flight, plus stylised low-poly diorama loops.
 
 - **Headless and scripted.** It runs on `blender -b --factory-startup` with no GUI, no `.blend` assets and no downloads.
 - **Deterministic.** Every moving value is a function of the frame number, and every random choice is seeded.
@@ -56,6 +56,10 @@ blender -b --factory-startup -P blender/run.py -- --recipe <id> [--preset NAME] 
 | `blender/art.liquidChrome` | metaball cluster on integer-harmonic orbits, chrome in a camera-dark softbox dome | yes | 4 s | 0.49 s/f; seam bit-exact |
 | `blender/art.voxelWave` | Geometry Nodes bars under travelling waves; height-coloured tops; `--beats` kicks pump and ring | yes | 4 s | 1.55 s/f; seam within 1/255 on one pixel |
 | `blender/art.particleSwirl` | Geometry Nodes vortex of streaks on integer-revolution orbits | yes | 6 s | about 0.2 s/f at 480p (smoke only) |
+| `blender/passReveal` | the kit model as wireframe -> x-ray -> clay -> full material, each step a soft left-to-right wipe from one keyed stage value; `pass=` wire, xray, clay or full holds one pass per plate (same camera, so four plates register for a wipe in HyperFrames) | no | 6 s | about 0.6-1.0 s/f at 480p, 8 samples (smoke only) |
+| `blender/knolling` | the model separates, every part flies to an overhead flat-lay grid (laid flat, largest first, twins side by side) while the camera cranes to top-down; hold; reassembly in reverse | no | 6 s | about 0.35 s/f at 480p (smoke only) |
+| `blender/cloudFlight` | sunset cloud sea (displaced cloud tops), Principled Volume haze, sun disc + halo, an additive anamorphic streak, chase camera on the flying, banking model with a spinning prop | no | 6 s | about 0.5-0.7 s/f at 480p (smoke only) |
+| `blender/diorama` | low-poly vignette loop, `scene=` lighthouse, campfire or island: one prop, mood light, sky; the subject sits inside the inscribed circle (`fill`), so it masks cleanly to a disc for montage windows | yes | 6 s, 1080x1080 | about 0.3 s/f at 480x480; seam bit-exact |
 
 Every recipe also lists its parameters, use and avoid lines in `manifest.json`; regenerate it with `python3 blender/tools/make_manifest.py`.
 
@@ -70,6 +74,9 @@ Every recipe also lists its parameters, use and avoid lines in `manifest.json`; 
 | `render.py` | `eevee_plate` and `cycles_keyart` (calibrated settings; anything a build lacks is reported), PNG stamps off, AgX "Medium High Contrast". |
 | `title.py` | Per-glyph extruded meshes laid out with Blender's own advances; cap and side materials split; static weight instance cut from the variable font with fontTools. |
 | `art.py`, `gn.py`, `beats.py` | The three loops; a small Geometry Nodes builder (5.x modifier inputs are keyed through `properties.inputs.Socket_N.value`); the music-sidecar reader (kick envelope and rings, wrapped for loops, with a seam check). |
+| `kit.py` | The procedural "flyer": 21 primitive parts (fuselage, cowling, spinner, 3 blades, wings, ailerons, tailplanes, fin, rudder, canopy, struts, wheels, tail skid), each mesh axis-aligned on its own centre so rotation is pose and extents are size. Render-pass materials (`pass_group` = one keyed `stage` value and a world-X wipe; `pass_material`, `wire_material`, `add_wires`) and the knolling layout (`knolling_layout`, `flat_rotation`). Generic on purpose: no real aircraft, livery or markings. |
+| `env.py` | Outdoor and stylised worlds: `sky_world` (gradient + sun disc/halo + Voronoi stars), `sun`, `point`, `haze_volume` + `eevee_volumes`, `cloud_sea` (two seeded noise displacements), `flare_card` + `face_card`, and the low-poly kit (`flat_mat`, `ico`, `frustum`). |
+| `diorama.py` | The three vignettes; each returns its framing and an `anim(K, P)` on integer harmonics of the loop. |
 | `ease.py` | The pack easing set (`enter`, `hero`, `exit`, `move`, `soft`, `cam`, `pop`, `lin`, `sine`, `expoOut`, `quint`, plus `glide`), ported bit for bit from `camera/ease.js`. |
 
 ## Determinism
@@ -100,6 +107,11 @@ Three rules make the renders repeatable:
 - **Metaballs.** The liquid-chrome polygonisation changes topology every frame, so it gets no motion blur.
 - **Particle swirl.** It was smoke-tested only and is not part of the showcase.
 - **Image-sequence path.** The canvas snippet in `COMPOSITING.md` has not been run inside a HyperFrames render.
+- **Round-3 recipes (passReveal, knolling, cloudFlight, diorama)** were smoke-tested at 480p and judged on stills only; they are not in the 8-plate showcase and have no 1080p timing yet.
+  - The x-ray pass is dithered coverage (EEVEE drops the emission of a fully transparent add-shader), so it needs the full 32 TAA samples to lose its grain.
+  - The cloud sea is one 140 m tile with no wind; plates longer than ~10 s at the default speed fly off its far edge. The look reads stylised, not photographic.
+  - The streak is an in-scene card, not a lens model; bloom and ghosts come from the pack's `layers` (`flareStreak`, `flareGhosts`).
+  - The kit model is concept geometry. Label it as a concept render wherever a viewer could take it for a real product.
 - **Open look notes** from the showcase review:
   - The exploded lid top reads as a pale slab.
   - In the 9:16 title, line 2 is darker than line 1 (its chrome mirrors the near floor).

@@ -67,6 +67,13 @@ BUNDLES = {
                                "punchline_pause_frames": 9},
                      "levels_re_voice_db": {"room": -30, "deadpan": -14, "jump_cut": -24, "format_break": -8},
                      "notes": "dialogue drives the cut (cuts/patterns.json mockumentaryReaction: 0.3-0.5 s reaction inserts); the stinger lands after the line, never over it"},
+    # 2026-10-14 round 3
+    "archive_open": {"desc": "archive / heritage opening into a late drop: projector clatter under archive footage, a typewriter line on all-caps credit cards, near-silence on the turn, the beat drops on the product name",
+                     "bed": ["cinematic_drone", "suspense_pulse", "tech_pulse"], "bpm": [72, 120], "lufs": -14,
+                     "roles": {"projector": "snd.amb.projector", "crackle": "snd.amb.vinyl_crackle", "credit_line": "snd.foley.typewriter", "stamp": "snd.foley.stamp", "burn": "snd.tx.film_burn",
+                               "tape_stop": "snd.tx.tape_stop", "beam": "snd.ui.hologram_beam", "riser": "snd.riser.noise_1bar", "drop": "snd.hit.sub_drop", "to_black": "snd.stinger.cut_to_black",
+                               "logo": "snd.logo.hybrid"},
+                     "notes": "cuts/patterns.json lateDrop: projector + typewriter only until the drop (no beat, no bass); the bed enters on the turn line; end with preStingSilence (1-3 s, room tone at most) before to_black"},
 }
 
 

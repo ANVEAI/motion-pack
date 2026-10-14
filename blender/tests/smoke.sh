@@ -30,12 +30,15 @@ run() {   # id engine extra...
   else echo "ok   $id ($eng) frames=$n $(( $(date +%s) - t0 ))s"; fi
 }
 echo "== recipes (EEVEE, 854x480, 3 frames each)"
-for id in blender/turntable blender/macroSweep blender/explode blender/title3d blender/art.liquidChrome blender/art.voxelWave blender/art.particleSwirl; do
+for id in blender/turntable blender/macroSweep blender/explode blender/title3d blender/art.liquidChrome blender/art.voxelWave blender/art.particleSwirl \
+          blender/passReveal blender/knolling blender/cloudFlight blender/diorama; do
   run "$id" eevee
 done
 BEATS="$HERE/../music/library/beds/bed_tech_pulse_loop8.json"                    # inside the pack
 [ -f "$BEATS" ] || BEATS="$HOME/Developer/motion-pack/music/library/beds/bed_tech_pulse_loop8.json"   # staging
 [ -f "$BEATS" ] && SUFFIX=beats run blender/art.voxelWave eevee --beats "$BEATS" --param beat_gain=1.2
+for ps in xray clay; do SUFFIX=$ps run blender/passReveal eevee --param pass=$ps; done                # one-pass plates
+for sc in campfire island; do SUFFIX=$sc run blender/diorama eevee --param scene=$sc; done              # the other two vignettes
 echo "== Cycles (key-art path)"
 run blender/turntable cycles
 echo "== post tools"

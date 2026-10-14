@@ -49,6 +49,12 @@ def main():
         rec["previews"] = [p for p, v in plates.items() if v["recipe"] == rid]
         rec["cli"] = ("blender -b --factory-startup -P blender/run.py -- --recipe %s --size 1920x1080 --fps 30 "
                       "--seconds %g --engine eevee --out out/%s" % (rid, rec["defaults"]["seconds"], rid.split("/")[1]))
+    old_p = os.path.join(HERE, "manifest.json")
+    old = json.load(open(old_p)) if os.path.exists(old_p) else {}
+    if not plates and old.get("showcase"):      # no showcase renders on this machine: keep the measured rows already committed
+        plates = old["showcase"]
+        for rid, rec in recipes.items():
+            rec["previews"] = [p for p, v in plates.items() if v["recipe"] == rid]
     det_p = os.path.join(HERE, "tests", "out", "determinism.json")
     man = {
         "module": "blender", "version": "1.0.0", "schema": "motion-pack/blender@1",
@@ -70,9 +76,15 @@ def main():
             "lib/title.py": {"api": "build(col, lines, font, weight, size, extrude, bevel, face_mat, side_mat)"},
             "lib/art.py": {"loops": ["liquid_chrome (metaballs)", "voxel_wave (geometry nodes)", "particle_swirl (geometry nodes)"]},
             "lib/beats.py": {"api": "load(sidecar, fps, n, loop) -> envelope(B, f), rings(B, f)"},
+            "lib/kit.py": {"model": "flyer: 21 primitive parts (no real aircraft or markings)",
+                           "api": "build(col, mat_for) -> parts; pass_group / pass_material / wire_material / add_wires (render passes); "
+                                  "knolling_layout(parts, gap, aspect) -> slots + flat rotations"},
+            "lib/env.py": {"api": "sky_world (gradient + sun glow + stars), sun, point, haze_volume, eevee_volumes, cloud_sea, "
+                                  "flare_card + face_card, flat_mat, ico, frustum (low-poly)"},
+            "lib/diorama.py": {"scenes": ["lighthouse", "campfire", "island"]},
         },
         "showcase": plates,
-        "determinism": json.load(open(det_p)) if os.path.exists(det_p) else "run bash blender/tests/determinism.sh",
+        "determinism": json.load(open(det_p)) if os.path.exists(det_p) else old.get("determinism", "run bash blender/tests/determinism.sh"),
     }
     out = os.path.join(HERE, "manifest.json")
     json.dump(man, open(out, "w"), indent=1)

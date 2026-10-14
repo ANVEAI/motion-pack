@@ -15,7 +15,7 @@ bundle). They are tunable heuristics, not platform facts.
 | `talking_head` | autocut numbers, reframe_alternate 1.0/1.15/1.0/1.25 on the eyes, punch_in 1.12 max 1 per 4 s, slow_push, beat_hold, cut_tick | talking-head, retention, jump-cut |
 | `smash` | 200 ms pre-silence, 12 dB / 0.4 luma contrast minimums, impact at cut + 1 frame | smash, comedy, mime |
 | `interrupts` | minor 2.5 s / medium 5 s / major 9 s, 25% jitter, majors >= 6 s apart | retention, short-form |
-| `story` | interruptOpen (cliche setup, stop sound + 300 ms freeze, new format), verbLadder (one verb per beat, the last holds 2 beats), mockumentaryReaction (0.3-0.5 s reaction inserts, silence before and a 1.2 s deadpan hold after the payoff line), sentenceLed (word-by-word build at <= 3.5 words/s, hold, result on the next downbeat) | story, hook, comedy, launch |
+| `story` | interruptOpen (cliche setup, stop sound + 300 ms freeze, new format), verbLadder (one verb per beat, the last holds 2 beats), mockumentaryReaction (0.3-0.5 s reaction inserts, silence before and a 1.2 s deadpan hold after the payoff line), sentenceLed (word-by-word build at <= 3.5 words/s, hold, result on the next downbeat); round 3: lateDrop (problem on UI ticks + texture for 10-60% of the runtime, optional 0.5-1 s speech gap, the beat drops on the turn line), preStingSilence (lockup, bed out, 1-3 s near-silence, one final sting), voiceHandoff (presenter starts the line, the consented synthetic voice finishes it; caption tag flips, honesty label on every synthetic frame), pipelineReveal (prompt -> plan -> passes -> teardown -> file chip -> product in the world -> title, breakdown before the world shot) | story, hook, comedy, launch, end, sound |
 | `onset_snap` | cuts within +-2 frames of a sound onset; target share 60% (studied films: 45-80%) | sync, lint |
 | `pace` | ASL and shots-per-30 s per format (hype ad, beat edit, talking head, mime-style spot, short film) | lint |
 
@@ -32,6 +32,10 @@ python3 cutgen.py interrupt-open --fps 30 [--setup 3.0] [--freeze-ms 300]
 python3 cutgen.py verbs --verbs "Build it all.,Expand.,Automate.,Multiply." --bpm 120 --fps 30 [--snap]
 python3 cutgen.py mockumentary --lines 0:75,90:160,200:260 --fps 30 [--payoff -1]
 python3 cutgen.py sentence --words "Your clients dream big" --bpm 120 --fps 30 [--snap]
+python3 cutgen.py late-drop --duration 30 --fps 30 (--turn-frame 240 | --share 0.25 --bpm 120) [--gap-ms 700] [--ticks 30,60] [--riser auto|on|off] [--riser-end F]
+python3 cutgen.py pre-sting --lockup-frame 600 --fps 30 [--hold 1.5] [--silence 2.0] [--sting-hold 1.0]
+python3 cutgen.py handoff --line 0:75:180 --fps 30 [--exit 1.5] [--consent] [--demo-frame 200]
+python3 cutgen.py pipeline --duration 45 --fps 30 [--bpm 120] [--steps prompt,plan,passes,teardown,file,world,title] [--breakdown 3]
 python3 cutgen.py snap --cuts 0,44,91 --fps 30 (--onsets 1.5,3.0 | --study study.json [--use onsets|beats|hits_top10pct]) [--tol 2]
 ```
 
@@ -52,6 +56,17 @@ python3 cutgen.py snap --cuts 0,44,91 --fps 30 (--onsets 1.5,3.0 | --study study
   storyboard shapes in `../skills/motion-pack/references/success-patterns.md`. Cue rows carry `visual_frame` (pass it to
   `music/mixer.py add_cue`) and `anchor_frame` (= visual frame + 1, where the anchor sample lands). Each prints `warnings`
   when the input breaks the pattern (a setup longer than 8 s, verbs too fast to read, a reaction running into the payoff).
+- **Round-3 story shapes** (14 Oct 2026, from `../docs/research/reference-round3-2026-10.md`):
+  - `late-drop` places the drop on the turn line's first frame (or at `share` x duration, on a bar line with `--bpm`), lists the problem
+    section's cues (`sfx/ui/agent_working` until the drop or the gap, your UI ticks), the riser and the drop hit. A riser's end anchor must sit on
+    the drop frame, one frame before the hit anchor; `--riser-end` checks your plan against that. With a speech gap the riser is off by default
+    (the silence is the tension) and ticks inside the gap are removed. Warns when the drop is outside 10-60% of the runtime or off the bar line.
+  - `pre-sting` gives the bed fade (samples), the silence window (frames and samples), the room-tone loop, the sting cue and the digital-zero tail.
+    Under 1 s it warns that this is the smash gag, not an ending; over 3 s, that viewers leave.
+  - `handoff` splits presenter and synthetic audio with a 30 ms crossfade on the handoff, one room tone under both, caption segments with the
+    speaker tag `(AI voice)` from the handoff frame, and the label window. It warns until `--consent` is passed.
+  - `pipeline` turns step weights into contiguous shots (bar lines with `--bpm`), one cue per step, and a 3 s breakdown ending on the world shot
+    with a riser ending one frame before it. Steps name their parts (`blender/passReveal`, `blender/knolling`, `blender/cloudFlight`, ...).
 - **`snap`** moves each cut to the nearest sound onset within +-2 frames and reports `share_snapped` against the 60% target.
   Onsets come from a list or from a `tools/refstudy.py` `study.json` (`audio.onsets`, `audio.beats` or `audio.hits_top10pct`);
   a snap that would collide with or cross a neighbouring cut is refused. Library use: `cutgen.snap_cuts_to_onsets(cuts, onsets_s, fps)`.
@@ -70,6 +85,6 @@ The rate curve is integrated exactly; each 2-frame piece gets its exact source i
 
 ## Tests
 
-`python3 -m unittest test_cutgen` (17 tests: exact grids, half-frame bound over 400 bars, snapping, patterns, section
+`python3 -m unittest test_cutgen` (23 tests: exact grids, half-frame bound over 400 bars, snapping, patterns, section
 hero on the downbeat, transition windows on the beat with overlap warnings, J/L/B-roll splits, talking-head ladder and
-punch-in gap, smash anchors, seeded interrupts, the four story shapes, onset snapping incl. collisions and a study.json, CLI).
+punch-in gap, smash anchors, seeded interrupts, the eight story shapes (late drop incl. the riser check and speech gap, pre-sting silence, voice handoff, pipeline reveal), onset snapping incl. collisions and a study.json, CLI).

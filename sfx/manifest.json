@@ -3,7 +3,7 @@
  "sample_rate": 48000,
  "bit_depth": 24,
  "peak_dbfs_target": -6.0,
- "count": 295,
+ "count": 298,
  "notes": "All sounds synthesised in code (numpy/scipy). Library level is peak -6 dBFS; real levels are set by the mixer (over-bed rules). anchor_sample = the sample that must land on (visual frame + 1) x SR/fps.",
  "sounds": [
   {
@@ -500,6 +500,55 @@
    "place_rule": "loop: starts at the cue frame and loops/crossfades",
    "over_bed_db": null,
    "file": "library/ambience/snd.amb.office.wav"
+  },
+  {
+   "id": "snd.amb.projector",
+   "category": "ambience",
+   "tags": [
+    "family:amb",
+    "tier:3",
+    "anchor:loop",
+    "mood:warm",
+    "use:short_film",
+    "archive",
+    "film"
+   ],
+   "tier": 3,
+   "desc": "film projector: 24 fps claw-and-shutter clatter (accented pull-down), motor whirr on 96 Hz harmonics, fan air and a slow reel flutter; 4.0 s seamless loop",
+   "use": [
+    "short_film",
+    "launch",
+    "ad"
+   ],
+   "duration_s": 4.0,
+   "samples": 192000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": false,
+   "loop": true,
+   "seed": 600,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.83,
+   "lufs_integrated": -24.19,
+   "lufs_m_max": -23.32,
+   "lufs_s_max": -24.11,
+   "centroid_hz": 1552,
+   "crest_db": 22.0,
+   "sub28_db": -32.5,
+   "sha": "ff1fce7a777d8318",
+   "phone_drop_db": 0.3,
+   "phone_safe": true,
+   "pairs_with": [
+    "dissolve",
+    "filmBurn",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/ambience/snd.amb.projector.wav"
   },
   {
    "id": "snd.amb.rain",
@@ -5321,6 +5370,58 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 3.0,
    "file": "library/foley/snd.foley.tape_tear.wav"
+  },
+  {
+   "id": "snd.foley.typewriter",
+   "category": "foley",
+   "tags": [
+    "family:foley",
+    "foley",
+    "rr:4",
+    "tier:3",
+    "tonal:no",
+    "anchor:start",
+    "size:l",
+    "archive",
+    "type"
+   ],
+   "tier": 3,
+   "desc": "typewriter line: 9 humanised strikes (each a different take, one space bar), the end-of-line bell, two more strikes, then the carriage-return ratchet and stop; anchor = the first strike (rr:4 = four different lines)",
+   "use": [
+    "short_film",
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 2.6986,
+   "samples": 129532,
+   "anchor_sample": 71,
+   "anchor_ms": 1.48,
+   "anchor_kind": "fixed",
+   "tonal": false,
+   "loop": false,
+   "seed": 410,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.93,
+   "lufs_integrated": -20.95,
+   "lufs_m_max": -16.51,
+   "lufs_s_max": -22.64,
+   "centroid_hz": 1888,
+   "crest_db": 19.7,
+   "sub28_db": -31.7,
+   "sha": "67d5a924b06be4f7",
+   "phone_drop_db": -0.4,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [
+    "textReveal"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 3.0,
+   "file": "library/foley/snd.foley.typewriter.wav"
   },
   {
    "id": "snd.foley.zipper",
@@ -11698,6 +11799,57 @@
    "file": "library/ui/snd.ui.finger_snap.wav"
   },
   {
+   "id": "snd.ui.hologram_beam",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "anchor:end",
+    "tonal:yes",
+    "size:m",
+    "key:A",
+    "mood:tech",
+    "beam",
+    "hologram"
+   ],
+   "tier": 3,
+   "desc": "projected hologram beam: a quick A3-to-A5 ignition glide, then a soft detuned A2/E3 hum with a 6 Hz shimmer, airy noise and a quiet A-major data chatter; 2.4 s plus a short plate tail, anchor = the beam at full",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 3.7922,
+   "samples": 182027,
+   "anchor_sample": 8693,
+   "anchor_ms": 181.1,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 620,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -17.38,
+   "lufs_m_max": -15.0,
+   "lufs_s_max": -19.09,
+   "centroid_hz": 487,
+   "crest_db": 16.1,
+   "sub28_db": -70.7,
+   "sha": "0c5c3141a7286364",
+   "phone_drop_db": -1.7,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "lumaWipe",
+    "maskReveal"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.hologram_beam.wav"
+  },
+  {
    "id": "snd.ui.listening_loop",
    "category": "ui",
    "tags": [
@@ -13895,6 +14047,7 @@
   "dissolve": [
    "snd.amb.birds_morning",
    "snd.amb.monsoon",
+   "snd.amb.projector",
    "snd.amb.rain",
    "snd.amb.rain_heavy",
    "snd.amb.rain_light",
@@ -13935,6 +14088,7 @@
    "snd.tx.glitch_stutter"
   ],
   "filmBurn": [
+   "snd.amb.projector",
    "snd.tx.film_burn",
    "snd.whoosh.fire"
   ],
@@ -14012,6 +14166,7 @@
    "snd.amb.monsoon",
    "snd.amb.night",
    "snd.amb.office",
+   "snd.amb.projector",
    "snd.amb.rain",
    "snd.amb.rain_heavy",
    "snd.amb.rain_light",
@@ -14110,6 +14265,7 @@
    "snd.foley.scissors",
    "snd.foley.stamp",
    "snd.foley.tape_tear",
+   "snd.foley.typewriter",
    "snd.foley.zipper",
    "snd.glass.clink",
    "snd.glass.crack",
@@ -14202,6 +14358,7 @@
    "snd.ui.click",
    "snd.ui.error",
    "snd.ui.finger_snap",
+   "snd.ui.hologram_beam",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
@@ -14256,6 +14413,7 @@
   ],
   "lumaWipe": [
    "snd.tx.luma_wipe",
+   "snd.ui.hologram_beam",
    "snd.ui.scan_sweep"
   ],
   "maskReveal": [
@@ -14282,6 +14440,7 @@
    "snd.stinger.reveal",
    "snd.tx.mask_reveal",
    "snd.ui.ai_reply",
+   "snd.ui.hologram_beam",
    "snd.ui.scan_sweep",
    "snd.whoosh.blade",
    "snd.whoosh.whoosh_in_m",
@@ -14566,6 +14725,7 @@
    "snd.sparkle.letter_assemble",
    "snd.tx.mask_reveal",
    "snd.ui.ai_think_pulse",
+   "snd.ui.hologram_beam",
    "snd.ui.mic_on",
    "snd.ui.scan_sweep"
   ],
@@ -14581,6 +14741,7 @@
    "snd.amb.monsoon",
    "snd.amb.night",
    "snd.amb.office",
+   "snd.amb.projector",
    "snd.amb.rain",
    "snd.amb.rain_heavy",
    "snd.amb.rain_light",
@@ -14731,12 +14892,17 @@
    "snd.wood.creak"
   ],
   "anchor:start": [
+   "snd.foley.typewriter",
    "snd.lift.down",
    "snd.lift.down_long",
    "snd.tx.dip_to_black",
    "snd.tx.freeze_hit",
    "snd.tx.tape_down",
    "snd.tx.tape_stop"
+  ],
+  "archive": [
+   "snd.amb.projector",
+   "snd.foley.typewriter"
   ],
   "bars:1": [
    "snd.riser.glitch_stutter",
@@ -14752,6 +14918,9 @@
   ],
   "bars:4": [
    "snd.riser.noise_4bar"
+  ],
+  "beam": [
+   "snd.ui.hologram_beam"
   ],
   "bitcrush": [
    "snd.tx.pixel_dissolve"
@@ -14821,6 +14990,7 @@
    "snd.amb.monsoon",
    "snd.amb.night",
    "snd.amb.office",
+   "snd.amb.projector",
    "snd.amb.rain",
    "snd.amb.rain_heavy",
    "snd.amb.rain_light",
@@ -14943,6 +15113,7 @@
    "snd.foley.scissors",
    "snd.foley.stamp",
    "snd.foley.tape_tear",
+   "snd.foley.typewriter",
    "snd.foley.zipper",
    "snd.sizzle.grain"
   ],
@@ -15107,6 +15278,7 @@
    "snd.ui.count_tick",
    "snd.ui.error",
    "snd.ui.finger_snap",
+   "snd.ui.hologram_beam",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
@@ -15160,6 +15332,9 @@
    "snd.wood.knock",
    "snd.wood.tap"
   ],
+  "film": [
+   "snd.amb.projector"
+  ],
   "foley": [
    "snd.cloth.flap",
    "snd.cloth.footstep",
@@ -15183,6 +15358,7 @@
    "snd.foley.scissors",
    "snd.foley.stamp",
    "snd.foley.tape_tear",
+   "snd.foley.typewriter",
    "snd.foley.zipper",
    "snd.paper.card_riffle",
    "snd.paper.card_shuffle_settle",
@@ -15195,6 +15371,9 @@
    "snd.ui.type_key",
    "snd.ui.typing_burst",
    "snd.wood.door_knock"
+  ],
+  "hologram": [
+   "snd.ui.hologram_beam"
   ],
   "impact": [
    "snd.glass.shatter"
@@ -15308,6 +15487,7 @@
    "snd.ui.ai_think_pulse",
    "snd.ui.blip",
    "snd.ui.camera_ping",
+   "snd.ui.hologram_beam",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
@@ -15458,6 +15638,7 @@
    "snd.tx.glitch_stutter",
    "snd.tx.pixel_dissolve",
    "snd.ui.agent_working",
+   "snd.ui.hologram_beam",
    "snd.ui.scan_sweep",
    "snd.whoosh.scifi_pass"
   ],
@@ -15482,6 +15663,7 @@
    "snd.amb.crowd",
    "snd.amb.crowd_murmur",
    "snd.amb.fire_crackle",
+   "snd.amb.projector",
    "snd.amb.room_tone",
    "snd.amb.studio_air",
    "snd.amb.train_chug",
@@ -15588,6 +15770,7 @@
    "snd.foley.scissors",
    "snd.foley.stamp",
    "snd.foley.tape_tear",
+   "snd.foley.typewriter",
    "snd.foley.zipper",
    "snd.indian.dholak_dha",
    "snd.indian.dholak_ge",
@@ -15616,6 +15799,7 @@
    "snd.drum.808",
    "snd.drum.crash",
    "snd.drum.kick_sub",
+   "snd.foley.typewriter",
    "snd.glass.shatter",
    "snd.hit.bass_drop_wobble",
    "snd.hit.boom_meme",
@@ -15729,6 +15913,7 @@
    "snd.ui.agent_working",
    "snd.ui.ai_reply",
    "snd.ui.count_run",
+   "snd.ui.hologram_beam",
    "snd.ui.listening_loop",
    "snd.ui.scan_sweep",
    "snd.ui.typing_burst",
@@ -16015,6 +16200,7 @@
    "snd.amb.monsoon",
    "snd.amb.night",
    "snd.amb.office",
+   "snd.amb.projector",
    "snd.amb.rain",
    "snd.amb.rain_heavy",
    "snd.amb.rain_light",
@@ -16095,6 +16281,7 @@
    "snd.foley.pen_click",
    "snd.foley.scissors",
    "snd.foley.tape_tear",
+   "snd.foley.typewriter",
    "snd.foley.zipper",
    "snd.glass.clink",
    "snd.glass.tap",
@@ -16163,6 +16350,7 @@
    "snd.ui.count_tick",
    "snd.ui.error",
    "snd.ui.finger_snap",
+   "snd.ui.hologram_beam",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
@@ -16245,6 +16433,7 @@
    "snd.foley.scissors",
    "snd.foley.stamp",
    "snd.foley.tape_tear",
+   "snd.foley.typewriter",
    "snd.foley.zipper",
    "snd.glass.crack",
    "snd.glass.shatter",
@@ -16456,6 +16645,7 @@
    "snd.ui.count_run",
    "snd.ui.count_tick",
    "snd.ui.error",
+   "snd.ui.hologram_beam",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
@@ -16479,6 +16669,7 @@
    "snd.hit.deep_impact"
   ],
   "type": [
+   "snd.foley.typewriter",
    "snd.sparkle.letter_assemble"
   ],
   "typing": [
@@ -16500,6 +16691,7 @@
    "snd.amb.indian_street_horns",
    "snd.amb.monsoon",
    "snd.amb.night",
+   "snd.amb.projector",
    "snd.amb.rain",
    "snd.amb.rain_heavy",
    "snd.amb.rain_light",

@@ -105,6 +105,8 @@ Times are for the stated length; scale them proportionally.
     - A demo thread multiplies saves (Tavus: 6 replies, 27K bookmarks).
     - A behind-the-scenes post follows (Ghost).
 12. **Master 16:9 for the launch post** (every film in the October wave was 16:9 on X). Re-layout to 9:16 and 1:1 for cut-downs; never crop.
+13. **Drop the beat late, on the turn line.** Run the problem on UI ticks and texture only (no kick, no bass) for 10-60% of the runtime, then land the beat exactly on the first frame of the turn line or the product name. An optional 0.5-1 s speech gap before it replaces the riser; with no gap, a riser ends one frame before the hit. Proven in round 3 (lexnlin 3.8% bookmarks, kaif9998 1.55x reach; 6 of 25 pieces). Plan it with `cuts/cutgen.py late-drop` (`cuts/story/lateDrop`).
+14. **Leave 1-3 s of near-silence before the final sting.** After the lockup, fade the bed out, hold the picture still on room tone at most (never digital zero mid-film), then cut to one sting on a giant cropped mark or the end card. It is an ending device, not the 200 ms smash gag. Seen in motionbyleo (3.0 s, 2.8% bookmarks), fishaudio-2 and kevin-t-ngo (1 s dip). Plan it with `cuts/cutgen.py pre-sting` (`cuts/story/preStingSilence`).
 
 ## 4. Anti-patterns (each one sank or dented a launch)
 
@@ -124,6 +126,10 @@ Times are for the stated length; scale them proportionally.
 | Explode / teardown | `blender/explode`, or layered renders animated as a pure function of `t` |
 | Reveal on the hit | `transitions/maskReveal` or `transitions/shutter`; a 1-bar riser ending one frame before; `sfx/logo/*` or a cinema hit |
 | Silence before the payoff | duck the bed for 0.2–5 s in `music/mixer.py`; return with a hit |
+| Late drop on the turn line | `cuts/story/lateDrop` (`cutgen.py late-drop`): `sfx/ui/agent_working` + `sfx/ui/tick` before, `sfx/hit/sub_drop` on the drop; bed enters on the drop downbeat |
+| Silence, then the final sting | `cuts/story/preStingSilence` (`cutgen.py pre-sting`): bed out, `sfx/amb/room_tone` at most, `sfx/stinger/cut_to_black` |
+| How it is made (AI-builder launch) | `cuts/story/pipelineReveal`: `blender/passReveal` (wire -> x-ray -> clay -> full), `blender/knolling`, then `blender/cloudFlight` (the product in the world) after a music breakdown |
+| Archive opening | `sfx/amb/projector` under the footage, `sfx/foley/typewriter` on all-caps credit cards (bundle `archive_open`) |
 | Feature card + UI | `type/maskRise` card, `device.laptop` / `device.phone` with the real recording under the frame, `callout.spotlight` |
 | Typed prompt | `type/typewriter`, `sfx/device/*` keys |
 | Proof number | `counter.statCard` (needs `source`), `chart.bar` |
@@ -135,6 +141,7 @@ Times are for the stated length; scale them proportionally.
 **Sound levels.**
 - VO-led founder films in the wave sat at about −18 to −25 LUFS; music-led films were louder (Argon about −15).
 - The pack master stays at −14 LUFS / ≤ −1 dBTP decoded. Within it, keep dialogue clear: duck the bed at least 9 dB under voice.
+- **Late drop and pre-sting silence** (round 3, `references/success-patterns.md` section 8): the quiet opening and the quiet ending are part of the master, not exceptions to it. Measure loudness on the whole file; the drop and the sting should feel louder because the sections around them are sparse, never because they clip.
 
 ## 6. Measure what matters
 
@@ -152,6 +159,7 @@ Read the post at 24 h and 72 h:
 - [ ] Exactly one hard number, with its method published.
 - [ ] One visual constant taken from the product; honest labels on renders.
 - [ ] Wordless or captioned; VO never fights the music.
+- [ ] Sound shape planned: where the beat drops (late, on the turn line?) and whether the end takes 1-3 s of silence before the sting.
 - [ ] End card: wordmark, URL, one verb. The price lives in the post copy unless it is final.
 - [ ] 16:9 master; 9:16 and 1:1 re-layouts; the 6 s teaser.
 - [ ] Post copy carries the argument; demo thread ready; BTS scheduled; second-wave number planned.

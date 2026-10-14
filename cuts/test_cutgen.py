@@ -157,6 +157,99 @@ class T(unittest.TestCase):
         out = subprocess.run([sys.executable, cutgen.__file__, "beats", "--bpm", "100", "--fps", "30", "--pattern", "every_2", "--bars", "2"], capture_output=True, text=True, check=True).stdout
         self.assertEqual([c["frame"] for c in json.loads(out)["cuts"]], [0, 36, 72, 108])
 
+    # ---- round 3 story shapes (2026-10-14)
+    def test_late_drop_on_the_turn(self):
+        r = cutgen.late_drop(30, 30, turn_frame=240, ticks=[10, 40, 200, 300])
+        self.assertEqual(r["drop_frame"], 240)
+        self.assertEqual(r["warnings"], [])
+        hit = [c for c in r["sfx"] if c["sfx"] == "sfx/hit/sub_drop"][0]
+        self.assertEqual(hit["anchor_frame"], 241)                       # the hit contract: visual frame + 1
+        riser = [c for c in r["sfx"] if c["sfx"].startswith("sfx/riser/")][0]
+        self.assertEqual(riser["anchor_frame"], 240)                     # the riser ends ONE frame before the hit anchor
+        tex = r["sfx"][0]
+        self.assertEqual((tex["sfx"], tex["until_frame"]), ("sfx/ui/agent_working", 240))
+        self.assertEqual([s["role"] for s in r["sections"]], ["problem", "drop"])
+        ok = cutgen.late_drop(30, 30, turn_frame=240, riser_end_frame=240)
+        self.assertTrue(ok["riser_check"]["ok"])
+        bad = cutgen.late_drop(30, 30, turn_frame=240, riser_end_frame=241)
+        self.assertFalse(bad["riser_check"]["ok"])
+        self.assertTrue(bad["warnings"])
+
+    def test_late_drop_gap_share_and_bar(self):
+        r = cutgen.late_drop(30, 30, share=0.3, bpm=120, gap_ms=700, ticks=[50, 225])
+        self.assertEqual(r["drop_frame"] % 60, 0)                        # 120 BPM at 30 fps: a bar is 60 frames
+        self.assertEqual([s["role"] for s in r["sections"]], ["problem", "speech_gap", "drop"])
+        gap = r["sections"][1]
+        self.assertEqual(gap["end"] - gap["start"], 21)                  # 700 ms
+        self.assertFalse(any(c["sfx"].startswith("sfx/riser/") for c in r["sfx"]))   # the silence replaces the riser
+        self.assertFalse(any(c["sfx"] == "sfx/ui/tick" and c["visual_frame"] == 225 for c in r["sfx"]))
+        self.assertTrue(any("speech gap" in w for w in r["warnings"]))   # the tick at 225 sat inside the gap
+        self.assertTrue(cutgen.late_drop(30, 30, turn_frame=30)["warnings"])        # 3 %: not a late drop
+        self.assertTrue(cutgen.late_drop(30, 30, turn_frame=800)["warnings"])       # 89 %
+        self.assertTrue(cutgen.late_drop(30, 30, turn_frame=245, bpm=120)["warnings"])   # off the bar line
+
+    def test_pre_sting_silence(self):
+        r = cutgen.pre_sting_silence(600, 30)
+        lock, sting = r["shots"]
+        self.assertEqual(r["silence"]["start"], 645)                     # 1.5 s lockup hold with the bed
+        self.assertEqual(r["silence"]["end"], 705)                       # 2.0 s of near-silence
+        self.assertEqual((lock["end"], sting["start"]), (705, 705))
+        self.assertEqual(sting["end"], 735)
+        self.assertEqual(r["bed"]["fade_out_samples"][1], 645 * 1600)
+        st = [c for c in r["sfx"] if c["sfx"] == "sfx/stinger/cut_to_black"][0]
+        self.assertEqual(st["anchor_frame"], 706)
+        room = [c for c in r["sfx"] if c["sfx"] == "sfx/amb/room_tone"][0]
+        self.assertEqual(room["until_frame"], 705)
+        self.assertEqual(r["tail_zero"]["start_frame"], 735 - 5)
+        self.assertEqual(r["warnings"], [])
+        self.assertTrue(cutgen.pre_sting_silence(600, 30, silence_s=0.4)["warnings"])
+        self.assertTrue(cutgen.pre_sting_silence(600, 30, silence_s=4.0)["warnings"])
+
+    def test_voice_handoff(self):
+        r = cutgen.voice_handoff(0, 75, 180, 30, consent=True)
+        self.assertEqual(r["warnings"], [])
+        self.assertEqual([c["tag"] for c in r["captions"]], ["", "(AI voice)"])
+        self.assertEqual(r["captions"][1]["start"], 75)
+        self.assertEqual((r["label"]["start"], r["label"]["end"]), (75, 180))     # label covers every synthetic frame
+        a, b = r["audio"]["crossfade_samples"]
+        self.assertEqual(b - a, 1440)                                                # 30 ms at 48 kHz, centred on the handoff
+        self.assertTrue(a < 75 * 1600 < b)
+        self.assertEqual(r["picture"]["presenter_exit"], [75, 120])
+        self.assertTrue(any("consent" in w for w in cutgen.voice_handoff(0, 75, 180, 30)["warnings"]))
+        self.assertTrue(cutgen.voice_handoff(0, 20, 180, 30, consent=True)["warnings"])   # 0.7 s of the real voice
+        self.assertTrue(cutgen.voice_handoff(0, 150, 180, 30, consent=True)["warnings"])  # still walking out
+        with self.assertRaises(ValueError):
+            cutgen.voice_handoff(0, 200, 180, 30)
+
+    def test_pipeline_reveal(self):
+        r = cutgen.pipeline_reveal(45, 30, bpm=120)
+        roles = [s["role"] for s in r["shots"]]
+        self.assertEqual(roles, ["prompt", "plan", "passes", "teardown", "file", "world", "title"])
+        for x, y in zip(r["shots"], r["shots"][1:]):
+            self.assertEqual(x["end"], y["start"])
+            self.assertEqual(y["start"] % 60, 0)                         # on bar lines
+        self.assertEqual(r["shots"][-1]["end"], 1350)
+        world = r["shots"][5]
+        self.assertEqual(world["part"], "blender/cloudFlight")
+        bd = r["bed"][1]
+        self.assertEqual((bd["end"], bd["end"] - bd["start"]), (world["start"], 90))   # 3 s breakdown right before the world shot
+        riser = [c for c in r["sfx"] if c["sfx"].startswith("sfx/riser/")][0]
+        self.assertEqual(riser["anchor_frame"], world["start"])
+        self.assertEqual(r["warnings"], [])
+        short = cutgen.pipeline_reveal(10, 30)
+        self.assertTrue(short["warnings"])                               # 7 steps in 10 s: steps under 1.5 s
+        nw = cutgen.pipeline_reveal(20, 30, steps=["prompt", "passes", "title"])
+        self.assertTrue(any("breakdown" in w for w in nw["warnings"]))
+
+    def test_round3_cli(self):
+        out = subprocess.run([sys.executable, cutgen.__file__, "late-drop", "--duration", "20", "--fps", "30", "--turn-frame", "150", "--riser", "off"],
+                             capture_output=True, text=True, check=True).stdout
+        d = json.loads(out)
+        self.assertEqual(d["drop_frame"], 150)
+        self.assertFalse(any(c["sfx"].startswith("sfx/riser/") for c in d["sfx"]))
+        out = subprocess.run([sys.executable, cutgen.__file__, "handoff", "--line", "0:60:150", "--consent"], capture_output=True, text=True, check=True).stdout
+        self.assertEqual(json.loads(out)["label"]["start"], 60)
+
 
 if __name__ == "__main__":
     unittest.main()

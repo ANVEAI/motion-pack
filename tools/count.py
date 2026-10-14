@@ -77,7 +77,7 @@ def table(c):
         ('`templates/`', f"{n} genre templates: {', '.join(c['templates'])}", '`templates/README.md`'),
     ]
     if 'blender_recipes' in c:
-        rows.append(('`blender/`', f"{c['blender_recipes']} Blender recipes for photoreal plates ({c['blender_recipes'] - c['blender_art_loops']} product shots, "
+        rows.append(('`blender/`', f"{c['blender_recipes']} Blender recipes for photoreal plates ({c['blender_recipes'] - c['blender_art_loops']} product and scene plates, "
                                    f"{c['blender_art_loops']} seamless art loops), {c['blender_presets']} device presets, {c['blender_previews']} showcase previews", '`blender/README.md`'))
     if 'physics_specs' in c:
         rows.append(('`physics/`', f"build-time rigid-body baking (Rapier) with a dependency-free table player; {c['physics_specs']} example specs, "
