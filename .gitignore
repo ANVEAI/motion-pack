@@ -24,6 +24,8 @@ templates/*/out/dev*/
 templates/*/out/*.wav
 templates/*/out/*.wav.json
 templates/*/out/render*.log
+# the cards/objects demo: MP4s (demo + 3D plate) stay out of git; out/sheet.jpg, plan.json and pin-track.json are committed
+templates/demo-cards-objects/out/*.mp4
 objects/qa/*/log.txt
 objects/tools/tmp/
 **/tmp/chrome-*/

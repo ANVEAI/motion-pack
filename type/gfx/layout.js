@@ -1,8 +1,9 @@
 /* motion-pack / type / gfx / layout.js: multi-shot layouts for HyperFrames DOM shots (video / img / div layers, full-frame, absolutely positioned).
    layoutAt(id, t, params, {W, H}) -> { slots: [css per shot], svg: overlay markup (dividers, handle, labels), hold?: true }; applyLayout(els, state, overlayEl) sets the styles; put the overlay ABOVE the shots (z-index > 4), slots use z-index 1..4.
    Each slot shows the CENTRE of its shot (clip in the shot's own space + a translate), so nothing is squashed. Pure functions of t (seek-safe).
-   layout.splitScreen (vertical | horizontal | diagonal | 3up | grid), layout.pip (corner snap, rounded, slide-in), layout.beforeAfter (wipe + handle), layout.freezeFrame (stroke card). */
+   layout.splitScreen (vertical | horizontal | diagonal | 3up | grid), layout.pip (corner snap, rounded, slide-in), layout.beforeAfter (wipe + handle), layout.freezeFrame (stroke card), layout.cornerPin (4-point warp, cornerpin.js). */
 import { E, clamp, lerp, seg } from '../ease.js';
+import { PIN_LAYOUTS } from './cornerpin.js';
 const f2 = (v) => (Math.round(v * 100) / 100).toString();
 const slotCss = ([x, y, w, h], W, H, r = 0) => { const sx = x + w / 2 - W / 2, sy = y + h / 2 - H / 2; return { clipPath: `inset(${f2(y - sy)}px ${f2(W - (x - sx) - w)}px ${f2(H - (y - sy) - h)}px ${f2(x - sx)}px${r ? ` round ${f2(r)}px` : ''})`, transform: `translate(${f2(sx)}px, ${f2(sy)}px)` }; };
 export const LAYOUTS = {
@@ -31,6 +32,7 @@ export const LAYOUTS = {
       return { hold: on, slots: [{ transform: `rotate(${f2(p.rot * k)}deg) scale(${f2(s)})`, boxShadow: on ? `0 0 0 ${f2(sw / s)}px ${p.stroke}, 0 30px 80px rgba(0,0,0,0.5)` : '', zIndex: '2' }],
         svg: on && p.label ? `<text x="${f2(W / 2)}" y="${f2(H * 0.9)}" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-weight="800" font-size="${f2(72 * H / 1080)}" fill="#fff" stroke="#000" stroke-width="8" paint-order="stroke" opacity="${f2(seg(t, p.at + 0.1, p.at + 0.3))}">${p.label}</text>` : '' }; } },
 };
-const PROPS = ['clipPath', 'transform', 'transformOrigin', 'zIndex', 'borderRadius', 'overflow', 'boxShadow'];
+Object.assign(LAYOUTS, PIN_LAYOUTS);   // layout.cornerPin (cornerpin.js): one slot, a matrix3d that lands the element on a quad
+const PROPS = ['clipPath', 'transform', 'transformOrigin', 'zIndex', 'borderRadius', 'overflow', 'boxShadow', 'opacity'];
 export function layoutAt(id, t, params = {}, size = { W: 1920, H: 1080 }) { const L = LAYOUTS[id]; if (!L) throw new Error('unknown layout ' + id); return L.at(t, { ...L.d, ...params }, size); }
 export function applyLayout(els, state, overlay = null) { els.forEach((el, i) => { const s = state.slots[i] || {}; for (const k of PROPS) el.style[k] = s[k] ?? ''; }); if (overlay) overlay.innerHTML = state.svg || ''; return state; }

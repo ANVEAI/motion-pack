@@ -58,8 +58,11 @@
  "sticker.place": 1,
  "reaction.place": 1,
  "reaction.burst": 1.4,
+ "lowerThird.docSuper": 0.8,
+ "caption.subtitleSpeedGag": 1.6,
  "layout.splitScreen": 1,
  "layout.pip": 1,
  "layout.beforeAfter": 1,
- "layout.freezeFrame": 1
+ "layout.freezeFrame": 1,
+ "layout.cornerPin": 1
 }

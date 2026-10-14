@@ -1,0 +1,232 @@
+{
+ "template": "demo-cards-objects",
+ "fps": 30,
+ "seconds": 16,
+ "size": [
+  1920,
+  1080
+ ],
+ "music": "music/bed_corporate_bright_loop8",
+ "musicGainDb": -2,
+ "masterCeilingDb": -2,
+ "shots": [
+  {
+   "id": "s1",
+   "start": 0,
+   "dur": 3,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "s2",
+   "start": 3,
+   "dur": 3,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "s3",
+   "start": 6,
+   "dur": 4,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "s4",
+   "start": 10,
+   "dur": 3,
+   "tx": "transitions/cut"
+  },
+  {
+   "id": "s5",
+   "start": 13,
+   "dur": 3,
+   "hold": true,
+   "tx": "transitions/cut"
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/ui/pop",
+   "t": 0,
+   "why": "frame 0: the stack pops in"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 0.35,
+   "why": "card flip 1"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 0.45,
+   "why": "\"everywhere.\" lands"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 0.48,
+   "why": "card flip 2"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 0.61,
+   "why": "card flip 3"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 0.74,
+   "why": "card flip 4"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 0.87,
+   "why": "card flip 5"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 1,
+   "why": "card flip 6"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 1.13,
+   "why": "card flip 7"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 1.26,
+   "why": "card flip 8"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 1.39,
+   "why": "card flip 9"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 1.52,
+   "why": "card flip 10"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 1.65,
+   "why": "card flip 11"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 1.78,
+   "why": "card flip 12"
+  },
+  {
+   "id": "sfx/whoosh/whoosh_m",
+   "t": 3,
+   "why": "cut into the river: whoosh peaks on the cut"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 3.3,
+   "why": "\"Saved... somewhere.\" lands still"
+  },
+  {
+   "id": "sfx/riser/noise_1bar",
+   "t": 6,
+   "why": "riser ends one frame before the flash"
+  },
+  {
+   "id": "sfx/tx/shutter_flash",
+   "t": 6,
+   "why": "invert flash on the cut (2 frames)"
+  },
+  {
+   "id": "sfx/wood/tap",
+   "t": 6.2,
+   "why": "pin 1"
+  },
+  {
+   "id": "sfx/wood/tap",
+   "t": 6.32,
+   "why": "pin 2"
+  },
+  {
+   "id": "sfx/wood/tap",
+   "t": 6.44,
+   "why": "pin 3"
+  },
+  {
+   "id": "sfx/paper/rustle",
+   "t": 6.55,
+   "why": "red string draws on"
+  },
+  {
+   "id": "sfx/wood/tap",
+   "t": 6.56,
+   "why": "pin 4"
+  },
+  {
+   "id": "sfx/wood/tap",
+   "t": 6.68,
+   "why": "pin 5"
+  },
+  {
+   "id": "sfx/wood/tap",
+   "t": 6.8,
+   "why": "pin 6"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 7.05,
+   "why": "sticky-note title slaps on"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 7.6,
+   "why": "doc super cuts on"
+  },
+  {
+   "id": "sfx/ui/pop_down",
+   "t": 8.6,
+   "why": "speed menu pops up"
+  },
+  {
+   "id": "sfx/ui/click",
+   "t": 9.4,
+   "why": "picks 0.25"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 10,
+   "why": "cut to the dome"
+  },
+  {
+   "id": "sfx/sparkle/shimmer",
+   "t": 10.2,
+   "why": "icon tiles pop on"
+  },
+  {
+   "id": "sfx/ui/success",
+   "t": 10.6,
+   "why": "the pinned card lands"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 13,
+   "why": "cut to the end card"
+  },
+  {
+   "id": "sfx/logo/ascend_land",
+   "t": 13.05,
+   "why": "sonic logo on the brand field"
+  }
+ ],
+ "claims": [],
+ "parts": [
+  "layout.cardStack",
+  "layout.cardRiver",
+  "layout.evidenceBoard",
+  "layout.cornerPin",
+  "lowerThird.docSuper",
+  "caption.subtitleSpeedGag",
+  "layers/invertFlash",
+  "layers/brandField",
+  "objects/glass-dome",
+  "objects/icon-orbit",
+  "objects/clay",
+  "type/maskRise"
+ ]
+}

@@ -38,6 +38,9 @@ Reusable three.js props, set pieces and one character, extracted from the ANVE l
 | objects/laptop | device computer screen **new** | `makeLaptop(ctx, p, o)`: `set({open 0..1, screen 0..1, ui})`, `pose(p, yaw)`; instanced bevelled keys, hinged lid, live canvas screen (`uiDashboard`) | new |
 | objects/phone | device mobile screen **new** | `makePhone(ctx, p, o)`: `set({screen, ui})`, `pose(p, euler)`; bevelled anodised frame, glass, camera island, live screen (`uiChat`) | new |
 | objects/mug | prop coffee ceramic **new** | `makeMug(ctx, p, o)`: `set({fill, slosh, tilt})`; `mugSlosh(tau)` closed-form slosh | new |
+| objects/glass-dome | set platform dome glass floating **new** | `makeGlassDome(ctx, p, o)`: `update(t)` (closed-form bob), `set({y, yaw, lift})` (`lift` raises the dome: a reveal); props go in `.inside`; the iridescent transmission glass is hidden in the depth pass so DOF focuses on what is inside | new 2026-10-14 |
+| objects/icon-orbit | icons orbit apps integrations tiles **new** | `makeIconOrbit(ctx, p, {n, radius, tilt, speed, appearAt, stagger})`: `update(t)`; rounded tiles printed with the pack's own line icons (`ICON_KINDS`), never real brand logos; tiles face a fixed world direction (no camera read: seek-safe) | new 2026-10-14 |
+| objects/clay | material clay matte subsurface **new** | `makeClay(hex, {rim, sss, pow, core, coreK})`: soft matte clay, warm core facing the viewer + light-bleed rim (shader patch on MeshPhysicalMaterial); `objects/worker` takes it with `spec.clay: true` or options | new 2026-10-14 |
 | objects/worker | character mascot pantomime original | `makeWorker(ctx, p, spec, zoneX?, rimLight?)`: `update(t)` from `{keys, path, blinks}`; rig, hops, follow-through (head 2 f, arms 3 f), breathing, blinks | v10 story B worker.js |
 
 Character data lives in `characters/poses.js`:
@@ -55,6 +58,7 @@ Materials are in `lib/mat.js`. `MAT` holds clay, satin, ceramic, anodised, darkM
   - **devices:** laptop, phone, mug and the worker's wave act.
   - **film:** every extracted set piece.
   - **cast:** the 6 emotions.
+  - **dome:** the glass dome floating with a clay worker typing inside and the icon orbit popping on (stills: `qa/dome-r1/sheet.jpg`; determinism: `qa/hash/gallery-dome.json`).
 - **Plates:** `templates/_shared/media/plate-{devices,film,cast}.mp4`, 1080p, about 0.5 MB each. Hero stills are in `qa/hero-{laptop,phone,mug}/f0100.jpg`.
 - **Stills:** `./stills.sh <page> <outdir> "<frames>" "<query>"`.
 - **Probe:** `node tools/probe.mjs <page> "<query>" "<js expr>"`.
@@ -71,6 +75,8 @@ Materials are in `lib/mat.js`. `MAT` holds clay, satin, ceramic, anodised, darkM
 - **Mug:** clean thrown-ceramic read, with a rounded rim, a real wall, a crema ring and a glaze that catches the panels. It is perfectly symmetric with no glaze variation, so it stays stylised and is not photoreal in an extreme close-up.
 - **None** of them looks toy-cheap at the distances the templates use, but none is a photoreal hero at macro distance. Use the Blender path for that.
 - **Not built:** desk (the slab and the desk cover it) and chair (no time to reach the bar, so we did not ship a weak one).
+
+**Dome kit verdict (2026-10-14, looked at the 1080p stills):** the glass reads as glass (transmission + clear coat highlights, slight iridescence) and the platform as soft satin; at a wide shot the tiles are blurred by the kit DOF when they sit far from the focus point, so lower `dofK` (the gallery uses 22) for a crisp orbit. The tiles are generic and stylised on purpose; brand logos never go on them.
 
 ## Rules kept
 

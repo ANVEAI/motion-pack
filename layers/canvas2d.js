@@ -5,6 +5,8 @@
    Film artefact / HUD frames: recHUD, timecode (vhs | crt | film), sprocket, gateEdge, polaroid, instax, impactFrame.
    Audio-reactive: arBars, arRing, arWave, arSpectrum, driven by an envelope (values per frame, e.g. from sfx/music measurement)
      or by beat times (attack/decay pulse per beat), see envAt().
+   Edit punctuation + end card (2026-10-14): invertFlash (1-3 frame negative via difference blend, flash budget <= 3/s enforced by safeFlashes),
+     brandField (full-bleed brand colour, logo slot or owned placeholder mark + name, one line, soft scale settle).
    Same layer contract as overlay.js (canvas + mix-blend-mode, render(t, {frame})). Mounted through overlay.js mountStack. */
 const TAU = Math.PI * 2;
 export function hashf(...k) { let h = 2166136261 >>> 0; for (const v of k) { h ^= (v * 2654435761) >>> 0; h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0; h = Math.imul(h ^ (h >>> 13), 3266489909) >>> 0; h ^= h >>> 16; } return (h >>> 0) / 4294967296; }
@@ -115,6 +117,34 @@ export const K2D = {
       for (let i = 0; i < p.bands; i++) { const e = envAt(p, t, i), a = i / p.bands * TAU - Math.PI / 2, l = (0.08 + e) * p.height * H; g.strokeStyle = rgba(i % 2 ? p.color : p.color2, p.intensity);
         g.beginPath(); g.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0); g.lineTo(cx + Math.cos(a) * (r0 + l), cy + Math.sin(a) * (r0 + l)); g.stroke(); } } },
 };
+
+/* ---- invertFlash + brandField (2026-10-14) ---- */
+/* flash safety: keep flashes in time order and drop any that would put more than maxPerSec flash onsets inside one second (WCAG 2.3.1 style budget) */
+export function safeFlashes(times = [], maxPerSec = 3) { const kept = []; for (const a of [...times].sort((x, y) => x - y)) { if (kept.filter((b) => a - b < 1 - 1e-9).length < maxPerSec) kept.push(a); } return kept; }
+export function lintFlashes(times = [], { maxPerSec = 3, frames = 2 } = {}) { const w = [], k = safeFlashes(times, maxPerSec); if (k.length < times.length) w.push(`invertFlash: ${times.length - k.length} flash(es) dropped: more than ${maxPerSec} in one second`); if (frames > 3) w.push('invertFlash: a negative flash longer than 3 frames reads as a look, not a flash'); return w; }
+const imgCache = new Map();
+const imgOf = (src) => { if (!src) return null; if (typeof src !== 'string') return src; if (!imgCache.has(src)) { const im = new Image(); im.src = src; imgCache.set(src, im); } const im = imgCache.get(src); return im.complete && im.naturalWidth ? im : null; };
+/* the generic placeholder mark: a ring with one orbiting dot (owned; swap in a real logo with p.logo) */
+function orbitMark(g, cx, cy, r, ink) { g.strokeStyle = ink; g.lineWidth = r * 0.16; g.beginPath(); g.arc(cx, cy, r, 0, TAU); g.stroke(); g.fillStyle = ink; g.beginPath(); g.arc(cx + r * 0.95, cy - r * 0.32, r * 0.24, 0, TAU); g.fill(); }
+Object.assign(K2D, {
+  invertFlash: { blend: 'difference', order: 89, tags: ['flash', 'invert', 'negative', 'comedy', 'impact', 'doc-parody', 'cut'], d: { at: [], frames: 2, fps: 30, color: '#FFFFFF', intensity: 1, maxPerSec: 3 },
+    draw(g, W, H, t, p) { for (const a of safeFlashes(p.at, p.maxPerSec)) { const f = Math.floor((t - a) * p.fps + 1e-6); if (f >= 0 && f < Math.min(3, p.frames)) { g.globalAlpha = p.intensity; g.fillStyle = p.color; g.fillRect(0, 0, W, H); g.globalAlpha = 1; return; } } } },
+  brandField: { blend: 'normal', order: 97, tags: ['end-card', 'brand', 'logo', 'cta', 'full-bleed', 'outro'], d: { at: 0, color: '#4A18ED', ink: '#FFFFFF', name: 'Orbit', line: 'Every idea, in one place.', logo: null, mark: 'orbit',
+    reveal: 'cut', revealDur: 0.35, settle: 0.9, scaleFrom: 1.08, lineDelay: 0.18, y: 0.46, size: 0.11, intensity: 1 },
+    draw(g, W, H, t, p) { const u = t - p.at; if (u < 0) return; const sc = H / 1080, rk = p.reveal === 'cut' ? 1 : E2(Math.min(1, u / p.revealDur));
+      g.save(); g.globalAlpha = p.intensity; g.beginPath();
+      if (p.reveal === 'iris') g.arc(W / 2, H / 2, Math.hypot(W, H) / 2 * rk + 1, 0, TAU); else if (p.reveal === 'wipe') g.rect(0, H * (1 - rk), W, H * rk + 1); else g.rect(0, 0, W, H);
+      g.fillStyle = p.color; g.fill(); g.clip();
+      const k = 1 - E2(Math.min(1, u / p.settle)), s = 1 + (p.scaleFrom - 1) * k, a1 = Math.min(1, u / 0.25), a2 = Math.min(1, Math.max(0, u - p.lineDelay) / 0.3);
+      g.translate(W / 2, H * p.y); g.scale(s, s); const L = p.size * H, logo = imgOf(p.logo);
+      g.globalAlpha = p.intensity * a1;
+      if (logo) { const iw = logo.naturalWidth || logo.width, ih = logo.naturalHeight || logo.height, k2 = Math.min(L * 3.2 / iw, L / ih); g.drawImage(logo, -iw * k2 / 2, -ih * k2 / 2, iw * k2, ih * k2); }
+      else { g.font = `800 ${(L * 0.82).toFixed(1)}px ${SANS}`; g.textBaseline = 'middle'; const tw = p.name ? g.measureText(p.name).width : 0, mw = p.mark === 'orbit' ? L * 0.9 : 0, gap = mw && tw ? L * 0.28 : 0, x0 = -(mw + gap + tw) / 2;
+        if (mw) orbitMark(g, x0 + mw / 2, 0, L * 0.36, p.ink); if (tw) { g.fillStyle = p.ink; g.textAlign = 'left'; g.fillText(p.name, x0 + mw + gap, L * 0.04); } }
+      if (p.line) { g.globalAlpha = p.intensity * a2; g.fillStyle = p.ink; g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.font = `600 ${(L * 0.36).toFixed(1)}px ${SANS}`; g.fillText(p.line, 0, L * 1.15 + (1 - a2) * 10 * sc); }
+      g.restore(); } },
+});
+const E2 = (x) => (x >= 1 ? 1 : 1 - 2 ** (-10 * Math.max(0, x)));   // expo-out: the soft settle
 
 export class Canvas2DLayer {
   constructor(canvas, kind, params = {}, { width = 1920, height = 1080, fps = 30, seed = 1 } = {}) {

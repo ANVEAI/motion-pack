@@ -2349,6 +2349,84 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "lowerThird.docSuper",
+   "file": "type/gfx/doc.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/cut_tick",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 2.6,
+   "in_frames": 4,
+   "out_frames": 6,
+   "params": {
+    "name": "THE FOLDER",
+    "role": "Missing since Tuesday",
+    "pos": "tl",
+    "color": "#FFFFFF",
+    "roleColor": "#FFFFFF",
+    "condense": 0.8,
+    "size": 84,
+    "roleSize": 30,
+    "rule": false,
+    "accent": "#FFE45C",
+    "scrim": 0.55
+   },
+   "tags": [
+    "lower-third",
+    "name",
+    "documentary",
+    "doc-parody",
+    "comedy",
+    "deadpan",
+    "interview"
+   ],
+   "demo": "type/demo/out/gfx-lowerthirds.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.subtitleSpeedGag",
+   "file": "type/gfx/doc.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 46,
+    "gain_db": -2
+   },
+   "dur_s": 3.2,
+   "in_frames": 3,
+   "out_frames": 6,
+   "params": {
+    "line": "[talks very, very slowly]",
+    "after": "[still talking slowly]",
+    "options": [
+     "0.25",
+     "0.5",
+     "0.75",
+     "Normal"
+    ],
+    "pick": 0,
+    "menuAt": 0.6,
+    "pickAt": 1.5,
+    "closeAt": 1.9,
+    "cursor": true,
+    "accent": "#FFFFFF",
+    "size": 46
+   },
+   "tags": [
+    "caption",
+    "subtitle",
+    "speed-menu",
+    "playback",
+    "comedy",
+    "doc-parody",
+    "gag"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "layout.splitScreen",
    "file": "type/gfx/layout.js",
    "kind": "layout",
@@ -2461,6 +2539,320 @@
    ],
    "demo": "type/demo/out/gfx-layouts.png",
    "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.cornerPin",
+   "file": "type/gfx/cornerpin.js",
+   "kind": "layout",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "params": {
+    "w": 1280,
+    "h": 800,
+    "corners": [
+     [
+      600,
+      300
+     ],
+     [
+      1300,
+      340
+     ],
+     [
+      1290,
+      760
+     ],
+     [
+      610,
+      740
+     ]
+    ],
+    "units": "px",
+    "at": 0,
+    "fadeIn": 0,
+    "out": null,
+    "fadeOut": 0,
+    "opacity": 1,
+    "z": 3
+   },
+   "tags": [
+    "layout",
+    "corner-pin",
+    "warp",
+    "perspective",
+    "logo-on-window",
+    "ui-on-footage",
+    "screen-replace"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.cardStack",
+   "file": "type/gfx/cards.js",
+   "kind": "card-system",
+   "backend": "canvas2d",
+   "sfx": {
+    "id": "sfx/paper/flip",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "params": {
+    "x": 0.5,
+    "y": 0.5,
+    "n": 6,
+    "cardH": 300,
+    "aspect": 0.78,
+    "fan": 4,
+    "spread": 10,
+    "jitter": 3,
+    "landJitter": 8,
+    "lift": 26,
+    "enterAt": 0,
+    "enterStagger": 0.04,
+    "riffleAt": 0.5,
+    "every": 0.14,
+    "flipDur": 0.22,
+    "count": null,
+    "images": 8,
+    "exitAt": null,
+    "seed": 3,
+    "radius": 18,
+    "border": 0,
+    "borderColor": "#FFFFFF",
+    "back": "#4A18ED",
+    "backInk": "#FFFFFF",
+    "shadow": 0.28,
+    "samples": 1,
+    "shutter": 0.5
+   },
+   "tags": [
+    "cards",
+    "stack",
+    "riffle",
+    "flip",
+    "inline-media",
+    "photos"
+   ],
+   "demo": "type/demo/out/cards.png",
+   "test": "type/tests/cards.test.mjs"
+  },
+  {
+   "id": "layout.cardRiver",
+   "file": "type/gfx/cards.js",
+   "kind": "card-system",
+   "backend": "canvas2d",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "params": {
+    "angle": -28,
+    "cx": 0.5,
+    "cy": 0.5,
+    "lanes": [
+     -0.3,
+     0.3
+    ],
+    "spacing": 260,
+    "cardH": 190,
+    "aspect": 0.78,
+    "landscape": 0.25,
+    "sizeJitter": 0.18,
+    "rotJitter": 7,
+    "wobble": 70,
+    "speed": 520,
+    "t0": 0,
+    "fill": true,
+    "keepOut": [],
+    "margin": 40,
+    "soft": 220,
+    "images": 12,
+    "fadeAt": null,
+    "seed": 7,
+    "radius": 16,
+    "border": 0,
+    "borderColor": "#FFFFFF",
+    "back": "#4A18ED",
+    "backInk": "#FFFFFF",
+    "shadow": 0.22,
+    "samples": 6,
+    "shutter": 0.5
+   },
+   "tags": [
+    "cards",
+    "river",
+    "stream",
+    "diagonal",
+    "motion-blur",
+    "photos",
+    "collage"
+   ],
+   "demo": "type/demo/out/cards.png",
+   "test": "type/tests/cards.test.mjs"
+  },
+  {
+   "id": "layout.evidenceBoard",
+   "file": "type/gfx/board.js",
+   "kind": "card-system",
+   "backend": "canvas2d",
+   "sfx": {
+    "id": "sfx/foley/stamp",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "params": {
+    "seed": 5,
+    "boardW": 1.25,
+    "boardH": 1.25,
+    "cork": "#B98A5A",
+    "corkDark": "#8C6239",
+    "frame": "#4A2F1B",
+    "frameW": 0.035,
+    "slots": [
+     {
+      "x": 0.2,
+      "y": 0.24,
+      "w": 0.17,
+      "h": 0.26,
+      "rot": -6,
+      "kind": "photo",
+      "img": 0,
+      "label": "EXHIBIT A"
+     },
+     {
+      "x": 0.47,
+      "y": 0.18,
+      "w": 0.15,
+      "h": 0.2,
+      "rot": 4,
+      "kind": "paper",
+      "lines": 6
+     },
+     {
+      "x": 0.77,
+      "y": 0.27,
+      "w": 0.17,
+      "h": 0.24,
+      "rot": 7,
+      "kind": "photo",
+      "img": 1,
+      "label": "LAST SEEN"
+     },
+     {
+      "x": 0.24,
+      "y": 0.7,
+      "w": 0.18,
+      "h": 0.22,
+      "rot": 5,
+      "kind": "paper",
+      "lines": 7,
+      "redact": true
+     },
+     {
+      "x": 0.53,
+      "y": 0.75,
+      "w": 0.16,
+      "h": 0.24,
+      "rot": -4,
+      "kind": "photo",
+      "img": 2,
+      "label": "?"
+     },
+     {
+      "x": 0.8,
+      "y": 0.72,
+      "w": 0.15,
+      "h": 0.21,
+      "rot": -8,
+      "kind": "photo",
+      "img": 3
+     }
+    ],
+    "strings": [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      0,
+      3
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      2
+     ],
+     [
+      4,
+      5
+     ],
+     [
+      1,
+      4
+     ]
+    ],
+    "string": "#C8102E",
+    "sag": 0.06,
+    "stringW": 4,
+    "title": {
+     "text": "WHERE DID IT GO?",
+     "sub": "a documentary",
+     "x": 0.5,
+     "y": 0.47,
+     "size": 0.2,
+     "rot": -3,
+     "at": 1.1,
+     "color": "#FFE45C",
+     "ink": "#16130F"
+    },
+    "slotsAt": 0,
+    "stagger": 0.12,
+    "stringsAt": 0.55,
+    "stringStagger": 0.1,
+    "stringDur": 0.4666666666666667,
+    "push": {
+     "from": [
+      0.5,
+      0.5,
+      0.84
+     ],
+     "to": [
+      0.48,
+      0.47,
+      1.12
+     ],
+     "at": 0,
+     "dur": 3.6,
+     "ease": "cam"
+    },
+    "images": 4,
+    "pin": "#D7263D",
+    "exitAt": null
+   },
+   "tags": [
+    "board",
+    "evidence",
+    "conspiracy",
+    "documentary",
+    "comedy",
+    "title-device",
+    "red-string",
+    "push"
+   ],
+   "demo": "type/demo/out/cards.png",
+   "test": "type/tests/cards.test.mjs"
   },
   {
    "id": "sticker.heart",

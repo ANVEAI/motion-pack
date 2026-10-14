@@ -3,9 +3,10 @@
    same t (seek-safe), and the page logs no errors. Also writes type/demo/out/gfx-hero.json (id -> hero t) for the manifest. exit 1 on failure. */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { open, ROOT } from '../../layers/tests/harness.mjs';
 const HERO = { 'title.countdown321': 1.1, 'title.slate': 0.75, 'caption.oneWordSlam': 1.1, 'social.chatBubbles': 3.4, 'chart.race': 3.2, 'map.route': 2.6, 'reaction.burst': 1.4, 'fx.emotion.heartBurst': 0.6,
-  'social.followButton': 1.0, 'counter.priceSlash': 1.2, 'fx.impact.smear': 0.05, 'fx.impact.star': 0.12, 'fx.impact.dustPoof': 0.35, 'fx.impact.speedLines': 0.3, 'lowerThird.newsBar': 1.2, 'callout.pinLeader': 1.0, 'device.laptop': 1.6, 'device.phone': 1.05 };
+  'social.followButton': 1.0, 'counter.priceSlash': 1.2, 'fx.impact.smear': 0.05, 'fx.impact.star': 0.12, 'fx.impact.dustPoof': 0.35, 'fx.impact.speedLines': 0.3, 'lowerThird.newsBar': 1.2, 'callout.pinLeader': 1.0, 'device.laptop': 1.6, 'device.phone': 1.05, 'caption.subtitleSpeedGag': 1.6, 'lowerThird.docSuper': 0.8 };
 const LIGHT = new Set(['callout.spotlight', 'layout.pip']);
-const PARAMS = { 'sticker.place': [{ name: 'fire' }, { name: 'faceLaugh', motion: 'wiggle' }], 'reaction.place': [{ name: 'love' }], 'layout.splitScreen': [{ mode: 'vertical' }, { mode: 'diagonal' }, { mode: '3up' }, { mode: 'grid' }] };
+const PARAMS = { 'sticker.place': [{ name: 'fire' }, { name: 'faceLaugh', motion: 'wiggle' }], 'reaction.place': [{ name: 'love' }], 'layout.splitScreen': [{ mode: 'vertical' }, { mode: 'diagonal' }, { mode: '3up' }, { mode: 'grid' }],
+  'layout.cornerPin': [{ w: 1920, h: 1080, corners: [[560, 230], [1390, 300], [1350, 830], [520, 760]] }] };
 const fam = (id) => (id.startsWith('lowerThird') ? 'lowerthirds' : id.startsWith('counter') || id.startsWith('title') ? 'counters-titles' : id.startsWith('callout') ? 'callouts' : id.startsWith('fx.') ? 'emotion-impact' : id.startsWith('social') || id.startsWith('device') ? 'social-device' : id.startsWith('caption') ? 'captions' : id.startsWith('chart') || id.startsWith('map') ? 'charts-map' : id.startsWith('layout') ? 'layouts' : 'stickers');
 const h = await open('/type/demo/gfx.html'); await h.page.setViewport({ width: 1920, height: 1080 });
 const ids = await h.page.evaluate('window.GFX_IDS'); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-gfx-')), groups = {}, hero = {}; let fail = 0;

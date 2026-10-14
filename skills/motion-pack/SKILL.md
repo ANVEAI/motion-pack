@@ -118,6 +118,11 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | comic / anime energy | `speedLines`, `impactFrame` (2–3 frames), `halftone` | flash rule: max 3 full-frame flashes per second |
 | celebrate | `confetti` (`burstAt`), `sparks` (`burstAt`), `reaction.burst` | pair with a win sound |
 | music visualiser / podcast | `arBars`, `arRing`, `arWave`, `arSpectrum` (feed `env` from the mix or `beats`) | |
+| photos inside a sentence, a collage that streams past | `layout.cardStack` (inline riffle, cards flip back to front), `layout.cardRiver` (diagonal streams with motion blur, `keepOut` keeps the words still in the gap) | canvas back-end; `placeholderCards` are abstract on purpose |
+| a logo on a window, a UI card on footage or a 3D screen | `layout.cornerPin` (static corners or per-frame `keys`; a three.js scene can export its plane's corners per frame) | no tracker built in |
+| a doc-parody or comedy title beat | `layout.evidenceBoard`, `lowerThird.docSuper`, `caption.subtitleSpeedGag`, layers `invertFlash` | at most 3 flash onsets per second (enforced) |
+| an end card | layers `brandField` (full-bleed colour, logo slot, one line, soft settle) | hold >= 1.8 s after it settles |
+| a little world under glass, integrations orbiting | `objects/glass-dome`, `objects/icon-orbit`, `objects/clay` (worker `spec.clay`) | own icons only, never brand logos |
 | a look | `layers/looks/look.<name>.cube`; send log footage through `log.<cam>-to-709.cube` first | one look per piece; it replaces the genre grade |
 | speed ramp / freeze / rewind gag | `cuts/retime.py` presets `heroRamp`, `rampIn`, `rampOut`, `bulletTime`, `freezeStamp`, `reverseFlash` | the same keys exist in `tx-core RAMP_PRESETS` for canvas shots |
 | camera comedy / drama | `cam2d.crashZoom`, `doubleTake`, `dollySnap`, `dutchRoll`, `rackFocus2D`, `parallaxStack` | crash zooms count as punch-ins (max 1 per 4 s) |
