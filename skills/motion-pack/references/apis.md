@@ -62,6 +62,7 @@ python3 cuts/cutgen.py talking | smash | interrupts ...      # see cuts/README.m
 python3 cuts/cutgen.py walkthrough --words words.json [--steps N]        # round 4/5 story shapes (cuts/story45.py): words.json = [{w, s, e}] in seconds
 python3 cuts/cutgen.py query-ladder --dur 45 --rungs "video:1,pdf:3" [--bpm 120] [--words words.json]
 python3 cuts/cutgen.py fidelity-ladder --bpm 99 --params 3,10,36,1024 [--dropout-s 3]
+python3 cuts/cutgen.py problem-pivot [--duration 30] [--sentence S --accent W --problem "a|b|c" --brand B --value "a|b|c" --command C --url U] [--gap-s 1.8 --hold-s 2.5 --lead-s 0.1]   # round 6 (cuts/story6.py): a continuous film: captions in frames, plan.audio (quiet gap + hold), bed_automation, sfx cues, the pivot frame; `story6.check_problem_pivot(result)` re-derives the checks
 python3 cuts/cutgen.py voices-open --clips clips.json                # [{id, src, words, name, role, tag, lead?}]
 python3 cuts/cutgen.py command-burst --words words.json | anaphora --words words.json --token here
 python3 cuts/cutgen.py trailer --dur 60 [--dialogue lines.json] | style-ladder --looks live,look.pastel --bpm 120
@@ -110,6 +111,7 @@ import { toSVGFilter, toCube, mixGrade } from './layers/grade.js'; import { GRAD
 - **Grade count:** one grade per piece.
 - **Round 3 (2026-10-14):** backgrounds `meshGradient`; `canvas2d-r3.js` `dotCondense` (`dotCondenseState`), `hologramBeam` (`hologramState`); `stylize.js` `mountGradeIn(el, params).render(t)`, `gradeInWeight`, `gradeInSVG`, `gradeInCube(params, w)`.
 - **Round 4/5 (2026-10-14):** `canvas2d-r45.js` (merged into `K2D`; ids `layers.embeddingCloud`, `layers.epicycleDraw`, `layers.hexMosaic`, `layers.convergeToDot`): `mountStack(el, [{ kind: 'epicycleDraw', params: { steps: [[0, 4], [0.8, 16], [1.6, 'full']], period: 0.8 } }], { width, height, fps })` (returns `{ layers, ready(), render(t), dispose() }`: `await stack.ready()` resolves when the layers' `images` are decoded; `bindHF` repaints once they are; `preloadImages(srcs)` is the same thing standalone); `cuesR45(kind, params)` -> `[{ t, id, why }]` (local s); the maths for DOM that follows a point: `embeddingState(t, p, { W, H })`, `epicycleState`, `epicycleDFT`, `hexState`, `convergeState`, `cloudPlan`.
+- **Round 6 (2026-10-15):** `backgrounds-r6.js` (merged into `BG`; id `background.auroraRibbon`): `mountStack(el, [{ kind: 'auroraRibbon', params: { riseAt: 10.47, rise: 1.4, bg: null } }], { width, height, fps })`; params `colors` (2-5 hex, placeholders by default), `bg`, `riseAt`, `rise`, `lead`, `height`, `crest`, `waves`, `spread`, `core`, `halo`, `speed`, `kick`, `loop` (exact seam, already risen), `grain`, `grainFps`, `res`, `intensity`, `seed`; exports `auroraParams(p)` (validates: NaN / a non-number / a bad colour throws, out-of-range numbers clamp), `auroraRise(t, p)`, `auroraKick`, `auroraCentre`, `auroraWeight`, `auroraGrainIndex`, `cuesR6(kind, params)` -> `[{ t, id: 'sfx/hit/sub_drop', why }]` (the bass `lead` s before `riseAt`; `[]` for a loop). Mutation proof: `python3 tools/mutation_check.py layers/tests/r6.mutants.json`.
 
 ## Type
 

@@ -82,6 +82,8 @@ A `.wav`, `.flac` or `.aif` input is judged as a master (true peak ≤ −1.5 dB
 | `ears/stereo` | L/R correlation overall and per half second, loudness lost when summed to mono, side vs mid width | anti-phase stretches and mono loss > 1.5 dB warn, > 3 dB fails |
 | `ears/compare` | with `--ref`: our loudness curve, band shares (< 150 Hz / mid / > 4 kHz, as refstudy measures them), tempo, brightness, cuts on onsets, quiet open and quiet tail against the references; with `--role`, the bass share against that role's range | information only: "inside / above / below the reference range" per measure |
 
+**Brand-launch beds are bass-led by design (round 6).** `--role brand_launch` (or `plan.audio.role`) reports the bed's bass share against 50-60% (two reference films at 55 and 58%: a thin base). On `templates/demo-r6-pivot` (59% bass) `ears/tone` read sub +7.9 and low +7.0 dB over the mid band and still passed, and `ears/compare` said "inside the range". Read a `boomy` note on such a bed as information when the share is inside the range and no voice sits on it; with a voice, the proof / explainer range (20-36%) is the one to compare against. The planned gap (kind `gap`) and hold (kind `hold`) of a problem-pivot film are read as shape: `ears/structure` found them at 9.0-10.0 s (42 dB under the programme) and 27.5-29.5 s (56 dB under), both marked planned, and the ending as a quiet hold.
+
 **Cue anchors use the exact take.**
 - `ears` renders the take `music/mixer.py` placed for each cue, including the round-robin seed of a repeated id.
 - A waveform matched filter finds that take in the mix to the sample. A pack bed's kick on frame F cannot fool it, even with the cue one frame later.

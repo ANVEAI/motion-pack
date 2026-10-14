@@ -54,6 +54,12 @@ jobs:
         run: node layers/tests/r6.test.mjs
       - name: round-6 story shape mutation proof (every check in cuts/test_story6.py fails when the code under test is broken; the layer's 26 mutants run locally, see tools/mutation_check.py)
         run: python3 tools/mutation_check.py cuts/test_story6.mutants.json && python3 tools/mutation_check.py cuts/test_story6.cutgen.mutants.json
+      - name: problem-pivot demo template (plan from cuts/story6.py: gap, pivot frame, bass = the ribbon's cue, hold, committed plan current, same bytes in two processes; node + python, no browser)
+        run: node templates/demo-r6-pivot/pivot.test.mjs
+      - name: problem-pivot demo mutation proof (each check fails when config.mjs is broken)
+        run: python3 tools/mutation_check.py templates/demo-r6-pivot/pivot.mutants.json
+      - name: ears brand_launch role mutation proof
+        run: python3 tools/mutation_check.py ears/tests/brand_launch.manifest.mutants.json && python3 tools/mutation_check.py ears/tests/brand_launch.checks.mutants.json
       - name: proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)
         run: node templates/proof-film/proof-film.test.mjs
       - name: physics table player (the baked table is committed; no npm install)

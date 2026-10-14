@@ -1,0 +1,75 @@
+{
+ "file": "templates/demo-r6-pivot/config.mjs",
+ "test": [
+  "node",
+  "templates/demo-r6-pivot/pivot.test.mjs"
+ ],
+ "timeout": 300,
+ "mutants": [
+  {
+   "name": "ribbon cue consistency check removed",
+   "find": "if (ac.length !== 1 || Math.round(ac[0].t * fps) !== pc.visual_frame) throw",
+   "replace": "if (false) throw"
+  },
+  {
+   "name": "ribbon rises on the sound frame, not the colour frame",
+   "find": "const riseAt = sec(story.pivot.visual_frame)",
+   "replace": "const riseAt = sec(story.pivot.frame)"
+  },
+  {
+   "name": "story checks not enforced",
+   "find": "if (failed.length || story.warnings.length) throw",
+   "replace": "if (false) throw"
+  },
+  {
+   "name": "ceiling dropped from the plan",
+   "find": "ceilingDb: C.ceilingDb,",
+   "replace": ""
+  },
+  {
+   "name": "ceiling raised",
+   "find": "ceilingDb: -3.0,",
+   "replace": "ceilingDb: -1.0,"
+  },
+  {
+   "name": "audio role dropped from the plan",
+   "find": "audio: story.audio,",
+   "replace": "audio: { ...story.audio, role: 'proof' },"
+  },
+  {
+   "name": "a stray shot in the plan",
+   "find": "shots: [],",
+   "replace": "shots: [{ id: 'x', start: 0, dur: 1 }],"
+  },
+  {
+   "name": "an unsourced number claim",
+   "find": "claims: [],",
+   "replace": "claims: [{ text: '3 x faster' }],"
+  },
+  {
+   "name": "gap flag ignored",
+   "find": "'--gap-s', String(s.gapS),",
+   "replace": "'--gap-s', '1.8',"
+  },
+  {
+   "name": "a cue shifted into the silence",
+   "find": "const cues = story.sfx.map((c) => ({ id: c.sfx, t: sec(c.visual_frame),",
+   "replace": "const cues = story.sfx.map((c) => ({ id: c.sfx, t: sec(c.sfx === 'sfx/ui/error' ? story.gap.start + 6 : c.visual_frame),"
+  },
+  {
+   "name": "wrong music id",
+   "find": "music: C.music,",
+   "replace": "music: ['music', 'bed_does_not_exist'].join('/'),"
+  },
+  {
+   "name": "placeholder note emptied",
+   "find": "placeholderNote: 'illustrative film: Brand A Notes is a placeholder',",
+   "replace": "placeholderNote: 'a film',"
+  },
+  {
+   "name": "pre-existing copy from the reference",
+   "find": "command: '//start a plan'",
+   "replace": "command: '//start building now'"
+  }
+ ]
+}
