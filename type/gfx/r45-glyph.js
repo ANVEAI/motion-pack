@@ -136,11 +136,10 @@ export function electricGeo(p, c) {
 /* the soft ambient halo of the numerals as pools for the EXISTING overlay `glow` (overlay.js: { kind: 'glow', params: { pools } }, screen blend, mounted below the type):
    [{ x, y, r, color, intensity }] in the overlay's own frame fractions (x from the left, y from the BOTTOM; r = fraction of H). Set `glow: 0` to drop the SVG blur and let the overlay carry all the light, or keep both (default: a tight SVG glow + this halo). */
 export function electricGlowPools(p, c) { const g = electricGeo(p, c); return [{ x: +(g.cx / c.W).toFixed(4), y: +(1 - g.cy / c.H).toFixed(4), r: +((g.cap * 0.7) / c.H).toFixed(4), color: p.color, intensity: p.halo }]; }
-/* the sound that pairs with the crackle. Today the closest EXISTING id (zzt bursts); the electric-arc sound (sfx/elec/arc) is added by another lane. When it lands in sfx/manifest.json,
-   change this ONE constant (the cue table and GFX_SFX in index.js both read it); type/tests/r45type.test.mjs fails until you do. */
-export const ELECTRIC_SOUND = 'sfx/tx/glitch_stutter';
-/* the id it will take over, built from parts on purpose: a literal would make tools/check_ids.py report an id that is not in this library yet */
-export const ELECTRIC_ARC = ['sfx', 'elec', 'arc'].join('/');
+/* the sound that pairs with the crackle: the synthesised electric arc (sfx/elec/arc, rr:4). ONE constant; the cue table and GFX_SFX in index.js both read it, and
+   type/tests/r45type.test.mjs checks that it is the pairing whenever snd.elec.arc is in sfx/manifest.json. */
+export const ELECTRIC_SOUND = 'sfx/elec/arc';
+export const ELECTRIC_ARC = 'sfx/elec/arc';
 export const GLYPH_R45 = {
   'type.asciiMosaic': { file: 'type/gfx/r45-glyph.js', tags: ['type', 'ascii', 'mosaic', 'glyph-portrait', 'text-as-image', 'prompt', 'generative', 'reveal'], dur: 4.6, inF: 6, outF: 10,
     d: { text: 'a quiet figure in warm side light, soft shadows, film grain, a calm look toward the window', image: 'bust', mode: 'text', cols: 72, area: [0.2, 0.06, 0.6, 0.88], levels: 10, gamma: 1,

@@ -6282,7 +6282,7 @@
    "file": "type/gfx/r45-glyph.js",
    "kind": "gfx",
    "sfx": {
-    "id": "sfx/tx/glitch_stutter",
+    "id": "sfx/elec/arc",
     "offset_f": 0,
     "gain_db": -6
    },
