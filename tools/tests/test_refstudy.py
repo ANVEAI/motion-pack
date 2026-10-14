@@ -197,12 +197,12 @@ def test_evidence_tiers_match_the_round45_grading():
 
 
 def test_grade_cli_on_a_study_folder(tmp_path):
-    d = tmp_path / "kenbwork"; d.mkdir()
+    d = tmp_path / "study-a"; d.mkdir()
     json.dump({"views": 26272, "followers": 7934, "likes": 328, "bookmarks": 262, "replies": 19}, open(d / "meta.json", "w"))
     json.dump({"audio": {"loudness_curve_4hz_dbfs": [-60.0] * 3 + [-16.0] * 60 + [-70.0] * 30}}, open(d / "study.json", "w"))
     r = subprocess.run([sys.executable, os.path.join(TOOLS, "refstudy.py"), "grade", str(d), "--write"], capture_output=True, text=True, timeout=60)
     assert r.returncode == 0, r.stderr
-    assert "kenbwork" in r.stdout and " A " in r.stdout
+    assert "study-a" in r.stdout and " A " in r.stdout
     st = json.load(open(d / "study.json"))
     assert st["evidence"]["tier"] == "A" and st["quiet"]["end_shape"] == "quiet hold"
 
