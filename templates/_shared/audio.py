@@ -58,6 +58,8 @@ def via_music_mixer(P, out, bed, a):
     sp = os.path.join(d, 'sheet.json'); json.dump(sheet, open(sp, 'w'))
     r = subprocess.run([sys.executable, os.path.join(MUSIC, 'mixer.py'), sp, '--out', d], capture_output=True, text=True, cwd=MUSIC)
     if r.returncode != 0: print(r.stdout[-2000:], r.stderr[-2000:]); raise SystemExit('music mixer failed')
+    for line in r.stdout.splitlines():   # a level the mixer could not reach (a trim outside -30..+24 dB) is said out loud, not buried in mix.wav.json
+        if line.startswith('WARN'): print('mixer', line)
     shutil.copyfile(os.path.join(d, 'master.wav'), out)
     if P.get('fadeInMs'):   # a bed that starts on a hit leaves a step at sample 0; some AAC encoders overshoot it by several dB (HyperFrames then lowers the whole track)
         import soundfile as sf

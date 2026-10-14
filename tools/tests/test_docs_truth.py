@@ -207,6 +207,9 @@ def test_room_tone_levels_in_the_docs_are_what_the_mixer_places():
             assert abs(got - lufs) <= 0.15, f"overBedDb {over}: the docs say {lufs} LUFS, the mixer gives {got:.2f}"
             if over == -38:
                 assert abs(rep["cues"][0]["measured_over_bed_db"] - float(nums.group(5))) <= 0.1 and rep["cues"][0]["trim_db"] == -30.0, rep["cues"][0]
+                assert rep["cues"][0]["trim_clipped_from_db"] < -30.0 and any("snd.amb.room_tone@0" in w for w in rep.get("warnings", [])), "a clipped trim must be reported, not silent"
+            else:
+                assert "trim_clipped_from_db" not in rep["cues"][0] and not rep.get("warnings"), (over, rep["cues"][0], rep.get("warnings"))
     man_item = next(s for s in json.load(open(os.path.join(REPO, "sfx", "manifest.json")))["sounds"] if s["id"] == "snd.amb.room_tone")
     assert abs(man_item["lufs_integrated"] - (-18.1)) <= 0.05 and "-18.1 LUFS-I" in read("skills/motion-pack/SKILL.md").replace("\u2212", "-")
     assert "-48" not in man_item["desc"], man_item["desc"]

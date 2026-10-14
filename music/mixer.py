@@ -319,6 +319,7 @@ class Mix:
                 trim = lr + tgt - lc
                 src = "vo" if c["over_vo_db"] is not None else "bed"
             c["trim_db"] = float(np.clip(trim, -30, 24))
+            c["trim_wanted_db"] = float(trim) if abs(trim - c["trim_db"]) > 1e-6 else None   # the solver's range is -30..+24 dB: a request outside it is reported, never silently met
             info.append((c, lc, lr, src))
         return info
 
@@ -439,6 +440,10 @@ class Mix:
                 lpr = -0.691 + 10 * np.log10(np.sum(np.mean(rp ** 2, axis=0)) + 1e-20)
                 row["phone_over_bed_db"] = round(lpc - lpr, 2)
                 row["phone_ok"] = bool(lpc - lpr >= 2.0 - 1.0)
+            if c.get("trim_wanted_db") is not None:
+                row["trim_clipped_from_db"] = round(c["trim_wanted_db"], 2)
+                r.setdefault("warnings", []).append("%s@%d: the level asked for needs a %.1f dB trim; the mixer stops at %.0f dB (measured over the bed: %s dB)"
+                                                     % (c["id"], c["frame"], c["trim_wanted_db"], c["trim_db"], row.get("measured_over_bed_db")))
             r["cues"].append(row)
         return r
 
@@ -515,5 +520,7 @@ if __name__ == "__main__":
     rep = mx.render(out, lufs=ms_.get("lufs", -14.0), ceiling_db=ms_.get("ceiling_db", -1.5))
     rep.pop("_audio", None)
     print(json.dumps({k: v for k, v in rep.items() if k != "cues"}, indent=1))
+    for w in rep.get("warnings", []):
+        print("WARN", w)
     for issue in lint_cues([{"id": c["id"], "frame": c["frame"], "tier": c["tier"], "over_bed_db": c["over_bed_db"]} for c in mx.cues], fps=sheet.get("fps", 30), lib=mx.lib, quiet=sheet.get("quiet")):
         print("LINT", issue)
