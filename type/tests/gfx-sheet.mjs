@@ -3,19 +3,20 @@
    same t (seek-safe), and the page logs no errors. Also writes type/demo/out/gfx-hero.json (id -> hero t) for the manifest. exit 1 on failure. */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { open, ROOT } from '../../layers/tests/harness.mjs';
 const HERO = { 'title.countdown321': 1.1, 'title.slate': 0.75, 'caption.oneWordSlam': 1.1, 'social.chatBubbles': 3.4, 'chart.race': 3.2, 'map.route': 2.6, 'reaction.burst': 1.4, 'fx.emotion.heartBurst': 0.6,
-  'social.followButton': 1.0, 'counter.priceSlash': 1.2, 'fx.impact.smear': 0.05, 'fx.impact.star': 0.12, 'fx.impact.dustPoof': 0.35, 'fx.impact.speedLines': 0.3, 'lowerThird.newsBar': 1.2, 'callout.pinLeader': 1.0, 'device.laptop': 1.6, 'device.phone': 1.05 };
-const LIGHT = new Set(['callout.spotlight', 'layout.pip']);
+  'social.followButton': 1.0, 'counter.priceSlash': 1.2, 'fx.impact.smear': 0.05, 'fx.impact.star': 0.12, 'fx.impact.dustPoof': 0.35, 'fx.impact.speedLines': 0.3, 'lowerThird.newsBar': 1.2, 'callout.pinLeader': 1.0, 'device.laptop': 1.6, 'device.phone': 1.05,
+  'type.wordWheel': 1.9, 'type.inlineMedia': 2.4, 'type.letterAssemble': 0.9, 'type.glyphMorphCursor': 2.9, 'type.marquee': 1.0, 'type.bleedWord': 1.0, 'layout.scatterCollage': 2.6, 'layout.mosaicBurst': 1.6, 'layout.logoWall': 1.6, 'layout.orbitRing': 2.0, 'callout.connectorLabel': 2.0 };
+const LIGHT = new Set(['callout.spotlight', 'layout.pip']), PAPER = new Set(['type.wordWheel', 'type.inlineMedia', 'type.glyphMorphCursor', 'type.bleedWord', 'layout.scatterCollage', 'layout.mosaicBurst', 'layout.logoWall', 'layout.orbitRing', 'callout.connectorLabel']);
 const PARAMS = { 'sticker.place': [{ name: 'fire' }, { name: 'faceLaugh', motion: 'wiggle' }], 'reaction.place': [{ name: 'love' }], 'layout.splitScreen': [{ mode: 'vertical' }, { mode: 'diagonal' }, { mode: '3up' }, { mode: 'grid' }] };
-const fam = (id) => (id.startsWith('lowerThird') ? 'lowerthirds' : id.startsWith('counter') || id.startsWith('title') ? 'counters-titles' : id.startsWith('callout') ? 'callouts' : id.startsWith('fx.') ? 'emotion-impact' : id.startsWith('social') || id.startsWith('device') ? 'social-device' : id.startsWith('caption') ? 'captions' : id.startsWith('chart') || id.startsWith('map') ? 'charts-map' : id.startsWith('layout') ? 'layouts' : 'stickers');
+const fam = (id) => (id.startsWith('type.') ? 'kinetic' : /^layout\.(scatterCollage|mosaicBurst|logoWall|orbitRing)$|^callout\.connectorLabel$/.test(id) ? 'collage' : id.startsWith('lowerThird') ? 'lowerthirds' : id.startsWith('counter') || id.startsWith('title') ? 'counters-titles' : id.startsWith('callout') ? 'callouts' : id.startsWith('fx.') ? 'emotion-impact' : id.startsWith('social') || id.startsWith('device') ? 'social-device' : id.startsWith('caption') ? 'captions' : id.startsWith('chart') || id.startsWith('map') ? 'charts-map' : id.startsWith('layout') ? 'layouts' : 'stickers');
 const h = await open('/type/demo/gfx.html'); await h.page.setViewport({ width: 1920, height: 1080 });
-const ids = await h.page.evaluate('window.GFX_IDS'); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-gfx-')), groups = {}, hero = {}; let fail = 0;
+const ids = await h.page.evaluate('window.GFX_IDS'), shotLayouts = await h.page.evaluate('window.SHOT_LAYOUTS'); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-gfx-')), groups = {}, hero = {}; let fail = 0;
 for (const id of ids) for (const params of PARAMS[id] || [{}]) {
-  const t = HERO[id] ?? 1.0, light = LIGHT.has(id);
+  const t = HERO[id] ?? 1.0, light = PAPER.has(id) ? 'paper' : LIGHT.has(id);
   const on = await h.page.evaluate((i, tt, p, l) => window.show(i, tt, p, 1920, 1080, { light: l }), id, t, params, light);
   const a = await h.page.evaluate(() => document.getElementById('ov').innerHTML + document.getElementById('shots').innerHTML);
   await h.page.evaluate((i, tt, p, l) => window.show(i, tt, p, 1920, 1080, { light: l }), id, t, params, light); const b = await h.page.evaluate(() => document.getElementById('ov').innerHTML + document.getElementById('shots').innerHTML);
   if (!on) { console.log('FAIL empty at hero time', id); fail++; } if (a !== b) { console.log('FAIL not seek-stable', id); fail++; }
-  if (!id.startsWith('layout')) { const pre = await h.page.evaluate((i, p) => window.show(i, -0.5, p, 1920, 1080, {}), id, params); if (pre) { console.log('FAIL visible before start', id); fail++; } await h.page.evaluate((i, tt, p, l) => window.show(i, tt, p, 1920, 1080, { light: l }), id, t, params, light); }
+  if (!shotLayouts.includes(id)) { const pre = await h.page.evaluate((i, p) => window.show(i, -0.5, p, 1920, 1080, {}), id, params); if (pre) { console.log('FAIL visible before start', id); fail++; } await h.page.evaluate((i, tt, p, l) => window.show(i, tt, p, 1920, 1080, { light: l }), id, t, params, light); }
   const f = path.join(dir, `${Object.keys(hero).length}-${Math.random().toString(36).slice(2, 6)}.png`); await h.page.screenshot({ path: f, clip: { x: 0, y: 0, width: 1920, height: 1080 } });
   (groups[fam(id)] ||= []).push([id + (params.name || params.mode ? ' ' + (params.name || params.mode) : ''), f]); hero[id] = t;
 }

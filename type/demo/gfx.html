@@ -7,7 +7,7 @@ html,body{margin:0;background:#000}#root{position:relative;overflow:hidden;font-
 import { GFX, renderSVG, layoutAt, applyLayout, LAYOUTS, STICKER_NAMES, REACTIONS } from '../gfx/index.js';
 import { STICKERS } from '../gfx/stickers.js';
 const root = document.getElementById('root'), bg = document.getElementById('bg'), shots = document.getElementById('shots'), ov = document.getElementById('ov');
-const plate = (light) => light ? 'linear-gradient(160deg,#dfe6f0,#9fb0c8 60%,#c9b79a)' : 'radial-gradient(120% 90% at 30% 20%,#3b2a7a 0%,#15131f 55%,#0b0b10 100%)';
+const plate = (light) => light === 'paper' ? '#F3F1EC' : light ? 'linear-gradient(160deg,#dfe6f0,#9fb0c8 60%,#c9b79a)' : 'radial-gradient(120% 90% at 30% 20%,#3b2a7a 0%,#15131f 55%,#0b0b10 100%)';
 const shotBg = ['linear-gradient(135deg,#ff8a3d,#ff3d7a)', 'linear-gradient(135deg,#2bd9a0,#1a6cff)', 'linear-gradient(135deg,#ffd23a,#ff6a1a)', 'linear-gradient(135deg,#8e6bff,#3a1fb0)'];
 window.show = (id, t, params = {}, W = 1920, H = 1080, o = {}) => {
   Object.assign(root.style, { width: W + 'px', height: H + 'px' }); bg.style.background = plate(o.light); shots.innerHTML = ''; ov.innerHTML = '';
@@ -19,6 +19,6 @@ window.show = (id, t, params = {}, W = 1920, H = 1080, o = {}) => {
 /* every owned sticker in one grid (static, final frame) */
 window.stickerSheet = (W = 1920, H = 1080) => { Object.assign(root.style, { width: W + 'px', height: H + 'px' }); bg.style.background = '#26232f'; shots.innerHTML = ''; const cols = 11, cw = W / cols, ch = H / Math.ceil(STICKER_NAMES.length / cols);
   ov.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">` + STICKER_NAMES.map((n, i) => `<g transform="translate(${(i % cols) * cw + cw / 2 - 55} ${Math.floor(i / cols) * ch + 20}) scale(1.1)">${STICKERS[n]()}</g><text x="${(i % cols) * cw + cw / 2}" y="${Math.floor(i / cols) * ch + ch - 22}" fill="#ddd" font-family="Manrope" font-size="20" text-anchor="middle">${n}</text>`).join('') + '</svg>'; return STICKER_NAMES.length; };
-window.GFX_IDS = [...Object.keys(GFX), ...Object.keys(LAYOUTS)];
+window.GFX_IDS = [...Object.keys(GFX), ...Object.keys(LAYOUTS)]; window.SHOT_LAYOUTS = Object.keys(LAYOUTS);
 document.fonts.ready.then(() => { window.__ready = true; });
 </script></body></html>

@@ -24,6 +24,7 @@ templates/*/out/dev*/
 templates/*/out/*.wav
 templates/*/out/*.wav.json
 templates/*/out/render*.log
+templates/demo-type-layout/out/*.mp4
 objects/qa/*/log.txt
 objects/tools/tmp/
 **/tmp/chrome-*/

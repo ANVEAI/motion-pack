@@ -10,6 +10,7 @@
 - **Pin the version:** `npx --yes hyperframes@0.8.142 ...`. Everything in this file was measured on 0.8.142.
 - **The whole track drops if the AAC is too hot.** If the encoded AAC true peak is over -1 dBTP, HyperFrames lowers the entire track, and it logs this only with `--debug`. The 30 s ad lost 1 dB this way. The mixer's AAC probes catch it, so keep the WAV at -1.5 dBTP.
 - **GL in HyperFrames is proven with canvas sources only.** A `<video>` used as a WebGL texture during a render is untested, so draw video frames into a canvas or use the DOM back-end.
+- **A mix that starts on a hit can make HyperFrames lower the whole track by 4–5 dB.** HyperFrames re-encodes its AAC mix (AAC to AAC) before muxing; a full-level transient in the first ~15 ms overshoots by several dB in the second encode even when the WAV sits at −2 dBTP, and the whole track is then lowered (the demo-type-layout render dropped to −18.9 LUFS). Fade the first 40 ms in (`plan.fadeInMs: 40` in `templates/_shared/audio.py`) and set `plan.ceilingDb: -2.0` when UI clicks are dense; then check `Audio lowered by` in the render log.
 - **The GSAP binding is one paused proxy tween per transition window, driving `p` linearly.** The easing lives inside `applyDom`, so do not add an ease on the proxy.
 
 ## Transitions

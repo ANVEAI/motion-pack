@@ -36,3 +36,11 @@ export function anchor(pos, ctx, w = 0, h = 0) {
   const x = pos.includes('l') ? S.x0 : pos.includes('r') ? S.x1 - w : (S.x0 + S.x1 - w) / 2, y = pos.startsWith('t') ? S.y0 : pos.startsWith('b') ? S.y1 - h : (S.y0 + S.y1 - h) / 2;
   return [x, y];
 }
+/* measured advance width (2026-10-14): canvas measureText in a browser (exact for the loaded font; deterministic once fonts are ready),
+   the textW estimate in node. weight 200..800 (variable Manrope), ls = letter-spacing in px added per char. */
+let _mctx = null;
+export function measure(str, size, { weight = 700, font = FONT, ls = 0 } = {}) {
+  const s = String(str ?? '');
+  if (typeof document !== 'undefined') { _mctx ||= document.createElement('canvas').getContext('2d'); _mctx.font = `${weight} ${size}px ${font}`; return _mctx.measureText(s).width + ls * s.length; }
+  return textW(s, size, font === MONO ? 0.6 : weight >= 700 ? 0.56 : 0.52) + ls * s.length;
+}

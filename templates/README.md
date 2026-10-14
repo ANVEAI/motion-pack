@@ -11,6 +11,7 @@ A plan is a single JSON file, `out/plan.json`, containing shots, transitions wit
 | mime-style character spot 16 s (white world, one gag, one feature, end line, sting) | `character-spot/` | three.js (objects kit) | `../_shared/render3d.sh character-spot scene.html wide` | `out/character-spot-wide.mp4` -14.2 LUFS / -1.7 dBTP |
 | Talking-head / human edit (input MP4 + words.json: jump cuts, captions, B-roll, punch-ins, lower third) | `talking-head/` | HyperFrames | `node make.mjs [--set input=/abs/talk.mp4]` then render | `out/talking-head.mp4` 9:16, 6.5 s (input audio + SFX stem; no master pass) |
 | Music / beat edit (cuts from a BPM) | `beat-edit/` | HyperFrames | `node make.mjs [--set bpm=128]` then render | `out/beat-edit.mp4` 12 s at 120 BPM (15 f/beat), flash on section changes + scalePunch on the drop cuts, -14.8 LUFS / -1.6 dBTP |
+| Type + layout parts demo (sentence-led product film: collage, word wheel, inline media, mosaic, orbit, marquee, connector tags, cursor-to-mark end card) | `demo-type-layout/` | HyperFrames | `node make.mjs` then `hyperframes render . -o out/demo-type-layout.mp4 --crf 23` | 17.5 s, 120 BPM, -14.2 LUFS / -1.6 dBTP decoded (rendered 2026-10-14, CRF 23, 1.9 MB; the MP4 is not committed, rebuild it) |
 
 Run the three.js templates before `beat-edit` and `talking-head`, because those two use the 3D renders as their footage.
 

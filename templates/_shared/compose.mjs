@@ -2,7 +2,7 @@
    stage(dir, { media: [abs paths], layers: true }) hard-links into <dir>/assets/ (HyperFrames serves only the project dir):
      fonts (Manrope, IBM Plex Mono), mp/pack.mjs + mp/plan.mjs, the named media, and OTHER MODULES when they exist:
        motion-pack/layers/{overlay.js, ease.js, finisher.js, lib/*, presets/*}  -> assets/mp/layers/   (finishing overlays, by kind)
-       motion-pack/transitions/lib/{registry,tx-core,tx-dom,ids}.js -> assets/mp/transitions/lib/, motion-pack/type/*.js -> assets/mp/type/,
+       motion-pack/transitions/lib/{registry,tx-core,tx-dom,ids}.js -> assets/mp/transitions/lib/, motion-pack/type/*.js + type/gfx/*.js -> assets/mp/type/,
        plus _shared/adapters/{type,transitions}.mjs -> assets/mp/adapters/ (they register ids with MP.register)
      Missing modules are listed in the returned `todo` (the template still renders: hard cuts, plain fades, no layers).
    head({ W, H, title, bg }) -> the <head> with GSAP 3.14.2, @font-face for the shared fonts and the base clip CSS. */
@@ -19,7 +19,7 @@ export function stage(dir, { media = [], layers = false } = {}) {
   if (layers) { const L = path.join(PACK, 'layers'); if (fs.existsSync(path.join(L, 'overlay.js'))) for (const f of jsUnder(L).filter((f) => !/\/(demo|tests)\//.test(f))) link(f, path.join(A, 'mp', 'layers', path.relative(L, f))); else todo.push('layers/overlay.js (layers module) not found: finishing layers skipped'); }
   // TYPE module: its DOM back-end (type/dom.js) + our thin adapter that registers 'type/<preset>' ids with MP
   const TY = path.join(PACK, 'type');
-  if (fs.existsSync(path.join(TY, 'dom.js'))) { for (const f of fs.readdirSync(TY).filter((f) => /\.js$/.test(f))) link(path.join(TY, f), path.join(A, 'mp', 'type', f)); link(path.join(SH, 'adapters', 'type.mjs'), path.join(A, 'mp', 'adapters', 'type.mjs')); adapters.push('assets/mp/adapters/type.mjs'); }
+  if (fs.existsSync(path.join(TY, 'dom.js'))) { for (const f of fs.readdirSync(TY).filter((f) => /\.js$/.test(f))) link(path.join(TY, f), path.join(A, 'mp', 'type', f)); for (const f of fs.readdirSync(path.join(TY, 'gfx')).filter((f) => /\.js$/.test(f))) link(path.join(TY, 'gfx', f), path.join(A, 'mp', 'type', 'gfx', f)); link(path.join(SH, 'adapters', 'type.mjs'), path.join(A, 'mp', 'adapters', 'type.mjs')); adapters.push('assets/mp/adapters/type.mjs'); }
   else todo.push('type/dom.js (type module) not found: plain fades used');
   // TRANSITIONS module: lib/{registry,tx-core,tx-dom,ids}.js + our adapter that registers 'transitions/<id>' with MP. The template
   // stretches clips around each windowed cut (txplan.mjs span) so both shots are present; GL-only keys stay hard cuts (logged).

@@ -48,11 +48,14 @@ def via_music_mixer(P, out, bed, a):
     y, sr = sf.read(bed, always_2d=True); n = int(round(P['seconds'] * sr)) + sr
     if len(y) < n: y = np.concatenate([y] * (n // len(y) + 1), axis=0)[:n]
     bed_full = os.path.join(d, 'bed.wav'); sf.write(bed_full, y, sr, subtype='FLOAT')
-    sheet = {'fps': fps, 'length_s': P['seconds'], 'bed': {'file': bed_full, 'gain_db': P.get('musicGainDb', 0.0), 'loop': False}, 'cues': cues, 'master': {'lufs': a.target, 'ceiling_db': -1.5}}
+    sheet = {'fps': fps, 'length_s': P['seconds'], 'bed': {'file': bed_full, 'gain_db': P.get('musicGainDb', 0.0), 'loop': False}, 'cues': cues, 'master': {'lufs': a.target, 'ceiling_db': P.get('ceilingDb', -1.5)}}   # plan.ceilingDb: -2.0 when clicky transients push the delivered AAC over -1 dBTP
     sp = os.path.join(d, 'sheet.json'); json.dump(sheet, open(sp, 'w'))
     r = subprocess.run([sys.executable, os.path.join(MUSIC, 'mixer.py'), sp, '--out', d], capture_output=True, text=True, cwd=MUSIC)
     if r.returncode != 0: print(r.stdout[-2000:], r.stderr[-2000:]); raise SystemExit('music mixer failed')
     shutil.copyfile(os.path.join(d, 'master.wav'), out)
+    if P.get('fadeInMs'):   # a bed that starts on a hit leaves a step at sample 0; some AAC encoders overshoot it by several dB (HyperFrames then lowers the whole track)
+        import soundfile as sf
+        y, sr = sf.read(out, always_2d=True); info = sf.info(out); n = int(sr * P['fadeInMs'] / 1000); y[:n] *= (0.5 - 0.5 * np.cos(np.pi * np.arange(n) / n))[:, None]; sf.write(out, y, sr, subtype=info.subtype)
     rep = {'via': 'music/mixer.py', 'bed': P.get('music'), 'mixer_report': r.stdout[-3000:]}
     import soundfile as sf
     x, _ = sf.read(out)

@@ -4,6 +4,7 @@
 import { MP } from '../pack.mjs';
 import { PRESET_IDS } from '../type/presets.js';
 import { mountType, bakeType } from '../type/dom.js';
+import { GFX, mountGfx } from '../type/gfx/index.js';
 const strip = (s) => s.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
 for (const id of PRESET_IDS) {
   if (id === 'scramble') continue;   // the type module says scramble needs driveType (glyph swaps are not timeline-safe)
@@ -16,5 +17,17 @@ for (const id of PRESET_IDS) {
     const m = mountType(el, spec, { fontPx, H: ctx.H || 1080, font: { weight: +cs.fontWeight || 800, family: cs.fontFamily, tracking: -0.035, lineHeight: 1.02 } });
     if (ems.length) m.units.forEach((u) => { const k = ems.find(([w]) => w && strip(u.text) && w.includes(strip(u.text))); if (k) u.el.style.color = k[1]; });
     bakeType(tl, m, spec, { t0: ctx.at, dur: ctx.dur, fps: ctx.fps || 30 });
+  });
+}
+
+/* the SVG kinetic pieces (type/gfx/kinetic.js: wordWheel, inlineMedia, letterAssemble, glyphMorphCursor, marquee, bleedWord) under the same 'type/<name>' ids.
+   They are full-frame SVG, re-rendered on every hf-seek (pure functions of t). ctx: { el, at, dur, params, W, H }; the element's text fills params.text when unset. */
+for (const gid of Object.keys(GFX).filter((k) => k.startsWith('type.'))) {
+  MP.register('type/' + gid.slice(5), (tl, ctx) => {
+    const el = typeof ctx.el === 'string' ? document.querySelector(ctx.el) : ctx.el; if (!el) return;
+    const params = { ...(ctx.params || {}) }; if (params.text == null && el.textContent.trim() && 'text' in GFX[gid].d) params.text = el.textContent.trim(); el.textContent = '';
+    Object.assign(el.style, { position: 'absolute', inset: '0' });
+    const st = mountGfx(el, [{ id: gid, at: ctx.at, dur: ctx.dur, params }], { W: ctx.W || 1920, H: ctx.H || 1080 }), f = (t) => st.render(t);
+    window.addEventListener('hf-seek', (e) => f(e.detail.time)); f(window.__hfThreeTime || 0);
   });
 }

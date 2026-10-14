@@ -196,7 +196,8 @@ TPL = {'ad': ('Ad 15/30 s: hook, problem, product, proof, CTA', 'out/ad-15.mp4',
        'film-scene': ('Animated short-film scene', 'out/film-scene-wide.mp4', 'out/film-scene-wide-sheet.jpg'),
        'character-spot': ('mime-style character spot 16 s', 'out/character-spot-wide.mp4', 'out/character-spot-wide-sheet.jpg'),
        'talking-head': ('Talking-head / human edit (9:16)', 'out/talking-head.mp4', 'out/sheet.jpg'),
-       'beat-edit': ('Music / beat edit', 'out/beat-edit.mp4', 'out/sheet.jpg')}
+       'beat-edit': ('Music / beat edit', 'out/beat-edit.mp4', 'out/sheet.jpg'),
+       'demo-type-layout': ('Type + layout parts demo 17.5 s (sentence-led product film)', 'out/demo-type-layout.mp4', 'out/sheet.jpg')}   # MP4 not committed: rebuild it
 IDRX = re.compile(r"['\"`]((?:transitions|sfx|music|type)/[A-Za-z0-9_./-]+)['\"`]")
 for k, (name, vid, sheet) in TPL.items():
     cfg = open(os.path.join(PACK, 'templates', k, 'config.mjs')).read()
