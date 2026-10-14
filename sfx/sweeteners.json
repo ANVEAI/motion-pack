@@ -228,6 +228,20 @@
    "over_bed_db": -2.0
   }
  ],
+ "ditherDissolve": [
+  {
+   "id": "snd.tx.glitch_stutter",
+   "anchor": "start",
+   "tier": 2,
+   "over_bed_db": 1.0
+  },
+  {
+   "id": "snd.sizzle.grain",
+   "anchor": "mid",
+   "tier": 3,
+   "over_bed_db": -2.0
+  }
+ ],
  "blinds": [
   {
    "id": "snd.paper.flip",

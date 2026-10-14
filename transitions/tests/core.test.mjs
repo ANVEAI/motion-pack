@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { EASES, ease, snapBpm, txWindow, progressAt, speedRamp, RAMP_PRESETS, matchPose, poseToCss, resolveParams } from '../lib/tx-core.js';
 import { planEdits, stateAt, lintPlan } from '../lib/sequence.js';
 import { REGISTRY } from '../lib/registry.js';
+import { bayerIndex, ditherOrder, ditherState } from '../lib/tx-dom-x.js';
 let n = 0; const t = (name, f) => { f(); n++; console.log('ok', name); };
 
 t('eases hit 0 and 1 and are deterministic', () => { for (const [k, f] of Object.entries(EASES)) { assert.ok(Math.abs(f(0)) < 1e-6, k); assert.ok(Math.abs(f(1) - 1) < 1e-6, k); assert.equal(f(0.37), f(0.37)); } });
@@ -27,4 +28,11 @@ t('sequence: swap on the cut, overlap lint', () => {
   const plan = planEdits([{ cut_s: 1, key: 'whip' }, { cut_s: 2, key: 'flash' }], { bpm: 120 });
   assert.deepEqual(stateAt(0.2, plan), { shot: 0 }); assert.equal(stateAt(1, plan).p, REGISTRY.whip.timing.cut); assert.deepEqual(stateAt(3, plan), { shot: 2 });
   assert.equal(lintPlan(plan).length, 0); assert.equal(lintPlan(planEdits([{ cut_s: 1, key: 'ink' }, { cut_s: 1.2, key: 'ink' }])).length, 1); });
+t('ditherDissolve: Bayer matrices, block order and states (A -> accent -> B, never back)', () => {
+  assert.deepEqual([0, 1, 2, 3].map(y => [0, 1, 2, 3].map(x => bayerIndex(x, y, 2))), [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]);
+  const m8 = new Set(); for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) m8.add(bayerIndex(x, y, 3)); assert.equal(m8.size, 64);
+  const P = { ...Object.fromEntries(Object.entries(REGISTRY.ditherDissolve.params).map(([k, s]) => [k, s.default])) }, g = { w: 1920, h: 1080, cs: 24 }, count = (e) => { const c = [0, 0, 0]; for (let y = 0; y < 45; y++) for (let x = 0; x < 80; x++) c[ditherState(ditherOrder(x, y, P, g), e, P.band)]++; return c; };
+  assert.deepEqual(count(0), [3600, 0, 0]); assert.deepEqual(count(1), [0, 0, 3600]); const mid = count(REGISTRY.ditherDissolve.timing.cut); assert.ok(mid[1] > 1800, 'most blocks are accent on the cut');
+  for (let y = 0; y < 45; y += 7) for (let x = 0; x < 80; x += 9) { const v = ditherOrder(x, y, P, g); assert.ok(v > 0 && v < 1); let prev = 0; for (let i = 0; i <= 60; i++) { const s = ditherState(v, i / 60, P.band); assert.ok(s >= prev); prev = s; } }
+  assert.equal(ditherOrder(5, 7, P, g), ditherOrder(5, 7, P, g)); });
 console.log(`${n} tests passed`);

@@ -45,7 +45,11 @@ export function drawType(g, spec, t, { W, H }) {
     g.globalAlpha = clamp(s.opacity); if (s.blur > 0.3) g.filter = `blur(${(s.blur * S).toFixed(2)}px)`;
     const wght = s.wght ?? font.weight; g.font = fontStr(font, fontPx, Math.round(wght)); g.letterSpacing = ((font.tracking + s.track) * fontPx).toFixed(2) + 'px';
     const txt = s.glyph ?? u.text, ox = -u.w / 2; if (s.glyph) { const gw = g.measureText(txt).width; if (gw > u.w * 1.02) g.scale(u.w / gw, 1); }
-    if (s.rgb > 0.1) { const d = s.rgb * S; g.globalCompositeOperation = 'lighter'; for (const [c, dx] of [['#ff0040', -d], ['#00ff90', 0], ['#2060ff', d]]) { g.fillStyle = c; g.fillText(txt, ox + dx, fontPx * 0.36); } } else { g.fillStyle = (spec.colors && spec.colors[u.wordIndex]) || spec.color || '#111111'; g.fillText(txt, ox, fontPx * 0.36); }
+    if (s.rgb > 0.1) { const d = s.rgb * S; g.globalCompositeOperation = 'lighter'; for (const [c, dx] of [['#ff0040', -d], ['#00ff90', 0], ['#2060ff', d]]) { g.fillStyle = c; g.fillText(txt, ox + dx, fontPx * 0.36); } }
+    else if (s.fill != null) { const col = (spec.colors && spec.colors[u.wordIndex]) || spec.color || '#111111', a = g.globalAlpha;   // outline presets: stroke (centred, like -webkit-text-stroke) + partial fill
+      if (s.fill > 0.002) { g.globalAlpha = a * clamp(s.fill); g.fillStyle = col; g.fillText(txt, ox, fontPx * 0.36); g.globalAlpha = a; }
+      if (s.stroke > 0.0005) { g.lineWidth = s.stroke * fontPx; g.lineJoin = 'round'; g.strokeStyle = col; g.strokeText(txt, ox, fontPx * 0.36); } }
+    else { g.fillStyle = (spec.colors && spec.colors[u.wordIndex]) || spec.color || '#111111'; g.fillText(txt, ox, fontPx * 0.36); }
     g.restore(); });
   if (R.caret && R.caret.on) { const vis = R.states.map((s, i) => (s.opacity > 0.5 ? i : -1)).filter((i) => i >= 0), last = vis.length ? units[vis[vis.length - 1]] : null, u = last || units[0], x = last ? ax + u.x + u.w + fontPx * 0.04 : ax, y = rowTop(u.line); g.globalAlpha = 1; g.fillStyle = spec.color || '#111'; g.fillRect(x, y + fontPx * 0.08, fontPx * 0.07, fontPx * 0.82); }
   g.restore(); return { units, lines, R };

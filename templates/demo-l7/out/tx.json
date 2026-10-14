@@ -1,0 +1,23 @@
+[
+ {
+  "i": 8,
+  "id": "transitions/ditherDissolve",
+  "key": "ditherDissolve",
+  "params": {
+   "cell": 30,
+   "sweep": 0.3
+  },
+  "cutF": 315,
+  "startF": 307,
+  "endF": 322,
+  "cut": 10.5,
+  "start": 10.233333333333333,
+  "end": 10.733333333333333,
+  "out": [
+   "#s5"
+  ],
+  "in": [
+   "#s6"
+  ]
+ }
+]

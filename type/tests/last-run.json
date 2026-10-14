@@ -1,10 +1,10 @@
 {
  "name": "type",
- "total": 26,
+ "total": 28,
  "failed": 0,
  "rows": [
   {
-   "label": "all 14 presets: same state for the same t in any order; finite for t in [-3 .. 1e4]",
+   "label": "all 15 presets: same state for the same t in any order; finite for t in [-3 .. 1e4]",
    "pass": true,
    "detail": ""
   },
@@ -37,6 +37,16 @@
    "label": "weightMorph reaches wght 800 at 18 f",
    "pass": true,
    "detail": ""
+  },
+  {
+   "label": "outlineFill: outline only (fill 0, stroke 0.022 em) by 7 f and still at 14 f, fills over f 15-27, settles solid (fill 1, stroke 0) at 30 f; word i starts i x 5 f; line unit works; DOM + canvas know fill/stroke",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "outlineFill honours the reading-time lint: the default hold passes; an out before the last word has filled + 9 f is flagged",
+   "pass": true,
+   "detail": "[[],[\"fully formed hold -7 f < 9 f\"]]"
   },
   {
    "label": "exits are 30% faster than entrances (dur x 0.7) and finish with opacity 0",
@@ -119,9 +129,9 @@
    "detail": "{}"
   },
   {
-   "label": "DOM bakeType: random-access seeks reproduce the pure states for 7 presets (opacity, x, y, scale)",
+   "label": "DOM bakeType: random-access seeks reproduce the pure states for 8 presets (opacity, x, y, scale; --mp-fill for outlineFill)",
    "pass": true,
-   "detail": "maskRise:0.0e+0 charStagger:0.0e+0 scaleSlam:0.0e+0 blurIn:0.0e+0 weightMorph:0.0e+0 flipSplit:0.0e+0 typewriter:0.0e+0"
+   "detail": "maskRise:0.0e+0 charStagger:0.0e+0 scaleSlam:0.0e+0 blurIn:0.0e+0 weightMorph:0.0e+0 flipSplit:0.0e+0 typewriter:0.0e+0 outlineFill:0.0e+0"
   },
   {
    "label": "DOM bakeCaptions: random-access seeks match captionFrame (worst 2.5e-5, 9 live chunk checks)",

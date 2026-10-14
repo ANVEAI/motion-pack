@@ -18,9 +18,10 @@ import { windowEnv } from './ease.js';
 import { hexRGB, dec, pad, leakParams, leakIntensity } from './lib/fx-params.js';
 import { Fx2Layer, FX2_KINDS } from './fx2.js';
 import { Canvas2DLayer, K2D } from './canvas2d.js';
-/* every mountable kind: the 9 core kinds below + fx2.js (GL procedural) + canvas2d.js (particles, HUD frames, audio-reactive) */
-export const ALL_KINDS = () => ({ ...KINDS, ...FX2_KINDS, ...K2D });
-const makeLayer = (c, kind, params, o) => (KINDS[kind] ? new OverlayLayer(c, kind, params, o) : FX2_KINDS[kind] ? new Fx2Layer(c, kind, params, o) : K2D[kind] ? new Canvas2DLayer(c, kind, params, o) : (() => { throw new Error('unknown overlay kind ' + kind); })());
+import { BackgroundLayer, BG } from './backgrounds.js';
+/* every mountable kind: the 9 core kinds below + fx2.js (GL procedural) + canvas2d.js (particles, HUD frames, audio-reactive) + backgrounds.js (opaque fields, order 1) */
+export const ALL_KINDS = () => ({ ...KINDS, ...FX2_KINDS, ...K2D, ...BG });
+const makeLayer = (c, kind, params, o) => (KINDS[kind] ? new OverlayLayer(c, kind, params, o) : FX2_KINDS[kind] ? new Fx2Layer(c, kind, params, o) : K2D[kind] ? new Canvas2DLayer(c, kind, params, o) : BG[kind] ? new BackgroundLayer(c, kind, params, o) : (() => { throw new Error('unknown overlay kind ' + kind); })());
 
 export const KINDS = {
   grain:     { id: 0, blend: 'overlay',  order: 70, tags: ['grain', 'film', 'texture'] },

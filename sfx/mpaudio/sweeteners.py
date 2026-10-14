@@ -36,6 +36,8 @@ TABLE = {
     "pagePeel": [("snd.paper.flip", "mid", 3, 1.0)],
     "pixelSort": [("snd.tx.glitch_stutter", "start", 2, 2.0), ("snd.sizzle.grain", "start", 3, -2.0)],
     "dip": [("snd.tx.dip_to_black", "start", 2, -2.0)],                     # transitions/ id for dipToBlack
+    # 2026-10-14: blocks break up on a stutter, the grain sizzle carries them through the cut (same ids as the catalog's sfx list)
+    "ditherDissolve": [("snd.tx.glitch_stutter", "start", 2, 1.0), ("snd.sizzle.grain", "mid", 3, -2.0)],
 }
 ENERGY_HIGH_EXTRA = {"hardCut": ("snd.hit.low_thump", "start", 3, 2.0)}   # hard cut at energy >= 0.7 also gets a low thump
 

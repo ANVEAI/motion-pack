@@ -948,5 +948,24 @@
   "same": true,
   "qa_hash": "5029900e8fac7870",
   "qa_pass": true
+ },
+ "ditherDissolve": {
+  "stills": {
+   "f0011.png": {
+    "run1": "5044396207cddaae",
+    "run2": "5044396207cddaae"
+   },
+   "f0015.png": {
+    "run1": "360d1832c335d852",
+    "run2": "360d1832c335d852"
+   },
+   "f0020.png": {
+    "run1": "50dd46d66a46707b",
+    "run2": "50dd46d66a46707b"
+   }
+  },
+  "same": true,
+  "qa_hash": "4b6de4c391e7c11a",
+  "qa_pass": true
  }
 }

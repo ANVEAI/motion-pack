@@ -2099,6 +2099,127 @@
    "test": "layers/tools/log_cubes.py"
   },
   {
+   "id": "look.duotone",
+   "file": "layers/stylize.js",
+   "kind": "look-filter",
+   "backend": "svg-filter | canvas | cube",
+   "tags": [
+    "duotone",
+    "archive",
+    "blueprint",
+    "accent",
+    "two-colour",
+    "launch"
+   ],
+   "params": {
+    "dark": "#4A18ED",
+    "light": "#F5F2EA",
+    "contrast": 1,
+    "pivot": 0.5
+   },
+   "doc": "luminance -> two colours: shadow -> dark, highlight -> light; contrast about pivot. Swap the colours for white line art on an accent field.",
+   "demo": "layers/demo/out/l7-sheet.png",
+   "test": "layers/tests/l7.test.mjs"
+  },
+  {
+   "id": "look.threshold1bit",
+   "file": "layers/stylize.js",
+   "kind": "look-filter",
+   "backend": "svg-filter | canvas",
+   "tags": [
+    "threshold",
+    "1-bit",
+    "dither",
+    "bayer",
+    "print",
+    "archive"
+   ],
+   "params": {
+    "threshold": 0.5,
+    "dither": "bayer4",
+    "dark": "#111111",
+    "light": "#F5F2EA",
+    "cell": 2,
+    "spread": 1
+   },
+   "doc": "1-bit two-colour threshold; dither none | bayer4 | bayer8 (ordered), cell = dither cell in px at 1080p, spread = dither amplitude (1 = classic ordered dither).",
+   "demo": "layers/demo/out/l7-sheet.png",
+   "test": "layers/tests/l7.test.mjs"
+  },
+  {
+   "id": "background.gridTunnel",
+   "file": "layers/backgrounds.js",
+   "kind": "background",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "grid",
+    "tunnel",
+    "perspective",
+    "wireframe",
+    "background",
+    "launch",
+    "tech"
+   ],
+   "params": {
+    "color": "#4A18ED",
+    "bg": "#F5F2EA",
+    "lines": 8,
+    "depth": 12,
+    "drift": 0.5,
+    "zoom": 0,
+    "vp": [
+     0.5,
+     0.5
+    ],
+    "width": 2,
+    "fade": 0.9,
+    "intensity": 1
+   },
+   "doc": "lines = longitudinal lines per wall, depth = rings in view, drift = rings per second towards the camera (0 = still), zoom = focal growth per second, vp = vanishing point (fractions), width = line px @1080, fade = fog at the vanishing point",
+   "demo": "layers/demo/out/l7-sheet.png",
+   "test": "layers/tests/l7.test.mjs"
+  },
+  {
+   "id": "background.dotGrid",
+   "file": "layers/backgrounds.js",
+   "kind": "background",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "dots",
+    "grid",
+    "pattern",
+    "background",
+    "glow",
+    "tech",
+    "clean"
+   ],
+   "params": {
+    "color": "#4A18ED",
+    "bg": "#F5F2EA",
+    "spacing": 36,
+    "radius": 3,
+    "drift": [
+     0,
+     0
+    ],
+    "fade": 0.5,
+    "hole": 0,
+    "glow": 0.5,
+    "glowColor": null,
+    "glowAt": [
+     0.5,
+     0.5
+    ],
+    "glowRadius": 0.55,
+    "intensity": 1
+   },
+   "doc": "spacing / radius px @1080; drift px/s @1080; fade = dots fade toward the edges (0..1); hole = clear radius around glowAt (fraction of H) for type; glow = radial gradient strength behind the dots (glowColor defaults to color, glowRadius fraction of the frame diagonal)",
+   "demo": "layers/demo/out/l7-sheet.png",
+   "test": "layers/tests/l7.test.mjs"
+  },
+  {
    "id": "hf.integration",
    "file": "layers/demo/hf/index.html",
    "kind": "demo",

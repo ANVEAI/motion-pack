@@ -2,13 +2,14 @@
    A preset animates "units" (word | char | line | block). For unit i of n at time t (seconds, from the spec's `at`):
        enter progress  p = seg(t - at - delay_i, 0, dur),  e = ease(p)            -> enter(e)
        exit  progress  q = seg(t - out - delayOut_i, 0, dur * 0.7),  eo = E.exit(q) -> exit(eo)       (exits are 30% faster than entrances and accelerate)
-   and the result is a unit state { x, y (em), scale, rot, rotX (deg), opacity, clip (0..1, left to right), track (em), wght, blur (px @1080), glyph, rgb (px split), shake [px,px] }.
+   and the result is a unit state { x, y (em), scale, rot, rotX (deg), opacity, clip (0..1, left to right), track (em), wght, blur (px @1080), glyph, rgb (px split), shake [px,px],
+   fill (0..1 glyph fill opacity, null = solid) , stroke (outline width in em, null = none) }.
    Renderers: type/render-canvas.js (2D canvas, three.js overlay), type/dom.js (DOM spans baked to a GSAP timeline or driven from hf-seek). Same numbers in both.
    Numbers (frames at 30 fps) come from the pack research (visual.md section 4); every preset has tone + tags for the planner.                                                  */
 import { E, clamp, lerp, seg, TAU, mulberry32, sines } from './ease.js';
 
 const F = 1 / 30;
-export const SHOWN = Object.freeze({ x: 0, y: 0, scale: 1, rot: 0, rotX: 0, opacity: 1, clip: 1, track: 0, wght: null, blur: 0, glyph: null, rgb: 0, shake: [0, 0] });
+export const SHOWN = Object.freeze({ x: 0, y: 0, scale: 1, rot: 0, rotX: 0, opacity: 1, clip: 1, track: 0, wght: null, blur: 0, glyph: null, rgb: 0, shake: [0, 0], fill: null, stroke: null });
 export const mergeState = (a) => ({ ...SHOWN, shake: [0, 0], ...a });
 /* closed-form damped spring residual (kit util): 1 at tau=0, -> 0, overshoots below 0 when zeta < 1 */
 const springU = (tau, zeta, hz) => { if (tau <= 0) return 1; const w = TAU * hz, wd = w * Math.sqrt(Math.max(1e-6, 1 - zeta * zeta)); return Math.exp(-zeta * w * tau) * (Math.cos(wd * tau) + ((zeta * w) / wd) * Math.sin(wd * tau)); };
@@ -53,6 +54,12 @@ export const PRESETS = {
   /* RGB glitch split on a hit: offset +-8 px, 6 f; trigger with params.hits (seconds); idle otherwise */
   glitchSplit: { unit: 'line', dur: 8 * F, stagger: 0, ease: E.lin, tone: 'deconstructed', tags: ['glitch', 'hype', 'cyber', 'retro'],
     enter: (e, c) => { const h = c.params.hits || [], d = h.map((x) => c.tAbs - x).filter((x) => x >= 0 && x <= 6 * F)[0]; return { opacity: c.p > 0 ? 1 : 0, rgb: d == null ? 0 : 8 * (1 - d / (6 * F)), x: d == null ? 0 : 0.01 * Math.sin(d * 120) }; }, exit: (e) => ({ opacity: 1 - e }) },
+  /* outline -> fill (2026-10-14): each unit fades in as an OUTLINE (stroke only, 0.022 em) over 7 f, holds as an outline to f 15, then fills solid
+     (f 15 -> 27, E.move) while the stroke thins away (f 24 -> 30), so the settled state is the plain solid glyph. Word by default; spec.unit 'line' for per line.
+     params.stroke (em) overrides the outline width. Exit runs it backwards: fill drains, then the outline fades. */
+  outlineFill: { unit: 'word', dur: 30 * F, stagger: 5 * F, ease: E.lin, tone: 'calm-sharp', tags: ['headline', 'reveal', 'outline', 'manifesto', 'launch', 'title'], outline: true,
+    enter: (e, c) => { const w = c.params.stroke ?? 0.022, o = E.enter(seg(e, 0, 7 / 30)); return { opacity: o, y: 0.06 * (1 - o), fill: E.move(seg(e, 15 / 30, 27 / 30)), stroke: w * (1 - seg(e, 24 / 30, 1)) }; },
+    exit: (e, c) => { const w = c.params.stroke ?? 0.022; return { fill: 1 - seg(e, 0, 0.55), stroke: w * seg(e, 0, 0.15), opacity: 1 - seg(e, 0.55, 1) }; } },
 };
 export const PRESET_IDS = Object.keys(PRESETS);
 

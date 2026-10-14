@@ -237,6 +237,25 @@
    "test": "type/tests/type.test.mjs"
   },
   {
+   "id": "type.outlineFill",
+   "file": "type/presets.js",
+   "kind": "kinetic-preset",
+   "unit": "word",
+   "dur_frames": 30,
+   "stagger_frames": 5,
+   "tone": "calm-sharp",
+   "tags": [
+    "headline",
+    "reveal",
+    "outline",
+    "manifesto",
+    "launch",
+    "title"
+   ],
+   "demo": "type/demo/out/presets-outline.png",
+   "test": "type/tests/type.test.mjs"
+  },
+  {
    "id": "caption.karaoke",
    "file": "type/captions.js",
    "kind": "caption-style",

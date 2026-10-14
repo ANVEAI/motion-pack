@@ -1,0 +1,266 @@
+{
+ "template": "demo-l7",
+ "fps": 30,
+ "seconds": 14.8,
+ "music": "music/bed_anthem_build_loop8",
+ "size": [
+  1920,
+  1080
+ ],
+ "shots": [
+  {
+   "id": "s1",
+   "kind": "line",
+   "dur": 2.5,
+   "bg": {
+    "kind": "gridTunnel",
+    "params": {
+     "color": "#4A18ED",
+     "bg": "#F5F2EA",
+     "lines": 8,
+     "depth": 12,
+     "drift": 0.6,
+     "zoom": 0.03
+    }
+   },
+   "text": "Every tool started as a sketch.",
+   "type": "type/maskRise",
+   "size": 88,
+   "color": "#111111",
+   "start": 0
+  },
+  {
+   "id": "s2a",
+   "kind": "still",
+   "dur": 0.5,
+   "src": "blender/previews/03-explode-16x9.jpg",
+   "look": [
+    "duotone",
+    {
+     "dark": "#4A18ED",
+     "light": "#F5F2EA",
+     "contrast": 2.4,
+     "pivot": 0.22
+    }
+   ],
+   "tx": "transitions/cut",
+   "start": 2.5
+  },
+  {
+   "id": "s2b",
+   "kind": "still",
+   "dur": 0.5,
+   "src": "blender/previews/01-turntable-16x9.jpg",
+   "look": [
+    "duotone",
+    {
+     "dark": "#F5F2EA",
+     "light": "#4A18ED",
+     "contrast": 2,
+     "pivot": 0.2
+    }
+   ],
+   "tx": "transitions/cut",
+   "start": 3
+  },
+  {
+   "id": "s2c",
+   "kind": "still",
+   "dur": 0.5,
+   "src": "blender/previews/02-macro-16x9.jpg",
+   "look": [
+    "duotone",
+    {
+     "dark": "#4A18ED",
+     "light": "#F5F2EA",
+     "contrast": 1.8,
+     "pivot": 0.3
+    }
+   ],
+   "tx": "transitions/cut",
+   "start": 3.5
+  },
+  {
+   "id": "s3",
+   "kind": "line",
+   "dur": 2.5,
+   "bg": {
+    "kind": "dotGrid",
+    "params": {
+     "color": "#4A18ED",
+     "bg": "#F5F2EA",
+     "spacing": 34,
+     "radius": 3,
+     "hole": 0.3,
+     "glow": 0.55,
+     "fade": 0.6
+    }
+   },
+   "text": "It looked <em>impossible.</em>",
+   "type": "type/weightMorph",
+   "size": 150,
+   "color": "#111111",
+   "tx": "transitions/cut",
+   "start": 4
+  },
+  {
+   "id": "s4a",
+   "kind": "clip",
+   "dur": 0.5,
+   "src": "templates/_shared/media/plate-devices.mp4",
+   "mediaStart": 1.2,
+   "look": [
+    "threshold1bit",
+    {
+     "dither": "bayer8",
+     "cell": 3,
+     "threshold": 0.62,
+     "dark": "#111111",
+     "light": "#F5F2EA"
+    }
+   ],
+   "tx": "transitions/cut",
+   "start": 6.5
+  },
+  {
+   "id": "s4b",
+   "kind": "still",
+   "dur": 0.5,
+   "src": "blender/previews/05-liquid-16x9.jpg",
+   "look": [
+    "threshold1bit",
+    {
+     "dither": "bayer4",
+     "cell": 4,
+     "threshold": 0.32,
+     "dark": "#4A18ED",
+     "light": "#F5F2EA"
+    }
+   ],
+   "tx": "transitions/cut",
+   "start": 7
+  },
+  {
+   "id": "s5",
+   "kind": "line",
+   "dur": 3,
+   "bg": null,
+   "text": "Until it <em>shipped.</em>",
+   "type": "type/outlineFill",
+   "size": 250,
+   "color": "#111111",
+   "noOut": true,
+   "tx": "transitions/cut",
+   "start": 7.5
+  },
+  {
+   "id": "s6",
+   "kind": "clip",
+   "dur": 1.5,
+   "src": "templates/_shared/media/plate-cast.mp4",
+   "mediaStart": 0.6,
+   "tx": "transitions/ditherDissolve",
+   "txReason": "CONTRAST: the claim breaks into accent blocks and clears onto the people it was for",
+   "txParams": {
+    "cell": 30,
+    "sweep": 0.3
+   },
+   "start": 10.5
+  },
+  {
+   "id": "s7",
+   "kind": "end",
+   "dur": 2.8,
+   "hold": true,
+   "title": "Your launch",
+   "sub": "· 2026",
+   "type": "type/trackingCollapse",
+   "subType": "type/blurIn",
+   "tx": "transitions/cut",
+   "start": 12
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 2.5,
+   "gainDb": -6,
+   "why": "archive cut s2a"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 3,
+   "gainDb": -6,
+   "why": "archive cut s2b"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 3.5,
+   "gainDb": -6,
+   "why": "archive cut s2c"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 4,
+   "gainDb": -4,
+   "why": "line 2 lands"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 6.5,
+   "gainDb": -6,
+   "why": "archive cut s4a"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 7,
+   "gainDb": -6,
+   "why": "archive cut s4b"
+  },
+  {
+   "id": "sfx/hit/low_thump",
+   "t": 7.5,
+   "gainDb": -2,
+   "why": "line 3: the big outline"
+  },
+  {
+   "id": "sfx/tx/glitch_stutter",
+   "t": 10.2,
+   "gainDb": -1,
+   "why": "sweetener ditherDissolve"
+  },
+  {
+   "id": "sfx/sizzle/grain",
+   "t": 10.466667,
+   "gainDb": -2,
+   "why": "sweetener ditherDissolve"
+  },
+  {
+   "id": "sfx/logo/ascend_land",
+   "t": 12,
+   "gainDb": 0,
+   "why": "end title"
+  }
+ ],
+ "claims": [],
+ "paceRule": {
+  "aslMax": 2.5,
+  "longMax": 3.1
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 10,
+   "asl": 1.48,
+   "longest": 3,
+   "pass": true
+  },
+  "type": {
+   "Every tool started as a sketch.": [],
+   "It looked impossible.": [],
+   "Until it shipped.": []
+  },
+  "piece": []
+ }
+}

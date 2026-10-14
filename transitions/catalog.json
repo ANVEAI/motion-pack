@@ -4124,6 +4124,122 @@
     "stills": "renders/stills/overexposure",
     "qa": "renders/qa/overexposure.json"
    }
+  },
+  {
+   "key": "ditherDissolve",
+   "id": "tx.ditherDissolve",
+   "name": "Dither dissolve (accent pixel blocks)",
+   "backends": [
+    "gl",
+    "dom"
+   ],
+   "credit": "ordered (Bayer) dithering, B. E. Bayer (1973); GLSL and DOM written for this pack",
+   "timing": {
+    "ms": 600,
+    "beats": 1,
+    "cut": 0.5,
+    "ease": "linear",
+    "frames_30fps": 18,
+    "frames_24fps": 14,
+    "frames_on_beat": {
+     "90": 20,
+     "100": 18,
+     "120": 15,
+     "128": 14,
+     "140": 13
+    }
+   },
+   "params": {
+    "cell": {
+     "type": "float",
+     "default": 24,
+     "min": 4,
+     "max": 120,
+     "doc": "block size in px at 1080p (scaled by height)"
+    },
+    "matrix": {
+     "type": "enum",
+     "default": "bayer8",
+     "opts": [
+      "bayer4",
+      "bayer8"
+     ],
+     "doc": "ordered-dither matrix that sets the block order"
+    },
+    "color": {
+     "type": "color",
+     "default": "#4A18ED",
+     "doc": "accent colour of a block in flight"
+    },
+    "band": {
+     "type": "float",
+     "default": 0.3,
+     "min": 0.05,
+     "max": 0.8,
+     "doc": "share of the window each block spends as an accent block"
+    },
+    "sweep": {
+     "type": "float",
+     "default": 0.35,
+     "min": 0,
+     "max": 1,
+     "doc": "directional bias of the order: 0 = pure ordered dither, 1 = a clean blocky wipe"
+    },
+    "dir": {
+     "type": "vec2",
+     "default": [
+      1,
+      0
+     ],
+     "doc": "sweep direction (designer space)"
+    },
+    "jitter": {
+     "type": "float",
+     "default": 0.15,
+     "min": 0,
+     "max": 1,
+     "doc": "seeded per-block noise mixed into the order"
+    }
+   },
+   "sfx": [
+    {
+     "id": "sfx/tx/glitch_stutter",
+     "at": "start",
+     "offset_f": 0,
+     "gain_db": -1
+    },
+    {
+     "id": "sfx/sizzle/grain",
+     "at": "cut",
+     "offset_f": 0,
+     "gain_db": -2
+    }
+   ],
+   "reasons": [
+    "CONTRAST",
+    "REVEAL",
+    "ENERGY"
+   ],
+   "tags": [
+    "dither",
+    "pixel",
+    "blocks",
+    "disintegrate",
+    "bayer",
+    "tech",
+    "manifesto"
+   ],
+   "use": "A line or an image breaks into accent pixel blocks and clears into the next shot (\"the old idea falls apart\"); the same window read the other way assembles a title out of blocks. As a type exit, make B the bare background.",
+   "avoid": "Soft emotional beats; more than once per 15 s; blocks under 8 px at 9:16 (they read as compression noise).",
+   "gl": true,
+   "dom": true,
+   "dom_approx": false,
+   "demo": {
+    "mp4": "renders/ditherDissolve.mp4",
+    "mp4_9x16": null,
+    "stills": "renders/stills/ditherDissolve",
+    "qa": "renders/qa/ditherDissolve.json"
+   }
   }
  ]
 }

@@ -1,10 +1,10 @@
 # motion-pack / transitions
 
-47 owned, deterministic transitions for every kind of video we make (ads, launch films, mime-style spots,
-beat edits, talking heads, short films): the original 23 plus 24 added on 2026-10-13 (ripple, swirl, crossWarp, directionalWarp,
+48 owned, deterministic transitions for every kind of video we make (ads, launch films, mime-style spots,
+beat edits, talking heads, short films): the original 23, 24 added on 2026-10-13 (ripple, swirl, crossWarp, directionalWarp,
 cube, doorway, kaleido, hexagonalize, windowSlice, blinds, squeeze, polkaDots, tvStatic, burnOut, dreamyZoom, linearBlur, gridFlip,
-bookFlip, pinwheel, radial, waterDrop, wind, luminanceMelt, overexposure). Since 2026-10-13 every visual transition also plays in DOM
-templates: 23 have a real DOM back-end and the other 23 GL-only looks run a DOM approximation (`lib/tx-dom-x.js` APPROX, `dom~` below),
+bookFlip, pinwheel, radial, waterDrop, wind, luminanceMelt, overexposure) and `ditherDissolve` (2026-10-14: the frame breaks into accent pixel blocks in an ordered-dither order and clears into the next shot; GL and a real DOM back-end, paired sound `sfx/tx/glitch_stutter` + `sfx/sizzle/grain`). Since 2026-10-13 every visual transition also plays in DOM
+templates: 24 have a real DOM back-end and the other 23 GL-only looks run a DOM approximation (`lib/tx-dom-x.js` APPROX, `dom~` below),
 so DOM templates no longer hard-cut on them. All 58 ffmpeg xfade modes + `custom` are pack ids too (`transitions/xfade-<mode>`, `lib/xfade.js`). Every one renders from `p` (or `t`) alone, so it is seek-safe in
 HyperFrames 0.8.142, in the three.js studio kit and in the spec-to-loop renderer. All GLSL and JS here is ours;
 gl-transitions (gl-transitions.com, MIT) was read for vocabulary; the 2026-10-13 shaders are our own GLSL for effects that collection named, and each entry's `credit` field names the original idea's author. Nothing vendored. No media files are used.
@@ -14,12 +14,12 @@ gl-transitions (gl-transitions.com, MIT) was read for vocabulary; the 2026-10-13
 | path | what |
 |---|---|
 | `lib/registry.js` | **source of truth**: params + defaults, beat-grid timing, sound pairing, edit grammar, tags |
-| `lib/tx-shaders.js` | the GLSL (ES 1.00; also valid in three `ShaderMaterial`): prelude + 22 shaders; `lib/tx-shaders-x.js` adds 24 (merged) |
-| `lib/registry-x.js` | registry entries for the 24 added transitions (merged into REGISTRY; `credit` = idea source) |
-| `lib/tx-dom-x.js` | 10 more real DOM back-ends (cube in CSS 3D, clip-path slices/blinds, conic masks, ...) + `APPROX`: a DOM look for every GL-only key |
+| `lib/tx-shaders.js` | the GLSL (ES 1.00; also valid in three `ShaderMaterial`): prelude + 22 shaders; `lib/tx-shaders-x.js` adds 25 (merged) |
+| `lib/registry-x.js` | registry entries for the 25 added transitions (merged into REGISTRY; `credit` = idea source) |
+| `lib/tx-dom-x.js` | 11 more real DOM back-ends (ditherDissolve as run-length `clip-path: path()` blocks, (cube in CSS 3D, clip-path slices/blinds, conic masks, ...) + `APPROX`: a DOM look for every GL-only key |
 | `lib/xfade.js` | ffmpeg xfade map: 58 modes + custom as `transitions/xfade-<mode>`, nearest pack key per mode, `xfadeFilter(id, {duration, offset})` |
 | `lib/tx-gl.js` | raw WebGL runner `createTxRenderer(canvas).render({key, from, to, p, params})` + text-mask/anchor solver |
-| `lib/tx-dom.js` | DOM/CSS back-end `applyDom(key, p, {a, b, root, params})`: 23 real back-ends + 23 approximations (shots are DOM layers) |
+| `lib/tx-dom.js` | DOM/CSS back-end `applyDom(key, p, {a, b, root, params})`: 24 real back-ends + 23 approximations (shots are DOM layers) |
 | `lib/tx-three.js` | `makeTransitionPass(THREE, key, params)` for the three.js kit (parity-tested against tx-gl) |
 | `lib/tx-hf.js` | `hfBind(renderAt, {compositionId, duration})`: drives any renderAt(t) from HyperFrames seeks |
 | `lib/sequence.js` | edit list on a beat grid -> what is on screen at t (`planEdits`, `stateAt`, `lintPlan`) |
@@ -50,7 +50,7 @@ Root needs `data-duration` and `data-no-timeline` (no GSAP needed; HyperFrames d
 `[0:v][1:v]xfade=transition=circleopen:duration=0.5000:offset=2.2500[v]`; a pack key also works (`xfadeFilter('whip', ...)` uses PACK_TO_XFADE).
 All 59 strings were run through local ffmpeg 8.0.1 on a lavfi test source.
 
-**HyperFrames, shots are DOM layers (all 46 visual effects; 23 exact, 23 approximated):** `applyDom(key, p, { a, b, root, params })`, see `examples/hf-dom`.
+**HyperFrames, shots are DOM layers (all 47 visual effects; 24 exact, 23 approximated):** `applyDom(key, p, { a, b, root, params })`, see `examples/hf-dom`.
 Put `a`/`b` inside clips, never tween `.clip` itself. DOM gives no mirrored edges (spin shows the background), no
 chroma fringe on whip and only linear/radial luma mattes; use the GL path when that matters.
 
@@ -156,6 +156,7 @@ python3 tools/contact.py renders/contact.jpg   # look at the stills
 | `wind` | tx.wind | 600 | 1 | 0.5 | gl + dom~ | `sfx/amb/wind` | wind, streak, wipe, travel |
 | `luminanceMelt` | tx.luminanceMelt | 1000 | 2 | 0.5 | gl + dom~ | `sfx/liquid/glug` | melt, drip, surreal, art |
 | `overexposure` | tx.overexposure | 700 | 1.5 | 0.5 | gl + dom | `sfx/tx/flash_swell` | exposure, white, heaven, memory |
+| `ditherDissolve` | tx.ditherDissolve | 600 | 1 | 0.5 | gl + dom | `sfx/tx/glitch_stutter` | dither, pixel, blocks, disintegrate |
 
 ### `flash` (tx.flash): Hard-cut flash
 
@@ -626,5 +627,15 @@ python3 tools/contact.py renders/contact.jpg   # look at the stills
 - **Params:** `strength`=0.85, `tint`="#FFF6E8"
 - **Sound:** `sfx/tx/flash_swell` at start+0 f, +0 dB; `sfx/sparkle/shimmer` at cut+0 f, -2 dB
 - **Demo:** [16:9](renders/overexposure.mp4) / [stills](renders/stills/overexposure)
+
+### `ditherDissolve` (tx.ditherDissolve): Dither dissolve (accent pixel blocks)
+
+- **Use:** A line or an image breaks into accent pixel blocks and clears into the next shot ("the old idea falls apart"); the same window read the other way assembles a title out of blocks. As a type exit, make B the bare background.
+- **Avoid:** Soft emotional beats; more than once per 15 s; blocks under 8 px at 9:16 (they read as compression noise).
+- **Reasons:** CONTRAST, REVEAL, ENERGY. **Tags:** dither, pixel, blocks, disintegrate, bayer, tech, manifesto
+- **Timing:** 600 ms free-time (18 f @30), 1 beat(s) on a grid (15 f @120 BPM), swap at p=0.5, ease `linear`
+- **Params:** `cell`=24, `matrix`="bayer8" (bayer4|bayer8), `color`="#4A18ED", `band`=0.3, `sweep`=0.35, `dir`=[1,0], `jitter`=0.15
+- **Sound:** `sfx/tx/glitch_stutter` at start+0 f, -1 dB; `sfx/sizzle/grain` at cut+0 f, -2 dB
+- **Demo:** [16:9](renders/ditherDissolve.mp4) / [stills](renders/stills/ditherDissolve)
 
 <!-- END CATALOG -->

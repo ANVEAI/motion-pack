@@ -25,7 +25,27 @@ export function bandsPoly(bands, horizontalBands = false) {
 }
 const half = (p, cut, e, eCut) => (p < cut ? 1 - e / Math.max(eCut, 1e-4) : (e - eCut) / Math.max(1 - eCut, 1e-4));
 
+/* ditherDissolve maths (shared by the DOM back-end and the tests; the GLSL in tx-shaders-x.js is the same formula):
+   block (x, y) of size cs px gets an order v in (0, 1) = mix(mix(bayer, directional ramp, sweep), seeded hash, jitter); it shows A while e < v (1 - band),
+   the accent colour for the next `band` of the window, then B. */
+export function bayerIndex(x, y, k) { let v = 0; for (let i = 0; i < k; i++) { const xb = (x >> i) & 1, yb = (y >> i) & 1; v += 4 ** (k - 1 - i) * ((xb ^ yb) * 2 + yb); } return v; }
+const fr = v => v - Math.floor(v), glHash = (x, y, seed = 1) => { let qx = fr(x * 0.3183099 + fr(seed * 0.6180339)), qy = fr(y * 0.3678794 + fr(seed * 0.6180339)); const d = qx * (qx + 17.17) + qy * (qy + 17.17); qx += d; qy += d; return fr(qx * qy * 2); };
+export function ditherOrder(x, y, P, { w, h, cs }) {
+  const k = P.matrix === 'bayer4' ? 2 : 3, b = (bayerIndex(x, y, k) + 0.5) / 4 ** k, qx = (x + 0.5) * cs / w, qy = (y + 0.5) * cs / h, dd = 0.5 * (Math.abs(P.dir[0]) + Math.abs(P.dir[1]));
+  const ramp = dd > 0 ? Math.min(1, Math.max(0, ((qx - 0.5) * P.dir[0] + (qy - 0.5) * P.dir[1]) / dd * 0.5 + 0.5)) : 0.5, m = b + (ramp - b) * P.sweep;
+  return m + (glHash(x, y) - m) * P.jitter;
+}
+export const ditherState = (v, e, band) => { const a = v * (1 - band); return e < a ? 0 : e < a + band ? 1 : 2; };   // 0 = A, 1 = accent, 2 = B
+
 export const DOM_X = {
+  /* real DOM back-end: B is clipped to the union of finished blocks and the overlay fill to the blocks in flight, both as one run-length path() per frame */
+  ditherDissolve(p, c) { const { a, b, P, e, root, ov } = c, w = W(root), h = H(root), cs = Math.max(1, Math.round(P.cell * h / 1080)), cols = Math.ceil(w / cs), rows = Math.ceil(h / cs), f = ov.querySelector('.mptx-fill');
+    const path = ['', ''], rect = (x0, x1, y) => `M${x0 * cs} ${y * cs}H${Math.min(w, x1 * cs)}V${Math.min(h, (y + 1) * cs)}H${x0 * cs}Z`;
+    for (let y = 0; y < rows; y++) { let run = -1, x0 = 0;
+      for (let x = 0; x <= cols; x++) { const st = x < cols ? ditherState(ditherOrder(x, y, P, { w, h, cs }), e, P.band) : -1;
+        if (st !== run) { if (run >= 1) path[run - 1] += rect(x0, x, y); run = st; x0 = x; } } }
+    show(a, true); show(b, !!path[1]); b.style.zIndex = '2'; b.style.clipPath = path[1] ? `path('${path[1]}')` : 'none';
+    f.style.background = P.color; f.style.opacity = path[0] ? '1' : '0'; f.style.clipPath = path[0] ? `path('${path[0]}')` : 'none'; },
   cube(p, c) { const { a, b, P, e, root } = c, w = W(root), o = `50% 50% ${(-w / 2).toFixed(1)}px`, z = 1 + P.zoom * Math.sin(Math.PI * p);
     root.style.perspective = `${(P.persp * w).toFixed(0)}px`; root.style.background = P.bg;
     for (const el of [a, b]) { el.style.transformOrigin = o; el.style.backfaceVisibility = 'hidden'; }

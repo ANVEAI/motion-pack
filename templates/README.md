@@ -12,6 +12,12 @@ A plan is a single JSON file, `out/plan.json`, containing shots, transitions wit
 | Talking-head / human edit (input MP4 + words.json: jump cuts, captions, B-roll, punch-ins, lower third) | `talking-head/` | HyperFrames | `node make.mjs [--set input=/abs/talk.mp4]` then render | `out/talking-head.mp4` 9:16, 6.5 s (input audio + SFX stem; no master pass) |
 | Music / beat edit (cuts from a BPM) | `beat-edit/` | HyperFrames | `node make.mjs [--set bpm=128]` then render | `out/beat-edit.mp4` 12 s at 120 BPM (15 f/beat), flash on section changes + scalePunch on the drop cuts, -14.8 LUFS / -1.6 dBTP |
 
+**Part demos (not genre templates, no `config.mjs`, so `tools/count.py` does not list them):**
+
+| demo | folder | run | demo (measured from the delivered file) |
+|---|---|---|---|
+| L7 metaphor manifesto, 14.8 s 16:9: uses `look.duotone`, `look.threshold1bit`, `background.gridTunnel`, `background.dotGrid`, `type/outlineFill`, `transitions/ditherDissolve` on original, neutral copy and the pack's own renders | `demo-l7/` | `node make.mjs` then `npx -y hyperframes@0.8.142 render . -o out/demo-l7.mp4 --crf 23` | `out/demo-l7.mp4` -14.1 LUFS / -1.3 dBTP (WAV master -2.3), 3.7 MB, sheet `out/sheet.jpg` |
+
 Run the three.js templates before `beat-edit` and `talking-head`, because those two use the 3D renders as their footage.
 
 ## How a template wires the other modules (by id only, never copied)

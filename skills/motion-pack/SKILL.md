@@ -118,6 +118,7 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | comic / anime energy | `speedLines`, `impactFrame` (2–3 frames), `halftone` | flash rule: max 3 full-frame flashes per second |
 | celebrate | `confetti` (`burstAt`), `sparks` (`burstAt`), `reaction.burst` | pair with a win sound |
 | music visualiser / podcast | `arBars`, `arRing`, `arWave`, `arSpectrum` (feed `env` from the mix or `beats`) | |
+| one accent colour carries archive, line art and type (L7 manifesto) | `layers` `look.duotone` (swap colours for light line art on accent), `look.threshold1bit` (Bayer dither); backgrounds `gridTunnel`, `dotGrid`; `type/outlineFill`; `transitions/ditherDissolve` | `layers/stylize.js` `mountLook` on a still wrapper; demo `templates/demo-l7` |
 | a look | `layers/looks/look.<name>.cube`; send log footage through `log.<cam>-to-709.cube` first | one look per piece; it replaces the genre grade |
 | speed ramp / freeze / rewind gag | `cuts/retime.py` presets `heroRamp`, `rampIn`, `rampOut`, `bulletTime`, `freezeStamp`, `reverseFlash` | the same keys exist in `tx-core RAMP_PRESETS` for canvas shots |
 | camera comedy / drama | `cam2d.crashZoom`, `doubleTake`, `dollySnap`, `dutchRoll`, `rackFocus2D`, `parallaxStack` | crash zooms count as punch-ins (max 1 per 4 s) |

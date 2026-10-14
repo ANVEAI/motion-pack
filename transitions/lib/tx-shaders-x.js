@@ -265,4 +265,20 @@ void main(){
   vec3 col = pow(tm(lin * 1.6) / tm(vec3(1.6)), vec3(1.0 / 2.2)); col = mix(col, u_tint, smoothstep(0.6, 1.0, k) * 0.5);
   gl_FragColor = vec4(clamp(mix(src, col, smoothstep(0.0, 0.15, k)), 0.0, 1.0), 1.0);
 }`,
+
+ditherDissolve: `
+uniform float u_cell; uniform float u_matrix; uniform vec3 u_color; uniform float u_band; uniform float u_sweep; uniform vec2 u_dir; uniform float u_jitter;
+/* Bayer index of block c for a 2^k matrix, normalised to (0, 1): sum over bits i (finest first) of 4^(k-1-i) * (2 (x_i xor y_i) + y_i) */
+float mp_bayer(vec2 c, float k){ float v = 0.0;
+  for (int i = 0; i < 3; i++){ float fi = float(i); if (fi >= k) break; float s = pow(2.0, fi);
+    float xb = mod(floor(c.x / s), 2.0), yb = mod(floor(c.y / s), 2.0); v += pow(4.0, k - 1.0 - fi) * (abs(xb - yb) * 2.0 + yb); }
+  return (v + 0.5) / pow(4.0, k); }
+void main(){
+  vec2 px = vec2(vUv.x, 1.0 - vUv.y) * uRes; float cs = max(1.0, floor(u_cell * uRes.y / 1080.0 + 0.5));
+  vec2 c = floor(px / cs), q = (c + 0.5) * cs / uRes; float dd = 0.5 * (abs(u_dir.x) + abs(u_dir.y));
+  float ramp = dd > 0.0 ? clamp(dot(q - 0.5, u_dir) / dd * 0.5 + 0.5, 0.0, 1.0) : 0.5;
+  float v = mix(mix(mp_bayer(c, u_matrix + 2.0), ramp, u_sweep), mp_hash(c), u_jitter), a = v * (1.0 - u_band);
+  vec3 col = uE < a ? A(vUv).rgb : (uE < a + u_band ? u_color : B(vUv).rgb);
+  gl_FragColor = vec4(col, 1.0);
+}`,
 };

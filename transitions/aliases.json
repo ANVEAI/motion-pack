@@ -153,6 +153,18 @@
    "params": {},
    "kind": "dom"
   },
+  "dither-dissolve": {
+   "id": "transitions/dither-dissolve",
+   "key": "ditherDissolve",
+   "params": {},
+   "kind": "dom"
+  },
+  "ditherDissolve": {
+   "id": "transitions/ditherDissolve",
+   "key": "ditherDissolve",
+   "params": {},
+   "kind": "dom"
+  },
   "doorway": {
    "id": "transitions/doorway",
    "key": "doorway",

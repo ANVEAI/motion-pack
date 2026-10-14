@@ -155,4 +155,15 @@ export const REGISTRY_X = {
     sfx: [S('sfx/tx/flash_swell', 'start', 0, 0), S('sfx/sparkle/shimmer', 'cut', 0, -2)],
     reasons: ['TIME', 'EMPHASIS'], tags: ['exposure', 'white', 'heaven', 'memory', 'bright'],
     use: 'Memory, revelation, sunlit lifestyle; a softer dip-to-white.', avoid: 'Stacking with flash; more than one per 10 s.' },
+  /* 2026-10-14 (reference study docs/research/reference-stan-launchpad-2026-10.md, technique only) */
+  ditherDissolve: { id: 'tx.ditherDissolve', name: 'Dither dissolve (accent pixel blocks)', backends: ['gl', 'dom'], credit: 'ordered (Bayer) dithering, B. E. Bayer (1973); GLSL and DOM written for this pack',
+    timing: { ms: 600, beats: 1, cut: 0.5, ease: 'linear' },
+    params: { cell: f(24, 4, 120, 'block size in px at 1080p (scaled by height)'), matrix: { type: 'enum', default: 'bayer8', opts: ['bayer4', 'bayer8'], doc: 'ordered-dither matrix that sets the block order' },
+      color: col(BRAND, 'accent colour of a block in flight'), band: f(0.3, 0.05, 0.8, 'share of the window each block spends as an accent block'),
+      sweep: f(0.35, 0, 1, 'directional bias of the order: 0 = pure ordered dither, 1 = a clean blocky wipe'), dir: v2([1, 0], 'sweep direction (designer space)'),
+      jitter: f(0.15, 0, 1, 'seeded per-block noise mixed into the order') },
+    sfx: [S('sfx/tx/glitch_stutter', 'start', 0, -1), S('sfx/sizzle/grain', 'cut', 0, -2)],
+    reasons: ['CONTRAST', 'REVEAL', 'ENERGY'], tags: ['dither', 'pixel', 'blocks', 'disintegrate', 'bayer', 'tech', 'manifesto'],
+    use: 'A line or an image breaks into accent pixel blocks and clears into the next shot ("the old idea falls apart"); the same window read the other way assembles a title out of blocks. As a type exit, make B the bare background.',
+    avoid: 'Soft emotional beats; more than once per 15 s; blocks under 8 px at 9:16 (they read as compression noise).' },
 };

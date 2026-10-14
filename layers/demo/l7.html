@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack L7 parts: looks + backgrounds</title>
+<style>html,body{margin:0;background:#000}#stage{position:relative;width:960px;height:540px;overflow:hidden}#stage>*{position:absolute;inset:0;width:100%;height:100%}</style></head><body>
+<div id="stage"><div id="look"><canvas id="plate" width="960" height="540"></canvas></div><div id="bg"></div></div>
+<script type="module">
+/* Test + preview page for layers/stylize.js (duotone, threshold1bit as SVG filters on a DOM wrapper, the HyperFrames path) and layers/backgrounds.js (gridTunnel, dotGrid via mountStack).
+   window.look(kind, params)  -> applies the SVG filter to #look (the plate under it); returns the filter markup length
+   window.ref(kind, params)   -> base64 RGBA of the JS reference (stylizeImageData on the same plate pixels)
+   window.bg(kind, params, t) -> mounts one background over the stage and renders it at t; window.bgAgain(t) re-renders the same layer */
+import { drawPlate } from './plate.js';
+import { mountLook, stylizeImageData } from '../stylize.js';
+import { mountStack } from '../overlay.js';
+const W = 960, H = 540, pg = document.getElementById('plate').getContext('2d', { willReadFrequently: true }); let lk = null, st = null;
+drawPlate(pg, W, H, 1.2, { mood: 'day' });
+const b64 = (u8) => { let s = ''; for (let i = 0; i < u8.length; i += 32768) s += String.fromCharCode.apply(null, u8.subarray(i, i + 32768)); return btoa(s); };
+window.look = (kind, params = {}) => { if (st) { st.dispose(); st = null; } if (lk) lk.dispose(); lk = kind ? mountLook(document.getElementById('look'), kind, params, { H }) : null; return lk ? lk.id : null; };
+window.ref = (kind, params = {}) => { const img = pg.getImageData(0, 0, W, H); stylizeImageData(img, kind, params, { H }); return b64(new Uint8Array(img.data.buffer)); };
+window.bg = (kind, params = {}, t = 1) => { if (lk) { lk.dispose(); lk = null; } if (st) st.dispose(); st = mountStack(document.getElementById('bg'), [{ kind, params }], { width: W, height: H, fps: 30 }); st.render(t, { frame: Math.round(t * 30) }); return st.layers.map((l) => l.canvas.dataset.mpKind); };
+window.bgAgain = (t) => st.render(t, { frame: Math.round(t * 30) });
+const rb = document.createElement('canvas'); rb.width = W; rb.height = H; const rg = rb.getContext('2d', { willReadFrequently: true });
+window.bgPixels = () => { rg.clearRect(0, 0, W, H); rg.drawImage(st.layers[0].canvas, 0, 0); return b64(new Uint8Array(rg.getImageData(0, 0, W, H).data.buffer)); };
+window.lookEmpty = (kind, params = {}) => { window.clearAll(); lk = mountLook(document.getElementById('bg'), kind, params, { H }); return lk.id; };   // filter on an EMPTY layer above the plate: must paint nothing
+window.clearAll = () => { if (st) { st.dispose(); st = null; } if (lk) { lk.dispose(); lk = null; } };
+window.__ready = true;
+</script></body></html>

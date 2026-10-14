@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack demo-l7 (six L7 parts)</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #F5F2EA; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F5F2EA; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.w { position: absolute; inset: 0; }
+.bgc { position: absolute; inset: 0; }
+.line { display: grid; place-items: center; text-align: center; }
+.line .tx { position: relative; font-weight: 800; letter-spacing: -0.035em; line-height: 1.02; max-width: 1500px; }
+.line em { font-style: normal; color: #4A18ED; }
+.end { background: #F5F2EA; display: grid; place-items: center; text-align: center; }
+.end .ttl { font-weight: 800; font-size: 190px; color: #4A18ED; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; }
+.end .sub { font-weight: 300; font-size: 64px; color: #111111; margin-top: 28px; letter-spacing: 0.08em; }
+.paper { background: #F5F2EA; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="14.8">
+<section class="clip line paper" id="s1" data-start="0.0000" data-duration="2.5000" data-track-index="0"><div class="bgc" id="bg-s1"></div><div class="tx" id="t-s1" style="font-size:88px;color:#111111">Every tool started as a sketch.</div></section>
+<section class="clip paper" id="s2a" data-start="2.5000" data-duration="0.5000" data-track-index="1"><img class="fill" src="assets/media/03-explode-16x9.jpg" alt=""></section>
+<section class="clip paper" id="s2b" data-start="3.0000" data-duration="0.5000" data-track-index="0"><img class="fill" src="assets/media/01-turntable-16x9.jpg" alt=""></section>
+<section class="clip paper" id="s2c" data-start="3.5000" data-duration="0.5000" data-track-index="1"><img class="fill" src="assets/media/02-macro-16x9.jpg" alt=""></section>
+<section class="clip line paper" id="s3" data-start="4.0000" data-duration="2.5000" data-track-index="0"><div class="bgc" id="bg-s3"></div><div class="tx" id="t-s3" style="font-size:150px;color:#111111">It looked <em>impossible.</em></div></section>
+<div class="w" id="w-s4a"><video id="s4a" class="clip fill" src="assets/media/plate-devices.mp4" muted playsinline data-start="6.5000" data-duration="0.5000" data-track-index="1" data-media-start="1.2"></video></div>
+<section class="clip paper" id="s4b" data-start="7.0000" data-duration="0.5000" data-track-index="0"><img class="fill" src="assets/media/05-liquid-16x9.jpg" alt=""></section>
+<section class="clip line paper" id="s5" data-start="7.5000" data-duration="3.2333" data-track-index="1"><div class="tx" id="t-s5" style="font-size:250px;color:#111111">Until it <em>shipped.</em></div></section>
+<div class="w" id="w-s6"><video id="s6" class="clip fill" src="assets/media/plate-cast.mp4" muted playsinline data-start="10.2333" data-duration="1.7667" data-track-index="0" data-media-start="0.3333"></video></div>
+<section class="clip end" id="s7" data-start="12.0000" data-duration="2.8000" data-track-index="1"><div><div class="ttl" id="t-s7">Your launch</div><div class="sub" id="u-s7">· 2026</div></div></section>
+<div id="fx" class="clip" data-start="0" data-duration="14.8" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="14.8" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module" src="assets/mp/adapters/type.mjs"></script>
+<script type="module" src="assets/mp/adapters/transitions.mjs"></script>
+<script type="module">
+import { MP } from './assets/mp/pack.mjs';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+import { mountLook } from './assets/mp/layers/stylize.js';
+gsap.config({ force3D: false });
+bindHF(mountStack(document.getElementById('bg-s1'), [{"kind":"gridTunnel","params":{"color":"#4A18ED","bg":"#F5F2EA","lines":8,"depth":12,"drift":0.6,"zoom":0.03}}], { width: 1920, height: 1080, fps: 30 }), { t0: 0.0000, fps: 30 });
+mountLook(document.getElementById('s2a'), "duotone", {"dark":"#4A18ED","light":"#F5F2EA","contrast":2.4,"pivot":0.22}, { H: 1080 });
+mountLook(document.getElementById('s2b'), "duotone", {"dark":"#F5F2EA","light":"#4A18ED","contrast":2,"pivot":0.2}, { H: 1080 });
+mountLook(document.getElementById('s2c'), "duotone", {"dark":"#4A18ED","light":"#F5F2EA","contrast":1.8,"pivot":0.3}, { H: 1080 });
+bindHF(mountStack(document.getElementById('bg-s3'), [{"kind":"dotGrid","params":{"color":"#4A18ED","bg":"#F5F2EA","spacing":34,"radius":3,"hole":0.3,"glow":0.55,"fade":0.6}}], { width: 1920, height: 1080, fps: 30 }), { t0: 4.0000, fps: 30 });
+mountLook(document.getElementById('w-s4a'), "threshold1bit", {"dither":"bayer8","cell":3,"threshold":0.62,"dark":"#111111","light":"#F5F2EA"}, { H: 1080 });
+mountLook(document.getElementById('s4b'), "threshold1bit", {"dither":"bayer4","cell":4,"threshold":0.32,"dark":"#4A18ED","light":"#F5F2EA"}, { H: 1080 });
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"vignette","params":{"amount":0.12}},{"kind":"grain","params":{"stock":"digital-soft"}}], { width: 1920, height: 1080, fps: 30, seed: 7 }), { fps: 30 });
+const tl = gsap.timeline({ paused: true });
+  MP.type(tl, "type/maskRise", '#t-s1', { at: 0.1000, dur: 2.4000, fps: 30, out: true });
+  MP.type(tl, "type/weightMorph", '#t-s3', { at: 4.1000, dur: 2.4000, fps: 30, out: true });
+  MP.type(tl, "type/outlineFill", '#t-s5', { at: 7.6000, dur: 2.9000, fps: 30, out: false });
+  MP.type(tl, "type/trackingCollapse", '#t-s7', { at: 12.0500, dur: 2.7500, fps: 30, out: false });
+  MP.type(tl, "type/blurIn", '#u-s7', { at: 12.4500, dur: 2.3500, fps: 30, out: false });
+  MP.transition(tl, "transitions/ditherDissolve", { out: ["#s5"], in: ["#s6"], root: '#root', start: 10.2333, cut: 10.5000, end: 10.7333, W: 1920, H: 1080, params: {"cell":30,"sweep":0.3} });
+tl.seek(tl.duration()).seek(0);   // one warm pass (bit-stable frames, see gotchas)
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

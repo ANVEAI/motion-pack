@@ -13584,6 +13584,10 @@
    "snd.tx.light_leak",
    "snd.whoosh.magic_swirl"
   ],
+  "ditherDissolve": [
+   "snd.sizzle.grain",
+   "snd.tx.glitch_stutter"
+  ],
   "filmBurn": [
    "snd.tx.film_burn",
    "snd.whoosh.fire"

@@ -19,13 +19,16 @@ export function mountType(container, spec, { fontPx = 124, font = {}, H = 1080 }
       if (unit === 'word') { const s = document.createElement('span'); s.className = 'mp-u'; s.textContent = tok; css(s, { display: 'inline-block' }); L.appendChild(s); units.push({ el: s, text: tok, line: li }); texts.push(tok); }
       else for (const ch of tok) { const s = document.createElement('span'); s.className = 'mp-u'; s.textContent = ch; css(s, { display: 'inline-block' }); L.appendChild(s); units.push({ el: s, text: ch, line: li }); texts.push(ch); } });
     root.appendChild(L); });
+  /* outline presets (outlineFill): fill and stroke follow two CSS variables the bake sets per frame; colour stays currentColor (accent <em> recolours keep working) */
+  if (def.outline) for (const u of units) css(u.el, { webkitTextFillColor: 'color-mix(in srgb, currentColor calc(var(--mp-fill, 1) * 100%), transparent)', webkitTextStroke: 'calc(var(--mp-stroke, 0) * 1em) currentColor' });
   container.appendChild(root); return { root, units, texts, fontPx, H, spec };
 }
 /* a unit state -> GSAP vars / CSS values */
 export function stateToVars(s, fontPx, H, originalText) {
   const S = H / 1080; const clip = s.clip < 1 ? `inset(-20% ${((1 - s.clip) * 100).toFixed(2)}% -20% -20%)` : 'none';
   return { x: +(s.x * fontPx + s.shake[0] * S).toFixed(2), y: +(s.y * fontPx + s.shake[1] * S).toFixed(2), scale: +s.scale.toFixed(4), rotation: +s.rot.toFixed(3), rotationX: +s.rotX.toFixed(2), transformPerspective: s.rotX ? 900 : 0, opacity: +Math.min(1, Math.max(0, s.opacity)).toFixed(4),
-    clipPath: clip, letterSpacing: s.track ? s.track.toFixed(4) + 'em' : 'normal', fontVariationSettings: s.wght != null ? `"wght" ${Math.round(s.wght)}` : 'normal', filter: s.blur > 0.3 ? `blur(${(s.blur * S).toFixed(2)}px)` : 'none', textContent: s.glyph ?? originalText };
+    clipPath: clip, letterSpacing: s.track ? s.track.toFixed(4) + 'em' : 'normal', fontVariationSettings: s.wght != null ? `"wght" ${Math.round(s.wght)}` : 'normal', filter: s.blur > 0.3 ? `blur(${(s.blur * S).toFixed(2)}px)` : 'none', textContent: s.glyph ?? originalText,
+    ...(s.fill != null ? { '--mp-fill': +s.fill.toFixed(4), '--mp-stroke': +(s.stroke ?? 0).toFixed(5) } : {}) };
 }
 export function bakeType(tl, m, spec, { t0 = 0, dur, fps = 30 } = {}) {
   const n = Math.round(dur * fps), prev = m.units.map(() => null);
@@ -37,7 +40,7 @@ export function bakeType(tl, m, spec, { t0 = 0, dur, fps = 30 } = {}) {
   return tl;
 }
 export function driveType(m, spec, { t0 = 0 } = {}) {
-  const f = (t) => { const R = unitStates(spec, m.texts, t - t0); m.units.forEach((u, k) => { const v = stateToVars(R.states[k], m.fontPx, m.H, u.text), e = u.el; e.style.transform = `perspective(${v.transformPerspective || 0}px) translate(${v.x}px, ${v.y}px) rotateX(${v.rotationX}deg) rotate(${v.rotation}deg) scale(${v.scale})`.replace('perspective(0px) ', ''); e.style.opacity = v.opacity; e.style.clipPath = v.clipPath; e.style.letterSpacing = v.letterSpacing; e.style.fontVariationSettings = v.fontVariationSettings; e.style.filter = v.filter; if (e.textContent !== v.textContent) e.textContent = v.textContent; }); return R; };
+  const f = (t) => { const R = unitStates(spec, m.texts, t - t0); m.units.forEach((u, k) => { const v = stateToVars(R.states[k], m.fontPx, m.H, u.text), e = u.el; e.style.transform = `perspective(${v.transformPerspective || 0}px) translate(${v.x}px, ${v.y}px) rotateX(${v.rotationX}deg) rotate(${v.rotation}deg) scale(${v.scale})`.replace('perspective(0px) ', ''); e.style.opacity = v.opacity; e.style.clipPath = v.clipPath; e.style.letterSpacing = v.letterSpacing; e.style.fontVariationSettings = v.fontVariationSettings; e.style.filter = v.filter; if (v['--mp-fill'] != null) { e.style.setProperty('--mp-fill', v['--mp-fill']); e.style.setProperty('--mp-stroke', v['--mp-stroke']); } if (e.textContent !== v.textContent) e.textContent = v.textContent; }); return R; };
   window.addEventListener('hf-seek', (e) => f(e.detail.time)); f(window.__hfThreeTime || 0); return f;
 }
 /* ---- captions ---- */

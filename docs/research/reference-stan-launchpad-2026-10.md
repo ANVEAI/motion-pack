@@ -45,9 +45,9 @@ Studied 14 Oct 2026 from stills taken at 2 fps.
 | One word's weight jump | `type/weightMorph` | exists |
 | Halftone / pixel-sort / glitch accents | `overlay.halftone`, `tx.pixelSort`, `tx.glitch` | exists |
 | Hard cut punctuation, fast archive cadence | `cuts/patterns.json`, `cuts/cutgen.py` | exists |
-| Violet duotone for archive and line art | none | **gap**: `layers` look `duotone` (shadow → accent, highlight → paper) |
-| 1-bit threshold still | none | **gap**: `layers` look `threshold1bit` (ordered or blue-noise dither) |
-| Perspective wireframe-grid tunnel | none | **gap**: `layers` background `gridTunnel` (seek-safe, vanishing point + drift) |
-| Dot-grid field | none | **gap**: `layers` background `dotGrid` |
-| Type outline → fill reveal | none | **gap**: `type` preset `outlineFill` |
-| Dither / pixel-block disintegration of type | none | **gap**: `transitions` `ditherDissolve` (DOM approximation plus GL) |
+| Violet duotone for archive and line art | `layers/stylize.js` `look.duotone` | built 2026-10-14 (shadow → accent, highlight → paper; swap for light lines on accent) |
+| 1-bit threshold still | `layers/stylize.js` `look.threshold1bit` | built 2026-10-14 (ordered Bayer 4 / 8 dither; blue noise not built) |
+| Perspective wireframe-grid tunnel | `layers/backgrounds.js` `background.gridTunnel` | built 2026-10-14 |
+| Dot-grid field | `layers/backgrounds.js` `background.dotGrid` | built 2026-10-14 |
+| Type outline → fill reveal | `type/outlineFill` | built 2026-10-14 |
+| Dither / pixel-block disintegration of type | `transitions/ditherDissolve` | built 2026-10-14 (GL + a real DOM back-end; demo `templates/demo-l7`) |
