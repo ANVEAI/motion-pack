@@ -3,15 +3,16 @@
    -> big numbers -> three stat cards -> URL held on a quiet end card. ONE continuous camera (camera/cam2d.js) travels between the panels: no hard cuts by default.
    Sound: a light bed (20-36% bass share, `plan.audio.role` proof), a quiet UI tick per state change, ONE soft hit on the number reveal, a planned quiet open, NO stinger on
    the end card and a planned quiet hold (plan.audio.quiet kind hold). Optional sparse VO: `vo: { audio, words }` puts every camera move in a speech gap (cutgen walkthrough).
-   HONESTY GATE (honesty.mjs, the point of the template): EVERY number field needs BOTH a `source` and a `method`; the build FAILS (exit 2, the field named) when one is missing.
+   HONESTY GATE (honesty.mjs, the point of the template): EVERY number field needs BOTH a `source` and a `method` that say something; a number in prose, the brand, an axis unit or the
+   VOICE is refused; the build FAILS (exit 2, the field named) when one is missing.
    DEMO CONTENT: "Acme Reader" is a FICTIONAL brand and every number is a labelled placeholder (source "illustrative placeholder, replace" + a method line); the frame prints
    ILLUSTRATIVE on every number panel. Replace the source and method with real ones, then set `illustrative: false`.
    Edit the CONFIG block only; `node make.mjs [--set format=tall] [--set builder.kind=trace]` then `hyperframes render`. */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
 import { PLATFORMS, SIZES, beatGrid } from '../_shared/plan.mjs';
 import { GFX, gfxCues, scatterTimes, tableTimes, traceTimes } from '../../type/gfx/index.js';
-import { safeInset } from './panels.mjs';
-import { assertHonest, numberFields, isIllustrative, claimWords, blank } from './honesty.mjs';
+import { safeInset, pillH } from './panels.mjs';
+import { problems, HonestyError, numberFields, isIllustrative, claimWords, blank } from './honesty.mjs';
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 
 const SRC = 'illustrative placeholder, replace';   // the source every demo number carries
@@ -46,17 +47,17 @@ export const CONFIG = {
     rows: [{ label: 'Tokens per task', unit: 'M', dec: 2, values: [2330000, 1350000] }, { label: 'Cost per task', unit: '$', dec: 2, values: [9.1, 3.6] }, { label: 'Answer score', unit: '', dec: 1, values: [52.5, 58.5] }] },
   numbers: { items: [{ label: 'answer score', value: 58.5, dec: 1, unit: '', source: SRC, method: 'mean graded answer over the placeholder run' },
     { label: 'lower cost per task', value: 60, dec: 0, unit: '%', source: SRC, method: '1 - (cost, Acme Reader / cost, alternative); placeholder inputs' }] },   // 1 to 3 big numbers, each with its own source and method on screen
-  cards: [{ label: 'Better', value: 58.5, dec: 1, unit: '', line: 'answer score', alt: 52.5, altLabel: 'alternative', source: SRC, method: 'mean graded answer, placeholder run' },   // exactly three: better / leaner / cheaper
-    { label: 'Leaner', value: 1350000, dec: 2, unit: 'M', line: 'tokens per task', alt: 2330000, altLabel: 'alternative', source: SRC, method: 'mean tokens per task, placeholder run' },
-    { label: 'Cheaper', value: 3.6, dec: 2, unit: '$', line: 'cost per task', alt: 9.1, altLabel: 'alternative', source: SRC, method: 'list price x tokens, placeholder run' }],
+  cards: [{ label: 'Better', value: 58.5, dec: 1, unit: '', line: 'answer score', alt: 52.5, altLabel: 'alternative', source: SRC, method: 'mean graded answer (placeholder)' },   // exactly three: better / leaner / cheaper
+    { label: 'Leaner', value: 1350000, dec: 2, unit: 'M', line: 'tokens per task', alt: 2330000, altLabel: 'alternative', source: SRC, method: 'mean tokens per task (placeholder)' },
+    { label: 'Cheaper', value: 3.6, dec: 2, unit: '$', line: 'cost per task', alt: 9.1, altLabel: 'alternative', source: SRC, method: 'list price x tokens (placeholder)' }],
   end: { line: 'Replace every placeholder before you publish.', chips: [] },   // the URL is brand.url; chips are benefit pills without digits
-  tail: { holdS: 5.4, liftS: 0.8, fadeMs: 600, bedDb: -30 },   // end card: quiet hold (plan.audio.quiet kind hold): the bed lifts liftS, then drops to bedDb; NO stinger. The near-silent part must be 3 to 9 s
-  timing: { travelS: 1.1, enterS: 0.15, ease: 'soft', dip: 0.08, push: 0.035, holdS: 1.4, claim: 2.4, name: 1.8, setting: 2.6, numbers: 2.8, cards: 3.0, endBuild: 1.2, quietOpenS: 1.2 },   // seconds of build per stage; stages are rounded up to whole beats; a stage's content starts `enterS` after the camera leaves for it (the camera is still settling); the camera dips `dip` in a move and pushes `push` while it dwells
+  tail: { holdS: 5.4, liftS: 0.8, fadeMs: 600, bedDb: -40, roomDb: -26 },   // end card: quiet hold (plan.audio.quiet kind hold): the bed lifts liftS, then drops to bedDb and a steady room tone (roomDb under the un-dipped bed) takes over, so the hold is flat, not a pulsing bed; NO stinger. The near-silent part must be 3 to 9 s
+  timing: { minS: 36, maxS: 60, travelS: 1.1, enterS: 0.15, ease: 'soft', dip: 0.08, push: 0.035, holdS: 1.4, claim: 2.4, name: 1.8, setting: 2.6, numbers: 2.8, cards: 3.0, endBuild: 1.2, quietOpenS: 1.2 },   // seconds of build per stage; stages are rounded up to whole beats; a stage's content starts `enterS` after the camera leaves for it (the camera is still settling); the camera dips `dip` in a move and pushes `push` while it dwells
   cut: {},                                           // a motivated hard cut instead of a camera move: { 'builder>h2h': 'EMOTION: ...' } (a boundary 'from>to'; the reason is required)
   vo: { words: null, audio: null },                  // optional sparse VO: words = a words.json [{w, s, e}] (seconds) turns it on; audio = your recording (null = a labelled guide signal for a dry run)
   music: 'music/bed_playful_bounce_loop8', bpm: 120, musicGainDb: 0, ceilingDb: -3.0, fadeInMs: 40, duckDb: 16, sfxUnderVoDb: -22,   // bpm = the bed's snapped tempo (music/manifest.json); stages start on its beats
   layers: [{ kind: 'grain', params: { stock: 'digital-soft' } }],
-  sfx: { claim: 'sfx/ui/tick', travel: ['sfx/ui/slide', 'sfx/whoosh/swish_xs'], arrive: 'sfx/ui/tick', numbers: 'sfx/hit/soft', count: 'sfx/ui/count_run', card: 'sfx/ui/pop', cut: 'sfx/tx/cut_tick' },   // saas_launch / product_ad palette; no end sting
+  sfx: { hold: 'sfx/amb/room_tone', claim: 'sfx/ui/tick', travel: ['sfx/ui/slide', 'sfx/whoosh/swish_xs'], arrive: 'sfx/ui/tick', numbers: 'sfx/hit/soft', count: 'sfx/ui/count_run', card: 'sfx/ui/pop', cut: 'sfx/tx/cut_tick' },   // saas_launch / product_ad palette; no end sting; hold = the room tone under the quiet hold
 };
 /* ============================================================================== */
 
@@ -64,7 +65,8 @@ const FORMAT = {   // box = [x, y, w, h] as fractions of the safe rect (pulled i
   wide: { W: 1920, H: 1080, platform: 'x.video', zone: 'wideTitle', pitch: [1920, 0], box: { scatter: [0, 0, 1, 1], trace: [0, 0, 1, 1], table: [0, 0, 1, 0.76] }, tableScale: 1.4, calloutOffset: [-200, 110] },
   tall: { W: 1080, H: 1920, platform: 'reels.organic', zone: 'conservative', pitch: [0, 1920], box: { scatter: [0, 0, 1, 1], trace: [0, 0, 1, 1], table: [0, 0, 1, 0.72] }, tableScale: 1.12, calloutOffset: [-380, -60] },   // 'conservative' 9:16 union: x 65-960, y 269-1248
 };
-const boxFor = (fm, push, key) => { const S = safeInset(fm.zone, fm.W, fm.H, push), r = fm.box[key]; return [(S.x0 + r[0] * S.w) / fm.W, (S.y0 + r[1] * S.h) / fm.H, (r[2] * S.w) / fm.W, (r[3] * S.h) / fm.H]; };
+const boxFor = (fm, push, key, reserve = 0) => { const S = safeInset(fm.zone, fm.W, fm.H, push), r = fm.box[key]; return [(S.x0 + r[0] * S.w) / fm.W, (S.y0 + r[1] * S.h) / fm.H, (r[2] * S.w) / fm.W, (r[3] * S.h - reserve) / fm.H]; };   // reserve: px kept free at the bottom of the box (the ILLUSTRATIVE pill sits there)
+const pillRoom = (fm, ill) => (ill ? pillH(fm.H > fm.W) + 18 : 0);
 export const STAGE_KINDS = (C) => ['claim', 'name', 'setting', 'builder', ...(C.builder.kind === 'table' ? [] : ['h2h']), 'numbers', 'cards', 'end'];
 const distinct = (a) => [...new Set(a.filter((v) => !blank(v)).map((v) => String(v).trim()))];
 
@@ -76,10 +78,10 @@ function tableParams(C, fm, t, extra = {}) {
 export function builderPart(C, fm) {
   const b = C.builder, ill = isIllustrative(C);
   if (b.kind === 'scatter') { const s = b.scatter, nums = [...s.points, ...(s.hero ? [s.hero] : [])];
-    const params = { box: boxFor(fm, C.timing.push, 'scatter'), title: s.title, points: s.points.map((p) => ({ label: p.label, x: p.x, y: p.y, source: p.source ?? s.source })), x: s.x, y: s.y, accent: C.brand.accent, theme: 'light', note: ill ? 'illustrative data' : '', calloutOffset: fm.calloutOffset,
+    const params = { box: boxFor(fm, C.timing.push, 'scatter', pillRoom(fm, ill)), title: s.title, points: s.points.map((p) => ({ label: p.label, x: p.x, y: p.y, source: p.source ?? s.source })), x: s.x, y: s.y, accent: C.brand.accent, theme: 'light', note: '', calloutOffset: fm.calloutOffset,   // note '': the honesty label is the pill panels.mjs draws (28 px), not the part's 17 px footnote
       method: distinct([s.method, ...nums.map((p) => p.method)]).join(' · '), ...(s.hero ? { hero: { label: s.hero.label, x: s.hero.x, y: s.hero.y, source: s.hero.source ?? s.source, callout: s.hero.callout } } : { hero: null }) };
     const tm = scatterTimes({ ...GFX['chart.scatterFrontier'].d, ...params }); return { id: 'chart.scatterFrontier', params, settleS: tm.calloutAt + 0.9 }; }
-  if (b.kind === 'trace') { const t = b.trace, params = { box: boxFor(fm, C.timing.push, 'trace'), input: t.input, lanes: t.lanes, decision: t.decision, run: t.run, note: ill ? 'illustrative run' : '', accent: C.brand.accent, theme: 'light' };
+  if (b.kind === 'trace') { const t = b.trace, params = { box: boxFor(fm, C.timing.push, 'trace', pillRoom(fm, ill)), input: t.input, lanes: t.lanes, decision: t.decision, run: t.run, note: '', accent: C.brand.accent, theme: 'light' };
     const tm = traceTimes({ ...GFX['ui.branchTrace'].d, ...params }); return { id: 'ui.branchTrace', params, settleS: tm.outcomeAt + 0.9 }; }
   const params = tableParams(C, fm, b.table, b.table.bars ? { bars: b.table.bars } : {}), tm = tableTimes({ ...GFX['ui.dataTable'].d, ...params });
   return { id: 'ui.dataTable', params, settleS: tm.hlAt + 0.9 };
@@ -93,8 +95,15 @@ function voSteps(C, nSteps, fps) {
 }
 const loadWords = (C) => { const j = JSON.parse(fs.readFileSync(path.resolve(HERE, C.vo.words), 'utf8')); return (Array.isArray(j) ? j : j.words).map((w) => ({ w: w.w, s: w.s, e: w.e })); };
 
+/* the whole gate: the CONFIG block plus the VO transcript (a number the voice says needs a number field too) */
+export function gateProblems(C) {
+  let voWords = [];
+  if (C.vo && C.vo.words) { try { voWords = loadWords(C); } catch (e) { return [`vo.words: cannot read the transcript "${C.vo.words}" (${e.message}): a words.json is [{w, s, e}] in seconds, or {words: [...]}`]; } }
+  return problems(C, { voWords });
+}
+
 export function buildPlan(C) {
-  assertHonest(C);
+  const gate = gateProblems(C); if (gate.length) throw new HonestyError(gate);
   const fps = C.fps, fm = FORMAT[C.format], T = C.timing, kinds = STAGE_KINDS(C), q = (s) => Math.round(s * fps) / fps, sec = (f) => +(f / fps).toFixed(4);
   const hasVo = !!(C.vo && C.vo.words), grid = beatGrid(C.bpm, fps, 600), fpb = grid.framesPerBeat, warnings = [], ill = isIllustrative(C), cw = claimWords(C.claim);
   const part = (k) => (k === 'builder' ? builderPart(C, fm) : k === 'h2h' ? h2hPart(C, fm) : null);
@@ -102,13 +111,19 @@ export function buildPlan(C) {
   /* stage start frames t0 (the camera leaves for it; stage 0 starts at frame 0) and the content-start frame `at` (t0 + the travel) */
   const need = kinds.map((k, i) => { const p = part(k); return q((i ? T.enterS : 0) + (p ? p.settleS : build[k]) + (k === 'end' ? 0 : T.holdS)); });
   let t0 = [], vo = null, endF = null, voSt = null;
+  const cutAt = (i) => (i > 0 ? C.cut[`${kinds[i - 1]}>${kinds[i]}`] : null);
   if (hasVo) {
     const W = loadWords(C), st = voSteps(C, kinds.length - 1, fps); voSt = st;
     if (st.steps.length !== kinds.length - 1) throw new Error(`vo: ${st.steps.length} stage changes fit the speech gaps, ${kinds.length - 1} are needed (${kinds.slice(0, -1).join(', ')}): leave a pause of 0.25 s or more between the sentences, one sentence per stage`);
     vo = { words: W, audio: C.vo.audio ?? null };
     t0 = st.steps.map((r) => r.frame); t0.push(Math.round(W.at(-1).e * fps) + 2);   // the end card: the camera leaves for it once the last word is out
-  } else { let f = 0; need.forEach((n, i) => { t0.push(f); f += Math.ceil(n * fps / fpb - 1e-9) * fpb; }); endF = f; }
-  const cutAt = (i) => (i > 0 ? C.cut[`${kinds[i - 1]}>${kinds[i]}`] : null);
+  } else {
+    /* stage starts on the bed's beats; a film shorter than timing.minS (a table builder skips the head-to-head stage) gets its dwell lengthened, spread over the content stages, until it is long enough */
+    const grow = kinds.filter((k) => !['claim', 'name', 'end'].includes(k)).length || 1, lastLead = cutAt(kinds.length - 1) ? 0 : Math.round(T.enterS * fps);
+    const lay = (x) => { const t = []; let f = 0; need.forEach((n, i) => { t.push(f); f += Math.ceil((n + (['claim', 'name', 'end'].includes(kinds[i]) ? 0 : x / grow)) * fps / fpb - 1e-9) * fpb; }); return { t, f, seconds: Math.ceil((t.at(-1) + lastLead + Math.round(C.tail.holdS * fps)) / 3) * 3 / fps }; };
+    let L0 = lay(0); for (let x = 0.25; L0.seconds < T.minS - 1e-6 && x < 30; x += 0.25) L0 = lay(x);
+    t0 = L0.t; endF = L0.f;
+  }
   const enter = Math.round(T.enterS * fps), stages = kinds.map((k, i) => { const cut = cutAt(i), lead = i && !cut ? enter : 0, at = t0[i] + lead, next = i + 1 < kinds.length ? t0[i + 1] : null, p = part(k);
     return { i, id: k, kind: k, t0: sec(t0[i]), at: sec(at), until: next == null ? null : sec(next), ...(cut ? { cut: true, why: cut } : {}), ...(p ? { part: { id: p.id, params: p.params } } : {}), ...(k === 'end' ? { hold: true } : {}) }; });
   const last = stages.at(-1), seconds = sec(Math.ceil(Math.round((last.at + C.tail.holdS) * fps) / 3) * 3); last.until = seconds;   // a whole number of tenths of a second at 30 fps (the render's frame count is then exact)
@@ -129,6 +144,8 @@ export function buildPlan(C) {
     else if (s.kind === 'cards') C.cards.forEach((_, j) => add(X.card, s.at + 0.2 + 0.3 * j, `stat card ${j + 1}`));
     else if (s.kind !== 'end') add(X.arrive, s.at + 0.05, `${s.kind} lands`);
     else add(X.arrive, s.at + 0.05, 'end card lands (a tick, no stinger: the quiet hold follows)'); }
+  { const tailF = Math.round(last.at * fps), holdT = (tailF + Math.round(C.tail.liftS * fps)) / fps;   // the room tone starts as the bed begins to fall and runs to the end: a flat floor under the hold (the bed's kick would otherwise read as a pulse, ears' 'decay')
+    if (X.hold) cues.push({ id: X.hold, t: +holdT.toFixed(4), why: 'room tone under the quiet hold: a steady floor, no beat, no stinger', overBedDb: C.tail.roomDb }); }
   for (const c of cues) c.t = +(Math.floor(c.t * fps + 0.5 + 1e-9) / fps).toFixed(4);   // whole frames: the mixer places a cue on round(t * fps) and a cue at half a frame would round the two ways in node and python
   cues.sort((a, b) => a.t - b.t);
   /* under a voice the cue sits relative to the VOICE (the mixer's default is over the un-ducked bed, which is as loud as the bed was before it ducked) */
@@ -142,7 +159,7 @@ export function buildPlan(C) {
   const fields = numberFields(C), claims = fields.map((n) => ({ text: `${n.label}: ${n.value}`, source: n.source, method: n.method }));
   const shots = stages.map((s) => ({ id: s.kind, start: s.t0, dur: +((s.until ?? seconds) - s.t0).toFixed(4), ...(s.hold ? { hold: true } : {}), move: s.cut ? 'cut' : s.i ? 'cam2d.pan' : 'cam2d.push' }));   // stages, not cuts: nothing cuts unless `cut` says so
   const events = [...new Set([...stages.slice(1).map((s) => s.t0), ...stages.map((s) => s.at), ...cues.map((c) => c.t)].map((t) => +t.toFixed(3)))].sort((a, b) => a - b);
-  if (C.format === 'tall' && C.builder.kind === 'trace') warnings.push('ui.branchTrace is a landscape diagram: on 9:16 it sits on a 16:9 plate scaled to the frame width, so its type is small on a phone. Prefer scatter or table for 9:16.');
+  if (seconds < T.minS - 1e-6 || seconds > T.maxS + 1e-6) warnings.push(`the film runs ${seconds.toFixed(1)} s, outside the ${T.minS}-${T.maxS} s window of a proof film${hasVo ? ': the voice sets the length, so lengthen or shorten the words' : ''}`);
   if (hasVo) { for (const w of voSt.warnings || []) warnings.push('vo: ' + w);
     stages.slice(0, -1).forEach((s, i) => { const want = need[i] - (i ? T.enterS : 0) - T.holdS, got = s.until - s.at; if (got < want - 1e-6) warnings.push(`vo: the ${s.kind} stage gets ${got.toFixed(1)} s of speech, its build needs ${want.toFixed(1)} s: lengthen that sentence or the pause after it`); }); }
   const plan = { template: 'proof-film', fps, seconds, format: C.format, size: SIZES[PLATFORMS[fm.platform].aspect], W: fm.W, H: fm.H, platform: fm.platform, safe: PLATFORMS[fm.platform].safe, safeZone: fm.zone, illustrative: ill,

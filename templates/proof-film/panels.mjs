@@ -2,7 +2,8 @@
    Every panel is a full-frame SVG string drawn in its own cell of a continuous world: stage(plan, st, t) -> inner SVG of that cell at composition time t.
    The builder (chart.scatterFrontier | ui.branchTrace | ui.dataTable) and the head-to-head table are the pack's own gfx parts (type/gfx/ui-proof.js, ui-trace.js: they print
    their own source / method / illustrative notes); the claim, name, method card, big numbers, stat cards and end card are drawn here. Every number printed here prints its
-   `source` and `method` beside it, and the ILLUSTRATIVE pill sits in the same footer on every number panel (honesty.mjs refuses a number without source and method).
+   `source` and `method` beside it, and the ILLUSTRATIVE pill (the honesty label: mono, at least 28 px on 16:9 and 30 px on 9:16, frame-design frames.md section 5) sits at the SAME place on every number panel:
+   the bottom-left of the safe rect, fading in with the panel (honesty.mjs refuses a number without source and method).
    Sizes are in 1080-unit px from the SHORTER frame side, so 16:9 and 9:16 share one type size; the content sits in the platform safe rect (type/safezones.js).
    cameraFor(plan) -> { zoom(t), pan(t) }: two nested cam2d state functions. `pan` (the world wrapper) is one cam2d pan2d leg per stage change; `zoom` (a frame-sized wrapper
    around it, scaled about the frame centre = the focus) dips while the camera travels and pushes in slowly while it dwells, so the cell of the stage in view always projects to
@@ -26,7 +27,7 @@ export function safeInset(zone, W, H, push = 0) {
 export function layout(plan) {
   const { W, H } = plan, S = safeInset(plan.safeZone, W, H, plan.camera.push), ctx = { ...ctxFor(W, H, plan.safeZone, 1), safe: S }, u = Math.min(W, H) / 1080, B = plan.brand;
   const T = { ink: B.ink, muted: B.muted, accent: B.accent, paper: B.paper, panel: '#FFFFFF', line: '#E3E0E7', faint: '#C8C5CE', chip: '#F0EEF4' };
-  return { W, H, u, fp: H > W ? 1.35 : 1, ctx, S, T, tall: H > W, plan, cx: (S.x0 + S.x1) / 2, cy: (S.y0 + S.y1) / 2 };
+  return { W, H, u, ctx, S, T, tall: H > W, plan, cx: (S.x0 + S.x1) / 2, cy: (S.y0 + S.y1) / 2 };
 }
 const distinct = (a) => [...new Set(a.map((v) => String(v ?? '').trim()).filter(Boolean))];
 const fade = (k) => op(clamp(k));
@@ -48,15 +49,25 @@ const TAB = 'font-variant-numeric="tabular-nums"';
 const fit = (R, h) => { const k = Math.min(1, (R.bottom - R.top) / h); return { k, y: Math.max(R.top, (R.top + R.bottom) / 2 - (k * h) / 2) }; };
 const put = (F, cx, g) => `<g transform="translate(${f2(cx)} ${f2(F.y)}) scale(${f2(F.k)}) translate(${f2(-cx)} 0)">${g}</g>`;
 
-/* ---------- the honesty footer: ILLUSTRATIVE pill + the source and method of the numbers on the panel, pinned to the bottom of the safe rect ---------- */
-function strip(L, x, y, w, nums, k, { source = true, method = true, pill = true } = {}) {
-  const s = L.u, T = L.T, f = L.fp, size = 20 * s * f, lh = 27 * s * f, ps = 17 * s * f, srcs = distinct(nums.map((n) => n.source)), meths = distinct(nums.map((n) => n.method)); let o = '', yy = y;   // the fine print is 1.35x on 9:16 so it still reads on a phone
-  if (pill && L.plan.illustrative) { const lab = 'ILLUSTRATIVE · PLACEHOLDER DATA', tw = measure(lab, ps, { weight: 600, font: MONO, ls: 2 }) + 36 * s * f;
-    o += rect(x, yy, tw, 34 * s * f, 17 * s * f, 'none', `stroke="${T.accent}" stroke-width="${f2(2 * s)}"`) + text(lab, x + 18 * s * f, yy + 23 * s * f, { size: ps, weight: 600, fill: T.accent, font: MONO, ls: 2 }); yy += 34 * s * f + 12 * s; }
-  const line = (label, str) => wrapLines(label + ': ' + str, size, 600, w, MONO).forEach((l) => { o += text(l, x, yy + 19 * s * f, { size, weight: 600, fill: T.muted, font: MONO }); yy += lh; });
+/* ---------- the honesty label + footer: the ILLUSTRATIVE pill at a fixed spot (bottom-left of the safe rect) and, above it, the source and method of the numbers on the panel ---------- */
+export const PILL_LABEL = 'ILLUSTRATIVE · PLACEHOLDER DATA';
+export const pillPx = (tall) => (tall ? 30 : 28);                                   // the pack's honesty-label floor (frames.md section 5): 28 px on 16:9, 30 px on 9:16, mono
+export const pillH = (tall, u = 1) => pillPx(tall) * 1.75 * u;
+const finePx = (L) => (L.tall ? 30 : 24) * L.u;                                       // the source / method fine print drawn here (the pack's own parts print theirs at 17-19 px)
+function pill(L, x, y, k) {
+  const s = L.u, ps = pillPx(L.tall) * s, h = pillH(L.tall, s), tw = measure(PILL_LABEL, ps, { weight: 600, font: MONO, ls: 2 }) + 1.3 * ps;
+  return `<g${fade(k)}>${rect(x, y, tw, h, h / 2, 'none', `stroke="${L.T.accent}" stroke-width="${f2(2 * s)}"`)}${text(PILL_LABEL, x + 0.65 * ps, y + h / 2 + 0.34 * ps, { size: ps, weight: 600, fill: L.T.accent, font: MONO, ls: 2 })}</g>`;
+}
+/* the honesty label arrives with its panel: it is fully in 0.05 s after the content starts, i.e. before the first number is on screen (the camera is still settling then) */
+const LABEL_IN = (u) => seg(u, -0.17, 0.05);
+const pillAtBottom = (L, k) => (L.plan.illustrative ? pill(L, L.S.x0, L.S.y1 - pillH(L.tall, L.u), k) : '');
+function strip(L, x, y, w, nums, k, { source = true, method = true, pill: withPill = true } = {}) {
+  const s = L.u, T = L.T, size = finePx(L), lh = 1.35 * size, srcs = distinct(nums.map((n) => n.source)), meths = distinct(nums.map((n) => n.method)); let o = '', yy = y;
+  const line = (label, str) => wrapLines(label + ': ' + str, size, 600, w, MONO).forEach((l) => { o += text(l, x, yy + 0.8 * size, { size, weight: 600, fill: T.muted, font: MONO }); yy += lh; });
   if (source && srcs.length) line('source', srcs.join(' · '));
   if (method && meths.length) { const groups = new Map(); nums.forEach((n) => { const m = String(n.method ?? '').trim(); if (m) groups.set(m, [...(groups.get(m) || []), n.label]); });
     line('method', meths.length === 1 ? meths[0] : [...groups].map(([m, labs]) => `${[...new Set(labs)].join(', ')}: ${m}`).join(' · ')); }
+  if (withPill && L.plan.illustrative) { if (yy > y) yy += 12 * s; o += pill(L, x, yy, 1); yy += pillH(L.tall, s); }   // the pill closes the strip: pinned to the bottom, it always lands on the same spot
   return { svg: `<g${fade(k)}>${o}</g>`, h: yy - y };
 }
 const footH = (L, nums, o) => strip(L, 0, 0, L.S.w, nums, 1, o).h;
@@ -106,28 +117,28 @@ function setting(L, d, u) {
   nums.forEach((n, i) => { const ck = spring(u - 1.0 - 0.14 * i, 'ui'), v = n.value * E.expoOut(seg(u, 1.05 + 0.14 * i, 1.85 + 0.14 * i)), cx = x + pad + i * cwid;
     o += `<g${fade(ck * 1.5)}><line x1="${f2(cx)}" x2="${f2(cx)}" y1="${f2(cy0 + 8 * s)}" y2="${f2(cy0 + chipH - 18 * s)}" stroke="${T.accent}" stroke-width="${f2(5 * s)}"/>`
       + text(fmtN(n, v), cx + 26 * s, cy0 + 94 * s, { size: 96 * s, weight: 800, fill: T.ink, extra: TAB }) + text(n.label, cx + 28 * s, cy0 + 140 * s, { size: 32 * s, weight: 600, fill: T.muted }) + '</g>'; });
-  return put(F, x + cw / 2, o + '</g>') + footer(L, nums, seg(u, 1.4, 2.0));
+  return put(F, x + cw / 2, o + '</g>') + footer(L, nums, LABEL_IN(u));   // the label and the sources arrive WITH the card, before the counts start
 }
 
 /* ---------- 4. big numbers: each with its own source and method on screen ---------- */
 function numbersP(L, d, u) {
   const s = L.u, T = L.T, items = d.items, n = items.length, gap = 56 * s, cwid = (L.S.w - gap * (n - 1)) / n, R = room(L, items, { source: false, method: false });
   const colBlock = (it, i, x, y, w, size) => { const t0 = 0.04 + 0.26 * i, k = spring(u - t0, 'headline'), v = it.value * E.expoOut(seg(u, t0, t0 + 1.15)), full = fmtN(it, it.value);
-    const fs = Math.min(size, size * w / Math.max(w * 0.4, measure(full, size, { weight: 800, ls: -0.04 * size }))), ls = -0.04 * fs, lk = seg(u, t0 + 0.5, t0 + 0.9), sk = seg(u, t0 + 1.0, t0 + 1.5);
-    const fp = 20 * s * L.fp, lab = wrapLines(it.label, 46 * s, 700, w), sm = wrapLines('source: ' + it.source, fp, 600, w, MONO), me = wrapLines('method: ' + it.method, fp, 600, w, MONO); let yy = y + fs * 0.8;
+    const fs = Math.min(size, size * w / Math.max(w * 0.4, measure(full, size, { weight: 800, ls: -0.04 * size }))), ls = -0.04 * fs, lk = seg(u, t0 + 0.25, t0 + 0.6), sk = seg(u, t0 + 0.2, t0 + 0.55);   // the label and the source / method lines come in while the number counts, not after it
+    const fp = finePx(L), lab = wrapLines(it.label, 46 * s, 700, w), sm = wrapLines('source: ' + it.source, fp, 600, w, MONO), me = wrapLines('method: ' + it.method, fp, 600, w, MONO); let yy = y + fs * 0.8;
     let g = `<g${fade(k * 2)} transform="translate(0 ${f2(fs * 0.2 * (1 - k))})">${text(fmtN(it, v), x, yy, { size: fs, weight: 800, fill: T.ink, ls, extra: TAB })}</g>`; yy += 30 * s;
     g += rect(x, yy, 64 * s * lk, 7 * s, 3.5 * s, T.accent); yy += 34 * s + 46 * s; lab.forEach((l, j) => { g += text(l, x, yy + j * 54 * s, { size: 46 * s, weight: 700, fill: T.ink, op: clamp(lk * 1.4) }); }); yy += lab.length * 54 * s - 20 * s;
     sm.concat(me).forEach((l, j) => { g += text(l, x, yy + fp + j * 1.35 * fp, { size: fp, weight: 600, fill: T.muted, font: MONO, op: clamp(sk) }); }); yy += (sm.length + me.length) * 1.35 * fp + 24 * s; return { g, h: yy - y }; };
   let o = '', h;
   if (!L.tall) { const size = (n === 1 ? 340 : n === 2 ? 290 : 230) * s, bl = items.map((it, i) => colBlock(it, i, L.S.x0 + i * (cwid + gap), 0, cwid, size)); h = Math.max(...bl.map((b) => b.h)); o = bl.map((b) => b.g).join(''); }
   else { const size = (n === 1 ? 260 : n === 2 ? 196 : 142) * s, gp = 26 * s; let y = 0; items.forEach((it, i) => { const b = colBlock(it, i, L.S.x0, y, L.S.w, size); o += b.g; y += b.h + gp; }); h = y - gp; }
-  return put(fit(R, h), L.cx, o) + footer(L, items, seg(u, 1.4, 2.0), { source: false, method: false });
+  return put(fit(R, h), L.cx, o) + footer(L, items, LABEL_IN(u), { source: false, method: false });
 }
 
 /* ---------- 5. three stat cards: better / leaner / cheaper ---------- */
 function cardsP(L, d, u) {
   const s = L.u, T = L.T, id = 'pc' + L.W, n = d.length, gap = 34 * s, pad = 30 * s, R = room(L, d, { source: false, method: false }); let o = `<defs>${shadowDef(id, s)}</defs>`;
-  const cw = L.tall ? L.S.w : (L.S.w - gap * (n - 1)) / n, ch = L.tall ? 292 * s : 640 * s, h = L.tall ? n * ch + gap * (n - 1) : ch, ours = L.plan.brand.name, F = fit(R, h);
+  const cw = L.tall ? L.S.w : (L.S.w - gap * (n - 1)) / n, shMax = Math.max(...d.map((it) => strip(L, 0, 0, cw - 2 * pad, [it], 1, { pill: false }).h)), ch = Math.max(L.tall ? 292 * s : 640 * s, (L.tall ? 196 : 446) * s + shMax + pad), h = L.tall ? n * ch + gap * (n - 1) : ch, ours = L.plan.brand.name, F = fit(R, h);   // the card is as tall as its content: the bars and value above, the fine print below, whatever the length of the method
   d.forEach((it, i) => { const t0 = 0.04 + 0.26 * i, k = spring(u - t0, 'panel'), x = L.tall ? L.S.x0 : L.S.x0 + i * (cw + gap), y = L.tall ? i * (ch + gap) : 0;
     const v = it.value * E.expoOut(seg(u, t0 + 0.1, t0 + 1.1)), vs = (L.tall ? 100 : 150) * s, mx = Math.max(it.value, it.alt ?? 0) || 1, bk = E.expoOut(seg(u, t0 + 0.7, t0 + 1.4)), bw = L.tall ? 330 * s : cw - 2 * pad - 130 * s, bh = (L.tall ? 24 : 28) * s;
     let g = `<g${fade(k * 1.6)} transform="translate(0 ${f2(50 * s * (1 - k))})">${cardBox(L, id, x, y, cw, ch, 24 * s)}${rect(x, y, cw, 10 * s, 5 * s, T.accent)}`;
@@ -139,8 +150,8 @@ function cardsP(L, d, u) {
     const bar = (yy, lab, val, col, str) => text(lab, bx, yy - 9 * s, { size: 21 * s, weight: 600, fill: T.muted, font: MONO }) + rect(bx, yy, bw, bh, bh / 2, T.chip) + rect(bx, yy, Math.max(bh, bw * (val / mx) * bk), bh, bh / 2, col) + text(str, bx + bw + 14 * s, yy + bh - 2 * s, { size: 28 * s, weight: 700, fill: T.ink, extra: TAB });
     if (it.alt !== undefined) g += bar(by + 22 * s, ours, it.value, T.accent, fmtN(it, it.value)) + bar(by + 22 * s + (L.tall ? 56 : 80) * s, it.altLabel || 'alternative', it.alt, T.faint, fmtN(it, it.alt));
     const sh = strip(L, 0, 0, cw - 2 * pad, [it], 1, { pill: false }).h;
-    g += strip(L, x + pad, y + ch - pad - sh + 6 * s, cw - 2 * pad, [it], clamp((u - t0 - 1.0) / 0.5), { pill: false }).svg + '</g>'; o += g; });
-  return put(F, L.cx, o) + footer(L, d, seg(u, 1.4, 2.0), { source: false, method: false });
+    g += strip(L, x + pad, y + ch - pad - sh + 6 * s, cw - 2 * pad, [it], clamp((u - t0 - 0.1) / 0.4), { pill: false }).svg + '</g>'; o += g; });
+  return put(F, L.cx, o) + footer(L, d, LABEL_IN(u), { source: false, method: false });
 }
 
 /* ---------- 6. end card: the name, the URL, one line; it holds still (a quiet hold, no stinger) ---------- */
@@ -152,19 +163,16 @@ function endP(L, d, u) {
   let yy = cy + nsz * 0.34 + 96 * s + 78 * s; wrapLines(d.line, 36 * s, 600, L.S.w * 0.9).forEach((l) => { o += `<g${fade(lk * 1.6)}>${text(l, L.cx, yy, { size: 36 * s, weight: 600, fill: T.muted, anchor: 'middle' })}</g>`; yy += 48 * s; });
   if (d.chips && d.chips.length) { const csz = 28 * s, ws = d.chips.map((c) => measure(c, csz, { weight: 700 }) + 44 * s), tot = ws.reduce((a, b) => a + b, 0) + 16 * s * (ws.length - 1); let x = L.cx - tot / 2;
     d.chips.forEach((c, i) => { o += `<g${fade(lk * 1.6)}>${rect(x, yy + 8 * s, ws[i], 56 * s, 28 * s, T.chip)}${text(c, x + ws[i] / 2, yy + 8 * s + 38 * s, { size: csz, weight: 700, fill: T.ink, anchor: 'middle' })}</g>`; x += ws[i] + 16 * s; }); }
-  if (L.plan.illustrative) { const f = L.fp, lab = 'ILLUSTRATIVE · PLACEHOLDER DATA', tw = measure(lab, 17 * s * f, { weight: 600, font: MONO, ls: 2 }) + 36 * s * f, y = L.S.y1 - 34 * s * f;
-    o += `<g${fade(lk)}>${rect(L.cx - tw / 2, y, tw, 34 * s * f, 17 * s * f, 'none', `stroke="${T.accent}" stroke-width="${f2(2 * s)}"`)}${text(lab, L.cx, y + 23 * s * f, { size: 17 * s * f, weight: 600, fill: T.accent, font: MONO, ls: 2, anchor: 'middle' })}</g>`; }
+  o += pillAtBottom(L, LABEL_IN(u));
   return o;
 }
 
-/* ---------- the parts: the pack's own gfx in this cell (ui.branchTrace on 9:16: a 16:9 plate scaled to the frame width) ---------- */
+/* ---------- the parts: the pack's own gfx in this cell (ui.branchTrace is landscape-only: the gate refuses it on 9:16) ---------- */
 function partP(L, st, t) {
-  const hold = (st.until ?? 0) + L.plan.camera.travelS + 0.4 - st.at, item = { at: st.at, dur: hold, params: st.part.params };
-  let o;
-  if (st.part.id === 'ui.branchTrace' && L.tall) { const k = L.S.w / 1920, ctxW = ctxFor(1920, 1080, 'wideTitle', 1), h = 1080 * k, y = L.S.y0 + (L.S.h - h) / 2;
-    o = `<g transform="translate(${f2(L.S.x0)} ${f2(y)}) scale(${f2(k)})">${renderInner(st.part.id, t, item, ctxW)}</g>`; }
-  else o = renderInner(st.part.id, t, item, L.ctx);
-  if (st.part.id === 'ui.dataTable') { const nums = L.plan.honesty.numbers.filter((n) => n.path.startsWith(st.id === 'h2h' ? 'h2h.' : 'builder.table.')); o += footer(L, nums, seg(t - st.at, 1.4, 2.0), { source: false }); }   // the part prints the source; the method line is ours
+  const u = t - st.at, hold = (st.until ?? 0) + L.plan.camera.travelS + 0.4 - st.at, item = { at: st.at, dur: hold, params: st.part.params };
+  let o = renderInner(st.part.id, t, item, L.ctx);
+  if (st.part.id === 'ui.dataTable') { const nums = L.plan.honesty.numbers.filter((n) => n.path.startsWith(st.id === 'h2h' ? 'h2h.' : 'builder.table.')); o += footer(L, nums, LABEL_IN(u), { source: false }); }   // the part prints the source; the method line and the pill are ours
+  else o += pillAtBottom(L, LABEL_IN(u));                                                                                                                                                             // scatter / trace: the part prints its own source note; the pill sits where it sits on every panel
   return o;
 }
 

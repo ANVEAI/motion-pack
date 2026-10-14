@@ -3,7 +3,7 @@
   * --audio set -> YOUR recording, decoded with ffmpeg from 0 s and cut or padded to the plan length (8 ms fades at both ends); words.json times are in that recording's own time
   * no --audio  -> a GUIDE signal for a dry run: band-limited noise shaped per word at the words.json timings. It is plainly not a voice and never imitates a person; it only lets the
                    mixer duck the bed and lets ears measure the ducking before you have recorded anything.
-templates/_shared/audio.py hands the result to music/mixer.py as the "vo" stem (plan.vo, plan.duckDb): the bed ducks 12 dB under it. If the voice is synthetic, say so in the post
+templates/_shared/audio.py hands the result to music/mixer.py as the "vo" stem (plan.vo, plan.duckDb): the bed ducks plan.duckDb (CONFIG duckDb, 16) dB under it. If the voice is synthetic, say so in the post
 (AI-generated speech is AI content); this template never calls a speech service."""
 import argparse, json, os, subprocess, zlib
 import numpy as np

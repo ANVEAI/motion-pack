@@ -134,7 +134,7 @@
       0.07505814993737696,
       0.1522745571658615,
       0.8006799069601003,
-      0.4926529790660226
+      0.4559342290660226
      ],
      "title": "Score against cost per task",
      "points": [
@@ -212,7 +212,7 @@
      },
      "accent": "#4a18ed",
      "theme": "light",
-     "note": "illustrative data",
+     "note": "",
      "calloutOffset": [
       -380,
       -60
@@ -340,7 +340,7 @@
      "unit": "",
      "dec": 1,
      "source": "illustrative placeholder, replace",
-     "method": "mean graded answer, placeholder run",
+     "method": "mean graded answer (placeholder)",
      "line": "answer score",
      "alt": 52.5,
      "altLabel": "alternative"
@@ -351,7 +351,7 @@
      "unit": "M",
      "dec": 2,
      "source": "illustrative placeholder, replace",
-     "method": "mean tokens per task, placeholder run",
+     "method": "mean tokens per task (placeholder)",
      "line": "tokens per task",
      "alt": 2330000,
      "altLabel": "alternative"
@@ -362,7 +362,7 @@
      "unit": "$",
      "dec": 2,
      "source": "illustrative placeholder, replace",
-     "method": "list price x tokens, placeholder run",
+     "method": "list price x tokens (placeholder)",
      "line": "cost per task",
      "alt": 9.1,
      "altLabel": "alternative"
@@ -657,6 +657,12 @@
    "id": "sfx/ui/tick",
    "t": 32.2333,
    "why": "end card lands (a tick, no stinger: the quiet hold follows)"
+  },
+  {
+   "id": "sfx/amb/room_tone",
+   "t": 32.9667,
+   "why": "room tone under the quiet hold: a steady floor, no beat, no stinger",
+   "overBedDb": -26
   }
  ],
  "music": "music/bed_playful_bounce_loop8",
@@ -682,7 +688,7 @@
   },
   {
    "frame": 1007,
-   "gain_db": -30
+   "gain_db": -40
   }
  ],
  "audio": {
@@ -753,7 +759,8 @@
    32,
    32.067,
    32.167,
-   32.233
+   32.233,
+   32.967
   ],
   "role": "proof"
  },
@@ -953,42 +960,42 @@
     "label": "Better",
     "value": 58.5,
     "source": "illustrative placeholder, replace",
-    "method": "mean graded answer, placeholder run"
+    "method": "mean graded answer (placeholder)"
    },
    {
     "path": "cards[0].alt",
     "label": "Better (alternative)",
     "value": 52.5,
     "source": "illustrative placeholder, replace",
-    "method": "mean graded answer, placeholder run"
+    "method": "mean graded answer (placeholder)"
    },
    {
     "path": "cards[1]",
     "label": "Leaner",
     "value": 1350000,
     "source": "illustrative placeholder, replace",
-    "method": "mean tokens per task, placeholder run"
+    "method": "mean tokens per task (placeholder)"
    },
    {
     "path": "cards[1].alt",
     "label": "Leaner (alternative)",
     "value": 2330000,
     "source": "illustrative placeholder, replace",
-    "method": "mean tokens per task, placeholder run"
+    "method": "mean tokens per task (placeholder)"
    },
    {
     "path": "cards[2]",
     "label": "Cheaper",
     "value": 3.6,
     "source": "illustrative placeholder, replace",
-    "method": "list price x tokens, placeholder run"
+    "method": "list price x tokens (placeholder)"
    },
    {
     "path": "cards[2].alt",
     "label": "Cheaper (alternative)",
     "value": 9.1,
     "source": "illustrative placeholder, replace",
-    "method": "list price x tokens, placeholder run"
+    "method": "list price x tokens (placeholder)"
    }
   ],
   "illustrative": true,
@@ -1133,32 +1140,32 @@
   {
    "text": "Better: 58.5",
    "source": "illustrative placeholder, replace",
-   "method": "mean graded answer, placeholder run"
+   "method": "mean graded answer (placeholder)"
   },
   {
    "text": "Better (alternative): 52.5",
    "source": "illustrative placeholder, replace",
-   "method": "mean graded answer, placeholder run"
+   "method": "mean graded answer (placeholder)"
   },
   {
    "text": "Leaner: 1350000",
    "source": "illustrative placeholder, replace",
-   "method": "mean tokens per task, placeholder run"
+   "method": "mean tokens per task (placeholder)"
   },
   {
    "text": "Leaner (alternative): 2330000",
    "source": "illustrative placeholder, replace",
-   "method": "mean tokens per task, placeholder run"
+   "method": "mean tokens per task (placeholder)"
   },
   {
    "text": "Cheaper: 3.6",
    "source": "illustrative placeholder, replace",
-   "method": "list price x tokens, placeholder run"
+   "method": "list price x tokens (placeholder)"
   },
   {
    "text": "Cheaper (alternative): 9.1",
    "source": "illustrative placeholder, replace",
-   "method": "list price x tokens, placeholder run"
+   "method": "list price x tokens (placeholder)"
   }
  ],
  "warnings": [],

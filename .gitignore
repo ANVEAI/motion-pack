@@ -81,3 +81,4 @@ templates/multi-voice-doc/out/*.mp4
 templates/proof-film/out/*.mp4
 templates/proof-film/out/ears*.md
 templates/proof-film/out/transcript.json
+templates/proof-film/tall/assets/

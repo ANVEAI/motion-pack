@@ -41,7 +41,7 @@ def via_music_mixer(P, out, bed, a):
         if c.get('loopTo'): continue   # the bed replaces ambience loops
         k = sid(c['id'])
         if k not in registry.SOUNDS: continue
-        cues.append({'id': k, 'frame': int(round(c['t'] * fps)), 'gain_db': 0.0, 'why': c.get('why', ''), **({'over_vo_db': c['overVoDb']} if c.get('overVoDb') is not None else {})})   # levels: the mixer solves over-bed dB per tier; plan cue overVoDb (negative dB) sits the cue under the VOICE instead (a cue over the un-ducked bed is as loud as the bed was before it ducked: wrong under a line)
+        cues.append({'id': k, 'frame': int(round(c['t'] * fps)), 'gain_db': 0.0, 'why': c.get('why', ''), **({'over_vo_db': c['overVoDb']} if c.get('overVoDb') is not None else {}), **({'over_bed_db': c['overBedDb']} if c.get('overBedDb') is not None else {})})   # levels: the mixer solves over-bed dB per tier; plan cue overVoDb (negative dB) sits the cue under the VOICE instead (a cue over the un-ducked bed is as loud as the bed was before it ducked: wrong under a line); plan cue overBedDb (dB, negative = under the bed) sets a LOOP cue's level against the un-dipped bed (a room tone under a quiet hold: the loop default is -10 dB, far too loud there)
     d = tempfile.mkdtemp(prefix='mp-mix-'); import soundfile as sf
     # pre-tile the (seamless) loop bed to the full length here: music/mixer.py add_bed(loop=True) mis-tiles stereo beds shorter than
     # the edit (np.tile on a 2-D array -> 4 channels; reported to the music module). Passing a full-length bed with loop False avoids it.
