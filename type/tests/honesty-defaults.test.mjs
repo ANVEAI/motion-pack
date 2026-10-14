@@ -112,6 +112,8 @@ for (const id of ['social.notification', 'social.chatBubbles', 'caption.meme', '
   check('type/manifest.json (generated from the parts) no longer lists "internal benchmark", "P50 voice latency" or the invented -38% delta', !/internal benchmark|P50 voice latency|"-38%"/.test(ids)); }
 { const p = (src) => lintClaims([{ text: '487 ms P50 latency, -38%', source: src }]).length;
   check('lintClaims: refuses a claim with a digit and no source, a blank source and a generic one ("internal benchmark", "n/a", "x", "trust me")', [undefined, '', '   ', 'internal benchmark', 'Internal Benchmark.', 'n/a', 'x', 'trust me', 'our data', 'tbd'].every((s) => p(s) === 1));
+  // verifier: separators and near-synonyms slipped through ("internal-benchmark", "in-house benchmark", "trust me bro", "self-reported", "me")
+  check('lintClaims: a generic source is refused in any spelling (hyphen, underscore, case, a "source:" prefix, in-house, self-reported, me)', ['internal-benchmark', 'in-house benchmark', 'In_House  Data', 'trust me bro', 'self-reported', 'me', 'source: our data', 'Our own numbers.', 'N/A'].every((s) => p(s) === 1));
   check('lintClaims: accepts a source that names where the number comes from, and a claim with no digit needs none', p('run 4 of the placeholder set, 2026-10-14') === 0 && p('illustrative data, printed in the chart footnote') === 0 && lintClaims([{ text: 'it is fast' }]).length === 0); }
 
 console.log(`\nhonesty-defaults: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);
