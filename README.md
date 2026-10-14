@@ -199,7 +199,7 @@ Each Release lists `SHA256SUMS`. The MP3 previews in git are for listening only:
 
 ## Optional third-party sets
 
-Nothing third-party is vendored. `scripts/fetch-external.sh` downloads pinned, permissively licensed sets from their original sources and checks every file against `scripts/external.lock`:
+No third-party icon, audio or library is vendored (three OFL font families are bundled, see Licences, and the lab sheets show renders of the icon sets below). `scripts/fetch-external.sh` downloads pinned, permissively licensed sets from their original sources and checks every file against `scripts/external.lock`:
 - Lucide and Phosphor icons;
 - Fluent Emoji;
 - Kenney and OwlishMedia CC0 audio.
@@ -224,7 +224,7 @@ CI runs the checks that need no GPU on every push.
 ## Licences
 
 - **Code, shaders and skills:** MIT, see [LICENSE](LICENSE). Copyright (c) 2026 Anveshana Futurecorp Pvt Ltd (ANVE).
-- **Media the pack generates** (synthesised SFX and music, renders and previews, images, LUT `.cube` files): CC0 1.0, see [LICENSE-MEDIA](LICENSE-MEDIA). Use them in anything, with no credit line.
+- **Media the pack generates** (synthesised SFX and music, renders and previews, images, LUT `.cube` files): CC0 1.0, see [LICENSE-MEDIA](LICENSE-MEDIA). Use them in anything, with no credit line. **Exception:** the lab contact sheets (`lab/*/sheets/`) show renders of third-party icon and emoji sets (Lucide, Phosphor, Fluent Emoji; all MIT or ISC) and keep their licences, with the notices in [`licenses/`](licenses/README.md).
 - **Fonts** (Manrope, IBM Plex Mono): SIL Open Font License 1.1, with the licence text next to each font.
 - **Trademarks:** the ANVE name and logo are not covered by either licence, see [TRADEMARKS.md](TRADEMARKS.md).
 - **Third-party:** runtime libraries and the optional fetched sets keep their own licences, see [THIRD_PARTY.md](THIRD_PARTY.md).
