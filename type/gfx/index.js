@@ -8,14 +8,15 @@
    layout.scatterCollage / mosaicBurst / logoWall / orbitRing + callout.connectorLabel (collage.js; SVG fields, not DOM-shot layouts). Layouts (layout.js, incl. layout.cornerPin from cornerpin.js) and draw-on (drawon.js) act on DOM shots and are exported here too.
    Round 4+5 proof parts: chart.scatterFrontier, ui.dataTable, ui.costTicker, type.paramReadout (ui-proof.js), ui.branchTrace, caption.sceneBubble, lowerThird.personalTag, ui.promptBar.attach (ui-trace.js).
    Round 4/5 (r45-type.js, r45-glyph.js): title.partnerLockup, layout.iconMergeLockup, type.flankWords, type.behindSubject, type.asciiMosaic, type.textOnPath, type.electricOutline.
+   Round 6 (r6.js): chart.hoverTooltip, ui.dockLaunch, title.verbCard, ui.connectRows, layout.degradingDiagram, type.commandPill.
    Card systems (canvas): layout.cardStack + layout.cardRiver (cards.js), layout.evidenceBoard (board.js): mountCards / mountBoard -> { render(t) }. */
 import { EDITORIAL } from './editorial.js'; import { CALLOUTS } from './callouts.js'; import { SOCIAL } from './social.js'; import { STICKER_GFX, STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource } from './stickers.js';
 import { KINETIC } from './kinetic.js'; import { COLLAGE } from './collage.js';
 import { life, ctxFor } from './core.js'; import { UI as UI1, UI_CUES as UI1_CUES, hooks as uiHooks } from './ui.js'; import { UI2, UI2_CUES } from './ui-data.js'; import { UI3, UI3_CUES } from './ui-nav.js';
-import { PROOF, PROOF_CUES } from './ui-proof.js'; import { TRACE, TRACE_CUES } from './ui-trace.js';
+import { PROOF, PROOF_CUES } from './ui-proof.js'; import { TRACE, TRACE_CUES } from './ui-trace.js'; import { R6, R6_CUES } from './r6.js';
 /* round 4+5 (ui-proof.js, ui-trace.js): the ui.* ones join the UI kit (uiCues); chart.*, caption.*, type.* and lowerThird.* ones get per-action cues through gfxCues */
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
-const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES) }; import { DOC } from './doc.js';
+const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45), ...onlyUI(R6) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES), ...onlyUI(R6_CUES) }; import { DOC } from './doc.js';
 import { SWAP, SWAP_CUES } from './swap.js'; import { TYPE_R45, TYPE_R45_CUES } from './r45-type.js'; import { GLYPH_R45, GLYPH_R45_CUES, ELECTRIC_SOUND } from './r45-glyph.js'; import { BADGES, BADGE_CUES } from './badges.js'; import { BRAND_LAYOUTS, BRAND_CUES } from './brand.js';
 export { stepAt, mixHex } from './swap.js'; export { selectionZoom, selectionZoomCss } from './badges.js'; export { CIRCLE4, SPARK4, PLATES } from './brand.js';
 export { PARTNER_MARKS, MERGE_ICONS, lintPartnerMarks, inkFromMask, markFromImage, partnerLockupLayout, iconMergeFit, iconMergeState, flankBox, flankFitK, lintFlank, flankShots, flankState, srcAt, figurePlate } from './r45-type.js';
@@ -27,7 +28,7 @@ export { BOARD, BOARD_D, boardAt, drawBoard, mountBoard } from './board.js';
 export { PIN_LAYOUTS, homography, matrix3d, cornersAt, lintQuad, drawQuad, mountPin } from './cornerpin.js';
 export { LAYOUTS, layoutAt, applyLayout } from './layout.js'; export { prepareDrawOn, drawOnAt, trimAt, bindDrawOn, drawAttrs } from './drawon.js';
 export { STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource };
-export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45 };
+export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6 };
 export const GFX_IDS = Object.keys(GFX);
 /* default sound pairing per gfx id prefix (sfx/<category>/<name>, anchor = the item's at + 1 frame, gain over the bed). Longest prefix wins. */
 export const GFX_SFX = {
@@ -58,7 +59,9 @@ export const GFX_SFX = {
   'ui.costTicker': ['sfx/ui/count_run', 10, -4], 'type.paramReadout': ['sfx/ui/count_tick', 6, -5], 'lowerThird.personalTag': ['sfx/whoosh/swish_s', 0, -3], 'ui.promptBar.attach': ['sfx/device/mouse_click', 9, -2],
   /* round 4/5 (2026-10-14): r45-type.js + r45-glyph.js; electricOutline reads ELECTRIC_SOUND (the glitch stutter until sfx/elec/arc is in the library) */
   'title.partnerLockup': ['sfx/hit/soft', 1, -2], 'layout.iconMergeLockup': ['sfx/hit/soft', 1, -3], 'type.asciiMosaic': ['sfx/whoosh/magic_swirl', 10, -4], 'type.textOnPath': ['sfx/whoosh/flyby', 3, -4],
-  'type.flankWords': ['sfx/whoosh/swish_s', 0, -4], 'type.electricOutline': [ELECTRIC_SOUND, 0, -6], 'type.behindSubject': ['sfx/whoosh/whoosh_in_m', 0, -4] };
+  'type.flankWords': ['sfx/whoosh/swish_s', 0, -4], 'type.electricOutline': [ELECTRIC_SOUND, 0, -6], 'type.behindSubject': ['sfx/whoosh/whoosh_in_m', 0, -4],
+  /* round 6 (2026-10-15): r6.js; gfxCues / uiCues give one cue per action */
+  'chart.hoverTooltip': ['sfx/ui/tick', 1, -4], 'ui.dockLaunch': ['sfx/device/mouse_click', 1, -2], 'title.verbCard': ['sfx/hit/soft', 1, -2], 'ui.connectRows': ['sfx/device/mouse_click', 1, -2], 'layout.degradingDiagram': ['sfx/ui/pop', 1, -4], 'type.commandPill': ['sfx/ui/type_key', 1, -5] };
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 export function renderInner(id, t, { at = 0, dur, params = {} } = {}, ctx) {
   const g = GFX[id]; if (!g) throw new Error('unknown gfx ' + id); const p = { ...g.d, ...params }, L = life(t, at, dur ?? p.dur ?? g.dur, g.inF ?? 12, g.outF ?? 9);
@@ -73,7 +76,7 @@ export function mountGfx(root, items, { W = 1920, H = 1080, platform = null, see
   const host = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); host.setAttribute('viewBox', `0 0 ${W} ${H}`);
   Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none', overflow: 'visible' }); root.appendChild(host);
   const ctx = ctxFor(W, H, platform, seed);
-  return { host, render(t) { host.innerHTML = items.map((it) => renderInner(it.id, t, it, ctx)).join(''); return this; } };
+  return { host, render(t) { host.innerHTML = items.map((it, i) => renderInner(it.id, t, it, { ...ctx, item: i })).join(''); return this; } };
 }
 export function bindHF(stack, { t0 = 0 } = {}) { const f = (t) => stack.render(t - t0); window.addEventListener('hf-seek', (e) => f(e.detail.time)); f(window.__hfThreeTime || 0); return f; }
 /* ui.* sound cue hook: every action of a UI-kit item (keystrokes, clicks, ticks, lock-on, morphs) as [{ t (absolute s), id: 'sfx/<cat>/<name>', why }] for the plan's cue sheet */
@@ -81,7 +84,7 @@ export function uiCues(id, { at = 0, params = {} } = {}) { const g = UI[id], f =
 uiHooks.renderInner = renderInner;
 /* per-action sound cues for every gfx id that has them (the ui.* kit and the round-3 parts): [{ t (absolute s), id: 'sfx/<cat>/<name>', why }];
    ids without an action table fall back to their single sfxFor() default at `at` + offset. */
-const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES };
+const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES };
 export function gfxCues(id, { at = 0, params = {}, dur } = {}) {
   if (UI_CUES[id]) return uiCues(id, { at, params }); const g = GFX[id], f = ACTION_CUES[id];
   if (g && f) return f({ ...g.d, dur: dur ?? g.dur, ...params }).map((c) => ({ ...c, t: +(c.t + at).toFixed(4) }));
