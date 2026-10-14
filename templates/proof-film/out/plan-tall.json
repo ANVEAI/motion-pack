@@ -1,7 +1,7 @@
 {
  "template": "proof-film",
  "fps": 30,
- "seconds": 36.6,
+ "seconds": 37.6,
  "format": "tall",
  "size": [
   1080,
@@ -78,7 +78,7 @@
    "kind": "setting",
    "t0": 7.5,
    "at": 7.6667,
-   "until": 13,
+   "until": 12,
    "data": {
     "title": "How we measured",
     "rows": [
@@ -124,9 +124,120 @@
    "i": 3,
    "id": "builder",
    "kind": "builder",
-   "t0": 13,
-   "at": 13.1667,
-   "until": 19,
+   "t0": 12,
+   "at": 12.1667,
+   "until": 18,
+   "part": {
+    "id": "chart.scatterFrontier",
+    "params": {
+     "box": [
+      0.07505814993737696,
+      0.1522745571658615,
+      0.8006799069601003,
+      0.4559342290660226
+     ],
+     "title": "Score against cost per task",
+     "points": [
+      {
+       "label": "System A",
+       "x": 12.4,
+       "y": 54,
+       "source": "illustrative placeholder, replace"
+      },
+      {
+       "label": "System B",
+       "x": 9.1,
+       "y": 52.5,
+       "source": "illustrative placeholder, replace"
+      },
+      {
+       "label": "System C",
+       "x": 6.8,
+       "y": 47,
+       "source": "illustrative placeholder, replace"
+      },
+      {
+       "label": "System D",
+       "x": 4.7,
+       "y": 42.5,
+       "source": "illustrative placeholder, replace"
+      },
+      {
+       "label": "System E",
+       "x": 3.9,
+       "y": 36,
+       "source": "illustrative placeholder, replace"
+      },
+      {
+       "label": "System F",
+       "x": 7.9,
+       "y": 40.5,
+       "source": "illustrative placeholder, replace"
+      },
+      {
+       "label": "System G",
+       "x": 5.6,
+       "y": 34,
+       "source": "illustrative placeholder, replace"
+      }
+     ],
+     "x": {
+      "min": 0,
+      "max": 14,
+      "ticks": [
+       0,
+       2,
+       4,
+       6,
+       8,
+       10,
+       12,
+       14
+      ],
+      "prefix": "$",
+      "label": "Cost per task  ·  cheaper →",
+      "invert": true
+     },
+     "y": {
+      "min": 30,
+      "max": 70,
+      "ticks": [
+       30,
+       40,
+       50,
+       60,
+       70
+      ],
+      "label": "Score"
+     },
+     "accent": "#4a18ed",
+     "theme": "light",
+     "note": "",
+     "calloutOffset": [
+      -380,
+      -60
+     ],
+     "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring",
+     "hero": {
+      "label": "Acme Reader",
+      "x": 3.6,
+      "y": 58.5,
+      "source": "illustrative placeholder, replace",
+      "callout": [
+       "Highest score",
+       "at the lowest cost"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "i": 4,
+   "id": "h2h",
+   "kind": "h2h",
+   "t0": 18,
+   "at": 18.1667,
+   "until": 22.5,
    "part": {
     "id": "ui.dataTable",
     "params": {
@@ -137,7 +248,7 @@
       0.3547101449275363
      ],
      "scale": 1.12,
-     "finding": "Acme Reader scored higher and cost less on the same tasks.",
+     "finding": "Same tasks, same budget. Acme Reader answered more, for less.",
      "columns": [
       {
        "label": "Metric"
@@ -151,12 +262,12 @@
      ],
      "rows": [
       {
-       "label": "Answer score",
-       "unit": "",
-       "dec": 1,
+       "label": "Tokens per task",
+       "unit": "M",
+       "dec": 2,
        "values": [
-        52.5,
-        58.5
+        2330000,
+        1350000
        ]
       },
       {
@@ -169,12 +280,12 @@
        ]
       },
       {
-       "label": "Tokens per task",
-       "unit": "M",
-       "dec": 2,
+       "label": "Answer score",
+       "unit": "",
+       "dec": 1,
        "values": [
-        2330000,
-        1350000
+        52.5,
+        58.5
        ]
       }
      ],
@@ -188,12 +299,12 @@
    }
   },
   {
-   "i": 4,
+   "i": 5,
    "id": "numbers",
    "kind": "numbers",
-   "t0": 19,
-   "at": 19.1667,
-   "until": 25,
+   "t0": 22.5,
+   "at": 22.6667,
+   "until": 27,
    "data": {
     "items": [
      {
@@ -216,12 +327,12 @@
    }
   },
   {
-   "i": 5,
+   "i": 6,
    "id": "cards",
    "kind": "cards",
-   "t0": 25,
-   "at": 25.1667,
-   "until": 31,
+   "t0": 27,
+   "at": 27.1667,
+   "until": 32,
    "data": [
     {
      "label": "Better",
@@ -259,12 +370,12 @@
    ]
   },
   {
-   "i": 6,
+   "i": 7,
    "id": "end",
    "kind": "end",
-   "t0": 31,
-   "at": 31.1667,
-   "until": 36.6,
+   "t0": 32,
+   "at": 32.1667,
+   "until": 37.6,
    "hold": true,
    "data": {
     "brand": "Acme Reader",
@@ -299,25 +410,31 @@
    {
     "from": 2,
     "to": 3,
-    "t0": 13,
+    "t0": 12,
     "dur": 1.1
    },
    {
     "from": 3,
     "to": 4,
-    "t0": 19,
+    "t0": 18,
     "dur": 1.1
    },
    {
     "from": 4,
     "to": 5,
-    "t0": 25,
+    "t0": 22.5,
     "dur": 1.1
    },
    {
     "from": 5,
     "to": 6,
-    "t0": 31,
+    "t0": 27,
+    "dur": 1.1
+   },
+   {
+    "from": 6,
+    "to": 7,
+    "t0": 32,
     "dur": 1.1
    }
   ]
@@ -340,30 +457,36 @@
   {
    "id": "setting",
    "start": 7.5,
-   "dur": 5.5,
+   "dur": 4.5,
    "move": "cam2d.pan"
   },
   {
    "id": "builder",
-   "start": 13,
+   "start": 12,
    "dur": 6,
+   "move": "cam2d.pan"
+  },
+  {
+   "id": "h2h",
+   "start": 18,
+   "dur": 4.5,
    "move": "cam2d.pan"
   },
   {
    "id": "numbers",
-   "start": 19,
-   "dur": 6,
+   "start": 22.5,
+   "dur": 4.5,
    "move": "cam2d.pan"
   },
   {
    "id": "cards",
-   "start": 25,
-   "dur": 6,
+   "start": 27,
+   "dur": 5,
    "move": "cam2d.pan"
   },
   {
    "id": "end",
-   "start": 31,
+   "start": 32,
    "dur": 5.6,
    "hold": true,
    "move": "cam2d.pan"
@@ -397,87 +520,147 @@
   },
   {
    "id": "sfx/whoosh/swish_xs",
-   "t": 13.0667,
+   "t": 12.0667,
    "why": "camera leaves for builder"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 13.4333,
-   "why": "builder: header slides in"
+   "t": 12.2333,
+   "why": "builder: axes draw on"
   },
   {
-   "id": "sfx/ui/tick",
-   "t": 13.6667,
-   "why": "builder: row 1"
+   "id": "sfx/ui/pop",
+   "t": 12.7333,
+   "why": "builder: point 1 drops in"
   },
   {
-   "id": "sfx/ui/count_run",
-   "t": 13.7,
-   "why": "builder: numbers count up"
-  },
-  {
-   "id": "sfx/ui/count_tick",
-   "t": 13.8,
-   "why": "builder: row 2"
-  },
-  {
-   "id": "sfx/device/loading_tick",
-   "t": 13.9333,
-   "why": "builder: row 3"
+   "id": "sfx/device/card_flip",
+   "t": 12.8667,
+   "why": "builder: point 2 drops in"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 15.0333,
-   "why": "builder: highlight pulses"
+   "t": 13.0333,
+   "why": "builder: point 3 drops in"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 13.2,
+   "why": "builder: point 4 drops in"
+  },
+  {
+   "id": "sfx/device/card_flip",
+   "t": 13.3667,
+   "why": "builder: point 5 drops in"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 13.5333,
+   "why": "builder: point 6 drops in"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 13.6667,
+   "why": "builder: point 7 drops in"
+  },
+  {
+   "id": "sfx/ui/scan_sweep",
+   "t": 14,
+   "why": "builder: frontier draws"
+  },
+  {
+   "id": "sfx/sparkle/shimmer",
+   "t": 15,
+   "why": "builder: hero point + star"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 15.3,
+   "why": "builder: callout"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 19.0667,
+   "t": 18.0667,
+   "why": "camera leaves for h2h"
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 18.4333,
+   "why": "h2h: header slides in"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 18.6667,
+   "why": "h2h: row 1"
+  },
+  {
+   "id": "sfx/ui/count_run",
+   "t": 18.7,
+   "why": "h2h: numbers count up"
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 18.8,
+   "why": "h2h: row 2"
+  },
+  {
+   "id": "sfx/device/loading_tick",
+   "t": 18.9333,
+   "why": "h2h: row 3"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 20.0333,
+   "why": "h2h: highlight pulses"
+  },
+  {
+   "id": "sfx/whoosh/swish_xs",
+   "t": 22.5667,
    "why": "camera leaves for numbers"
   },
   {
    "id": "sfx/hit/soft",
-   "t": 19.2667,
+   "t": 22.7667,
    "why": "ONE soft hit on the number reveal"
   },
   {
    "id": "sfx/ui/count_run",
-   "t": 19.3667,
+   "t": 22.8667,
    "why": "numbers count up"
   },
   {
-   "id": "sfx/whoosh/swish_xs",
-   "t": 25.0667,
+   "id": "sfx/ui/slide",
+   "t": 27.0667,
    "why": "camera leaves for cards"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 25.3667,
+   "t": 27.3667,
    "why": "stat card 1"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 25.6667,
+   "t": 27.6667,
    "why": "stat card 2"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 25.9667,
+   "t": 27.9667,
    "why": "stat card 3"
   },
   {
-   "id": "sfx/ui/slide",
-   "t": 31.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "t": 32.0667,
    "why": "camera leaves for end"
   },
   {
    "id": "sfx/ui/tick",
-   "t": 31.2333,
+   "t": 32.2333,
    "why": "end card lands (a tick, no stinger: the quiet hold follows)"
   },
   {
    "id": "sfx/amb/room_tone",
-   "t": 31.9667,
+   "t": 32.9667,
    "why": "room tone under the quiet hold: a steady floor, no beat, no stinger",
    "overBedDb": -26
   }
@@ -500,11 +683,11 @@
    "gain_db": 0
   },
   {
-   "frame": 959,
+   "frame": 989,
    "gain_db": 0
   },
   {
-   "frame": 977,
+   "frame": 1007,
    "gain_db": -40
   }
  ],
@@ -521,8 +704,8 @@
    },
    {
     "t": [
-     32.5667,
-     36.6
+     33.5667,
+     37.6
     ],
     "kind": "hold",
     "why": "end card on near-silence: no stinger, the URL holds"
@@ -539,31 +722,45 @@
    7.567,
    7.667,
    7.733,
-   13,
-   13.067,
-   13.167,
-   13.433,
+   12,
+   12.067,
+   12.167,
+   12.233,
+   12.733,
+   12.867,
+   13.033,
+   13.2,
+   13.367,
+   13.533,
    13.667,
-   13.7,
-   13.8,
-   13.933,
-   15.033,
-   19,
-   19.067,
-   19.167,
-   19.267,
-   19.367,
-   25,
-   25.067,
-   25.167,
-   25.367,
-   25.667,
-   25.967,
-   31,
-   31.067,
-   31.167,
-   31.233,
-   31.967
+   14,
+   15,
+   15.3,
+   18,
+   18.067,
+   18.167,
+   18.433,
+   18.667,
+   18.7,
+   18.8,
+   18.933,
+   20.033,
+   22.5,
+   22.567,
+   22.667,
+   22.767,
+   22.867,
+   27,
+   27.067,
+   27.167,
+   27.367,
+   27.667,
+   27.967,
+   32,
+   32.067,
+   32.167,
+   32.233,
+   32.967
   ],
   "role": "proof"
  },
@@ -591,44 +788,156 @@
     "method": "count of systems in the placeholder field"
    },
    {
-    "path": "builder.table.rows[0].values[0]",
-    "label": "Answer score (Alternative)",
-    "value": 52.5,
+    "path": "builder.scatter.points[0].x",
+    "label": "System A x",
+    "value": 12.4,
     "source": "illustrative placeholder, replace",
-    "method": "mean per task over the placeholder run; cost = list price x tokens"
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
    },
    {
-    "path": "builder.table.rows[0].values[1]",
-    "label": "Answer score (Acme Reader)",
-    "value": 58.5,
+    "path": "builder.scatter.points[0].y",
+    "label": "System A y",
+    "value": 54,
     "source": "illustrative placeholder, replace",
-    "method": "mean per task over the placeholder run; cost = list price x tokens"
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
    },
    {
-    "path": "builder.table.rows[1].values[0]",
-    "label": "Cost per task (Alternative)",
+    "path": "builder.scatter.points[1].x",
+    "label": "System B x",
     "value": 9.1,
     "source": "illustrative placeholder, replace",
-    "method": "mean per task over the placeholder run; cost = list price x tokens"
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
    },
    {
-    "path": "builder.table.rows[1].values[1]",
-    "label": "Cost per task (Acme Reader)",
+    "path": "builder.scatter.points[1].y",
+    "label": "System B y",
+    "value": 52.5,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[2].x",
+    "label": "System C x",
+    "value": 6.8,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[2].y",
+    "label": "System C y",
+    "value": 47,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[3].x",
+    "label": "System D x",
+    "value": 4.7,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[3].y",
+    "label": "System D y",
+    "value": 42.5,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[4].x",
+    "label": "System E x",
+    "value": 3.9,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[4].y",
+    "label": "System E y",
+    "value": 36,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[5].x",
+    "label": "System F x",
+    "value": 7.9,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[5].y",
+    "label": "System F y",
+    "value": 40.5,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[6].x",
+    "label": "System G x",
+    "value": 5.6,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.points[6].y",
+    "label": "System G y",
+    "value": 34,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "builder.scatter.hero.x",
+    "label": "Acme Reader x",
     "value": 3.6,
     "source": "illustrative placeholder, replace",
-    "method": "mean per task over the placeholder run; cost = list price x tokens"
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
    },
    {
-    "path": "builder.table.rows[2].values[0]",
+    "path": "builder.scatter.hero.y",
+    "label": "Acme Reader y",
+    "value": 58.5,
+    "source": "illustrative placeholder, replace",
+    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+   },
+   {
+    "path": "h2h.rows[0].values[0]",
     "label": "Tokens per task (Alternative)",
     "value": 2330000,
     "source": "illustrative placeholder, replace",
     "method": "mean per task over the placeholder run; cost = list price x tokens"
    },
    {
-    "path": "builder.table.rows[2].values[1]",
+    "path": "h2h.rows[0].values[1]",
     "label": "Tokens per task (Acme Reader)",
     "value": 1350000,
+    "source": "illustrative placeholder, replace",
+    "method": "mean per task over the placeholder run; cost = list price x tokens"
+   },
+   {
+    "path": "h2h.rows[1].values[0]",
+    "label": "Cost per task (Alternative)",
+    "value": 9.1,
+    "source": "illustrative placeholder, replace",
+    "method": "mean per task over the placeholder run; cost = list price x tokens"
+   },
+   {
+    "path": "h2h.rows[1].values[1]",
+    "label": "Cost per task (Acme Reader)",
+    "value": 3.6,
+    "source": "illustrative placeholder, replace",
+    "method": "mean per task over the placeholder run; cost = list price x tokens"
+   },
+   {
+    "path": "h2h.rows[2].values[0]",
+    "label": "Answer score (Alternative)",
+    "value": 52.5,
+    "source": "illustrative placeholder, replace",
+    "method": "mean per task over the placeholder run; cost = list price x tokens"
+   },
+   {
+    "path": "h2h.rows[2].values[1]",
+    "label": "Answer score (Acme Reader)",
+    "value": 58.5,
     "source": "illustrative placeholder, replace",
     "method": "mean per task over the placeholder run; cost = list price x tokens"
    },
@@ -709,12 +1018,92 @@
    "method": "count of systems in the placeholder field"
   },
   {
-   "text": "Answer score (Alternative): 52.5",
+   "text": "System A x: 12.4",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System A y: 54",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System B x: 9.1",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System B y: 52.5",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System C x: 6.8",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System C y: 47",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System D x: 4.7",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System D y: 42.5",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System E x: 3.9",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System E y: 36",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System F x: 7.9",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System F y: 40.5",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System G x: 5.6",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "System G y: 34",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "Acme Reader x: 3.6",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "Acme Reader y: 58.5",
+   "source": "illustrative placeholder, replace",
+   "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
+  },
+  {
+   "text": "Tokens per task (Alternative): 2330000",
    "source": "illustrative placeholder, replace",
    "method": "mean per task over the placeholder run; cost = list price x tokens"
   },
   {
-   "text": "Answer score (Acme Reader): 58.5",
+   "text": "Tokens per task (Acme Reader): 1350000",
    "source": "illustrative placeholder, replace",
    "method": "mean per task over the placeholder run; cost = list price x tokens"
   },
@@ -729,12 +1118,12 @@
    "method": "mean per task over the placeholder run; cost = list price x tokens"
   },
   {
-   "text": "Tokens per task (Alternative): 2330000",
+   "text": "Answer score (Alternative): 52.5",
    "source": "illustrative placeholder, replace",
    "method": "mean per task over the placeholder run; cost = list price x tokens"
   },
   {
-   "text": "Tokens per task (Acme Reader): 1350000",
+   "text": "Answer score (Acme Reader): 58.5",
    "source": "illustrative placeholder, replace",
    "method": "mean per task over the placeholder run; cost = list price x tokens"
   },
@@ -788,8 +1177,8 @@
   "claimsWithoutSource": [],
   "unmotivatedTransitions": [],
   "pace": {
-   "shots": 7,
-   "asl": 5.23,
+   "shots": 8,
+   "asl": 4.7,
    "longest": 6,
    "pass": true
   }

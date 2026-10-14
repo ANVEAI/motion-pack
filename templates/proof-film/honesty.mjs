@@ -37,7 +37,8 @@ const NUM_WORDS = new Set(('zero two three four five six seven eight nine ten el
 const NUM_FUSED = new RegExp(`^(?:${TENS})(?:${UNITS_1_9})$`), NUM_FOLD = new RegExp(`^(?:two|three|four|five|six|seven|eight|nine|ten|${TENS}|hundred|thousand|million)fold$`);
 /* the first number-like fragment of a text ('' when none): a symbol or digit, or a number word. `symbols: false` lets a currency or percent sign through (an axis unit) */
 export function numberIn(str, { symbols = true } = {}) {
-  const s = String(str ?? ''), m = (symbols ? SYMBOL : DIGIT).exec(s); if (m) return m[0];
+  const raw = String(str ?? '').replace(/\p{Cf}/gu, ''), s = raw.normalize('NFKC');   // \p{Cf}: a zero-width or soft-hyphen character cannot split "sixty" in two; NFKC turns fullwidth letters into plain ones ("ｓｉｘｔｙ")
+  for (const t of [raw, s]) { const m = (symbols ? SYMBOL : DIGIT).exec(t); if (m) return m[0]; }   // the raw text first: NFKC turns the Roman numeral sign "Ⅷ" into the letters "VIII"
   for (const w of s.toLowerCase().split(/[^\p{L}\p{N}]+/u)) if (w && (NUM_WORDS.has(w) || NUM_FUSED.test(w) || NUM_FOLD.test(w))) return w;
   return '';
 }
@@ -125,7 +126,8 @@ function check(C, ctx) {
   }
   const unitOf = [...A(C.setting?.numbers).map((n, i) => [`setting.numbers[${i}]`, n]), ...A(C.numbers?.items).map((n, i) => [`numbers.items[${i}]`, n]), ...A(C.cards).map((n, i) => [`cards[${i}]`, n]),
     ...A(b.kind === 'table' ? b.table?.rows : C.h2h?.rows).map((r, i) => [`${b.kind === 'table' ? 'builder.table' : 'h2h'}.rows[${i}]`, r]), ...A(b.kind === 'table' ? b.table?.columns : C.h2h?.columns).map((c, i) => [`${b.kind === 'table' ? 'builder.table' : 'h2h'}.columns[${i}]`, c])];
-  for (const [path, n] of unitOf) if (n.unit !== undefined && !UNITS.includes(n.unit)) p.push(`${path}.unit: "${n.unit}" is not one of ${UNITS.map((x) => JSON.stringify(x)).join(' ')}`);
+  for (const [path, n] of unitOf) { if (n.unit !== undefined && !UNITS.includes(n.unit)) p.push(`${path}.unit: "${n.unit}" is not one of ${UNITS.map((x) => JSON.stringify(x)).join(' ')}`);
+    if (n.dec !== undefined && !(Number.isInteger(n.dec) && n.dec >= 0 && n.dec <= 6)) p.push(`${path}.dec: ${JSON.stringify(n.dec)} is not a number of decimals (a whole number from 0 to 6)`); }
   for (const [path, v, mode, t] of proseFields(C, ctx.voWords)) {
     if (typeof v !== 'string') { p.push(`${path}: must be text, got ${typeof v} ${JSON.stringify(v)} (a number belongs in a number field {value, source, method})`); continue; }
     const hit = numberIn(v, { symbols: mode !== 'unit' });

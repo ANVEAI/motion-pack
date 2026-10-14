@@ -93,12 +93,21 @@ function voSteps(C, nSteps, fps) {
   const py = process.env.PYTHON || 'python3', words = path.resolve(HERE, C.vo.words);
   return JSON.parse(execFileSync(py, [path.join(HERE, '..', '..', 'cuts', 'cutgen.py'), 'walkthrough', '--words', words, '--fps', String(fps), '--steps', String(nSteps), '--end-hold', String(C.tail.holdS)], { encoding: 'utf8' }));
 }
-const loadWords = (C) => { const j = JSON.parse(fs.readFileSync(path.resolve(HERE, C.vo.words), 'utf8')); return (Array.isArray(j) ? j : j.words).map((w) => ({ w: w.w, s: w.s, e: w.e })); };
+const rawWords = (C) => { const j = JSON.parse(fs.readFileSync(path.resolve(HERE, C.vo.words), 'utf8')); return Array.isArray(j) ? j : j.words; };
+const loadWords = (C) => rawWords(C).map((w) => ({ w: w.w, s: w.s, e: w.e }));
+/* a transcript the gate can read: every entry {w: "text", s, e} in seconds, in order (an entry under another key would otherwise be skipped by the number check, and its word never gated) */
+function wordShape(words) {
+  if (!Array.isArray(words) || !words.length) return ['vo.words: the transcript is empty or not a list: a words.json is [{w, s, e}] in seconds, or {words: [...]}'];
+  const bad = []; words.forEach((w, i) => { if (!w || typeof w.w !== 'string' || !w.w.trim() || !Number.isFinite(w.s) || !Number.isFinite(w.e) || w.e < w.s || (i && w.s < words[i - 1].s)) bad.push(`vo.words[${i}]: ${JSON.stringify(w)} is not {w: "text", s, e} in seconds, in order (the key is "w", not "word")`); });
+  return bad.slice(0, 5).concat(bad.length > 5 ? [`vo.words: ${bad.length - 5} more entries of the wrong shape`] : []);
+}
 
 /* the whole gate: the CONFIG block plus the VO transcript (a number the voice says needs a number field too) */
 export function gateProblems(C) {
   let voWords = [];
-  if (C.vo && C.vo.words) { try { voWords = loadWords(C); } catch (e) { return [`vo.words: cannot read the transcript "${C.vo.words}" (${e.message}): a words.json is [{w, s, e}] in seconds, or {words: [...]}`]; } }
+  if (C.vo && C.vo.audio && !C.vo.words) return ['vo.audio: a recording needs its transcript (vo.words): the gate reads the words for numbers and the camera moves in the gaps between them'];
+  if (C.vo && C.vo.words) { let raw; try { raw = rawWords(C); } catch (e) { return [`vo.words: cannot read the transcript "${C.vo.words}" (${e.message}): a words.json is [{w, s, e}] in seconds, or {words: [...]}`]; }
+    const shape = wordShape(raw); if (shape.length) return [...shape, ...problems(C, {})]; voWords = loadWords(C); }
   return problems(C, { voWords });
 }
 
