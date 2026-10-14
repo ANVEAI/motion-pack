@@ -1,5 +1,6 @@
 # motion-pack name denylist: SHA-256 of normalised names (lower case, a-z0-9 only), one per line: "<sha256> <run|phrase>  # tag".
-# These are accounts, brands and people cited as evidence in docs/research. They must not appear anywhere else in the shipped tree.
+# These are accounts, brands and people cited as evidence in docs/research, plus the maintainers' own cloud project names. They must not appear
+# anywhere else in the shipped tree (docs/research is exempt, and holds no project name either).
 # The names are NOT in this file (hashes only, no salt: anyone who has a name can check it). tools/check_names.py explains how entries were
 # chosen, what run and phrase mean, and how to add one:  python3 tools/check_names.py --hash "<name>" [--tag handle|brand|person]  then append the line.
 08cc91fd110061d88c3d0ef2462833784dcfcafa955ff073baaf3c717c7c9d19 phrase  # brand
@@ -100,3 +101,5 @@ febcaa13844e035645bd75ed02cbe7159e2553f3e895f81285d5ec297542efd0 run  # handle
 7ef3cdcdca787509629a2bf65695252c647f7352eba14f3f67d47a3256a6df97 phrase  # person
 ae261156f21afab89f03a8acc1491a1ee87f8aadd99c543b1a72e4082d5bf8da phrase  # person
 bf599b8393354dc5f299db8d2480dda7f4e2de89275443d35f39f9e42bb2df9f run  # person
+579af4aa6547686c3a96ec41d2125466a617c2f507bb3eda2dfc691daeba580b run  # brand
+9e203abfc1bfd4ca24b4acba50f27fc65c5ada6a6efd363dd04b6238e2670c03 run  # brand
