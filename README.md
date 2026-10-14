@@ -81,15 +81,15 @@ The skills pair well with [charlie947/social-media-skills](https://github.com/ch
 <!-- counts:start -->
 | module | what | read first |
 |---|---|---|
-| `transitions/` | 47 transitions: 23 with an exact DOM back-end, 23 WebGL with a DOM approximation, 1 timing-only (speed ramp); 140 aliases incl. 59 ffmpeg xfade modes | `transitions/README.md` |
-| `cuts/` | 31 cut patterns (beat grids, sections, J/L splits, talking-head, pace) + 2 rule sets + 6 retime presets | `cuts/README.md` |
-| `sfx/` | 288 synthesised sounds in 25 families, 11 role bundles per video type | `sfx/README.md` |
+| `transitions/` | 48 transitions: 24 with an exact DOM back-end, 23 WebGL with a DOM approximation, 1 timing-only (speed ramp); 142 aliases incl. 59 ffmpeg xfade modes | `transitions/README.md` |
+| `cuts/` | 35 cut patterns (beat grids, sections, J/L splits, talking-head, story shapes, pace) + 3 rule sets + 6 retime presets | `cuts/README.md` |
+| `sfx/` | 295 synthesised sounds in 25 families, 13 role bundles per video type | `sfx/README.md` |
 | `music/` | 40 beds from 32 style presets, 10 stingers, 14 sonic logos, plus the mixer | `music/README.md` |
-| `layers/` | 126 finishing components (overlays, grades, grain stocks, finisher) incl. 45 looks; 49 `.cube` LUTs | `layers/README.md` |
-| `type/` | 151 kinetic-type presets, caption styles, icons, editor graphics and stickers | `type/README.md` |
+| `layers/` | 130 finishing components (overlays, grades, grain stocks, finisher) incl. 45 looks; 49 `.cube` LUTs | `layers/README.md` |
+| `type/` | 170 kinetic-type presets, caption styles, icons, editor graphics and stickers | `type/README.md` |
 | `camera/` | 45 2D and 3D camera moves | `camera/README.md` |
 | `objects/` | 28 three.js props, set pieces and one rigged character | `objects/README.md` |
-| `templates/` | 5 genre templates: ad, beat-edit, character-spot, film-scene, talking-head | `templates/README.md` |
+| `templates/` | 6 genre templates: ad, beat-edit, character-spot, demo-type-layout, film-scene, talking-head | `templates/README.md` |
 | `blender/` | 7 Blender recipes for photoreal plates (4 product shots, 3 seamless art loops), 4 device presets, 8 showcase previews | `blender/README.md` |
 | `physics/` | build-time rigid-body baking (Rapier) with a dependency-free table player; 2 example specs, 1 baked table | `physics/README.md` |
 | `terminal/` | 5 baked flock looks (cbirds, fetched and built at a pinned commit): flock, braille, a word the flock writes, 3D murmuration, code that flies | `terminal/README.md` |
