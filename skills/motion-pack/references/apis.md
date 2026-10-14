@@ -8,7 +8,7 @@ All paths are relative to the repository root. Each module README holds the full
 cd templates/<ad|beat-edit|talking-head|multi-voice-doc|proof-film>  && node make.mjs [--set key=value ...]   # plan.json + mix.wav + index.html (+ out/tx.json windows)
 npx --yes hyperframes@0.8.142 render . -o out/<name>.mp4 --crf 23
 bash templates/_shared/render3d.sh templates/<film-scene|character-spot> scene.html <wide|tall> [crf]   # three.js: plan, GPU render, mix, mux, sheet
-node templates/_shared/cues.mjs <dir> [--set k=v]       # export the plan only (no browser)
+node templates/_shared/cues.mjs <dir> [--set k=v]       # export the plan only (no browser); exits 2 on lint.proof / lint.tx, `--allow-lint` waives (recorded in plan.lint.allowed)
 python3 templates/_shared/audio.py <plan.json> <out.wav> [--stem]   # plan -> mix (music mixer when a bed is set)
 python3 templates/_shared/sheet.py <mp4> <sheet.jpg> t1,t2,...       # contact sheet from the DELIVERED file + LUFS-I / TP
 ```

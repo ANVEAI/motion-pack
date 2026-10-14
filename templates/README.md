@@ -45,10 +45,12 @@ Run the three.js templates before `beat-edit` and `talking-head`, because those 
 
 ## Lint (in `cues.mjs`, results written into `plan.json`)
 
-- **`lint.proof`:** every claim that contains a digit needs a `source`. There are no fabricated stats. The ad demo uses copy with no numbers.
+`lint.proof` and `lint.tx` are gates, not printouts. `cues.mjs` prints the problem, still writes `out/plan.json` (its `lint` object lists it) and exits 2; every `make.mjs` runs it first, so a failing lint stops the build before anything is staged, mixed or written (`render3d.sh` stops too, it runs with `set -e`). One documented waiver: `--allow-lint` (`MP_ALLOW_LINT=1` for `render3d.sh`) lets the build go on and records the waived problems in `plan.lint.allowed`; never waive a stat that has no source. `tools/tests/test_lint_gate.py` runs it on every shipped template and on a bad claim and a bad transition.
+
+- **`lint.proof` (gate):** every claim in the plan's `claims` that contains a digit needs a `source`. There are no fabricated stats. `claims` is what a template puts there (the ad's and the worked example's proof lines, the proof film's number fields); copy outside it, such as a hook or a headline, is not scanned, so keep every stat in a claim. The ad demo uses copy with no numbers.
 - **Honesty gate (`proof-film/honesty.mjs`):** stricter, because a proof film is made of numbers. Every number field needs a `source` AND a `method` that say something (blank, filler such as "n/a" and a method that repeats the source count as missing), a number may only appear through a number field (never in prose, the brand name, the URL, an axis unit or the VO transcript: a digit in any script, a currency or percent sign, a number word, even split by a zero-width character), the VO transcript has to be a readable `[{w, s, e}]`, the claim is at most 6 words with one accent word, `trace` is refused on 9:16, and `node make.mjs` exits 2 naming the field before it builds anything. It feeds `lint.proof` too.
-- **Transitions:** any transition other than a hard cut needs a `txReason`, written as a Murch reason.
-- **`lint.pace`:** checks ASL and the longest shot. Shots marked `hold: true`, such as the hero reveal and the end card, are exempt from the longest-shot check.
+- **`lint.tx` (gate):** any transition other than a hard cut needs a `txReason`, written as a Murch reason.
+- **`lint.pace` (reported, not enforced):** checks ASL and the longest shot. Shots marked `hold: true`, such as the hero reveal and the end card, are exempt from the longest-shot check.
 - **Ad brand cue:** the ad also reports `brandCueAt` against the platform's `brandCueBy`.
 
 ## Shared files
@@ -58,7 +60,7 @@ Run the three.js templates before `beat-edit` and `talking-head`, because those 
 | `_shared/plan.mjs` | pure helpers: `PLATFORMS` (safe zones, brand-cue deadline, loudness), `beatGrid` (BPM snapped to whole frames: 128 -> 128.57, 110 -> 112.5), `sequence` (frame-exact, no drift), `TX_SFX` (transition -> paired sound), `chunkCaptions`, `autocut`, `remap` |
 | `_shared/pack.mjs` | browser glue `MP` (register / transition / type / layer, with logged fallbacks) |
 | `_shared/compose.mjs` | stage a HyperFrames project: fonts, media and other modules are hard-linked into `assets/` |
-| `_shared/cues.mjs` | `node cues.mjs <dir> [--set k=v]` exports the plan without a browser |
+| `_shared/cues.mjs` | `node cues.mjs <dir> [--set k=v] [--allow-lint]` exports the plan without a browser and enforces the lint gates (exit 2) |
 | `_shared/audio.py` | plan -> mix (music mixer when a bed is set; `--stem` for a stem that sits under dialogue) |
 | `_shared/render3d.sh` | three.js template end to end: plan, GPU render, mix, mux, contact sheet, loudness (`AUDIO_ONLY=1` remuxes sound only) |
 | `_shared/sheet.py` | contact sheet decoded from the delivered MP4, plus LUFS and TP of its audio |

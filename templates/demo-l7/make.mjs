@@ -8,7 +8,7 @@
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
 import { stage, head, esc, write } from '../_shared/compose.mjs';
 import { txPlan, span, txCalls } from '../_shared/txplan.mjs';
-import { sequence, lintClaims, lintTransitions, lintPace } from '../_shared/plan.mjs';
+import { sequence, lintClaims, lintTransitions, lintPace, lintFailures } from '../_shared/plan.mjs';
 import { REGISTRY } from '../../transitions/lib/registry.js';
 import { lintType, lintPiece } from '../../type/presets.js';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..');
@@ -51,6 +51,7 @@ plan.lint = { claimsWithoutSource: lintClaims(plan.claims), unmotivatedTransitio
   type: Object.fromEntries(typeSpecs.map((t) => [t.text, lintType({ ...t, out: t.out ?? undefined })])), piece: lintPiece([...typeSpecs, { preset: 'trackingCollapse' }, { preset: 'blurIn' }]) };
 fs.mkdirSync(path.join(DIR, 'out'), { recursive: true }); fs.writeFileSync(path.join(DIR, 'out', 'plan.json'), JSON.stringify(plan, null, 1));
 console.log('plan', `${shots.length} shots, ${seconds} s, ${plan.cues.length} cues`, 'lint', JSON.stringify(plan.lint));
+{ const fails = lintFailures(plan.lint); if (fails.length) { console.error(`demo-l7: ${fails.length} lint problem(s)\n  - ${fails.join('\n  - ')}`); if (!(process.argv.includes('--allow-lint') || process.env.MP_ALLOW_LINT === '1')) process.exit(2); plan.lint.allowed = fails; fs.writeFileSync(path.join(DIR, 'out', 'plan.json'), JSON.stringify(plan, null, 1)); } }   // same gate as _shared/cues.mjs
 
 const abs = (p) => path.join(PACK, p), media = [...new Set(shots.filter((s) => s.src).map((s) => abs(s.src)))];
 const st = stage(DIR, { media, layers: true });

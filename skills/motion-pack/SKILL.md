@@ -54,7 +54,7 @@ Every path below is relative to the pack root.
    - One `plan.json` drives the picture, the sound and the checks: shots, transitions with reasons, the cue sheet, and lint.
    - Start from the closest template in `templates/`. Its `CONFIG` block covers the stock structure. For another aspect (the ad template is 16:9), story-specific sound cues or new scenes, copy its `make.mjs` next to your CONFIG and extend it, keeping every reference an id.
    - Build inside your clone of the pack, for example in `templates/<your-video>/`. Templates find the pack two folders up, and `tools/check_ids.py` only scans the pack it sits in. On macOS, `cp -c -R` makes an instant copy-on-write clone of the whole pack for a scratch build.
-3. **Default to the hard cut and motivate everything else.** Every non-cut transition carries a reason (`EMOTION`, `STORY`, `RHYTHM`, `ENERGY`, `REVEAL`, `PLACE`, ...). Lint refuses unmotivated transitions.
+3. **Default to the hard cut and motivate everything else.** Every non-cut transition carries a reason (`EMOTION`, `STORY`, `RHYTHM`, `ENERGY`, `REVEAL`, `PLACE`, ...). Lint refuses unmotivated transitions: `make.mjs` exits 2 before it builds anything (`--allow-lint` waives it and records the waiver in `plan.lint.allowed`).
 4. **Sound is half the cut.**
    - A cue for visual frame F puts its anchor sample on `(F + 1) x 48000 / fps`.
    - A whoosh peaks on the cut. A riser ends one frame before the hit.
@@ -65,7 +65,7 @@ Every path below is relative to the pack root.
    - The last 0.15 s is digital zero.
    - Use `music/mixer.py`. Never gain SFX by hand; the library is normalised to −6 dBFS peak.
 6. **Honesty.**
-   - No invented stats, quotes, reviews or logos. A claim containing a digit needs a `source` (`lint.proof`).
+   - No invented stats, quotes, reviews or logos. A claim containing a digit needs a `source`: `lint.proof` checks the plan's `claims` (a template's proof lines or number fields) and `make.mjs` exits 2 on a miss, so every stat goes in a claim with its source, never in a headline.
    - Label placeholders and concept renders where a viewer could mistake them for real.
    - Use original characters only. References are craft to learn from, never designs to copy.
 7. **Measure the delivered file, not dev stills.**

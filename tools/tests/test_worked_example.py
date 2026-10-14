@@ -4,49 +4,10 @@ This is the documented reproduction, step for step, up to (not including) the Hy
 It failed before 2026-10-15: brewly passes `media: []`, so assets/media never existed and audio.py died on the mix.wav write. Run: python3 -m pytest -q tools/tests/test_worked_example.py"""
 import json
 import os
-import shutil
 import subprocess
-import sys
 import tempfile
 
-import pytest
-
-REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-EXAMPLE = os.path.join(REPO, "examples", "brewly-teaser", "template")
-NODE = shutil.which("node")
-pytestmark = pytest.mark.skipif(NODE is None, reason="node is not installed")
-
-
-def _env():
-    e = dict(os.environ)
-    e["PATH"] = os.path.dirname(sys.executable) + os.pathsep + e.get("PATH", "")   # make.mjs runs `python3`: use the interpreter that runs the tests
-    return e
-
-
-def _ensure_bed(bed="bed_uplift_corporate_loop8"):
-    """the music WAV masters are gitignored (CI does not build the whole library): build only the one bed the example names, like README step 1 would"""
-    man = json.load(open(os.path.join(REPO, "music", "manifest.json")))["items"]
-    f = os.path.join(REPO, "music", next(i["file"] for i in man if i["id"] == "music." + bed))
-    if not os.path.exists(f):
-        r = subprocess.run([sys.executable, "build_music.py", "--only", bed], cwd=os.path.join(REPO, "music"), capture_output=True, text=True, env=_env())
-        assert r.returncode == 0 and os.path.exists(f), r.stdout[-800:] + r.stderr[-800:]
-
-
-@pytest.fixture()
-def brewly():
-    """templates/<scratch>/ holds a copy of the example template, as the README says (templates find the pack two folders up); removed afterwards"""
-    _ensure_bed()
-    d = tempfile.mkdtemp(prefix="wx-brewly-", dir=os.path.join(REPO, "templates"))
-    for f in os.listdir(EXAMPLE):
-        shutil.copy(os.path.join(EXAMPLE, f), d)
-    try:
-        yield d
-    finally:
-        shutil.rmtree(d, ignore_errors=True)
-
-
-def _make(d, *args):
-    return subprocess.run([NODE, "make.mjs", *args], cwd=d, capture_output=True, text=True, env=_env(), timeout=600)
+from mp_build import NODE, REPO
 
 
 def _assert_built(d, r, label):
@@ -62,12 +23,12 @@ def _assert_built(d, r, label):
     assert 'src="assets/media/mix.wav"' in html and "Brewly" in html
 
 
-def test_documented_reproduction_9x16(brewly):
-    _assert_built(brewly, _make(brewly), "node make.mjs")
+def test_documented_reproduction_9x16(brewly, make):
+    _assert_built(brewly, make(brewly), "node make.mjs")
 
 
-def test_documented_reproduction_16x9(brewly):
-    _assert_built(brewly, _make(brewly, "--set", "aspect=16:9", "--set", "platform=x.video"), "node make.mjs --set aspect=16:9 --set platform=x.video")
+def test_documented_reproduction_16x9(brewly, make):
+    _assert_built(brewly, make(brewly, "--set", "aspect=16:9", "--set", "platform=x.video"), "node make.mjs --set aspect=16:9 --set platform=x.video")
 
 
 def test_a_template_with_no_linked_media_still_gets_assets_media():

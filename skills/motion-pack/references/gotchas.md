@@ -5,7 +5,7 @@
 - **Timed clips vanish outside their window.** A clip is hidden outside `[data-start, data-start + data-duration]`. A two-layer transition needs the outgoing clip to run past the cut and the incoming clip to start before it. `templates/_shared/txplan.mjs` does this with `txPlan()` + `span()`, clamped to half of each neighbouring shot. When you add a new template, pass every timed element through `span()`.
 - **Never tween a timed `.clip` or `<video>` directly.** Animate an untimed wrapper (`#w-<id>`).
 - **`z-index` on the overlay container breaks blending.** It creates a stacking context and isolates `mix-blend-mode` (grain and vignette stop blending), so set z on the canvases.
-- **Lint warnings do not block a render.** Use `--strict` to make errors block.
+- **HyperFrames' own lint warnings do not block a render.** Use `--strict` to make errors block. (The pack's plan lint is different: `lint.proof` and `lint.tx` stop `make.mjs` with exit 2, see `templates/README.md`.)
 - **Default quality `looks` is CRF 16.** That gives about 18 Mb/s, 34 MB for a 15 s 1080p file. Pass `--crf 23` for demos and reviews, and use the default only for masters.
 - **Pin the version:** `npx --yes hyperframes@0.8.142 ...`. Everything in this file was measured on 0.8.142.
 - **The whole track drops if the AAC is too hot.** If the encoded AAC true peak is over -1 dBTP, HyperFrames lowers the entire track, and it logs this only with `--debug`. The 30 s ad lost 1 dB this way. The mixer's AAC probes catch it, so keep the WAV at -1.5 dBTP.
@@ -138,4 +138,7 @@
 - **A demo page opened in a plain Chrome tab has a zero-height `#root`.** `#root { height: 100% }` collapses without HyperFrames sizing it, so a screenshot is blank paper. Add `html, body, #root { width: 1920px; height: 1080px }` before screenshotting, then dispatch `hf-seek` events to step time (the same frame comes out in any seek order: `templates/demo-r45-ui` was checked forward and reversed in two browser sessions).
 - **Image models garble UI.** Never let one redraw UI or text. Generate the room and composite the real screenshot.
 - **References are craft, not copy.** Learn the method from reference work and never build a literal replica.
+- **The plan lint stops the build.** An unsourced digit in a claim (`lint.proof`) or a non-cut transition with no reason (`lint.tx`) makes `cues.mjs`, and so every `make.mjs` and `render3d.sh`, exit 2 before anything is written. It used to print and exit 0, so an unsourced stat reached the page and the mix. The one waiver is `--allow-lint` (`MP_ALLOW_LINT=1` for `render3d.sh`); it is recorded in `plan.lint.allowed`. `lint.pace` is reported only.
+- **A template that links no media still needs `assets/media`.** `compose.stage()` now makes it, because the mix is written to `assets/media/mix.wav` (the worked example passes `media: []` and used to die in `audio.py`). A missing music bed WAV now stops with the command that builds it.
+- **`git stash` is shared by every worktree of a clone.** Two worktrees that each stash and pop can pop each other's changes (it happened while fixing this pack in parallel). In a multi-worktree setup use a patch file (`git diff > x.patch`) or a throwaway commit instead.
 - **Write it down the same day.** Every new gotcha goes into this file and the module README.
