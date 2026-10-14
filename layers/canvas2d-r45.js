@@ -33,7 +33,7 @@ function loadImg(src) {
   const im = new Image(), fin = (ok) => { e.ok = ok && im.naturalWidth > 0; return e; }; e.im = im;
   e.p = new Promise((res) => { im.onload = () => (im.decode ? im.decode().then(() => res(fin(true)), () => res(fin(true))) : res(fin(true))); im.onerror = () => res(fin(false)); }); im.src = src; return e;
 }
-const imgOf = (src) => { if (!src) return null; if (typeof src === 'object') return src.naturalWidth || src.width ? src : null; const e = loadImg(src); return e.ok ? e.im : null; };
+export const imgOf = (src) => { if (!src) return null; if (typeof src === 'object') return src.naturalWidth || src.width ? src : null; const e = loadImg(src); return e.ok ? e.im : null; };
 /* resolves when every string source is decoded (or failed); layers call it from setParams, mountStack(...).ready() waits for all of them */
 export const preloadImages = (srcs = []) => Promise.all([...new Set((srcs || []).filter((x) => typeof x === 'string'))].map((x) => loadImg(x).p));
 /* loop phase: frame-exact so t and t + L give the same bits */

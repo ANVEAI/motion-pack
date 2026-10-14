@@ -107,6 +107,7 @@
 ## Layers and camera
 
 - **Overlay grain behaves like midBias 1.** It is quiet in shadows and highlights. For exact kit grain use the Finisher.
+- **A URL `logo` on `brandField` (and `images` on `embeddingCloud` / `hexMosaic`) loads once, shared by every frame.** `await stack.ready()` before the first frame; until a source is decoded, or if it failed, the placeholder is drawn. A second private loader in `canvas2d.js` used to start the load inside `draw()`, so frame 0 showed the placeholder and later frames the logo (fixed 2026-10-15; `layers/tests/r45.test.mjs` checks frame 0 after `ready()` with an async fake `Image`).
 - **Plate-based effects need plate pixels.** Bloom, halation, chroma, lens and diffusion only run in the Finisher, so a DOM-only composition cannot do them.
 - **No double finishing.** The `launch-studio` plate already bakes bloom, vignette and grain. `lintStack` and `lintOverlayStack` warn when you stack them twice.
 - **meshGradient bands without grain.** Big slow radial gradients in 8-bit band; keep `grain` at 0.02 or more (the default is 0.04). The hologram beam is a screen blend, so it disappears on white plates.

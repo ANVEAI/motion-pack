@@ -9,7 +9,7 @@
      embeddingCloud at 1080p), no console errors; writes layers/demo/out/r45-sheet.png + tests/last-run-r45.json.
    run: node layers/tests/r45.test.mjs [--chrome] */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
-import { K2D } from '../canvas2d.js'; import { K2D_R3 } from '../canvas2d-r3.js'; import { ALL_KINDS } from '../overlay.js';
+import { K2D, Canvas2DLayer } from '../canvas2d.js'; import { K2D_R3 } from '../canvas2d-r3.js'; import { ALL_KINDS } from '../overlay.js';
 import { K2D_R45, CUES_R45, cuesR45, cloudPlan, embeddingState, epicycleDFT, epicycleTip, epicycleCurve, epicycleState, hexState, convergeState, preloadImages, errText } from '../canvas2d-r45.js';
 import { flattenPath, PATHS } from '../../type/gfx/pathsample.js'; import { DEFAULT_MARK } from '../../type/gfx/media.js';
 import { reporter, ROOT } from './harness.mjs';
@@ -80,6 +80,18 @@ const fake = (tag) => ({ naturalWidth: 64, naturalHeight: 48, toString: () => 'I
   const sh = shuffle(ts.map((_, i) => i)), want = ts.map((t) => recS('embeddingCloud', t, { images: IMGS })), got = new Map(sh.map((i) => [i, recS('embeddingCloud', ts[i], { images: IMGS })]));
   R.check('embeddingCloud with images: identical draw calls in forward and shuffled seek order (70 seeks)', want.every((x, i) => x === got.get(i)));
   R.check('preloadImages: resolves at once with nothing to load, with objects and with strings when there is no Image (node); K2D kinds list their sources in assets()', (await preloadImages([])).length === 0 && (await preloadImages(IMGS)).length === 0 && (await preloadImages(['x.png'])).length === 1 && K2D.embeddingCloud.assets({ images: ['a'] })[0] === 'a' && K2D.hexMosaic.assets({ faces: ['color'], images: ['a'] }).length === 0 && K2D.hexMosaic.assets({ faces: ['image'], images: ['a'] }).length === 1); }
+/* 5b2. brandField with a URL `logo`: stack.ready() resolves once it is decoded, so the FIRST frame already draws it and no frame depends on load timing (it used to draw the placeholder mark on frame 0
+   and the logo from the next frame on, because the kind had no assets() and loaded the image inside draw()). A fake async Image stands in for the browser's: onload fires 15 ms after src is set. */
+{ const had = 'Image' in globalThis, saved = globalThis.Image;
+  globalThis.Image = class { constructor() { this.complete = false; this.naturalWidth = 0; } set src(v) { this._src = v; setTimeout(() => { if (/broken/.test(v)) { this.onerror && this.onerror(); return; } this.naturalWidth = 80; this.naturalHeight = 40; this.complete = true; this.onload && this.onload(); }, 15); } get src() { return this._src; } decode() { return Promise.resolve(); } };
+  const mk = (logo) => { const { g, log } = recorder(); return { layer: new Canvas2DLayer({ getContext: () => g, style: {}, dataset: {} }, 'brandField', { logo, at: 0 }, { width: W, height: H }), log }; }, nDraw = (log) => log.filter((x) => x.startsWith('drawImage')).length, frame = (o, t) => { o.log.length = 0; o.layer.render(t); return o.log.join('|'); };
+  let firstOk = 0, stable = 0; const N = 6;
+  for (let i = 0; i < N; i++) { const o = mk('race-logo-' + i + '.png'); await o.layer.ready(); const f0 = frame(o, 1.5); if (nDraw(o.log) === 1) firstOk++; await new Promise((r) => setTimeout(r, 40)); if (frame(o, 1.5) === f0) stable++; }
+  R.check(`brandField URL logo: after stack.ready() the first frame already draws the logo (${firstOk} of ${N} fresh logos) and the same frame is identical once any late load would have landed (${stable} of ${N}); the kind lists the source in assets()`, firstOk === N && stable === N && K2D.brandField.assets({ logo: 'a.png' })[0] === 'a.png' && K2D.brandField.assets({ logo: null }).length === 0 && K2D.brandField.assets({ logo: IMGS[0] }).length === 0);
+  { const o = mk('broken-logo.png'); await o.layer.ready(); const a = frame(o, 1.5); await new Promise((r) => setTimeout(r, 40)); const b = frame(o, 1.5);
+    R.check('brandField URL logo that fails to load: ready() still resolves, the placeholder mark is drawn, and it stays the same frame (never a half state)', a === b && nDraw(o.log) === 0 && /fillText/.test(a)); }
+  { const o = mk(fake('L')); await o.layer.ready(); frame(o, 1.5); R.check('brandField with an already decoded logo object draws it on the first frame', nDraw(o.log) === 1); }
+  if (had) globalThis.Image = saved; else delete globalThis.Image; }
 /* 5c. epicycle readout: legible type, a note that cannot be blanked, movable */
 { const fonts = (log) => log.filter((x) => x.startsWith('font=')).map((x) => parseFloat(/([\d.]+)px/.exec(x)[1])), texts = (log) => log.filter((x) => x.startsWith('fillText')).map((x) => x.slice(8).split(',')[0]);
   const log = rec('epicycleDraw', 2.0), f = fonts(log), tx = texts(log), blank = recS('epicycleDraw', 2.0, { source: '' }), nul = recS('epicycleDraw', 2.0, { source: null }), base = recS('epicycleDraw', 2.0), custom = recS('epicycleDraw', 2.0, { source: 'my own note' });
