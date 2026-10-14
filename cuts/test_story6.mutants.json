@@ -1,0 +1,99 @@
+{
+ "file": "cuts/story6.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "cuts/test_story6.py"
+ ],
+ "timeout": 300,
+ "mutants": [
+  {
+   "name": "gap range check disabled",
+   "find": "p[\"gap_range_s\"][0] - 1e-9 <= gs <= p[\"gap_range_s\"][1] + 1e-9",
+   "replace": "True"
+  },
+  {
+   "name": "hold range check disabled",
+   "find": "hs >= p[\"hold_range_s\"][0] - 1e-9 and hs <= p[\"hold_range_s\"][1] + 1e-9",
+   "replace": "True"
+  },
+  {
+   "name": "no-sound-inside check disabled",
+   "find": "ok(\"no sound cue inside the gap (before the pivot) or the hold\", not inside,",
+   "replace": "ok(\"no sound cue inside the gap (before the pivot) or the hold\", True,"
+  },
+  {
+   "name": "bed comes back 6 frames late",
+   "find": "{\"frame\": pivot, \"gain_db\": 0.0},",
+   "replace": "{\"frame\": pivot + 6, \"gain_db\": 0.0},"
+  },
+  {
+   "name": "bass hit 3 frames after the pivot",
+   "find": "cues.append(_cue(p[\"pivot_sfx\"], pivot,",
+   "replace": "cues.append(_cue(p[\"pivot_sfx\"], pivot + 3,"
+  },
+  {
+   "name": "hold halved",
+   "find": "hold = fr(hold_s)\n",
+   "replace": "hold = fr(hold_s) // 2\n"
+  },
+  {
+   "name": "gap starts after the last beat",
+   "find": "gap0 = rungs[-1] + fr(p[\"gap_into_last_rung_s\"])",
+   "replace": "gap0 = ladder_end + 5"
+  },
+  {
+   "name": "the hum eats the silence",
+   "find": "hum = min(fr(p[\"hum_s\"]), gap_f - sil_min - 1)",
+   "replace": "hum = fr(p[\"hum_s\"]) + 30"
+  },
+  {
+   "name": "a typing sound inside the gap",
+   "find": "cues = [_cue(p[\"type_sfx\"], s0,",
+   "replace": "cues = [_cue(p[\"type_sfx\"], gap0 + 5,"
+  },
+  {
+   "name": "colour arrives before the sound",
+   "find": "lead_f = max(0, fr(lead_s))",
+   "replace": "lead_f = -fr(lead_s)"
+  },
+  {
+   "name": "quiet gap mislabelled",
+   "find": "\"kind\": \"gap\", \"why\": \"the bed thins",
+   "replace": "\"kind\": \"dip\", \"why\": \"the bed thins"
+  },
+  {
+   "name": "range guard removed",
+   "find": "    if not lo <= v <= hi:",
+   "replace": "    if False:"
+  },
+  {
+   "name": "bool accepted as a number",
+   "find": "    if isinstance(v, bool) or not isinstance(v, (int, float))",
+   "replace": "    if not isinstance(v, (int, float))"
+  },
+  {
+   "name": "string accepted past the type guard",
+   "find": "    if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):",
+   "replace": "    if False:"
+  },
+  {
+   "name": "text length limit removed",
+   "find": "    if len(v) > MAX_TEXT:",
+   "replace": "    if False:"
+  },
+  {
+   "name": "typewriter pause dropped",
+   "find": "(6 if chars[k] in \".,?!\" else 0)",
+   "replace": "0"
+  },
+  {
+   "name": "hidden randomness in the result",
+   "find": "    r[\"checks\"] = check_problem_pivot(r)\n",
+   "replace": "    r[\"typed\"][\"sentence_s\"] += __import__(\"random\").random()\n    r[\"checks\"] = check_problem_pivot(r)\n"
+  }
+ ]
+}

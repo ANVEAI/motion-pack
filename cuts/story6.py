@@ -37,6 +37,27 @@ def typewriter_s(text):
     return (f + 1) / 30.0
 
 
+MAX_TEXT = 200          # characters of one caption: a typed line longer than this is not a caption (and would run the typing time up without bound)
+MAX_FILM_S = 600.0      # longest film the generator will lay out
+
+
+def _num(name, v, lo, hi):
+    """a numeric parameter must be a real, finite number inside [lo, hi]: NaN, inf, a string, a bool or an out-of-range value raises a ValueError that names it (no value can hang the layout or build an unbounded list)"""
+    if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):
+        raise ValueError("problem-pivot: %s must be a finite number, got %r" % (name, v))
+    if not lo <= v <= hi:
+        raise ValueError("problem-pivot: %s must be between %g and %g, got %g" % (name, lo, hi, v))
+    return v
+
+
+def _text(name, v):
+    if not isinstance(v, str) or not v.strip():
+        raise ValueError("problem-pivot: %s must be a non-empty string, got %r" % (name, v))
+    if len(v) > MAX_TEXT:
+        raise ValueError("problem-pivot: %s is %d characters, the limit is %d" % (name, len(v), MAX_TEXT))
+    return v
+
+
 def _caption(cid, role, text, start, end=None, **kw):
     c = {"id": cid, "role": role, "text": text, "in": int(start), "out": None if end is None else int(end)}
     c.update(kw)
@@ -53,12 +74,28 @@ def problem_pivot(fps=30, sentence=None, accent=None, problem=None, brand=None, 
     brand = p["defaults"]["brand"] if brand is None else brand
     command = p["defaults"]["command"] if command is None else command
     url = p["defaults"]["url"] if url is None else url
-    rung_s = p["rung_s"] if rung_s is None else float(rung_s)
-    gap_s = p["gap_s"] if gap_s is None else float(gap_s)
-    hold_s = p["hold_s"] if hold_s is None else float(hold_s)
-    value_s = p["value_rung_s"] if value_s is None else float(value_s)
-    lead_s = p["lead_s"] if lead_s is None else float(lead_s)
+    rung_s = p["rung_s"] if rung_s is None else rung_s
+    gap_s = p["gap_s"] if gap_s is None else gap_s
+    hold_s = p["hold_s"] if hold_s is None else hold_s
+    value_s = p["value_rung_s"] if value_s is None else value_s
+    lead_s = p["lead_s"] if lead_s is None else lead_s
     warn = []
+    fps = _num("fps", fps, 1, 240)
+    for what, v in (("sentence", sentence), ("accent", accent), ("brand", brand), ("command", command), ("url", url)):
+        _text(what, v)
+    if not isinstance(problem, (list, tuple)) or not isinstance(value, (list, tuple)):
+        raise ValueError("problem-pivot: problem and value are lists of three captions")
+    for k, v in enumerate(problem):
+        _text("problem[%d]" % k, v)
+    for k, v in enumerate(value):
+        _text("value[%d]" % k, v)
+    rung_s = _num("rung_s", rung_s, 0.1, 30)
+    gap_s = _num("gap_s", gap_s, 0.1, 30)
+    hold_s = _num("hold_s", hold_s, 0.1, 60)
+    value_s = _num("value_rung_s", value_s, 0.1, 30)
+    lead_s = _num("lead_s", lead_s, 0, 5)
+    if duration_s is not None:
+        duration_s = _num("duration", duration_s, 1, MAX_FILM_S)
     if len(problem) != p["rungs"]:
         raise ValueError("a problem ladder has exactly %d beats, got %d" % (p["rungs"], len(problem)))
     if len(value) != p["value_rungs"]:
