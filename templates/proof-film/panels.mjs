@@ -140,7 +140,7 @@ function cardsP(L, d, u) {
   const s = L.u, T = L.T, id = 'pc' + L.W, n = d.length, gap = 34 * s, pad = 30 * s, R = room(L, d, { source: false, method: false }); let o = `<defs>${shadowDef(id, s)}</defs>`;
   const cw = L.tall ? L.S.w : (L.S.w - gap * (n - 1)) / n, shMax = Math.max(...d.map((it) => strip(L, 0, 0, cw - 2 * pad, [it], 1, { pill: false }).h)), ch = Math.max(L.tall ? 292 * s : 640 * s, (L.tall ? 196 : 446) * s + shMax + pad), h = L.tall ? n * ch + gap * (n - 1) : ch, ours = L.plan.brand.name, F = fit(R, h);   // the card is as tall as its content: the bars and value above, the fine print below, whatever the length of the method
   d.forEach((it, i) => { const t0 = 0.04 + 0.26 * i, k = spring(u - t0, 'panel'), x = L.tall ? L.S.x0 : L.S.x0 + i * (cw + gap), y = L.tall ? i * (ch + gap) : 0;
-    const v = it.value * E.expoOut(seg(u, t0 + 0.1, t0 + 1.1)), vs = (L.tall ? 100 : 150) * s, mx = Math.max(it.value, it.alt ?? 0) || 1, bk = E.expoOut(seg(u, t0 + 0.7, t0 + 1.4)), bw = L.tall ? 330 * s : cw - 2 * pad - 130 * s, bh = (L.tall ? 24 : 28) * s;
+    const v = it.value * E.expoOut(seg(u, t0 + 0.1, t0 + 1.1)), vs = (L.tall ? 100 : 150) * s, mx = Math.max(it.value, it.alt ?? 0) || 1, bk = E.expoOut(seg(u, t0 + 0.7, t0 + 1.4)), bw = L.tall ? 270 * s : cw - 2 * pad - 130 * s, bh = (L.tall ? 24 : 28) * s;
     let g = `<g${fade(k * 1.6)} transform="translate(0 ${f2(50 * s * (1 - k))})">${cardBox(L, id, x, y, cw, ch, 24 * s)}${rect(x, y, cw, 10 * s, 5 * s, T.accent)}`;
     g += text(it.label, x + pad, y + pad + 40 * s, { size: 42 * s, weight: 800, fill: T.accent });
     if (L.tall) g += text(it.line, x + pad + measure(it.label, 42 * s, { weight: 800 }) + 18 * s, y + pad + 40 * s, { size: 30 * s, weight: 600, fill: T.muted });
