@@ -101,6 +101,7 @@ Every path below is relative to the pack root.
 ```
 What is the deliverable?
 ├─ Talking head / interview / podcast / screen-record with a human voice ──> RECIPE H (human edit)
+│     several speakers, a documentary / customer-story launch? -> RECIPE H step 5 (`templates/multi-voice-doc`)
 ├─ Music drives it (lyric, montage, beat promo, dance, loop to a track) ──> RECIPE B (beat edit)
 ├─ Wordless character comedy, one gag + one feature ──> RECIPE Z (character spot)
 ├─ Story with a turn (cold open -> want -> obstacle -> turn -> button) ──> RECIPE F (short film / scene)
@@ -184,6 +185,7 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | a different music genre | `music/bed_*_loop8` (lo-fi jazz, synthwave, deep house, dnb, ambient pad, chiptune, folk pluck, marimba, orchestral epic, jazz walk, comedy pizzicato, corporate bright, suspense pulse) and length-fitted cuts | all are generic library beds; listen once before a hero use |
 | a SaaS / AI product film sound | bundle `saas_launch`: `sfx/paper/card_riffle`, `card_shuffle_settle`, `sfx/ui/scan_sweep`, `sfx/ui/agent_working` (4 s loop), `sfx/tx/pixel_dissolve`, `sfx/sparkle/letter_assemble`, `sfx/hit/brand_field_slam` | stop the working loop on the result frame: mixer `add_cue(..., until_frame=F)` |
 | a story shape | `cuts/story/*`: `interruptOpen`, `verbLadder`, `mockumentaryReaction`, `sentenceLed` (`cutgen.py interrupt-open / verbs / mockumentary / sentence`); bundle `mockumentary` for doc-parody comedy | `cutgen.py snap` puts cuts on onsets (target 60% within 2 frames) |
+| a VO-led, documentary, explainer or trailer shape (word timings in, a plan out) | `cuts/story/*` round 4/5, all `cutgen.py` subcommands: `diagramWalkthrough` (`walkthrough`: the diagram advances only in speech gaps), `queryLadder` (`query-ladder`: one UI, 4-6 harder inputs), `fidelityLadder` (`fidelity-ladder`: a step per bar, a dropout, a new dimension), `voicesColdOpen` (`voices-open`), `commandRapidFire` (`command-burst`), `anaphoraCut` (`anaphora`), `trailerArc` (`trailer`), `styleLadder` (`style-ladder`); `templates/multi-voice-doc` runs the documentary one | VO shapes never cut inside a word; they emit `bed_automation` (dropouts, a near-silent question, a quiet hold) that `music/mixer.py` applies; `vo.duck_db` deepens the duck |
 | a tempo build into a drop | `music/bed_anthem_ramp16` (100 → 128 BPM; real beat frames in its sidecar) and `music/tempo_maps.json` | cut from the sidecar, not from a constant BPM |
 | a photoreal product shot or 3D title | `blender/turntable`, `blender/macroSweep`, `blender/explode`, `blender/title3d`; art loops `blender/art.*` | EEVEE for motion plates, Cycles for key-art stills |
 
@@ -332,6 +334,13 @@ Every recipe ends with the VIRALITY and QA checklists below.
    8. Grade `documentary`.
 3. **Beat hold:** keep the face still for 450 ms after a punchline, then cut.
 4. **Build and render:** `node make.mjs --set input=/abs/talk.mp4`, then `hyperframes render`.
+5. **Several speakers (documentary launch, customer story), template `templates/multi-voice-doc`:**
+   - Input: `clips.json` (`[{id, src, words, name, role, tag, lead?}]`, your interview MP4s with whisper word timings in each clip's own time). With `src: null` a clip renders as a labelled "your interview clip here" card over a guide signal, never a generated person.
+   - Shape: `voicesColdOpen` (`cutgen.py voices-open`: 4-6 faces in 0.5-1.3 s, each mid-sentence, audio leads every cut) -> the lead's line with a name super at 5-6 s -> 3 chapters (a speaker, a flat 2D insert, B-roll) -> proof -> availability -> the lead closes -> a quiet hold.
+   - Cuts: speaker changes sit in the breath between lines and never inside a word; B-roll and inserts cut inside sentences on purpose (the VO is the continuity).
+   - Sound: the voices are one `vo.wav`, the bed is ducked 12 dB under it (`plan.duckDb`), the end card keeps the bed up for 1.8 s and then holds at -30 dB (`bedAutomation`). Run `ears` with `--transcript out/transcript.json`.
+   - Name supers are `lowerThird.docSuper`, one personal `tag` each after the lead; swap in `lowerThird.personalTag` in `CONFIG.supers.part` once it lands.
+   - Build: `node make.mjs [--set clips=/abs/clips.json]`, then `hyperframes render`.
 
 ### RECIPE B: music / beat edit, template `templates/beat-edit`
 

@@ -73,3 +73,6 @@ templates/demo-r45-type/out/*.mp4
 
 # a transient matte sequence made by type/tests/r45type.test.mjs --chrome (deleted after the run)
 type/demo/out/matte-tmp-*/
+
+# --- multi-voice-doc: the placeholder demo MP4 stays out of git (plan.json, transcript.json and sheet.jpg are committed; vo.wav is covered by templates/.gitignore) ---
+templates/multi-voice-doc/out/*.mp4

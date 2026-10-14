@@ -19,8 +19,11 @@ Subcommands (all print JSON):
   handoff    --line 0:75:180 --fps 30 [--exit 1.5] [--consent] [--demo-frame 200]          presenter -> synthetic voice handoff, caption tags, label
   pipeline   --duration 45 --fps 30 [--bpm 120] [--steps prompt,plan,passes,teardown,file,world,title] [--breakdown 3]
   snap       --cuts 0,44,91 --fps 30 (--onsets 1.5,3.0 | --study study.json [--use onsets|beats]) [--tol 2]   snap cuts to sound onsets
+  round-4/5 story shapes (story45.py): walkthrough, query-ladder, fidelity-ladder, voices-open, command-burst, anaphora, trailer, style-ladder
 Library use: import cutgen; cutgen.beat_cuts(...)."""
 import argparse, json, math, os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import story45  # noqa: E402  (round-4/5 story shapes, same frame maths)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(HERE, "patterns.json")) as _f:
@@ -513,9 +516,12 @@ def main(argv=None):
     pr.add_argument("--bpm", type=float); pr.add_argument("--steps", default=""); pr.add_argument("--breakdown", type=float)
     sn = sub.add_parser("snap"); sn.add_argument("--cuts", required=True); sn.add_argument("--fps", type=float, default=30); sn.add_argument("--onsets", default="")
     sn.add_argument("--study"); sn.add_argument("--use", default="onsets", choices=["onsets", "beats", "hits_top10pct"]); sn.add_argument("--tol", type=int)
+    s45 = story45.add_parsers(sub)
     a = ap.parse_args(argv)
     ints = lambda s: [int(x) for x in s.split(",") if x.strip()]
-    if a.cmd == "beats":
+    if a.cmd in s45:
+        r = story45.run(a)
+    elif a.cmd == "beats":
         r = beat_cuts(a.bpm, a.fps, a.pattern, a.bars, a.offset, a.snap, a.tx)
     elif a.cmd == "section":
         r = section_cuts(a.bpm, a.fps, a.plan, a.offset, a.snap)
