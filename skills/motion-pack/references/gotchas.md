@@ -74,6 +74,9 @@
 - **HyperFrames sound integration is mode A only:** one baked `mix.wav` at 0. Per-clip `<audio>` with `data-start = (F + 1)/fps` is not built yet.
 - **Talking-head demo.** The SFX stem sits under the input's own audio, so its LUFS is low on purpose (around -37 for the stem alone).
 
+- **Sound shas are per CPU platform; anchors must not be.** The same recipes with the same pinned numpy / scipy / numba give 248 of 301 sounds one 24-bit LSB apart on x86-64 Linux vs arm64 macOS (-138 dBFS, inaudible), so a sha only matches where the manifest was built. That LSB used to move two anchors: argmax picked the other of two near-equal peaks (`snd.cartoon.cuckoo` 681 vs 181 ms, `snd.device.phone_ring_synth` 842 vs 1942 ms). `registry.peak_anchor` now takes the first sample within 1e-5 of the peak, and CI checks every non-sha manifest field against the commit after the rebuild (`tools/check_generated.py --ignore-field sha`).
+- **A test after a generator compares the code with itself.** `sfx/build_library.py` rewrites `sfx/manifest.json` before the tests read it, so a recipe change the commit does not reflect passed every sha test. Run `tools/check_generated.py <file>` right after any generator (CI does, for the sfx, music and layers / type / camera manifests).
+
 ## Type and captions
 
 - **UI-kit text widths are estimated.** `ui.*` sizes chips and pills from `textW` (no DOM measurement), so a long label can overrun its chip; check the sheet. The prompt caret is a `<tspan>` after the typed text, so it always sits right after the glyphs.

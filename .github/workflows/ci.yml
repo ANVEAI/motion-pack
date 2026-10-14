@@ -12,7 +12,7 @@ jobs:
     # Headless checks that need no GPU. The browser tests (layers/tests/run-all.sh) and renders need a hardware GPU
     # and run locally; see CONTRIBUTING.md.
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -28,8 +28,23 @@ jobs:
         run: pip install -r requirements.txt
       - name: cross-module ids resolve
         run: python3 tools/check_ids.py
-      - name: build the sound library (WAV masters are not in git; regenerated bit for bit)
+      - name: build the sound library (WAV masters are not in git; rebuilt from the recipes)
         run: python3 sfx/build_library.py
+      # The build rewrites sfx/manifest.json (every sound's sha) BEFORE the tests read it, so without this step a recipe change that the commit's manifest
+      # does not reflect stays invisible. Shas are bit-exact per platform only (x86-64 Linux and arm64 macOS differ by one 24-bit LSB in most sounds), so
+      # they are left out here; every measured field (anchors, peaks, loudness, durations) must match the commit exactly.
+      - name: the rebuilt sound manifest matches the commit (all measured fields; shas are per platform)
+        run: python3 tools/check_generated.py --ignore-field sha sfx/manifest.json
+      - name: sound QA (peaks, true peak, loudness, DC, edges, tails, loop seams, determinism vs the rebuilt manifest)
+        run: python3 sfx/qa.py
+      - name: build the music library (beds, stingers, sonic logos)
+        run: python3 music/build_music.py
+      - name: the rebuilt music manifest matches the commit byte for byte
+        run: python3 tools/check_generated.py music/manifest.json
+      - name: music QA (every bed, stinger and logo; python vs ffmpeg loudness)
+        run: python3 music/qa.py
+      - name: the layers / type / camera manifests match their generator
+        run: node layers/tests/make-manifests.mjs && python3 tools/check_generated.py layers/manifest.json type/manifest.json camera/manifest.json
       - name: python tests (cuts, sfx, music, refstudy smoke test)
         run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
       - name: ears tests (automated listening, synthetic signals)

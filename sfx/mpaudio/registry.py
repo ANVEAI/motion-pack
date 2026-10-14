@@ -65,9 +65,17 @@ def finish(y, anchor, s):
     pk = np.max(np.abs(y)) + 1e-12
     y = y * (dsp.db(s.peak_db) / pk)
     if s.kind == "peak" or anchor is None:
-        anchor = int(np.argmax(np.max(np.abs(y), axis=1)))
+        anchor = peak_anchor(y)
     anchor = int(np.clip(anchor, 0, len(y) - 1))
     return y.astype(np.float32), anchor
+
+
+def peak_anchor(y, rel=1e-5):
+    """the anchor of a 'peak' sound: the FIRST sample within `rel` (1e-5 = -100 dB) of the loudest one, not argmax. A repeating sound (two equal cuckoo calls,
+    a ring) has near-tied peaks, and the last-bit float differences between CPUs (x86-64 Linux vs arm64 macOS: at most one 24-bit LSB) flipped argmax
+    between the calls: 0.5 s for snd.cartoon.cuckoo, 1.1 s for snd.device.phone_ring_synth. 1e-5 is about 80x that noise. (sfx/tests/test_anchor.py)"""
+    a = np.max(np.abs(y), axis=1) if y.ndim == 2 else np.abs(y)
+    return int(np.argmax(a >= a.max() * (1.0 - rel)))
 
 
 def render(sid, seed=None):
