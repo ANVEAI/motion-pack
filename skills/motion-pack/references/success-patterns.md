@@ -146,7 +146,7 @@ Per-piece studies with source links: `docs/research/reference-round3-2026-10.md`
 |---|---|---|
 | Integrated loudness | -22.5 to -8.1 LUFS, median -16.1; 7 peak at or above 0 dBFS | Keep the -14 LUFS / <= -1 dBTP master; copy neither end |
 | Bass share (<150 Hz) | two clusters: music-led motion 52-87%, VO-led live action 14-22% | Pick the bed by format |
-| Cuts on an onset | median 40%; tier A music pieces 61-83% | The >= 60% target stands for cut-driven pieces; with few cuts, motion hits carry the sync |
+| Cuts on an onset | median 40%; tier A music pieces 61-83% | The >= 60% target stands for music-led, cut-driven pieces; with few cuts, motion hits carry the sync (`continuous` mode); VO-led films are scored on speech continuity (`critic.md`) |
 | Tempo (conf >= 0.5) | 60-108 BPM | Half-time feels of 120-180 BPM beds; hits every 1.5-1.7 s suit a 1.5-3 s beat cadence |
 | VO rate | 87 (ad read), 145-163 (explainer), 176-188 (founder to camera) | Text-led A pieces use no VO |
 
