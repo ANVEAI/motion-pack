@@ -13,9 +13,10 @@ export const MAX_CLAIM_WORDS = 6;
 export const BUILDERS = ['scatter', 'trace', 'table'];
 export const UNITS = ['', 'K', 'M', '%', '$', 's', 'ms', 'dur'];   // the formats type/gfx fmtUnit knows: a unit is a token the part formats, never typed prose
 export const FORMATS = ['wide', 'tall'];
+export const STAGES = ['claim', 'name', 'setting', 'builder', 'h2h', 'numbers', 'cards', 'end'];
 export class HonestyError extends Error { constructor(problems) { super('proof-film honesty gate: ' + problems.length + ' problem' + (problems.length === 1 ? '' : 's') + '\n  - ' + problems.join('\n  - ')); this.name = 'HonestyError'; this.problems = problems; } }
 
-export const blank = (v) => !String(v ?? '').trim();
+export const blank = (v) => typeof v !== 'string' || !v.trim();   // a source or method is a string: a blank, whitespace-only or non-string value (0, null, a number) counts as missing
 /* the words of a claim with its accent marked *like this*: { words: ['Better', 'answers,', 'lower', 'cost.'], accent: [2], marks: 1 } (a *two word* accent is one mark and two accent words) */
 const wordsOf = (s) => s.replace(/\*/g, '').trim().split(/\s+/).filter(Boolean);
 export function claimWords(text) {
@@ -62,6 +63,8 @@ export function problems(C) {
   const p = [], b = C.builder || {};
   if (!FORMATS.includes(C.format)) p.push(`format: "${C.format}" is not one of ${FORMATS.join(' | ')}`);
   if (!BUILDERS.includes(b.kind)) p.push(`builder.kind: "${b.kind}" is not one of ${BUILDERS.join(' | ')} (ONE builder)`);
+  for (const [k, why] of Object.entries(C.cut || {})) { const [a, b] = k.split('>'); if (!STAGES.includes(a) || !STAGES.includes(b) || STAGES.indexOf(a) + 1 !== STAGES.indexOf(b) && !(a === 'builder' && b === 'numbers')) p.push(`cut.${k}: not a boundary between neighbouring stages (${STAGES.join(' > ')}; h2h is skipped when the builder is a table)`);
+    if (blank(why) || !/^[A-Z]{3,}\b/.test(String(why).trim())) p.push(`cut.${k}: a hard cut needs a reason that starts with its Murch reason in capitals (EMOTION, STORY, RHYTHM, ENERGY, REVEAL, PLACE...), e.g. "EMOTION: payoff -> pain"`); }
   const cw = claimWords(C.claim);
   if (!cw.words.length) p.push('claim: empty');
   if (cw.words.length > MAX_CLAIM_WORDS) p.push(`claim: ${cw.words.length} words, at most ${MAX_CLAIM_WORDS} ("${C.claim}")`);

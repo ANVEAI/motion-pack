@@ -68,7 +68,7 @@ function claim(L, d, u) {
   const s = L.u, T = L.T, sz = (L.tall ? 128 : 190) * s, ls = -0.035 * sz, maxW = L.S.w * (L.tall ? 1 : 0.92), lh = 1.1 * sz, sp = measure(' ', sz, { weight: 800 }) + ls;
   const lines = []; let at = 0; for (const text0 of balanced(d.words.join(' '), sz, 800, maxW, ls)) { const ws = text0.split(' ').map((w, k) => ({ w, i: at + k, ww: measure(w, sz, { weight: 800, ls }) })); at += ws.length; lines.push(ws); }
   const x0 = L.S.x0 + (L.tall ? 0 : 0.04 * L.W), top = L.cy - (lines.length * lh) / 2 + sz * 0.82; let o = '', under = '';
-  lines.forEach((ln, r) => { let x = x0; ln.forEach((q) => { const k = spring(u - 0.16 * q.i, 'headline'), y = top + r * lh, acc = d.accent.includes(q.i);
+  lines.forEach((ln, r) => { let x = x0; ln.forEach((q) => { const k = spring(u + 0.04 - 0.11 * q.i, 'headline'), y = top + r * lh, acc = d.accent.includes(q.i);   // the first word is already moving on frame 0
     if (k > 0) o += `<g${fade(k * 2.2)} transform="translate(0 ${f2(sz * 0.32 * (1 - k))})">${text(q.w, x, y, { size: sz, weight: 800, fill: acc ? T.accent : T.ink, ls })}</g>`;
     if (acc) { const uk = E.enter(seg(u, d.accentAt, d.accentAt + 0.55)); if (uk > 0) under += `<path d="M${f2(x)} ${f2(y + sz * 0.16)} L${f2(x + q.ww)} ${f2(y + sz * 0.16)}" stroke="${T.accent}" stroke-width="${f2(9 * s)}" stroke-linecap="round" fill="none" stroke-dasharray="${f2(q.ww)} ${f2(q.ww + 1)}" stroke-dashoffset="${f2(q.ww * (1 - uk))}"/>`; }
     x += q.ww + sp; }); });
