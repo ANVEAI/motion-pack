@@ -116,6 +116,8 @@ SVG kinetic pieces and field layouts (`type/gfx/kinetic.js`, `type/gfx/collage.j
 - `type.wordWheel` (`words`, `steps: [[t, index], ...]`), `type.inlineMedia` (`text` with `[photo]`, `[stack]`, `*pill*`, `|`; `media: [{href} | {svg} | {cards}]`), `type.letterAssemble`, `type.glyphMorphCursor` (`mark`: an SVG path in a 100 box), `type.marquee` (`accent`, `accentStyle: 'color' | 'pixel'`), `type.bleedWord`.
 - `layout.scatterCollage`, `layout.mosaicBurst`, `layout.logoWall` (placeholder marks only; `logos: [{svg} | {href}]`; a digit in `headline` needs `source`), `layout.orbitRing` (`icons: [{name | svg | href, label, ring, angle}]`), `callout.connectorLabel` (`items: [{label, at, tint, ink}]`, chained).
 
+Round 3 (`type/gfx/swap.js`, `badges.js`, `brand.js`): `type.accentSwap`, `type.wordSplitMedia`, `type.imageFill`, `type.strikeOut`, `type.glowWord`, `type.ledDigits`, `callout.selectionBox` (+ `selectionZoomCss`), `counter.scoreIterate`, `counter.stepPill`, `caption.speakerTag`, `title.timeCard`, `layout.paletteColumns`, `layout.logoConstruction` (`CIRCLE4`, `SPARK4`), `layout.mockupInContext` (`PLATES`), `layout.typeSpecimen`, `layout.backdropSwap`, `layout.lineup`. Sound per action: `gfxCues(id, { at, params, dur })` -> `[{ t, id, why }]`.
+
 ## Camera
 
 ```js

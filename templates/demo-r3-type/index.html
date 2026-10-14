@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack demo: round-3 type + layout parts</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #F3F1EC; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F3F1EC; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.scene { overflow: hidden; } .part { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="17.5">
+<section class="clip scene" id="s-select" data-start="0.0000" data-duration="2.0000" data-track-index="1" style="background:#F3F1EC"><div class="part" id="p-select"></div></section>
+<section class="clip scene" id="s-swap" data-start="2.0000" data-duration="2.0000" data-track-index="1" style="background:#F3F1EC"><div class="part" id="p-swap"></div></section>
+<section class="clip scene" id="s-mark" data-start="4.0000" data-duration="2.0000" data-track-index="1" style="background:#0E0E14"><div class="part" id="p-mark"></div></section>
+<section class="clip scene" id="s-palette" data-start="6.0000" data-duration="2.0000" data-track-index="1" style="background:#F3F1EC"><div class="part" id="p-palette"></div></section>
+<section class="clip scene" id="s-specimen" data-start="8.0000" data-duration="2.0000" data-track-index="1" style="background:#F3F1EC"><div class="part" id="p-specimen"></div></section>
+<section class="clip scene" id="s-split" data-start="10.0000" data-duration="1.5000" data-track-index="1" style="background:#F3F1EC"><div class="part" id="p-split"></div></section>
+<section class="clip scene" id="s-billboard" data-start="11.5000" data-duration="2.0000" data-track-index="1" style="background:#F3F1EC"><div class="part" id="p-billboard"></div></section>
+<section class="clip scene" id="s-count" data-start="13.5000" data-duration="1.5000" data-track-index="1" style="background:#F3F1EC"><div class="part" id="p-count"></div></section>
+<section class="clip scene" id="s-end" data-start="15.0000" data-duration="2.5000" data-track-index="1" style="background:#F3F1EC"><div class="part" id="p-end"></div></section>
+<div id="fx" class="clip" data-start="0" data-duration="17.5" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="17.5" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module" src="assets/mp/adapters/type.mjs"></script>
+<script type="module" src="assets/mp/adapters/transitions.mjs"></script>
+<script type="module">
+import { MP } from './assets/mp/pack.mjs';
+import { mountGfx } from './assets/mp/type/gfx/index.js';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"grain","params":{"stock":"digital-soft"}}], { width: 1920, height: 1080, fps: 30, seed: 3 }), { fps: 30 });
+const hf = (stack) => { const r = (t) => stack.render(t); window.addEventListener('hf-seek', (e) => r(e.detail.time)); r(window.__hfThreeTime || 0); };
+const tl = gsap.timeline({ paused: true });
+hf(mountGfx(document.getElementById('p-select'), [{ id: 'callout.selectionBox', at: 0.0000, dur: 2.0000, params: {"text":"Start with one line","texts":[[1.05,"then make it move"]],"size":96,"draw":0.35,"handlesAt":0.2,"cursorAt":0.75,"bezier":true} }], { W: 1920, H: 1080 }));
+MP.type(tl, 'type/accentSwap', '#p-swap', { at: 2.0000, dur: 2.0000, fps: 30, W: 1920, H: 1080, params: {"prefix":"Parts you can","words":["design","edit","ship"],"steps":[[0,0],[0.5,1],[1,2]],"size":108} });
+hf(mountGfx(document.getElementById('p-mark'), [{ id: 'layout.logoConstruction', at: 4.0000, dur: 2.0000, params: {"grid":0.45,"shapeAt":0.3,"morphAt":0.6,"morph":0.6,"guidesOutAt":1.25,"fillAt":1.3} }], { W: 1920, H: 1080 }));
+hf(mountGfx(document.getElementById('p-palette'), [{ id: 'layout.paletteColumns', at: 6.0000, dur: 2.0000, params: {"stretchAt":1.1,"stretch":0.45,"stagger":0.06} }], { W: 1920, H: 1080 }));
+hf(mountGfx(document.getElementById('p-specimen'), [{ id: 'layout.typeSpecimen', at: 8.0000, dur: 2.0000, params: {"text":"Manrope","start":0.2,"every":0.16,"collapseAt":1.3,"collapse":0.45,"size":92} }], { W: 1920, H: 1080 }));
+MP.type(tl, 'type/wordSplitMedia', '#p-split', { at: 10.0000, dur: 1.5000, fps: 30, W: 1920, H: 1080, params: {"word":"introducing","split":5,"openAt":0.2,"open":0.45,"closeAt":null,"size":150} });
+hf(mountGfx(document.getElementById('p-billboard'), [{ id: 'layout.mockupInContext', at: 11.5000, dur: 2.0000, params: {"scene":"billboard","walkerAt":0.35,"walkSpeed":0.45,"inner":{"id":"layout.backdropSwap","params":{"text":"wordmark","every":0.5,"size":150}}} }], { W: 1920, H: 1080 }));
+hf(mountGfx(document.getElementById('p-count'), [{ id: 'counter.stepPill', at: 13.5000, dur: 1.5000, params: {"steps":[[0,6],[0.5,11],[1,17]],"suffix":"","phrase":"new parts this round","size":84,"source":"motion-pack round 3: 11 type + 6 layout ids"} }], { W: 1920, H: 1080 }));
+hf(mountGfx(document.getElementById('p-end'), [{ id: 'layout.backdropSwap', at: 15.0000, dur: 2.5000, params: {"text":"motion-pack","loop":false,"every":0.35,"size":130,"backs":[{"kind":"grid","bg":"#F3F1EC"},{"kind":"solid","bg":"#0E0E14"},{"kind":"solid","bg":"#4A18ED"}]} }], { W: 1920, H: 1080 }));
+tl.set({}, {}, 17.5000);
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

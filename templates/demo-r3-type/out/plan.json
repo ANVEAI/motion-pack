@@ -1,0 +1,388 @@
+{
+ "template": "demo-r3-type",
+ "fps": 30,
+ "seconds": 17.5,
+ "music": "music/bed_deep_house_loop8",
+ "size": [
+  1920,
+  1080
+ ],
+ "bpm": 120,
+ "beatSec": 0.5,
+ "shots": [
+  {
+   "id": "select",
+   "part": "callout.selectionBox",
+   "params": {
+    "text": "Start with one line",
+    "texts": [
+     [
+      1.05,
+      "then make it move"
+     ]
+    ],
+    "size": 96,
+    "draw": 0.35,
+    "handlesAt": 0.2,
+    "cursorAt": 0.75,
+    "bezier": true
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 2,
+   "tx": "transitions/cut",
+   "start": 0
+  },
+  {
+   "id": "swap",
+   "part": "type/accentSwap",
+   "params": {
+    "prefix": "Parts you can",
+    "words": [
+     "design",
+     "edit",
+     "ship"
+    ],
+    "steps": [
+     [
+      0,
+      0
+     ],
+     [
+      0.5,
+      1
+     ],
+     [
+      1,
+      2
+     ]
+    ],
+    "size": 108
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 2,
+   "tx": "transitions/cut",
+   "start": 2
+  },
+  {
+   "id": "mark",
+   "part": "layout.logoConstruction",
+   "params": {
+    "grid": 0.45,
+    "shapeAt": 0.3,
+    "morphAt": 0.6,
+    "morph": 0.6,
+    "guidesOutAt": 1.25,
+    "fillAt": 1.3
+   },
+   "bg": "ink",
+   "hold": false,
+   "dur": 2,
+   "tx": "transitions/cut",
+   "start": 4
+  },
+  {
+   "id": "palette",
+   "part": "layout.paletteColumns",
+   "params": {
+    "stretchAt": 1.1,
+    "stretch": 0.45,
+    "stagger": 0.06
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 2,
+   "tx": "transitions/cut",
+   "start": 6
+  },
+  {
+   "id": "specimen",
+   "part": "layout.typeSpecimen",
+   "params": {
+    "text": "Manrope",
+    "start": 0.2,
+    "every": 0.16,
+    "collapseAt": 1.3,
+    "collapse": 0.45,
+    "size": 92
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 2,
+   "tx": "transitions/cut",
+   "start": 8
+  },
+  {
+   "id": "split",
+   "part": "type/wordSplitMedia",
+   "params": {
+    "word": "introducing",
+    "split": 5,
+    "openAt": 0.2,
+    "open": 0.45,
+    "closeAt": null,
+    "size": 150
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 1.5,
+   "tx": "transitions/cut",
+   "start": 10
+  },
+  {
+   "id": "billboard",
+   "part": "layout.mockupInContext",
+   "params": {
+    "scene": "billboard",
+    "walkerAt": 0.35,
+    "walkSpeed": 0.45,
+    "inner": {
+     "id": "layout.backdropSwap",
+     "params": {
+      "text": "wordmark",
+      "every": 0.5,
+      "size": 150
+     }
+    }
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 2,
+   "tx": "transitions/cut",
+   "start": 11.5
+  },
+  {
+   "id": "count",
+   "part": "counter.stepPill",
+   "params": {
+    "steps": [
+     [
+      0,
+      6
+     ],
+     [
+      0.5,
+      11
+     ],
+     [
+      1,
+      17
+     ]
+    ],
+    "suffix": "",
+    "phrase": "new parts this round",
+    "size": 84,
+    "source": "motion-pack round 3: 11 type + 6 layout ids"
+   },
+   "bg": "paper",
+   "hold": false,
+   "dur": 1.5,
+   "tx": "transitions/cut",
+   "start": 13.5
+  },
+  {
+   "id": "end",
+   "part": "layout.backdropSwap",
+   "params": {
+    "text": "motion-pack",
+    "loop": false,
+    "every": 0.35,
+    "size": 130,
+    "backs": [
+     {
+      "kind": "grid",
+      "bg": "#F3F1EC"
+     },
+     {
+      "kind": "solid",
+      "bg": "#0E0E14"
+     },
+     {
+      "kind": "solid",
+      "bg": "#4A18ED"
+     }
+    ]
+   },
+   "bg": "paper",
+   "hold": true,
+   "dur": 2.5,
+   "tx": "transitions/cut",
+   "start": 15
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/ui/slide",
+   "t": 0,
+   "gainDb": 0,
+   "why": "select: box draws"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 0.2,
+   "gainDb": 0,
+   "why": "select: handles pop"
+  },
+  {
+   "id": "sfx/ui/click",
+   "t": 0.75,
+   "gainDb": 0,
+   "why": "select: cursor clicks the corner"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 1.05,
+   "gainDb": 0,
+   "why": "select: content changes, box resizes"
+  },
+  {
+   "id": "sfx/whoosh/swish_xs",
+   "t": 2.5,
+   "gainDb": 0,
+   "why": "swap: accent word swaps"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 3,
+   "gainDb": 0,
+   "why": "swap: accent word swaps"
+  },
+  {
+   "id": "sfx/whoosh/swish_xs",
+   "t": 4,
+   "gainDb": 0,
+   "why": "mark: guides draw on"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 4.3,
+   "gainDb": 0,
+   "why": "mark: primitive appears"
+  },
+  {
+   "id": "sfx/sparkle/letter_assemble",
+   "t": 4.6,
+   "gainDb": 0,
+   "why": "mark: handles pull the shape"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 5.3,
+   "gainDb": 0,
+   "why": "mark: mark fills"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 6,
+   "gainDb": 0,
+   "why": "palette: columns rise"
+  },
+  {
+   "id": "sfx/whoosh/whoosh_m",
+   "t": 7.1,
+   "gainDb": 0,
+   "why": "palette: columns re-flow into stripes"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 8.36,
+   "gainDb": 0,
+   "why": "specimen: highlight row steps"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 8.68,
+   "gainDb": 0,
+   "why": "specimen: highlight row steps"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 9,
+   "gainDb": 0,
+   "why": "specimen: highlight row steps"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 9.3,
+   "gainDb": 0,
+   "why": "specimen: rows collapse"
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 10.2,
+   "gainDb": 0,
+   "why": "split: word splits open"
+  },
+  {
+   "id": "sfx/whoosh/whoosh_in_m",
+   "t": 11.5,
+   "gainDb": 0,
+   "why": "billboard: cut to the plate"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 12,
+   "gainDb": -3,
+   "why": "billboard screen: backdrop swaps"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 12.5,
+   "gainDb": -3,
+   "why": "billboard screen: backdrop swaps"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 13,
+   "gainDb": -3,
+   "why": "billboard screen: backdrop swaps"
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 14,
+   "gainDb": 0,
+   "why": "count: pill steps"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 14.5,
+   "gainDb": 0,
+   "why": "count: pill steps"
+  },
+  {
+   "id": "sfx/tx/cut_tick",
+   "t": 15.35,
+   "gainDb": 0,
+   "why": "end: backdrop swaps"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 15.7,
+   "gainDb": 0,
+   "why": "end: backdrop swaps"
+  }
+ ],
+ "claims": [
+  {
+   "text": "17 new parts this round",
+   "source": "type/gfx/index.js: 11 type ids (swap.js, badges.js) + 6 layout ids (brand.js), this commit"
+  }
+ ],
+ "ceilingDb": -2,
+ "fadeInMs": 40,
+ "paceRule": {
+  "aslMax": 2.5,
+  "longMax": 3.1
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 9,
+   "asl": 1.94,
+   "longest": 2,
+   "pass": true
+  }
+ }
+}

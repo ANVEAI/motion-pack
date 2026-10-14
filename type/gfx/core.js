@@ -44,3 +44,12 @@ export function measure(str, size, { weight = 700, font = FONT, ls = 0 } = {}) {
   if (typeof document !== 'undefined') { _mctx ||= document.createElement('canvas').getContext('2d'); _mctx.font = `${weight} ${size}px ${font}`; return _mctx.measureText(s).width + ls * s.length; }
   return textW(s, size, font === MONO ? 0.6 : weight >= 700 ? 0.56 : 0.52) + ls * s.length;
 }
+/* round-3 helpers (2026-10-14): a stable per-item id for <defs> (filters, clips, gradients) so two items in one host never share a def,
+   a blur filter def (empty below 0.05 px so settled frames carry no filter), and the readable ink (dark or light) on a background colour. */
+export function uidOf(name, p) { const s = name + JSON.stringify([p.text, p.words, p.word, p.items, p.seed, p.at, p.size, p.uid]); let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return 'q' + h.toString(36); }
+export const blurDef = (id, sd) => (sd > 0.05 ? `<filter id="${id}" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${f2(sd)}"/></filter>` : '');
+export const blurAttr = (id, sd) => (sd > 0.05 ? ` filter="url(#${id})"` : '');
+export function lum(hex) { const h = String(hex).replace('#', ''), v = h.length === 3 ? h.split('').map((x) => parseInt(x + x, 16)) : [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const l = v.map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; }); return 0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2]; }
+/* the ink with the higher WCAG contrast on bg: dark '#0E0E14' or light '#FFFFFF' */
+export const inkOn = (bg, dark = INK, light = PAPER) => { const L = lum(bg), cd = (L + 0.05) / (lum(dark) + 0.05), cl = (lum(light) + 0.05) / (L + 0.05); return cd >= cl ? dark : light; };

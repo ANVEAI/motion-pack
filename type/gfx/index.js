@@ -10,6 +10,8 @@
 import { EDITORIAL } from './editorial.js'; import { CALLOUTS } from './callouts.js'; import { SOCIAL } from './social.js'; import { STICKER_GFX, STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource } from './stickers.js';
 import { KINETIC } from './kinetic.js'; import { COLLAGE } from './collage.js';
 import { life, ctxFor } from './core.js'; import { UI, UI_CUES, hooks as uiHooks } from './ui.js'; import { DOC } from './doc.js';
+import { SWAP, SWAP_CUES } from './swap.js'; import { BADGES, BADGE_CUES } from './badges.js'; import { BRAND_LAYOUTS, BRAND_CUES } from './brand.js';
+export { stepAt, mixHex } from './swap.js'; export { selectionZoom, selectionZoomCss } from './badges.js'; export { CIRCLE4, SPARK4, PLATES } from './brand.js';
 export { nodeGraphCam, isoTiltCss } from './ui.js';
 export { SHAPES, PIXEL5x7, pixelGlyph, tokenize } from './kinetic.js'; export { photoTile, slotMedia, placeholderLogo, MARKS, DEFAULT_MARK } from './media.js'; export { measure } from './core.js';
 export { CARDS, CARD_IDS, cardsAt, stackFlipTimes, drawCards, renderCards, mountCards, placeholderCard, placeholderCards, loadImages } from './cards.js';
@@ -17,7 +19,7 @@ export { BOARD, BOARD_D, boardAt, drawBoard, mountBoard } from './board.js';
 export { PIN_LAYOUTS, homography, matrix3d, cornersAt, lintQuad, drawQuad, mountPin } from './cornerpin.js';
 export { LAYOUTS, layoutAt, applyLayout } from './layout.js'; export { prepareDrawOn, drawOnAt, trimAt, bindDrawOn, drawAttrs } from './drawon.js';
 export { STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource };
-export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC };
+export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS };
 export const GFX_IDS = Object.keys(GFX);
 /* default sound pairing per gfx id prefix (sfx/<category>/<name>, anchor = the item's at + 1 frame, gain over the bed). Longest prefix wins. */
 export const GFX_SFX = {
@@ -34,7 +36,13 @@ export const GFX_SFX = {
   'type.wordWheel': ['sfx/ui/tick', 1, -4], 'type.inlineMedia': ['sfx/ui/pop', 1, -3], 'type.letterAssemble': ['sfx/whoosh/magic_swirl', 12, -4], 'type.glyphMorphCursor': ['sfx/ui/typing_burst', 0, -6],
   'type.marquee': ['sfx/whoosh/swish_s', 0, -4], 'type.bleedWord': ['sfx/whoosh/whip_pan', 0, -2], 'layout.scatterCollage': ['sfx/whoosh/whoosh_m', 34, -2], 'layout.mosaicBurst': ['sfx/whoosh/whoosh_l', 0, -2],
   'layout.logoWall': ['sfx/ui/pop', 9, -4], 'layout.orbitRing': ['sfx/whoosh/swish_s', 13, -3], 'callout.connectorLabel': ['sfx/ui/slide', 1, -3],
-  'lowerThird.docSuper': ['sfx/tx/cut_tick', 0, -6], 'caption.subtitleSpeedGag': ['sfx/ui/click', 46, -2], 'layout.cardStack': ['sfx/paper/flip', 0, -3], 'layout.cardRiver': ['sfx/whoosh/swish_s', 0, -2], 'layout.cornerPin': ['sfx/ui/pop', 1, -4], 'layout.evidenceBoard': ['sfx/foley/stamp', 1, -2] };
+  'lowerThird.docSuper': ['sfx/tx/cut_tick', 0, -6], 'caption.subtitleSpeedGag': ['sfx/ui/click', 46, -2], 'layout.cardStack': ['sfx/paper/flip', 0, -3], 'layout.cardRiver': ['sfx/whoosh/swish_s', 0, -2], 'layout.cornerPin': ['sfx/ui/pop', 1, -4], 'layout.evidenceBoard': ['sfx/foley/stamp', 1, -2],
+  /* round 3 (2026-10-14): type + layout parts; gfxCues(id) gives one cue per action */
+  'type.accentSwap': ['sfx/whoosh/swish_xs', 0, -4], 'callout.selectionBox': ['sfx/ui/slide', 0, -3], 'counter.scoreIterate': ['sfx/ui/count_tick', 1, -3], 'counter.stepPill': ['sfx/ui/count_tick', 1, -4],
+  'type.wordSplitMedia': ['sfx/ui/slide', 11, -3], 'type.imageFill': ['sfx/tx/mask_reveal', 0, -4], 'type.strikeOut': ['sfx/whoosh/zip', 21, -4], 'caption.speakerTag': ['sfx/ui/mic_on', 0, -6],
+  'type.glowWord': ['sfx/sparkle/shimmer', 0, -4], 'type.ledDigits': ['sfx/device/loading_tick', 0, -4], 'title.timeCard': ['sfx/cartoon/surprise_sting', 0, -2],
+  'layout.paletteColumns': ['sfx/whoosh/swish_s', 0, -3], 'layout.logoConstruction': ['sfx/sparkle/letter_assemble', 30, -4], 'layout.mockupInContext': ['sfx/whoosh/whoosh_in_m', 0, -4],
+  'layout.typeSpecimen': ['sfx/ui/tick', 11, -4], 'layout.backdropSwap': ['sfx/tx/cut_tick', 15, -4], 'layout.lineup': ['sfx/whoosh/swish_s', 0, -3] };
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 export function renderInner(id, t, { at = 0, dur, params = {} } = {}, ctx) {
   const g = GFX[id]; if (!g) throw new Error('unknown gfx ' + id); const p = { ...g.d, ...params }, L = life(t, at, dur ?? p.dur ?? g.dur, g.inF ?? 12, g.outF ?? 9);
@@ -54,3 +62,11 @@ export function bindHF(stack, { t0 = 0 } = {}) { const f = (t) => stack.render(t
 /* ui.* sound cue hook: every action of a UI-kit item (keystrokes, clicks, ticks, lock-on, morphs) as [{ t (absolute s), id: 'sfx/<cat>/<name>', why }] for the plan's cue sheet */
 export function uiCues(id, { at = 0, params = {} } = {}) { const g = UI[id], f = UI_CUES[id]; if (!g || !f) return []; return f({ ...g.d, ...params }).map((c) => ({ ...c, t: +(c.t + at).toFixed(4) })); }
 uiHooks.renderInner = renderInner;
+/* per-action sound cues for every gfx id that has them (the ui.* kit and the round-3 parts): [{ t (absolute s), id: 'sfx/<cat>/<name>', why }];
+   ids without an action table fall back to their single sfxFor() default at `at` + offset. */
+const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES };
+export function gfxCues(id, { at = 0, params = {}, dur } = {}) {
+  if (UI_CUES[id]) return uiCues(id, { at, params }); const g = GFX[id], f = ACTION_CUES[id];
+  if (g && f) return f({ ...g.d, dur: dur ?? g.dur, ...params }).map((c) => ({ ...c, t: +(c.t + at).toFixed(4) }));
+  const d = sfxFor(id); return d ? [{ t: +(at + d.offset_f / 30).toFixed(4), id: d.id, why: id + ' default' }] : [];
+}
