@@ -26,6 +26,7 @@ Every path below is relative to the pack root.
 - `catalog/index.html`: an offline gallery of every component. Rebuild it with `python3 catalog/build.py`.
 
 **Detail lives in `references/`:**
+- `launch-playbook.md`: launch-film archetypes, beat sheets and rules from 15 recent launches (evidence in `docs/research/launch-films-2026.md`).
 - `apis.md`: per-module API cheat sheet.
 - `platforms.md`: platform lengths, safe zones, loudness.
 - `virality.md`: the hook and retention checklist with evidence grades.
@@ -160,6 +161,15 @@ Every recipe ends with the VIRALITY and QA checklists below.
 
 ### RECIPE L: launch film / product reveal
 
+0. **Plan with `references/launch-playbook.md` first.** Pick the archetype and its pair:
+   - L1 founder keynote;
+   - L2 hero sizzle;
+   - L3 product UI film;
+   - L4 output montage;
+   - L5 teaser;
+   - L6 build-in-public clip.
+
+   Fill its beat sheet. Frame 0 is the product or the thesis. Show real UI or the reveal inside the window. Use 3 mundane demos and one defensible number.
 1. **Arc:** hook, tease, reveal, feature montage, end card. Pick one tone and commit to it.
 2. **Lock the music first.**
    - Generate with `music/compose.py` presets (`tech_pulse` or `anthem_build`) or use `music/bed_*`.
