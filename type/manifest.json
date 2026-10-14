@@ -5945,6 +5945,390 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "title.partnerLockup",
+   "file": "type/gfx/r45-type.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/soft",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 4.2,
+   "in_frames": 14,
+   "out_frames": 12,
+   "params": {
+    "marks": [
+     "ring",
+     "bars"
+    ],
+    "labels": [
+     "Brand A",
+     "Brand B"
+    ],
+    "balance": "area",
+    "weights": [
+     1,
+     1
+    ],
+    "divider": "x",
+    "dividerSize": 0.26,
+    "size": 240,
+    "gap": 0.3,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "layout": "auto",
+    "color": "#0E0E14",
+    "divColor": "#8A8A94",
+    "labelColor": "#8A8A94",
+    "rise": 0.06,
+    "blur": 10,
+    "font": "'IBM Plex Mono', ui-monospace, Menlo, monospace"
+   },
+   "tags": [
+    "title",
+    "lockup",
+    "partner",
+    "co-brand",
+    "announcement",
+    "end-card",
+    "quiet-tail"
+   ],
+   "demo": "type/demo/out/gfx-r45type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.iconMergeLockup",
+   "file": "type/gfx/r45-type.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/soft",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 4.4,
+   "in_frames": 1,
+   "out_frames": 10,
+   "params": {
+    "icons": [
+     "play",
+     "bolt",
+     "chat",
+     "cube"
+    ],
+    "name": "The Bundle",
+    "tile": 190,
+    "step": 0.62,
+    "rowScale": 0.55,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "drawAt": 0,
+    "draw": 0.6,
+    "stagger": 0.2,
+    "hits": [
+     1.2,
+     1.45,
+     1.7,
+     1.95
+    ],
+    "fillF": 4,
+    "lineAt": 2.2,
+    "line": 0.45,
+    "mergeAt": 2.8,
+    "merge": 0.6,
+    "nameSize": 84,
+    "weight": 700,
+    "ls": -0.02,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "ink": "#0E0E14",
+    "paper": "#FFFFFF",
+    "frameColor": "rgba(14,14,20,0.55)"
+   },
+   "tags": [
+    "layout",
+    "icons",
+    "bundle",
+    "merge",
+    "draw-on",
+    "outline-fill",
+    "lockup",
+    "announcement"
+   ],
+   "demo": "type/demo/out/gfx-r45type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.flankWords",
+   "file": "type/gfx/r45-type.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 2.4,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "words": [
+     "All-day",
+     "comfort"
+    ],
+    "split": null,
+    "subject": {
+     "box": [
+      0.41,
+      0.2,
+      0.18,
+      0.6
+     ],
+     "arriveAt": 0,
+     "arrive": 0.6
+    },
+    "margin": 44,
+    "size": 92,
+    "weight": 700,
+    "ls": -0.02,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "color": "#0E0E14",
+    "row": null,
+    "stagger": 0.06,
+    "rise": 0.25,
+    "drawSubject": false,
+    "subjectColor": "#DCD5C6",
+    "shot": 0
+   },
+   "tags": [
+    "type",
+    "flank",
+    "product",
+    "negative-space",
+    "split",
+    "sentence-across-cuts",
+    "feature-super"
+   ],
+   "demo": "type/demo/out/gfx-r45type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.behindSubject",
+   "file": "type/gfx/r45-type.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_in_m",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 4,
+   "out_frames": 8,
+   "params": {
+    "mode": "label",
+    "steps": [
+     [
+      0,
+      "DAWN"
+     ],
+     [
+      0.8,
+      "NOON"
+     ],
+     [
+      1.6,
+      "DUSK"
+     ]
+    ],
+    "text": "NEW NAME",
+    "sep": "  /  ",
+    "speed": 260,
+    "loop": null,
+    "size": 400,
+    "y": 0.56,
+    "weight": 800,
+    "ls": -0.04,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "color": "#FF6B4A",
+    "outline": false,
+    "plate": null,
+    "matte": null,
+    "matteMode": "alpha",
+    "edge": "soft",
+    "swap": 0.16
+   },
+   "tags": [
+    "type",
+    "depth",
+    "matte",
+    "behind-subject",
+    "giant-type",
+    "marquee",
+    "label",
+    "occlusion"
+   ],
+   "demo": "type/demo/out/gfx-r45type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.asciiMosaic",
+   "file": "type/gfx/r45-glyph.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/magic_swirl",
+    "offset_f": 10,
+    "gain_db": -4
+   },
+   "dur_s": 4.6,
+   "in_frames": 6,
+   "out_frames": 10,
+   "params": {
+    "text": "a quiet figure in warm side light, soft shadows, film grain, a calm look toward the window",
+    "image": "bust",
+    "mode": "text",
+    "cols": 72,
+    "area": [
+     0.2,
+     0.06,
+     0.6,
+     0.88
+    ],
+    "levels": 10,
+    "gamma": 1,
+    "lineSize": 40,
+    "lineChars": 46,
+    "scatterAt": 0.35,
+    "scatter": 0.6,
+    "settleAt": 0.9,
+    "settle": 1.1,
+    "spread": 0.7,
+    "dissolveAt": null,
+    "dissolve": 0.9,
+    "ink": "#F6E7D2",
+    "dim": "#2E2824",
+    "accent": null,
+    "font": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
+    "weight": 600,
+    "seed": 4
+   },
+   "tags": [
+    "type",
+    "ascii",
+    "mosaic",
+    "glyph-portrait",
+    "text-as-image",
+    "prompt",
+    "generative",
+    "reveal"
+   ],
+   "demo": "type/demo/out/gfx-r45type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.textOnPath",
+   "file": "type/gfx/r45-glyph.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/flyby",
+    "offset_f": 3,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "text": "search everything you have ever saved",
+    "path": "swoop",
+    "closed": false,
+    "pathBox": [
+     1920,
+     1080
+    ],
+    "mode": "trail",
+    "start": 0,
+    "end": 0.92,
+    "delay": 0.1,
+    "travel": 2.2,
+    "ease": "cam",
+    "speed": 260,
+    "gap": 0.5,
+    "size": 52,
+    "weight": 700,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "ls": 0,
+    "color": "#0E0E14",
+    "fade": 0.8,
+    "leader": "icon",
+    "leaderSize": 1.9,
+    "leaderColor": "#4A18ED",
+    "showPath": false,
+    "pathColor": "rgba(14,14,20,0.18)"
+   },
+   "tags": [
+    "type",
+    "text-on-path",
+    "curve",
+    "follow",
+    "kinetic",
+    "arc-length",
+    "icon-trail"
+   ],
+   "demo": "type/demo/out/gfx-r45type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.electricOutline",
+   "file": "type/gfx/r45-glyph.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/glitch_stutter",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 2.4,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "text": "4",
+    "size": 300,
+    "at": [
+     0.78,
+     0.42
+    ],
+    "weight": 0.95,
+    "tilt": -6,
+    "color": "#8FE6FF",
+    "core": "#FFFFFF",
+    "line": 3,
+    "glow": 9,
+    "glowOp": 0.95,
+    "halo": 0.3,
+    "draw": 0.55,
+    "stagger": 0.12,
+    "jitter": 2.6,
+    "crackleFps": 15,
+    "hand": 0.035,
+    "bolts": 3,
+    "boltLen": 0.42,
+    "boltOn": 0.55,
+    "spacing": 1.5,
+    "seed": 7
+   },
+   "tags": [
+    "type",
+    "electric",
+    "neon",
+    "outline",
+    "chapter-mark",
+    "numerals",
+    "crackle",
+    "talking-head"
+   ],
+   "demo": "type/demo/out/gfx-r45type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "layout.splitScreen",
    "file": "type/gfx/layout.js",
    "kind": "layout",

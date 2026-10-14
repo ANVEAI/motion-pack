@@ -2451,6 +2451,231 @@
    "test": "layers/tests/r3.test.mjs"
   },
   {
+   "id": "layers.embeddingCloud",
+   "file": "layers/canvas2d-r45.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "embedding",
+    "vector-space",
+    "point-cloud",
+    "3d",
+    "search",
+    "retrieval",
+    "nearest-neighbours",
+    "ai",
+    "explainer"
+   ],
+   "params": {
+    "n": 260,
+    "clusters": 6,
+    "spread": 0.13,
+    "thumbs": 22,
+    "thumbSize": 34,
+    "dot": 2.8,
+    "radius": 0.55,
+    "center": [
+     0.5,
+     0.52
+    ],
+    "spin": 0.03,
+    "loop": 0,
+    "fps": 30,
+    "tilt": 0.28,
+    "fov": 2.6,
+    "color": "#9FE3B4",
+    "accent": "#FFE07A",
+    "query": "a dog on the beach",
+    "queryAt": 1,
+    "queryDur": 0.7,
+    "liftDur": 0.6,
+    "k": 6,
+    "lift": 0.45,
+    "queryCluster": 0,
+    "lines": true,
+    "chipBg": "rgba(14,20,16,0.82)",
+    "chipInk": "#FFFFFF",
+    "collapseAt": null,
+    "collapse": 0.9,
+    "markSize": 0.34,
+    "mark": null,
+    "images": [],
+    "intensity": 1,
+    "seed": 3
+   },
+   "doc": "n dots + thumbs (<= 48) media tiles in `clusters` seeded gaussian clusters (spread), radius = cloud radius (fraction of H), spin turns/s (or loop: L s per exact turn), tilt rad, fov camera distance in radii; query chip text flies in at queryAt, the k nearest neighbours (precomputed) lift by `lift` toward the camera with lines; collapseAt: every point lands on the outline of `mark` (an SVG path d in a 100 box, e.g. your icon or logo; null = the pack placeholder mark; markSize = its height as a fraction of H); images: optional thumbnail sources (URLs / data URLs, or decoded images; each point always shows the same one). Await stack.ready() before the first frame, like fonts: until a source is decoded its tile is a placeholder, after that every frame draws the image",
+   "demo": "layers/demo/out/r45-sheet.png",
+   "test": "layers/tests/r45.test.mjs"
+  },
+  {
+   "id": "layers.epicycleDraw",
+   "file": "layers/canvas2d-r45.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "epicycles",
+    "fourier",
+    "math",
+    "drawing",
+    "line-art",
+    "fidelity-ladder",
+    "explainer",
+    "glow"
+   ],
+   "params": {
+    "path": "bird",
+    "pathBox": [
+     1920,
+     1080
+    ],
+    "closed": "auto",
+    "scale": 0.9,
+    "center": [
+     0.5,
+     0.48
+    ],
+    "samples": 1024,
+    "terms": 64,
+    "steps": null,
+    "period": 4,
+    "at": 0,
+    "loop": false,
+    "fps": 30,
+    "trail": 1,
+    "progressive": true,
+    "circles": true,
+    "maxCircles": 80,
+    "arms": true,
+    "inset": null,
+    "insetZoom": 4,
+    "color": "#8FDBFF",
+    "circleColor": "#8FDBFF",
+    "width": 2.2,
+    "glow": 10,
+    "readout": true,
+    "readoutAt": [
+     0.5,
+     0.93
+    ],
+    "readColor": "#CFEFFF",
+    "source": "mean distance of the drawn curve from the input path",
+    "intensity": 1
+   },
+   "doc": "path = an SVG d string, a preset (wave, arc, swoop, loop, spiral, bird) or [[x, y], ...] in pathBox px; closed auto (default: closed when the path ends in z or returns to its start) | true = a closed outline | false = an open path traced there and back (a Fourier series is periodic); samples = DFT size, even (resampled by arc length; sharp corners round off by under 1 px at 1024); terms N (or steps [[t, N | \"full\"], ...]: each step re-traces at higher fidelity); period = s per trace; loop (single step: exact repeat every period); trail = fraction of the figure kept behind the tip (1 = all); circles / arms / inset [x, y, w, h] fractions + insetZoom; readout prints N, the mean distance of the drawn curve from the INPUT path (every segment of it, not only the samples; N = full is under 0.05%, not exactly 0) and the `source` note under it, always (an empty `source` falls back to the default note; readout: false hides the numbers), type from the shorter frame side, at readoutAt [x, y] (move it up inside a 9:16 safe zone)",
+   "demo": "layers/demo/out/r45-sheet.png",
+   "test": "layers/tests/r45.test.mjs"
+  },
+  {
+   "id": "layers.hexMosaic",
+   "file": "layers/canvas2d-r45.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "hex",
+    "mosaic",
+    "tiles",
+    "texture",
+    "background",
+    "brand-texture",
+    "flip",
+    "wave",
+    "engraved"
+   ],
+   "params": {
+    "radius": 64,
+    "gap": 5,
+    "faces": [
+     "color",
+     "engrave"
+    ],
+    "palette": [
+     "#3557D6",
+     "#F2B33D",
+     "#E4572E",
+     "#2BB673",
+     "#9B5DE5",
+     "#00A6A6",
+     "#F3F1EC"
+    ],
+    "texBg": "#E7E4DC",
+    "texInk": "#3B3B44",
+    "images": [],
+    "waves": [
+     {
+      "at": 0.3,
+      "from": [
+       0,
+       0.5
+      ]
+     }
+    ],
+    "speed": 1500,
+    "flip": 0.32,
+    "loop": 0,
+    "loopFrom": [
+     0,
+     0.5
+    ],
+    "fps": 30,
+    "bg": "#F3F1EC",
+    "panel": null,
+    "intensity": 1,
+    "seed": 6
+   },
+   "doc": "radius = hex circumradius px @1080, gap px; faces = sequence of tile faces (color | engrave | image) a wave flips each tile to the next; waves [{ at, from: [x, y] fractions, speed px/s @1080 }]; flip = s per tile flip; loop L: one wave every L / faces from loopFrom, exact repeat (the panel bob then makes a whole number of 4 s swings per loop, so the seam holds with a panel too); images: sources for image faces (clip-path); panel { rect: [x, y, w, h] fractions, color, radius } floats above. Image faces are preloaded like embeddingCloud images (await stack.ready()); the lattice is offset rows of pointy-top hexes (the same geometry as axial coordinates)",
+   "demo": "layers/demo/out/r45-sheet.png",
+   "test": "layers/tests/r45.test.mjs"
+  },
+  {
+   "id": "layers.convergeToDot",
+   "file": "layers/canvas2d-r45.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "network",
+    "nodes",
+    "converge",
+    "many-to-one",
+    "paper",
+    "flat",
+    "insert",
+    "explainer",
+    "bloom"
+   ],
+   "params": {
+    "nodes": 24,
+    "field": 0.34,
+    "center": [
+     0.5,
+     0.5
+    ],
+    "links": 1,
+    "hub": 12,
+    "dot": 56,
+    "at": 0.6,
+    "dur": 1.1,
+    "stagger": 0.5,
+    "order": "outside-in",
+    "ease": "move",
+    "reverse": false,
+    "wobble": 6,
+    "ink": "#6E6E78",
+    "line": "#8E8E98",
+    "lineW": 1.6,
+    "dotColor": "#3557D6",
+    "bg": null,
+    "intensity": 1,
+    "seed": 4
+   },
+   "doc": "nodes seeded in a field (radius fraction of H, wider in 16:9) around center; links = nearest-neighbour edges per node (plus hub edges); hub / dot = start and end radius of the solid dot px @1080; at / dur / stagger (radius-dependent delay; order outside-in | inside-out); reverse blooms the network out of the dot; bg = paper colour or null (transparent)",
+   "demo": "layers/demo/out/r45-sheet.png",
+   "test": "layers/tests/r45.test.mjs"
+  },
+  {
    "id": "hf.integration",
    "file": "layers/demo/hf/index.html",
    "kind": "demo",

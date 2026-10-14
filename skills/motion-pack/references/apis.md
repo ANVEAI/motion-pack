@@ -94,6 +94,7 @@ import { toSVGFilter, toCube, mixGrade } from './layers/grade.js'; import { GRAD
 - **Stack order:** leaks / bokeh / glow, grade, paper, vignette, scanlines, story type, dust, grain, brand, bars, dither.
 - **Grade count:** one grade per piece.
 - **Round 3 (2026-10-14):** backgrounds `meshGradient`; `canvas2d-r3.js` `dotCondense` (`dotCondenseState`), `hologramBeam` (`hologramState`); `stylize.js` `mountGradeIn(el, params).render(t)`, `gradeInWeight`, `gradeInSVG`, `gradeInCube(params, w)`.
+- **Round 4/5 (2026-10-14):** `canvas2d-r45.js` (merged into `K2D`; ids `layers.embeddingCloud`, `layers.epicycleDraw`, `layers.hexMosaic`, `layers.convergeToDot`): `mountStack(el, [{ kind: 'epicycleDraw', params: { steps: [[0, 4], [0.8, 16], [1.6, 'full']], period: 0.8 } }], { width, height, fps })` (returns `{ layers, ready(), render(t), dispose() }`: `await stack.ready()` resolves when the layers' `images` are decoded; `bindHF` repaints once they are; `preloadImages(srcs)` is the same thing standalone); `cuesR45(kind, params)` -> `[{ t, id, why }]` (local s); the maths for DOM that follows a point: `embeddingState(t, p, { W, H })`, `epicycleState`, `epicycleDFT`, `hexState`, `convergeState`, `cloudPlan`.
 
 ## Type
 
@@ -114,6 +115,8 @@ renderSVG('ui.liveTranscript', t, { at: 0, params: { turns: [{ speaker: 'Caller'
 import { pageFlyCam } from './type/gfx/index.js'; pageFlyCam(t, { stops: [[0.1, 0.1], [1.0, 0.4]], pullAt: 2 });   // { focus, zoom, pull, blur, transform } for a DOM page screenshot (true CSS perspective)
 import { springTrack, spring, springSettle, SPRING } from './type/ease.js';   // springTrack(t, [[t0, v0], [t1, v1], ...], 'ui' | 'panel' | 'camera' | 'headline' | 'mascot' | { zeta, f })
 ```
+
+Round 4/5 (`type/gfx/r45-type.js`, `r45-glyph.js`, `pathsample.js`): `title.partnerLockup` (`marks`, `balance`, `divider`; `partnerLockupLayout`, `lintPartnerMarks`, `inkFromMask({ data, width, height }, { channel })`, browser `markFromImage(img, { licensed })`, CLI `tools/mark_ink.py`), `layout.iconMergeLockup` (`icons`, `hits`, `mergeAt`; `iconMergeState`, `iconMergeFit`), `type.flankWords` (`subject`, `split`; `flankState`, `flankFitK`, `lintFlank`, `flankShots(sentence, ranges, style, ctx)`), `type.behindSubject` (SUPPLIED `plate` / `matte`: `{ href } | { frames: 'dir/f_%04d.png', fps, count, first } | { svg }`; `matteMode`, `edge`; `srcAt`, `figurePlate`; a video alpha -> frames with `python3 tools/alpha_frames.py video out_dir [--mode alpha|luma] [--fps] [--scale] [--prefix]`), `type.asciiMosaic` (`image`: `bust | orb | spark | { lum }`, `mode: 'text' | 'ramp'`; `lumGrid(img, cols, rows)`, `asciiMosaicGrid`), `type.textOnPath` (`path`, `mode: 'trail' | 'reveal' | 'travel'`; `textOnPathState`), `type.electricOutline` (`text`, `jitter`, `crackleFps`, `halo`; `strokeOutline`, `electricGeo`, `electricGlowPools(p, ctx)` -> pools for overlay `glow`, `ELECTRIC_SOUND`). Path maths: `flattenPath(d)`, `arcTable(pts, closed)`, `pointAt(tab, s)`, `resample(tab, n)`, `PATHS`.
 
 SVG kinetic pieces and field layouts (`type/gfx/kinetic.js`, `type/gfx/collage.js`) use the gfx contract: `renderSVG(id, t, { at, dur, params })` or `mountGfx(root, items)` re-rendered on `hf-seek`. The `type.*` ones also resolve as `type/<name>` ids through the template type adapter (`MP.type(tl, 'type/wordWheel', '#el', { at, dur, params, W, H })`).
 

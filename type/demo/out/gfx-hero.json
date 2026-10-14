@@ -116,5 +116,12 @@
   "layout.pip": 1,
   "layout.beforeAfter": 1,
   "layout.freezeFrame": 1,
-  "layout.cornerPin": 1
+  "layout.cornerPin": 1,
+  "title.partnerLockup": 1.5,
+  "layout.iconMergeLockup": 1.75,
+  "type.asciiMosaic": 2.9,
+  "type.textOnPath": 1.4,
+  "type.flankWords": 1,
+  "type.electricOutline": 1.2,
+  "type.behindSubject": 1
 }

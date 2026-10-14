@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack round-4/5 layers</title>
+<style>@font-face{font-family:Manrope;src:url(/templates/_shared/fonts/Manrope-Variable.ttf) format('truetype');font-weight:200 800}@font-face{font-family:'IBM Plex Mono';src:url(/templates/_shared/fonts/IBMPlexMono-SemiBold.ttf) format('truetype')}
+html,body{margin:0;background:#000}#stage{position:relative;width:960px;height:540px;overflow:hidden;background:#0B1210}#stage>*{position:absolute;inset:0;width:100%;height:100%}</style></head><body>
+<div id="stage"><div id="bg"></div></div>
+<script type="module">
+/* Test + preview page for the round-4/5 layers (2026-10-14): embeddingCloud, epicycleDraw, hexMosaic, convergeToDot (canvas2d-r45.js).
+   window.stack(layers, t, W, H, plate) -> mounts layers ([{kind, params}]) with mountStack at W x H (shown at 960 x 540) over a plate colour and renders t
+   window.again(t), window.pixels()      -> re-render the same stack, read its composited pixels at 960 x 540 (determinism checks)
+   window.ready()                        -> promise: the images of every layer are decoded (stack.ready())
+   window.countColor(r, g, b)            -> composited pixels within 6 of that colour (is an image really drawn?)
+   window.timeIt(t0, n)                  -> mean ms per render over n frames from t0 (render-time budget) */
+import { mountStack } from '../overlay.js';
+let st = null, W = 960, H = 540;
+const b64 = (u8) => { let s = ''; for (let i = 0; i < u8.length; i += 32768) s += String.fromCharCode.apply(null, u8.subarray(i, i + 32768)); return btoa(s); };
+window.stack = (layers, t = 1, w = 960, h = 540, plate = '#0B1210') => { if (st) st.dispose(); W = w; H = h; document.getElementById('stage').style.background = plate;
+  st = mountStack(document.getElementById('bg'), layers, { width: W, height: H, fps: 30, seed: 3 }); st.render(t, { frame: Math.round(t * 30) }); return st.layers.map((l) => l.canvas.dataset.mpKind); };
+window.again = (t) => { st.render(t, { frame: Math.round(t * 30) }); return true; };
+const rb = document.createElement('canvas'); rb.width = 960; rb.height = 540; const rg = rb.getContext('2d', { willReadFrequently: true });
+window.pixels = () => { rg.clearRect(0, 0, 960, 540); for (const l of st.layers) rg.drawImage(l.canvas, 0, 0, 960, 540); return b64(new Uint8Array(rg.getImageData(0, 0, 960, 540).data.buffer)); };
+window.ready = () => st.ready();   // every layer's images decoded (stack.ready()): await before the first frame
+window.countColor = (r, g, b, tol = 6) => { rg.clearRect(0, 0, 960, 540); for (const l of st.layers) rg.drawImage(l.canvas, 0, 0, 960, 540); const d = rg.getImageData(0, 0, 960, 540).data; let n = 0; for (let i = 0; i < d.length; i += 4) if (Math.abs(d[i] - r) <= tol && Math.abs(d[i + 1] - g) <= tol && Math.abs(d[i + 2] - b) <= tol && d[i + 3] > 200) n++; return n; };
+window.timeIt = (t0 = 1, n = 30) => { const a = performance.now(); for (let i = 0; i < n; i++) { st.render(t0 + i / 30, { frame: Math.round((t0 + i / 30) * 30) }); st.layers[0].g.getImageData(0, 0, 1, 1); } return (performance.now() - a) / n; };   // the 1 px readback forces the GPU canvas to finish each frame (Chrome logs a willReadFrequently note: the test filters it)
+/* canvas text starts the font download on first use and draws the fallback until it lands: load the faces before the first frame (gotchas.md) */
+await Promise.all([document.fonts.load('600 26px Manrope'), document.fonts.load('600 24px "IBM Plex Mono"')]); await document.fonts.ready; window.__ready = true;
+</script></body></html>
