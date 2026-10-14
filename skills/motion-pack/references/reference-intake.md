@@ -69,10 +69,12 @@ Save it as `docs/research/reference-<name>-<yyyy-mm>.md`. Use these sections, in
 
 Paraphrase. Quote at most a few words, and never reproduce scripts, lyrics or long on-screen copy. Then add any new, general pattern to `success-patterns.md` with the evidence tier.
 
+**Names stay in the study.** The study in `docs/research/` is the only place that names the account or brand, with its link and its hedges (a tier such as "boosted-looking" is an inference from two rates, never a statement that reach was paid for; a cause is never asserted without a source). `success-patterns.md`, `launch-playbook.md`, the READMEs, templates and code carry tiers, counts and measured numbers only. A shipped file may point at a study by path (`docs/research/<file>`). `python3 tools/check_names.py` fails CI on any listed name outside `docs/research/`. Add each new study's names to the hashed denylist (`python3 tools/check_names.py --hash "<name>" --tag handle`, then append the printed line to `tools/name_denylist.txt`; the name itself is never committed).
+
 ## 4. Build the gaps as parts
 
 - Every gap becomes an **owned, general part** with an id, a manifest entry, tests and a catalog card: a seek-safe layer, type preset, transition, cut pattern or synthesised sound. Name it by what it does, not by the brand that used it.
-- Build the technique, not the reference's instance of it: a `cardStack` that riffles any images, not "the Pinterest stack".
+- Build the technique, not the reference's instance of it: a `cardStack` that riffles any images, not one brand's stack.
 - Sound gaps are synthesised in code like the rest of `sfx/` (no samples); cut gaps go into `cuts/patterns.json` with `cutgen.py` support.
 - Update the study's coverage table (`gap` → `added <date>`) when a part lands.
 

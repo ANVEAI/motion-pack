@@ -6,8 +6,9 @@ it, but do not use the ANVE name or logo in a way that suggests ANVE made, endor
 product, and do not use them as your own branding. A few demo renders show the ANVE name as maker
 credit; if you reuse such a render, remove or replace that name.
 
-Names of third parties that appear in the docs (platforms, camera makers, tools, cited campaigns) are
-used only to describe compatibility or to cite sources. They belong to their owners, and nothing in
+Names of third parties that appear in the docs (platforms, camera makers, tools) are used only to describe
+compatibility. Studied accounts, launches and campaigns are named, linked and hedged only in `docs/research/`,
+where they are cited as sources; no other file names them (`tools/check_names.py` enforces this). They belong to their owners, and nothing in
 this repository implies an endorsement. The pack ships no third-party logos.
 
 "Orbit", "Nova", "Lumen", "Atlas" and "Ember" in demos and examples are fictional placeholder brands.

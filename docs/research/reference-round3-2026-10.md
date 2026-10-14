@@ -305,8 +305,8 @@ It pulls out to the full page, then frames the hero with floating app icons and 
 **Source:** https://x.com/fishaudio/status/2110038429199450126
 **Reception:**
 - **8.9M views (276× followers)**, 13K likes, 10.7K bm, 6K replies.
-- **Flag:** a like rate of 0.15% at 276× reach looks boosted or celebrity-driven.
-- The replies are driven by "comment DRAMA for a free month".
+- **Flag:** a like rate of 0.15% at 276× reach is what the grading rules call boosted-looking. That is an inference from two rates; nothing here shows that any reach was paid for or that a celebrity shared it.
+- The post text asks viewers to comment in return for a free month (a comment-gated offer); we did not measure what the replies were driven by.
 
 **Format:** 163 s, 4K, live action.
 
@@ -385,7 +385,7 @@ It pulls out to the full page, then frames the hero with floating app icons and 
 
 ## motion-so: concept smart-home launch, "one-shotted" in a motion tool
 **Source:** https://x.com/motion_so/status/2110052382075973908
-**Reception:** 1.6K views (**0.12×**), 11 likes (0.69%). Weak.
+**Reception:** 1.6K views (**0.12×**), 11 likes (0.69%). Tier C (weak reach at study time).
 **Format:** 37 s, 4K, **zero cuts**: elements re-lay out between scenes.
 
 **Structure:**
@@ -401,7 +401,7 @@ It pulls out to the full page, then frames the hero with floating app icons and 
 - A VO line only at 27–34 s.
 - −18.0 LUFS.
 
-**Learn:** shared-element re-layout instead of cuts. Its reach shows polish alone doesn't travel.
+**Learn:** shared-element re-layout instead of cuts. Its reach at study time was small; we read that as polish not being enough on its own, which is our reading and not a finding about cause.
 
 ## hark-labs: personal-AI OS keynote film
 **Source:** https://x.com/hark_labs/status/2107506971083731014
@@ -491,7 +491,7 @@ It pulls out to the full page, then frames the hero with floating app icons and 
 
 ## fishaudio-2: earlier TTS launch, same company (compare with fishaudio)
 **Source:** https://x.com/fishaudio/status/2082152596739862853
-**Reception:** **6.3M views (194×)**, 13.9K likes (0.22%), 10.9K bm, 4.9K replies. Same flag: boosted-looking. The CTA was "like, comment, bookmark, repost".
+**Reception:** **6.3M views (194×)**, 13.9K likes (0.22%), 10.9K bm, 4.9K replies. Same flag (boosted-looking is an inference from the rates, not a finding). The CTA was "like, comment, bookmark, repost".
 **Format:** 144 s, 4K, live action.
 
 **Structure:**

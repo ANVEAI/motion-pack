@@ -56,6 +56,8 @@ jobs:
         run: node physics/tests/test-player.mjs
       - name: blender scripts compile (no Blender on CI; renders are tested locally with blender/tests/smoke.sh)
         run: python3 -m compileall -q blender
+      - name: no studied account or brand name outside docs/research (hashed denylist; the names themselves are never in the repo)
+        run: python3 tools/check_names.py
       - name: README counts are current
         run: python3 tools/count.py --check
       - name: catalog media all resolve

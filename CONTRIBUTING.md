@@ -9,12 +9,14 @@ Thanks for helping. The pack stays useful because every part follows the same fe
 3. **Owned or nothing.** Code you write, sound you synthesise, renders you make. Do not commit third-party media, samples, icons, logos, fonts or LUTs. Outside assets go through `scripts/fetch-external.sh` (pinned URL + SHA-256 in `scripts/external.lock`) and, for audio, `sfx/tools/check_origin.py` and `sfx/tools/catalog_import.py`. Only licences that need no attribution (CC0, MIT, ISC, Apache-2.0, OFL) are accepted for fetched sets.
 4. **Measured, not claimed.** Numbers in READMEs come from the code (manifests, QA reports, `tools/count.py`). If a README is generated (`sfx/make_readme.py`, `music/make_readme.py`, `transitions/tools/build.mjs`), edit the generator, not the output.
 5. **No real people, brands or logos in demos.** Use the fictional placeholders (`Orbit`, `Maya Rao`, ...).
+6. **Studied accounts and brands live in `docs/research/` only.** Every other file keeps tiers, counts and measured numbers (`success-patterns.md` is the model). The hashed denylist `tools/name_denylist.txt` and `python3 tools/check_names.py` enforce it in CI; when you add a study, add its names with `python3 tools/check_names.py --hash "<name>" --tag handle` and append the printed line (the name itself is never committed).
 
 ## Before you push
 
 ```bash
 python3 tools/check_ids.py                      # 0 unresolved
-python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests
+python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
+python3 tools/check_names.py                    # no studied account or brand name outside docs/research
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs
 node camera/tests/camera.test.mjs
 node physics/tests/test-player.mjs
