@@ -79,6 +79,80 @@ class T(unittest.TestCase):
         maj = [e["time_s"] for e in ev if e["level"] == 3]
         self.assertTrue(all(y - x >= 6.0 for x, y in zip(maj, maj[1:])))
 
+    # ---- story shapes + onset snapping (2026-10-14)
+    def test_story_patterns_present(self):
+        for k in ("interruptOpen", "verbLadder", "mockumentaryReaction", "sentenceLed"):
+            self.assertIn(k, cutgen.PATTERNS["story"])
+        self.assertEqual(cutgen.PATTERNS["onset_snap"]["tolerance_frames"], 2)
+
+    def test_interrupt_open(self):
+        r = cutgen.interrupt_open(30)
+        setup, freeze, new = r["shots"]
+        self.assertEqual((setup["start"], setup["end"]), (0, 90))
+        self.assertEqual(freeze["start"], 90)
+        self.assertEqual(freeze["end"], 99)                     # 300 ms freeze = 9 frames
+        self.assertEqual(new["start"], freeze["end"])
+        self.assertEqual(r["sfx"][0]["anchor_frame"], 91)       # stop sound on the stop frame + 1
+        self.assertEqual(r["warnings"], [])
+        self.assertTrue(cutgen.interrupt_open(30, setup_s=12)["warnings"])
+
+    def test_verb_ladder_one_beat_each(self):
+        r = cutgen.verb_ladder(["Build it all.", "Expand.", "Automate.", "Multiply."], 120, 30)
+        self.assertEqual([s["start"] for s in r["shots"]], [0, 15, 30, 45])
+        self.assertEqual(r["shots"][-1]["end"], 75)              # the last verb holds 2 beats
+        self.assertEqual([c["sfx"] for c in r["sfx"]], ["sfx/ui/tick"] * 3 + ["sfx/hit/punch"])
+        fast = cutgen.verb_ladder(["a", "b"], 240, 30)            # 250 ms beat < 300 ms readable: one verb every 2 beats
+        self.assertEqual(fast["beats_per_verb"], 2)
+        self.assertTrue(fast["warnings"])
+
+    def test_mockumentary_reactions(self):
+        r = cutgen.mockumentary([(0, 75), (90, 160), (200, 260)], 30)
+        roles = [s["role"] for s in r["shots"]]
+        self.assertEqual(roles, ["interview", "reaction", "interview", "reaction", "interview"])
+        for s in r["shots"]:
+            if s["role"] == "reaction":
+                self.assertTrue(9 <= s["end"] - s["start"] <= 15, s)   # 0.3-0.5 s at 30 fps
+        for x, y in zip(r["shots"], r["shots"][1:]):
+            self.assertEqual(x["end"], y["start"])                # contiguous picture
+        last = r["shots"][-1]
+        self.assertTrue(last["payoff"])
+        self.assertEqual(last["end"], 260 + 36)                   # 1.2 s deadpan hold
+        self.assertEqual(r["sfx"][0]["visual_frame"], last["end"])
+        self.assertEqual(r["silence"], {"start": 191, "end": 200, "note": r["silence"]["note"]})
+        self.assertEqual(r["warnings"], [])
+
+    def test_sentence_led(self):
+        r = cutgen.sentence_led("Your clients dream big".split(), 120, 30)
+        self.assertEqual(r["word_every_beats"], 1.0)              # half beats at 120 BPM = 4 words/s > 3.5: doubled
+        self.assertEqual([w["frame"] for w in r["words"]], [0, 15, 30, 45])
+        self.assertEqual(r["result"]["beat"] % 4, 0)              # result on a downbeat
+        self.assertGreaterEqual(r["result"]["start"], r["full_sentence"]["hold_until_frame"])
+        slow = cutgen.sentence_led(["a", "b", "c"], 90, 30)
+        self.assertEqual(slow["word_every_beats"], 0.5)           # 3 words/s at 90 BPM half beats: allowed
+        self.assertTrue(cutgen.sentence_led("one two three four five six seven eight".split(), 100, 30)["warnings"])
+
+    def test_snap_cuts_to_onsets(self):
+        r = cutgen.snap_cuts_to_onsets([0, 44, 91, 140], [0.0, 1.5, 3.1, 5.5], 30)
+        self.assertEqual(r["frames_out"], [0, 45, 93, 140])
+        self.assertEqual(r["moved"], 2)
+        self.assertEqual(r["share_snapped"], 0.75)
+        self.assertTrue(r["meets_target"])
+        far = cutgen.snap_cuts_to_onsets([10, 50], [1.0], 30)       # 3 frames away: outside +-2
+        self.assertEqual(far["frames_out"], [10, 50])
+        self.assertEqual(far["share_snapped"], 0.0)
+        clash = cutgen.snap_cuts_to_onsets([30, 32], [1.0], 30)     # both want frame 30: the second is refused
+        self.assertEqual(clash["frames_out"], [30, 32])
+        self.assertIn("refused", clash["cuts"][1])
+        self.assertEqual(cutgen.snap_cuts_to_onsets([10], [], 30)["frames_out"], [10])
+
+    def test_snap_cli_reads_a_study(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            p = os.path.join(td, "study.json")
+            json.dump({"audio": {"onsets": [0.5, 1.0], "beats": [0.5]}}, open(p, "w"))
+            out = subprocess.run([sys.executable, cutgen.__file__, "snap", "--cuts", "16,29", "--fps", "30", "--study", p], capture_output=True, text=True, check=True).stdout
+            self.assertEqual(json.loads(out)["frames_out"], [15, 30])
+
     def test_cli(self):
         out = subprocess.run([sys.executable, cutgen.__file__, "beats", "--bpm", "100", "--fps", "30", "--pattern", "every_2", "--bars", "2"], capture_output=True, text=True, check=True).stdout
         self.assertEqual([c["frame"] for c in json.loads(out)["cuts"]], [0, 36, 72, 108])

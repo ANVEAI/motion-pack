@@ -31,6 +31,9 @@ Every path below is relative to the pack root.
 - `platforms.md`: platform lengths, safe zones, loudness.
 - `virality.md`: the hook and retention checklist with evidence grades.
 - `gotchas.md`: the full list.
+- `success-patterns.md`: hooks, storyboard shapes, motion vocabulary, sound and endings that recur in studied launch and motion films.
+- `reference-intake.md`: how to learn from a shared reference (`tools/refstudy.py`, the study template, building gaps as parts).
+- `critic.md`: the evidence pack (`tools/critic_pack.sh`), the 1-10 rubric and the fix-the-worst-three loop.
 
 **Library and tool questions** (GSAP vs Anime.js, Lottie players, physics, post effects, Remotion, encoders, covers) are tested and answered in the **motion-stack** skill.
 
@@ -72,6 +75,26 @@ Every path below is relative to the pack root.
    - Work outside cloud-synced folders (iCloud, OneDrive, Dropbox): sync daemons can stall file reads mid-render.
    - Check free disk space before renders and stop under 10 GiB.
    - Render demos at `--crf 23`.
+
+## Production gates (pass them in order; long or unattended runs stop at each for approval)
+
+1. **References and assets approved.** Real logo, UI, type, colours and audio are in hand; each reference has a study (`references/reference-intake.md`). A missing asset means stop and ask, never fake it.
+2. **Style guide and shot list approved.** Palette, type, shot lengths, transitions, camera and grain (frame-design), plus the shot list (story-script). Both before any code.
+3. **Stills per shot, critiqued.** One still per shot at final layout, read at 360 px.
+4. **960x540 animatic.** Timing, cuts and placeholder audio; check the hook and the cut rhythm here, while changes are cheap.
+5. **Full pass.** Polish, the mixed sound, then the critic loop (`references/critic.md`) until every score is 8 or more.
+6. **Formats, loop, poster, README.** 16:9 / 9:16 / 1:1 by re-layout, the loop check, a poster frame, and a README with the ids used and the measured loudness.
+
+## Banned defaults (each needs a written reason in `plan.json` to appear)
+
+- A centred title on a gradient.
+- Everything fading in. Give each element one entrance verb, and let some arrive by cut.
+- Corner labels and decorative captions nobody reads.
+- Glow on UI.
+- A logo bumper first. The logo belongs at the end.
+- A black frame 0. Frame 0 is in motion.
+- Invented UI or numbers. Use real screens and sourced numbers, or label the placeholder.
+- Clipping. Master through `music/mixer.py` (−14 LUFS-I, ≤ −1.5 dBTP WAV, ≤ −1.0 dBTP delivered).
 
 ## Decision tree (pick the path in this order)
 
@@ -126,6 +149,8 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | foley on every contact | bundle `office_comedy`; `sfx/foley/*` (footsteps, doors, drawers, chair creak, keys, coins, cups, pen click, stamp, zipper, scissors, tape, book thud, laptop close) | ids tagged `rr:4` have 4 takes; the mixer varies the seed per repeat |
 | product demo / app UI sound | `sfx/device/*` (phone buzz, message sent/received, clicks, keyboard, loading tick, notify, lock/unlock, achievement) and `sfx/ui/*` (mic on/off, listening loop, think pulse, reply) | one device sound per UI action, under the VO |
 | a different music genre | `music/bed_*_loop8` (lo-fi jazz, synthwave, deep house, dnb, ambient pad, chiptune, folk pluck, marimba, orchestral epic, jazz walk, comedy pizzicato, corporate bright, suspense pulse) and length-fitted cuts | all are generic library beds; listen once before a hero use |
+| a SaaS / AI product film sound | bundle `saas_launch`: `sfx/paper/card_riffle`, `card_shuffle_settle`, `sfx/ui/scan_sweep`, `sfx/ui/agent_working` (4 s loop), `sfx/tx/pixel_dissolve`, `sfx/sparkle/letter_assemble`, `sfx/hit/brand_field_slam` | stop the working loop on the result frame: mixer `add_cue(..., until_frame=F)` |
+| a story shape | `cuts/story/*`: `interruptOpen`, `verbLadder`, `mockumentaryReaction`, `sentenceLed` (`cutgen.py interrupt-open / verbs / mockumentary / sentence`); bundle `mockumentary` for doc-parody comedy | `cutgen.py snap` puts cuts on onsets (target 60% within 2 frames) |
 | a tempo build into a drop | `music/bed_anthem_ramp16` (100 → 128 BPM; real beat frames in its sidecar) and `music/tempo_maps.json` | cut from the sidecar, not from a constant BPM |
 | a photoreal product shot or 3D title | `blender/turntable`, `blender/macroSweep`, `blender/explode`, `blender/title3d`; art loops `blender/art.*` | EEVEE for motion plates, Cycles for key-art stills |
 

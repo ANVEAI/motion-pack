@@ -14,7 +14,7 @@ Thanks for helping. The pack stays useful because every part follows the same fe
 
 ```bash
 python3 tools/check_ids.py                      # 0 unresolved
-python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tests
+python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tests tools/tests
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs
 node camera/tests/camera.test.mjs
 node physics/tests/test-player.mjs

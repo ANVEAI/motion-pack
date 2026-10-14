@@ -1,5 +1,5 @@
 {
- "count": 288,
+ "count": 295,
  "categories": [
   "ambience",
   "camera",
@@ -960,6 +960,12 @@
    "dI": 0.04
   },
   {
+   "id": "snd.hit.brand_field_slam",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.97
+  },
+  {
    "id": "snd.hit.cinema",
    "ok": true,
    "notes": [],
@@ -1411,6 +1417,18 @@
    "seed_corr": 0.359
   },
   {
+   "id": "snd.paper.card_riffle",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.014
+  },
+  {
+   "id": "snd.paper.card_shuffle_settle",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.278
+  },
+  {
    "id": "snd.paper.crumple",
    "ok": true,
    "notes": [],
@@ -1555,6 +1573,14 @@
    "ok": true,
    "notes": [],
    "seed_corr": 0.012
+  },
+  {
+   "id": "snd.sparkle.letter_assemble",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.041,
+   "ffmpeg_I": -16.7,
+   "dI": 0.01
   },
   {
    "id": "snd.sparkle.shimmer",
@@ -1726,6 +1752,12 @@
    "seed_corr": 1.0
   },
   {
+   "id": "snd.tx.pixel_dissolve",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.034
+  },
+  {
    "id": "snd.tx.push",
    "ok": true,
    "notes": [],
@@ -1778,6 +1810,15 @@
     "warn sub<28Hz energy -19.1 dB (limit -20)"
    ],
    "seed_corr": 0.061
+  },
+  {
+   "id": "snd.ui.agent_working",
+   "ok": true,
+   "notes": [],
+   "seam_ratio": 0.01,
+   "seed_corr": 0.994,
+   "ffmpeg_I": -17.3,
+   "dI": 0.01
   },
   {
    "id": "snd.ui.ai_reply",
@@ -1897,6 +1938,12 @@
    "ok": true,
    "notes": [],
    "seed_corr": 0.981
+  },
+  {
+   "id": "snd.ui.scan_sweep",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.054
   },
   {
    "id": "snd.ui.slide",
