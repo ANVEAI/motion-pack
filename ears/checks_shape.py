@@ -3,7 +3,7 @@ and the comparison with reference studies (tools/refstudy.py study.json). Same r
 import numpy as np
 from scipy.ndimage import uniform_filter1d
 
-from .core import SPEC, SR, db, runs, fmt_ranges, band, stft_power, lra
+from .core import SPEC, SR, db, runs, fmt_ranges, band, stft_power, lra, quiet_shape
 from .checks_level import result, issue
 
 BLOCK = 0.5
@@ -127,6 +127,7 @@ def structure(ctx):
             m['breath'] = None
             notes.append('suggestion: no breath before the final sting at %.2f s; a 200-400 ms dip (10 dB) right before it makes the payoff land '
                          '(references/launch-playbook.md, silence before the payoff)' % sting)
+    _quiet(ctx, lev, bt, dur, m, issues, notes)
     # loop seam: end vs start (only judged with --loop)
     n = int(BLOCK * SR)
     if len(y) > 4 * n:
@@ -142,8 +143,72 @@ def structure(ctx):
             issues.append(issue('warn', [round(dur - 0.5, 2), 0.5], 'loop seam: start vs end differ by %.1f dB level and %.1f dB in spectral shape' % (lvl, shape),
                                 'make the last state equal the first: end on the bed loop point, or crossfade the tail into the opening sound',
                                 'When it loops you hear a jump in the sound.'))
-    return result('ears/structure', 'structure', m, 'drop <= %d%% of runtime, a %.1f-%.0f s breath before the final sting%s' % (
-        round(sp['late_drop_share'] * 100), sp['breath_min_s'], sp['breath_max_s'], ', a seamless loop' if ctx.get('loop') else ''), issues, notes)
+    return result('ears/structure', 'structure', m, 'drop <= %d%% of runtime, a %.1f-%.0f s breath before the final sting, no unplanned dead air >= %.0f s%s' % (
+        round(sp['late_drop_share'] * 100), sp['breath_min_s'], sp['breath_max_s'], SPEC['quiet']['unplanned_warn_s'], ', a seamless loop' if ctx.get('loop') else ''), issues, notes)
+
+
+def _kind(a, b, dur):
+    return 'open' if a <= BLOCK else ('hold' if b >= dur - BLOCK else 'dip')
+
+
+def _quiet(ctx, lev, bt, dur, m, issues, notes):
+    """near-silent stretches (0.5 s blocks >= depth_db under the programme median). Planned ones (plan.audio.quiet) are intended shape:
+    a quiet open, a mid-film reset dip or trailer gap, an end-card quiet hold; unplanned ones of unplanned_warn_s or more are dead air.
+    The breath before the final sting stays with the breath check. Also the ending shape on the refstudy definition."""
+    q = SPEC['quiet']
+    planned = ctx.get('quiet') or []
+    live = lev[lev > lev.max() - 30] if len(lev) else lev               # the programme: blocks within 30 dB of the loudest (a long hold cannot drag it down)
+    if len(live) < 4:
+        return
+    med = float(np.median(live))
+    mask = lev < med - q['depth_db']
+    rs = runs(mask, bt, q['min_s'], 0.0) if len(bt) > 1 else []
+    sting = m.get('final_sting_s')
+    rows = []
+    for a, b in rs:
+        b = min(b, round(dur, 2))
+        if sting is not None and abs(sting - b) <= 0.3 + BLOCK and b - a <= SPEC['structure']['breath_max_s'] and b < dur - BLOCK:
+            continue                                                       # the breath before the final sting: judged above
+        depth = round(med - float(np.mean(lev[(bt >= a) & (bt < b)])), 1)
+        hit = None
+        for p in planned:
+            ov = min(b, p['t'][1]) - max(a, p['t'][0])
+            if ov >= q['plan_overlap'] * (b - a) - 1e-6:
+                hit = p; break
+        kind = (hit or {}).get('kind') or _kind(a, b, dur)
+        row = {'t': [a, b], 'length_s': round(b - a, 2), 'under_programme_db': depth, 'kind': kind, 'planned': hit is not None}
+        if hit is not None and hit.get('why'):
+            row['why'] = hit['why']
+        rows.append(row)
+        if hit is None and b - a >= q['unplanned_warn_s']:
+            issues.append(issue('warn', [a, b], 'dead air: %.1f s of near-silence (%.0f dB under the programme) at %.1f-%.1f s, not marked as planned' % (b - a, depth, a, b),
+                                'if it is intended (a quiet open, a reset dip, a trailer gap or an end-card quiet hold), mark it in plan.audio.quiet '
+                                '[{"t": [%.1f, %.1f], "kind": "%s", "why": "..."}]; otherwise carry the bed or room tone through it' % (a, b, kind),
+                                'The sound drops out at %.1f-%.1f s; unless the picture is holding too, it reads as a mistake.' % (a, b), kind='dead_air'))
+        elif hit is not None:
+            mx = q['max_s'].get(kind, q['max_s']['dip'])
+            if b - a > mx + q['max_margin_s']:
+                issues.append(issue('warn', [a, b], 'planned quiet %s of %.1f s at %.1f-%.1f s is longer than the house max %.0f s' % (kind, b - a, a, b, mx),
+                                    'shorten it to %.0f s or less (round 4/5 references: open <= 2 s, dip / gap 1-4 s, end-card hold 4-9 s)' % mx,
+                                    'The quiet runs long enough to feel like the sound has stopped.'))
+    for p in planned:
+        a, b = p['t']
+        if not any(min(b, r['t'][1]) - max(a, r['t'][0]) > 0 for r in rows) and b - a >= q['min_s']:
+            k = (bt >= a) & (bt < b)
+            under = round(med - float(np.mean(lev[k])), 1) if k.any() else None
+            notes.append('planned quiet %s %.1f-%.1f s measures only %s dB under the programme (near-silence is >= %.0f dB): fine if a thinned bed was meant' % (
+                p.get('kind') or _kind(a, b, dur), a, b, under, q['depth_db']))
+    m['quiet'] = rows
+    m['programme_block_median_dbfs'] = round(med, 1)
+    sh = quiet_shape(_refstudy_like(ctx['y'])['curve'])
+    if sh:
+        m['quiet_shape'] = sh
+        m['end_shape'] = sh['end_shape']
+        if sh['end_shape'] == 'quiet hold':
+            notes.append('ending: quiet hold (the last 2 s %.0f dB under the body), a first-class end for explainers and partnership posts%s' % (
+                -sh['tail_2s_vs_body_db'], '' if any(r['planned'] and r['kind'] == 'hold' for r in rows) else '; mark it in plan.audio.quiet (kind hold) so it reads as intended'))
+        else:
+            notes.append('ending: %s (the last 2 s %+.0f dB against the body)' % (sh['end_shape'], sh['tail_2s_vs_body_db']))
 
 
 # ------------------------------------------------------------------------------------------------ repetition fatigue
@@ -241,11 +306,24 @@ def _shape(c, n=40):
     return np.interp(np.linspace(0, 1, n), np.linspace(0, 1, len(c)), c) if len(c) > 1 else np.zeros(n)
 
 
+def _role_line(role, low):
+    rng = SPEC['bass_share_by_role'].get(role)
+    if not rng:
+        return None
+    pos = 'below' if low < rng[0] else ('above' if low > rng[1] else 'inside')
+    return 'bass share (<150 Hz) %.0f%% vs %.0f-%.0f%% for a %s bed (round 4/5 references): %s the range' % (low * 100, rng[0] * 100, rng[1] * 100, role, pos)
+
+
 def compare(ctx):
     refs = ctx.get('refs') or []
-    if not refs:
+    role = ctx.get('role')
+    if not refs and not role:
         return result('ears/compare', 'compare', {}, 'n/a', [], ['no --ref study.json given'], status='n/a')
     me = _refstudy_like(ctx['y'])
+    if not refs:
+        line = _role_line(role, me['low'])
+        return result('ears/compare', 'compare', {'role': role, 'mine': {'low': round(me['low'], 3)}, 'differences': [line] if line else []},
+                      'bass share inside the role range', [], [line or 'unknown role %r' % role], status='info')
     I = ctx['lufs']
     rows, lines = [], []
     for name, st in refs:
@@ -254,6 +332,9 @@ def compare(ctx):
         r = {'ref': name, 'lufs': (st.get('loudness') or {}).get('integrated_lufs'), 'tempo': a.get('tempo_bpm_estimate'), 'tempo_conf': a.get('tempo_confidence'),
              'low': bs.get('low_<150Hz'), 'high': bs.get('high_>4kHz'), 'brightness': a.get('brightness_hz_mean'),
              'cuts_on_onset': (a.get('sync') or {}).get('share_on_onset')}
+        qs = st.get('quiet') or quiet_shape(a.get('loudness_curve_4hz_dbfs'))
+        if qs:
+            r['open_db'], r['tail_db'], r['end_shape'] = qs.get('open_vs_body_db'), qs.get('tail_2s_vs_body_db'), qs.get('end_shape')
         if a.get('loudness_curve_4hz_dbfs'):
             sa, sb = _shape(me['curve']), _shape(a['loudness_curve_4hz_dbfs'])
             r['curve_corr'] = round(float(np.corrcoef(sa, sb)[0, 1]), 2) if sa.std() > 0 and sb.std() > 0 else None
@@ -264,8 +345,12 @@ def compare(ctx):
         return (min(v), float(np.median(v)), max(v)) if v else None
     mine = {'lufs': I, 'tempo': ctx['tempo']['bpm'], 'low': me['low'], 'high': me['high'], 'brightness': me['brightness'],
             'cuts_on_onset': ctx.get('cuts_on_onset'), 'spread_db': float(np.percentile(_shape(me['curve']), 90) - np.percentile(_shape(me['curve']), 10))}
+    qm = quiet_shape(me['curve'])
+    if qm:
+        mine['open_db'], mine['tail_db'] = qm['open_vs_body_db'], qm['tail_2s_vs_body_db']
     label = {'lufs': ('loudness', '%.1f LUFS', 1), 'tempo': ('tempo', '%.0f BPM', 1), 'low': ('bass share (<150 Hz)', '%.0f%%', 100), 'high': ('high share (>4 kHz)', '%.1f%%', 100),
-             'brightness': ('brightness', '%.0f Hz', 1), 'cuts_on_onset': ('cuts on an onset', '%.0f%%', 100), 'spread_db': ('loudness-curve spread P90-P10', '%.1f dB', 1)}
+             'brightness': ('brightness', '%.0f Hz', 1), 'cuts_on_onset': ('cuts on an onset', '%.0f%%', 100), 'spread_db': ('loudness-curve spread P90-P10', '%.1f dB', 1),
+             'open_db': ('quiet open (first 2 s vs body)', '%+.1f dB', 1), 'tail_db': ('quiet tail (last 2 s vs body)', '%+.1f dB', 1)}
     for k, (nm, fm, sc) in label.items():
         g = rng(k)
         if g is None or mine.get(k) is None:
@@ -277,5 +362,12 @@ def compare(ctx):
     if cc:
         lines.append('loudness-curve shape: correlation %.2f with the closest reference (median %.2f); %s' % (
             max(cc), float(np.median(cc)), 'a similar arc' if max(cc) > 0.5 else 'a different arc (where it builds and drops)'))
-    m = {'refs': rows, 'mine': {k: (round(v, 3) if isinstance(v, float) else v) for k, v in mine.items()}, 'differences': lines}
+    ends = [r['end_shape'] for r in rows if r.get('end_shape')]
+    if ends and qm:
+        lines.append('ending: %s; references end %s' % (qm['end_shape'], ', '.join('%s %d' % (k, ends.count(k)) for k in sorted(set(ends)))))
+    if role:
+        line = _role_line(role, me['low'])
+        if line:
+            lines.append(line)
+    m = {'refs': rows, 'mine': {k: (round(v, 3) if isinstance(v, float) else v) for k, v in mine.items()}, 'differences': lines, 'role': role}
     return result('ears/compare', 'compare', m, 'inside the references\' ranges', [], lines, status='info')

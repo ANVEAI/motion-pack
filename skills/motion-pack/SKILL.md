@@ -170,7 +170,7 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | product demo / app UI sound | `sfx/device/*` (phone buzz, message sent/received, clicks, keyboard, loading tick, notify, lock/unlock, achievement) and `sfx/ui/*` (mic on/off, listening loop, think pulse, reply) | one device sound per UI action, under the VO |
 | a different music genre | `music/bed_*_loop8` (lo-fi jazz, synthwave, deep house, dnb, ambient pad, chiptune, folk pluck, marimba, orchestral epic, jazz walk, comedy pizzicato, corporate bright, suspense pulse) and length-fitted cuts | all are generic library beds; listen once before a hero use |
 | a SaaS / AI product film sound | bundle `saas_launch`: `sfx/paper/card_riffle`, `card_shuffle_settle`, `sfx/ui/scan_sweep`, `sfx/ui/agent_working` (4 s loop), `sfx/tx/pixel_dissolve`, `sfx/sparkle/letter_assemble`, `sfx/hit/brand_field_slam` | stop the working loop on the result frame: mixer `add_cue(..., until_frame=F)` |
-| a story shape | `cuts/story/*`: `interruptOpen`, `verbLadder`, `mockumentaryReaction`, `sentenceLed` (`cutgen.py interrupt-open / verbs / mockumentary / sentence`); bundle `mockumentary` for doc-parody comedy | `cutgen.py snap` puts cuts on onsets (target 60% within 2 frames) |
+| a story shape | `cuts/story/*`: `interruptOpen`, `verbLadder`, `mockumentaryReaction`, `sentenceLed` (`cutgen.py interrupt-open / verbs / mockumentary / sentence`); bundle `mockumentary` for doc-parody comedy | `cutgen.py snap` puts cuts on onsets (target 60% within 2 frames, for music-led cut pieces; VO-led and continuous films: `references/critic.md`) |
 | a tempo build into a drop | `music/bed_anthem_ramp16` (100 → 128 BPM; real beat frames in its sidecar) and `music/tempo_maps.json` | cut from the sidecar, not from a constant BPM |
 | a photoreal product shot or 3D title | `blender/turntable`, `blender/macroSweep`, `blender/explode`, `blender/title3d`; art loops `blender/art.*` | EEVEE for motion plates, Cycles for key-art stills |
 
@@ -371,7 +371,8 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 ## VIRALITY checklist (the mechanisms are solid; every number is a tunable default)
 
 **Hook (first second)**
-- [ ] Frame 0 is a strong image in motion: never black, never a logo bumper, never a fade-in.
+- [ ] Frame 0 is a strong image in motion: never black, never a logo bumper, never a fade-in. A small product-name super over moving footage inside 2 s is not a bumper.
+- [ ] The sound may enter 1–2 s after a moving frame 0, on the first meaningful visual event (13 of 28 round 4/5 references, tier A among them). Plan it: `plan.audio.quiet` `[{"t": [0, 1.5], "kind": "open", "why": "..."}]`.
 - [ ] First motion by frame 6. Hook text on screen by 0.3 s: at most 7 words, and at most 4 on the poster frame.
 - [ ] The picture, the on-screen text and the VO all say the same idea.
 - [ ] The hook uses one archetype, and you made 3 hook variants on the same body.
@@ -409,7 +410,7 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
   - Run `python3 templates/_shared/sheet.py <mp4> <sheet.jpg> <t1,t2,...>` on every cut, mid-transition, the hook, the reveal and the end card, then LOOK at the sheet.
   - Check for clipped or overlapping type, words cut by masks, and text outside the safe zones at 9:16.
 - [ ] **Loudness:** the delivered MP4 decodes to −14 ± 0.5 LUFS-I and TP ≤ −1.0 dBTP, with the WAV master at ≤ −1.5 (`sheet.py` prints both).
-- [ ] **Sync:** hits land on frame F + 1, risers end one frame before the hit, whooshes peak on the cut, and the last 0.15 s is silent.
+- [ ] **Sync:** hits land on frame F + 1, risers end one frame before the hit, whooshes peak on the cut, and the last 0.15 s is silent. The edit is scored by its mode (`plan.audio.mode`, `references/critic.md`): music-led cut pieces put ≥ 60% of cuts on an onset; VO-led films keep cuts out of words; continuous films put ≥ 60% of motion events on an onset.
 - [ ] **Ears:** `ears/listen.py` on the delivered MP4 shows no fail, and you listened once at phone size.
 - [ ] **Legibility:**
   - Captions are at most 18 characters per line and at most 2 lines.
@@ -434,8 +435,10 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
   - clipping and intersample overs;
   - mud, harshness and dullness, with time ranges;
   - ducking and masking under a voice (with a transcript);
-  - cuts on onsets, and every plan cue on F + 1 (it finds the mixer's exact take, to the sample);
-  - a flat mix (the blindfold test), late drops and the breath before the final sting;
+  - the edit by mode (`--mode music|vo|continuous`, default `plan.audio.mode`, else music): cuts on onsets, speech continuity (no cut inside a word), or motion events on onsets; and every plan cue on F + 1 (it finds the mixer's exact take, to the sample);
+  - a flat mix (the blindfold test), late drops, the breath before the final sting, dead air, and the ending shape (slam, quiet hold, decay);
+  - planned quiet is shape, not a fault: mark a quiet open (≤ 2 s), a reset dip or trailer gap (≤ 4 s) or an end-card quiet hold (≤ 9 s) in `plan.audio.quiet` `[{t: [a, b], kind, why}]`;
+  - with `--role proof|explainer|hype|trailer|vo_doc` (or `plan.audio.role`), the bed's bass share against the round 4/5 range for that role;
   - repeated SFX and mono compatibility.
 - **What it cannot judge:** taste, mood without a local CLAP model, whether a sound fits the picture, or a voice's naturalness.
 - **It measures; it does not replace one human listen** at phone size and on headphones. Its sound score is a ceiling: listen, then lower it for what you hear.

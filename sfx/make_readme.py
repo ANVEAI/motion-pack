@@ -9,7 +9,7 @@ S = man["sounds"]
 cats = {}
 for d in S:
     cats.setdefault(d["category"], []).append(d)
-ORDER = ["whoosh", "impact", "riser", "ui", "glass", "metal", "wood", "paper", "cloth", "plastic", "camera", "cash", "sparkle", "liquid", "cartoon", "voice", "drum", "transition", "stinger", "logo", "ambience", "indian", "foley", "device", "crowd"]
+ORDER = ["whoosh", "impact", "riser", "ui", "glass", "metal", "wood", "paper", "cloth", "plastic", "camera", "cash", "sparkle", "liquid", "cartoon", "voice", "drum", "transition", "stinger", "logo", "ambience", "indian", "foley", "device", "crowd", "elec"]
 BLURB = {
     "whoosh": "Band-passed noise, exponential fc sweep, skewed-bell amplitude, air + body layers, pan path. Anchor = loudest sample = put it on the frame of maximum on-screen velocity.",
     "impact": "Hits and booms: tonal crest + noise crack + sub. Hero hits (tier 1) at most one per 8-10 s.",
@@ -26,6 +26,7 @@ BLURB = {
     "foley": "Foley with 4 round-robin takes each (seeds s..s+3; the mixer picks seed + occurrence): footsteps on concrete / wood / gravel / carpet, doors, drawer, chair, keys, coin, cups, chai glasses, pen, stamp, zipper, scissors, tape, paper tear, book, laptop.",
     "device": "Phone, desktop and app sounds: buzz, original ringtone, message sent / received, mouse, mechanical keys (2 switch types, round-robin), loading tick, progress fill, card flip, level up, achievement, lock / unlock, notification dings.",
     "crowd": "WORD-FREE synthetic crowd reactions from the formant voices (cheer, aww, boo). No speech, no recordings.",
+    "elec": "Electric (arc zap, sustained crackle loop, zap-off power-down) for neon / electric outline type and power-on moments: a crack, filtered-noise bursts and micro-crackles, and a raspy mains-style buzz tuned to A2 (110 Hz, the pack key) whose level follows a seeded random walk (a Brownian bridge in the 4.0 s loop so it wraps).",
     "ambience": "Seamless 8.0 s loops (circular synthesis / equal-power self cross-fade). Level them with the mixer (about -10 dB re the bed).",
 }
 L = []

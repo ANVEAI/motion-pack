@@ -2,9 +2,10 @@
 # motion-pack tools/check_ids.py once integrated). MIT (see blender/LICENSE).
 from . import turntable, macro_sweep, explode, title3d, art_liquid_chrome, art_voxel_wave, art_particle_swirl
 from . import pass_reveal, knolling, cloud_flight, diorama          # round 3 (2026-10-14): pipeline-reveal and in-the-world plates
+from . import cable_tangle                                          # metaphor plates
 
 MODULES = (turntable, macro_sweep, explode, title3d, art_liquid_chrome, art_voxel_wave, art_particle_swirl,
-           pass_reveal, knolling, cloud_flight, diorama)
+           pass_reveal, knolling, cloud_flight, diorama, cable_tangle)
 REGISTRY = {m.ID: m for m in MODULES}
 
 

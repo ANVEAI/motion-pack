@@ -190,5 +190,7 @@ def cycles_keyart(sc, W, H, samples=None, threshold=0.006, seed=7, alpha=False, 
 
 def describe_device(engine):
     if engine == "cycles":
-        return "Cycles " + bpy.context.scene.cycles.device + ": " + (", ".join(gpu_devices("METAL")) or "CPU")
+        if bpy.context.scene.cycles.device == "CPU":
+            return "Cycles CPU"
+        return "Cycles GPU: " + (", ".join(gpu_devices("METAL")) or "CPU")
     return "EEVEE (GPU, Metal backend)"

@@ -15,12 +15,14 @@ Numbers here are tunable defaults drawn from those films, not laws. RECIPE L in 
 | **L5** | Teaser | 6–15 s, 1:1 or 9:16 | The day before; announce a premiere time | Hark "premiering at 9am" 6 s; Comet 7 s at 1:1 |
 | **L6** | Build-in-public clip | 15–30 s, 9:16 | Pre-launch weeks, to build anticipation honestly | (pack practice) |
 | **L7** | Metaphor manifesto | 20–30 s | A brand, programme or cohort with no single product shot. An archival metaphor in three lines, then real people, then the title | Stan "Launchpad" 22 s: craft reference only, reception unproven; see `docs/research/reference-stan-launchpad-2026-10.md` |
+| **L8** | Proof film | 16–80 s, usually 0–4 cuts | You have a measured result (a benchmark, a cost, a caught failure) and a builder audience. One chart or diagram that builds carries the argument | Round 4/5: tier A on reach and saves (a benchmark scatter at 8.5× followers and 1.23% saves; a diagram explainer at 3.3× and 1.0%; a data-table post at 1.31% saves). The best-saved shape of the batch. `docs/research/reference-round45-2026-10.md` |
+| **L9** | Multi-voice documentary | 1:45–3:00 | A team, a customer base or a launch with real people who can speak to it | Round 4/5: three tier-A pieces at 107–185 s (a frontier-model launch, a finance workspace, a wearable). Long works when it is people talking |
 
 **Pair them.** A long film converts believers; a short one travels:
 - Rabbit: a 25:30 keynote plus a 57 s spot.
 - Limitless: 9:39 plus 42 s.
 
-Default package: **L5 the day before → L1 or L3 on launch day → L2 cut-down → the sales number as a second wave**.
+Default package: **L5 the day before → L1 or L3 on launch day → L2 cut-down → the sales number as a second wave**. With a measured result, **L8** is the strongest launch-day film for a builder audience; **L9** follows once real customers can speak.
 
 ## 2. Beat sheets
 
@@ -67,6 +69,10 @@ Times are for the stated length; scale them proportionally.
 - **Ending:** a closing title on an accelerating cut. Music only.
 - **Use it only when** the outputs are genuinely striking.
 
+Its two strongest forms (round 4/5, both tier A):
+- **Query ladder** (60 s; 1.66% saves, the best in the batch): the concept as a space (0–5 s) → the name → **one UI, five escalating inputs**, each 4–7 s with one VO line (a video moment → a podcast minute → a document clause → another language → code; about 99 wpm, the sparsest VO in tier A) → pull back to where it runs, with benefit chips → the repo. Planned part: `cuts.story.queryLadder` (round 4/5).
+- **Fidelity ladder** (~60 s): a crude first attempt with a live readout (error %, N) → **one parameter step per bar** (2.4 s at 99 BPM) → a 2–3 s dropout (a planned quiet dip) → the same thing in a **new dimension** (2D → 3D) → a title. A variant puts three model generations side by side on one prompt. Planned part: `cuts.story.fidelityLadder` (round 4/5).
+
 ### L5 teaser (6–15 s)
 - The hero object or the most surprising output, plus a date or premiere time. No explanation.
 - Square or vertical. Post it from the founder's account the day before.
@@ -78,6 +84,39 @@ Times are for the stated length; scale them proportionally.
 - **15–20 s:** title cards: tiny line, then wide bold name, then light date.
 - **Last 2 s:** the logo.
 - **Colour:** one accent colour across duotone archive, type and wardrobe.
+
+### L8 proof film (~40 s; 16–80 s)
+
+| t (40 s) | beat | notes |
+|---|---|---|
+| 0–2 s | **Claim** in at most 6 words, one accent word | Frame 0 moves; the sound may enter 1–2 s later (planned quiet open) |
+| 2–4 s | The name | A small product-name super is fine |
+| 4–8 s | **Method or setting card** | What was measured, on what, against whom. Without it the numbers are claims |
+| 8–22 s | **One chart or diagram that builds** | A cost-vs-score scatter whose frontier line draws through the field and a starred hero point; or a decision diagram where a wrong fork turns red and the red propagates downstream (the strongest honest climax: a failure the method catches). Advance it in VO gaps (a 0.3–0.5 s gap every ~4 s) |
+| 22–30 s | **Head-to-head rows** against the alternative | A table whose rows and counters build under a one-line finding |
+| 30–35 s | Big numbers, **each with its source on screen** | `counter.statCard` needs `source` |
+| 35–37 s | Three stat cards (better / leaner / cheaper) | |
+| 37–40 s + | URL or repo on the end card, **quiet hold** | No spoken CTA in any tier-A explainer |
+
+- **Cuts:** usually none. The camera moves between slides or the diagram grows, so score sync by motion events (`plan.audio.mode: "continuous"`, or `"vo"` with a voice; `references/critic.md`).
+- **Bed:** a proof or explainer bed at 20–36% bass share, so numbers and VO sit on top; −14 LUFS master.
+- **Parts:** `chart.scatterFrontier`, `ui.dataTable`, `ui.branchTrace` and `cuts.story.diagramWalkthrough` (round 4/5, planned in parallel; a proof-film template is a listed gap); today `counter.statCard`, `chart.bar`, `type/maskRise`.
+- **Honesty:** measured numbers only, each with its source and method. If the numbers do not exist yet, stop and measure; never borrow them.
+
+### L9 multi-voice documentary (~2:30; 1:45–3:00)
+
+| t (2:30) | beat | notes |
+|---|---|---|
+| 0–5 s | **Five faces in five seconds**, each mid-sentence (J-cut audio), before any name | People first; curiosity about who they are |
+| 5–25 s | **The lead's thesis** | Name super plus **one personal detail** ("built the first X at Y") |
+| 25–1:50 | **Voices in turn**, 3 chapters | Each voice gets a name super with one personal detail. **Flat 2D inserts** for the abstract ideas (networks collapsing to one dot, documents tiling a wall). B-roll cuts land mid-sentence: the voice is the continuity |
+| 1:50–2:15 | **Customer proof** | Real customers on camera, or nothing. Never stage a testimonial |
+| 2:15–2:30 | Availability, then the end card on a quiet hold | Partner lockup "A · B" if it is a partnership |
+
+- **Sound:** VO at 175–193 wpm. The references sat at −16 to −19 LUFS integrated; keep the pack master at −14 LUFS-I / ≤ −1 dBTP. A VO-documentary bed at 15–34% bass share, ducked 9 dB under every line.
+- **Sync:** score it in `vo` mode: cuts under the voice (61–89% of cuts in the reference documentaries fell inside a line), no cut inside a word.
+- **Parts:** `templates/multi-voice-doc` and `cuts.story.voicesColdOpen` (round 4/5, planned in parallel); today `templates/talking-head`, `lowerThird.accentRule`, `type/gfx` flat inserts.
+- **Honesty:** only real people who agreed to speak. For ANVE this waits until real pilot customers exist.
 
 ### L6 build-in-public (15–30 s)
 - **Opening:** one real screen or one concept render, with a ≤7-word hook on frame 0.
@@ -107,6 +146,16 @@ Times are for the stated length; scale them proportionally.
 12. **Master 16:9 for the launch post** (every film in the October wave was 16:9 on X). Re-layout to 9:16 and 1:1 for cut-downs; never crop.
 13. **Drop the beat late, on the turn line.** Run the problem on UI ticks and texture only (no kick, no bass) for 10-60% of the runtime, then land the beat exactly on the first frame of the turn line or the product name. An optional 0.5-1 s speech gap before it replaces the riser; with no gap, a riser ends one frame before the hit. Proven in round 3 (lexnlin 3.8% bookmarks, kaif9998 1.55x reach; 6 of 25 pieces). Plan it with `cuts/cutgen.py late-drop` (`cuts/story/lateDrop`).
 14. **Leave 1-3 s of near-silence before the final sting.** After the lockup, fade the bed out, hold the picture still on room tone at most (never digital zero mid-film), then cut to one sting on a giant cropped mark or the end card. It is an ending device, not the 200 ms smash gag. Seen in motionbyleo (3.0 s, 2.8% bookmarks), fishaudio-2 and kevin-t-ngo (1 s dip). Plan it with `cuts/cutgen.py pre-sting` (`cuts/story/preStingSilence`).
+15. **Pick the end shape on purpose.** There are four first-class endings; choose one per film and plan it:
+
+    | end shape | what you hear | use for | evidence |
+    |---|---|---|---|
+    | **Quiet hold** | the bed decays, then the end card holds on near-silence (room tone at most) for **3–9 s**; the last 0.15 s is digital zero | explainers, proof films, partnership posts, documentaries | round 4/5: 17 of 28 end at least 10 dB under the body; a tier-A diagram explainer holds 9 s of silence under its end card, others 4–5 s |
+    | **Pre-sting silence** | 1–3 s of near-silence, then one sting on the mark | brand tours, motion pieces (rule 14) | round 3 |
+    | **Sustained sub** | the logo sits on a held low note, not a hit | music-led, moody | round 3 |
+    | **Slam** | a hard stop on the last hit, then black | trailers (after the crescendo), hype cuts | round 4/5 trailer arc |
+
+    Mark a quiet hold in `plan.audio.quiet` (`{"t": [a, b], "kind": "hold", "why": "end card"}`) so `ears` reads it as intended, not as dead air; ears reports the measured ending shape. The loudness is still measured on the whole file (−14 LUFS-I).
 
 ## 4. Anti-patterns (each one sank or dented a launch)
 
@@ -128,6 +177,11 @@ Times are for the stated length; scale them proportionally.
 | Silence before the payoff | duck the bed for 0.2–5 s in `music/mixer.py`; return with a hit |
 | Late drop on the turn line | `cuts/story/lateDrop` (`cutgen.py late-drop`): `sfx/ui/agent_working` + `sfx/ui/tick` before, `sfx/hit/sub_drop` on the drop; bed enters on the drop downbeat |
 | Silence, then the final sting | `cuts/story/preStingSilence` (`cutgen.py pre-sting`): bed out, `sfx/amb/room_tone` at most, `sfx/stinger/cut_to_black` |
+| Quiet-hold ending | bed fades under the URL card; `sfx/amb/room_tone` at most; `plan.audio.quiet` kind `hold` (3–9 s) |
+| Trailer valley then crescendo | `music/bed_trailer_arc`: act 1 drone, act 2 ostinato, act 3 wall, a planned gap, crescendo, hit, quiet hold; marker frames in its sidecar. Mark the gap in `plan.audio.quiet` (kind `gap`) |
+| Proof film (L8) | `chart.scatterFrontier`, `ui.dataTable`, `ui.branchTrace`, `cuts.story.diagramWalkthrough` (round 4/5); `counter.statCard`, `chart.bar` |
+| Multi-voice documentary (L9) | `templates/multi-voice-doc`, `cuts.story.voicesColdOpen` (round 4/5); `templates/talking-head`, `lowerThird.accentRule` |
+| "Everything is connected" problem beat | `blender/cableTangle`: a seeded cable tangle feeding warm bulbs that go out in sequence (or light as it untangles) on plan frames; follow it with an abstract untangle diagram |
 | How it is made (AI-builder launch) | `cuts/story/pipelineReveal`: `blender/passReveal` (wire -> x-ray -> clay -> full), `blender/knolling`, then `blender/cloudFlight` (the product in the world) after a music breakdown |
 | Archive opening | `sfx/amb/projector` under the footage, `sfx/foley/typewriter` on all-caps credit cards (bundle `archive_open`) |
 | Feature card + UI | `type/maskRise` card, `device.laptop` / `device.phone` with the real recording under the frame, `callout.spotlight` |
@@ -142,6 +196,7 @@ Times are for the stated length; scale them proportionally.
 - VO-led founder films in the wave sat at about −18 to −25 LUFS; music-led films were louder (Argon about −15).
 - The pack master stays at −14 LUFS / ≤ −1 dBTP decoded. Within it, keep dialogue clear: duck the bed at least 9 dB under voice.
 - **Late drop and pre-sting silence** (round 3, `references/success-patterns.md` section 8): the quiet opening and the quiet ending are part of the master, not exceptions to it. Measure loudness on the whole file; the drop and the sting should feel louder because the sections around them are sparse, never because they clip.
+- **Bed bass share by role** (round 4/5, the energy share under 150 Hz as `tools/refstudy.py` measures it): **proof and explainer beds 20–36%** (numbers and VO sit on top), **hype and trailer beds 50–61%**, **VO documentaries 15–34%**. Round 3's 52–87% was the hype case, not a default. `ears/listen.py --role <role>` reports where your bed sits.
 
 ## 6. Measure what matters
 
@@ -159,7 +214,8 @@ Read the post at 24 h and 72 h:
 - [ ] Exactly one hard number, with its method published.
 - [ ] One visual constant taken from the product; honest labels on renders.
 - [ ] Wordless or captioned; VO never fights the music.
-- [ ] Sound shape planned: where the beat drops (late, on the turn line?) and whether the end takes 1-3 s of silence before the sting.
+- [ ] Sound shape planned: where the beat drops (late, on the turn line?), whether the sound enters 1–2 s after a moving frame 0, and the end shape (quiet hold, pre-sting silence, sustained sub or slam). Planned quiet regions are in `plan.audio.quiet`.
+- [ ] The edit's sync mode is set (`plan.audio.mode`: music, vo or continuous) so the critic scores the right rule.
 - [ ] End card: wordmark, URL, one verb. The price lives in the post copy unless it is final.
 - [ ] 16:9 master; 9:16 and 1:1 re-layouts; the 6 s teaser.
 - [ ] Post copy carries the argument; demo thread ready; BTS scheduled; second-wave number planned.

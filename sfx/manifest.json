@@ -3,7 +3,7 @@
  "sample_rate": 48000,
  "bit_depth": 24,
  "peak_dbfs_target": -6.0,
- "count": 298,
+ "count": 301,
  "notes": "All sounds synthesised in code (numpy/scipy). Library level is peak -6 dBFS; real levels are set by the mixer (over-bed rules). anchor_sample = the sample that must land on (visual frame + 1) x SR/fps.",
  "sounds": [
   {
@@ -4466,6 +4466,167 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.0,
    "file": "library/drum/snd.drum.tom_lo.wav"
+  },
+  {
+   "id": "snd.elec.arc",
+   "category": "elec",
+   "tags": [
+    "family:elec",
+    "electric",
+    "neon",
+    "tier:3",
+    "tonal:no",
+    "mood:tech",
+    "anchor:crest",
+    "size:s",
+    "rr:4",
+    "zap"
+   ],
+   "tier": 3,
+   "desc": "electric arc zap: a hard crack, a band-passed noise burst whose centre and level random-walk, micro-crackles and a raspy A2 (110 Hz) mains-style buzz with a seeded random-walk envelope; about 0.35 s, anchor = the crack (rr:4 = four different strikes)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.4195,
+   "samples": 20135,
+   "anchor_sample": 77,
+   "anchor_ms": 1.6,
+   "anchor_kind": "peak",
+   "tonal": false,
+   "loop": false,
+   "seed": 700,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.55,
+   "lufs_integrated": -20.89,
+   "lufs_m_max": -20.89,
+   "lufs_s_max": -29.64,
+   "centroid_hz": 891,
+   "crest_db": 18.4,
+   "sub28_db": -53.3,
+   "sha": "4693a7f783581ac6",
+   "phone_drop_db": -0.2,
+   "phone_safe": true,
+   "pairs_with": [
+    "flash",
+    "glitch",
+    "hardCut"
+   ],
+   "roles": [
+    "powerOn",
+    "textReveal"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 3.5,
+   "file": "library/elec/snd.elec.arc.wav"
+  },
+  {
+   "id": "snd.elec.crackle_loop",
+   "category": "elec",
+   "tags": [
+    "family:elec",
+    "electric",
+    "neon",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:loop",
+    "size:m",
+    "key:A",
+    "loop",
+    "hum"
+   ],
+   "tier": 3,
+   "desc": "sustained electric crackle: a raspy A2 (110 Hz) buzz breathing on a seeded random-walk envelope (a Brownian bridge, so it wraps), a hiss bed that follows the same walk, and scattered sparks with the odd louder snap; 4.0 s seamless loop for neon signs and live wires",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic",
+    "short_film"
+   ],
+   "duration_s": 4.0,
+   "samples": 192000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": true,
+   "loop": true,
+   "seed": 701,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.65,
+   "lufs_integrated": -18.49,
+   "lufs_m_max": -16.23,
+   "lufs_s_max": -17.81,
+   "centroid_hz": 420,
+   "crest_db": 14.9,
+   "sub28_db": -36.0,
+   "sha": "4ce693c11f2810d5",
+   "phone_drop_db": -1.4,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/elec/snd.elec.crackle_loop.wav"
+  },
+  {
+   "id": "snd.elec.zap_off",
+   "category": "elec",
+   "tags": [
+    "family:elec",
+    "electric",
+    "neon",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:start",
+    "size:m",
+    "key:A",
+    "power_down"
+   ],
+   "tier": 3,
+   "desc": "zap-off / power-down: a relay snap, then the A2 buzz falls about 1.7 octaves (110 to 34 Hz) and darkens while the crackles thin out and the arc sputters; ends in digital zero after about 1.3 s; anchor = the snap (put it on the frame the light dies)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic",
+    "short_film"
+   ],
+   "duration_s": 1.2251,
+   "samples": 58805,
+   "anchor_sample": 114,
+   "anchor_ms": 2.38,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 702,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.71,
+   "lufs_integrated": -24.99,
+   "lufs_m_max": -20.83,
+   "lufs_s_max": -28.99,
+   "centroid_hz": 187,
+   "crest_db": 20.5,
+   "sub28_db": -40.8,
+   "sha": "38fd2b778f4fdf99",
+   "phone_drop_db": -2.2,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [
+    "powerOff"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 3.5,
+   "file": "library/elec/snd.elec.zap_off.wav"
   },
   {
    "id": "snd.foley.book_thud",
@@ -14019,6 +14180,7 @@
    "snd.amb.night",
    "snd.amb.studio_air",
    "snd.amb.tension_drone",
+   "snd.elec.zap_off",
    "snd.foley.door_close",
    "snd.foley.laptop_close",
    "snd.hit.braam",
@@ -14099,6 +14261,7 @@
    "snd.device.level_up",
    "snd.drum.crash",
    "snd.drum.snare_roll",
+   "snd.elec.arc",
    "snd.hit.cinema",
    "snd.hit.cymbal_swell",
    "snd.hit.deep_impact",
@@ -14147,6 +14310,7 @@
    "snd.tx.tape_stop"
   ],
   "glitch": [
+   "snd.elec.arc",
    "snd.metal.scrape",
    "snd.stinger.alert",
    "snd.tx.glitch_stutter",
@@ -14246,6 +14410,9 @@
    "snd.drum.snare_roll",
    "snd.drum.tom_hi",
    "snd.drum.tom_lo",
+   "snd.elec.arc",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off",
    "snd.foley.book_thud",
    "snd.foley.chai_cup_clink",
    "snd.foley.chair_creak",
@@ -14619,6 +14786,7 @@
    "snd.device.notify_soft",
    "snd.device.phone_ring_synth",
    "snd.device.unlock",
+   "snd.elec.arc",
    "snd.foley.book_thud",
    "snd.foley.chai_cup_clink",
    "snd.foley.coin_drop",
@@ -14755,6 +14923,7 @@
    "snd.amb.train_chug",
    "snd.amb.vinyl_crackle",
    "snd.amb.wind",
+   "snd.elec.crackle_loop",
    "snd.indian.shruti_drone",
    "snd.ui.agent_working",
    "snd.ui.listening_loop"
@@ -14892,6 +15061,7 @@
    "snd.wood.creak"
   ],
   "anchor:start": [
+   "snd.elec.zap_off",
    "snd.foley.typewriter",
    "snd.lift.down",
    "snd.lift.down_long",
@@ -14977,6 +15147,11 @@
   "downlifter": [
    "snd.lift.down",
    "snd.lift.down_long"
+  ],
+  "electric": [
+   "snd.elec.arc",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off"
   ],
   "family:amb": [
    "snd.amb.applause",
@@ -15092,6 +15267,11 @@
    "snd.drum.snare_roll",
    "snd.drum.tom_hi",
    "snd.drum.tom_lo"
+  ],
+  "family:elec": [
+   "snd.elec.arc",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off"
   ],
   "family:foley": [
    "snd.foley.book_thud",
@@ -15375,6 +15555,9 @@
   "hologram": [
    "snd.ui.hologram_beam"
   ],
+  "hum": [
+   "snd.elec.crackle_loop"
+  ],
   "impact": [
    "snd.glass.shatter"
   ],
@@ -15449,6 +15632,8 @@
    "snd.device.notify_soft",
    "snd.device.phone_ring_synth",
    "snd.device.progress_fill",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off",
    "snd.hit.bass_drop_wobble",
    "snd.hit.stab",
    "snd.indian.bansuri_note",
@@ -15499,6 +15684,7 @@
    "snd.ui.toggle_on"
   ],
   "loop": [
+   "snd.elec.crackle_loop",
    "snd.indian.shruti_drone",
    "snd.ui.agent_working",
    "snd.ui.listening_loop"
@@ -15627,6 +15813,9 @@
    "snd.drum.808",
    "snd.drum.kick",
    "snd.drum.kick_punch",
+   "snd.elec.arc",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off",
    "snd.hit.glass_hit",
    "snd.hit.low_thump",
    "snd.hit.punch",
@@ -15697,8 +15886,16 @@
    "snd.ui.success",
    "snd.wood.tap"
   ],
+  "neon": [
+   "snd.elec.arc",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off"
+  ],
   "pixel": [
    "snd.tx.pixel_dissolve"
+  ],
+  "power_down": [
+   "snd.elec.zap_off"
   ],
   "region:in": [
    "snd.amb.indian_street_horns",
@@ -15751,6 +15948,7 @@
    "snd.device.loading_tick",
    "snd.device.mouse_click",
    "snd.device.phone_buzz",
+   "snd.elec.arc",
    "snd.foley.book_thud",
    "snd.foley.chai_cup_clink",
    "snd.foley.chair_creak",
@@ -15866,6 +16064,8 @@
    "snd.drum.snare",
    "snd.drum.snare_roll",
    "snd.drum.tom_lo",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off",
    "snd.foley.chair_creak",
    "snd.foley.coin_drop",
    "snd.foley.door_close",
@@ -15946,6 +16146,7 @@
    "snd.drum.dhol_rim",
    "snd.drum.hat_open",
    "snd.drum.tom_hi",
+   "snd.elec.arc",
    "snd.foley.book_thud",
    "snd.foley.footstep_gravel",
    "snd.foley.keys_jingle",
@@ -16265,6 +16466,9 @@
    "snd.drum.snare",
    "snd.drum.tom_hi",
    "snd.drum.tom_lo",
+   "snd.elec.arc",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off",
    "snd.foley.chai_cup_clink",
    "snd.foley.chair_creak",
    "snd.foley.coin_drop",
@@ -16415,6 +16619,7 @@
    "snd.drum.shaker",
    "snd.drum.snare",
    "snd.drum.snare_roll",
+   "snd.elec.arc",
    "snd.foley.book_thud",
    "snd.foley.chair_creak",
    "snd.foley.coin_drop",
@@ -16553,6 +16758,8 @@
    "snd.drum.rim",
    "snd.drum.tom_hi",
    "snd.drum.tom_lo",
+   "snd.elec.crackle_loop",
+   "snd.elec.zap_off",
    "snd.foley.chai_cup_clink",
    "snd.glass.clink",
    "snd.glass.tap",
@@ -16731,6 +16938,9 @@
    "snd.voice.oh",
    "snd.voice.sigh",
    "snd.voice.wow"
+  ],
+  "zap": [
+   "snd.elec.arc"
   ],
   "zoom": [
    "snd.hit.punch"

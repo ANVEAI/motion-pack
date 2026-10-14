@@ -23,8 +23,9 @@ Virality is three separate jobs: survive the first second, hold to the end and i
 
 | rule | value | grade |
 |---|---|---|
-| Frame 0 | Not black, not a logo, not a fade | [P] |
+| Frame 0 | Not black, not a logo, not a fade. A small product-name super over moving footage inside 2 s is allowed: it is not a logo bumper (round 4/5: 7 of 29 did it, tier A among them; 0 of 29 opened on a static logo) | [P] |
 | First motion | By frame 6 | [H] |
+| First sound | On frames 0-3, **or** 1-2 s later on the first meaningful visual event over a moving frame 0 (a planned quiet open: 13 of 28 round 4/5 references, tier A among them). Mark it in `plan.audio.quiet` so `ears` treats it as intended | [P] |
 | Hook text | On screen by 0.3 s, at most 7 words; at most 4 words on the poster frame | [H] |
 | Layered hook | Picture, text and VO say one idea | [P] |
 | Moves in the first 1.0 s | At most 1 camera or layout move | [H] |
@@ -61,7 +62,7 @@ Add 25% jitter so the cadence is not metronomic. Lint fails on two L3s within 1.
 
 - **Retention structure of a 20-35 s short:** hook (0-3 s), then the why-stay promise or open loop (3-6 s), then 2-4 beats each with a micro-payoff, then the best payoff in the final 20%, then the loop seam or CTA [H].
 - **Static limit:** something visible or audible changes at least every 3.5 s (R4) [H].
-- **Ending:** if the retention graph dips at the very end, trim the last 1-2 s [P].
+- **Ending:** if the retention graph dips at the very end, trim the last 1-2 s [P]. The exception is a planned **quiet hold**: explainers and partnership posts hold the end card on near-silence for 3-9 s (17 of 28 round 4/5 references end at least 10 dB under the body; `launch-playbook.md` end shapes) [P].
 
 **Mute-proof:**
 

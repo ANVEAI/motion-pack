@@ -1,6 +1,6 @@
 # What makes these launch and motion films work: hooks, sound, motion, storyboard, climax, CTA
 
-These patterns come from the founder's 10 shared references (13–14 Oct 2026) plus the 15-launch study in `docs/research/launch-films-2026.md`. Section 8 adds round 3: 25 more references studied on 14 Oct 2026 (`docs/research/reference-round3-2026-10.md`).
+These patterns come from the founder's 10 shared references (13–14 Oct 2026) plus the 15-launch study in `docs/research/launch-films-2026.md`. Section 8 adds round 3: 25 more references studied on 14 Oct 2026 (`docs/research/reference-round3-2026-10.md`). Section 9 adds rounds 4–5: 29 more, graded with `tools/refstudy.py grade` (`docs/research/reference-round45-2026-10.md`).
 
 **Evidence tiers:**
 - **Proven reach:** Clueso, 742K views and 1.3K bookmarks.
@@ -106,6 +106,7 @@ Craft-only references teach technique, not reach.
 - A one-line promise before the logo: "It's already done", "Keep your pets thriving", "Helping you move".
 - The post copy carries the ask (waitlist, URL). The end card stays clean.
 - Funding announcements end on the plain fact, delivered as the joke's payoff ("we just raised $10,000,000").
+- **Offers and deadlines have no organic evidence.** Round 3: comment gates drove replies, not purchases. Round 4/5: offer-plus-deadline posts ("60% off", "7 days only") appeared only in tier-C or boosted pieces, and the at-cost price-reveal film was paid reach (B). Use an offer only when it is real, with honest terms, and never as the hook (section 9).
 
 ## 7. For ANVE, specifically
 
@@ -161,3 +162,53 @@ Per-piece studies with source links: `docs/research/reference-round3-2026-10.md`
 
 **For ANVE:** use the late drop on the turn line, an agent pipeline reveal built from the box's real call log, and live transcripts with **measured** per-turn latency (P50 487 ms). A voice-handoff gag (`cuts/story/voiceHandoff`) needs a consented voice and the "(AI voice)" label on every synthetic frame. Avoid clipping, boosted-reach envy, comment gates without a real offer, and self-referential climaxes as the payoff.
 
+## 9. Rounds 4–5 (29 references, 14 Oct 2026)
+
+Per-piece studies, source links and tiers: `docs/research/reference-round45-2026-10.md`. Graded with `tools/refstudy.py grade` (`reference-intake.md`); the rules reproduce the hand grades.
+
+**Evidence tiers for this batch:** A 11 (2 claim-driven: provocative post text, like rate under 0.4%), **A− 2** (saves-strong: ≥ 1.3% bookmarks with less reach), B 4 (boosted: one at 4,018× its followers), B′ 1, **R 4** (account-size reach: millions of views below 1× followers; it proves the account, not the format), C 7. Four of the five best-saved pieces are proof-led.
+
+**Hooks (what is new):**
+- Pain as a typed reaction inside the work surface; a prompt slam (one word per 0.5 s, full-bleed, the background flipping per word); a crude first attempt with a live readout; the concept as a space before the product; five faces in five seconds; outline glyphs drawing on (all tier A).
+- **A small product-name super over moving footage inside 2 s is common and is not a logo bumper.** None of the 29 opened on a static logo.
+- **Sound often enters after the picture:** 13 of 28 open at least 6 dB under the body for 1–2 s while frame 0 moves. Plan it (`plan.audio.quiet`, kind `open`); `ears` then reads it as intended.
+
+**New storyboard shapes** (continuing round 3's E–H):
+
+| shape | what | evidence |
+|---|---|---|
+| **I. Proof film** | claim (≤ 6 words) → name → method card → **one chart or diagram that builds** → head-to-head rows → numbers with sources → three stat cards → URL; usually 0–4 cuts | tier A on reach and saves; the best-saved shape. Launch archetype **L8** |
+| **J. Query ladder** | one UI, five escalating inputs, one VO line each (99 wpm), pull back with benefit chips, the repo | tier A, 1.66% saves. L4's strongest form |
+| **K. Fidelity ladder** | crude → resolved, one parameter step per bar with a live readout, a 2–3 s dropout, a new dimension | tier A. L4's other strong form |
+| **L. Multi-voice documentary** | 5 faces in 5 s → the lead's thesis → voices with a name super plus one personal detail → flat 2D inserts → customer proof → availability; 107–185 s | three tier-A pieces over 100 s. Launch archetype **L9** |
+| **M. Trailer arc** | quiet dialogue → title cards → build → a wall montage → **one line over near-silence (2–4 s)** → crescendo → title, hard stop | R and A (valley and build). `music/bed_trailer_arc` |
+| **N. Rapid-command demo** | ~16 spoken commands in 17 s, each answered by the UI on the next frame | A, claim-driven |
+| **O. Bundle construction** | outline tiles draw on → cascade → fill on hits → collapse into one name, in 10 s, 0 cuts | A, 5.4M views |
+
+**Motion vocabulary (tier-A craft):** a cost-vs-score scatter with a frontier line and a starred, sourced hero point; a branch diagram where a wrong fork turns red and the red propagates downstream; a data table that builds under a one-line finding; an embedding cloud whose nearest neighbours lift towards a query; a live math readout; electric hand-drawn numerals as chapter marks; a running cost ticker pinned beside a hand; transcript bubbles anchored in the scene. Craft-only: flanking words, a sentence continued across cuts, a style ladder on one composition, a practical cable-tangle metaphor then an abstract untangle diagram (`blender/cableTangle`).
+
+**Sound, measured (28 with audio):**
+
+| measure | this batch | take |
+|---|---|---|
+| Integrated loudness | −24.8 to −9.6 LUFS, median −15.1; VO-led about −18, music-led about −14.2; 8 of 28 peak at or above 0 dBFS | keep −14 LUFS-I / ≤ −1 dBTP; copy neither the quiet VO films nor the clipping |
+| **Bass share by role** (< 150 Hz) | median 33%. Proof and explainer beds 20–36%; hype and trailer 50–61%; VO documentaries 15–34% | pick the bed by role; round 3's 52–87% was the hype case, not a default (`ears/listen.py --role`) |
+| Cuts on an onset (≥ 10 cuts) | 24–73%, median 47.5% | **did not predict reach**: the 73% pieces are tier C, tier-A VO films sit at 40–59%. The ≥ 60% rule applies to music-led, cut-driven pieces only (`critic.md`) |
+| Cuts under a voice | 61–89% of cuts in VO documentaries fall inside a speech line | the voice is the continuity: judge VO films by speech continuity, not cut sync |
+| Continuous pieces | 7 of 29 have ≤ 4 cuts; 5 of those 7 are tier A or A− | score them by **motion events on onsets** (`refstudy` `motion.sync`; e.g. 0.61 on a fidelity ladder, 0.31–0.44 on the proof films) |
+| VO rate | 99 (one line per rung) · 158–177 (explainer) · 184–193 (founders) | the tier-A explainer is the sparsest VO: a 0.3–0.5 s gap every ~4 s, and the diagram advances in it |
+
+**Sound shapes:**
+- **Quiet open:** 13 of 28 (above).
+- **Mid-film reset dip:** 1–3 s at −39 to −52 dBFS before a reveal or a build; a trailer holds one line over about −55 dBFS for 2–4 s before the crescendo.
+- **Quiet ending:** 17 of 28 end at least 10 dB under the body; explainers hold the end card on near-silence for 4–9 s. **Quiet hold is a first-class end shape** alongside the sustained sub and the pre-sting silence (`launch-playbook.md` rule 15). The last 0.15 s is still digital zero.
+
+**Climax:** the strongest honest climax for an AI product is **a failure the method catches** (red propagating down a diagram). Also: the hero point on the frontier, the hardest rung last, a new dimension after a dropout, many marks merging into one name.
+
+**CTA and end:** a URL or repo on the end card is the tier-A norm for builder audiences, with **no spoken CTA** in any tier-A explainer; benefit chips can replace the CTA; a partner lockup held on a quiet tail; a silent end-card hold of 4–9 s. **Offers with deadlines and discount framing showed no organic evidence** (tier C or boosted only; see section 6).
+
+**Pacing:** the median shot is about 2.8 s; four speeds (montage 0.46–0.87 s, product 1.1–2 s, documentary 3–4.4 s, continuous). Tier A is bimodal in length: 10–60 s craft and proof pieces, 107–185 s people-led documentaries, nothing between 60 and 100 s.
+
+**Ranked, proven to craft-only:** (1) proof film; (2) query ladder; (3) fidelity ladder with a dropout; (4) multi-voice documentary; (5) bundle construction in 10 s; (6) rapid-command demo (claim-driven); (7) prompt slam; (8) in-scene transcript bubbles; (9) craft-only: flanking words, sentence across cuts, style ladder, electric numerals, the trailer arc (R).
+
+**For ANVE:** a proof film with **measured** numbers only (no box benchmarks exist yet: measure first, never borrow AnveVoice's); a query ladder over the box's own data ending on "runs on your box · no cloud"; in-scene transcript bubbles and a rapid-command demo recorded for real; the trust gate stopping a wrong action as the failure-caught climax; quiet holds on end cards. A multi-voice documentary waits for real pilot customers. Avoid boosted-reach envy, clipping, unsourced price comparisons and deadline offers as the hook.

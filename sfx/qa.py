@@ -20,7 +20,8 @@ from build_library import TRANSITIONS  # noqa: E402
 CENTROID = {"whoosh": (800, 11000), "impact": (30, 5000), "riser": (50, 16000), "ui": (150, 6000), "glass": (700, 7000), "metal": (300, 6000), "wood": (150, 2500), "paper": (1500, 9000),
             "cloth": (80, 2500), "liquid": (250, 9500), "cartoon": (100, 7000), "voice": (200, 4000), "ambience": (40, 13000), "drum": (40, 17000), "transition": (30, 14000), "logo": (50, 4000),
             "stinger": (50, 4000), "sparkle": (1500, 16000), "cash": (500, 6500), "camera": (500, 6000), "plastic": (500, 6000),
-            "indian": (50, 7000), "foley": (80, 9000), "device": (150, 7000), "crowd": (150, 4000)}
+            "indian": (50, 7000), "foley": (80, 9000), "device": (150, 7000), "crowd": (150, 4000),
+            "elec": (120, 9000)}
 
 
 def ebur(path):

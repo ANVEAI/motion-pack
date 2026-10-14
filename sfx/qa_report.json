@@ -1,5 +1,5 @@
 {
- "count": 298,
+ "count": 301,
  "categories": [
   "ambience",
   "camera",
@@ -9,6 +9,7 @@
   "crowd",
   "device",
   "drum",
+  "elec",
   "foley",
   "glass",
   "impact",
@@ -788,6 +789,27 @@
     "seed-invariant (pure tonal recipe)"
    ],
    "seed_corr": 1.0
+  },
+  {
+   "id": "snd.elec.arc",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.239
+  },
+  {
+   "id": "snd.elec.crackle_loop",
+   "ok": true,
+   "notes": [],
+   "seam_ratio": 0.0,
+   "seed_corr": 0.646,
+   "ffmpeg_I": -18.5,
+   "dI": 0.01
+  },
+  {
+   "id": "snd.elec.zap_off",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.782
   },
   {
    "id": "snd.foley.book_thud",
