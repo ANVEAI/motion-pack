@@ -255,6 +255,29 @@ def _align(y, c, exp, search, yh=None):
     return (lo + lag * 48) / SR + pre, (float(rs[lag]) if rs[lag] >= 0.5 else 0.0)
 
 
+def _chance_share(on, tol, dur):
+    """the chance level of 'within tol of an onset': the fraction of the timeline inside the merged +/- tol windows around the onsets.
+    A cut or an event placed at random in time lands inside with this probability (a busy bed at 4 onsets/s makes it 40-60%)."""
+    if dur <= 0 or not len(on):
+        return 0.0
+    cover, end = 0.0, 0.0
+    for a, b in zip(np.clip(np.sort(np.asarray(on, float)) - tol, 0.0, dur), np.clip(np.sort(np.asarray(on, float)) + tol, 0.0, dur)):
+        a = max(a, end)
+        if b > a:
+            cover += b - a
+            end = b
+    return min(1.0, cover / dur)
+
+
+def _chance_note(share, n, chance, what):
+    """a plain sentence when a sync share is within chance of what luck gives (a binomial z < 2 above it)"""
+    z = (share * n - chance * n) / np.sqrt(n * chance * (1 - chance)) if 0 < chance < 1 else None
+    if z is None or z >= 2:
+        return None
+    return 'chance level: %d%% of the timeline is inside the onset windows, so %d%% of %s on an onset is %s (z %.1f); it is not evidence of sync' % (
+        round(chance * 100), round(share * 100), what, 'about what luck gives' if z > -2 else 'below what luck gives', z)
+
+
 def sync(ctx):
     y, fps, sp = ctx['y'], ctx['fps'], SPEC['sync']
     on, strg = ctx['onsets'], ctx['strengths']
@@ -266,20 +289,33 @@ def sync(ctx):
     lvl = db(uniform_filter1d(y ** 2, int(0.05 * SR))) if len(y) else np.zeros(1)
     first = np.argmax(lvl > -35) / SR if (lvl > -35).any() else None
     first_f = None if first is None else int(np.floor(first * fps))
+    q_open = next((q for q in (ctx.get('quiet') or []) if q['t'][0] <= 1.0 / fps + 1e-6), None)      # a planned quiet open (plan.audio.quiet)
+    mode = ctx.get('mode', 'music')
     if first_f is None or first_f > sp['first_event_frame_max']:
-        issues.append(issue('warn', [0.0, round(first or dur, 2)], 'first audible sound at %s (pack R10: an event on frames 0-%d)' % (
-            'never' if first is None else 'frame %d (%.2f s)' % (first_f, first), sp['first_event_frame_max']),
-            'put a hit or the bed downbeat on frame 0 (plan cue t: 0)', 'The first moment is silent, so a scrolling viewer hears nothing to stop for.'))
+        qmax = SPEC['quiet']['max_s']['open']
+        if q_open is not None and first is not None and first <= q_open['t'][1] + 0.25:
+            notes.append('planned quiet open %.1f-%.1f s (%s): the sound enters at frame %d (%.2f s), as planned; the picture must move from frame 0'
+                         % (q_open['t'][0], q_open['t'][1], q_open.get('why') or 'plan.audio.quiet', first_f, first))
+            if first > qmax + SPEC['quiet']['max_margin_s']:
+                issues.append(issue('warn', [0.0, round(first, 2)], 'the planned quiet open runs %.2f s (house max %.1f s: the sound enters 1-2 s after a moving frame 0)' % (first, qmax),
+                                    'bring the first sound in by %.1f s: on the first meaningful visual event' % qmax,
+                                    'The opening stays silent long enough that a viewer may think the sound is off.'))
+        else:
+            issues.append(issue('warn', [0.0, round(first or dur, 2)], 'first audible sound at %s (pack R10: an event on frames 0-%d)' % (
+                'never' if first is None else 'frame %d (%.2f s)' % (first_f, first), sp['first_event_frame_max']),
+                'put a hit or the bed downbeat on frame 0 (plan cue t: 0), or, if the quiet open is intended (sound enters 1-2 s after a moving frame 0), '
+                'mark it in plan.audio.quiet [{"t": [0, %.1f], "kind": "open", "why": "..."}]' % min(2.0, first or 2.0),
+                'The first moment is silent, so a scrolling viewer hears nothing to stop for.'))
     m = {'tempo_bpm': None if not tm['bpm'] else round(tm['bpm'], 1), 'tempo_confidence': round(tm['confidence'], 2), 'beats': len(tm['beats']),
          'onsets': len(on), 'onsets_per_s': round(len(on) / max(dur, 1e-6), 2), 'hits': [round(h, 3) for h in hits][:40],
-         'first_audible_frame': first_f, 'fps': fps}
+         'first_audible_frame': first_f, 'fps': fps, 'mode': mode}
     if tm['bpm'] and tm['confidence'] < 0.3:
         notes.append('tempo confidence %.2f: the tempo is a guess (speech or free-time music)' % tm['confidence'])
     if tm['bpm']:
         notes.append('tempo can read as half or double time; %.1f BPM also fits %.1f / %.1f' % (tm['bpm'], tm['bpm'] / 2, tm['bpm'] * 2))
     cuts = ctx.get('cuts')
+    tol = sp['cut_tolerance_frames'] / fps
     if cuts:
-        tol = sp['cut_tolerance_frames'] / fps
         rows = []
         for c in cuts:
             n_on, n_b = _nearest(c, on), _nearest(c, tm['beats'])
@@ -288,8 +324,14 @@ def sync(ctx):
                          'on_onset': n_on is not None and abs(n_on - c) <= tol, 'on_beat': n_b is not None and abs(n_b - c) <= tol, 'nearest_onset': n_on})
         share = sum(r['on_onset'] for r in rows) / len(rows)
         share_b = sum(r['on_beat'] for r in rows) / len(rows)
-        m.update(cuts=len(rows), cuts_on_onset=round(share, 2), cuts_on_beat=round(share_b, 2))
-        if share < sp['cuts_on_onset_min']:
+        m.update(cuts=len(rows), cuts_on_onset=round(share, 2), cuts_on_beat=round(share_b, 2), cuts_on_onset_chance=round(_chance_share(on, tol, dur), 2))
+        nt = _chance_note(share, len(rows), m['cuts_on_onset_chance'], 'cuts') if len(rows) >= 4 else None
+        if nt and mode == 'music':
+            notes.append(nt)
+        if mode != 'music':
+            notes.append('mode %s: cuts on onsets %d%% is information only (the >= %d%% rule applies to music-led, cut-driven pieces; references/critic.md)'
+                         % (mode, round(share * 100), round(sp['cuts_on_onset_min'] * 100)))
+        elif share < sp['cuts_on_onset_min']:
             off = [r for r in rows if not r['on_onset']]
             fix = '; '.join('%.2f s -> %.2f s (%+.0f f)' % (r['t'], r['nearest_onset'], r['onset_dt_frames']) for r in off[:4] if r['nearest_onset'] is not None)
             issues.append(issue('fail' if share < sp['cuts_on_onset_min'] / 2 else 'warn', [off[0]['t'], off[0]['t']] if off else None,
@@ -297,6 +339,10 @@ def sync(ctx):
                                 'move the cuts to the nearest onset: %s, or run cuts/cutgen.py snap --study <refstudy study.json>' % (fix or 'add a cue on each cut'),
                                 'Cuts land between sounds, so the edit feels unmotivated and loose.'))
         m['cut_rows'] = [{k: v for k, v in r.items() if k != 'nearest_onset'} for r in rows]
+    if mode == 'vo':
+        _vo_continuity(ctx, cuts or [], m, issues, notes)
+    elif mode == 'continuous':
+        _motion_sync(ctx, on, tol, m, issues, notes)
     cues = ctx.get('cues') or []
     if cues:
         rows = []
@@ -333,5 +379,60 @@ def sync(ctx):
         missing = [r for r in rows if r.get('measured_s') is None and not r.get('note')]
         if missing:
             notes.append('%d cue(s) not detectable in the mix (buried under the bed or soft attack): %s' % (len(missing), ', '.join('%s at %.2f s' % (r['id'], r['t']) for r in missing[:5])))
-    return result('ears/sync', 'sync', m, '>= %d%% of cuts within %d frames of an onset, cue anchors on F + 1, risers end on F, an event by frame %d' % (
-        round(sp['cuts_on_onset_min'] * 100), sp['cut_tolerance_frames'], sp['first_event_frame_max']), issues, notes)
+    edit = {'music': '>= %d%% of cuts within %d frames of an onset' % (round(sp['cuts_on_onset_min'] * 100), sp['cut_tolerance_frames']),
+            'vo': 'no cut inside a word (VO-led: cuts sit under the voice)',
+            'continuous': '>= %d%% of motion events within %d frames of an onset' % (round(sp['cuts_on_onset_min'] * 100), sp['cut_tolerance_frames'])}[mode]
+    return result('ears/sync', 'sync', m, '%s, cue anchors on F + 1, risers end on F, an event by frame %d (or a planned quiet open)' % (
+        edit, sp['first_event_frame_max']), issues, notes)
+
+
+def _vo_continuity(ctx, cuts, m, issues, notes):
+    """VO-led films: the voice is the continuity. Cuts may (and mostly do) land under speech; a cut inside a word is the fault.
+    Needs word timings (words.json, or a Whisper JSON with word timestamps); with segments only, the share of cuts under speech is reported."""
+    tr, words, edge = ctx.get('transcript'), ctx.get('words'), SPEC['sync']['word_edge_s']
+    if not tr and not words:
+        notes.append('mode vo without --transcript: speech continuity not checked (pass a words.json or a Whisper JSON with word timestamps)')
+        return
+    if tr and cuts:
+        under = sum(1 for c in cuts if any(a <= c <= b for a, b, _ in tr))
+        m['cuts_under_speech'] = round(under / len(cuts), 2)
+        notes.append('%d%% of cuts fall under a speech line (reference VO documentaries: 61-89%%; cuts do not wait for sentence ends)' % round(under / len(cuts) * 100))
+    if not words:
+        notes.append('segment-level transcript: cuts inside words cannot be checked (pass a words.json or Whisper word timestamps)')
+        return
+    inside = [(c, a, b) for c in cuts for a, b in words if a + edge < c < b - edge]
+    m['cuts_inside_words'] = len(inside)
+    if inside:
+        issues.append(issue('warn', [inside[0][0], inside[0][0]], '%d cut(s) land inside a word: %s' % (
+            len(inside), ', '.join('%.2f s (word %.2f-%.2f)' % x for x in inside[:4])),
+            'move each cut to the nearest word boundary or into the gap between words (a speech gap is where a diagram or UI should advance)',
+            'The picture jumps in the middle of a word, so the voice and the edit fight.'))
+
+
+def _motion_sync(ctx, on, tol, m, issues, notes):
+    """continuous films: the picture's motion events (things appearing, flashes, large changes) should land on onsets, as cuts do in a cut edit"""
+    sp = SPEC['sync']
+    ev = ctx.get('events')
+    if not ev:
+        notes.append('mode continuous: no motion events (plan.audio.events, --events with a refstudy study.json, or an MP4 so ears measures them)')
+        return
+    rows = []
+    for e in ev:
+        n_on = _nearest(e, on)
+        rows.append({'t': round(e, 3), 'onset_dt_frames': None if n_on is None else round((n_on - e) * ctx['fps'], 1), 'on_onset': n_on is not None and abs(n_on - e) <= tol,
+                     'nearest_onset': n_on})
+    share = sum(r['on_onset'] for r in rows) / len(rows)
+    dur = len(ctx['y']) / SR
+    m.update(motion_events=len(rows), events_on_onset=round(share, 2), events_on_onset_chance=round(_chance_share(on, tol, dur), 2),
+             event_rows=[{k: v for k, v in r.items() if k != 'nearest_onset'} for r in rows])
+    nt = _chance_note(share, len(rows), m['events_on_onset_chance'], 'motion events') if len(rows) >= 4 else None
+    if nt:
+        notes.append(nt)
+    if share < sp['cuts_on_onset_min']:
+        off = [r for r in rows if not r['on_onset']]
+        fix = '; '.join('%.2f s -> %.2f s (%+.0f f)' % (r['t'], r['nearest_onset'], r['onset_dt_frames']) for r in off[:4] if r['nearest_onset'] is not None)
+        issues.append(issue('fail' if share < sp['cuts_on_onset_min'] / 2 else 'warn', [off[0]['t'], off[0]['t']] if off else None,
+                            '%d%% of %d motion events sit within %d frames of an onset (target >= %d%%; continuous film)' % (
+                                round(share * 100), len(rows), sp['cut_tolerance_frames'], round(sp['cuts_on_onset_min'] * 100)),
+                            'put a cue on each accent (plan cue t = the event frame) or move the accent to the music: %s' % (fix or 'add a cue per event'),
+                            'Things appear on screen between sounds, so the motion and the music feel unrelated.'))

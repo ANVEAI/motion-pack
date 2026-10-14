@@ -81,7 +81,8 @@ rep = m.render('out_dir')                        # master.wav -14 LUFS / -1.5 dB
 - **CLI:** `python3 music/mixer.py cuesheet.json --out DIR` (the JSON cue sheet format is in `music/README.md`).
 - **Ids:** `sfx/<cat>/<name>` maps to `snd.<cat>.<name>` (`sfx/manifest.json`: anchor, LUFS, centroid, `phone_safe`, `pairs_with`).
 - **Bundles:** `sfx/bundles.json` maps roles to ids for `launch_film`, `mime_spot`, `beat_edit`, `talking_head`, `short_film`, `product_ad`, `kinetic_type`, `loop_short`, `india_festive`, `voice_agent_demo` and `office_comedy`.
-- **SFX families (288):** cartoon 30, indian 26, ambience 24, transition 24, ui 23, foley 20, impact 18, drum 17, device 16, riser 16, whoosh 15, voice 12, and smaller liquid / logo / stinger / glass / wood / cloth / crowd / metal / paper / plastic / sparkle / camera / cash. Ids tagged `rr:4` have four round-robin takes (seeds s..s+3).
+- **SFX families (301):** cartoon 30, indian 26, ambience 24, transition 24, ui 23, foley 20, impact 18, drum 17, device 16, riser 16, whoosh 15, voice 12, and smaller liquid / logo / stinger / glass / wood / cloth / crowd / metal / paper / plastic / sparkle / camera / cash / elec. Ids tagged `rr:4` have four round-robin takes (seeds s..s+3).
+- **Electric (round 4/5):** `sfx/elec/arc` (`snd.elec.arc`, a 0.4 s zap, anchor = the crack, `rr:4` four strikes), `sfx/elec/crackle_loop` (4.0 s seamless loop on a seeded random-walk envelope, sit it under the bed with `Mix.add_cue(..., until_frame=F)`) and `sfx/elec/zap_off` (1.2 s power-down, anchor = the snap: put it on the frame the light dies). The buzz is tuned to A2 (110 Hz). Bundle `neon_power_on`. Pairs with electric / neon outline type and `blender/cableTangle` bulb-out frames.
 - **Sweeteners:** `sfx/sweeteners.json` has a row for every transition kind (incl. the formerly pending shutter, swipeUp, spin, pagePeel, pixelSort); new visual transitions fall back to their `transitions/catalog.json` sfx list.
 - **Music:**
   - `music/compose.py` + `music/presets.py`: 27 presets (the original 10 plus indian_fusion, bhangra_hype, raga_calm, festive_dhol, lofi_jazz, synthwave, deep_house, dnb_170, ambient_pad, chiptune_8bit, acoustic_folk_pluck, documentary_marimba, orchestral_synth_epic, jazz_walk, comedy_pizzicato, corporate_bright, suspense_pulse). Indian presets use `tuning="ji"` and raga scales.
@@ -89,6 +90,7 @@ rep = m.render('out_dir')                        # master.wav -14 LUFS / -1.5 dB
   - `music/grid.py`: `snap_bpm`, `cut_map`, `tempo_ramp_map` (`music/tempo_maps.json`: 11 tempos x 24/30/60 fps + ramps).
   - `music/logo.py`: `motif_from_name(name)`; sitar variants `logo_sitar_*`.
   - `music/stingers.py`.
+  - `music/trailer.py`: `render_trailer('trailer_arc', fps, seed, act_bars=(4, 4, 4))` -> `{stems, mix, events, meta, markers}`: act 1 drone, act 2 rising ostinato, act 3 wall, a planned sub-only gap, a crescendo, a hard-stop title hit, a quiet hold. NOT a loop; every marker is a whole frame (`markers(name, fps, act_bars)`); the pack bed is `music/bed_trailer_arc` and its sidecar `bed_trailer_arc.json` has `markers`, `visual_cut_frame` (hit - 1) and the length rule. Mark the gap and the hold in `plan.audio.quiet`.
   - `Mix.add_bed(loop=True)` now tiles stereo beds correctly (fixed 2026-10-13).
 - **Outside audio:** nothing third-party is vendored. `scripts/fetch-external.sh` fetches the CC0 subsets (Kenney audio, OwlishMedia SFX) into a folder outside git; then `python3 sfx/tools/check_origin.py DIR` and `python3 sfx/tools/catalog_import.py DIR --category NAME [--dry]` import them into `sfx/library_ext/` (tagged `source:ext`), never `sfx/manifest.json`.
 
@@ -171,11 +173,35 @@ const worker = create(ctx, parent, 'objects/worker', { spec: { keys: keysOf(ACTS
 - **Stills:** `objects/stills.sh <page> <outdir> "<frames>" "<query>"`.
 - **Probe:** `node objects/tools/probe.mjs <page> "<query>" "<expr>"`.
 
+## Blender plates (`blender/`)
+
+```bash
+B=${BLENDER:-blender}      # Blender 5.2.x; macOS: /Applications/Blender.app/Contents/MacOS/Blender
+$B -b --factory-startup -P blender/run.py -- --list
+$B -b --factory-startup -P blender/run.py -- --recipe blender/cableTangle --size 1920x1080 --fps 30 --seconds 5 --out out/tangle \
+   [--param mode=off|on --param bulbs=5 --param stagger=12 --param schedule=36,48,60,72,84] [--beats bed.json] [--device gpu|cpu]
+```
+
+- **`blender/cableTangle`** (round 4/5): a dark set, a seeded cable tangle feeding warm filament bulbs. `mode=off`: the red feed cable is pulled out and the bulbs go out in sequence; `mode=on`: it untangles and they light. Bulb change frames come from `schedule` > `--beats` sidecar hits > `pull_start + lag + k * stagger` (`order` ltr | rtl | out | in | seeded), are keyed per WHOLE frame, and are written to `render.json` `recipe_report.plan.change_frames` with each bulb's pixel position per frame (`bulb_px`). Cut the sound to those frames: `sfx/elec/zap_off` or a `snd.hit.*` on each bulb frame. Looks (`--preset`): tungsten, amber, daylight. Cycles by default; `--device cpu` for a hash-level repeatable render (GPU is visually, not bit, identical).
+- Every recipe: frame-keyed, seeded, PNG masters in `out/frames/`, `render.json` with hashes; `blender/README.md` lists the recipes and their parameters.
+
+## Critic tools (`tools/refstudy.py`, `ears/`)
+
+```bash
+python3 tools/refstudy.py <x-status-url | mp4-url | file.mp4> refs/<name> [--whisper none] [--tier A|A-|B|B'|R|C|D] [--tiers my.json]
+python3 tools/refstudy.py grade refs/*/ [--write] [--json]            # grade existing study folders from meta.json (no download)
+python3 ears/listen.py out/film.mp4 --plan out/plan.json [--mode music|vo|continuous] [--events study.json] [--role proof|explainer|hype|trailer|vo_doc]
+```
+
+- **refstudy** writes `study.json` fields `motion` (visual events for continuous pieces, `motion.sync` with `share_on_onset` and its chance level: `chance_share`, `lift`, `z_vs_chance`, `reading`), `quiet` (`open_vs_body_db`, `tail_2s_vs_body_db`, `end_shape`) and `evidence` (`tier` A / A- / B / B' / R / C / D, `boosted`, `claim_driven`, reasons). Thresholds: `tools/refstudy_tiers.json`. Python: `refstudy.motion_events(path, cut_times)`, `motion_sync(motion, onsets, speech, fps_video)`, `video_fps(path)`, `motion` subcommand (`refstudy.py motion <local mp4> <study dir> --write`), `quiet_shape(curve)`, `grade(meta, rules, override)`.
+- **ears plan fields** (all optional, in `out/plan.json`): `audio.mode` (`music` default | `vo` | `continuous`), `audio.quiet` `[{t: [a, b], kind: open|dip|gap|hold, why}]` (planned quiet is shape: open <= 2 s, dip / gap <= 4 s, hold <= 9 s; unplanned near-silence of 2 s or more warns as dead air), `audio.events` (motion-event seconds, for `continuous`), `audio.role` (bass-share range note). `ears.listen.analyze(x, fps, plan=..., mode=..., quiet=..., events=..., words=..., role=...)`.
+
 ## Checks
 
 ```bash
 python3 tools/check_ids.py
-python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests
+python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
+python3 -m pytest -q ears/tests
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs
 node camera/tests/camera.test.mjs; node type/tests/type.test.mjs; bash layers/tests/run-all.sh
 python3 sfx/qa.py; python3 music/qa.py

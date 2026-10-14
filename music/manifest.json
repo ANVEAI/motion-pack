@@ -4,7 +4,7 @@
  "bit_depth": 24,
  "fps_default": 30,
  "bed_lufs_i": -16.0,
- "count": 64,
+ "count": 65,
  "items": [
   {
    "id": "music.bed_tech_pulse_loop8",
@@ -2488,6 +2488,134 @@
    "centroid_hz": 325,
    "crest_db": 16.1,
    "duration_s": 19.2,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_trailer_arc",
+   "kind": "bed",
+   "file": "library/beds/bed_trailer_arc.wav",
+   "preset": "trailer_arc",
+   "structure": "trailer_arc",
+   "loop": false,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 120,
+   "frames_per_beat": 15,
+   "bars": 14,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "hype",
+    "tense"
+   ],
+   "use": [
+    "launch",
+    "ad",
+    "short_film"
+   ],
+   "desc": "trailer arc: low drone + sub pulse, rising 16th ostinato, full wall (taiko, strings, brass), a 3 s sub-only valley, a 2-bar crescendo, a title hit with a hard stop, a quiet hold; markers in the sidecar",
+   "sections": [
+    {
+     "name": "act1",
+     "frame0": 0,
+     "frames": 240,
+     "bars": 4.0,
+     "energy": 0.2
+    },
+    {
+     "name": "act2",
+     "frame0": 240,
+     "frames": 240,
+     "bars": 4.0,
+     "energy": [
+      0.45,
+      0.75
+     ]
+    },
+    {
+     "name": "act3",
+     "frame0": 480,
+     "frames": 240,
+     "bars": 4.0,
+     "energy": 1.0
+    },
+    {
+     "name": "gap",
+     "frame0": 720,
+     "frames": 90,
+     "bars": 1.5,
+     "energy": 0.02
+    },
+    {
+     "name": "crescendo",
+     "frame0": 810,
+     "frames": 120,
+     "bars": 2.0,
+     "energy": [
+      0.3,
+      1.0
+     ]
+    },
+    {
+     "name": "hit",
+     "frame0": 930,
+     "frames": 45,
+     "bars": 0.75,
+     "energy": 1.0
+    },
+    {
+     "name": "hold",
+     "frame0": 975,
+     "frames": 105,
+     "bars": 1.75,
+     "energy": 0.0
+    }
+   ],
+   "drop_frames": [
+    480,
+    930
+   ],
+   "sidecar": "library/beds/bed_trailer_arc.json",
+   "markers": {
+    "act1_start": 0,
+    "act2_start": 240,
+    "act3_start": 480,
+    "gap_start": 720,
+    "gap_end": 810,
+    "crescendo_start": 810,
+    "hit": 930,
+    "quiet_hold_start": 975,
+    "end": 1080,
+    "visual_cut_frame": 929
+   },
+   "act_bars": [
+    4,
+    4,
+    4
+   ],
+   "length_rule": "fixed length, NOT a loop: never loop or crossfade it into itself. To fit a cut, re-render with trailer.render_trailer(act_bars=(a1, a2, a3)) (whole bars, acts 1-3 only, all before the gap), or trim the WAV only by whole bars inside acts 1-2 (cut on bar_frames, 10 ms crossfade); never trim inside or after gap_start: the gap, crescendo, hit and hold keep fixed beat lengths. Cut picture to black on visual_cut_frame (hit - 1, rule R1).",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:trailer_arc",
+    "trailer",
+    "markers",
+    "non-loop",
+    "mood:cinematic",
+    "mood:hype",
+    "mood:tense",
+    "use:launch",
+    "use:ad",
+    "use:short_film"
+   ],
+   "lufs_i": -16.03,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -12.6,
+   "centroid_hz": 623,
+   "crest_db": 18.1,
+   "duration_s": 36.0,
    "mastered_lufs": -16.0
   },
   {

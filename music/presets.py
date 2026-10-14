@@ -132,3 +132,16 @@ STRUCTURES.update({
     "outro_8s": [("final", 3, 0.8), ("tail", 1, 0.15)],                 # 4 bars = 8.0 s at 120 BPM
     "anthem_ramp_16": [("intro", 2, 0.35), ("build", 6, (0.45, 0.85)), ("drop", 6, 1.0), ("final", 1, 0.8), ("tail", 1, 0.15)],
 })
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------
+# 2026-10-14: trailer arc (music/trailer.py, NOT a loop and NOT in PRESETS, so no 8-bar loop bed is built from it). Every marker is a whole number of BEATS,
+# so with the tempo snap (one beat = whole frames) every marker is a whole frame at any fps. Length rule: change act_bars (whole bars, acts 1-3 only, before the
+# gap); the gap, crescendo, hit and hold keep their beat lengths. Shape (round-4/5 trailer study, craft only): quiet act 1, rising act 2, sustained wall,
+# ONE near-silent valley of 2-4 s (sub only), crescendo, title hit with a hard stop, quiet hold.
+TRAILERS = {
+    "trailer_arc": dict(bpm=120, key=9, scale="minor", act_bars=(4, 4, 4), gap_beats=6, cresc_bars=2, ring_beats=3, hold_beats=7,
+                        prog_act1=["i", "i", "i", "i"], prog_act2=["i", "III", "iv", "V"], prog_act3=["i", "VI", "III", "VII"], prog_cresc=["VI", "V"],
+                        gap_below_wall_db=38.0, mood=["cinematic", "hype", "tense"], use=["launch", "ad", "short_film"],
+                        desc="trailer arc: low drone + sub pulse, rising 16th ostinato, full wall (taiko, strings, brass), a 3 s sub-only valley, "
+                             "a 2-bar crescendo, a title hit with a hard stop, a quiet hold; markers in the sidecar"),
+}

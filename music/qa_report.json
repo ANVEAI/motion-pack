@@ -1,5 +1,5 @@
 {
- "count": 64,
+ "count": 65,
  "fails": [],
  "warns": [
   "music.bed_desi_bounce_loop8: in-scale chroma share 0.61",
@@ -16,6 +16,7 @@
    "beat_events_on_whole_frames": "48/48",
    "inscale_share": 0.91,
    "top_pc": 4,
+   "bass_share": 0.6,
    "seam_flux_ratio": 0.92,
    "seam_step_ratio": 0.03,
    "stem_rel_db": {
@@ -32,6 +33,7 @@
    "beat_events_on_whole_frames": "32/32",
    "inscale_share": 0.87,
    "top_pc": 9,
+   "bass_share": 0.48,
    "seam_flux_ratio": 0.96,
    "seam_step_ratio": 0.01,
    "stem_rel_db": {
@@ -48,6 +50,7 @@
    "beat_events_on_whole_frames": "48/48",
    "inscale_share": 0.92,
    "top_pc": 6,
+   "bass_share": 0.67,
    "seam_flux_ratio": 0.83,
    "seam_step_ratio": 0.14,
    "stem_rel_db": {
@@ -65,6 +68,7 @@
    "beat_events_on_whole_frames": "8/8",
    "inscale_share": 0.92,
    "top_pc": 9,
+   "bass_share": 0.74,
    "seam_flux_ratio": 0.93,
    "seam_step_ratio": 0.02,
    "stem_rel_db": {
@@ -82,6 +86,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.98,
    "top_pc": 9,
+   "bass_share": 0.69,
    "seam_flux_ratio": 1.07,
    "seam_step_ratio": 0.01,
    "stem_rel_db": {
@@ -98,6 +103,7 @@
    "beat_events_on_whole_frames": "4/4",
    "inscale_share": 0.78,
    "top_pc": 4,
+   "bass_share": 0.32,
    "seam_flux_ratio": 0.92,
    "seam_step_ratio": 0.4,
    "stem_rel_db": {
@@ -115,6 +121,7 @@
    "beat_events_on_whole_frames": "2/2",
    "inscale_share": 0.93,
    "top_pc": 9,
+   "bass_share": 0.54,
    "seam_flux_ratio": 0.9,
    "seam_step_ratio": 0.0,
    "stem_rel_db": {
@@ -133,6 +140,7 @@
    "beat_events_on_whole_frames": "2/2",
    "inscale_share": 0.61,
    "top_pc": 5,
+   "bass_share": 0.34,
    "seam_flux_ratio": 0.87,
    "seam_step_ratio": 0.14,
    "stem_rel_db": {
@@ -150,6 +158,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.86,
    "top_pc": 9,
+   "bass_share": 0.76,
    "seam_flux_ratio": 0.98,
    "seam_step_ratio": 0.01,
    "stem_rel_db": {
@@ -166,6 +175,7 @@
    "beat_events_on_whole_frames": "48/48",
    "inscale_share": 0.85,
    "top_pc": 9,
+   "bass_share": 0.63,
    "seam_flux_ratio": 0.89,
    "seam_step_ratio": 0.02,
    "stem_rel_db": {
@@ -183,6 +193,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.86,
    "top_pc": 9,
+   "bass_share": 0.37,
    "seam_flux_ratio": 0.96,
    "seam_step_ratio": 0.41,
    "stem_rel_db": {
@@ -202,6 +213,7 @@
    "beat_events_on_whole_frames": "6/6",
    "inscale_share": 0.65,
    "top_pc": 9,
+   "bass_share": 0.47,
    "seam_flux_ratio": 0.98,
    "seam_step_ratio": 0.29,
    "stem_rel_db": {
@@ -219,6 +231,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.96,
    "top_pc": 9,
+   "bass_share": 0.64,
    "seam_flux_ratio": 0.97,
    "seam_step_ratio": 0.0,
    "stem_rel_db": {
@@ -238,6 +251,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.68,
    "top_pc": 4,
+   "bass_share": 0.6,
    "seam_flux_ratio": 0.93,
    "seam_step_ratio": 0.04,
    "stem_rel_db": {
@@ -255,6 +269,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.89,
    "top_pc": 0,
+   "bass_share": 0.54,
    "seam_flux_ratio": 0.98,
    "seam_step_ratio": 0.65,
    "stem_rel_db": {
@@ -271,6 +286,7 @@
    "beat_events_on_whole_frames": "32/32",
    "inscale_share": 0.91,
    "top_pc": 9,
+   "bass_share": 0.4,
    "seam_flux_ratio": 0.94,
    "seam_step_ratio": 0.01,
    "stem_rel_db": {
@@ -288,6 +304,7 @@
    "beat_events_on_whole_frames": "48/48",
    "inscale_share": 0.9,
    "top_pc": 9,
+   "bass_share": 0.86,
    "seam_flux_ratio": 0.86,
    "seam_step_ratio": 0.02,
    "stem_rel_db": {
@@ -304,6 +321,7 @@
    "beat_events_on_whole_frames": "8/8",
    "inscale_share": 0.89,
    "top_pc": 9,
+   "bass_share": 0.4,
    "seam_flux_ratio": 0.92,
    "seam_step_ratio": 0.02,
    "stem_rel_db": {
@@ -321,6 +339,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.97,
    "top_pc": 9,
+   "bass_share": 0.63,
    "seam_flux_ratio": 1.0,
    "seam_step_ratio": 0.02
   },
@@ -332,6 +351,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.82,
    "top_pc": 9,
+   "bass_share": 0.22,
    "seam_flux_ratio": 1.0,
    "seam_step_ratio": 0.01,
    "stem_rel_db": {
@@ -349,6 +369,7 @@
    "beat_events_on_whole_frames": "2/2",
    "inscale_share": 0.77,
    "top_pc": 4,
+   "bass_share": 0.37,
    "seam_flux_ratio": 0.85,
    "seam_step_ratio": 0.25,
    "stem_rel_db": {
@@ -366,6 +387,7 @@
    "beat_events_on_whole_frames": "3/3",
    "inscale_share": 0.93,
    "top_pc": 4,
+   "bass_share": 0.38,
    "seam_flux_ratio": 1.03,
    "seam_step_ratio": 0.41,
    "stem_rel_db": {
@@ -383,6 +405,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.97,
    "top_pc": 7,
+   "bass_share": 0.61,
    "seam_flux_ratio": 0.97,
    "seam_step_ratio": 0.0,
    "stem_rel_db": {
@@ -400,6 +423,7 @@
    "beat_events_on_whole_frames": "3/3",
    "inscale_share": 0.8,
    "top_pc": 7,
+   "bass_share": 0.72,
    "seam_flux_ratio": 0.7,
    "seam_step_ratio": 0.22,
    "stem_rel_db": {
@@ -416,6 +440,7 @@
    "beat_events_on_whole_frames": "4/4",
    "inscale_share": 0.82,
    "top_pc": 6,
+   "bass_share": 0.44,
    "seam_flux_ratio": 0.93,
    "seam_step_ratio": 0.01,
    "stem_rel_db": {
@@ -433,6 +458,7 @@
    "beat_events_on_whole_frames": "32/32",
    "inscale_share": 0.75,
    "top_pc": 11,
+   "bass_share": 0.7,
    "seam_flux_ratio": 1.0,
    "seam_step_ratio": 0.03,
    "stem_rel_db": {
@@ -450,6 +476,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.91,
    "top_pc": 9,
+   "bass_share": 0.4,
    "seam_flux_ratio": 0.97,
    "seam_step_ratio": 0.08,
    "stem_rel_db": {
@@ -466,6 +493,7 @@
    "beat_events_on_whole_frames": "72/72",
    "inscale_share": 0.91,
    "top_pc": 9,
+   "bass_share": 0.44,
    "stem_rel_db": {
     "drums": 0.0,
     "bass": -2.0,
@@ -482,6 +510,7 @@
    "beat_events_on_whole_frames": "38/38",
    "inscale_share": 0.92,
    "top_pc": 6,
+   "bass_share": 0.53,
    "hook_first3_peak_db": -3.6,
    "stem_rel_db": {
     "drums": 0.0,
@@ -499,6 +528,7 @@
    "beat_events_on_whole_frames": "1/1",
    "inscale_share": 0.98,
    "top_pc": 9,
+   "bass_share": 0.64,
    "stem_rel_db": {
     "drums": 0.0,
     "bass": -2.0,
@@ -514,6 +544,7 @@
    "beat_events_on_whole_frames": "3/3",
    "inscale_share": 0.86,
    "top_pc": 9,
+   "bass_share": 0.27,
    "hook_first3_peak_db": -1.5,
    "stem_rel_db": {
     "drums": 0.0,
@@ -531,6 +562,7 @@
    "beat_events_on_whole_frames": "4/4",
    "inscale_share": 0.85,
    "top_pc": 9,
+   "bass_share": 0.52,
    "stem_rel_db": {
     "drums": 0.0,
     "bass": -2.0,
@@ -547,6 +579,7 @@
    "beat_events_on_whole_frames": "90/90",
    "inscale_share": 0.79,
    "top_pc": 11,
+   "bass_share": 0.62,
    "stem_rel_db": {
     "drums": 0.0,
     "bass": -2.0,
@@ -563,6 +596,7 @@
    "beat_events_on_whole_frames": "2/2",
    "inscale_share": 0.92,
    "top_pc": 9,
+   "bass_share": 0.18,
    "stem_rel_db": {
     "drums": 0.0,
     "bass": -2.0,
@@ -579,6 +613,7 @@
    "beat_events_on_whole_frames": "1/1",
    "inscale_share": 0.97,
    "top_pc": 7,
+   "bass_share": 0.33,
    "stem_rel_db": {
     "drums": 0.0,
     "bass": -2.0,
@@ -595,6 +630,7 @@
    "beat_events_on_whole_frames": "4/4",
    "inscale_share": 0.92,
    "top_pc": 2,
+   "bass_share": 0.29,
    "stem_rel_db": {
     "drums": 0.0,
     "bass": -2.0,
@@ -611,6 +647,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.93,
    "top_pc": 9,
+   "bass_share": 0.41,
    "seam_flux_ratio": 0.6,
    "seam_step_ratio": 0.01,
    "stem_rel_db": {
@@ -626,6 +663,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.91,
    "top_pc": 9,
+   "bass_share": 0.33,
    "seam_flux_ratio": 0.71,
    "seam_step_ratio": 0.34,
    "stem_rel_db": {
@@ -641,6 +679,7 @@
    "beat_events_on_whole_frames": "0/0",
    "inscale_share": 0.94,
    "top_pc": 9,
+   "bass_share": 0.34,
    "seam_flux_ratio": 0.82,
    "seam_step_ratio": 0.33,
    "stem_rel_db": {
@@ -658,11 +697,38 @@
    "beat_events_on_whole_frames": "24/24",
    "inscale_share": 0.49,
    "top_pc": 5,
+   "bass_share": 0.63,
    "seam_flux_ratio": 0.57,
    "seam_step_ratio": 0.0,
    "stem_rel_db": {
     "drums": 0.0,
     "lead": -4.0
+   }
+  },
+  {
+   "id": "music.bed_trailer_arc",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "52da89c92592",
+   "beat_events_on_whole_frames": "18/18",
+   "inscale_share": 0.95,
+   "top_pc": 4,
+   "bass_share": 0.58,
+   "trailer": {
+    "wall_dbfs": -15.0,
+    "gap_dbfs": -53.1,
+    "gap_below_wall_db": 38.1,
+    "crescendo_rise_db": 19.2,
+    "hit_dbfs": -10.9,
+    "hold_below_hit_db": 56.2,
+    "tail_zero": true
+   },
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -9.4
    }
   },
   {

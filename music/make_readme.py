@@ -22,9 +22,10 @@ A("## Build and QA")
 A("```bash")
 A("cd music")
 A("python3 build_music.py [--fps 30]       # library/{beds,stingers,logos}/*.wav, per-bed .json sidecars (events in frames), manifest.json, tempo_maps.json  (about 45 s)")
-A("python3 qa.py                           # loudness, true peak, determinism, loop seam (step + spectral flux), beat events on whole frames, key chroma, hook, python-vs-ffmpeg")
+A("python3 qa.py                           # loudness, true peak, determinism, loop seam (step + spectral flux), beat events on whole frames, key chroma, bass share, hook, trailer markers / gap / crescendo / hold, python-vs-ffmpeg")
 A("python3 tests/test_music.py             # Euclid, chords in key, deterministic compose + grid, hook in first 3 frames, seamless loop, duck depth/look-ahead, cue lint")
 A("python3 tests/test_expansion.py         # stereo loop tiling fix, just intonation, tempo ramp on whole frames, thekas seamless, new presets deterministic, sitar logo, every transition kind sweetened")
+A("python3 tests/test_trailer.py           # trailer arc: markers on whole frames at 24/25/30/60 fps, deterministic, length rule, gap / crescendo / hit / quiet hold / digital-zero tail, ears finds the gap and the crescendo at the marker times")
 A("python3 demo/demo_expansion.py          # 24 s India-market spot: looped indian_fusion bed + new SFX families + formerly pending sweeteners + sitar logo -> demo/out/expansion/master.wav")
 A("python3 demo/demo_mix.py                # 21 s launch-ad track: bed + word-free voice stand-in + 11 transition sweeteners + UI cues + riser into logo -> demo/out/master.wav")
 A("python3 mixer.py cuesheet.json --out DIR   # CLI mixer for any cue sheet")
@@ -62,12 +63,12 @@ A("R1 one frame after the picture (exact, tested) | R2 over-bed table (hero +4.5
   "R6 pre-hit vacuum | R9 round-robin seeds for repeated ids | R10 short-form needs an audible event on frames 0-3 | R12 phone check (+ lint for sub-only cues) | stems sum exactly to the pre-limiter master.")
 A("")
 A("## Beds (measured, mastered to -16 LUFS-I stand-alone preview level; the mixer sets the real level)")
-A("| id | preset | structure | BPM (snapped) | frames/beat | bars | length s | loop | LUFS-I | TP dBTP | centroid | in-scale chroma | seam flux vs other bar lines | mood | use |")
-A("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
+A("| id | preset | structure | BPM (snapped) | frames/beat | bars | length s | loop | LUFS-I | TP dBTP | centroid | bass < 150 Hz | in-scale chroma | seam flux vs other bar lines | mood | use |")
+A("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
 for b in beds:
     r = rows.get(b["id"], {})
-    A("| `%s` | %s | %s | %.2f (req %s) | %d | %d | %.1f | %s | %.1f | %.2f | %d | %s | %s | %s | %s |" % (b["id"].replace("music.", ""), b["preset"], b["structure"], b["bpm"], b["bpm_requested"], b["frames_per_beat"], b["bars"], b["duration_s"],
-                                                                                              "yes" if b["loop"] else "no", b["lufs_i"], b["true_peak_db"], b["centroid_hz"], r.get("inscale_share", ""), r.get("seam_flux_ratio", "-"),
+    A("| `%s` | %s | %s | %.2f (req %s) | %d | %d | %.1f | %s | %.1f | %.2f | %d | %s | %s | %s | %s | %s |" % (b["id"].replace("music.", ""), b["preset"], b["structure"], b["bpm"], b["bpm_requested"], b["frames_per_beat"], b["bars"], b["duration_s"],
+                                                                                              "yes" if b["loop"] else "no", b["lufs_i"], b["true_peak_db"], b["centroid_hz"], ("%d%%" % round(100 * r["bass_share"])) if "bass_share" in r else "-", r.get("inscale_share", ""), r.get("seam_flux_ratio", "-"),
                                                                                               ",".join(b["mood"]), ",".join(b["use"])))
 A("")
 A("Each bed has a `.json` sidecar: `meta` (sections with start frames and energy, chords per bar), `kick_frames`, `clap_snare_frames`, `drop_frames`, `riser_frames`, `bar_frames`, `beat_frames` at the build fps: cut your edit to these.")
@@ -83,6 +84,43 @@ A("")
 A("## Tempo snap table (30 fps)")
 A("120, 100, 90, 75 BPM are already integer frames per beat; 110 -> 112.5 (16 frames), 128 -> 128.57 (14), 140 -> 138.46 (13). `tempo_maps.json` has 11 tempos x fps 24/30/60.")
 A("")
+tr = next((b for b in beds if b.get("markers")), None)
+if tr:
+    q = rows.get(tr["id"], {}).get("trailer", {})
+    mk, fps = tr["markers"], tr["fps"]
+    A("## Trailer arc (2026-10-14, gap `music/bed_trailer_arc`): a bed with a planned valley, not a loop")
+    A("`trailer.py` (`render_trailer(name, fps, seed, act_bars)`, preset `TRAILERS` in `presets.py`) renders the shape the round 4/5 trailer references share: **act 1** low drone + sub pulse (a softer second pulse a dotted 8th later, dark strings swelling in the last two bars) -> **act 2** rising 16th ostinato (roots climb i, III, iv, V; the filter opens; taiko enters halfway) -> **act 3** the full wall (taiko ostinato, sub kicks, snares, 16th ticks, tremolo strings in two octaves, brass stabs and a brass line; a crash, an impact and a one-bar noise riser into it) -> **the planned gap** (the wall stops dead on a 12 ms fade; only a sustained A1 sub remains, set 38 dB under the wall) -> **a 2-bar crescendo** (VI -> V; snare roll in 8ths, 16ths, then 32nds; taiko and strings swelling about 20 dB; a riser) -> **the title hit** (taiko, sub kick, crash, brass and low strings; every other layer ends ON the hit sample) -> **a quiet hold** (the hit rings out, then near-silence; the last 0.15 s is digital zero). Lyria (`cloud/`) cannot place markers; this bed can.")
+    A("")
+    A("| marker | frame (%d fps) | s | what |" % fps)
+    A("|---|---|---|---|")
+    docs = {"act1_start": "act 1: low drone + sub pulse", "act2_start": "act 2: rising 16th ostinato", "act3_start": "act 3: the full wall (crash + impact here)",
+            "gap_start": "the wall stops dead; sub-only valley begins (mark it `kind: gap` in `plan.audio.quiet`)", "gap_end": "valley ends (= crescendo_start)",
+            "crescendo_start": "crescendo begins (an audible onset)", "hit": "title hit and hard stop; its attack sample is hit x SR / fps",
+            "visual_cut_frame": "cut the picture to black here: one frame BEFORE the hit (rule R1)", "quiet_hold_start": "the hit has rung out; near-silence (mark it `kind: hold`)",
+            "end": "last frame (exclusive); the last 0.15 s is digital zero"}
+    for k in ("act1_start", "act2_start", "act3_start", "gap_start", "gap_end", "crescendo_start", "visual_cut_frame", "hit", "quiet_hold_start", "end"):
+        A("| `%s` | %d | %.2f | %s |" % (k, mk[k], mk[k] / fps, docs[k]))
+    A("")
+    A("- **Not a loop; the length rule.** Fixed length (%.0f s at the default 4 + 4 + 4 act bars). Never loop or crossfade it into itself. To fit a cut, re-render with `render_trailer(act_bars=(a1, a2, a3))` (whole bars, acts 1 to 3 only, all before the gap), or trim the WAV by whole bars inside acts 1 and 2 only. The gap, crescendo, hit and hold keep fixed beat lengths. The sidecar (`bed_trailer_arc.json`) carries every marker in frames and seconds, `bar_frames`, `beat_frames`, `kick_frames`, `riser_frames` and the `length_rule`." % tr["duration_s"])
+    A("- **Plan it for ears.** The gap and the hold are intended shape: put them in the composition plan as `plan.audio.quiet` `[{\"t\": [24.0, 27.0], \"kind\": \"gap\", \"why\": \"...\"}, {\"t\": [32.5, 36.0], \"kind\": \"hold\", \"why\": \"...\"}]` (marker frames / fps, plus the bed's start time) and `\"role\": \"trailer\"` for the bass-share note. Cut the picture to black on `visual_cut_frame`; the hit lands one frame later.")
+    A("- **Measured** (`qa.py`, on the -16 LUFS-I preview master): the wall is %.1f dBFS and the gap %.1f dBFS (**%.1f dB under the wall**; QA needs 30); the crescendo rises **%.1f dB** into the hit (QA needs 12); the hold is **%.1f dB under the hit** (QA needs 40); the last 0.15 s is digital zero: %s; every marker is a whole frame." % (
+        q.get("wall_dbfs", 0), q.get("gap_dbfs", 0), q.get("gap_below_wall_db", 0), q.get("crescendo_rise_db", 0), q.get("hold_below_hit_db", 0), q.get("tail_zero")))
+    A("- **ears, mixed through `mixer.py` to -14 LUFS** (14 Oct 2026, `ears/listen.py master.wav --plan plan.json`): -14.03 LUFS-I, true peak -1.5 dBTP, AAC probes -1.46 and -1.42 dBTP. With the gap and the hold marked, `ears/structure` passes: it finds the valley at 24.0-27.0 s and the crescendo (the biggest step) at 27.0 s, which are the marker times, and reports the ending as a quiet hold; the unmarked file warns of dead air at 24.0-27.0 s and 32.5-35.5 s. Bass share (< 150 Hz) is 58%, inside the 50-61% range for a trailer bed. **One warning stays:** the loudness range is 15.9 LU over the whole file and 13.5 LU without the two planned regions (house max 10 LU), because the act-1 drone sits about 16 LU under the wall by design. Lift act 1 if a given cut needs a flatter range.")
+    A("- **No human has listened to it.** The voices are the pack's owned synthesis and the arrangement is written by rule; the numbers prove the shape, not the taste. Audition it once before a hero use.")
+    A("")
+A("## Bed bass share by role (round 4/5 references)")
+A("The share of energy under 150 Hz, as `tools/refstudy.py` and `ears` measure it. Pick the bed by what the film is for; round 3's 52-87% was the hype case, not a default.")
+A("")
+A("| role | bass share | seen in the references | pack beds inside the range (measured, preview masters; by bass share only, not by genre) |")
+A("|---|---|---|---|")
+share = {b["id"]: rows.get(b["id"], {}).get("bass_share") for b in beds}
+fit = lambda lo, hi: ", ".join("`%s` %d%%" % (i.replace("music.", ""), round(v * 100)) for i, v in sorted(share.items(), key=lambda kv: kv[1] or 0) if v is not None and lo <= round(v * 100) <= hi) or "none"
+A("| proof / explainer (numbers and VO sit on top) | **20-36%%** | six tier-A pieces: 21, 24, 24, 31, 32, 36%% | %s |" % fit(20, 36))
+A("| hype / trailer | **50-61%%** | three trailer-style pieces: 58, 61, 55%% | %s |" % fit(50, 61))
+A("| VO documentary | **15-34%%** | three VO documentaries: 18, 15, 33%% | %s |" % fit(15, 34))
+A("")
+A("Most of the pack's beds sit above the proof / explainer range (the bass-led `corporate_bright`, `ambient_pad` and `uplift_corporate` beds measure 48-70%). For a proof film or an explainer, pick one from the first row, or check yours: `python3 ears/listen.py master.wav --role proof|explainer|hype|trailer|vo_doc` (or `plan.audio.role`) says below, inside or above the range. It is information, not a verdict. A bed that is lean in the bass and still sounds like a corporate explainer bed is a gap in the library.")
+A("")
 A("## Expansion 2026-10-13 (what is new)")
 A("- **17 new presets** (`presets.py`, data-driven `drums=\"pattern\"` rows): indian_fusion, bhangra_hype, raga_calm, festive_dhol (Hindustani just intonation, `tuning=\"ji\"`, raga scales raga_bilawal/kafi/khamaj/bhairav/yaman/bhupali/asavari), lofi_jazz (7th chords, 8th swing), synthwave, deep_house, dnb_170 (snaps to 163.6 BPM at 30 fps), ambient_pad, chiptune_8bit, acoustic_folk_pluck, documentary_marimba, orchestral_synth_epic, jazz_walk (walking bass), comedy_pizzicato, corporate_bright, suspense_pulse; each ships as an 8-bar seamless bed.")
 A("- **New voices** (owned, `sfx/mpaudio/indian.py`, `instruments_ext.py`): tabla bols, sitar (jawari + tarab), santoor, shehnai-like, bansuri-like, harmonium, tanpura, dholak, manjira, ghungroo, nagara, taiko, string ensemble, guitar strum, chiptune square/noise, brass-like stab, ride, upright bass.")
@@ -96,6 +134,7 @@ A("## Honest limits")
 A("- **No listening pass yet**: the kit is verified by measurement (loudness, true peak, determinism, seams, grid, chroma) and a timeline still, not by ear. The composer makes competent generic beds, not finished songs; treat them as pro-grade scratch / library beds, and expect to retune a preset after one listen.")
 A("- (closed 2026-10-13: tempo ramps exist as `anthem_ramp`; the loop bed `anthem_build` stays constant-tempo by design.) Earlier note: `anthem_build` does not accelerate (research suggested 100 -> 128 BPM); a tempo ramp needs a tempo map the grid does not support yet. `cinematic_drone` and `suspense_tick` are sparse by design.")
 A("- Indian presets are stylised owned synthesis in just intonation, not recordings or imitations; JI and the tabla/sitar models are textbook starting points (Raman 1920 for the dayan modes, a heuristic bayan glide) that need one listening pass with a musician. In-scale chroma warnings on bhangra/festive/desi beds come from untuned drum partials, not wrong notes.")
+A("- **The trailer arc has not been auditioned by a human** (see its section); its loudness range is wide by design, and the Lyria path in `cloud/` remains the only way to get a sung or orchestrally real trailer, without markers.")
 A("- The demo voice is a word-free formant babble stand-in used only to prove ducking and cue-over-voice levels. It is not speech.")
 A("- Loudness targets for Instagram / TikTok / X / LinkedIn remain unverified (D-grade); the house master is -14 LUFS-I, TP <= -1.5 on the WAV, AAC probes <= -1.0 dBTP (so HyperFrames never lowers the track).")
 open(os.path.join(HERE, "README.md"), "w").write("\n".join(L) + "\n")

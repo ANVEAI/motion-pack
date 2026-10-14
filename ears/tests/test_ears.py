@@ -294,3 +294,146 @@ def test_gemini_mood_is_opt_in_and_fails_soft(monkeypatch, tmp_path):
     monkeypatch.delenv('MP_GCP_PROJECT', raising=False)
     r = mood.gemini(str(tmp_path / 'missing.wav'))
     assert r['available'] is False and r['text'].startswith('mood: gemini not available')
+
+
+# ------------------------------------------------------------------------------------------------ round 4/5: modes, planned quiet, end shape
+def _with_hold(body_s=10.0, hold_s=6.0):
+    """a shaped body, then an end-card quiet hold of near-silence (-70 dBFS room tone), the last 0.15 s at digital zero"""
+    body = np.concatenate([s.mix_like(3, 11) * 0.3, s.mix_like(body_s - 3, 12)])
+    hold = 10 ** (-70 / 20) * np.random.default_rng(3).standard_normal(int(hold_s * s.SR))
+    y = np.concatenate([body, hold])
+    y[-int(0.15 * s.SR):] = 0
+    return y
+
+
+def test_a_planned_quiet_hold_passes_and_the_same_file_unmarked_warns():
+    y = _with_hold()
+    bare = check(analyze(s.st(y)), 'structure')
+    assert 'dead air' in whats(bare) and bare['status'] == 'warn'
+    plan = {'fps': 30, 'audio': {'quiet': [{'t': [10.0, 16.0], 'kind': 'hold', 'why': 'end card holds on near-silence'}]}}
+    ok = check(analyze(s.st(y), plan=plan), 'structure')
+    assert 'dead air' not in whats(ok) and ok['status'] == 'pass', whats(ok)
+    row = ok['measured']['quiet'][-1]
+    assert row['planned'] and row['kind'] == 'hold' and row['length_s'] == pytest.approx(6.0, abs=0.5)
+    assert ok['measured']['end_shape'] == 'quiet hold'
+    long = check(analyze(s.st(_with_hold(10.0, 11.0)), plan={'audio': {'quiet': [{'t': [10.0, 21.0], 'kind': 'hold'}]}}), 'structure')
+    assert 'longer than the house max 9 s' in whats(long)
+
+
+def test_planned_quiet_is_left_out_of_the_loudness_range():
+    """a mid-file planned hold of 6 s widens the whole-file LRA (18 LU, over the house 10); judged without the planned region it is not a fault"""
+    a, b = s.mix_like(8.0, 21), s.mix_like(8.0, 22)
+    hold = 10 ** (-45 / 20) * np.random.default_rng(5).standard_normal(int(6.0 * s.SR))
+    y = np.concatenate([a, hold, b]); y[-int(0.15 * s.SR):] = 0
+    bare = check(analyze(s.st(y)), 'loudness')
+    assert bare['measured']['lra_lu'] > 10 and 'loudness range' in whats(bare)
+    planned = check(analyze(s.st(y), quiet=[{'t': [8.0, 14.0], 'kind': 'hold', 'why': 'a held reset'}]), 'loudness')
+    assert planned['measured']['lra_lu'] == bare['measured']['lra_lu']                   # the whole-file figure is still reported
+    assert planned['measured']['lra_without_planned_quiet_lu'] < 3.0 and 'loudness range' not in whats(planned)
+    assert any('without the planned quiet regions' in n for n in planned['notes'])
+
+
+def test_a_master_exactly_on_the_ceiling_is_not_over_it():
+    """the mixer's limiter sits on -1.5 dBTP and a 4x oversampled meter reads it a hair over: that is the ceiling, not a breach"""
+    y = s.mix_like(8, 31)
+    y = y / core.tp_envelope(s.st(y)).max() * 10 ** (-1.495 / 20)                        # true peak 0.005 dB over the ceiling: a rounding hair
+    y[-int(0.15 * s.SR):] = 0
+    c = check(analyze(s.st(y), is_master=True), 'loudness')
+    assert not any('true peak' in i['what'] for i in c['issues']), whats(c)
+    hot = check(analyze(s.st(y * 10 ** (1.0 / 20)), is_master=True), 'loudness')
+    assert any('true peak' in i['what'] for i in hot['issues'])                                # 1 dB over still warns
+
+
+def test_ending_shapes_include_the_sustained_sub():
+    body = np.concatenate([s.mix_like(3, 11) * 0.3, s.mix_like(7, 12)])
+    sub = 10 ** (-24 / 20) * np.sin(2 * np.pi * 55 * s.t_(4.0))
+    y = np.concatenate([body, sub])
+    y[-int(0.15 * s.SR):] = 0
+    e = check(analyze(s.st(y)), 'structure')['measured']
+    assert e['end_shape'] == 'sustained sub' and e['sustained_sub']['low_share'] > 0.95            # a held low note, even at body level (the loudness curve alone says slam)
+    hold = check(analyze(s.st(_with_hold())), 'structure')['measured']
+    assert hold['end_shape'] == 'quiet hold' and 'sustained_sub' not in hold                # room-tone noise is not a held low note
+    slam = np.concatenate([body, s.mix_like(0.5, 13) * 2.0])
+    slam[-int(0.15 * s.SR):] = 0
+    assert check(analyze(s.st(slam)), 'structure')['measured']['end_shape'] == 'slam'
+
+
+def test_a_planned_quiet_open_waives_the_frame_0_event():
+    y = np.concatenate([np.zeros(int(1.5 * s.SR)), s.click_track(120, 6)])
+    assert 'first audible sound' in whats(check(analyze(s.st(y)), 'sync'))
+    sy = check(analyze(s.st(y), quiet=[{'t': [0, 1.5], 'kind': 'open', 'why': 'sound enters on the first visual event'}]), 'sync')
+    assert 'first audible sound' not in whats(sy) and any('planned quiet open' in n for n in sy['notes'])
+    y3 = np.concatenate([np.zeros(int(3.5 * s.SR)), s.click_track(120, 6)])
+    assert 'planned quiet open runs' in whats(check(analyze(s.st(y3), quiet=[[0, 3.5]]), 'sync'))
+
+
+def test_mode_vo_judges_speech_continuity_not_cut_sync():
+    y = s.click_track(120.0, 8.0, offset=0.02)
+    cuts = [0.02 + 0.5 * k + 0.23 for k in range(1, 14, 2)]                 # every cut off the onsets
+    tr = [(0.5, 7.5, 20)]
+    words = [(0.5 + 0.35 * k, 0.5 + 0.35 * k + 0.3) for k in range(20)]
+    music = check(analyze(s.st(y), cuts=cuts), 'sync')
+    assert music['status'] == 'fail'                                          # default mode unchanged
+    vo = check(analyze(s.st(y), cuts=cuts, transcript=tr, words=words, mode='vo'), 'sync')
+    assert 'of an onset' not in whats(vo) and any('information only' in n for n in vo['notes'])
+    assert vo['measured']['cuts_under_speech'] == 1.0
+    assert vo['measured']['cuts_inside_words'] > 0 and 'inside a word' in whats(vo)
+    gaps = [0.5 + 0.35 * k + 0.325 for k in range(1, 12, 2)]               # cuts in the 50 ms gaps between words
+    clean = check(analyze(s.st(y), cuts=gaps, transcript=tr, words=words, plan={'audio': {'mode': 'vo'}}), 'sync')
+    assert clean['measured']['cuts_inside_words'] == 0 and 'inside a word' not in whats(clean)
+
+
+def test_mode_continuous_scores_motion_events_on_onsets():
+    y = s.click_track(120.0, 8.0, offset=0.02)
+    on = [0.02 + 0.5 * k for k in range(1, 15)]
+    good = check(analyze(s.st(y), mode='continuous', events=on[::3]), 'sync')
+    assert good['measured']['events_on_onset'] == 1.0 and good['status'] == 'pass', whats(good)
+    bad = check(analyze(s.st(y), plan={'audio': {'mode': 'continuous', 'events': [t + 0.23 for t in on[::3]]}}), 'sync')
+    assert bad['measured']['events_on_onset'] == 0.0 and 'motion events' in whats(bad) and bad['status'] == 'fail'
+    none = check(analyze(s.st(y), mode='continuous'), 'sync')
+    assert any('no motion events' in n for n in none['notes'])
+
+
+def test_a_dense_bed_makes_a_half_hit_rate_chance_not_sync():
+    y = s.click_track(240.0, 8.0, offset=0.02)                                   # 4 onsets a second: about half the timeline is inside the 2-frame windows
+    on = [0.02 + 0.25 * k for k in range(1, 28)]
+    ev = [on[0], on[3] + 0.125, on[6], on[9] + 0.125, on[12], on[15] + 0.125, on[18], on[21] + 0.125]      # half on an onset, half between two
+    sy = check(analyze(s.st(y), mode='continuous', events=ev), 'sync')
+    m = sy['measured']
+    assert m['events_on_onset'] == 0.5 and 0.4 < m['events_on_onset_chance'] < 0.65, m
+    assert any('not evidence of sync' in n for n in sy['notes']), sy['notes']
+    sparse = check(analyze(s.st(s.click_track(120.0, 8.0, offset=0.02)), mode='continuous', events=[0.52, 1.52, 2.52, 3.52, 4.52]), 'sync')
+    assert not any('not evidence of sync' in n for n in sparse['notes'])           # 5 of 5 against a quarter of the timeline: that is sync
+
+
+def test_mode_and_role_words_are_not_case_sensitive():
+    y = s.click_track(120.0, 6.0, offset=0.02)
+    assert analyze(s.st(y), mode='VO')['mode'] == 'vo'
+    assert analyze(s.st(y), plan={'audio': {'mode': ' Continuous ', 'role': 'Trailer'}})['mode'] == 'continuous'
+    assert check(analyze(s.st(y), plan={'audio': {'role': 'Trailer'}}), 'compare')['measured']['role'] == 'trailer'
+    with pytest.raises(ValueError):
+        analyze(s.st(y), mode='loud')
+
+
+def test_bass_share_by_role_and_reference_quiet_shape():
+    y = s.mix_like(10, 4)
+    c = check(analyze(s.st(y), role='trailer'), 'compare')
+    assert c['status'] == 'info' and 'for a trailer bed' in ' '.join(c['notes'])
+    ref = {'loudness': {'integrated_lufs': -15.0}, 'audio': {'band_share_mean': {'low_<150Hz': 0.3, 'high_>4kHz': 0.05},
+           'loudness_curve_4hz_dbfs': [-60.0] * 4 + [-16.0] * 40 + [-70.0] * 8}}
+    c2 = check(analyze(s.st(y), refs=[('r', ref)], role='proof'), 'compare')
+    d = ' | '.join(c2['measured']['differences'])
+    assert 'quiet tail' in d and 'references end quiet hold 1' in d and 'proof bed' in d
+
+
+@pytest.mark.skipif(shutil.which(core.FFMPEG) is None, reason='ffmpeg not on PATH')
+def test_cli_continuous_mode_measures_motion_events_from_the_video(tmp_path):
+    clip = str(tmp_path / 'c.mp4')
+    vf = "drawbox=x=20:y=20:w=60:h=40:color=white:t=fill:enable='gte(t,1.0)',drawbox=x=0:y=140:w=320:h=24:color=0x4A18ED:t=fill:enable='gte(t,2.5)'"
+    subprocess.run([core.FFMPEG, '-v', 'error', '-nostdin', '-y', '-f', 'lavfi', '-i', 'color=c=0x202428:s=320x180:r=30:d=4', '-f', 'lavfi', '-i',
+                    "aevalsrc='0.02*sin(2*PI*110*t)+0.6*sin(2*PI*1500*t)*(between(t,1,1.03)+between(t,2.5,2.53))':s=48000:d=4", '-vf', vf,
+                    '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-shortest', clip], check=True)
+    from ears.listen import main
+    rep = main([clip, '--mode', 'continuous', '--quiet', '--json', str(tmp_path / 'e.json')])
+    sy = check(rep, 'sync')
+    assert rep['mode'] == 'continuous' and sy['measured']['motion_events'] == 2 and sy['measured']['events_on_onset'] == 1.0

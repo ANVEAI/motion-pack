@@ -3,6 +3,7 @@
 
     python3 ears/listen.py <video.mp4 | master.wav> [--plan out/plan.json] [--cuts cuts.json] [--transcript study.json|whisper.json]
                            [--ref study.json ...] [--json out.json] [--md out.md] [--loop] [--target-lufs -14] [--fps 30] [--quiet]
+                           [--mode auto|music|vo|continuous] [--events study.json|events.json] [--role proof|explainer|hype|trailer|vo_doc]
 
 Every check prints a measured value, pass / warn / fail against the pack spec (SKILL.md hard rules, music/mixer.py rules) or a stated house
 default (ears/manifest.json "spec"), and a concrete fix with timestamps:
@@ -10,11 +11,15 @@ default (ears/manifest.json "spec"), and a concrete fix with timestamps:
   clipping    flat-topped runs, samples and true peaks over 0 dBFS, crest factor, PLR
   tone        sub / low / mud / mid / presence / sibilance / air per octave vs the mid band; mud, boomy, thin, harsh, sibilant, dull + where
   speech      speech regions (detector or transcript), speech-to-music ratio 300 Hz-3.4 kHz, ducking depth (>= 9 dB), masking, words per minute
-  sync        tempo + confidence, beats, onsets, hits; an event on frames 0-3; cuts on onsets (>= 60 %); cue anchors on F + 1; risers end on F
-  structure   energy + novelty sections, drop time as % of runtime (late drop), the breath before the final sting, loop seam (--loop)
+  sync        tempo + confidence, beats, onsets, hits; an event on frames 0-3 (waived by a planned quiet open); cue anchors on F + 1;
+              risers end on F; the edit by --mode: music = cuts on onsets (>= 60 %), vo = speech continuity (no cut inside a word),
+              continuous = motion events on onsets (>= 60 %; events from the plan, --events, or measured from the video)
+  structure   energy + novelty sections, drop time as % of runtime (late drop), the breath before the final sting, loop seam (--loop),
+              near-silence (dead air unless planned in plan.audio.quiet [{t: [a, b], kind: open|dip|gap|hold, why}]), ending shape
   repetition  the same SFX-like onset repeated too often in 10 s; repeated plan cue ids
   stereo      L/R correlation, mono loss, width
-  compare     with --ref refstudy study.json files: loudness-curve shape, band shares, tempo, brightness, cuts on onsets
+  compare     with --ref refstudy study.json files: loudness-curve shape, band shares, tempo, brightness, cuts on onsets, quiet open / tail;
+              with --role (or plan.audio.role) the bass share against the round 4/5 range for that role
   mood        optional: EARS_CLAP_MODEL=<local CLAP checkpoint> + transformers/torch, or --mood gemini (opt-in cloud, paid);
               otherwise "mood: not available (no local model)"
 Then the top 3 issues a listener would notice and a 1-10 score per category (references/critic.md: 8 or more passes).
@@ -32,8 +37,12 @@ from ears import core, checks_level, checks_time, checks_shape, report, mood  # 
 from ears.core import SR  # noqa: E402
 
 
-def analyze(x, fps=30.0, is_master=False, channels=2, plan=None, cuts=None, transcript=None, refs=None, loop=False, target_lufs=None, name='input'):
-    """x: (n, 2) float at 48 kHz. plan: a plan.json dict; cuts: [seconds]; transcript: [(s, e, words)]; refs: [(name, study dict)]. -> report dict"""
+def analyze(x, fps=30.0, is_master=False, channels=2, plan=None, cuts=None, transcript=None, refs=None, loop=False, target_lufs=None, name='input',
+            mode=None, quiet=None, events=None, words=None, role=None):
+    """x: (n, 2) float at 48 kHz. plan: a plan.json dict; cuts: [seconds]; transcript: [(s, e, words)]; refs: [(name, study dict)].
+    mode: 'music' | 'vo' | 'continuous' (default: plan.audio.mode, else 'music'); quiet: planned quiet regions [{t: [a, b], kind, why}]
+    (default: plan.audio.quiet); events: motion-event seconds (default: plan.audio.events); words: [(s, e)] word timings; role: the bed's
+    role for the bass-share guidance (default: plan.audio.role). -> report dict"""
     x = np.asarray(x, float)
     if x.ndim == 1:
         x = np.stack([x, x], 1)
@@ -42,6 +51,13 @@ def analyze(x, fps=30.0, is_master=False, channels=2, plan=None, cuts=None, tran
     ctx = {'x': x, 'y': y, 'fps': float(fps), 'is_master': is_master, 'channels': channels, 'loop': loop, 'refs': refs or [],
            'transcript': transcript, 'cues': core.plan_cues(plan, fps) if plan else [],
            'cuts': cuts if cuts is not None else (core.cuts_from(plan, fps) if plan else None)}
+    pa = core.plan_audio(plan)
+    ctx['mode'] = mode.strip().lower() if isinstance(mode, str) and mode.strip() else (pa['mode'] or 'music')
+    if ctx['mode'] not in ('music', 'vo', 'continuous'):
+        raise ValueError('ears: mode must be music, vo or continuous, not %r' % ctx['mode'])
+    ctx['quiet'] = core.quiet_from(quiet) if quiet is not None else pa['quiet']
+    ctx['events'] = events if events is not None else pa['events']
+    ctx['words'], ctx['role'] = words, (role.strip().lower() if isinstance(role, str) and role.strip() else pa['role'])
     if target_lufs is not None:
         ctx['target_lufs'] = float(target_lufs)
     ctx['S'] = core.stft_power(y, 2048, 480)
@@ -55,7 +71,7 @@ def analyze(x, fps=30.0, is_master=False, channels=2, plan=None, cuts=None, tran
     ctx['cuts_on_onset'] = checks[4]['measured'].get('cuts_on_onset')
     checks.append(checks_shape.compare(ctx))
     secs = checks[5]['measured'].get('sections') or [{'t': [0.0, len(y) / SR]}]
-    rep = {'input': name, 'duration_s': round(len(y) / SR, 3), 'channels': channels, 'fps': fps, 'is_master': is_master,
+    rep = {'input': name, 'duration_s': round(len(y) / SR, 3), 'channels': channels, 'fps': fps, 'is_master': is_master, 'mode': ctx['mode'],
            'checks': checks, 'mood': mood.labels(y, SR, secs)}
     rep['scores'] = report.scores(checks)
     rep['top_issues'] = report.top_issues(checks)
@@ -77,7 +93,13 @@ def main(argv=None):
     ap.add_argument('--mood', choices=['auto', 'gemini', 'off'], default='auto',
                     help='auto: local CLAP if EARS_CLAP_MODEL is set; gemini: cloud/gemini_mood.py (opt-in, paid, sends audio to Google); off')
     ap.add_argument('--brief', default='', help='with --mood gemini: the brief to judge fit against')
-    ap.add_argument('--quiet', action='store_true')
+    ap.add_argument('--mode', dest='edit_mode', choices=['auto', 'music', 'vo', 'continuous'], default='auto',
+                    help='what the edit is scored on: music = cuts on onsets (the critic rule, music-led cut-driven pieces); vo = speech continuity '
+                         '(VO-led films); continuous = motion events on onsets (few or no cuts). auto: plan.audio.mode, else music')
+    ap.add_argument('--events', help='motion events for --mode continuous: a refstudy study.json (motion.events), or a JSON list of seconds / {t} / {frame}; '
+                                     'default plan.audio.events, else measured from the video with tools/refstudy.py')
+    ap.add_argument('--role', choices=['proof', 'explainer', 'hype', 'trailer', 'vo_doc'], help='the bed role for the bass-share guidance (default plan.audio.role)')
+    ap.add_argument('--quiet', action='store_true', help='print nothing (the reports still go to --json / --md)')
     a = ap.parse_args(argv)
     info = core.probe(a.input)
     x = core.decode(a.input)
@@ -86,10 +108,17 @@ def main(argv=None):
     plan = core.load_json(a.plan)
     fps = a.fps or (plan or {}).get('fps') or info['fps'] or 30.0
     cuts = core.cuts_from(core.load_json(a.cuts), fps) if a.cuts else None
-    tr = core.speech_from(core.load_json(a.transcript)) if a.transcript else None
+    trj = core.load_json(a.transcript) if a.transcript else None
+    tr, words = core.speech_from(trj), core.words_from(trj)
+    mode = None if a.edit_mode == 'auto' else a.edit_mode
+    events = core.events_from(core.load_json(a.events), fps) if a.events else None
+    if (mode or core.plan_audio(plan)['mode']) == 'continuous' and events is None and core.plan_audio(plan)['events'] is None and info['fps']:
+        sys.path.insert(0, os.path.join(core.PACK, 'tools'))
+        import refstudy                                   # the same detector the reference studies use
+        events = refstudy.motion_events(a.input, cuts or core.cuts_from(plan, fps) or []).get('events', [])
     refs = [(os.path.basename(os.path.dirname(os.path.abspath(p))) or p, core.load_json(p)) for p in a.ref]
     rep = analyze(x, fps, a.input.lower().endswith(('.wav', '.flac', '.aif', '.aiff')), info['channels'] or 2, plan, cuts, tr, refs, a.loop, a.target_lufs,
-                  os.path.basename(a.input))
+                  os.path.basename(a.input), mode=mode, events=events, words=words, role=a.role)
     if a.mood == 'gemini':
         rep['mood'] = mood.gemini(a.input, a.brief)
     elif a.mood == 'off':
@@ -102,7 +131,7 @@ def main(argv=None):
         os.makedirs(os.path.dirname(os.path.abspath(a.md)), exist_ok=True)
         open(a.md, 'w').write(md)
     if not a.quiet:
-        print('ears: %s (%.1f s)' % (rep['input'], rep['duration_s']))
+        print('ears: %s (%.1f s, mode %s)' % (rep['input'], rep['duration_s'], rep['mode']))
         for c in rep['checks']:
             print('  %-16s %-5s %s' % (c['id'], c['status'], report._measured(c)))
         print('  ' + rep['mood']['text'])

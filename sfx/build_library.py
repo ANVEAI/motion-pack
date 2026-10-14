@@ -21,7 +21,8 @@ PAIR_MAP = {"cut": "hardCut", "hardcut": "hardCut", "punchIn": "scalePunch", "sh
 # suggested level over the bed (K-weighted, 60 ms from the anchor) by class: house rules of docs/research/sound.md section 3
 OVER_BED = {"impact": 4.5, "logo": 5.0, "stinger": 4.5, "whoosh": 2.0, "riser": 4.0, "ui": 4.0, "glass": 3.0, "metal": 3.0, "wood": 3.0, "paper": 3.0, "cloth": 2.0, "plastic": 3.0,
             "camera": 3.0, "cash": 3.5, "sparkle": 3.0, "liquid": 3.0, "cartoon": 4.0, "voice": 3.0, "drum": 4.0, "transition": 2.5, "ambience": None,
-            "indian": 3.5, "foley": 3.0, "device": 4.0, "crowd": 2.0}
+            "indian": 3.5, "foley": 3.0, "device": 4.0, "crowd": 2.0, "elec": 3.5}
+BED_LOOPS = {"ambience", "elec"}          # categories whose LOOPS are beds-under-the-bed (elec: the crackle loop), not featured cues like ui.agent_working
 
 
 def build(only=None, write_wav=True):
@@ -43,7 +44,7 @@ def build(only=None, write_wav=True):
         d["anchor_frame_offset"] = -1 if "anchor:end" in s.tags and s.cat == "riser" and s.id.startswith("snd.riser") else 0
         d["place_rule"] = ("riser end lands ONE FRAME BEFORE the hit anchor; the hit itself lands on visual frame + 1" if d["anchor_frame_offset"] else
                            ("loop: starts at the cue frame and loops/crossfades" if s.loop else "anchor sample lands on (visual frame + 1) x SR / fps"))
-        d["over_bed_db"] = OVER_BED.get(s.cat)
+        d["over_bed_db"] = None if (s.loop and s.cat in BED_LOOPS) else OVER_BED.get(s.cat)   # None = the mixer sits the loop 10 dB under the bed
         rel = os.path.join("library", s.cat, sid + ".wav")
         d["file"] = rel
         if write_wav:

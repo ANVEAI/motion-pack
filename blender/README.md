@@ -1,6 +1,6 @@
 # motion-pack / blender
 
-This module renders photoreal plates in Blender 5.2: a procedural product device in a dark photo studio, macro light sweeps, an exploded view, a 3D chrome title, three seamless abstract loops, and (round 3, 14 Oct 2026) a pipeline-reveal set on a 21-part procedural model: render passes, knolling, a cloud-sea flight, plus stylised low-poly diorama loops.
+This module renders photoreal plates in Blender 5.2: a procedural product device in a dark photo studio, macro light sweeps, an exploded view, a 3D chrome title, three seamless abstract loops, and (round 3, 14 Oct 2026) a pipeline-reveal set on a 21-part procedural model: render passes, knolling, a cloud-sea flight, plus stylised low-poly diorama loops. Round 4/5 (14 Oct 2026) adds one practical-metaphor plate: a tangle of cables feeding warm bulbs, where pulling one cable puts the bulbs out in sequence (or lights them as it untangles).
 
 - **Headless and scripted.** It runs on `blender -b --factory-startup` with no GUI, no `.blend` assets and no downloads.
 - **Deterministic.** Every moving value is a function of the frame number, and every random choice is seeded.
@@ -16,6 +16,7 @@ $B -b --factory-startup -P blender/run.py -- --recipe blender/turntable --preset
    --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/turntable --post lens
 bash blender/tests/smoke.sh                                   # py_compile + 3 frames at 480p per recipe (~1 min)
 bash blender/tests/determinism.sh                             # same frame twice, two processes + one process
+bash blender/tests/cable_tangle.sh                            # cableTangle: bulb timing measured in the PNGs against the plan, schedule, CPU hash check (~3 min at 480p)
 bash blender/tests/showcase.sh showcase                       # the 8-plate showcase set (~45 min on an M3 Pro)
 ```
 
@@ -37,12 +38,13 @@ blender -b --factory-startup -P blender/run.py -- --recipe <id> [--preset NAME] 
         --engine eevee|cycles [--samples N] --out DIR [--alpha] [--beats sidecar.json] [--param k=v ...]
         [--frames 0:90 | 0,45,89 | smoke] [--seed N] [--exposure EV] [--depth 8|16] [--motion-blur auto|on|off]
         [--post none|lens] [--crf 18] [--force] [--no-mp4] [--determinism F] [--loop-check] [--save-blend PATH]
-        [--denoise-gpu] [--list]
+        [--denoise-gpu] [--no-denoise] [--device gpu|cpu] [--list]
 ```
 
 - Frames are keyed from -1 to N, so motion blur is right at both ends and frame N is the loop seam.
 - `--frames` renders a subset, and existing frames are skipped unless you pass `--force`. A partial render writes no MP4.
 - **Samples.** EEVEE defaults to 32 TAA samples. Cycles defaults to 1024 adaptive samples at threshold 0.006, with OIDN on the CPU.
+- **Device.** `--device cpu` renders Cycles on the CPU: slower (cableTangle at 480p on a loaded M3 Pro: about 3.8 s/f on the CPU at 16 samples, against about 1.8 s/f on the GPU at 24 samples), but the same PNG file hash in two separate processes (measured on cableTangle only; `DETERMINISM.md`). The default `gpu` is visually, not bit, identical.
 - **Motion blur.** `auto` turns it on for product recipes (180 degrees, centred) and off for the art loops: metaballs change topology, and the particle streaks already encode their speed.
 
 ## Recipes
@@ -60,6 +62,7 @@ blender -b --factory-startup -P blender/run.py -- --recipe <id> [--preset NAME] 
 | `blender/knolling` | the model separates, every part flies to an overhead flat-lay grid (laid flat, largest first, twins side by side) while the camera cranes to top-down; hold; reassembly in reverse | no | 6 s | about 0.35 s/f at 480p (smoke only) |
 | `blender/cloudFlight` | sunset cloud sea (displaced cloud tops), Principled Volume haze, sun disc + halo, an additive anamorphic streak, chase camera on the flying, banking model with a spinning prop | no | 6 s | about 0.5-0.7 s/f at 480p (smoke only) |
 | `blender/diorama` | low-poly vignette loop, `scene=` lighthouse, campfire or island: one prop, mood light, sky; the subject sits inside the inscribed circle (`fill`), so it masks cleanly to a disc for montage windows | yes | 6 s, 1080x1080 | about 0.3 s/f at 480x480; seam bit-exact |
+| `blender/cableTangle` | a dark tabletop: a seeded tangle of bevelled cables feeding 2-9 warm filament bulbs on bakelite sockets (clear glass, so each light really lights the set). One red cable is pulled: `mode=off` slides it out of the knot and the bulbs go out in sequence (a 2-frame flicker, an orange afterglow); `mode=on` lifts and untangles it and they light. The change frames come from `schedule=f1,f2,...`, a `--beats` sidecar (each bulb on a hit) or `pull_start + lag + k * stagger`, in `order` ltr, rtl, out, in or seeded; they are keyed on whole frames and written to `render.json` `recipe_report` (`plan.change_frames`, and each bulb's screen position per frame in `bulb_px`) | no | 5 s | about 1.8 s/f at 480p, 24 samples, Cycles GPU (loaded machine; smoke and test only, 1080p not timed) |
 
 Every recipe also lists its parameters, use and avoid lines in `manifest.json`; regenerate it with `python3 blender/tools/make_manifest.py`.
 
@@ -86,6 +89,7 @@ Every recipe also lists its parameters, use and avoid lines in `manifest.json`; 
 - **Bit-exact:** EEVEE turntable and voxel wave, and the liquid-chrome and voxel loop seams (voxel seam within 1/255 on one pixel).
 - **EEVEE title:** not bit-exact, max 3/255 on 0.5 % of pixels, PSNR about 71 dB. It is not caused by the halo card, and the cause is not isolated.
 - **Cycles GPU:** not bit-exact even without a denoiser (1 pixel, 111 dB). With CPU OIDN, 96 dB; with GPU OIDN, 71 dB.
+- **Cycles CPU (`--device cpu`), cableTangle frame 48 at 854x480, 16 samples, OIDN on the CPU:** the same PNG file hash in two separate processes, and pixel-equal with the same hash inside one process (after a frame rendered in between). Cycles also writes its timings (`cycles.ViewLayer.*_time`) into every PNG, which made equal pixels hash differently; `run.py` strips those chunks after each render (`lib/util.py` `strip_png_timing`). Other recipes on the CPU are not measured.
 
 Three rules make the renders repeatable:
 
@@ -107,6 +111,7 @@ Three rules make the renders repeatable:
 - **Metaballs.** The liquid-chrome polygonisation changes topology every frame, so it gets no motion blur.
 - **Particle swirl.** It was smoke-tested only and is not part of the showcase.
 - **Image-sequence path.** The canvas snippet in `COMPOSITING.md` has not been run inside a HyperFrames render.
+- **cableTangle (round 4/5)** was rendered at 480p only (Cycles, 12-24 samples) and judged on stills and measurements; there is no 1080p timing and no showcase plate. `bash blender/tests/cable_tangle.sh` measured the first frame from which each bulb stays dimmer (`mode=off`) or brighter (`mode=on`) in the PNGs: all 5 bulbs in both modes matched the plan frames exactly. The set is a metaphor, not wiring advice: the cables are bevelled curves over a flat tabletop with a deterministic over-under lift (cables rest on each other; there is no contact or gravity simulation) and the knot is a seeded pile. The bulbs are generic (no brand, no real socket standard). The red feed's plug rides the cable end and is not articulated. Bulb light is a point light at the filament, so the soft glow on the table is the real light and not a bloom pass; add `layers` bloom in the finish if you want a halo.
 - **Round-3 recipes (passReveal, knolling, cloudFlight, diorama)** were smoke-tested at 480p and judged on stills only; they are not in the 8-plate showcase and have no 1080p timing yet.
   - The x-ray pass is dithered coverage (EEVEE drops the emission of a fully transparent add-shader), so it needs the full 32 TAA samples to lose its grain.
   - The cloud sea is one 140 m tile with no wind; plates longer than ~10 s at the default speed fly off its far edge. The look reads stylised, not photographic.

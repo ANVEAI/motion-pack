@@ -2,7 +2,14 @@
 """refstudy: measure a reference video's picture, edit and sound, so a person or an agent can learn its craft.
 
 Usage:
-  refstudy.py <x-status-url | mp4-url | file.mp4> <out_dir> [--whisper base|small|none]
+  refstudy.py <x-status-url | mp4-url | file.mp4> <out_dir> [--whisper base|small|none] [--tiers tiers.json] [--tier A|A-|B|B'|R|C|D]
+  refstudy.py grade <study_dir> [<study_dir> ...] [--tiers tiers.json] [--write] [--json]
+      grade existing study folders from their meta.json (and the quiet open / tail from study.json's 4 Hz curve) without
+      re-downloading anything; --write adds "evidence" (and "quiet" when missing) to each study.json; a path that is not a
+      study folder is reported and the exit status is 1
+  refstudy.py motion <local file.mp4> <study_dir> [--write]
+      re-measure the visual events and their sync on a local copy of the video and (--write) put them into that study.json;
+      uses the study's cuts, onsets and transcript; downloads nothing
 
 Writes into out_dir:
   meta.json      post metadata (X posts, via the public fxtwitter API), duration, size
@@ -15,6 +22,14 @@ What it measures:
 - **sound:** integrated LUFS and true peak; a 4 Hz loudness curve; low (<150 Hz), mid and high (>4 kHz) energy; onsets and their strongest "hits"; tempo and beats (an estimate, often wrong on dialogue); silences; spectral brightness.
 - **sync:** the share of cuts within 2 frames of an onset or a beat.
 - **speech:** an optional Whisper transcript with timestamps, giving voiceover presence and words per minute.
+- **motion:** visual events for continuous (few-cut) pieces: frame-difference / colour-change peaks and new-text appearance (edge-density
+  jumps) from a fixed 30 fps, 96x54 pass, peak-picked against the median absolute deviation; their share within 2 frames of the file's
+  own frame rate of an audio onset (`motion.sync.share_on_onset`, the continuous-film version of the cut sync) and, with a transcript, the
+  share inside speech gaps. Every sync share (motion and cut) comes with its chance level (`chance_share`, `lift`, `z_vs_chance`, `reading`:
+  the fraction of the timeline inside the onset windows, so a busy soundtrack's coincidences are not read as sync).
+- **quiet:** the quiet open (first 2 s, by seconds) and the quiet tail (last 2 s; last 3 s too) against the body median, in dB, and the ending shape.
+- **evidence:** the reach tier from meta.json (A, A-, B boosted, B', R, C, D) with its reasons, the auto `boosted` flag and the
+  `claim_driven` flag; thresholds in tools/refstudy_tiers.json (override with --tiers, or force one with --tier / meta tier_override).
 
 Nothing here listens like a person. Treat tempo and hits as hints and check them against the frames.
 A remote video is downloaded ONCE to a temporary file (curl with retries, a 10-minute cap and a minimum-speed abort), every
@@ -28,6 +43,9 @@ Python deps: numpy and matplotlib only. A post URL is fetched over the network; 
 Learning from a reference is craft, not copying: see skills/motion-pack/references/reference-intake.md.
 """
 import json, os, re, shutil, subprocess, sys, tempfile, urllib.request
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+TIERS = os.path.join(HERE, "refstudy_tiers.json")
 
 FFMPEG = os.environ.get("FFMPEG", "ffmpeg")
 WHISPER_BIN = os.environ.get("WHISPER_BIN", "whisper")
@@ -75,6 +93,17 @@ def duration_of(url):
     return int(m.group(1)) * 3600 + int(m.group(2)) * 60 + float(m.group(3)) if m else None
 
 
+def video_fps(url, default=30.0):
+    """the frame rate of the first video stream (ffmpeg's banner), so the 2-frame sync tolerance is 2 frames of THIS file; `default` if unreadable"""
+    out = sh([FFMPEG, "-hide_banner", "-i", url]).stderr
+    m = re.search(r"Video:.*?,\s*([\d.]+) fps", out)
+    try:
+        f = float(m.group(1)) if m else 0.0
+    except ValueError:
+        f = 0.0
+    return f if 1.0 <= f <= 240.0 else default
+
+
 def contact_sheet(url, dur, out):
     fps = 2 if dur <= 30 else (1 if dur <= 120 else 0.5)
     n = int(dur * fps) + 1
@@ -101,6 +130,31 @@ def _read_audio(url, sr):
     raw = subprocess.run([FFMPEG, "-v", "error", "-i", url, "-vn", "-ac", "1", "-ar", str(sr), "-f", "s16le", "-"],
                          capture_output=True).stdout
     return np.frombuffer(raw, dtype="<i2").astype("float32") / 32768.0
+
+
+def _chance(onsets, tol, dur):
+    """chance level of a sync share: the fraction of the timeline within +/- tol of any onset (the windows merged, so clumped onsets do not
+    count twice). An event placed at random in time falls inside a window with this probability; a share near it proves nothing."""
+    import numpy as np
+    on = np.sort(np.asarray(onsets if onsets is not None else [], float))
+    if on.size == 0 or not dur or dur <= 0:
+        return 0.0
+    lo, hi = np.clip(on - tol, 0.0, dur), np.clip(on + tol, 0.0, dur)
+    cover, end = 0.0, 0.0
+    for a, b in zip(lo, hi):
+        a = max(a, end)
+        if b > a: cover += b - a; end = b
+    return min(1.0, cover / dur)
+
+
+def _vs_chance(n_on, n, p):
+    """a sync count against the chance level p: the share, the chance share, lift, a binomial z score and a plain reading (|z| < 2 is near chance)"""
+    import math
+    if not n:
+        return {}
+    z = (n_on - n * p) / math.sqrt(n * p * (1 - p)) if 0 < p < 1 else None
+    read = "no onsets" if p == 0 else ("above chance" if z is not None and z >= 2 else ("below chance" if z is not None and z <= -2 else "near chance"))
+    return {"chance_share": round(p, 2), "lift": round((n_on / n) / p, 2) if p > 0 else None, "z_vs_chance": None if z is None else round(z, 1), "reading": read}
 
 
 def audio_analysis(url, cut_times, fps_video=30.0):
@@ -167,6 +221,8 @@ def audio_analysis(url, cut_times, fps_video=30.0):
             "share_on_onset": round(near(cut_times, onsets) / nc, 2) if nc else None,
             "share_on_beat": round(near(cut_times, beats) / nc, 2) if nc else None,
             "onsets_per_s": round(len(onsets) / max(t[-1], 1e-6), 2), "tolerance_s": round(tol, 3)}
+    if nc:
+        sync["vs_chance_onset"] = _vs_chance(sync["cuts_on_onset"], nc, _chance(onsets, tol, float(t[-1])))
     return {
         "loudness_curve_4hz_dbfs": curve,
         "band_share_mean": {"low_<150Hz": round(float(low.mean()), 3), "mid": round(float(mid.mean()), 3), "high_>4kHz": round(float(high.mean()), 3)},
@@ -176,6 +232,225 @@ def audio_analysis(url, cut_times, fps_video=30.0):
         "silences": sil, "sync": sync,
         "_plot": {"t": t.tolist(), "db": db.tolist(), "low": low.tolist(), "high": high.tolist()},
     }
+
+
+MOTION_FPS, MOTION_W, MOTION_H = 30, 96, 54
+
+
+def _frames(url, fps=MOTION_FPS, w=MOTION_W, h=MOTION_H):
+    """the whole video as small RGB frames at a fixed rate: (n, h, w, 3) uint8 (aspect is ignored; only change matters)"""
+    import numpy as np
+    raw = subprocess.run([FFMPEG, "-v", "error", "-nostdin", "-i", url, "-an", "-vf", f"fps={fps},scale={w}:{h}:flags=area",
+                          "-pix_fmt", "rgb24", "-f", "rawvideo", "-"], capture_output=True).stdout
+    n = len(raw) // (w * h * 3)
+    return np.frombuffer(raw[:n * w * h * 3], dtype=np.uint8).reshape(n, h, w, 3)
+
+
+def _peaks(curve, k, floor, gap):
+    """local maxima of curve over median + k * 1.4826 * MAD and over an absolute floor, at least `gap` samples apart (stronger wins)"""
+    import numpy as np
+    if len(curve) < 3:
+        return []
+    med = float(np.median(curve)); mad = float(np.median(np.abs(curve - med))) * 1.4826
+    thr = max(med + k * mad, floor)
+    out = []
+    for i in range(1, len(curve) - 1):
+        if curve[i] > thr and curve[i] >= curve[i - 1] and curve[i] >= curve[i + 1]:
+            if out and i - out[-1] < gap:
+                if curve[i] > curve[out[-1]]: out[-1] = i
+            else:
+                out.append(i)
+    return out
+
+
+def motion_events(url, cut_times=(), fps=MOTION_FPS, k=6.0):
+    """visual events of a continuous piece. Two curves on the 30 fps, 96x54 frames:
+      change  mean absolute RGB difference to the previous frame (0-255): flashes, large-area luma or colour changes, things appearing
+      text    the jump in edge density (share of pixels with a luma gradient > 24) to the previous frame: type or UI appearing
+    Peaks over median + k * MAD (and an absolute floor) are events; a frame-pair i-1 -> i is reported at the time of frame i.
+    Steady camera moves raise the median, so only the accents of a moving shot count. Deterministic on the same file."""
+    import numpy as np
+    F = _frames(url, fps)
+    if len(F) < 3:
+        return {"error": "no video frames", "events": []}
+    n, change, edges = len(F), np.zeros(len(F)), np.zeros(len(F))
+    for a in range(0, n, 1024):                                              # in chunks (one frame of overlap): a long film stays out of float32 RAM
+        b = min(n, a + 1024)
+        X = F[max(0, a - 1):b].astype(np.float32)
+        if a > 0:
+            change[a:b] = np.abs(np.diff(X, axis=0)).mean(axis=(1, 2, 3))
+            X = X[1:]
+        else:
+            change[1:b] = np.abs(np.diff(X, axis=0)).mean(axis=(1, 2, 3))
+        Y = X @ np.array([0.299, 0.587, 0.114], np.float32)
+        gx = np.abs(np.diff(Y, axis=2))[:, :-1, :]; gy = np.abs(np.diff(Y, axis=1))[:, :, :-1]
+        edges[a:b] = ((gx + gy) > 24).mean(axis=(1, 2))
+    text = np.concatenate([[0.0], np.abs(np.diff(edges))]) * 100.0          # percentage points of the frame
+    pc = _peaks(change, k, 2.0, 3); pt = _peaks(text, k, 0.5, 3)
+    idx = sorted(set(pc) | set(pt)); ev = []
+    for i in idx:                                                            # merge a change and a text peak 1-2 frames apart
+        if ev and i - ev[-1] <= 2:
+            if change[i] > change[ev[-1]]: ev[-1] = i
+        else:
+            ev.append(i)
+    t = [round(i / fps, 3) for i in ev]
+    tol = 2.0 / fps
+    cut_like = [x for x in t if any(abs(x - c) <= tol for c in cut_times)]
+    return {"fps": fps, "size": [MOTION_W, MOTION_H], "k_mad": k, "duration_s": round(len(F) / fps, 3), "events": t,
+            "kinds": ["change+text" if (i in pc and i in pt) else ("change" if i in pc else "text") for i in ev],
+            "strength": [round(float(change[i]), 2) for i in ev], "events_not_cuts": [x for x in t if x not in cut_like],
+            "events_per_min": round(len(t) / (len(F) / fps) * 60, 1), "motion_energy_median": round(float(np.median(change)), 2),
+            "_curve": {"t": (np.arange(len(F)) / fps).tolist(), "change": change.tolist()}}
+
+
+def motion_sync(motion, onsets, speech=None, fps_video=30.0):
+    """share of visual events within 2 video frames of an audio onset, against its chance level; with speech segments, the share in speech gaps.
+    The window is 2 frames of the source (`fps_video`, from video_fps) but never finer than 2 frames of the 30 fps motion pass, which cannot place
+    an event more exactly than that. Read `reading` before the share: a busy soundtrack (3+ onsets/s) puts a third of the timeline inside the
+    windows, so a share near `chance_share` is coincidence, not sync (`z_vs_chance` < 2)."""
+    import numpy as np
+    ev = motion.get("events") or []
+    on = np.asarray(onsets or [], float)
+    tol = 2.0 / min(float(fps_video), float(motion.get("fps") or MOTION_FPS))
+    n_on = sum(1 for e in ev if on.size and np.min(np.abs(on - e)) <= tol)
+    dur = motion.get("duration_s") or (float(max(list(on) + list(ev) + [0.0])) or None)
+    out = {"events": len(ev), "events_on_onset": n_on, "share_on_onset": round(n_on / len(ev), 2) if ev else None, "tolerance_s": round(tol, 3),
+           "onsets_per_s": round(len(on) / dur, 2) if dur else None}
+    if ev:
+        out.update(_vs_chance(n_on, len(ev), _chance(on, tol, dur)))
+    segs = (speech or {}).get("segments") or []
+    if ev and segs:
+        inside = sum(1 for e in ev if any(s["s"] <= e <= s["e"] for s in segs))
+        out["share_in_speech_gaps"] = round((len(ev) - inside) / len(ev), 2)
+    return out
+
+
+def quiet_shape(curve, step=0.25):
+    """quiet open and quiet tail from a loudness curve (dBFS per `step` s, e.g. study audio.loudness_curve_4hz_dbfs), in dB against the
+    median of the body (from 2 s in to 3 s before the end; negative = under the body):
+      open_vs_body_db     the quieter of the first and the second second (medians): the sound may enter 1-2 s after a moving frame 0
+      open_2s_vs_body_db  the median of the first 2 s
+      tail_2s / tail_3s   the median of the last 2 s and of the last 3 s
+    quiet_open: open_vs_body_db <= -6; quiet_tail: tail_2s <= -10 (on the round 4/5 intake these reproduce the hand counts, 13 and 17 of 28).
+    end_shape: slam (the last second within 6 dB of the body), quiet hold (the last 2 s >= 10 dB under and flat within
+    8 dB), decay (falling into the end) or level. sound_enters_s: the first quarter-second within 20 dB of the body."""
+    import numpy as np
+    c = np.asarray([v if v is not None else -90.0 for v in (curve or [])], float)
+    n = len(c); q = lambda s_: int(round(s_ / step))
+    if n < q(6.0):
+        return None
+    c = np.maximum(c, -90.0)
+    body = float(np.median(c[q(2.0):n - q(3.0)]))
+    med = lambda x: round(float(np.median(x)) - body, 1)
+    out = {"body_median_dbfs": round(body, 1), "open_vs_body_db": min(med(c[:q(1.0)]), med(c[q(1.0):q(2.0)])), "open_2s_vs_body_db": med(c[:q(2.0)]),
+           "tail_2s_vs_body_db": med(c[n - q(2.0):]), "tail_3s_vs_body_db": med(c[n - q(3.0):])}
+    out["quiet_open"] = out["open_vs_body_db"] <= -6.0
+    out["quiet_tail"] = out["tail_2s_vs_body_db"] <= -10.0
+    last1, seg = med(c[n - q(1.0):]), c[n - q(2.0):]
+    if last1 >= -6.0:
+        shape = "slam"
+    elif out["quiet_tail"] and float(np.percentile(seg, 90) - np.percentile(seg, 10)) <= 8.0:
+        shape = "quiet hold"
+    elif last1 < -6.0:
+        shape = "decay"
+    else:
+        shape = "level"
+    out["end_shape"] = shape
+    live = np.where(c >= body - 20.0)[0]
+    out["sound_enters_s"] = round(float(live[0]) * step, 2) if live.size else None
+    out["duration_s"] = round(n * step, 2)
+    return out
+
+
+def _f(x):
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return None
+
+
+def grade(meta, rules=None, override=None):
+    """evidence tier from post reach (meta.json): views/followers (v/f), like %, bookmark %, reply % of views.
+    Rules (tools/refstudy_tiers.json) run in order: D no data; B boosted-looking (like <= 0.05 %, or v/f >= 100 with like <= 0.15 %,
+    or reach without likes); A proven organic (v/f >= 1.5 or bm >= 1.5 %, at a like rate >= 0.2 %); A- saves-strong (bm >= 1.3 %);
+    B' solid for a big account (>= 1M followers, v/f >= 1); R account-size reach (>= 500K views at v/f < 1); else C.
+    claim_driven flags an A whose reach is high (v/f >= 10) at a like rate under 0.4 %: some of that reach is debate."""
+    R = rules or json.load(open(TIERS))
+    v, fo = _f(meta.get("views")), _f(meta.get("followers"))
+    pct = lambda k: (100.0 * _f(meta.get(k)) / v) if (v and _f(meta.get(k)) is not None) else None      # a missing count is None, never 0
+    like, bm, rep = pct("likes"), pct("bookmarks"), pct("replies")
+    bm0 = bm or 0.0                                                                                      # a missing bookmark count cannot make a tier
+    vf = (v / fo) if (v and fo) else None
+    nums = {"views": v and int(v), "followers": fo and int(fo), "v_per_f": None if vf is None else round(vf, 2),
+            "like_pct": None if like is None else round(like, 3), "bm_pct": None if bm is None else round(bm, 3),
+            "reply_pct": None if rep is None else round(rep, 3)}
+    why = []
+    B, A, Am, Bp, Rr, C = R["boosted"], R["A"], R["A-"], R["B'"], R["R"], R["claim_driven"]
+    if not v or not fo or like is None:
+        tier = "D"; why.append("no %s in meta.json" % ("views or follower count" if not v or not fo else "like count"))
+    elif like <= B["like_max_pct"]:
+        tier = "B"; why.append("like rate %.3f%% <= %.2f%%: boosted-looking" % (like, B["like_max_pct"]))
+    elif vf >= B["vf_min"] and like <= B["vf_like_max_pct"]:
+        tier = "B"; why.append("v/f %.0fx >= %.0f with like rate %.2f%% <= %.2f%%: boosted-looking" % (vf, B["vf_min"], like, B["vf_like_max_pct"]))
+    elif (vf >= A["vf_min"] or bm0 >= A["bm_min_pct"]) and like < A["like_min_pct"]:
+        tier = "B"; why.append("reach (v/f %.2f, bm %.2f%%) without likes (%.2f%% < %.2f%%): boosted-looking" % (vf, bm0, like, A["like_min_pct"]))
+    elif vf >= A["vf_min"] or bm0 >= A["bm_min_pct"]:
+        tier = "A"; why.append(("v/f %.2f >= %.1f" % (vf, A["vf_min"])) if vf >= A["vf_min"] else ("bm %.2f%% >= %.1f%%" % (bm0, A["bm_min_pct"])))
+    elif bm0 >= Am["bm_min_pct"]:
+        tier = "A-"; why.append("bm %.2f%% >= %.1f%% at v/f %.2f: saves-strong" % (bm0, Am["bm_min_pct"], vf))
+    elif fo >= Bp["followers_min"] and vf >= Bp["vf_min"]:
+        tier = "B'"; why.append("v/f %.2f >= %.1f on %d followers" % (vf, Bp["vf_min"], fo))
+    elif v >= Rr["views_min"] and vf < Rr["vf_max"]:
+        tier = "R"; why.append("%d views at v/f %.2f < %.1f: the reach is the account's" % (v, vf, Rr["vf_max"]))
+    else:
+        tier = "C"; why.append("v/f %.2f, like %.2f%%, bm %s: no tier rule met" % (vf, like, "n/a" if bm is None else "%.2f%%" % bm))
+    claim = bool(tier == "A" and vf >= C["vf_min"] and like < C["like_max_pct"])
+    if claim:
+        why.append("claim-driven: v/f %.0fx with a like rate of %.2f%% < %.1f%%" % (vf, like, C["like_max_pct"]))
+    ov = override or meta.get("tier_override")
+    if ov:
+        ov = ov if isinstance(ov, dict) else {"tier": ov, "why": "set by hand (--tier)"}
+        why.append("override: %s -> %s (%s)" % (tier, ov["tier"], ov.get("why", "")))
+        tier = ov["tier"]
+    return {"tier": tier, "display": tier + ("*" if claim else ""), "label": R["labels"].get(tier, ""), "boosted": tier == "B",
+            "claim_driven": claim, "reasons": why, "numbers": nums}
+
+
+def grade_cli(argv):
+    """grade study folders; a path that is not a folder, or a folder without meta.json, is reported on stderr and the exit status is 1"""
+    skip = {i + 1 for i, a in enumerate(argv) if a == "--tiers"}
+    paths = [a for i, a in enumerate(argv) if not a.startswith("--") and i not in skip]
+    if not paths:
+        raise SystemExit("refstudy grade: give at least one study folder (see --help in the module docstring)")
+    rules = json.load(open(argv[argv.index("--tiers") + 1])) if "--tiers" in argv else None
+    rows, bad = [], 0
+    for d in paths:
+        if not os.path.isdir(d):
+            print("refstudy grade: not a folder: %s" % d, file=sys.stderr); bad += 1; continue
+        mp, sp = os.path.join(d, "meta.json"), os.path.join(d, "study.json")
+        if not os.path.exists(mp):
+            print("refstudy grade: no meta.json in %s" % d, file=sys.stderr); bad += 1; continue
+        meta = json.load(open(mp)); ev = grade(meta, rules)
+        st = json.load(open(sp)) if os.path.exists(sp) else None
+        q = (st or {}).get("quiet") or quiet_shape(((st or {}).get("audio") or {}).get("loudness_curve_4hz_dbfs"))
+        rows.append({"study": os.path.basename(os.path.normpath(d)), "evidence": ev, "quiet": q})
+        if "--write" in argv and st is not None:
+            st["evidence"] = ev
+            if q and not st.get("quiet"): st["quiet"] = q
+            json.dump(st, open(sp, "w"), indent=1, ensure_ascii=False)
+    if "--json" in argv:
+        print(json.dumps(rows, indent=1))
+        if bad: raise SystemExit(1)
+        return rows
+    print("%-18s %-4s %9s %9s %6s %6s  %-7s %-7s %s" % ("study", "tier", "views", "v/f", "like%", "bm%", "open dB", "tail dB", "end"))
+    for r in rows:
+        e, n, q = r["evidence"], r["evidence"]["numbers"], r["quiet"] or {}
+        fm = lambda x, f: "-" if x is None else f % x
+        print("%-18s %-4s %9s %9s %6s %6s  %-7s %-7s %s" % (r["study"][:18], e["display"], fm(n["views"], "%d"), fm(n["v_per_f"], "%.2f"), fm(n["like_pct"], "%.2f"),
+                                                       fm(n["bm_pct"], "%.2f"), fm(q.get("open_vs_body_db"), "%+.1f"), fm(q.get("tail_2s_vs_body_db"), "%+.1f"), q.get("end_shape", "-")))
+    if bad:
+        raise SystemExit(1)
+    return rows
 
 
 def transcribe(url, model):
@@ -219,21 +494,54 @@ def plot(study, out):
     for h in a.get("hits_top10pct", []): ax[0].plot([h], [-3], marker="v", color="#2F6B4F", ms=5)
     for b in a.get("beats", [])[::1]: ax[1].axvline(b, color="#999", lw=0.3, alpha=0.5)
     for s in (study.get("speech") or {}).get("segments", []): ax[0].axvspan(s["s"], s["e"], color="#E8B662", alpha=0.18)
-    ax[0].set_title("loudness (purple), cuts (red), hits (green ▼), speech (amber); bottom: band energy and beats (grey)", fontsize=9)
+    for e in (study.get("motion") or {}).get("events", []): ax[0].plot([e], [-57], marker="^", color="#1F6FB2", ms=4)
+    ax[0].set_title("loudness (purple), cuts (red), hits (green ▼), motion events (blue ▲), speech (amber); bottom: band energy and beats (grey)", fontsize=9)
     ax[1].set_xlabel("seconds"); fig.tight_layout(); fig.savefig(out, dpi=110); plt.close(fig)
 
 
+def motion_cli(argv):
+    """re-measure the motion events and their sync on a LOCAL copy of a video and put them into an existing study folder (study.json) without
+    re-running anything else. Uses the study's cuts, audio onsets and transcript when it has them; otherwise measures them from the file."""
+    pos = [a for a in argv if not a.startswith("--")]
+    if len(pos) != 2 or re.match(r"https?://", pos[0]):
+        raise SystemExit("usage: refstudy.py motion <local file.mp4> <study_dir> [--write]   (a local file: nothing is downloaded here)")
+    url, d = pos
+    sp = os.path.join(d, "study.json")
+    if not os.path.isfile(url) or not os.path.isdir(d):
+        raise SystemExit("refstudy motion: %s is not a file or %s is not a folder" % (url, d))
+    st = json.load(open(sp)) if os.path.exists(sp) else {}
+    c = st.get("cuts") if "cuts" in st else cuts(url)
+    onsets = (st.get("audio") or {}).get("onsets")
+    if onsets is None:
+        onsets = audio_analysis(url, c, video_fps(url)).get("onsets") or []
+    m = motion_events(url, c)
+    m["sync"] = motion_sync(m, onsets, st.get("speech"), video_fps(url))
+    m.pop("_curve", None)
+    print(json.dumps({"cuts": len(c), "events": len(m["events"]), "events_per_min": m.get("events_per_min"), "sync": m["sync"]}, indent=1))
+    if "--write" in argv:
+        if not st:
+            raise SystemExit("refstudy motion --write: no study.json in %s (run refstudy.py on the file first)" % d)
+        st["motion"] = m
+        json.dump(st, open(sp, "w"), indent=1, ensure_ascii=False)
+
+
 def main():
+    if len(sys.argv) >= 2 and sys.argv[1] == "grade":
+        grade_cli(sys.argv[2:]); return
+    if len(sys.argv) >= 2 and sys.argv[1] == "motion":
+        motion_cli(sys.argv[2:]); return
     if len(sys.argv) < 3: raise SystemExit(__doc__)
     src, out = sys.argv[1], sys.argv[2]
-    wmodel = sys.argv[sys.argv.index("--whisper") + 1] if "--whisper" in sys.argv else "base"
+    opt = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
+    wmodel = opt("--whisper") or "base"
+    rules = json.load(open(opt("--tiers"))) if opt("--tiers") else None
     os.makedirs(out, exist_ok=True)
     url, meta = resolve(src)
     with tempfile.TemporaryDirectory(prefix="refstudy-") as td:
-        run(fetch(url, td), meta, out, wmodel)
+        run(fetch(url, td), meta, out, wmodel, rules, opt("--tier"))
 
 
-def run(url, meta, out, wmodel):
+def run(url, meta, out, wmodel, rules=None, tier=None):
     dur = meta.get("duration") or duration_of(url); meta["duration"] = dur
     study = {"meta": meta}
     study["sheet_fps"] = contact_sheet(url, dur, os.path.join(out, "sheet.jpg"))
@@ -242,16 +550,23 @@ def run(url, meta, out, wmodel):
     study["edit"] = {"cuts_per_min": round(len(c) / dur * 60, 1) if dur else None, "shot_len_median_s": sorted(shots)[len(shots) // 2] if shots else None,
                      "shot_len_min_s": min(shots) if shots else None, "shot_len_max_s": max(shots) if shots else None}
     lufs, tp = loudness(url); study["loudness"] = {"integrated_lufs": lufs, "peak_dbfs": tp}
-    study["audio"] = audio_analysis(url, c)
+    fps = video_fps(url); study["video_fps"] = fps
+    study["audio"] = audio_analysis(url, c, fps)
     study["speech"] = None if wmodel == "none" else transcribe(url, wmodel)
+    study["motion"] = motion_events(url, c)
+    study["motion"]["sync"] = motion_sync(study["motion"], study["audio"].get("onsets"), study["speech"], fps)
+    study["quiet"] = quiet_shape(study["audio"].get("loudness_curve_4hz_dbfs"))
+    study["evidence"] = grade(meta, rules, tier)
     plot(study, os.path.join(out, "timeline.png"))
-    study["audio"].pop("_plot", None)
+    study["audio"].pop("_plot", None); study["motion"].pop("_curve", None)
     json.dump(meta, open(os.path.join(out, "meta.json"), "w"), indent=1, ensure_ascii=False)
     json.dump(study, open(os.path.join(out, "study.json"), "w"), indent=1, ensure_ascii=False)
     a = study["audio"]
     print(json.dumps({"dur": dur, "edit": study["edit"], "loudness": study["loudness"], "tempo": a.get("tempo_bpm_estimate"), "tempo_conf": a.get("tempo_confidence"),
                       "bands": a.get("band_share_mean"), "brightness": a.get("brightness_hz_mean"), "hits": len(a.get("hits_top10pct", [])),
                       "silences": a.get("silences"), "sync": a.get("sync"),
+                      "motion": {k: study["motion"].get(k) for k in ("events_per_min", "sync")}, "quiet": study["quiet"],
+                      "evidence": {k: study["evidence"][k] for k in ("display", "label", "boosted", "claim_driven", "reasons")},
                       "speech": None if not study["speech"] else {k: study["speech"][k] for k in ("words", "speech_seconds", "words_per_min_spoken")}}, indent=1))
 
 

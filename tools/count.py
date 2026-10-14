@@ -103,8 +103,8 @@ def table(c):
         rows.append(('`terminal/`', f"{c['terminal_recipes']} baked flock looks (cbirds, fetched and built at a pinned commit): "
                      "flock, braille, a word the flock writes, 3D murmuration, code that flies", '`terminal/README.md`'))
     if 'ears_checks' in c:
-        rows.append(('`ears/`', f"automated listening and critique of a delivered MP4 or WAV: {c['ears_checks']} checks (loudness, clipping, tone, speech, sync, "
-                                "structure, repetition, stereo, reference comparison, optional mood), each with a fix and timestamps", '`ears/README.md`'))
+        rows.append(('`ears/`', f"automated listening and critique of a delivered MP4 or WAV: {c['ears_checks']} checks (loudness, clipping, tone, speech, sync scored by edit mode "
+                                "(music, VO or continuous), structure with planned quiet judged as shape, repetition, stereo, reference comparison, optional mood), each with a fix and timestamps", '`ears/README.md`'))
     if os.path.isdir(os.path.join(REPO, 'cloud')):
         rows.append(('`cloud/`', "optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, "
                      "Gemini Live voiceover with a word-for-word check, a Gemini mood judge", '`cloud/README.md`'))

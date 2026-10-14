@@ -104,6 +104,87 @@ def speech_from(obj):
     return out
 
 
+def words_from(obj):
+    """word timings [(s, e)] when the transcript has them: a talking-head words.json ({words: [{w, s, e}]}) or a Whisper JSON run with
+    word timestamps (segments[].words[{start, end}]); None for segment-only transcripts (a refstudy study.json, plain Whisper)"""
+    if obj is None:
+        return None
+    if isinstance(obj, dict) and isinstance(obj.get('speech'), dict):
+        obj = obj['speech']
+    ws = []
+    if isinstance(obj, dict) and isinstance(obj.get('words'), list) and 'segments' not in obj:
+        ws = obj['words']
+    else:
+        for sg in (obj.get('segments', []) if isinstance(obj, dict) else obj) or []:
+            if isinstance(sg, dict) and isinstance(sg.get('words'), list):
+                ws += [w for w in sg['words'] if isinstance(w, dict)]
+    out = []
+    for w in ws:
+        a, b = w.get('s', w.get('start')), w.get('e', w.get('end'))
+        if a is not None and b is not None and b > a:
+            out.append((float(a), float(b)))
+    return sorted(out) or None
+
+
+QUIET_KINDS = ('open', 'dip', 'gap', 'hold')
+
+
+def plan_audio(plan):
+    """the sound intent a plan.json may carry (all optional):
+      plan.audio.mode   'music' | 'vo' | 'continuous': how ears/sync scores the edit (references/critic.md, cut-sync scope)
+      plan.audio.quiet  [{t: [a, b], kind: open|dip|gap|hold, why}]: planned quiet regions, judged as intended shape, not as level faults
+      plan.audio.events [seconds | {t} | {frame}]: the picture's motion events (a continuous film's accents) for mode continuous
+      plan.audio.role   'proof' | 'explainer' | 'hype' | 'trailer' | 'vo_doc': the bed's role, for the bass-share-by-role guidance
+    Top-level plan.audioMode / plan.quiet / plan.motionEvents / plan.audioRole are read too. returns {mode, quiet, events, role}"""
+    plan = plan or {}
+    a = plan.get('audio') if isinstance(plan.get('audio'), dict) else {}
+    fps = float(plan.get('fps') or 30)
+    ev = a.get('events', plan.get('motionEvents'))
+    word = lambda x: x.strip().lower() if isinstance(x, str) and x.strip() else x                  # 'VO' and ' Continuous ' mean what they say
+    return {'mode': word(a.get('mode', plan.get('audioMode'))), 'quiet': quiet_from(a.get('quiet', plan.get('quiet'))),
+            'events': events_from(ev, fps) if ev is not None else None, 'role': word(a.get('role', plan.get('audioRole')))}
+
+
+def quiet_from(obj):
+    """planned quiet regions from [{t: [a, b], kind, why}] or [[a, b], ...] -> [{t, kind, why}] (kind inferred later when missing)"""
+    out = []
+    for q in obj or []:
+        if isinstance(q, dict):
+            t = q.get('t') or [q.get('start'), q.get('end')]
+            kind, why = q.get('kind'), q.get('why', '')
+        else:
+            t, kind, why = q, None, ''
+        if t and len(t) == 2 and t[0] is not None and t[1] is not None and float(t[1]) > float(t[0]):
+            out.append({'t': [float(t[0]), float(t[1])], 'kind': kind if kind in QUIET_KINDS else None, 'why': why})
+    return out
+
+
+def events_from(obj, fps=30.0):
+    """motion-event times (s) from: a list of seconds or {t}|{time_s}|{frame}; a refstudy study.json (motion.events); {events: [...]}"""
+    if obj is None:
+        return None
+    if isinstance(obj, dict):
+        if isinstance(obj.get('motion'), dict):
+            return [float(x) for x in obj['motion'].get('events', [])]
+        return events_from(obj.get('events', []), float(obj.get('fps') or fps))
+    out = []
+    for c in obj:
+        if isinstance(c, (int, float)):
+            out.append(float(c))
+        elif isinstance(c, dict):
+            if 't' in c: out.append(float(c['t']))
+            elif 'time_s' in c: out.append(float(c['time_s']))
+            elif 'frame' in c: out.append(float(c['frame']) / fps)
+    return sorted(out)
+
+
+def quiet_shape(curve, step=0.25):
+    """the quiet open / quiet tail / end shape of tools/refstudy.py (one definition for references and our mixes)"""
+    sys.path.insert(0, os.path.join(PACK, 'tools'))
+    import refstudy
+    return refstudy.quiet_shape(curve, step)
+
+
 _REG = None
 
 
@@ -226,11 +307,17 @@ def short_term(x, win=3.0, hop=0.1):
     return ends / SR, -0.691 + 10 * np.log10(ms + 1e-20)
 
 
-def lra(x):
-    """loudness range, EBU Tech 3342: short-term (3 s, 10 Hz) values gated at -70 LUFS absolute and -20 LU relative; P95 - P10"""
+def lra(x, skip=None):
+    """loudness range, EBU Tech 3342: short-term (3 s, 10 Hz) values gated at -70 LUFS absolute and -20 LU relative; P95 - P10.
+    skip: [[a, b], ...] seconds (planned quiet regions): short-term windows that overlap one are left out, so intended shape is not a range fault"""
     if len(x) < 3 * SR:
         return None
-    _, st = short_term(x, 3.0, 0.1)
+    t, st = short_term(x, 3.0, 0.1)
+    if skip:
+        keep = np.ones(len(t), bool)
+        for a, b in skip:
+            keep &= ~((t > a) & (t - 3.0 < b))                  # the window (t - 3, t] overlaps (a, b)
+        t, st = t[keep], st[keep]
     st = st[st > -70]
     if len(st) < 2:
         return None

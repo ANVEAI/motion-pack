@@ -25,14 +25,24 @@ Determinism renders the composition twice, so it is slow; run it once per review
 
 | criterion | 8 or more means | evidence |
 |---|---|---|
-| **Hook in 2 s** | frame 0 is in motion; the problem or the broken expectation is clear by 2 s; at most 7 words; no logo bumper, no black | sheet tiles 0-4, `phone/phone_000.00s.png`, `phone_001.00s.png`, `phone_002.00s.png` |
+| **Hook in 2 s** | frame 0 is in motion; the problem or the broken expectation is clear by 2 s; at most 7 words; no logo bumper, no black. A small product-name super over moving footage is fine, and the sound may enter 1-2 s after a moving frame 0 when that quiet open is planned (`plan.audio.quiet`) | sheet tiles 0-4, `phone/phone_000.00s.png`, `phone_001.00s.png`, `phone_002.00s.png` |
 | **Phone readability** | every word reads at 360 px; at most 2 caption lines; text inside the 9:16 safe zone; contrast holds over motion | `phone/` |
 | **Motion** | eases have intent (snap, settle, glide, land), no linear drift, no pops or smears in the strip, nothing everything-fades-in | `motion_strip.jpg`, `loop2x.mp4` |
 | **Variety** | something visibly changes every 2-4 s; no three same-scale shots in a row; the interrupt ladder holds | `sheet_2fps.jpg` |
-| **Sound sync** | at least 60% of cuts within 2 frames of an onset; hits on F + 1; the loudness is −14 ± 0.5 LUFS-I and no clipping; the audio has shape on its own (the blindfold test) | `ears/ears.md`: start from its suggested score (`critic.json` `ears.scores.critic_sound_sync`, the minimum of its loudness, cleanliness, sync and structure scores); `refstudy/timeline.png` |
+| **Sound sync** | the edit's sync rule for its mode (below); hits on F + 1; the loudness is −14 ± 0.5 LUFS-I and no clipping; the audio has shape on its own (the blindfold test); planned quiet (open, dip, end-card hold) is marked in the plan | `ears/ears.md`: start from its suggested score (`critic.json` `ears.scores.critic_sound_sync`, the minimum of its loudness, cleanliness, sync and structure scores); `refstudy/timeline.png` |
 | **Brand accuracy** | the real logo, palette, type and product UI; real numbers with a source; placeholders labelled | sheet, end card, `phone/` |
 
 Write the score and the evidence (file and timestamp) for every row of `review.md`. A score without evidence does not count.
+
+**Which sync rule applies** (round 4/5: cut sync did not predict reach; the two 73%-sync pieces were tier C, tier-A VO films sat at 40-59%, and 5 of the 7 continuous pieces were tier A or A−):
+
+| mode (`plan.audio.mode`, or `ears/listen.py --mode`) | the film | 8 or more means |
+|---|---|---|
+| `music` (the default) | music-led and cut-driven: a montage, a beat edit, a hero sizzle | at least 60% of cuts within 2 frames of an onset |
+| `vo` | VO-led: a founder film, an explainer, a documentary | **speech continuity**: cuts sit under the voice (61-89% of cuts in the reference documentaries fell inside a line), no cut inside a word, and a diagram or UI advances in a speech gap. Cut sync is information only. Needs a transcript with word timings (`words.json`) |
+| `continuous` | few or no cuts: a camera glide, a diagram that grows, a proof film | at least 60% of the **motion events** (things appearing, flashes, large changes; `tools/refstudy.py` measures them) within 2 frames of an onset (ears also prints the chance level: on a busy bed 50% on an onset is luck, and a pass near the chance level is not evidence of sync) |
+
+`ears` scores the mode it is given; `tools/critic_pack.sh` passes the refstudy motion events, and `EARS_MODE=vo|continuous` overrides the plan.
 
 **The sound score uses ears.**
 - `ears` measures what a meter can: level, peaks, balance, masking, ducking, placement and shape. Its suggested score is a ceiling, not the score.
@@ -53,7 +63,10 @@ Write the score and the evidence (file and timestamp) for every row of `review.m
 |---|---|
 | black or static frame 0 | start mid-motion; move the logo to the end |
 | a line unreadable at 360 px | fewer words, bigger type, hold at least 9 frames fully formed |
-| cuts off the music | `cuts/cutgen.py snap --study reviews/rN/refstudy/study.json` with your cut list |
+| cuts off the music (mode `music`) | `cuts/cutgen.py snap --study reviews/rN/refstudy/study.json` with your cut list |
+| a cut inside a word (mode `vo`) | move it to the word boundary or the gap between lines; advance the diagram in the gap |
+| motion accents between sounds (mode `continuous`) | a cue on each accent frame, or move the accent onto the music |
+| "dead air" or "first audible sound" warnings on a quiet you meant | mark it in `plan.audio.quiet` (`kind` open, dip, gap or hold, with `why`); ears then judges it as shape, within the house maxima (open 2 s, dip 4 s, hold 9 s) |
 | everything fades in | give each element one entrance verb (mask, slide, scale) and let some arrive by cut |
 | a loop that jumps | make the last state equal the first (`loop2x.mp4`, `seam.jpg`) |
 | clipping, or quiet | remaster through `music/mixer.py`; never gain by hand |

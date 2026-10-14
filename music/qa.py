@@ -2,6 +2,8 @@
 """Listen-free QA for the music kit (measurement only). usage: python3 qa.py
 Beds: loudness (-16 +-0.1 LUFS-I), true peak <= -1.5, no clipping, DC, determinism (re-compose sha), loop seam (continuity, level notch, spectral flux at the seam <= 1.5x the largest flux at the loop's other bar lines),
 beat-grid alignment (events on beats sit on whole frames), key check (in-scale chroma share), hook (audible event in the first 3 frames of 'hook' beds), stem balance.
+Trailer arcs (beds with "markers"): every sidecar marker present and a whole frame, the gap >= 30 dB under the wall, the crescendo rising >= 12 dB into the hit,
+the quiet hold >= 40 dB under the hit, the last 0.15 s digital zero.
 Stingers / logos: anchor inside the buffer, anchor ~ peak where designed, ring-out ends below -60 dBFS, true peak.
 Cross-meter: python vs ffmpeg ebur128 on every bed (within 0.1 LU). Exit 0 = no FAIL. Writes qa_report.json."""
 import hashlib
@@ -17,7 +19,8 @@ from mpaudio import dsp, meter
 from mpaudio.dsp import SR
 import compose as C
 import grid
-from presets import PRESETS, STRUCTURES
+from presets import PRESETS, STRUCTURES, TRAILERS
+import trailer as TR
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -63,6 +66,44 @@ def seam_flux_ratio(y, bar_samples):
     return float(seam / (np.max(others) + 1e-12)), float(np.max(others) / (np.median(others) + 1e-12))
 
 
+def bass_share(y):
+    """share of the energy under 150 Hz, the way tools/refstudy.py and ears measure it (STFT 2048 / hop 512, the mean of the per-frame share, mono mix):
+    information for choosing a bed by role (round 4/5: proof and explainer 20-36%, hype and trailer 50-61%, VO documentary 15-34%), not a pass / fail"""
+    sys.path.insert(0, os.path.dirname(HERE))
+    from ears.core import stft_power, band
+    S, _, f = stft_power(y.mean(axis=1) if y.ndim > 1 else y, 2048, 512)
+    return float((band(S, f, 0, 150) / (S.sum(1) + 1e-12)).mean())
+
+
+def trailer_checks(it, y, row, F):
+    """the planned shape of a trailer arc, measured on the master: markers, gap depth, crescendo, quiet hold, digital-zero tail"""
+    side = json.load(open(os.path.join(HERE, it["sidecar"])))
+    mk, spf = side.get("markers", {}), SR // it["fps"]
+    need = ("act1_start", "act2_start", "act3_start", "gap_start", "gap_end", "crescendo_start", "hit", "visual_cut_frame", "quiet_hold_start", "end")
+    miss = [k for k in need if not isinstance(mk.get(k), int)]
+    if miss:
+        F("sidecar markers missing or not whole frames: %s" % ",".join(miss))
+        return
+    if mk != it["markers"] or mk["end"] * spf != len(y):
+        F("sidecar markers disagree with the manifest or the WAV length")
+    lv = lambda a, b: 10 * np.log10(np.mean(y[a * spf:b * spf] ** 2) + 1e-20)
+    beat = it["frames_per_beat"]
+    wall, gap = lv(mk["act3_start"], mk["gap_start"]), lv(mk["gap_start"], mk["gap_end"])
+    c_first, c_last = lv(mk["crescendo_start"], mk["crescendo_start"] + beat), lv(mk["hit"] - beat, mk["hit"])
+    hit, hold = lv(mk["hit"], mk["hit"] + beat), lv(mk["quiet_hold_start"], mk["end"])
+    tail = np.max(np.abs(y[-int(0.15 * SR):]))
+    row["trailer"] = {"wall_dbfs": round(wall, 1), "gap_dbfs": round(gap, 1), "gap_below_wall_db": round(wall - gap, 1), "crescendo_rise_db": round(c_last - c_first, 1),
+                      "hit_dbfs": round(hit, 1), "hold_below_hit_db": round(hit - hold, 1), "tail_zero": bool(tail == 0.0)}
+    if wall - gap < 30:
+        F("gap only %.1f dB under the wall (>= 30)" % (wall - gap))
+    if c_last - c_first < 12:
+        F("crescendo rises only %.1f dB (>= 12)" % (c_last - c_first))
+    if hit - hold < 40:
+        F("quiet hold only %.1f dB under the hit (>= 40)" % (hit - hold))
+    if tail != 0.0:
+        F("last 0.15 s is not digital zero")
+
+
 def main():
     man = json.load(open(os.path.join(HERE, "manifest.json")))
     fails, warns, rows = [], [], []
@@ -92,6 +133,8 @@ def main():
                 regen = lambda: TK.render_theka(it["tala"], it["fps"], it["bars"], seed=3)
             elif it["preset"] == "bhangra_dhol":
                 regen = lambda: TK.render_bhangra(it["fps"], it["bars"], seed=3)
+            elif it["preset"] in TRAILERS:
+                regen = lambda: TR.render_trailer(it["preset"], it["fps"], seed, it.get("act_bars"))
             else:
                 regen = lambda: C.compose(it["preset"], it["structure"], seed, it["fps"])
             r = regen()
@@ -116,6 +159,7 @@ def main():
             share, top = chroma_share(y, it["_key_pc"] if "_key_pc" in it else (PRESETS[it["preset"]]["key"] if it["preset"] in PRESETS else 9), it["scale"])
             row["inscale_share"] = round(share, 2)
             row["top_pc"] = top
+            row["bass_share"] = round(bass_share(y), 2)
             if share < 0.7:
                 W("in-scale chroma share %.2f" % share)
             if it["loop"]:
@@ -136,6 +180,8 @@ def main():
                 row["hook_first3_peak_db"] = round(meter.sample_peak_db(np.array([e0])), 1)
                 if e0 < 10 ** (-24 / 20):
                     F("no audible event in the first 3 frames (%.1f dBFS)" % meter.sample_peak_db(np.array([e0])))
+            if it.get("markers"):
+                trailer_checks(it, y, row, F)
             # stem balance relative loudness
             stems = C.balance(r["stems"])
             ref = meter.lufs_integrated(stems["drums"]) if np.max(np.abs(stems["drums"])) > 0 else None

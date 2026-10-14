@@ -4,6 +4,8 @@ There is one starter per genre. Each one has a `config.mjs`, which holds the edi
 
 A plan is a single JSON file, `out/plan.json`, containing shots, transitions with their reasons, the SFX cue sheet and the lint results. The same plan drives the picture, the sound and the checks.
 
+A plan may also say what the sound is meant to do, so `ears` and the critic judge a planned shape as intended: `"audio": {"mode": "music" | "vo" | "continuous", "quiet": [{"t": [a, b], "kind": "open" | "dip" | "gap" | "hold", "why": "..."}], "events": [seconds], "role": "proof" | "explainer" | "hype" | "trailer" | "vo_doc"}`. All fields are optional (no `audio` means mode `music` and no planned quiet); the templates do not write it yet, so add it in a template's `make.mjs` plan or by hand. See `ears/README.md` ("What the plan can tell ears") and `skills/motion-pack/references/critic.md`.
+
 | genre | folder | engine | run | demo (measured from the delivered file) |
 |---|---|---|---|---|
 | Ad 15 s / 30 s (hook, problem, product, proof, CTA) | `ad/` | HyperFrames 0.8.142 | `node make.mjs [--set length=30]` then `hyperframes render . -o out/ad-15.mp4` | `out/ad-15.mp4` -14.1 LUFS / -1.9 dBTP with whip, push and dip-to-black through the DOM back-end (re-rendered 2026-10-13, CRF 23, 2.2 MB); `out/ad-30.mp4` -15.0 / -1.7 (older render, hard cuts; HyperFrames lowered the 30 s track 1 dB) |

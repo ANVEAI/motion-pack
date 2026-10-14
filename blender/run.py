@@ -6,7 +6,7 @@
 #          --post none|lens (lens = bloom + vignette baked into the MP4 proxy only)   --crf 18   --force   --no-mp4
 #          --determinism F (render frame F twice in-session, compare)   --loop-check (render frame N, compare with 0)
 #          --save-blend PATH   --list (recipes + params as JSON)   --denoise-gpu (Cycles: faster, not bit-exact)
-#          --no-denoise (Cycles: raw path tracing, for determinism tests)
+#          --no-denoise (Cycles: raw path tracing, for determinism tests)   --device gpu|cpu (Cycles device)
 #
 # Output: DIR/frames/f0000.png ... (RGBA with --alpha), DIR/<slug>.mp4 (H.264 proxy, alpha flattened on black),
 # DIR/sheet.jpg (contact sheet), DIR/render.json (settings, seed, per-frame timings, hashes, checks).
@@ -26,7 +26,7 @@ if HERE not in sys.path:
 
 import bpy                                   # noqa: E402
 from lib import render as RD                 # noqa: E402
-from lib.util import Keyer, sha256_file, write_json   # noqa: E402
+from lib.util import Keyer, sha256_file, strip_png_timing, write_json   # noqa: E402
 import recipes                               # noqa: E402
 
 
@@ -60,6 +60,7 @@ def parse(argv):
     ap.add_argument("--loop-check", action="store_true")
     ap.add_argument("--save-blend", default=None)
     ap.add_argument("--denoise-gpu", action="store_true")
+    ap.add_argument("--device", default="gpu", choices=("gpu", "cpu"), help="Cycles device (cpu: slower, for hash-level repeatability)")
     ap.add_argument("--no-denoise", action="store_true", help="Cycles: no OIDN (isolates path-tracing determinism)")
     ap.add_argument("--list", action="store_true")
     return ap.parse_args(argv)
@@ -106,7 +107,10 @@ def render_to(sc, f, path):
     sc.render.filepath = path
     t = time.time()
     bpy.ops.render.render(write_still=True)
-    return round(time.time() - t, 3)
+    dt = round(time.time() - t, 3)
+    if path.lower().endswith(".png") and os.path.exists(path):
+        strip_png_timing(path)                # Cycles' per-render timing chunks would make equal pixels hash differently
+    return dt
 
 
 def main():
@@ -164,7 +168,8 @@ def main():
         S = RD.eevee_plate(sc, W, H, a.samples, mb, a.alpha, exposure=a.exposure, depth=a.depth)
     else:
         S = RD.cycles_keyart(sc, W, H, a.samples, seed=a.seed, alpha=a.alpha, exposure=a.exposure, depth=a.depth,
-                             denoise=not a.no_denoise, denoise_gpu=a.denoise_gpu, motion_blur=mb)
+                             denoise=not a.no_denoise, denoise_gpu=a.denoise_gpu, motion_blur=mb,
+                             device=a.device.upper())
     if a.save_blend:
         bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(a.save_blend))
     report = {"recipe": rec.ID, "name": rec.NAME, "preset": a.preset, "params": {k: (list(v) if isinstance(v, tuple) else v)

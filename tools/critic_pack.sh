@@ -8,7 +8,8 @@
 #   motion_strip.jpg    12 consecutive frames (6 x 2) around the fastest motion (largest mean frame difference); motion.txt names them
 #   phone/*.png         360 px wide frames (hook, quarters, end): read every word at this size or it fails phone readability
 #   loop2x.mp4          the video played twice (watch the wrap); seam.jpg = last frame | first frame, seam PSNR in critic.json
-#   refstudy/           tools/refstudy.py on the delivered file: loudness, onsets, cuts and the share of cuts within 2 frames of an onset
+#   refstudy/           tools/refstudy.py on the delivered file: loudness, onsets, cuts and the share of cuts within 2 frames of an onset,
+#                       motion events (continuous films), quiet open / tail and the ending shape
 #   ears/               ears/listen.py on the delivered file: ears.md (what a listener would notice, sound scores, every check with fixes) + ears.json;
 #                       with composition_dir it reads <dir>/out/plan.json (cuts, cue anchors) and <dir>/words.json (transcript) when they exist
 #   det/                (only with composition_dir) two HyperFrames png-sequence renders and a frame-hash comparison (det/report.txt)
@@ -16,6 +17,7 @@
 #   review.md           the rubric to fill in (skills/motion-pack/references/critic.md)
 #
 # Environment: FFMPEG, FFPROBE (default: on PATH), PYTHON (default python3, needs numpy + matplotlib for refstudy, numpy + scipy for ears),
+#              EARS_MODE (music | vo | continuous: what ears scores the edit on; default plan.audio.mode, else music),
 #              HF (default "npx -y hyperframes@0.8.142") for the determinism renders.
 set -euo pipefail
 
@@ -54,6 +56,9 @@ EARS_ARGS=()
 if [ -n "$COMP" ] && [ -f "$COMP/out/plan.json" ]; then EARS_ARGS+=(--plan "$COMP/out/plan.json")
 elif [ -f "$OUT/refstudy/study.json" ]; then EARS_ARGS+=(--cuts "$OUT/refstudy/study.json"); fi
 [ -n "$COMP" ] && [ -f "$COMP/words.json" ] && EARS_ARGS+=(--transcript "$COMP/words.json")
+# motion events for a continuous film (plan.audio.mode "continuous" or EARS_MODE=continuous); ears ignores them in the other modes
+[ -f "$OUT/refstudy/study.json" ] && EARS_ARGS+=(--events "$OUT/refstudy/study.json")
+[ -n "${EARS_MODE:-}" ] && EARS_ARGS+=(--mode "$EARS_MODE")
 "$PYTHON" "$PACK/ears/listen.py" "$IN" ${EARS_ARGS[@]+"${EARS_ARGS[@]}"} --json "$OUT/ears/ears.json" --md "$OUT/ears/ears.md" > "$OUT/ears.txt" 2>&1 \
   || echo "ears failed: see $OUT/ears.txt" >&2
 

@@ -411,5 +411,32 @@
    "logo": "snd.logo.hybrid"
   },
   "notes": "cuts/patterns.json lateDrop: projector + typewriter only until the drop (no beat, no bass); the bed enters on the turn line; end with preStingSilence (1-3 s, room tone at most) before to_black"
+ },
+ "neon_power_on": {
+  "desc": "electric / neon look: an arc zap on the frame the outline strikes, the crackle loop under the lit sign (stop it with until_frame), flicker on a glitch, zap-off on the frame the light dies",
+  "bed": [
+   "synthwave",
+   "tech_pulse",
+   "suspense_pulse"
+  ],
+  "bpm": [
+   100,
+   124
+  ],
+  "lufs": -14,
+  "roles": {
+   "power_on": "snd.elec.arc",
+   "live": "snd.elec.crackle_loop",
+   "power_off": "snd.elec.zap_off",
+   "flicker": "snd.tx.glitch_stutter",
+   "sizzle": "snd.sizzle.grain",
+   "switch": "snd.ui.toggle_on",
+   "beam": "snd.ui.hologram_beam",
+   "build": "snd.riser.noise_1bar",
+   "hit": "snd.hit.punch",
+   "to_black": "snd.stinger.cut_to_black",
+   "logo": "snd.logo.hybrid"
+  },
+  "notes": "one arc per outline strike (the id is rr:4: a repeated cue gets a different strike); the buzz is tuned to A2 (110 Hz), so it sits under A-major beds; levels over the bed: arc +3.5 dB (manifest over_bed_db), zap-off about +2, the crackle loop about 10 dB under the bed, ended on the zap-off frame"
  }
 }

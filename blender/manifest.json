@@ -11,6 +11,7 @@
  "entry": "blender/run.py",
  "smoke": "bash blender/tests/smoke.sh",
  "determinism_test": "bash blender/tests/determinism.sh",
+ "cable_tangle_test": "bash blender/tests/cable_tangle.sh",
  "id_convention": "blender/<recipe> (art loops: blender/art.<name>)",
  "recipes": {
   "blender/turntable": {
@@ -1051,6 +1052,136 @@
    "id": "blender/diorama",
    "previews": [],
    "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/diorama --size 1920x1080 --fps 30 --seconds 6 --engine eevee --out out/diorama"
+  },
+  "blender/cableTangle": {
+   "name": "Cable tangle and bulbs",
+   "doc": "Dark set: a seeded tangle of cables feeding warm filament bulbs; one cable is pulled and the bulbs go out in sequence (mode=off) or light as it untangles (mode=on). Bulb frames come from a plan and are written to render.json.",
+   "use": "The 'everything is connected' problem beat: one dependency pulled and the system goes dark; the fix beat with mode=on; pairs with an untangle diagram or a dependency graph; bulb-off frames sync to sfx hits via --beats.",
+   "avoid": "Literal electrical advice (the set is a metaphor, not wiring); slots under ~3 s (the sequence needs air); fast cuts mid-sequence (the stagger is the point).",
+   "loop": false,
+   "defaults": {
+    "seconds": 5.0,
+    "size": [
+     1920,
+     1080
+    ],
+    "engine": "cycles"
+   },
+   "params": {
+    "mode": {
+     "type": "str",
+     "default": "off",
+     "doc": "off = pulled out, bulbs go out in sequence | on = untangles, bulbs light"
+    },
+    "bulbs": {
+     "type": "int",
+     "default": 5,
+     "doc": "number of bulbs (2-9)"
+    },
+    "cables": {
+     "type": "int",
+     "default": 3,
+     "doc": "extra loose cables through the knot (besides one per bulb and the feed)"
+    },
+    "pull_start": {
+     "type": "int",
+     "default": 24,
+     "doc": "frame the pull starts (frames at the plate fps)"
+    },
+    "pull_frames": {
+     "type": "int",
+     "default": 40,
+     "doc": "duration of the pull / untangle (frames)"
+    },
+    "pull": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "mode=off slide distance (m); 0 = the plug clears the knot"
+    },
+    "lag": {
+     "type": "int",
+     "default": 12,
+     "doc": "frames from the pull start to the first bulb change"
+    },
+    "stagger": {
+     "type": "int",
+     "default": 12,
+     "doc": "frames between bulb changes"
+    },
+    "schedule": {
+     "type": "str",
+     "default": "",
+     "doc": "explicit change frames 'f1,f2,...' in sequence order (overrides lag/stagger/beats)"
+    },
+    "order": {
+     "type": "str",
+     "default": "ltr",
+     "doc": "which bulb changes first: ltr | rtl | out (centre first) | in | seeded"
+    },
+    "flicker": {
+     "type": "float",
+     "default": 0.25,
+     "doc": "mode=off: dip depth of the 2-frame stutter before a bulb dies (0 = clean cut)"
+    },
+    "bulb_w": {
+     "type": "float",
+     "default": 2.2,
+     "doc": "light power per bulb (W)"
+    },
+    "filament": {
+     "type": "float",
+     "default": 60.0,
+     "doc": "filament emission strength"
+    },
+    "glow": {
+     "type": "float",
+     "default": 0.35,
+     "doc": "lit-glass glow strength"
+    },
+    "ambient": {
+     "type": "float",
+     "default": 1.0,
+     "doc": "scale of the cool top + back light (keeps the dark set legible with the bulbs off)"
+    },
+    "radius_mm": {
+     "type": "float",
+     "default": 4.5,
+     "doc": "cable radius (mm)"
+    },
+    "az": {
+     "type": "float",
+     "default": 8.0,
+     "doc": "camera azimuth (deg, 0 = dead front)"
+    },
+    "el": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "camera elevation (deg; 0 = 24 wide / 34 tall)"
+    },
+    "lens": {
+     "type": "float",
+     "default": 40.0,
+     "doc": "mm on a 24 mm vertical sensor"
+    },
+    "fstop": {
+     "type": "float",
+     "default": 5.6,
+     "doc": "aperture (focus on the knot)"
+    },
+    "fill": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "set fill of the frame (0 = 0.84 wide / 0.86 tall)"
+    },
+    "push": {
+     "type": "float",
+     "default": 0.04,
+     "doc": "slow push-in over the plate (fraction of the distance; 0 = locked off)"
+    }
+   },
+   "id": "blender/cableTangle",
+   "previews": [],
+   "cli": "blender -b --factory-startup -P blender/run.py -- --recipe blender/cableTangle --size 1920x1080 --fps 30 --seconds 5 --engine cycles --out out/cableTangle"
   }
  },
  "library": {
