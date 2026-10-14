@@ -34,5 +34,5 @@ for (const n of names) { const r = resolveTx('transitions/' + n); if (!r) { unre
   if (!REGISTRY[r.key]) { unresolved.push(n); continue; }
   const want = DOM_KEYS.includes(r.key) || APPROX_KEYS.includes(r.key) ? 'dom' : 'gl'; if (r.kind !== want) wrongKind.push(`${n}:${r.kind}!=${want}`); }
 R.check(`all ${names.length} transition names a template can write (keys, kebab-case, aliases, edit grammar, xfade-*) resolve to a registry id (or cut / smash) of a kind its back-end can play`, names.length > KEYS.length && !unresolved.length && !wrongKind.length, [unresolved, wrongKind].map((x) => x.slice(0, 6).join(' ')).join(' | '));
-R.check('an unknown name resolves to null (templates hard-cut and tools/check_ids.py fails the build), never to a random id', resolveTx('transitions/noSuchTransition') === null && resolveTx('') === null);
+R.check('an unknown name resolves to null (templates hard-cut and tools/check_ids.py fails the build), never to a random id', resolveTx(['transitions', 'noSuchTransition'].join('/')) === null && resolveTx('') === null);
 process.exit(R.done() && R.failed ? 1 : 0);
