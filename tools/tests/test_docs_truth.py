@@ -222,6 +222,8 @@ def test_one_python_version_everywhere():
     compat = next(l for l in skill.split("\n") if l.startswith("compatibility:"))
     assert "Python 3.11" in compat and "3.10" in compat and "numba" in compat and "puppeteer-core" in compat and "Node 22" in compat and "ffmpeg" in compat and "Blender 5.2" in compat, compat
     assert "Tested with Python 3.11" in req
+    reqline = next(l for l in read("skills/README.md").split("\n") if l.startswith("**Requirements by skill:**"))
+    assert "motion-pack needs" in reqline and "Python 3.11" in reqline and "requirements.txt" in reqline and "numba" in reqline, reqline
 
 
 def test_the_readme_says_what_is_and_is_not_deterministic():
