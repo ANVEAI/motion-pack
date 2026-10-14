@@ -2369,7 +2369,7 @@
   },
   {
    "id": "ui.agentActivity",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/ui.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/pop",
@@ -2423,12 +2423,12 @@
     "list",
     "product-film"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-ui.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
    "id": "ui.promptBar",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/ui.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/click",
@@ -2465,12 +2465,12 @@
     "cursor",
     "click"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-ui.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
    "id": "ui.checklist",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/ui.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/pop",
@@ -2509,12 +2509,12 @@
     "ai-at-work",
     "building"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-ui.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
    "id": "ui.nodeGraph",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/ui.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/pop",
@@ -2608,12 +2608,12 @@
     "automation",
     "diagram"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-ui.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
    "id": "ui.scanOverlay",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/ui.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/camera_ping",
@@ -2657,12 +2657,12 @@
     "ai-at-work",
     "status"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-ui.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
    "id": "ui.isometricTilt",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/ui.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/whoosh/swish_xs",
@@ -2699,12 +2699,12 @@
     "panel",
     "camera"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-ui.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
    "id": "ui.stateMorph",
-   "file": "type/gfx/social.js",
+   "file": "type/gfx/ui.js",
    "kind": "gfx",
    "sfx": {
     "id": "sfx/ui/click",
@@ -2857,7 +2857,646 @@
     "loop",
     "product-film"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.liveTranscript",
+   "file": "type/gfx/ui-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/ai_reply",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 6.2,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.56,
+     0.1,
+     0.38,
+     0.8
+    ],
+    "title": "Live transcript",
+    "turns": [
+     {
+      "speaker": "Caller",
+      "text": "Hi, can I move my delivery to Friday?",
+      "at": 0.3
+     },
+     {
+      "speaker": "Acme Voice",
+      "ai": true,
+      "text": "Of course. Friday morning or afternoon?",
+      "at": 1.75,
+      "latency": 0.34,
+      "tags": [
+       "Booking"
+      ]
+     },
+     {
+      "speaker": "Caller",
+      "text": "Morning, please.",
+      "at": 3.25
+     },
+     {
+      "speaker": "Acme Voice",
+      "ai": true,
+      "text": "Done. A text with the new slot is on its way.",
+      "at": 4,
+      "latency": 0.31,
+      "tags": [
+       "Calendar",
+       "SMS"
+      ]
+     }
+    ],
+    "wps": 3.4,
+    "waveform": true,
+    "aiLabel": "AI voice",
+    "source": "latency values illustrative",
+    "theme": "dark",
+    "glass": true,
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "voice",
+    "transcript",
+    "latency",
+    "agent",
+    "call",
+    "glass",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.wordRegenerate",
+   "file": "type/gfx/ui-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 4.2,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.12,
+     0.3,
+     0.76,
+     0.4
+    ],
+    "title": "Script · line 2",
+    "words": "Your table for four is booked for Friday at eight.",
+    "target": 7,
+    "replacement": "Saturday",
+    "selectAt": 0.45,
+    "clickAt": 1.1,
+    "replaceAt": 1.45,
+    "cps": 13,
+    "playAt": null,
+    "playDur": 1.3,
+    "button": "Regenerate",
+    "cursor": true,
+    "waveform": true,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "voice",
+    "tts",
+    "edit",
+    "waveform",
+    "regenerate",
+    "word",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.receiptCompare",
+   "file": "type/gfx/ui-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/card_flip",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 3.8,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.1,
+     0.17,
+     0.8,
+     0.66
+    ],
+    "cards": [
+     {
+      "title": "Option A · direct",
+      "lines": [
+       {
+        "label": "Voice minutes",
+        "amount": 240
+       }
+      ],
+      "note": "No added fees"
+     },
+     {
+      "title": "Option B · reseller",
+      "lines": [
+       {
+        "label": "Voice minutes",
+        "amount": 240
+       },
+       {
+        "label": "Platform fee",
+        "amount": 12.4,
+        "fee": true,
+        "at": 0.9
+       },
+       {
+        "label": "Card processing",
+        "amount": 6.96,
+        "fee": true,
+        "at": 1.45
+       },
+       {
+        "label": "Top-up fee",
+        "amount": 2.5,
+        "fee": true,
+        "at": 2
+       }
+      ],
+      "error": {
+       "at": 2.55,
+       "text": "429 Too many requests"
+      }
+     }
+    ],
+    "currency": "$",
+    "start": 0.1,
+    "stagger": 0.18,
+    "source": "illustrative prices",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "pricing",
+    "receipt",
+    "fees",
+    "compare",
+    "cost",
+    "error",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.failoverRoute",
+   "file": "type/gfx/ui-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/toggle_on",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 4.4,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.05,
+     0.16,
+     0.9,
+     0.66
+    ],
+    "source": {
+     "label": "Your app",
+     "icon": "doc"
+    },
+    "hub": {
+     "label": "Acme router",
+     "icon": "branch"
+    },
+    "providers": [
+     {
+      "label": "Provider A"
+     },
+     {
+      "label": "Provider B"
+     },
+     {
+      "label": "Provider C"
+     }
+    ],
+    "active": 0,
+    "start": 0.25,
+    "rate": 0.17,
+    "travel": 1,
+    "failAt": 1.9,
+    "rerouteAt": 2.3,
+    "status": [
+     "Routing",
+     "Provider A down",
+     "Rerouted to Provider B"
+    ],
+    "note": "timings illustrative",
+    "theme": "dark",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "routing",
+    "failover",
+    "diagram",
+    "network",
+    "uptime",
+    "infrastructure",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.fileChip",
+   "file": "type/gfx/ui-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3.4,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "center": [
+     0.5,
+     0.5
+    ],
+    "name": "acme-voice-calls.csv",
+    "size": "4.8 MB",
+    "ext": "CSV",
+    "kind": "Spreadsheet",
+    "clickAt": 0.95,
+    "dlDur": 1.15,
+    "button": "Download",
+    "doneLabel": "Open",
+    "cursor": true,
+    "source": null,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "file",
+    "download",
+    "export",
+    "progress",
+    "cursor",
+    "click"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.pageFlythrough",
+   "file": "type/gfx/ui-nav.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 5.6,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "sections": [
+     {
+      "kind": "hero",
+      "h": 760
+     },
+     {
+      "kind": "features",
+      "h": 560
+     },
+     {
+      "kind": "integrations",
+      "h": 520
+     },
+     {
+      "kind": "pricing",
+      "h": 640
+     },
+     {
+      "kind": "quotes",
+      "h": 460
+     },
+     {
+      "kind": "footer",
+      "h": 260
+     }
+    ],
+    "headline": "Acme Voice",
+    "href": null,
+    "aspect": 2.8,
+    "stops": [
+     [
+      0.15,
+      0.12
+     ],
+     [
+      1.15,
+      0.32
+     ],
+     [
+      2.15,
+      0.52
+     ],
+     [
+      3.15,
+      0.73
+     ]
+    ],
+    "pullAt": 4.2,
+    "zoom": 1.25,
+    "fit": 0.32,
+    "tilt": 14,
+    "squash": 0.62,
+    "tiltX": 48,
+    "band": 0.36,
+    "blur": 7,
+    "bg": null,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "landing-page",
+    "website",
+    "camera",
+    "flythrough",
+    "depth-of-field",
+    "perspective",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.tabPillNav",
+   "file": "type/gfx/ui-nav.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 4.6,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.2,
+     0.15,
+     0.6,
+     0.7
+    ],
+    "title": "Acme Voice",
+    "tabs": [
+     {
+      "label": "Calls",
+      "icon": "play",
+      "items": [
+       [
+        "Reschedule delivery",
+        "Resolved · 1 min"
+       ],
+       [
+        "Order status",
+        "Resolved"
+       ],
+       [
+        "Refund question",
+        "Sent to team"
+       ]
+      ]
+     },
+     {
+      "label": "Voices",
+      "icon": "user",
+      "items": [
+       [
+        "Warm",
+        "Default for support"
+       ],
+       [
+        "Calm",
+        "Night shift"
+       ],
+       [
+        "Upbeat",
+        "Sales line"
+       ]
+      ]
+     },
+     {
+      "label": "Flows",
+      "icon": "branch",
+      "items": [
+       [
+        "Booking",
+        "4 steps"
+       ],
+       [
+        "Returns",
+        "6 steps"
+       ],
+       [
+        "After hours",
+        "3 steps"
+       ]
+      ]
+     },
+     {
+      "label": "Insights",
+      "icon": "chart",
+      "items": [
+       [
+        "Busiest hour",
+        "Shown in the weekly report"
+       ],
+       [
+        "Top intents",
+        "Booking, status, refunds"
+       ],
+       [
+        "Handoffs",
+        "Reasons, by week"
+       ]
+      ]
+     }
+    ],
+    "steps": [
+     [
+      1,
+      1
+     ],
+     [
+      1.9,
+      2
+     ],
+     [
+      2.8,
+      3
+     ]
+    ],
+    "first": 0,
+    "cursor": true,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "tabs",
+    "navigation",
+    "feature-tour",
+    "pill",
+    "panel",
+    "cursor",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.windowWall",
+   "file": "type/gfx/ui-nav.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_l",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 5.4,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0,
+     0.14,
+     1,
+     0.72
+    ],
+    "count": 9,
+    "kinds": [
+     "typing",
+     "cart",
+     "chart",
+     "list",
+     "form",
+     "call"
+    ],
+    "winW": 560,
+    "winH": 380,
+    "gap": 44,
+    "period": 2.2,
+    "panAt": 0.2,
+    "panDur": 4.6,
+    "label": "9 tasks running in parallel",
+    "url": "acme.example",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "browser",
+    "agents",
+    "parallel",
+    "wall",
+    "camera",
+    "ai-at-work",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.optionPicker",
+   "file": "type/gfx/ui-nav.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/tick",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 3.4,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "center": [
+     0.5,
+     0.5
+    ],
+    "prompt": "Acme Voice picks a tone:",
+    "options": [
+     "Warm",
+     "Calm",
+     "Upbeat",
+     "Formal",
+     "Playful",
+     "Concise"
+    ],
+    "target": 1,
+    "mode": "arc",
+    "spinAt": 0.35,
+    "lockAt": 1.75,
+    "turns": 2,
+    "cursor": true,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "picker",
+    "options",
+    "choice",
+    "quiz",
+    "chips",
+    "slot",
+    "cursor",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-ui-r3.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -2925,7 +3564,7 @@
     "agent-at-work",
     "feature-list"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-kinetic.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -2971,7 +3610,7 @@
     "editorial",
     "hook"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-kinetic.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3022,7 +3661,7 @@
     "hook",
     "logo-reveal"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-kinetic.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3070,7 +3709,7 @@
     "mark",
     "tech"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-kinetic.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3109,7 +3748,7 @@
     "pixel",
     "manifesto"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-kinetic.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3149,7 +3788,7 @@
     "brand-system",
     "editorial"
    ],
-   "demo": "type/demo/out/gfx-stickers.png",
+   "demo": "type/demo/out/gfx-kinetic.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3212,7 +3851,7 @@
     "stickers",
     "hook"
    ],
-   "demo": "type/demo/out/gfx-layouts.png",
+   "demo": "type/demo/out/gfx-collage.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3254,7 +3893,7 @@
     "explosion",
     "montage"
    ],
-   "demo": "type/demo/out/gfx-layouts.png",
+   "demo": "type/demo/out/gfx-collage.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3301,7 +3940,7 @@
     "placeholder",
     "customers"
    ],
-   "demo": "type/demo/out/gfx-layouts.png",
+   "demo": "type/demo/out/gfx-collage.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3391,7 +4030,7 @@
     "icons",
     "connected"
    ],
-   "demo": "type/demo/out/gfx-layouts.png",
+   "demo": "type/demo/out/gfx-collage.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
@@ -3453,7 +4092,7 @@
     "grid",
     "draw-on"
    ],
-   "demo": "type/demo/out/gfx-callouts.png",
+   "demo": "type/demo/out/gfx-collage.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {

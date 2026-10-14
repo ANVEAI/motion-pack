@@ -45,6 +45,8 @@
 ## Type and captions
 
 - **UI-kit text widths are estimated.** `ui.*` sizes chips and pills from `textW` (no DOM measurement), so a long label can overrun its chip; check the sheet. The prompt caret is a `<tspan>` after the typed text, so it always sits right after the glyphs.
+- **Round-3 UI parts measure text, so fonts must be in before the first frame.** `ui.liveTranscript` wraps turns and `ui.wordRegenerate` / `ui.tabPillNav` size words with `measure()` (canvas metrics in the browser). A frame drawn before Manrope loads wraps with the fallback font. Kick off `document.fonts.load()` for the weights you use and repaint the current time when they resolve (`templates/demo-r3-ui/make.mjs`).
+- **A spinner inside a looping part must turn a whole number of times per loop.** The kit spinner turns 1.15 times a second, so a loop of 2.2 s does not repeat exactly; `ui.windowWall` drives its spinners from the loop phase (3 turns per loop) so frame t and t + period are identical (tested).
 - **Real UI is small on a 16:9 frame.** At `scale: 1` the kit uses true UI sizes (30-34 px body); for video use `scale` 1.3-1.6 and check a 360 px wide still.
 
 - **`scramble` swaps glyph text.** Use the canvas renderer or `driveType`, not `bakeType`.

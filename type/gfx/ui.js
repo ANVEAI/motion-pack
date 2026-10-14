@@ -8,6 +8,7 @@
      ui.scanOverlay    corner brackets lock onto a subject box, a coloured sweep fills a supplied mask path (or a rounded-rect fallback), "Scanning… -> Done"
      ui.isometricTilt  a flat panel (or any other gfx item via `inner`) tilts into an isometric plane and back, with a floor shadow; isoTiltCss for DOM panels
      ui.stateMorph     ONE container morphs size, radius, colour and content through a list of states, driven by a cursor path with real clicks; loops when last = first
+   Round 3 (same contract, same KIT): ui-data.js (liveTranscript, wordRegenerate, receiptCompare, failoverRoute, fileChip), ui-nav.js (pageFlythrough, tabPillNav, windowWall, optionPicker).
    Size: `scale` multiplies the size unit (see the loop under UI). Sound: uiCues(id, params) -> [{ t, id: 'sfx/<cat>/<name>', why }] in the item's local time (add the item's `at`); index.js exposes it with the at applied. */
 import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, INK, PAPER, esc, f2, text, textW, dash, hashf } from './core.js';
 import { springTrack, spring } from '../ease.js';
@@ -43,6 +44,9 @@ const ripple = (x, y, u, s, col) => (u < 0 || u > 0.45 ? '' : `<circle cx="${f2(
 const pressAt = (u, at) => clamp(springTrack(u, [[0, 0], [at - 0.02, 1], [at + 0.07, 0]], 'ui'), 0, 1.2);
 const caret = (u, typing, col) => `<tspan fill="${col}" font-weight="300" opacity="${typing || Math.floor(u * 2) % 2 === 0 ? 1 : 0}">|</tspan>`;
 const typed = (s, u, at, cps) => String(s).slice(0, Math.max(0, Math.floor((u - at) * cps + 1e-9)));
+
+/* shared kit for the round-3 ui files (ui-data.js, ui-nav.js): same look, same springs, same sounds */
+export const KIT = { THEME, th, GREEN, AMBER, SPOT, bx, uid, op, rect, shadowDef, softShadow, lum, rgb, hex, ICON, icon, spinner, checkBadge, cursorSvg, ripple, pressAt, caret, typed };
 
 /* ---------- 1. agent activity ---------- */
 const AGENT_STEPS = [{ verb: 'Checking', obj: 'Inbox' }, { verb: 'Reading', obj: 'Supplier notes' }, { verb: 'Comparing', obj: 'Prices' }, { verb: 'Writing', obj: 'Follow-up' }, { verb: 'Planning', obj: 'Schedule' }];
@@ -213,12 +217,12 @@ export const UI = {
 
 /* every ui.* item takes `scale` (default 1): it multiplies the size unit ctx.s (type, radii, strokes, rows), while `box` / `center` stay frame fractions.
    Real product UI is small on a 16:9 frame; 1.3-1.6 keeps it legible on a phone (check the 360 px test). */
-for (const g of Object.values(UI)) { const f = g.svg; g.d.scale = 1; g.svg = (L, p, c) => f(L, p, p.scale && p.scale !== 1 ? { ...c, s: c.s * p.scale } : c); }
+for (const g of Object.values(UI)) { const f = g.svg; g.file = 'type/gfx/ui.js'; g.d.scale = 1; g.svg = (L, p, c) => f(L, p, p.scale && p.scale !== 1 ? { ...c, s: c.s * p.scale } : c); }
 
 /* ---------- sound cue hook (local times; the item's `at` is added by index.js uiCues) ---------- */
 /* round-robin over sibling sounds so a run of identical UI events never repeats one sample 3+ times in 8 events (music/mixer.py lint R9) */
-const rr = (list, i) => list[i % list.length];
-const TICKS = ['sfx/ui/tick', 'sfx/ui/count_tick', 'sfx/device/loading_tick'], POPS = ['sfx/ui/pop', 'sfx/device/card_flip', 'sfx/ui/blip'];
+export const rr = (list, i) => list[i % list.length];
+export const TICKS = ['sfx/ui/tick', 'sfx/ui/count_tick', 'sfx/device/loading_tick'], POPS = ['sfx/ui/pop', 'sfx/device/card_flip', 'sfx/ui/blip'];
 export const UI_CUES = {
   'ui.agentActivity': (p) => [...p.steps.map((_, i) => ({ t: p.start + i * p.step, id: rr(TICKS, i), why: 'step ' + (i + 1) + ' becomes active' })), { t: p.start + p.steps.length * p.step, id: 'sfx/ui/success', why: 'last step done' },
     ...(p.card ? (p.card.points || []).map((_, i) => ({ t: (p.card.at ?? p.start) + 0.25 + i * (p.card.pointStep ?? p.step * 0.7), id: 'sfx/ui/blip', why: 'map point' })).filter((_, i) => i % 2 === 0) : [])],
