@@ -58,7 +58,7 @@ BUNDLES = {
                               "card_move": "snd.whoosh.swish_s", "card_fly": "snd.whoosh.whoosh_m", "card_riffle": "snd.paper.card_riffle", "card_settle": "snd.paper.card_shuffle_settle",
                               "scan": "snd.ui.scan_sweep", "working": "snd.ui.agent_working", "step_done": "snd.device.loading_tick", "result": "snd.ui.success", "number": "snd.ui.count_run",
                               "pixel_wipe": "snd.tx.pixel_dissolve", "letters": "snd.sparkle.letter_assemble", "brand_field": "snd.hit.brand_field_slam", "logo": "snd.logo.hybrid"},
-                    "notes": "target >= 60% of cuts within 2 frames of an onset (cuts/cutgen.py snap); end the 'working' loop at the result frame (mixer add_cue until_frame); one slam only, on the cut to the brand field"},
+                    "notes": "in a music-led cut, target >= 60% of cuts within 2 frames of an onset (cuts/cutgen.py snap; a VO-led or continuous film is scored by its mode, references/critic.md); end the 'working' loop at the result frame (mixer add_cue until_frame); one slam only, on the cut to the brand field"},
     "mockumentary": {"desc": "documentary-parody comedy: room tone under every interview, hard dialogue cuts, a record scratch or tape stop on the format break, deadpan stingers, silence before the punchline",
                      "bed": ["documentary_marimba", "comedy_pizzicato", "suspense_tick"], "bpm": [90, 120], "lufs": -14,
                      "roles": {"room": "snd.amb.room_tone", "office": "snd.amb.office", "format_break": "snd.cartoon.record_scratch", "tape_stop": "snd.tx.tape_stop", "jump_cut": "snd.tx.cut_tick",

@@ -28,7 +28,7 @@
 
 - One line, the type preset that matches the tone cell (`type/maskRise` premium, `type/blurIn` film, `type/elasticPop` playful, `type/scaleSlam` hype, `type/trackingCollapse` brand).
 - Hold the fully formed title for at least 9 frames; longer for more words (type-module reading rule).
-- A title never opens a social cut. In feeds, the first second belongs to the stake; put the title later or in the caption.
+- A title card never opens a social cut. In feeds, the first second belongs to the stake; put the title later or in the caption (a small name super over moving footage inside 2 s is fine: the hook rule is in motion-pack `references/virality.md` §1).
 
 ## 3. Lower thirds
 

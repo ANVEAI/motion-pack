@@ -1,6 +1,6 @@
 # Launch-film playbook
 
-How to plan, build and ship a product launch film that travels. Derived from 15 launch films from 2023–2026 (Ghost, Hark, Gemini "Argon", Pine, Tavus, Oki, Rabbit, Humane, Friend, Daylight, Limitless, Mac mini, Nothing, Cursor, Linear, Notion, Figma, Comet, ElevenLabs, Dia). The evidence and every source is in `docs/research/launch-films-2026.md`.
+How to plan, build and ship a product launch film that travels. Derived from <!--n:launch_films-->20<!--/n--> launch films from 2023–2026 (Ghost, Hark, Gemini "Argon", Pine, Tavus, Oki, Rabbit, Humane, Friend, Daylight, Limitless, Mac mini, Nothing, Cursor, Linear, Notion, Figma, Comet, ElevenLabs, Dia). The evidence and every source is in `docs/research/launch-films-2026.md`.
 
 Numbers here are tunable defaults drawn from those films, not laws. RECIPE L in `SKILL.md` builds what this page plans.
 

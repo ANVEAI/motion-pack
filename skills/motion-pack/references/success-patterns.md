@@ -83,7 +83,7 @@ Craft-only references teach technique, not reach.
 |---|---|---|
 | Integrated loudness | −9.2 to −14.9 LUFS, several peaking above 0 dBFS | **Don't copy the clipping.** Keep the pack master at −14 LUFS / ≤ −1 dBTP; it plays back at the same level on platforms that normalise |
 | Bass share (<150 Hz) | 32–66%, mostly 40–66% | Warm, bass-led beds; the highs stay low (1–6%) and UI ticks carry the sparkle |
-| Cuts on a sound onset | 45–80% (Pinterest 80%, Customer.io 75%, Animala 75%, Base44 53%, Clueso 45%) | **Cut on hits.** Target ≥ 60% of cuts within 2 frames of an onset (`cuts/cutgen.py snap`) |
+| Cuts on a sound onset | 45–80% (Pinterest 80%, Customer.io 75%, Animala 75%, Base44 53%, Clueso 45%) | **Cut on hits** in a music-led, cut-driven piece: target ≥ 60% of cuts within 2 frames of an onset (`cuts/cutgen.py snap`); VO-led and continuous films are scored by their mode (§9, `critic.md`) |
 | Tempo (estimate) | about 120–140 BPM for the product films | 120–136 BPM fits a 1.5–3 s beat cadence |
 | Voice | Base44: sparse VO, ~1 line per beat (57 words in 52 s). Clueso: dialogue at 145 wpm. Others: no VO | A product film is text-led or uses a sparse VO "verb ladder" (*Build it all. Expand. Automate. Multiply.*). Comedy uses real dialogue |
 

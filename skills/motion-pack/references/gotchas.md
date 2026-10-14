@@ -36,14 +36,14 @@
 
 ## Transitions
 
-- **DOM gaps.** The DOM back-end covers 13 of 23 transitions. Its limits:
+- **DOM gaps.** The DOM back-end plays all 49 visual transitions: 26 exact back-ends and 23 approximations of the GL-only looks (`kind: 'dom', approx: true`). The exact ones have limits:
   - spin shows the background instead of mirrored edges.
   - whip has no RGB fringe.
   - lumaWipe supports only linear and radial.
   - iris star and roundRect are approximations.
   - match has no guides.
-- **GL-only keys hard-cut in DOM templates.** These are glitch, ink, filmBurn, lightLeak, morph, zoomThrough, pagePeel, pixelSort and maskReveal. Each is logged as `transitions todo`.
-- **Two transitions are approximations.** pixelSort is a max-luma streak, not a true sort. morph is a luma-gradient warp dissolve, not optical flow.
+- **The 23 GL-only looks keep the timing, the swap frame and the sound, not the look.** glitch, ink, filmBurn, lightLeak, morph, zoomThrough, pagePeel, pixelSort, maskReveal and the rest run `tx-dom-x.js` APPROX in a DOM template; they do not hard-cut and are not logged as `transitions todo` (that line is now only `speedRamp`, which is timing-only, or an unknown id). Use `transitions/lib/tx-gl.js` on canvas sources, or the three.js pass, when the exact GL look is the point; look at the cut frame before a hero use.
+- **Two of the approximations are far from the original.** pixelSort is a max-luma streak, not a true sort. morph is a luma-gradient warp dissolve, not optical flow.
 - **The three.js pass is parity-tested against r185** (`transitions/tools/three-parity.sh`, with `THREE_BUILD` pointing at a local three.js build). The kit (`objects/kit/`) loads r160 from CDN, so do a first-use check inside a kit scene before a hero use.
 - **sharedElement clones are snapshots.** The DOM back-end clones each `[data-share]` element (computed styles copied) the first time a frame inside the window is drawn. A frame-parallel or out-of-order render can enter the window anywhere, so hold shared elements still inside the window (draw an animated one at `min(t, t0)` in shot A and `max(t, t1)` in shot B); a `<video>` inside a shared element freezes.
 - **sketchToRender needs edges.** Flat gradients give no line art (the DOM Laplacian and the GL Sobel both read luminance edges); a plate with busy texture turns into hatching. Judge the cut frame.
@@ -52,7 +52,8 @@
 ## Sound
 
 - **Hit contract.** The anchor sample lands at `(F + 1) x SR / fps`: one frame after the visual (the rule from ANVE's v9 launch film). Risers end one frame **before** the hit.
-- **The library is normalised to -6 dBFS peak.** Real levels come from the mixer's over-bed solver (hero +4.5, whoosh +2, ui +4, logo +5 dB over the bed). Never gain by hand.
+- **The library is normalised to -6 dBFS peak.** Real levels come from the mixer's over-bed solver (hero +4.5, whoosh +2, ui +4, logo +5 dB over the bed). Never gain by hand: set the level in the plan (`overBedDb`, `overVoDb`, or `gainDb` when there is no bed).
+- **Room tone is not -48 anything, and the mixer cannot go below -30 dB under the bed.** `sfx/amb/room_tone` ships at -18.1 LUFS-I (peak -6 dBFS). Measured under `bed_cinematic_drone_loop8` (master -14 LUFS), its stem reads -23.5 LUFS at the loop default (-10 dB under the bed), -33.1 at `overBedDb: -20`, -39.0 at -26 and -43.0 at -30; a request of -38 is clipped to a -30 dB trim and measures -32.7 over the bed (-45.7 LUFS), with no warning, so read `measured_over_bed_db` in the mix report. In the bed path a plan cue with `loopTo` is dropped (the bed replaces ambience loops): give the room tone a plain cue and `overBedDb`.
 - **Sub-heavy cues are not phone-safe.** `phone_safe=false` means the cue drops more than 6 dB on a phone speaker. Pair it with a mid-range cue (lint R12).
 - **Sound ids use the registry segment, not the manifest category.** The transition sounds are `sfx/tx/*` and the impacts `sfx/hit/*` (category names `transition` and `impact` are not ids). The music-mixer path of `templates/_shared/audio.py` skips an unknown id silently, so run `python3 tools/check_ids.py` before every mix and compare the cue count it prints.
 - **A dense SFX cue sheet can still trip the AAC probe.** The 16 s cards demo decoded 0.9 LU quiet at a -1.5 dBTP WAV ceiling (HyperFrames lowered the whole track); `plan.masterCeilingDb: -2.0` fixed it (-14.2 LUFS / -1.6 dBTP decoded).

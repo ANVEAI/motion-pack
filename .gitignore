@@ -50,6 +50,7 @@ AUDIT.md
 
 # --- tooling ---
 node_modules/
+.venv/
 # only the root lockfile (from optional `npm i --no-save` test tooling); physics/package-lock.json is committed
 /package-lock.json
 __pycache__/

@@ -2,7 +2,7 @@
 name: motion-pack
 description: Make finished, platform-ready videos with an AI agent from motion-pack, an open-source kit of deterministic, seek-safe parts rendered with HyperFrames - transitions, kinetic type and captions, synthesised sound effects and music, overlays and film looks, 2D and 3D camera moves, three.js objects, Blender hero plates and genre templates. Use this skill whenever the user wants to make or edit a video of any kind - an ad, launch film, product promo, explainer, reel, short or TikTok, animated short film, wordless character spot, talking-head edit with captions and B-roll, music or beat-synced edit, kinetic title, lower third or sonic logo - even if they never mention motion-pack. It plans the edit, picks parts by id, syncs sound to frames, masters to platform loudness and checks the delivered file. For choosing or wiring outside libraries (GSAP, three.js, Lottie, Rapier, Remotion and others), load the motion-stack skill alongside.
 license: MIT
-compatibility: Node 22+ with npx (HyperFrames 0.8.142 renders the compositions), ffmpeg, Python 3.10+ with numpy, scipy, soundfile and Pillow for sound and QA, Chrome or Chromium; Blender 5.2 only for photoreal plates. Works in Claude Code and in any agent that reads Agent Skills.
+compatibility: Node 22+ with npx (HyperFrames 0.8.142 renders the compositions), ffmpeg, Python 3.11 in a venv with `pip install -r requirements.txt` (numpy, scipy, numba, soundfile, Pillow, matplotlib, pytest; 3.10 to 3.12 install the pins, 3.13+ cannot), Chrome or Chromium; the three.js templates and GPU tests also need `npm i --no-save puppeteer-core` and a hardware GPU; Blender 5.2 only for photoreal plates. Works in Claude Code and in any agent that reads Agent Skills.
 metadata:
   version: 2.0.0
   author: ANVE (anveai.com)
@@ -26,7 +26,7 @@ Every path below is relative to the pack root.
 - `catalog/index.html`: an offline gallery of every component. Rebuild it with `python3 catalog/build.py`.
 
 **Detail lives in `references/`:**
-- `launch-playbook.md`: launch-film archetypes, beat sheets and rules from 15 recent launches (evidence in `docs/research/launch-films-2026.md`).
+- `launch-playbook.md`: launch-film archetypes, beat sheets and rules from <!--n:launch_films-->20<!--/n--> recent launches (evidence in `docs/research/launch-films-2026.md`).
 - `apis.md`: per-module API cheat sheet.
 - `platforms.md`: platform lengths, safe zones, loudness.
 - `virality.md`: the hook and retention checklist with evidence grades.
@@ -63,7 +63,7 @@ Every path below is relative to the pack root.
    - −14 LUFS-I, and true peak ≤ −1.5 dBTP on the WAV master. Use −2.0 if clicky transients push the AAC probe over.
    - The delivered MP4 decodes to ≤ −1.0 dBTP. HyperFrames lowers the whole track if its AAC goes over −1, so check the probe, not just the WAV.
    - The last 0.15 s is digital zero.
-   - Use `music/mixer.py`. Never gain SFX by hand; the library is normalised to −6 dBFS peak.
+   - Use `music/mixer.py`. Never gain SFX by hand (an editor, ffmpeg `volume`): the library is normalised to −6 dBFS peak and the level is set in the plan: `overBedDb` / `overVoDb` on a cue for the mixer, or `gainDb` on a cue when there is no bed (`templates/_shared/audio.py`).
 6. **Honesty.**
    - No invented stats, quotes, reviews or logos. A claim containing a digit needs a `source`: `lint.proof` checks the plan's `claims` (a template's proof lines or number fields) and `make.mjs` exits 2 on a miss, so every stat goes in a claim with its source, never in a headline.
    - Label placeholders and concept renders where a viewer could mistake them for real.
@@ -92,7 +92,7 @@ Every path below is relative to the pack root.
 - Corner labels and decorative captions nobody reads.
 - Glow on UI.
 - A logo bumper first. The logo belongs at the end.
-- A black frame 0. Frame 0 is in motion.
+- A black frame 0. Frame 0 is a strong image already in motion (the first visible change lands by frame 6).
 - Invented UI or numbers. Use real screens and sourced numbers, or label the placeholder.
 - Clipping. Master through `music/mixer.py` (−14 LUFS-I, ≤ −1.5 dBTP WAV, ≤ −1.0 dBTP delivered).
 
@@ -185,9 +185,8 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | product demo / app UI sound | `sfx/device/*` (phone buzz, message sent/received, clicks, keyboard, loading tick, notify, lock/unlock, achievement) and `sfx/ui/*` (mic on/off, listening loop, think pulse, reply) | one device sound per UI action, under the VO |
 | a different music genre | `music/bed_*_loop8` (lo-fi jazz, synthwave, deep house, dnb, ambient pad, chiptune, folk pluck, marimba, orchestral epic, jazz walk, comedy pizzicato, corporate bright, suspense pulse) and length-fitted cuts | all are generic library beds; listen once before a hero use |
 | a SaaS / AI product film sound | bundle `saas_launch`: `sfx/paper/card_riffle`, `card_shuffle_settle`, `sfx/ui/scan_sweep`, `sfx/ui/agent_working` (4 s loop), `sfx/tx/pixel_dissolve`, `sfx/sparkle/letter_assemble`, `sfx/hit/brand_field_slam` | stop the working loop on the result frame: mixer `add_cue(..., until_frame=F)` |
-| a story shape | `cuts/story/*`: `interruptOpen`, `verbLadder`, `mockumentaryReaction`, `sentenceLed` (`cutgen.py interrupt-open / verbs / mockumentary / sentence`); bundle `mockumentary` for doc-parody comedy | `cutgen.py snap` puts cuts on onsets (target 60% within 2 frames) |
 | a VO-led, documentary, explainer or trailer shape (word timings in, a plan out) | `cuts/story/*` round 4/5, all `cutgen.py` subcommands: `diagramWalkthrough` (`walkthrough`: the diagram advances only in speech gaps), `queryLadder` (`query-ladder`: one UI, 4-6 harder inputs), `fidelityLadder` (`fidelity-ladder`: a step per bar, a dropout, a new dimension), `voicesColdOpen` (`voices-open`), `commandRapidFire` (`command-burst`), `anaphoraCut` (`anaphora`), `trailerArc` (`trailer`), `styleLadder` (`style-ladder`); `templates/multi-voice-doc` runs the documentary one | VO shapes never cut inside a word; they emit `bed_automation` (dropouts, a near-silent question, a quiet hold) that `music/mixer.py` applies; `vo.duck_db` deepens the duck |
-| a story shape | `cuts/story/*`: `interruptOpen`, `verbLadder`, `mockumentaryReaction`, `sentenceLed` (`cutgen.py interrupt-open / verbs / mockumentary / sentence`); bundle `mockumentary` for doc-parody comedy | `cutgen.py snap` puts cuts on onsets (target 60% within 2 frames, for music-led cut pieces; VO-led and continuous films: `references/critic.md`) |
+| a story shape | `cuts/story/*`: `interruptOpen`, `verbLadder`, `mockumentaryReaction`, `sentenceLed` (`cutgen.py interrupt-open / verbs / mockumentary / sentence`); bundle `mockumentary` for doc-parody comedy | `cutgen.py snap` puts cuts on onsets (target 60% within 2 frames: for music-led cut pieces only; VO-led and continuous films are scored differently, `references/critic.md`) |
 | a trailer: a build, a planned valley, a crescendo, one title hit | `music/bed_trailer_arc` (act 1 drone, act 2 ostinato, act 3 wall, a 3 s sub-only gap, a 2-bar crescendo, a hard-stop hit, a quiet hold; every marker in its sidecar in frames) | NOT a loop: fit a cut with `trailer.render_trailer(act_bars=...)`, never by trimming past `gap_start`; cut the picture to black on `visual_cut_frame` (hit - 1); mark the gap and the hold in `plan.audio.quiet` |
 | an electric / neon outline, a power-on or a light dying | bundle `neon_power_on`: `sfx/elec/arc` (zap, `rr:4`), `sfx/elec/crackle_loop` (4 s loop under the lit sign, end it with `until_frame`), `sfx/elec/zap_off` (power-down, anchor on the frame the light dies) | arc on the frame the stroke strikes; the zap-off anchor is its opening snap, so put it on the frame the light dies; synthesised, never auditioned by a human: listen once before a hero use |
 | a quiet open, a mid-film reset dip or a quiet end-card hold | `plan.audio.quiet` `[{t: [a, b], kind, why}]` with kind open, dip, gap or hold (open <= 2 s, dip / gap <= 4 s, hold <= 9 s), and `plan.audio.mode` music, vo or continuous for what the critic scores | `ears` then reads the quiet as shape; it still warns on unplanned dead air and on a region over its maximum |
@@ -295,7 +294,7 @@ Every recipe ends with the VIRALITY and QA checklists below.
    - J/L splits (`cuts/split/film_J`) for scene bridges.
    - `filmBurn` / `lightLeak` only for memory or a tonal break.
 4. **Sound first.**
-   - Room tone under every scene (`sfx/amb/*`, about −48 LUFS).
+   - Room tone under every scene (`sfx/amb/*`), set in the plan, not by hand. `sfx/amb/room_tone` ships at −18.1 LUFS-I (peak −6 dBFS); its old "−48 dBFS floor" label was a design target, not the file. Under a bed use a plan cue with `overBedDb`: the loop default is −10 dB under the bed, and measured under `bed_cinematic_drone_loop8` the room-tone stem reads −23.5 LUFS at the default, −33.1 at −20, −39.0 at −26 and −43.0 at −30. The mixer never goes below −30 dB under the bed and a lower request is clipped without a warning (`measured_over_bed_db` in the report shows it: −38 asked gave −32.7). With no bed (a score-less film, `templates/film-scene`) put `gainDb: -20` on the cue.
    - The score enters on emotion, not on action.
    - 200–400 ms of silence before the turn.
    - Bundle `short_film`, or `office_comedy` for workplace comedy.
@@ -408,9 +407,9 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 ## VIRALITY checklist (the mechanisms are solid; every number is a tunable default)
 
 **Hook (first second)**
-- [ ] Frame 0 is a strong image in motion: never black, never a logo bumper, never a fade-in. A small product-name super over moving footage inside 2 s is not a bumper.
+- [ ] Frame 0 is a strong image already in motion (the first visible change lands by frame 6): never black, never a logo bumper, never a fade-in. A small product-name super over moving footage inside 2 s is not a bumper. This is the one statement of the hook rule (`references/virality.md` §1 has the table); the sibling skills link to it.
 - [ ] The sound may enter 1–2 s after a moving frame 0, on the first meaningful visual event (13 of 28 round 4/5 references, tier A among them). Plan it: `plan.audio.quiet` `[{"t": [0, 1.5], "kind": "open", "why": "..."}]`.
-- [ ] First motion by frame 6. Hook text on screen by 0.3 s: at most 7 words, and at most 4 on the poster frame.
+- [ ] Hook text on screen by 0.3 s: at most 7 words, and at most 4 on the poster frame.
 - [ ] The picture, the on-screen text and the VO all say the same idea.
 - [ ] The hook uses one archetype, and you made 3 hook variants on the same body.
 

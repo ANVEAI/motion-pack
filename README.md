@@ -87,9 +87,9 @@ The skills pair well with [charlie947/social-media-skills](https://github.com/ch
 | `music/` | 41 beds from 33 style presets, 10 stingers, 14 sonic logos, plus the mixer | `music/README.md` |
 | `layers/` | 138 finishing components (overlays, grades, grain stocks, finisher) incl. 45 looks; 49 `.cube` LUTs | `layers/README.md` |
 | `type/` | 211 kinetic-type presets, caption styles, icons, editor graphics and stickers | `type/README.md` |
-| `camera/` | 49 2D and 3D camera moves | `camera/README.md` |
-| `objects/` | 30 three.js props, set pieces and one rigged character | `objects/README.md` |
-| `templates/` | 10 genre templates: ad, beat-edit, character-spot, demo-r3-type, demo-r45-type, demo-type-layout, film-scene, multi-voice-doc, proof-film, talking-head | `templates/README.md` |
+| `camera/` | 33 camera moves (19 2D, 14 3D) plus 16 helpers (lock, sequence, lint, CSS and GSAP export, presets, bake) | `camera/README.md` |
+| `objects/` | 30 three.js props, set pieces and materials, with 2 characters (a rigged 3D worker and a flat 2D mascot) | `objects/README.md` |
+| `templates/` | 7 genre templates: ad, beat-edit, character-spot, film-scene, multi-voice-doc, proof-film, talking-head; plus 9 part demos (`demo-*`) that show the newer parts | `templates/README.md` |
 | `blender/` | 12 Blender recipes for photoreal plates (9 product and scene plates, 3 seamless art loops), 4 device presets, 8 showcase previews | `blender/README.md` |
 | `physics/` | build-time rigid-body baking (Rapier) with a dependency-free table player; 2 example specs, 1 baked table | `physics/README.md` |
 | `terminal/` | 5 baked flock looks (cbirds, fetched and built at a pinned commit): flock, braille, a word the flock writes, 3D murmuration, code that flies | `terminal/README.md` |
@@ -106,14 +106,16 @@ Every module has a README with its API, measured numbers and honest limits. Modu
 | need | for |
 |---|---|
 | Node.js 22+ | HyperFrames renders, templates, tests |
-| Python 3.11 + `pip install -r requirements.txt` | sound synthesis, mixing, cuts, catalog |
+| Python 3.11 in a venv, then `pip install -r requirements.txt` (3.10 to 3.12 install the pins; 3.13 and newer cannot) | sound synthesis, mixing, cuts, catalog |
 | ffmpeg | mixes, muxing, contact sheets, encodes |
 | Chrome or Chromium | HyperFrames and three.js renders |
 | A hardware GPU | WebGL templates and transitions |
+| `npm i --no-save puppeteer-core` (repo root) | the three.js templates and the GPU tests; HyperFrames renders do not need it (details: `templates/README.md`) |
 | Blender 5.2 (optional) | photoreal plates in `blender/` |
 
 ```bash
 git clone https://github.com/ANVEAI/motion-pack && cd motion-pack
+python3.11 -m venv .venv && . .venv/bin/activate   # a current system python3 (3.13+) cannot install the pinned numpy / scipy / numba
 pip install -r requirements.txt
 
 # 1. Build the sound library (or download the WAV masters from the latest Release)

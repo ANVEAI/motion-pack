@@ -1,6 +1,6 @@
 # Launch films that worked (and two that didn't), 2023–2026
 
-Evidence behind `skills/motion-pack/references/launch-playbook.md`. 15 launch films, compiled 14 Oct 2026.
+Evidence behind `skills/motion-pack/references/launch-playbook.md`. <!--n:launch_films-->20<!--/n--> launch films, compiled 14 Oct 2026.
 
 **How the numbers were gathered:**
 - Engagement figures were read that day from public post metadata (the fxtwitter API for X, YouTube page metadata).

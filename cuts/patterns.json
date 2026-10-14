@@ -41,7 +41,7 @@
   "use": "comedy, shock, irony, problem-to-solved snap, mime-style punchline; the silence before is what sells it"
  },
  "interrupts": {
-  "minor_every_s": 2.5, "medium_every_s": 5.0, "major_every_s": 9.0, "jitter": 0.25, "major_min_gap_s": 6.0, "major_pair_min_gap_s": 1.5,
+  "minor_every_s": 2.5, "medium_every_s": 5.0, "major_every_s": 9.0, "jitter": 0.25, "major_min_gap_s": 6.0, "major_pair_min_gap_s": 1.5, "fatigue_window_s": 5.0, "fatigue_rising_windows": 4,
   "levels": {"1": ["cam.punchIn", "caption emphasis", "new angle", "tx.scalePunch"], "2": ["B-roll insert", "text card", "tx.whip", "zoom-out reveal", "colour field"], "3": ["cut.smash", "tx.glitch", "tx.flash + music drop", "format switch"]}
  },
  "story": {
@@ -108,7 +108,7 @@
                            "renderer": "hold ONE composition; swap the grade / stylize layer on the planned frames (layers look.*, transitions/sketchToRender for the sketch -> render step)",
                            "use": "show a model's range in about 3 s: one held composition steps through render styles on hits (live -> toon 3D -> pencil -> watercolour, or any list of looks), 0.5-1 s each (tier C reference: craft only)"}
  },
- "onset_snap": {"tolerance_frames": 2, "target_share": 0.6, "note": "studied launch and motion films put 45-80% of their cuts within 2 frames of a sound onset (success-patterns.md 4); cutgen.py snap moves each cut to the nearest onset within the tolerance"},
+ "onset_snap": {"tolerance_frames": 2, "target_share": 0.6, "note": "studied launch and motion films put 45-80% of their cuts within 2 frames of a sound onset (success-patterns.md 4); the 60% target is for music-led, cut-driven pieces only (VO-led and continuous films are scored by their mode, references/critic.md); cutgen.py snap moves each cut to the nearest onset within the tolerance"},
  "pace": {
   "hype_ad":      {"asl_s": [1.2, 2.0], "shots_per_30s": [15, 24], "beat_pattern": "every_2"},
   "beat_edit":    {"asl_beats": [1, 2], "shots_per_30s": [30, 60], "beat_pattern": "every_beat"},

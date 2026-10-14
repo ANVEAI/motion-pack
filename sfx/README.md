@@ -390,7 +390,7 @@ Seamless 8.0 s loops (circular synthesis / equal-power self cross-fade). Level t
 | `amb.rain` | rain: Poisson drops + pink bed, interior window taps | 8.00 | loop | -15.1 | 1907 | 14 | short_film | dissolve,hardCut | tier:3 anchor:loop mood:tense loop |
 | `amb.rain_heavy` | heavy rain: dense drops, roaring wash, gutter rumble | 8.00 | loop | -15.4 | 2168 | 14 | short_film | dissolve,hardCut | tier:3 anchor:loop mood:tense loop |
 | `amb.rain_light` | light rain: sparse drops on a soft hiss | 8.00 | loop | -16.3 | 2633 | 15 | short_film,talking_head | dissolve,hardCut | tier:3 anchor:loop mood:calm loop |
-| `amb.room_tone` | empty room tone with 50 Hz mains hum (India), -48 dBFS style floor | 8.00 | loop | -16.7 | 390 | 14 | short_film,talking_head | hardCut,jcut | tier:3 anchor:loop mood:warm loop |
+| `amb.room_tone` | empty room tone with 50 Hz mains hum (India); ships at -18 LUFS-I, so sit it 20-26 dB under the bed (plan overBedDb) | 8.00 | loop | -16.7 | 390 | 14 | short_film,talking_head | hardCut,jcut | tier:3 anchor:loop mood:warm loop |
 | `amb.server_hum` | server room: 120 Hz hum + fan noise | 8.00 | loop | -16.7 | 652 | 14 | ad,launch,short_film | hardCut | tier:3 anchor:loop mood:tech loop |
 | `amb.stream` | stream: babbling bubbles over a filtered water bed | 8.00 | loop | -15.3 | 1533 | 14 | short_film,talking_head | dissolve,hardCut | tier:3 anchor:loop mood:calm loop |
 | `amb.studio_air` | near-silent studio air: dark pink floor + faint 8 kHz air (not digital zero) | 8.00 | loop | -18.3 | 438 | 14 | short_film,talking_head,launch | dipToBlack,hardCut | tier:3 anchor:loop mood:warm loop |

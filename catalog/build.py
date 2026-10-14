@@ -156,7 +156,9 @@ for m in re.finditer(r"'(objects/[a-z0-9-]+)': r\(.*?\[([^\]]*)\], '([^']*)', '(
     n = oid.split('/')[1]
     thumb = hero.get(n) or rel(os.path.join(PACK, 'objects/qa/cast-r2/sheet.jpg' if n == 'worker' else 'objects/qa/film-r2/sheet.jpg'))
     add('objects', oid, n, tags + ['three'], desc=doc, thumb=thumb, meta={'state API': state}, file='objects/index.js')
-add('objects', 'objects/characters/poses', 'poses + emotions + acts', ['character', 'acts', 'emotions'], desc='45 film poses + 6 generic, 6 emotions (emote), timed acts (doubleTake, shrug, wave, point, cheer, facepalm, slowBurn, slump, jumpScare, danceBob)',
+_POSES = json.loads(subprocess.run(['node', '--input-type=module', '-e', "import('./objects/characters/poses.js').then(m=>{const g=['front','pointR','waveR','shrug','facepalm','armsCrossed'],k=Object.keys(m.POSES),f=k.filter(x=>!g.includes(x)).length;console.log(JSON.stringify({film:f,generic:k.length-f}))})"],
+                                    capture_output=True, text=True, cwd=PACK).stdout)   # counted from POSES, never typed
+add('objects', 'objects/characters/poses', 'poses + emotions + acts', ['character', 'acts', 'emotions'], desc=f"{_POSES['film']} film poses + {_POSES['generic']} generic, 6 emotions (emote), timed acts (doubleTake, shrug, wave, point, cheer, facepalm, slowBurn, slump, jumpScare, danceBob)",
     thumb=rel(os.path.join(PACK, 'objects/qa/cast-r2/sheet.jpg')), file='objects/characters/poses.js')
 
 # ---------- blender: photoreal plates (blender/manifest.json; previews committed in blender/previews/, renders are not) ----------

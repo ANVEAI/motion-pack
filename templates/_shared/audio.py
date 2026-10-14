@@ -49,6 +49,8 @@ def via_music_mixer(P, out, bed, a):
     if len(y) < n: y = np.concatenate([y] * (n // len(y) + 1), axis=0)[:n]
     bed_full = os.path.join(d, 'bed.wav'); sf.write(bed_full, y, sr, subtype='FLOAT')
     sheet = {'fps': fps, 'length_s': P['seconds'], 'bed': {'file': bed_full, 'gain_db': P.get('musicGainDb', 0.0), 'loop': False}, 'cues': cues, 'master': {'lufs': a.target, 'ceiling_db': P.get('ceilingDb', P.get('masterCeilingDb', -1.5))}}   # plan.ceilingDb: lower it (-2.0 to -2.5) when clicky UI transients or a hit at the start push HyperFrames' own AAC over -1 dBTP
+    q = (P.get('audio') or {}).get('quiet') or P.get('quiet')   # plan.audio.quiet: a planned quiet open waives the mixer's R10 lint, like ears
+    if q: sheet['quiet'] = q
     if P.get('bedAutomation'): sheet['bed']['automation'] = P['bedAutomation']   # [{frame, gain_db}] breakpoints (cuts/story45.py dropouts, quiet holds)
     if P.get('vo'):   # a dialogue / VO track placed on the timeline (plan.vo = path, relative to the plan's folder): the mixer ducks the bed under it
         vp = P['vo'] if os.path.isabs(P['vo']) else os.path.join(os.path.dirname(os.path.abspath(a.plan)), P['vo']); sheet['vo'] = {'file': vp, 'start_frame': 0}

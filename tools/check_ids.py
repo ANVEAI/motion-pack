@@ -49,7 +49,7 @@ def families(B, E):
       ('cam', re.compile(B + r"(cam[23]d\.[A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z][A-Za-z0-9_]*)?)" + E)),
       ('cuts', re.compile(B + r"(cuts/[A-Za-z_]+(?:/[A-Za-z][A-Za-z0-9_-]*)?)" + E)), ('templates', re.compile(B + r"(templates/[A-Za-z0-9_-]+)" + E))]
 RX, RX_MD = families(*Q), families(*MD)
-SKIP_DIRS = {'.git', 'node_modules', 'renders', 'out', 'library', '__pycache__', 'research', 'fonts', 'media', 'dev1', 'dev2', 'external'}
+SKIP_DIRS = {'.git', '.venv', 'venv', 'node_modules', 'renders', 'out', 'library', '__pycache__', 'research', 'fonts', 'media', 'dev1', 'dev2', 'external'}
 FILE_EXT = {'js', 'mjs', 'json', 'md', 'py', 'html', 'sh', 'jpg', 'png', 'mp4', 'wav', 'test'}
 SCRATCH = {'brewly'}   # template folders a doc tells you to create (examples/brewly-teaser/README.md)
 SKIP_FILES = {'RUNLOG.md'}   # a log of one real agent run: it quotes the mistakes it made

@@ -23,7 +23,7 @@ export function stage(dir, { media = [], layers = false } = {}) {
   if (fs.existsSync(path.join(TY, 'dom.js'))) { for (const f of fs.readdirSync(TY).filter((f) => /\.js$/.test(f))) link(path.join(TY, f), path.join(A, 'mp', 'type', f)); for (const f of fs.readdirSync(path.join(TY, 'gfx')).filter((f) => /\.js$/.test(f))) link(path.join(TY, 'gfx', f), path.join(A, 'mp', 'type', 'gfx', f)); link(path.join(SH, 'adapters', 'type.mjs'), path.join(A, 'mp', 'adapters', 'type.mjs')); adapters.push('assets/mp/adapters/type.mjs'); }
   else todo.push('type/dom.js (type module) not found: plain fades used');
   // TRANSITIONS module: lib/{registry,tx-core,tx-dom,ids}.js + our adapter that registers 'transitions/<id>' with MP. The template
-  // stretches clips around each windowed cut (txplan.mjs span) so both shots are present; GL-only keys stay hard cuts (logged).
+  // stretches clips around each windowed cut (txplan.mjs span) so both shots are present; the 23 GL-only looks run their DOM approximation (tx-dom-x.js), only speedRamp (timing-only) stays a logged hard cut.
   const TX = path.join(PACK, 'transitions', 'lib');
   if (fs.existsSync(path.join(TX, 'tx-dom.js'))) { for (const f of fs.readdirSync(TX).filter((f) => f.endsWith('.js'))) link(path.join(TX, f), path.join(A, 'mp', 'transitions', 'lib', f)); link(path.join(SH, 'adapters', 'transitions.mjs'), path.join(A, 'mp', 'adapters', 'transitions.mjs')); adapters.push('assets/mp/adapters/transitions.mjs'); }
   else todo.push('transitions/lib/tx-dom.js (transitions module) not found: hard cuts used');

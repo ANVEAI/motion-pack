@@ -53,7 +53,7 @@ Then write the **sound-off sentence**: "After one watch with the sound off, a vi
 8. **When a draft is rejected, subtract.** Revisions fail by addition: every note becomes another card, super or scene. Cut back to the spine first; add only what the spine is missing.
 9. **Concrete artefacts, not abstract "AI" imagery.** Node graphs, glowing threads, orbiting cards, floating UI and holograms read as slop. Use objects the story already has: a stamped page, a ledger, a bill, a sent message, a lamp switched off.
 10. **Spine before shots.** Every scene moves one matter forward. A visible clock (time labels, a wall clock) gives a short film its drive; freeze any on-screen clock while the product works, or the film implies a speed claim.
-11. **Write for the first second.** Frame 0 shows the stake already in motion. No black frame, logo, title card or name in the first second.
+11. **Write for the first second.** Frame 0 shows the stake already in motion. No black frame, logo bumper or title card; a small name super over moving footage inside 2 s is fine. The rule is stated once, in motion-pack's `references/virality.md` §1 (the hook table); follow that, not a copy here.
 12. **For pieces that matter, run a writers' room.** Draft three versions independently. Where they converge is the signal; steal the best single line from each.
 
 ## Workflow
@@ -131,7 +131,7 @@ Full schema and a complete example: `references/templates.md` and `assets/shotli
 - **Archetypes** (the same ids as motion-pack's `hook.archetype`): `payoff-first`, `pattern-break`, `claim-or-question`, `in-medias-res`, `curiosity-gap`, `social-proof` (needs a sourced number), `problem-agitate`.
 - **Frame 0 shows the stake in motion.** Show the stake and hold the twist: no answer in frame 0, in the title or in the first line.
 - **One idea, said three ways:** the picture, the on-screen text and the sound agree. At most 7 words on screen in the hook and at most 4 on the poster frame (house defaults).
-- **A sound on frame 0**, not just a music bed fading in.
+- **The first sound** lands on frames 0-3, or 1-2 s later on the first meaningful visual event over a moving frame 0 (a planned quiet open, `plan.audio.quiet`; 13 of 28 round 4/5 references did it). A music bed fading in is not a sound event. Details: motion-pack `references/virality.md` §1.
 - **Change only the first 1-3 s** between variants. With an identical body, a test tells you which hook worked.
 
 ## Honesty inside the story
