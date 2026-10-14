@@ -33,7 +33,7 @@ python3 ears/listen.py out/film-9x16.mp4 \
 ```
 
 Other flags:
-- `--mode auto|music|vo|continuous` sets what the edit is scored on (below); `--events study.json` gives the motion events for `continuous` (a refstudy `study.json`, or a JSON list of seconds, `{t}` or `{frame}`); `--role proof|explainer|hype|trailer|vo_doc` names the bed's role for the bass-share note.
+- `--mode auto|music|vo|continuous` sets what the edit is scored on (below); `--events study.json` gives the motion events for `continuous` (a refstudy `study.json`, or a JSON list of seconds, `{t}` or `{frame}`); `--role proof|explainer|hype|trailer|vo_doc|brand_launch` names the bed's role for the bass-share note.
 - `--cuts cuts.json` takes a cut list instead of the plan's shots: seconds, cutgen output, a `cutgen snap` result or a refstudy `study.json`.
 - `--loop` judges the loop seam.
 - `--target-lufs -16` sets another integrated target (`hero.web`).
@@ -58,7 +58,7 @@ Other flags:
 | `audio.mode` | `music` (the default: music-led, cut-driven; >= 60% of cuts within 2 frames of an onset), `vo` (VO-led: cuts under the voice, none inside a word; cut sync is information only; needs word timings from a talking-head `words.json` or a Whisper JSON with word timestamps), `continuous` (few or no cuts: >= 60% of the motion events within 2 frames of an onset; events from `audio.events`, `--events`, or measured from the video by `tools/refstudy.py`) |
 | `audio.quiet` | planned quiet regions `[{t: [a, b], kind, why}]`, `kind` open (<= 2 s: the sound enters 1-2 s after a moving frame 0), dip or gap (<= 4 s: a mid-film reset or a trailer valley), hold (<= 9 s: the end card on near-silence). Judged as shape: no dead-air or first-audible-sound warning, left out of the loudness range, reported with its `why`. A planned region over its maximum (plus half a second) still warns. A bare `[a, b]` pair is accepted and its kind inferred |
 | `audio.events` | the picture's motion events in seconds, `{t}` or `{frame}` (for `continuous`) |
-| `audio.role` | `proof`, `explainer`, `hype`, `trailer` or `vo_doc`: the bed's bass share (< 150 Hz) is reported against the round 4/5 range for that role (20-36, 20-36, 50-61, 50-61 and 15-34%); information, not a verdict |
+| `audio.role` | `proof`, `explainer`, `hype`, `trailer`, `vo_doc` or `brand_launch`: the bed's bass share (< 150 Hz) is reported against the studied range for that role (20-36, 20-36, 50-61, 50-61, 15-34 and, from two round 6 brand-launch films, 50-60%); information, not a verdict |
 
 Backward compatible: with none of these fields, mode is `music`, no quiet is planned, and every earlier verdict is unchanged. `audio.mode` and `audio.role` are not case-sensitive (`"VO"` is `vo`); an unknown mode still raises.
 

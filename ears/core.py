@@ -134,7 +134,7 @@ def plan_audio(plan):
       plan.audio.mode   'music' | 'vo' | 'continuous': how ears/sync scores the edit (references/critic.md, cut-sync scope)
       plan.audio.quiet  [{t: [a, b], kind: open|dip|gap|hold, why}]: planned quiet regions, judged as intended shape, not as level faults
       plan.audio.events [seconds | {t} | {frame}]: the picture's motion events (a continuous film's accents) for mode continuous
-      plan.audio.role   'proof' | 'explainer' | 'hype' | 'trailer' | 'vo_doc': the bed's role, for the bass-share-by-role guidance
+      plan.audio.role   'proof' | 'explainer' | 'hype' | 'trailer' | 'vo_doc' | 'brand_launch': the bed's role, for the bass-share-by-role guidance
     Top-level plan.audioMode / plan.quiet / plan.motionEvents / plan.audioRole are read too. returns {mode, quiet, events, role}"""
     plan = plan or {}
     a = plan.get('audio') if isinstance(plan.get('audio'), dict) else {}

@@ -328,10 +328,11 @@ def _shape(c, n=40):
 
 def _role_line(role, low):
     rng = SPEC['bass_share_by_role'].get(role)
-    if not rng:
+    if not isinstance(rng, list):
         return None
+    src = (SPEC['bass_share_by_role'].get('sources') or {}).get(role, 'round 4/5 references')
     pos = 'below' if low < rng[0] else ('above' if low > rng[1] else 'inside')
-    return 'bass share (<150 Hz) %.0f%% vs %.0f-%.0f%% for a %s bed (round 4/5 references): %s the range' % (low * 100, rng[0] * 100, rng[1] * 100, role, pos)
+    return 'bass share (<150 Hz) %.0f%% vs %.0f-%.0f%% for a %s bed (%s): %s the range' % (low * 100, rng[0] * 100, rng[1] * 100, role, src, pos)
 
 
 def compare(ctx):

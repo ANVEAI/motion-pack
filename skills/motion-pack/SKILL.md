@@ -475,7 +475,7 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
   - the edit by mode (`--mode music|vo|continuous`, default `plan.audio.mode`, else music): cuts on onsets, speech continuity (no cut inside a word), or motion events on onsets; and every plan cue on F + 1 (it finds the mixer's exact take, to the sample);
   - a flat mix (the blindfold test), late drops, the breath before the final sting, dead air, and the ending shape (slam, sustained sub, quiet hold, decay);
   - planned quiet is shape, not a fault: mark a quiet open (≤ 2 s), a reset dip or trailer gap (≤ 4 s) or an end-card quiet hold (≤ 9 s) in `plan.audio.quiet` `[{t: [a, b], kind, why}]`;
-  - with `--role proof|explainer|hype|trailer|vo_doc` (or `plan.audio.role`), the bed's bass share against the round 4/5 range for that role;
+  - with `--role proof|explainer|hype|trailer|vo_doc|brand_launch` (or `plan.audio.role`), the bed's bass share against the studied range for that role (brand_launch 50-60%, round 6);
   - repeated SFX and mono compatibility.
 - **What it cannot judge:** taste, mood without a local CLAP model, whether a sound fits the picture, or a voice's naturalness.
 - **It measures; it does not replace one human listen** at phone size and on headphones. Its sound score is a ceiling: listen, then lower it for what you hear.

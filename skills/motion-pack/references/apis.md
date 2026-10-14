@@ -194,7 +194,7 @@ $B -b --factory-startup -P blender/run.py -- --recipe blender/cableTangle --size
 ```bash
 python3 tools/refstudy.py <x-status-url | mp4-url | file.mp4> refs/<name> [--whisper none] [--tier A|A-|B|B'|R|C|D] [--tiers my.json]
 python3 tools/refstudy.py grade refs/*/ [--write] [--json]            # grade existing study folders from meta.json (no download)
-python3 ears/listen.py out/film.mp4 --plan out/plan.json [--mode music|vo|continuous] [--events study.json] [--role proof|explainer|hype|trailer|vo_doc]
+python3 ears/listen.py out/film.mp4 --plan out/plan.json [--mode music|vo|continuous] [--events study.json] [--role proof|explainer|hype|trailer|vo_doc|brand_launch]
 ```
 
 - **refstudy** writes `study.json` fields `motion` (visual events for continuous pieces, `motion.sync` with `share_on_onset` and its chance level: `chance_share`, `lift`, `z_vs_chance`, `reading`), `quiet` (`open_vs_body_db`, `tail_2s_vs_body_db`, `end_shape`) and `evidence` (`tier` A / A- / B / B' / R / C / D, `boosted`, `claim_driven`, reasons). Thresholds: `tools/refstudy_tiers.json`. Python: `refstudy.motion_events(path, cut_times)`, `motion_sync(motion, onsets, speech, fps_video)`, `video_fps(path)`, `motion` subcommand (`refstudy.py motion <local mp4> <study dir> --write`), `quiet_shape(curve)`, `grade(meta, rules, override)`.

@@ -3,7 +3,7 @@
 
     python3 ears/listen.py <video.mp4 | master.wav> [--plan out/plan.json] [--cuts cuts.json] [--transcript study.json|whisper.json]
                            [--ref study.json ...] [--json out.json] [--md out.md] [--loop] [--target-lufs -14] [--fps 30] [--quiet]
-                           [--mode auto|music|vo|continuous] [--events study.json|events.json] [--role proof|explainer|hype|trailer|vo_doc]
+                           [--mode auto|music|vo|continuous] [--events study.json|events.json] [--role proof|explainer|hype|trailer|vo_doc|brand_launch]
 
 Every check prints a measured value, pass / warn / fail against the pack spec (SKILL.md hard rules, music/mixer.py rules) or a stated house
 default (ears/manifest.json "spec"), and a concrete fix with timestamps:
@@ -98,7 +98,7 @@ def main(argv=None):
                          '(VO-led films); continuous = motion events on onsets (few or no cuts). auto: plan.audio.mode, else music')
     ap.add_argument('--events', help='motion events for --mode continuous: a refstudy study.json (motion.events), or a JSON list of seconds / {t} / {frame}; '
                                      'default plan.audio.events, else measured from the video with tools/refstudy.py')
-    ap.add_argument('--role', choices=['proof', 'explainer', 'hype', 'trailer', 'vo_doc'], help='the bed role for the bass-share guidance (default plan.audio.role)')
+    ap.add_argument('--role', choices=['proof', 'explainer', 'hype', 'trailer', 'vo_doc', 'brand_launch'], help='the bed role for the bass-share guidance (default plan.audio.role)')
     ap.add_argument('--quiet', action='store_true', help='print nothing (the reports still go to --json / --md)')
     a = ap.parse_args(argv)
     info = core.probe(a.input)
