@@ -8,7 +8,7 @@
    when `vo` is set (vo.py) -> the mix (_shared/audio.py -> music/mixer.py: bed, a planned quiet open and quiet hold, -14 LUFS) -> the page. The page is ONE director draw(t) on every hf-seek:
    two nested wrappers carry the cam2d camera (#cam scales about the frame centre, #world pans), the cells inside the world are drawn by panels.mjs; nothing in it reads a clock. */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, write } from '../_shared/compose.mjs';
+import { stage, runPlan, head, write } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..'), OUT = path.join(DIR, 'out'), PY = process.env.PYTHON || 'python3';
 const { CONFIG, gateProblems } = await import('./config.mjs'); const C = structuredClone(CONFIG);
 for (let i = 2; i < process.argv.length; i++) if (process.argv[i] === '--set') { const arg = process.argv[++i], [k, ...rest] = arg.split('='), v = rest.join('='); let o = C; const ks = k.split('.');
@@ -20,7 +20,7 @@ if (bad.length) { console.error(`\nproof-film honesty gate: ${bad.length} proble
 
 /* 1. plan */
 const tall = C.format === 'tall', tag = tall ? '-tall' : '', planName = 'plan' + tag, PROJ = tall ? path.join(DIR, 'tall') : DIR;   // 9:16 is its own HyperFrames project (tall/): two root compositions in one folder fail hyperframes lint
-execFileSync('node', [path.join(SH, 'cues.mjs'), DIR, ...process.argv.slice(2), '--name', planName], { stdio: 'inherit' });
+runPlan(DIR, [...process.argv.slice(2), '--name', planName]);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(OUT, planName + '.json'), 'utf8')), F = plan.fps, W = plan.W, H = plan.H, T = plan.seconds, B = plan.brand;
 if (plan.lint === undefined || plan.lint.claimsWithoutSource.length) { console.error('lint.proof failed'); process.exit(2); }
 for (const w of plan.warnings) console.log('warning:', w);

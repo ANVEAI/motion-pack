@@ -7,9 +7,9 @@
    -> the mix (templates/_shared/audio.py -> music/mixer.py: bed ducked 9 dB under the voice, bed automation for the quiet hold, -14 LUFS master)
    -> index.html. Picture: your clips muted (their sound is in the mix), or labelled placeholder cards; flat 2D inserts drawn here (SVG + GSAP). */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, esc, write } from '../_shared/compose.mjs';
+import { stage, runPlan, head, esc, write } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..'), OUT = path.join(DIR, 'out'), PY = process.env.PYTHON || 'python3';
-execFileSync('node', [path.join(SH, 'cues.mjs'), DIR, ...process.argv.slice(2)], { stdio: 'inherit' });
+runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(OUT, 'plan.json'), 'utf8'));
 const { CONFIG } = await import('./config.mjs'); const C = structuredClone(CONFIG);
 for (let i = 2; i < process.argv.length; i++) if (process.argv[i] === '--set') { const [k, v] = process.argv[++i].split('='); let o = C; const ks = k.split('.'); for (const q of ks.slice(0, -1)) o = o[q]; o[ks.at(-1)] = v !== '' && !isNaN(+v) ? +v : v; }

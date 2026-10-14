@@ -6,10 +6,17 @@
        plus _shared/adapters/{type,transitions}.mjs -> assets/mp/adapters/ (they register ids with MP.register)
      Missing modules are listed in the returned `todo` (the template still renders: hard cuts, plain fades, no layers).
    head({ W, H, title, bg }) -> the <head> with GSAP 3.14.2, @font-face for the shared fonts and the base clip CSS. */
-import fs from 'node:fs'; import path from 'node:path';
+import fs from 'node:fs'; import path from 'node:path'; import { spawnSync } from 'node:child_process';
 const SH = path.dirname(new URL(import.meta.url).pathname), PACK = path.resolve(SH, '..', '..');
 const link = (src, dst) => { fs.mkdirSync(path.dirname(dst), { recursive: true }); try { fs.rmSync(dst, { force: true }); fs.linkSync(src, dst); } catch { fs.copyFileSync(src, dst); } };
 const jsUnder = (d) => (fs.existsSync(d) ? fs.readdirSync(d, { recursive: true }).filter((f) => /\.(m?js)$/.test(f)).map((f) => path.join(d, f)) : []);
+
+/* runPlan(dir, args): run _shared/cues.mjs (plan export + the lint gates) for a make.mjs. When it fails, this process exits with ITS code
+   (2 = lint.proof / lint.tx, see templates/README.md) and no Node stack trace; nothing after it (stage, mix, page) runs. */
+export function runPlan(dir, args = process.argv.slice(2)) {
+  const r = spawnSync('node', [path.join(SH, 'cues.mjs'), dir, ...args], { stdio: 'inherit' });
+  if (r.status !== 0) process.exit(r.status ?? 1);
+}
 
 export function stage(dir, { media = [], layers = false } = {}) {
   const A = path.join(dir, 'assets'), todo = [], adapters = [];

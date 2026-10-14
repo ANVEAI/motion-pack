@@ -78,7 +78,8 @@ def test_make_stops_before_building_and_allow_lint_lets_it_go_on(brewly, make):
     """node make.mjs (the worked example's copy of the ad pipeline): the failing lint stops it before it stages, mixes or writes a page; --allow-lint builds"""
     bad = ["--set", "proof.0.text=Ships in 2 days"]
     r = make(brewly, *bad)
-    assert r.returncode != 0 and "lint.proof" in r.stderr and "Ships in 2 days" in r.stderr, (r.returncode, r.stderr[-800:])
+    assert r.returncode == 2 and "lint.proof" in r.stderr and "Ships in 2 days" in r.stderr, (r.returncode, r.stderr[-800:])   # the docs say make.mjs exits 2
+    assert "execFileSync" not in r.stderr and "    at " not in r.stderr, "the gate stops the build with its message, not a Node stack trace:\n" + r.stderr[-800:]
     assert not os.path.exists(os.path.join(brewly, "index.html")) and not os.path.exists(os.path.join(brewly, "assets", "media", "mix.wav")), "a failed lint must not leave a page or a mix behind"
     r = make(brewly, *bad, "--allow-lint")
     assert r.returncode == 0, r.stderr[-800:]

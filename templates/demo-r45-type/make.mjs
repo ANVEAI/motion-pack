@@ -2,9 +2,9 @@
    (mountGfx, SVG from t) and/or Canvas2D layers of layers/canvas2d-r45.js (mountStack + bindHF with t0 = the scene start); both re-render on hf-seek.
      node make.mjs   then   npx -y hyperframes@0.8.142 render . -o out/demo-r45-type.mp4 --crf 23 */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, write } from '../_shared/compose.mjs';
+import { stage, runPlan, head, write } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared');
-execFileSync('node', [path.join(SH, 'cues.mjs'), DIR, ...process.argv.slice(2)], { stdio: 'inherit' });
+runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(DIR, 'out', 'plan.json'), 'utf8'));
 const { CONFIG: C } = await import('./config.mjs');
 const st = stage(DIR, { layers: true });
