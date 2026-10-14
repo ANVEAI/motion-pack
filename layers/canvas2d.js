@@ -8,6 +8,7 @@
    Edit punctuation + end card (2026-10-14): invertFlash (1-3 frame negative via difference blend, flash budget <= 3/s enforced by safeFlashes),
      brandField (full-bleed brand colour, logo slot or owned placeholder mark + name, one line, soft scale settle).
    Same layer contract as overlay.js (canvas + mix-blend-mode, render(t, {frame})). Mounted through overlay.js mountStack. */
+import { K2D_R3 } from './canvas2d-r3.js';   // round 3 (2026-10-14): dotCondense, hologramBeam
 const TAU = Math.PI * 2;
 export function hashf(...k) { let h = 2166136261 >>> 0; for (const v of k) { h ^= (v * 2654435761) >>> 0; h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0; h = Math.imul(h ^ (h >>> 13), 3266489909) >>> 0; h ^= h >>> 16; } return (h >>> 0) / 4294967296; }
 const MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace", SANS = "Manrope, 'Helvetica Neue', Arial, sans-serif";
@@ -144,6 +145,7 @@ Object.assign(K2D, {
       if (p.line) { g.globalAlpha = p.intensity * a2; g.fillStyle = p.ink; g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.font = `600 ${(L * 0.36).toFixed(1)}px ${SANS}`; g.fillText(p.line, 0, L * 1.15 + (1 - a2) * 10 * sc); }
       g.restore(); } },
 });
+Object.assign(K2D, K2D_R3);
 const E2 = (x) => (x >= 1 ? 1 : 1 - 2 ** (-10 * Math.max(0, x)));   // expo-out: the soft settle
 
 export class Canvas2DLayer {

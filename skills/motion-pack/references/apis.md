@@ -39,6 +39,7 @@ import { txWindow, snapBpm, speedRamp } from './transitions/lib/tx-core.js';    
 
 - **Python:** `cuts/cutgen.py beats --bpm 128 --pattern every_2 --tx whip --snap` gives the same windows plus sound-cue anchor frames.
 - **Kinds:** cut, smash (hard cut with the smash sound), dom (23 exact keys, plus `approx: true` for the 23 GL looks run through `transitions/lib/tx-dom-x.js` APPROX), gl (GL-only, canvas sources).
+- **2026-10-14 round 3:** `sharedElement` (DOM: `[data-share="key"]` in both shots; params `bounce`, `stagger`, `shadow`; GL: `rectA` / `rectB` vec4) and `sketchToRender` (`paper`, `ink`, `line`, `threshold`, `draw`, `tone`, `dir`), both GL + DOM; `springStep(x, bounce)` and `shareProgress` in `tx-dom-x.js`.
 - **2026-10-13 additions:** `transitions/lib/registry-x.js` + `transitions/lib/tx-shaders-x.js` (24 GL transitions: ripple, swirl, crossWarp, directionalWarp, cube, doorway, kaleido, hexagonalize, windowSlice, blinds, squeeze, polkaDots, tvStatic, burnOut, dreamyZoom, linearBlur, gridFlip, bookFlip, pinwheel, radial, waterDrop, wind, luminanceMelt, overexposure); `transitions/lib/xfade.js` `xfadeFilter('transitions/xfade-<mode>', { duration, offset })` for ffmpeg-only finishes.
 
 ## Retime
@@ -92,6 +93,7 @@ import { toSVGFilter, toCube, mixGrade } from './layers/grade.js'; import { GRAD
 
 - **Stack order:** leaks / bokeh / glow, grade, paper, vignette, scanlines, story type, dust, grain, brand, bars, dither.
 - **Grade count:** one grade per piece.
+- **Round 3 (2026-10-14):** backgrounds `meshGradient`; `canvas2d-r3.js` `dotCondense` (`dotCondenseState`), `hologramBeam` (`hologramState`); `stylize.js` `mountGradeIn(el, params).render(t)`, `gradeInWeight`, `gradeInSVG`, `gradeInCube(params, w)`.
 
 ## Type
 
@@ -124,7 +126,7 @@ Round 3 (`type/gfx/swap.js`, `badges.js`, `brand.js`): `type.accentSwap`, `type.
 
 ```js
 import * as C3 from './camera/cam3d.js';   // hold pushIn pushSlow pullOut orbit crane truck dollyZoom whipPan handheld beatPunch impactShake dutch breathe rackFocus lock sequence kitDrift; applyToThree(THREE, cam, state, W, H)
-import * as C2 from './camera/cam2d.js';   // push2d pull2d pan2d whip2d handheld2d punchCadence punchIn2d beatPunch2d kenBurns dutch2d breathe2d shake2d coverScale toCSS toGSAP
+import * as C2 from './camera/cam2d.js';   // (round 3: scaleDive + scaleDiveCSS, pullbackToScreen -> state.pin.corners, mapPoint2) push2d pull2d pan2d whip2d handheld2d punchCadence punchIn2d beatPunch2d kenBurns dutch2d breathe2d shake2d coverScale toCSS toGSAP
 import { bakeGSAP, driveSeek } from './camera/bake.js';
 const cam = C3.handheld(C3.pushIn(C3.hold(KIT.wide), { at: 1, dur: 1.2 }), { level: 'doc', seed: 3 });
 ```
@@ -139,7 +141,8 @@ const laptop = create(ctx, stage.slabG, 'objects/laptop', {}); laptop.set({ open
 const worker = create(ctx, parent, 'objects/worker', { spec: { keys: keysOf(ACTS.doubleTake(1.0), [[3.0, emote('front', 'happy')]]), blinks: blinkTimes(0, 8, 3) } });   // keys: [[t, pose, ease]]; worker.update(t)
 ```
 
-- **Gallery:** `objects/gallery.html?shot=devices|film|cast`.
+- **Gallery:** `objects/gallery.html?shot=devices|film|cast|dome|r3`.
+- **Round 3:** `objects/characters/mascot2d.js` (`mascotSVG(t, spec, {W, H})`, `drawMascot2d`, `mountMascot2d`; no three.js) and `O.makeMascotPlane`; `O.makeLogoExtrude(ctx, parent, { svg, preset: 'chrome' | 'glass' | 'iridescent' | 'satin', slice })`.
 - **Stills:** `objects/stills.sh <page> <outdir> "<frames>" "<query>"`.
 - **Probe:** `node objects/tools/probe.mjs <page> "<query>" "<expr>"`.
 

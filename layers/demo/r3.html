@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack round-3 layers</title>
+<style>html,body{margin:0;background:#000}#stage{position:relative;width:960px;height:540px;overflow:hidden;background:#000}#stage>*{position:absolute;inset:0;width:100%;height:100%}</style></head><body>
+<div id="stage"><div id="look"><canvas id="plate" width="960" height="540"></canvas></div><div id="bg"></div></div>
+<script type="module">
+/* Test + preview page for the round-3 layers (2026-10-14):
+   window.grade(params, t)    -> look.gradeIn (SVG filter on #look over the plate) at t; returns the map weight
+   window.gradeRef(params, t) -> base64 RGBA of the JS reference (gradeInImageData on the same plate pixels)
+   window.stack(layers, t)    -> mounts layers ([{kind, params}]) over the stage with mountStack and renders t (meshGradient, dotCondense, hologramBeam)
+   window.again(t), window.pixels() -> re-render the same stack, read its pixels (determinism checks) */
+import { drawPlate } from './plate.js';
+import { mountGradeIn, gradeInImageData } from '../stylize.js';
+import { mountStack } from '../overlay.js';
+const W = 960, H = 540, pg = document.getElementById('plate').getContext('2d', { willReadFrequently: true }); let gi = null, st = null;
+drawPlate(pg, W, H, 1.2, { mood: 'day' });
+const b64 = (u8) => { let s = ''; for (let i = 0; i < u8.length; i += 32768) s += String.fromCharCode.apply(null, u8.subarray(i, i + 32768)); return btoa(s); };
+window.clearAll = () => { if (st) { st.dispose(); st = null; } if (gi) { gi.dispose(); gi = null; } };
+window.grade = (params = {}, t = 0) => { window.clearAll(); gi = mountGradeIn(document.getElementById('look'), params); gi.render(t); return gi.weight(t); };
+window.gradeAt = (t) => { gi.render(t); return gi.weight(t); };
+window.gradeRef = (params = {}, t = 0) => { const img = pg.getImageData(0, 0, W, H); gradeInImageData(img, t, params); return b64(new Uint8Array(img.data.buffer)); };
+window.stack = (layers, t = 1) => { window.clearAll(); st = mountStack(document.getElementById('bg'), layers, { width: W, height: H, fps: 30, seed: 3 }); st.render(t, { frame: Math.round(t * 30) }); return st.layers.map((l) => l.canvas.dataset.mpKind); };
+window.again = (t) => st.render(t, { frame: Math.round(t * 30) });
+const rb = document.createElement('canvas'); rb.width = W; rb.height = H; const rg = rb.getContext('2d', { willReadFrequently: true });
+window.pixels = () => { rg.clearRect(0, 0, W, H); for (const l of st.layers) rg.drawImage(l.canvas, 0, 0); return b64(new Uint8Array(rg.getImageData(0, 0, W, H).data.buffer)); };
+await document.fonts.ready; window.__ready = true;
+</script></body></html>

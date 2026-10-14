@@ -420,9 +420,33 @@
    "params": {},
    "kind": "dom"
   },
+  "shared-element": {
+   "id": "transitions/shared-element",
+   "key": "sharedElement",
+   "params": {},
+   "kind": "dom"
+  },
+  "sharedElement": {
+   "id": "transitions/sharedElement",
+   "key": "sharedElement",
+   "params": {},
+   "kind": "dom"
+  },
   "shutter": {
    "id": "transitions/shutter",
    "key": "shutter",
+   "params": {},
+   "kind": "dom"
+  },
+  "sketch-to-render": {
+   "id": "transitions/sketch-to-render",
+   "key": "sketchToRender",
+   "params": {},
+   "kind": "dom"
+  },
+  "sketchToRender": {
+   "id": "transitions/sketchToRender",
+   "key": "sketchToRender",
    "params": {},
    "kind": "dom"
   },

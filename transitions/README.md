@@ -1,10 +1,10 @@
 # motion-pack / transitions
 
-48 owned, deterministic transitions for every kind of video we make (ads, launch films, mime-style spots,
+50 owned, deterministic transitions for every kind of video we make (ads, launch films, mime-style spots,
 beat edits, talking heads, short films): the original 23, 24 added on 2026-10-13 (ripple, swirl, crossWarp, directionalWarp,
 cube, doorway, kaleido, hexagonalize, windowSlice, blinds, squeeze, polkaDots, tvStatic, burnOut, dreamyZoom, linearBlur, gridFlip,
-bookFlip, pinwheel, radial, waterDrop, wind, luminanceMelt, overexposure) and `ditherDissolve` (2026-10-14: the frame breaks into accent pixel blocks in an ordered-dither order and clears into the next shot; GL and a real DOM back-end, paired sound `sfx/tx/glitch_stutter` + `sfx/sizzle/grain`). Since 2026-10-13 every visual transition also plays in DOM
-templates: 24 have a real DOM back-end and the other 23 GL-only looks run a DOM approximation (`lib/tx-dom-x.js` APPROX, `dom~` below),
+bookFlip, pinwheel, radial, waterDrop, wind, luminanceMelt, overexposure) and `ditherDissolve` (2026-10-14: the frame breaks into accent pixel blocks in an ordered-dither order and clears into the next shot; GL and a real DOM back-end, paired sound `sfx/tx/glitch_stutter` + `sfx/sizzle/grain`) and, on 2026-10-14 (round 3), `sharedElement` (magic move: `[data-share]` elements spring from their A rect to their B rect while the rest dissolves; GL version moves one rect region) and `sketchToRender` (line art of the next shot draws on over paper, takes a clay tone, then colour; Sobel edges in GL, an SVG Laplacian in DOM). Since 2026-10-13 every visual transition also plays in DOM
+templates: 26 have a real DOM back-end and the other 23 GL-only looks run a DOM approximation (`lib/tx-dom-x.js` APPROX, `dom~` below),
 so DOM templates no longer hard-cut on them. All 58 ffmpeg xfade modes + `custom` are pack ids too (`transitions/xfade-<mode>`, `lib/xfade.js`). Every one renders from `p` (or `t`) alone, so it is seek-safe in
 HyperFrames 0.8.142, in the three.js studio kit and in the spec-to-loop renderer. All GLSL and JS here is ours;
 gl-transitions (gl-transitions.com, MIT) was read for vocabulary; the 2026-10-13 shaders are our own GLSL for effects that collection named, and each entry's `credit` field names the original idea's author. Nothing vendored. No media files are used.
@@ -19,7 +19,7 @@ gl-transitions (gl-transitions.com, MIT) was read for vocabulary; the 2026-10-13
 | `lib/tx-dom-x.js` | 11 more real DOM back-ends (ditherDissolve as run-length `clip-path: path()` blocks, (cube in CSS 3D, clip-path slices/blinds, conic masks, ...) + `APPROX`: a DOM look for every GL-only key |
 | `lib/xfade.js` | ffmpeg xfade map: 58 modes + custom as `transitions/xfade-<mode>`, nearest pack key per mode, `xfadeFilter(id, {duration, offset})` |
 | `lib/tx-gl.js` | raw WebGL runner `createTxRenderer(canvas).render({key, from, to, p, params})` + text-mask/anchor solver |
-| `lib/tx-dom.js` | DOM/CSS back-end `applyDom(key, p, {a, b, root, params})`: 24 real back-ends + 23 approximations (shots are DOM layers) |
+| `lib/tx-dom.js` | DOM/CSS back-end `applyDom(key, p, {a, b, root, params})`: 26 real back-ends + 23 approximations (shots are DOM layers) |
 | `lib/tx-three.js` | `makeTransitionPass(THREE, key, params)` for the three.js kit (parity-tested against tx-gl) |
 | `lib/tx-hf.js` | `hfBind(renderAt, {compositionId, duration})`: drives any renderAt(t) from HyperFrames seeks |
 | `lib/sequence.js` | edit list on a beat grid -> what is on screen at t (`planEdits`, `stateAt`, `lintPlan`) |
@@ -50,7 +50,7 @@ Root needs `data-duration` and `data-no-timeline` (no GSAP needed; HyperFrames d
 `[0:v][1:v]xfade=transition=circleopen:duration=0.5000:offset=2.2500[v]`; a pack key also works (`xfadeFilter('whip', ...)` uses PACK_TO_XFADE).
 All 59 strings were run through local ffmpeg 8.0.1 on a lavfi test source.
 
-**HyperFrames, shots are DOM layers (all 47 visual effects; 24 exact, 23 approximated):** `applyDom(key, p, { a, b, root, params })`, see `examples/hf-dom`.
+**HyperFrames, shots are DOM layers (all 49 visual effects; 26 exact, 23 approximated):** `applyDom(key, p, { a, b, root, params })`, see `examples/hf-dom`.
 Put `a`/`b` inside clips, never tween `.clip` itself. DOM gives no mirrored edges (spin shows the background), no
 chroma fringe on whip and only linear/radial luma mattes; use the GL path when that matters.
 
@@ -62,6 +62,8 @@ and lists every sound cue's anchor frame.
 
 **Speed ramps:** `speedRamp(RAMP_PRESETS.hit, { anchor: cut_s }).map(tOut) -> tSource` (monotonic, closed-form per
 segment). Feed `tSource` to the shot renderer; accumulate 6 sub-frames at 180 degrees for motion blur.
+
+**Round 3 notes (2026-10-14).** `sharedElement` DOM: give the element in shot A and in shot B the same `data-share="<key>"`; inside the window both are hidden and two clones in the overlay (computed styles copied node by node, canvases snapshotted) spring between the rects with a per-key `stagger` and cross-fade A look -> B look. The clones are snapshots taken when the window is first entered, so hold shared elements still inside the window (draw them at `min(t, t0)` in A and `max(t, t1)` in B), or a render that seeks into the middle first would snapshot a different frame; `<video>` inside a shared element is not supported. `sketchToRender` DOM edges come from an SVG `feConvolveMatrix` Laplacian (thinner and noisier than the GL Sobel); both need edges in shot B (flat gradients give no lines).
 
 ## House rules
 
@@ -157,6 +159,8 @@ python3 tools/contact.py renders/contact.jpg   # look at the stills
 | `luminanceMelt` | tx.luminanceMelt | 1000 | 2 | 0.5 | gl + dom~ | `sfx/liquid/glug` | melt, drip, surreal, art |
 | `overexposure` | tx.overexposure | 700 | 1.5 | 0.5 | gl + dom | `sfx/tx/flash_swell` | exposure, white, heaven, memory |
 | `ditherDissolve` | tx.ditherDissolve | 600 | 1 | 0.5 | gl + dom | `sfx/tx/glitch_stutter` | dither, pixel, blocks, disintegrate |
+| `sharedElement` | tx.sharedElement | 800 | 1.5 | 0.5 | gl + dom | `sfx/ui/slide` | shared-element, magic-move, morph, continuity |
+| `sketchToRender` | tx.sketchToRender | 1600 | 3 | 0.3 | gl + dom | `sfx/paper/rustle` | sketch, line-art, draw-on, render |
 
 ### `flash` (tx.flash): Hard-cut flash
 
@@ -637,5 +641,25 @@ python3 tools/contact.py renders/contact.jpg   # look at the stills
 - **Params:** `cell`=24, `matrix`="bayer8" (bayer4|bayer8), `color`="#4A18ED", `band`=0.3, `sweep`=0.35, `dir`=[1,0], `jitter`=0.15
 - **Sound:** `sfx/tx/glitch_stutter` at start+0 f, -1 dB; `sfx/sizzle/grain` at cut+0 f, -2 dB
 - **Demo:** [16:9](renders/ditherDissolve.mp4) / [stills](renders/stills/ditherDissolve)
+
+### `sharedElement` (tx.sharedElement): Shared element (magic move)
+
+- **Use:** Continuous product films with zero hard cuts: the title pill becomes the card header, the icon becomes the app tile, the button becomes the next screen. DOM: give the same data-share="<key>" to the element in shot A and in shot B; every key springs from its A rect to its B rect while the rest dissolves under it.
+- **Avoid:** Elements whose content changes completely (it reads as a morph glitch); <video> or live canvases inside a shared element (the DOM clone is a snapshot); more than ~6 keys at once.
+- **Reasons:** LINK, PLACE, EMPHASIS. **Tags:** shared-element, magic-move, morph, continuity, ui, saas, no-cut
+- **Timing:** 800 ms free-time (24 f @30), 1.5 beat(s) on a grid (23 f @120 BPM), swap at p=0.5, ease `linear`
+- **Params:** `rectA`=[0.255,0.365,0.21,0.37], `rectB`=[0.5275,0.25,0.225,0.4], `radius`=1, `bounce`=0.3, `stagger`=0.15, `shadow`=0.25
+- **Sound:** `sfx/ui/slide` at start+0 f, -1 dB; `sfx/tx/match_link` at end+0 f, -2 dB
+- **Demo:** [16:9](renders/sharedElement.mp4) / [stills](renders/stills/sharedElement)
+
+### `sketchToRender` (tx.sketchToRender): Sketch to render
+
+- **Use:** Idea to finished thing: an outline of the next shot draws on over paper, takes a grey clay tone, then fills to full colour ("from a sketch to the real render"). Best on product renders, architecture, illustrations and UI with clear edges.
+- **Avoid:** Low-contrast or noisy footage (edges turn to hatching); faces in close-up; quick edits (it needs about 1.5 s to read).
+- **Reasons:** REVEAL, TIME, EMPHASIS. **Tags:** sketch, line-art, draw-on, render, reveal, design, architecture, product
+- **Timing:** 1600 ms free-time (48 f @30), 3 beat(s) on a grid (45 f @120 BPM), swap at p=0.3, ease `linear`
+- **Params:** `paper`="#F4F1EA", `ink`="#1E1B26", `line`=1.3, `threshold`=0.12, `draw`=0.42, `tone`=0.6, `dir`=[1,0.35]
+- **Sound:** `sfx/paper/rustle` at start+2 f, -3 dB; `sfx/tx/mask_reveal` at peak+0 f, -1 dB
+- **Demo:** [16:9](renders/sketchToRender.mp4) / [stills](renders/stills/sketchToRender)
 
 <!-- END CATALOG -->

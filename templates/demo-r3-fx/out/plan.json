@@ -1,0 +1,175 @@
+{
+ "template": "demo-r3-fx",
+ "fps": 30,
+ "seconds": 15,
+ "size": [
+  1920,
+  1080
+ ],
+ "music": "music/bed_playful_bounce_loop8",
+ "musicGainDb": -3,
+ "ceilingDb": -2.2,
+ "fadeInMs": 40,
+ "shots": [
+  {
+   "id": "s1",
+   "start": 0,
+   "dur": 3,
+   "tx": "transitions/sharedElement",
+   "why": "LINK: the idea becomes the plan; nothing cuts away"
+  },
+  {
+   "id": "s2",
+   "start": 3,
+   "dur": 3.4,
+   "tx": "transitions/sketchToRender",
+   "why": "REVEAL: the plan turns into the made thing, sketch first"
+  },
+  {
+   "id": "s3",
+   "start": 6.4,
+   "dur": 4,
+   "tx": "transitions/cut",
+   "why": "the pull-back is a camera move, not a transition"
+  },
+  {
+   "id": "s4",
+   "start": 10.4,
+   "dur": 4.6,
+   "hold": true
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/ui/pop",
+   "t": 0,
+   "why": "frame 0: the mascot pops in"
+  },
+  {
+   "id": "sfx/voice/chirp",
+   "t": 0.4,
+   "why": "the hop"
+  },
+  {
+   "id": "sfx/sparkle/letter_assemble",
+   "t": 0.9,
+   "why": "dots start to condense"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 2.05,
+   "why": "the words land"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 2.4,
+   "why": "the pill forms"
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 3,
+   "why": "magic move starts (registry pairing)"
+  },
+  {
+   "id": "sfx/tx/match_link",
+   "t": 3.8,
+   "why": "elements land (registry pairing)"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 4,
+   "why": "the book opens"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 4.3,
+   "why": "row 1"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 4.65,
+   "why": "row 2"
+  },
+  {
+   "id": "sfx/ui/success",
+   "t": 5,
+   "why": "row 3"
+  },
+  {
+   "id": "sfx/paper/rustle",
+   "t": 6.4667,
+   "why": "line art starts (registry pairing)"
+  },
+  {
+   "id": "sfx/tx/mask_reveal",
+   "t": 6.88,
+   "why": "sketch peak (registry pairing)"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 8.3,
+   "why": "mascot pops in"
+  },
+  {
+   "id": "sfx/voice/chirp",
+   "t": 8.45,
+   "why": "mascot hops"
+  },
+  {
+   "id": "sfx/ui/scan_sweep",
+   "t": 8.7,
+   "why": "hologram beam powers on"
+  },
+  {
+   "id": "sfx/whoosh/reverse",
+   "t": 10.4,
+   "why": "pull back to the screen"
+  },
+  {
+   "id": "sfx/logo/ascend_land",
+   "t": 12.4,
+   "why": "end line lands"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 12.9,
+   "why": "mascot peeks in"
+  },
+  {
+   "id": "sfx/voice/chirp",
+   "t": 13.05,
+   "why": "mascot waves"
+  }
+ ],
+ "claims": [],
+ "parts": [
+  "background.meshGradient",
+  "layers.dotCondense",
+  "objects/mascot2d",
+  "transitions/sharedElement",
+  "transitions/sketchToRender",
+  "objects/logo-extrude",
+  "overlay.hologramBeam",
+  "cam2d.pullbackToScreen",
+  "layout.cornerPin",
+  "look.gradeIn"
+ ],
+ "screenQuad": [
+  [
+   0.34362,
+   0.33185
+  ],
+  [
+   0.57968,
+   0.32278
+  ],
+  [
+   0.58876,
+   0.58152
+  ],
+  [
+   0.349,
+   0.59619
+  ]
+ ]
+}

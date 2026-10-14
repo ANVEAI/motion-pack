@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset="utf-8"><title>tx dom check</title>
 <style>html,body{margin:0;background:#000}#root{position:relative;width:960px;height:540px;overflow:hidden}.s{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:800 90px Arial;color:#fff}</style></head><body>
-<div id="root"><div class="s" id="a" style="background:linear-gradient(135deg,#3a1fb0,#8e6bff)">SHOT A</div><div class="s" id="b" style="background:linear-gradient(135deg,#ff8a3d,#ff3d7a)">SHOT B</div></div>
+<div id="root"><div class="s" id="a" style="background:linear-gradient(135deg,#3a1fb0,#8e6bff)"><span data-share="t" style="padding:0 30px;border-radius:24px;background:rgba(255,255,255,.18)">SHOT A</span></div><div class="s" id="b" style="background:linear-gradient(135deg,#ff8a3d,#ff3d7a)"><span data-share="t" style="position:absolute;right:40px;bottom:40px;padding:0 20px;border-radius:24px;background:rgba(0,0,0,.25);font-size:60px">SHOT B</span></div></div>
 <script type="module">
 /* every DOM + approx transition at progress p (used by tests/dom-sheet.mjs) */
 import { applyDom, DOM_KEYS, APPROX_KEYS } from '../lib/tx-dom.js';

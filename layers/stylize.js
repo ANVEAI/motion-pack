@@ -95,3 +95,54 @@ export function mountLook(el, kind, pIn = {}, { H = 1080, id = null } = {}) {
   set(pIn);
   return { id: fid, update(p) { set(p); return this; }, dispose() { svg.remove(); if (el.style.filter === `url(#${fid})`) el.style.filter = ''; } };
 }
+
+/* ---- look.gradeIn (2026-10-14, round 3): an ANIMATED look. A gradient map (luminance -> N colour stops, evenly spaced; 2 stops = a duotone)
+   resolves to the natural colour over a duration (or the reverse), keyed by t alone:
+     w(t) = amount * (1 - ease(seg(t, at, at + dur)))   (reverse: amount * ease(...)) = weight of the gradient map; out = w * map(L) + (1 - w) * src.
+   Emitters (same maths): gradeInPixel (JS reference), gradeInImageData (canvas), gradeInSVG (filter: luma matrix -> feComponentTransfer table ->
+   feComposite arithmetic k2 = w, k3 = 1 - w), mountGradeIn(el, params) -> { render(t) } (only the two arithmetic weights change per frame: cheap,
+   seek-safe), gradeInCube(params, w) (.cube for one fixed weight). Display-referred like duotone; opaque sources only. */
+const EASES_GI = { lin: (x) => x, soft: (x) => x * x * (3 - 2 * x), hero: (x) => 1 - (1 - x) ** 3, sine: (x) => 0.5 - 0.5 * Math.cos(Math.PI * x), expoOut: (x) => (x >= 1 ? 1 : 1 - 2 ** (-10 * x)) };
+export const GRADE_IN = { tags: ['grade', 'gradient-map', 'duotone', 'reveal', 'colour', 'animated', 'launch', 'memory'],
+  d: { stops: ['#1B1340', '#E0457B', '#FFD9A8'], at: 0, dur: 1.2, ease: 'soft', reverse: false, amount: 1, contrast: 1, pivot: 0.5 },
+  doc: 'stops = gradient-map colours from shadow to highlight (2 = duotone); the map resolves to natural colour from at over dur (reverse: natural -> map); ease lin | soft | hero | sine | expoOut; amount = map weight at full; contrast about pivot' };
+const giP = (p = {}) => { const o = { ...GRADE_IN.d, ...p }; if (!Array.isArray(o.stops) || o.stops.length < 2) throw new Error('gradeIn: stops needs >= 2 colours'); if (!EASES_GI[o.ease]) throw new Error('gradeIn: ease must be one of ' + Object.keys(EASES_GI).join(' | ')); return o; };
+/* weight of the gradient map at t (1 = all map, 0 = natural) */
+export function gradeInWeight(t, pIn = {}) { const p = giP(pIn), u = p.dur > 0 ? clamp((t - p.at) / p.dur) : t >= p.at ? 1 : 0, k = EASES_GI[p.ease](u); return p.amount * (p.reverse ? k : 1 - k); }
+/* gradient map of a luminance value (0..1) -> [r, g, b]; same piecewise-linear interpolation as SVG feFunc type="table" */
+export function gradientMap(L, stops, { contrast = 1, pivot = 0.5 } = {}) {
+  const C = stops.map(hexRGB), n = C.length - 1, x = clamp((L - pivot) * contrast + 0.5) * n, k = Math.min(n - 1, Math.floor(x)), f = x - k;
+  return [0, 1, 2].map((c) => C[k][c] + (C[k + 1][c] - C[k][c]) * f);
+}
+export function gradeInPixel(r, g, b, t, pIn = {}, w = null) {
+  const p = giP(pIn), W = w ?? gradeInWeight(t, p), m = gradientMap(LUMA[0] * r + LUMA[1] * g + LUMA[2] * b, p.stops, p);
+  return [r, g, b].map((v, i) => clamp(W * m[i] + (1 - W) * v));
+}
+export function gradeInImageData(img, t, pIn = {}) {
+  const p = giP(pIn), w = gradeInWeight(t, p), d = img.data; if (w <= 0) return img;
+  for (let i = 0; i < d.length; i += 4) { const o = gradeInPixel(d[i] / 255, d[i + 1] / 255, d[i + 2] / 255, t, p, w); d[i] = Math.round(o[0] * 255); d[i + 1] = Math.round(o[1] * 255); d[i + 2] = Math.round(o[2] * 255); }
+  return img;
+}
+export function gradeInSVG(pIn = {}, id = 'mp-gradeIn', w = 1) {
+  const p = giP(pIn), [r, g, b] = LUMA, c = p.contrast, k = 0.5 - p.pivot * c, C = p.stops.map(hexRGB), tv = (ch) => C.map((v) => v[ch].toFixed(5)).join(' ');
+  return `<filter id="${id}" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">` +
+    `<feColorMatrix in="SourceGraphic" type="matrix" values="${f5([c * r, c * g, c * b, 0, k, c * r, c * g, c * b, 0, k, c * r, c * g, c * b, 0, k, 0, 0, 0, 0, 1])}"/>` +
+    `<feComponentTransfer result="gm"><feFuncR type="table" tableValues="${tv(0)}"/><feFuncG type="table" tableValues="${tv(1)}"/><feFuncB type="table" tableValues="${tv(2)}"/></feComponentTransfer>` +
+    `<feComposite id="${id}-mix" in="gm" in2="SourceGraphic" operator="arithmetic" k1="0" k2="${w.toFixed(5)}" k3="${(1 - w).toFixed(5)}" k4="0"/>` + KEEP_ALPHA + '</filter>';
+}
+export function gradeInCube(pIn = {}, w = 1, title = 'motion-pack gradeIn', size = 33) {
+  const out = [`TITLE "${title} w=${(+w).toFixed(3)}"`, `LUT_3D_SIZE ${size}`, 'DOMAIN_MIN 0 0 0', 'DOMAIN_MAX 1 1 1'];
+  for (let b = 0; b < size; b++) for (let g = 0; g < size; g++) for (let r = 0; r < size; r++) out.push(gradeInPixel(r / (size - 1), g / (size - 1), b / (size - 1), 0, pIn, w).map((v) => v.toFixed(6)).join(' '));
+  return out.join('\n') + '\n';
+}
+/* DOM: inject the filter once; render(t) sets the two arithmetic weights from t alone (at w = 0 the filter is removed, so the natural frame is untouched) */
+let giUid = 0;
+export function mountGradeIn(el, pIn = {}, { id = null } = {}) {
+  const doc = el.ownerDocument, fid = id || `mp-gradein-${++giUid}`, svg = doc.createElementNS('http://www.w3.org/2000/svg', 'svg'); let p = giP(pIn);
+  svg.setAttribute('width', '0'); svg.setAttribute('height', '0'); svg.setAttribute('aria-hidden', 'true'); svg.style.position = 'absolute'; doc.body.appendChild(svg);
+  const build = () => { svg.innerHTML = gradeInSVG(p, fid, 1); }; build();
+  const api = { id: fid, weight: (t) => gradeInWeight(t, p),
+    render(t) { const w = gradeInWeight(t, p), m = svg.querySelector('feComposite[operator="arithmetic"]'); m.setAttribute('k2', w.toFixed(5)); m.setAttribute('k3', (1 - w).toFixed(5)); el.style.filter = w > 1e-4 ? `url(#${fid})` : ''; return api; },
+    update(q) { p = giP({ ...p, ...q }); build(); return api; }, dispose() { svg.remove(); if (el.style.filter === `url(#${fid})`) el.style.filter = ''; } };
+  return api;
+}

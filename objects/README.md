@@ -41,6 +41,8 @@ Reusable three.js props, set pieces and one character, extracted from the ANVE l
 | objects/glass-dome | set platform dome glass floating **new** | `makeGlassDome(ctx, p, o)`: `update(t)` (closed-form bob), `set({y, yaw, lift})` (`lift` raises the dome: a reveal); props go in `.inside`; the iridescent transmission glass is hidden in the depth pass so DOF focuses on what is inside | new 2026-10-14 |
 | objects/icon-orbit | icons orbit apps integrations tiles **new** | `makeIconOrbit(ctx, p, {n, radius, tilt, speed, appearAt, stagger})`: `update(t)`; rounded tiles printed with the pack's own line icons (`ICON_KINDS`), never real brand logos; tiles face a fixed world direction (no camera read: seek-safe) | new 2026-10-14 |
 | objects/clay | material clay matte subsurface **new** | `makeClay(hex, {rim, sss, pow, core, coreK})`: soft matte clay, warm core facing the viewer + light-bleed rim (shader patch on MeshPhysicalMaterial); `objects/worker` takes it with `spec.clay: true` or options | new 2026-10-14 |
+| objects/mascot2d | character mascot 2d flat narrator **new** | `characters/mascot2d.js` (no three.js): `mascotSVG(t, spec)`, `drawMascot2d(g, t, spec)`, `mountMascot2d(el, spec)`; in a 3D scene `makeMascotPlane(ctx, p, {spec, height})` (canvas texture). Original bean body + sprout, eyes, brows, mouth (smile / open / talk), stick arms; poses `idle point read cheer dive wave think` changed by closed-form springs; `hops` (anticipation squash, stretch, landing squash), `blinks`, `talk`, `aim` (the point pose aims at a px target) | new 2026-10-14 |
+| objects/logo-extrude | logo mark extrude bevel chrome glass iridescent satin **new** | `lib/logo.js`: `makeLogoExtrude(ctx, p, {svg, preset, size, depth, bevel, spin, slice})` -> `update(t)`, `set({yaw, tilt, slice, scale})`; SVG path(s) in a 100 box (default: the pack's placeholder orbit mark), SVGLoader shapes with holes, creased normals (smooth bevels, crisp edges), presets chrome / glass / iridescent / satin, optional sliced-and-offset beat (two world-space clipping planes) | new 2026-10-14 |
 | objects/worker | character mascot pantomime original | `makeWorker(ctx, p, spec, zoneX?, rimLight?)`: `update(t)` from `{keys, path, blinks}`; rig, hops, follow-through (head 2 f, arms 3 f), breathing, blinks | v10 story B worker.js |
 
 Character data lives in `characters/poses.js`:
@@ -58,6 +60,7 @@ Materials are in `lib/mat.js`. `MAT` holds clay, satin, ceramic, anodised, darkM
   - **devices:** laptop, phone, mug and the worker's wave act.
   - **film:** every extracted set piece.
   - **cast:** the 6 emotions.
+  - **r3:** the four logo-extrude presets spinning (satin sliced) and the 2D mascot on a plane (stills: `qa/r3-r1/sheet.jpg`).
   - **dome:** the glass dome floating with a clay worker typing inside and the icon orbit popping on (stills: `qa/dome-r1/sheet.jpg`; determinism: `qa/hash/gallery-dome.json`).
 - **Plates:** `templates/_shared/media/plate-{devices,film,cast}.mp4`, 1080p, about 0.5 MB each. Hero stills are in `qa/hero-{laptop,phone,mug}/f0100.jpg`.
 - **Stills:** `./stills.sh <page> <outdir> "<frames>" "<query>"`.
@@ -77,6 +80,8 @@ Materials are in `lib/mat.js`. `MAT` holds clay, satin, ceramic, anodised, darkM
 - **Not built:** desk (the slab and the desk cover it) and chair (no time to reach the bar, so we did not ship a weak one).
 
 **Dome kit verdict (2026-10-14, looked at the 1080p stills):** the glass reads as glass (transmission + clear coat highlights, slight iridescence) and the platform as soft satin; at a wide shot the tiles are blurred by the kit DOF when they sit far from the focus point, so lower `dofK` (the gallery uses 22) for a crisp orbit. The tiles are generic and stylised on purpose; brand logos never go on them.
+
+**Round 3 verdict (2026-10-14, looked at `qa/r3-r1/sheet.jpg` and `qa/mascot2d/poses.jpg`):** the four logo presets read as different materials at a wide shot (chrome mirrors the soft panels, glass is pale and needs a darker or busier backdrop to show refraction, iridescent shifts hue as it turns, satin takes the brand colour); the sliced cut shows the hollow inside of the extrusion (no cap), which reads as a deliberate cut at speed but not in a long hold. The 2D mascot is flat on purpose: in a 3D scene it is a cut-out on a plane (fine for a narrator, wrong for a character that should cast light). Determinism: `qa/hash/gallery-r3.json` (same frame twice, t vs t + 3 loops, console clean; the seam check fails as expected, not a loop); `node tools/mascot-sheet.mjs` (6 checks).
 
 ## Rules kept
 

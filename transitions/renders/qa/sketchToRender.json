@@ -1,0 +1,45 @@
+{
+ "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)",
+ "config": {
+  "fps": 30,
+  "loopFrames": 60,
+  "width": 960,
+  "height": 540,
+  "qaFrames": [
+   15,
+   45
+  ],
+  "name": "sketchToRender"
+ },
+ "same_frame_twice": {
+  "frame": 37,
+  "a": "dbac3dab0dd0229d",
+  "b": "dbac3dab0dd0229d",
+  "pass": true
+ },
+ "renderAt_0_vs_loop": {
+  "a": "12392cd4707f9800",
+  "b": "12392cd4707f9800",
+  "pass": true
+ },
+ "renderAt_t_vs_t_plus_3loops": {
+  "t": 1.2345,
+  "pass": true
+ },
+ "frame0_vs_frameN": {
+  "a": "4d24c04cffd8153e",
+  "b": "4d24c04cffd8153e",
+  "pass": true
+ },
+ "seam_mean_abs_diff": {
+  "57->58": 31.44,
+  "58->59": 17.048,
+  "59->0 (seam)": 16.548,
+  "0->1": 9,
+  "1->2": 0.311
+ },
+ "seam_pass": true,
+ "console": [],
+ "console_pass": true,
+ "pass": true
+}

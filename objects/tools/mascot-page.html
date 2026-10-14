@@ -1,0 +1,8 @@
+<!doctype html><html><head><meta charset="utf-8"><title>mascot2d check</title><style>html,body{margin:0;background:#f0ece4}#s{position:relative;width:1920px;height:1080px;background:#f0ece4}</style></head><body><div id="s"></div>
+<script type="module">
+import { mountMascot2d, drawMascot2d } from '../characters/mascot2d.js';
+const s = document.getElementById('s');
+window.show = (spec, t) => { mountMascot2d(s, spec).render(t); return true; };
+window.canvasDraws = () => { const c = document.createElement('canvas'); c.width = 400; c.height = 400; const g = c.getContext('2d'); drawMascot2d(g, 1, { path: [[0, [200, 380]]] }, { W: 400, H: 1080 }); const d = g.getImageData(0, 0, 400, 400).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++; return n > 4000; };
+window.__ready = true;
+</script></body></html>

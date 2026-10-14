@@ -380,6 +380,30 @@
    "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
   },
   {
+   "id": "cam2d.scaleDive",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "scaleDive"
+   ],
+   "demo": "camera/demo/out/cam2d-r3.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
+   "id": "cam2d.pullbackToScreen",
+   "file": "camera/cam2d.js",
+   "kind": "camera-2d",
+   "tags": [
+    "dom",
+    "hyperframes",
+    "pullbackToScreen"
+   ],
+   "demo": "camera/demo/out/cam2d-r3.png",
+   "test": "camera/tests/camera.test.mjs | camera2d.test.mjs"
+  },
+  {
    "id": "cam3d.lock",
    "file": "camera/cam3d.js",
    "kind": "camera-tool",
@@ -528,6 +552,26 @@
    "tags": [
     "dom",
     "blurFilterSVG"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.scaleDiveCSS",
+   "file": "camera/cam2d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "dom",
+    "scaleDiveCSS"
+   ],
+   "test": "camera/tests/camera.test.mjs"
+  },
+  {
+   "id": "cam2d.mapPoint2",
+   "file": "camera/cam2d.js",
+   "kind": "camera-tool",
+   "tags": [
+    "dom",
+    "mapPoint2"
    ],
    "test": "camera/tests/camera.test.mjs"
   },

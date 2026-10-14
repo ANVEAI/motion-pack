@@ -4240,6 +4240,234 @@
     "stills": "renders/stills/ditherDissolve",
     "qa": "renders/qa/ditherDissolve.json"
    }
+  },
+  {
+   "key": "sharedElement",
+   "id": "tx.sharedElement",
+   "name": "Shared element (magic move)",
+   "backends": [
+    "gl",
+    "dom"
+   ],
+   "credit": "shared-element / \"magic move\" re-layout as a technique (FLIP); DOM and GLSL written for this pack",
+   "timing": {
+    "ms": 800,
+    "beats": 1.5,
+    "cut": 0.5,
+    "ease": "linear",
+    "frames_30fps": 24,
+    "frames_24fps": 19,
+    "frames_on_beat": {
+     "90": 30,
+     "100": 27,
+     "120": 23,
+     "128": 21,
+     "140": 19
+    }
+   },
+   "params": {
+    "rectA": {
+     "type": "vec4",
+     "default": [
+      0.255,
+      0.365,
+      0.21,
+      0.37
+     ],
+     "doc": "GL: the element in shot A, [x, y, w, h] designer fractions (DOM reads [data-share] rects)"
+    },
+    "rectB": {
+     "type": "vec4",
+     "default": [
+      0.5275,
+      0.25,
+      0.225,
+      0.4
+     ],
+     "doc": "GL: the same element in shot B, [x, y, w, h] designer fractions"
+    },
+    "radius": {
+     "type": "float",
+     "default": 1,
+     "min": 0,
+     "max": 1,
+     "doc": "GL: element corner radius as a fraction of its half short side (1 = pill / disc, 0 = square)"
+    },
+    "bounce": {
+     "type": "float",
+     "default": 0.3,
+     "min": 0,
+     "max": 1,
+     "doc": "spring character of the move: 0 = critically damped glide, 0.3 = ui settle, 0.6 = playful overshoot"
+    },
+    "stagger": {
+     "type": "float",
+     "default": 0.15,
+     "min": 0,
+     "max": 0.6,
+     "js": true,
+     "doc": "DOM: share of the window spread as start delays across keyed elements (cascade)"
+    },
+    "shadow": {
+     "type": "float",
+     "default": 0.25,
+     "min": 0,
+     "max": 1,
+     "doc": "lift shadow under the element while it travels"
+    }
+   },
+   "sfx": [
+    {
+     "id": "sfx/ui/slide",
+     "at": "start",
+     "offset_f": 0,
+     "gain_db": -1
+    },
+    {
+     "id": "sfx/tx/match_link",
+     "at": "end",
+     "offset_f": 0,
+     "gain_db": -2
+    }
+   ],
+   "reasons": [
+    "LINK",
+    "PLACE",
+    "EMPHASIS"
+   ],
+   "tags": [
+    "shared-element",
+    "magic-move",
+    "morph",
+    "continuity",
+    "ui",
+    "saas",
+    "no-cut"
+   ],
+   "use": "Continuous product films with zero hard cuts: the title pill becomes the card header, the icon becomes the app tile, the button becomes the next screen. DOM: give the same data-share=\"<key>\" to the element in shot A and in shot B; every key springs from its A rect to its B rect while the rest dissolves under it.",
+   "avoid": "Elements whose content changes completely (it reads as a morph glitch); <video> or live canvases inside a shared element (the DOM clone is a snapshot); more than ~6 keys at once.",
+   "gl": true,
+   "dom": true,
+   "dom_approx": false,
+   "demo": {
+    "mp4": "renders/sharedElement.mp4",
+    "mp4_9x16": null,
+    "stills": "renders/stills/sharedElement",
+    "qa": "renders/qa/sharedElement.json"
+   }
+  },
+  {
+   "key": "sketchToRender",
+   "id": "tx.sketchToRender",
+   "name": "Sketch to render",
+   "backends": [
+    "gl",
+    "dom"
+   ],
+   "credit": "pencil-to-final reveal as a technique; Sobel / Laplacian edge line art, GLSL and SVG filters written for this pack",
+   "timing": {
+    "ms": 1600,
+    "beats": 3,
+    "cut": 0.3,
+    "ease": "linear",
+    "frames_30fps": 48,
+    "frames_24fps": 38,
+    "frames_on_beat": {
+     "90": 60,
+     "100": 54,
+     "120": 45,
+     "128": 42,
+     "140": 39
+    }
+   },
+   "params": {
+    "paper": {
+     "type": "color",
+     "default": "#F4F1EA",
+     "doc": "paper colour shot A gives way to"
+    },
+    "ink": {
+     "type": "color",
+     "default": "#1E1B26",
+     "doc": "line colour"
+    },
+    "line": {
+     "type": "float",
+     "default": 1.3,
+     "min": 0.5,
+     "max": 4,
+     "doc": "line weight in px at 1080p"
+    },
+    "threshold": {
+     "type": "float",
+     "default": 0.12,
+     "min": 0.02,
+     "max": 0.6,
+     "doc": "edge strength that becomes a line (lower = more lines)"
+    },
+    "draw": {
+     "type": "float",
+     "default": 0.42,
+     "min": 0.15,
+     "max": 0.6,
+     "doc": "share of the window the lines take to draw on"
+    },
+    "tone": {
+     "type": "float",
+     "default": 0.6,
+     "min": 0,
+     "max": 1,
+     "doc": "grey clay pass before colour (0 = straight to colour)"
+    },
+    "dir": {
+     "type": "vec2",
+     "default": [
+      1,
+      0.35
+     ],
+     "doc": "draw-on direction (designer space)"
+    }
+   },
+   "sfx": [
+    {
+     "id": "sfx/paper/rustle",
+     "at": "start",
+     "offset_f": 2,
+     "gain_db": -3
+    },
+    {
+     "id": "sfx/tx/mask_reveal",
+     "at": "peak",
+     "offset_f": 0,
+     "gain_db": -1
+    }
+   ],
+   "reasons": [
+    "REVEAL",
+    "TIME",
+    "EMPHASIS"
+   ],
+   "tags": [
+    "sketch",
+    "line-art",
+    "draw-on",
+    "render",
+    "reveal",
+    "design",
+    "architecture",
+    "product"
+   ],
+   "use": "Idea to finished thing: an outline of the next shot draws on over paper, takes a grey clay tone, then fills to full colour (\"from a sketch to the real render\"). Best on product renders, architecture, illustrations and UI with clear edges.",
+   "avoid": "Low-contrast or noisy footage (edges turn to hatching); faces in close-up; quick edits (it needs about 1.5 s to read).",
+   "gl": true,
+   "dom": true,
+   "dom_approx": false,
+   "demo": {
+    "mp4": "renders/sketchToRender.mp4",
+    "mp4_9x16": null,
+    "stills": "renders/stills/sketchToRender",
+    "qa": "renders/qa/sketchToRender.json"
+   }
   }
  ]
 }

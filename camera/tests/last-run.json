@@ -1,6 +1,6 @@
 {
  "name": "camera",
- "total": 22,
+ "total": 25,
  "failed": 0,
  "rows": [
   {
@@ -9,7 +9,7 @@
    "detail": ""
   },
   {
-   "label": "2d: every preset gives identical state for the same t in shuffled / repeated order (13 presets x 240 samples), frozen base never mutated",
+   "label": "2d: every preset gives identical state for the same t in shuffled / repeated order (15 presets x 240 samples), frozen base never mutated",
    "pass": true,
    "detail": ""
   },
@@ -105,6 +105,21 @@
   },
   {
    "label": "bakeGSAP writes one tl.set per frame (61 for 2 s) identical to toGSAP(cam(t)); CSS transform numbers match GSAP vars",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "scaleDive: constant log-zoom speed across levels (2.058/2.058/2.058/2.058 per s, expected 2.058); every hand-off lands the next level at scale 1 exactly where level i showed it; ends on level 3 at scale 1",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "scaleDiveCSS: the current level visible, the next one fading in above it, the others hidden",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "pullbackToScreen: starts with the comp full frame and the quad's box filling the frame (0.000..1.000 x 0.056..0.944), ends with the comp exactly on the quad at plate scale 1; once locked the corners ride the camera",
    "pass": true,
    "detail": ""
   },

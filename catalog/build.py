@@ -150,6 +150,7 @@ for mod in ('layers', 'type', 'camera'):
 src = open(os.path.join(PACK, 'objects', 'index.js')).read()
 hero = {n: rel(os.path.join(PACK, f'objects/qa/hero-{n}/f0100.png')) for n in ('laptop', 'phone', 'mug')}
 hero.update({n: rel(os.path.join(PACK, 'objects/qa/dome-r1/f0110.png')) for n in ('glass-dome', 'icon-orbit', 'clay')})
+hero.update({'mascot2d': rel(os.path.join(PACK, 'objects/qa/mascot2d/poses.png')), 'logo-extrude': rel(os.path.join(PACK, 'objects/qa/r3-r1/f0075.png'))})
 for m in re.finditer(r"'(objects/[a-z0-9-]+)': r\(.*?\[([^\]]*)\], '([^']*)', '([^']*)'\)", src):
     oid, tags, state, doc = m.group(1), [x.strip(" '") for x in m.group(2).split(',')], m.group(3), m.group(4)
     n = oid.split('/')[1]

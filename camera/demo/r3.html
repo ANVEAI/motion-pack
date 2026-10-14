@@ -1,0 +1,34 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack camera round 3: scaleDive + pullbackToScreen</title>
+<style>html,body{margin:0;background:#111}#frame{position:relative;width:1920px;height:1080px;overflow:hidden;background:#000;font-family:Helvetica,Arial,sans-serif}
+.lv,.world,.comp{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden}
+#l0{background:radial-gradient(circle at 30% 30%,#2b2f6b,#0d0f24)}#l0 .planet{position:absolute;left:940px;top:203px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#9fd0ff,#2a56d6 60%,#14205c)}
+#l0 .star{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff}
+#l1{background:radial-gradient(circle at 50% 40%,#6fb7ff,#1d4fc4)}#l1 .land{position:absolute;left:280px;top:520px;width:600px;height:420px;border-radius:48% 52% 40% 60%;background:#3fae6a}#l1 .h{position:absolute;left:590.7px;top:678.3px;width:66.7px;height:50px;background:#f7f5ef;border-radius:3px}#l1 .r{position:absolute;left:584px;top:658.3px;width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:23.3px solid #4a18ed}
+#l2{background:#3fae6a}#l2 .house{position:absolute;left:760px;top:420px;width:400px;height:300px;background:#f7f5ef;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.2)}#l2 .roof{position:absolute;left:720px;top:300px;width:0;height:0;border-left:240px solid transparent;border-right:240px solid transparent;border-bottom:140px solid #4a18ed}#l2 h1{position:absolute;left:0;right:0;top:820px;text-align:center;font:800 90px Helvetica;color:#14205c}
+#l3{background:#f7f5ef}#l3 h1{position:absolute;left:0;right:0;top:440px;text-align:center;font:800 150px Helvetica;color:#4a18ed;margin:0}
+.room{position:absolute;inset:0;background:linear-gradient(180deg,#3b2f2a 0,#5a463c 62%,#2a201c 62%,#1c1512 100%)}
+.desk{position:absolute;left:300px;top:690px;width:1320px;height:40px;background:#8a6a52;border-radius:8px}.mon{position:absolute;left:560px;top:268px;width:800px;height:420px;background:#111;border-radius:20px}.stand{position:absolute;left:930px;top:688px;width:60px;height:30px;background:#222}
+.lamp{position:absolute;left:1500px;top:420px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#ffe7b0,#ff9a3c 50%,rgba(255,154,60,0) 72%)}
+.comp{background:linear-gradient(135deg,#4a18ed,#ff6f91);transform-origin:0 0}.comp h1{position:absolute;left:0;right:0;top:400px;margin:0;text-align:center;font:800 170px Helvetica;color:#fff;letter-spacing:-4px}
+</style></head><body>
+<div id="frame">
+ <div id="dive"><div class="lv" id="l0"><div class="planet"></div></div><div class="lv" id="l1"><div class="land"></div><div class="r"></div><div class="h"></div></div><div class="lv" id="l2"><div class="roof"></div><div class="house"></div></div><div class="lv" id="l3"><h1>one door</h1></div></div>
+ <div id="pull" style="display:none"><div class="world" id="world"><div class="room"></div><div class="lamp"></div><div class="mon"></div><div class="stand"></div><div class="desk"></div></div><div class="comp" id="comp"><h1>the film</h1></div></div>
+</div>
+<script type="module">
+/* scaleDive: 4 DOM levels (planet -> land -> street -> door); each inner level is drawn to be the region of the level above around its focus.
+   pullbackToScreen: a full-frame comp pulls back onto the monitor of a flat illustrated room (corner-pinned with type/gfx/cornerpin.js matrix3d). */
+import * as C from '../cam2d.js'; import { matrix3d } from '../../type/gfx/cornerpin.js';
+const W = 1920, H = 1080, L = [...document.querySelectorAll('#dive .lv')];
+document.querySelectorAll('#l0').forEach((el) => { for (let i = 0; i < 60; i++) { const s = document.createElement('i'); s.className = 'star'; s.style.left = ((i * 733) % 1900) + 'px'; s.style.top = ((i * 389) % 1060) + 'px'; el.appendChild(s); } });
+const DIVE = C.scaleDive(C.ID2, { at: 0.2, dur: 3.6, levels: 3, ratio: [8, 6, 5], focus: [[0.594, 0.373], [0.29, 0.676], [0.5, 0.52]], blend: 0.25 });
+const MON = [[560 / W, 268 / H], [1360 / W, 268 / H], [1360 / W, 688 / H], [560 / W, 688 / H]].map(([x, y]) => [x + 0.008, y + 0.012]).map(([x, y], i) => [x - (i === 1 || i === 2 ? 0.016 : 0), y - (i >= 2 ? 0.024 : 0)]);
+const PULL = C.pullbackToScreen(C.ID2, { at: 0.2, dur: 2.6, quad: MON, lock: 0.3 });
+window.setCam = (n) => { document.getElementById('dive').style.display = n === 'scaleDive' ? '' : 'none'; document.getElementById('pull').style.display = n === 'pullbackToScreen' ? '' : 'none'; window.cam = n; };
+window.at = (t) => {
+  if (window.cam === 'scaleDive') { const st = DIVE(t), css = C.scaleDiveCSS(st, L.length, { W, H }); L.forEach((el, i) => Object.assign(el.style, css[i])); return st.dive; }
+  const st = PULL(t), c = C.toCSS(st, { W, H }), w = document.getElementById('world'); w.style.transform = c.transform; w.style.transformOrigin = c.transformOrigin;
+  document.getElementById('comp').style.transform = matrix3d(W, H, st.pin.corners.map(([x, y]) => [x * W, y * H])); return st.pin;
+};
+window.setCam('scaleDive'); window.__ready = true;
+</script></body></html>

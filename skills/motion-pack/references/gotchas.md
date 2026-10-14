@@ -25,6 +25,8 @@
 - **GL-only keys hard-cut in DOM templates.** These are glitch, ink, filmBurn, lightLeak, morph, zoomThrough, pagePeel, pixelSort and maskReveal. Each is logged as `transitions todo`.
 - **Two transitions are approximations.** pixelSort is a max-luma streak, not a true sort. morph is a luma-gradient warp dissolve, not optical flow.
 - **The three.js pass is parity-tested against r185** (`transitions/tools/three-parity.sh`, with `THREE_BUILD` pointing at a local three.js build). The kit (`objects/kit/`) loads r160 from CDN, so do a first-use check inside a kit scene before a hero use.
+- **sharedElement clones are snapshots.** The DOM back-end clones each `[data-share]` element (computed styles copied) the first time a frame inside the window is drawn. A frame-parallel or out-of-order render can enter the window anywhere, so hold shared elements still inside the window (draw an animated one at `min(t, t0)` in shot A and `max(t, t1)` in shot B); a `<video>` inside a shared element freezes.
+- **sketchToRender needs edges.** Flat gradients give no line art (the DOM Laplacian and the GL Sobel both read luminance edges); a plate with busy texture turns into hatching. Judge the cut frame.
 - **Flash and photosensitivity.** Use `peak: 0.7` and no more than 3 flashes per second for anything broadcast-adjacent. Check WCAG flash thresholds.
 
 ## Sound
@@ -64,6 +66,7 @@
 - **Overlay grain behaves like midBias 1.** It is quiet in shadows and highlights. For exact kit grain use the Finisher.
 - **Plate-based effects need plate pixels.** Bloom, halation, chroma, lens and diffusion only run in the Finisher, so a DOM-only composition cannot do them.
 - **No double finishing.** The `launch-studio` plate already bakes bloom, vignette and grain. `lintStack` and `lintOverlayStack` warn when you stack them twice.
+- **meshGradient bands without grain.** Big slow radial gradients in 8-bit band; keep `grain` at 0.02 or more (the default is 0.04). The hologram beam is a screen blend, so it disappears on white plates.
 - **Grades are starting values** judged on synthetic stills. Re-judge them on real footage.
 - **Whip blur needs subframe sampling** in the render loop (8 or 16 subframes). A 2D whip alone exposes black.
 
@@ -73,6 +76,7 @@
 - **Determinism QA.** Run the frame renderer's `--qa` mode (determinism, seam and console checks). A failing seam check is expected for non-loops.
 - **Prop polish varies by distance.** The laptop aluminium reads slightly flat and the mug is perfectly symmetric. Both are fine at template distances but not photoreal at macro distance; use a Blender render (not part of this repo) for a photoreal hero.
 - **No third-party logos on props.** If you pass a real logo texture, the type layer must carry the trademark line.
+- **logo-extrude slices are hollow.** The sliced beat uses two clipping planes, so the cut face shows the inside of the extrusion (no cap). Fine at speed, not for a long hold. Clipping planes live in world space; `set()` recomputes them from the part's matrix every frame.
 - **Run the 3D templates before `beat-edit` and `talking-head`,** which use their renders as footage.
 
 ## Environment and process

@@ -26,7 +26,9 @@ function overlay(root) {
   }
   return ov;
 }
-function clearOverlay(ov) { const f = ov.querySelector('.mptx-fill'); f.style.opacity = '0'; f.style.background = ''; f.style.mixBlendMode = ''; f.style.clipPath = ''; ov.querySelector('.mptx-bars').innerHTML = ''; }
+function clearOverlay(ov) { const sh = ov.querySelector(':scope > .mptx-share'); if (sh) sh.style.display = 'none';   // sharedElement clones (tx-dom-x.js)
+  for (const el of (ov.parentNode || ov).querySelectorAll('[data-mptx-hide]')) { el.style.visibility = el.dataset.mptxHide === '-' ? '' : el.dataset.mptxHide; el.removeAttribute('data-mptx-hide'); }
+  const f = ov.querySelector('.mptx-fill'); f.style.opacity = '0'; f.style.background = ''; f.style.mixBlendMode = ''; f.style.clipPath = ''; ov.querySelector('.mptx-bars').innerHTML = ''; }
 
 const W = el => el.clientWidth || el.getBoundingClientRect().width, H = el => el.clientHeight || el.getBoundingClientRect().height;
 const pct = v => (v * 100).toFixed(4) + '%';

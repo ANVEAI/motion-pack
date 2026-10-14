@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>motion-pack demo-r3-fx: environment plate</title>
+<link rel="icon" href="data:,">
+<style>html,body{margin:0;padding:0;background:#efe8dc;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+/* demo-r3-fx, shot 4 environment (one still): objects/laptop (screen off) with a mug on the floating slab, warm paper. The camera is locked, so a single
+   frame is the plate; window.__screenQuad(t) exports the laptop screen's four corners in output px (TL, TR, BR, BL) for cam2d.pullbackToScreen. */
+import { runScene, U, THREE } from './objects/kit/studio-lite.js';
+import { O } from './objects/index.js';
+import { stageConfig, makeStage, shot } from './objects/stage.js';
+window.CONFIG = stageConfig({ name: 'demo-r3-fx-env', seconds: 1, qaFrames: [0], colors: { backdrop: '#efe8dc' }, grade: { vignette: 0.1, dofK: 30 } });
+const st = {}, SHOT = { fov: 20, elev: [12, 12], az: [-8, -8], dist: [6.4, 6.4], target: [0.05, 0.55, 0.05], screen: [960, 520], t0: 0, t1: 1 };
+runScene({
+  async build(ctx) {
+    st.stage = makeStage(ctx, { slab: [3.4, 0.64, 2.0], paper: '#efe8dc' }); const G = st.stage.parent;
+    st.laptop = O.makeLaptop(ctx, G, {}); st.laptop.pose([0, 0, -0.1], 0); st.laptop.set({ open: 1, screen: 0.002 });
+    st.mug = O.makeMug(ctx, G, {}); st.mug.pose([1.05, 0, 0.35], -0.5); st.mug.set({ fill: 0.85 });
+    ctx.probes = { laptop: st.laptop.probes.laptop, screen: st.laptop.probes['laptop.screen'] };
+  },
+  update(ctx, t, n, slot) { st.stage.update(n, slot, 0); },
+  camera(ctx, t) { return shot(ctx, t, SHOT); },
+  focus() { return [0, 0.6, 0]; },
+  subframes() { return 4; },
+});
+window.__screenQuad = (t) => { window.__layout(t); const scr = st.laptop.probes['laptop.screen']; scr.geometry.computeBoundingBox(); const b = scr.geometry.boundingBox;
+  return [[b.min.x, b.max.y], [b.max.x, b.max.y], [b.max.x, b.min.y], [b.min.x, b.min.y]].map(([x, y]) => { const v = new THREE.Vector3(x, y, (b.max.z + b.min.z) / 2).applyMatrix4(scr.matrixWorld); return window.__project(v.x, v.y, v.z).map((q) => +q.toFixed(2)); }); };
+</script>
+</body>
+</html>
