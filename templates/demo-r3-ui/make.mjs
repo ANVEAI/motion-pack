@@ -4,8 +4,8 @@
      python3 ../_shared/sheet.py out/demo-r3-ui.mp4 out/sheet.jpg <times>
    Not a genre template (no config.mjs, so tools/count.py does not count it): the CONFIG block is the whole edit. Every part is referenced by id; every frame is a pure
    function of t (the page re-renders the SVG on each hf-seek). Copy is placeholder for a fictional product; latency and timing numbers are labelled illustrative in frame. */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, write } from '../_shared/compose.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+import { stage, head, write, mix, lintPlan, lintStop } from '../_shared/compose.mjs';
 import { uiCues } from '../../type/gfx/index.js';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..');
 
@@ -47,7 +47,9 @@ const shots = C.scenes.map((s) => ({ id: s.id, start: s.start, dur: +(s.end - s.
 const plan = { template: 'demo-r3-ui', fps: F, seconds: T, W: C.W, H: C.H, music: C.music, musicGainDb: C.musicGainDb, ceilingDb: C.ceilingDb, fadeInMs: C.fadeInMs, shots, cues,
   honesty: 'fictional product (Acme Voice); placeholder copy; latency badges and failover timings labelled illustrative in frame',
   lint: { cutsOnBeat: shots.every((s) => Math.abs(s.start * 2 - Math.round(s.start * 2)) < 1e-9), partsUsed: [...new Set(shots.flatMap((s) => s.parts))] } };
+const fails = lintPlan(plan);   // lint.proof + lint.tx: the gate cues.mjs runs for the genre templates (compose.mjs)
 fs.mkdirSync(path.join(DIR, 'out'), { recursive: true }); fs.writeFileSync(path.join(DIR, 'out', 'plan.json'), JSON.stringify(plan, null, 1));
+lintStop(fails, 'demo-r3-ui');
 console.log(`plan: ${shots.length} shots, ${cues.length} cues, parts ${plan.lint.partsUsed.length} (${plan.lint.partsUsed.join(', ')}), cuts on beat: ${plan.lint.cutsOnBeat}`);
 
 /* ---------- stage: fonts, layers + type modules (compose.mjs), plus type/gfx (the UI kit lives there) ---------- */
@@ -55,7 +57,7 @@ const st = stage(DIR, { layers: C.layers.length > 0 });
 const link = (src, dst) => { fs.mkdirSync(path.dirname(dst), { recursive: true }); try { fs.rmSync(dst, { force: true }); fs.linkSync(src, dst); } catch { fs.copyFileSync(src, dst); } };
 for (const f of fs.readdirSync(path.join(PACK, 'type', 'gfx')).filter((f) => f.endsWith('.js'))) link(path.join(PACK, 'type', 'gfx', f), path.join(DIR, 'assets', 'mp', 'type', 'gfx', f));
 fs.mkdirSync(path.join(DIR, 'assets', 'media'), { recursive: true });
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 
 /* ---------- page ---------- */
 const css = `#bg { z-index: 0; } #stage { z-index: 2; } #fx { pointer-events: none; } #fx canvas { z-index: 5; }`;

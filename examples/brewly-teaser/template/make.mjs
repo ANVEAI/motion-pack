@@ -3,8 +3,8 @@
    Same pipeline as the ad template: CONFIG -> plan (cues.mjs, lint) -> SFX + music mix (audio.py -> music/mixer.py) -> static HyperFrames
    index.html whose paused GSAP timeline is built from the same plan. Every prop animation is a timeline tween at an absolute time (seek-safe).
    BREWLY IS A FICTIONAL BRAND: every screen below is a drawn illustration, labelled in frame. */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, runPlan, head, esc, write } from '../_shared/compose.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+import { stage, runPlan, head, esc, write, mix } from '../_shared/compose.mjs';
 import { txPlan, span, txCalls } from '../_shared/txplan.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared');
 runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
@@ -12,7 +12,7 @@ const plan = JSON.parse(fs.readFileSync(path.join(DIR, 'out', 'plan.json'), 'utf
 const { CONFIG } = await import('./config.mjs'); const C = structuredClone(CONFIG);
 for (let i = 2; i < process.argv.length; i++) if (process.argv[i] === '--set') { const [k, v] = process.argv[++i].split('='); let o = C; const ks = k.split('.'); for (const q of ks.slice(0, -1)) o = o[q]; o[ks.at(-1)] = v !== '' && !isNaN(+v) ? +v : v; }
 const st = stage(DIR, { media: [], layers: (C.layers || []).length > 0 });
-if (!process.env.SKIP_MIX) execFileSync('python3', [path.join(SH, 'audio.py'), path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+if (!process.env.SKIP_MIX) mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 const TALL = C.aspect !== '16:9', W = TALL ? 1080 : 1920, H = TALL ? 1920 : 1080, B = C.brand, F = plan.fps, T = plan.seconds;
 const rich = (s) => esc(s).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 /* palette from design.json (no CONFIG keys for these roles: kept here, see design.json handoff) */

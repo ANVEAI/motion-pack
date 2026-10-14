@@ -29,7 +29,7 @@ export function lintPace(shots, { aslMax = 2.5, longMax = 4.5 } = {}) {   // sho
   return { shots: d.length, asl: +asl.toFixed(2), longest: +lg.toFixed(3), pass: asl <= aslMax && lg <= longMax };
 }
 /* every non-hard-cut boundary must carry a reason (edit.md: the planner refuses unmotivated transitions) */
-export const lintTransitions = (shots) => shots.filter((s) => s.tx && s.tx !== 'transitions/cut' && !s.txReason).map((s) => s.id);
+export const lintTransitions = (shots) => shots.filter((s) => { const tx = s.tx ?? s.transition; return tx && tx !== 'transitions/cut' && !s.txReason; }).map((s) => s.id);   // shot.tx, or shot.transition (the part demos' spelling)
 /* the lint as a gate: what stops a build. An unsourced digit claim and an unmotivated transition are failures (cues.mjs exits 2 unless --allow-lint); lint.pace is reported, never enforced */
 export const lintFailures = (L) => [...((L && L.claimsWithoutSource) || []).map((t) => `lint.proof: "${t}" has a digit and no source (add { source } to the claim, or take the number out)`),
   ...((L && L.unmotivatedTransitions) || []).map((id) => `lint.tx: the transition into shot "${id}" has no reason (set a Murch reason such as EMOTION, STORY, RHYTHM, ENERGY, REVEAL, PLACE, or make it a hard cut)`)];

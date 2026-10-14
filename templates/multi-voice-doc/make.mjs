@@ -7,7 +7,7 @@
    -> the mix (templates/_shared/audio.py -> music/mixer.py: bed ducked 9 dB under the voice, bed automation for the quiet hold, -14 LUFS master)
    -> index.html. Picture: your clips muted (their sound is in the mix), or labelled placeholder cards; flat 2D inserts drawn here (SVG + GSAP). */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, runPlan, head, esc, write } from '../_shared/compose.mjs';
+import { stage, runPlan, head, esc, write, mix } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..'), OUT = path.join(DIR, 'out'), PY = process.env.PYTHON || 'python3';
 runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(OUT, 'plan.json'), 'utf8'));
@@ -25,7 +25,7 @@ plan.overlays.forEach((o, k) => { if (o.kind === 'broll' && o.src) o.url = media
 /* 2. the voice track, the transcript for ears, then the mix */
 fs.writeFileSync(path.join(OUT, 'transcript.json'), JSON.stringify({ source: 'timeline words of out/plan.json (placeholder text until clips.json holds real transcripts)', words: plan.transcript }));
 execFileSync(PY, [path.join(DIR, 'vo.py'), path.join(OUT, 'plan.json'), path.join(OUT, 'vo.wav'), '--placeholder', C.placeholderVoice], { stdio: 'inherit' });
-execFileSync(PY, [path.join(SH, 'audio.py'), path.join(OUT, 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(OUT, 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'), PY);   // audio.py: a failure ends the build with its own message, no stack trace
 
 /* 3. the composition */
 const PAPER = '#F3EFE6', INK = '#1D1B19', ACC = '#4A18ED', TINT = ['#2B2622', '#22282B', '#2A2430', '#24291F', '#2E2620', '#1F2630', '#2B2228', '#262626'];

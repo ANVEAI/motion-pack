@@ -308,6 +308,8 @@
  ],
  "honesty": "fictional product (Acme); placeholder copy; map-card numbers labelled \"illustrative data\"",
  "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
   "cutsOnBeat": true,
   "partsUsed": [
    "ui.promptBar",

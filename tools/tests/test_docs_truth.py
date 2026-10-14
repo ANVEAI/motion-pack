@@ -223,6 +223,12 @@ def test_one_python_version_everywhere():
     compat = next(l for l in skill.split("\n") if l.startswith("compatibility:"))
     assert "Python 3.11" in compat and "3.10" in compat and "numba" in compat and "puppeteer-core" in compat and "Node 22" in compat and "ffmpeg" in compat and "Blender 5.2" in compat, compat
     assert "Tested with Python 3.11" in req
+    # the install range is stated the same way in all three places (README prerequisites, SKILL.md compatibility, requirements.txt), so it cannot drift in one of them
+    head = "\n".join(l for l in req.split("\n") if l.startswith("#"))
+    assert "3.10 to 3.12" in head and "3.13" in head and "python3.11 -m venv" in head, "requirements.txt must say which Pythons can install the pins and how to make the venv:\n" + head
+    prereq = next(l for l in readme.split("\n") if "pip install -r requirements.txt" in l and l.startswith("|"))
+    assert "3.10 to 3.12" in prereq and "3.13" in prereq, prereq
+    assert "3.10 to 3.12" in compat and "3.13" in compat, compat
     reqline = next(l for l in read("skills/README.md").split("\n") if l.startswith("**Requirements by skill:**"))
     assert "motion-pack needs" in reqline and "Python 3.11" in reqline and "requirements.txt" in reqline and "numba" in reqline, reqline
 

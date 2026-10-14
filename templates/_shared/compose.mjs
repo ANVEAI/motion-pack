@@ -7,6 +7,7 @@
      Missing modules are listed in the returned `todo` (the template still renders: hard cuts, plain fades, no layers).
    head({ W, H, title, bg }) -> the <head> with GSAP 3.14.2, @font-face for the shared fonts and the base clip CSS. */
 import fs from 'node:fs'; import path from 'node:path'; import { spawnSync } from 'node:child_process';
+import { lintClaims, lintTransitions, lintFailures } from './plan.mjs';
 const SH = path.dirname(new URL(import.meta.url).pathname), PACK = path.resolve(SH, '..', '..');
 const link = (src, dst) => { fs.mkdirSync(path.dirname(dst), { recursive: true }); try { fs.rmSync(dst, { force: true }); fs.linkSync(src, dst); } catch { fs.copyFileSync(src, dst); } };
 const jsUnder = (d) => (fs.existsSync(d) ? fs.readdirSync(d, { recursive: true }).filter((f) => /\.(m?js)$/.test(f)).map((f) => path.join(d, f)) : []);
@@ -15,6 +16,32 @@ const jsUnder = (d) => (fs.existsSync(d) ? fs.readdirSync(d, { recursive: true }
    (2 = lint.proof / lint.tx, see templates/README.md) and no Node stack trace; nothing after it (stage, mix, page) runs. */
 export function runPlan(dir, args = process.argv.slice(2)) {
   const r = spawnSync('node', [path.join(SH, 'cues.mjs'), dir, ...args], { stdio: 'inherit' });
+  if (r.status !== 0) process.exit(r.status ?? 1);
+}
+
+/* THE LINT GATE, shared: cues.mjs uses it, and so does every make.mjs that builds its own plan instead of running cues.mjs (the part demos).
+   allowLint(): --allow-lint on the command line or MP_ALLOW_LINT=1 (render3d.sh), the one documented waiver.
+   lintPlan(plan): fills plan.lint.claimsWithoutSource (lint.proof: a claim with a digit and no source) and plan.lint.unmotivatedTransitions (lint.tx: a non-cut transition
+     with no txReason) from plan.claims and plan.shots, keeps the other lint fields, records the failures in plan.lint.allowed when waived, and returns them.
+   lintStop(fails, who): call it after the plan is written (plan.lint shows what failed): prints the failures and exits 2 unless waived, before anything is staged, mixed or rendered. */
+export const allowLint = (argv = process.argv) => argv.includes('--allow-lint') || process.env.MP_ALLOW_LINT === '1';
+export function lintPlan(plan, waive = allowLint()) {
+  const { claimsWithoutSource, unmotivatedTransitions, ...rest } = plan.lint || {};   // the two gate fields first, then whatever else the plan's lint holds (pace, cutsOnBeat, ...)
+  plan.lint = { claimsWithoutSource: lintClaims(plan.claims).map((c) => c.text), unmotivatedTransitions: lintTransitions(plan.shots || []), ...rest };
+  const fails = lintFailures(plan.lint); if (fails.length && waive) plan.lint.allowed = fails;   // a waived problem stays on the record (ears, the critic and a reviewer can see it)
+  return fails;
+}
+export function lintStop(fails, who, waive = allowLint()) {
+  if (!fails.length) return;
+  console.error(`\n${who}: ${fails.length} lint problem${fails.length === 1 ? '' : 's'}${waive ? ' (waived by --allow-lint, recorded in plan.lint.allowed)' : ', build stopped (exit 2)'}\n  - ${fails.join('\n  - ')}`);
+  if (!waive) { console.error('\nFix the CONFIG block, or pass --allow-lint to build anyway (MP_ALLOW_LINT=1 for render3d.sh). Never waive a stat that has no source.'); process.exit(2); }
+}
+
+/* mix(planJson, wav, py = 'python3'): run _shared/audio.py (music/mixer.py under it). Like runPlan, a failure (a missing music bed, a mixer error) ends this process with audio.py's own
+   message and exit code, not a Node stack trace on top of it. */
+export function mix(planJson, wav, py = 'python3') {
+  const r = spawnSync(py, [path.join(SH, 'audio.py'), planJson, wav], { stdio: 'inherit' });
+  if (r.error) { console.error(`mix: could not run ${py} (${r.error.message})`); process.exit(1); }
   if (r.status !== 0) process.exit(r.status ?? 1);
 }
 

@@ -4,7 +4,10 @@ unmotivated transition. Before 2026-10-15 cues.mjs only console.logged both and 
 and --allow-lint (or MP_ALLOW_LINT=1 for render3d.sh) is the one documented waiver, recorded in plan.lint.allowed. No render, no browser. Run: python3 -m pytest -q tools/tests/test_lint_gate.py"""
 import json
 import os
+import shutil
 import subprocess
+import sys
+import tempfile
 
 import pytest
 
@@ -85,3 +88,60 @@ def test_make_stops_before_building_and_allow_lint_lets_it_go_on(brewly, make):
     assert r.returncode == 0, r.stderr[-800:]
     assert os.path.exists(os.path.join(brewly, "index.html")) and os.path.exists(os.path.join(brewly, "assets", "media", "mix.wav"))
     assert json.load(open(os.path.join(brewly, "out", "plan.json")))["lint"]["allowed"][0].startswith("lint.proof")
+
+
+# ---- the part demos build their own plan (no config.mjs, so no cues.mjs): they run the same gate through compose.mjs lintPlan / lintStop ----
+COMPOSE = os.path.join(REPO, "templates", "_shared", "compose.mjs")
+LIGHT_DEMOS = ["demo-r3-ui", "demo-ui-kit", "demo-r45-ui"]   # no plate render before the plan, so the gate can be run here without a browser
+
+
+def tracked_makes():
+    out = subprocess.run(["git", "ls-files", "templates/*/make.mjs", "examples/*/template/make.mjs"], cwd=REPO, capture_output=True, text=True).stdout.split()
+    return [os.path.join(REPO, f) for f in out] or sorted(os.path.join(REPO, "templates", d, "make.mjs") for d in os.listdir(os.path.join(REPO, "templates")) if os.path.exists(os.path.join(REPO, "templates", d, "make.mjs")) and not d.startswith("wx-"))
+
+
+@pytest.mark.parametrize("f", tracked_makes(), ids=lambda f: os.path.relpath(f, REPO))
+def test_every_make_runs_the_gate_before_it_stages_and_mixes_through_mix(f):
+    """templates/README.md says every make.mjs runs the lint gate first: either cues.mjs (runPlan) or, for a demo that builds its own plan, lintPlan + lintStop, before stage();
+    and the mix goes through compose.mix(), so a failing audio.py ends the build with its own message, not a Node stack trace"""
+    s = open(f).read()
+    gate = min([i for i in (s.find("runPlan("), s.find("lintStop(")) if i >= 0] or [-1])
+    assert gate >= 0, "this make.mjs never runs the lint gate (runPlan or lintPlan + lintStop)"
+    assert "lintStop(" not in s or "lintPlan(" in s, "lintStop needs lintPlan to fill plan.lint first"
+    assert s.find("stage(DIR") < 0 or gate < s.find("stage(DIR"), "the gate must run before anything is staged"
+    assert "audio.py')" not in s, "call compose.mix(), not execFileSync(... audio.py ...)"
+    assert "everyClaimHasSource: true" not in s, "a lint result is computed, never asserted"
+
+
+@pytest.mark.parametrize("demo", LIGHT_DEMOS)
+def test_a_part_demo_stops_on_an_unsourced_digit(demo, make):
+    d = tempfile.mkdtemp(prefix="wx-gate-", dir=os.path.join(REPO, "templates"))
+    try:
+        s = open(os.path.join(REPO, "templates", demo, "make.mjs")).read()
+        assert s.count("const fails = lintPlan(plan);") == 1
+        s = s.replace("const fails = lintPlan(plan);", "plan.claims = [...(plan.claims || []), { text: 'Saves 40% of your time' }];\nconst fails = lintPlan(plan);")
+        open(os.path.join(d, "make.mjs"), "w").write(s)
+        r = make(d)
+        assert r.returncode == 2 and "lint.proof" in r.stderr and "Saves 40% of your time" in r.stderr and demo in r.stderr, (r.returncode, r.stdout[-400:], r.stderr[-800:])
+        assert "    at " not in r.stderr, r.stderr[-800:]
+        assert not os.path.exists(os.path.join(d, "assets")) and not os.path.exists(os.path.join(d, "index.html")), "the gate must stop before stage(), the mix and the page"
+        assert json.load(open(os.path.join(d, "out", "plan.json")))["lint"]["claimsWithoutSource"] == ["Saves 40% of your time"]
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def test_lint_tx_reads_the_demos_transition_spelling():
+    """the demos write shot.transition (not shot.tx): a non-cut one with no txReason is still an unmotivated transition"""
+    js = ("import('%s').then((m) => console.log(JSON.stringify(m.lintTransitions([{ id: 'a', transition: 'transitions/whip' }, { id: 'b', transition: 'transitions/cut' }, "
+          "{ id: 'c', tx: 'transitions/whip', txReason: 'RHYTHM' }, { id: 'd', transition: 'transitions/push', txReason: 'STORY' }]))))") % os.path.join(REPO, "templates", "_shared", "plan.mjs")
+    r = subprocess.run([NODE, "-e", js], capture_output=True, text=True, timeout=60)
+    assert r.returncode == 0 and json.loads(r.stdout) == ["a"], r.stdout + r.stderr
+
+
+def test_mix_failure_has_no_node_stack_trace():
+    """compose.mix(): when audio.py stops (here: no plan file), make.mjs ends with audio.py's own message and exit code, not execFileSync's 'Command failed' and a Node stack"""
+    with tempfile.TemporaryDirectory() as d:
+        js = "import('%s').then((m) => m.mix('%s', '%s', '%s'))" % (COMPOSE, os.path.join(d, "missing-plan.json"), os.path.join(d, "mix.wav"), sys.executable)
+        r = subprocess.run([NODE, "-e", js], capture_output=True, text=True, timeout=120, env=env())
+    assert r.returncode == 1, (r.returncode, r.stderr[-600:])
+    assert "missing-plan.json" in r.stderr and "Command failed" not in r.stderr and "node:child_process" not in r.stderr and "    at " not in r.stderr, r.stderr[-800:]

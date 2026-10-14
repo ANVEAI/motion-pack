@@ -1,7 +1,7 @@
 /* templates/beat-edit/make.mjs: BPM -> beat grid -> cut list -> HyperFrames index.html (+ drum-grid SFX mix from the sfx module).
      node make.mjs [--set bpm=128 --set platform=reels.organic]   then   hyperframes render . -o out/beat-edit.mp4 */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, runPlan, head, esc, write } from '../_shared/compose.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+import { stage, runPlan, head, esc, write, mix } from '../_shared/compose.mjs';
 import { txPlan, span, txCalls } from '../_shared/txplan.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared');
 runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
@@ -11,7 +11,7 @@ for (let i = 2; i < process.argv.length; i++) if (process.argv[i] === '--set') {
 const abs = (p) => (path.isAbsolute(p) ? p : path.resolve(DIR, p));
 const missing = [...new Set(plan.shots.map((s) => abs(s.media)))].filter((p) => !fs.existsSync(p)); if (missing.length) { console.error('clips not found (render the other templates first):\n' + missing.join('\n')); process.exit(2); }
 const st = stage(DIR, { media: [...new Set(plan.shots.map((s) => abs(s.media)))], layers: (C.layers || []).length > 0 });
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 const [W, H] = plan.size, F = plan.fps, T = plan.seconds, f = (x) => (+x).toFixed(4);
 const css = `
 .w { position: absolute; inset: 0; }

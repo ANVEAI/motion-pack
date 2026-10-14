@@ -5,10 +5,10 @@
    brands or wording). Pictures are the pack's own renders (templates/_shared/media, blender/previews). Not a genre template: no config.mjs,
    so tools/count.py does not list it; the CONFIG block below is the editable part.
      node make.mjs     then     npx -y hyperframes@0.8.142 render . -o out/demo-l7.mp4 --crf 23                                                */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, esc, write } from '../_shared/compose.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+import { stage, head, esc, write, mix, lintPlan, lintStop } from '../_shared/compose.mjs';
 import { txPlan, span, txCalls } from '../_shared/txplan.mjs';
-import { sequence, lintClaims, lintTransitions, lintPace, lintFailures } from '../_shared/plan.mjs';
+import { sequence, lintPace } from '../_shared/plan.mjs';
 import { REGISTRY } from '../../transitions/lib/registry.js';
 import { lintType, lintPiece } from '../../type/presets.js';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..');
@@ -47,15 +47,16 @@ for (const w of P.wins) for (const s of REGISTRY[w.key].sfx) {   // the transiti
   const fr = { start: w.startF, cut: w.cutF, end: w.endF, peak: w.cutF }[s.at] + s.offset_f - 1; cues.push({ id: s.id, t: +(fr / F).toFixed(6), gainDb: s.gain_db, why: 'sweetener ' + w.key }); }
 const typeSpecs = shots.filter((s) => s.text).map((s) => ({ preset: s.type.split('/')[1], text: s.text.replace(/<[^>]+>/g, ''), at: s.start + 0.1, out: s.noOut ? null : s.start + s.dur - 0.25 }));
 const plan = { template: 'demo-l7', fps: F, seconds, music: C.music, size: C.size, shots, cues: cues.sort((a, b) => a.t - b.t), claims: [], paceRule: { aslMax: 2.5, longMax: 3.1 } };
-plan.lint = { claimsWithoutSource: lintClaims(plan.claims), unmotivatedTransitions: lintTransitions(shots), pace: lintPace(shots, plan.paceRule),
+plan.lint = { pace: lintPace(shots, plan.paceRule),
   type: Object.fromEntries(typeSpecs.map((t) => [t.text, lintType({ ...t, out: t.out ?? undefined })])), piece: lintPiece([...typeSpecs, { preset: 'trackingCollapse' }, { preset: 'blurIn' }]) };
+const fails = lintPlan(plan);   // lint.proof + lint.tx: the gate cues.mjs runs for the genre templates (compose.mjs)
 fs.mkdirSync(path.join(DIR, 'out'), { recursive: true }); fs.writeFileSync(path.join(DIR, 'out', 'plan.json'), JSON.stringify(plan, null, 1));
 console.log('plan', `${shots.length} shots, ${seconds} s, ${plan.cues.length} cues`, 'lint', JSON.stringify(plan.lint));
-{ const fails = lintFailures(plan.lint); if (fails.length) { console.error(`demo-l7: ${fails.length} lint problem(s)\n  - ${fails.join('\n  - ')}`); if (!(process.argv.includes('--allow-lint') || process.env.MP_ALLOW_LINT === '1')) process.exit(2); plan.lint.allowed = fails; fs.writeFileSync(path.join(DIR, 'out', 'plan.json'), JSON.stringify(plan, null, 1)); } }   // same gate as _shared/cues.mjs
+lintStop(fails, 'demo-l7');
 
 const abs = (p) => path.join(PACK, p), media = [...new Set(shots.filter((s) => s.src).map((s) => abs(s.src)))];
 const st = stage(DIR, { media, layers: true });
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 
 const css = `
 .w { position: absolute; inset: 0; }
