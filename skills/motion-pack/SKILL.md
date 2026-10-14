@@ -133,6 +133,8 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | a comedy beat | `fx.emotion.*` (sweat, vein, heartBurst, question, exclaim, dizzy, sparkle, zzz, bulb), `fx.impact.*` (onomatopoeia, speedLines, dustPoof, star, smear) | one mark per gag |
 | reels furniture | `social.*` (follow, reply bubble, notification, typing, chat), `caption.meme` / `.replyCard` / `.oneWordSlam`, `sticker.place` / `reaction.place` / `reaction.burst` | for real emoji, fetch Fluent Emoji (see Outside assets) |
 | show a product on a device | `device.phone` (taps, scroll), `device.laptop` (cursor path + clicks) | the screen recording goes UNDER the frame |
+| AI at work / product UI without real screens | `ui.agentActivity`, `ui.promptBar`, `ui.checklist`, `ui.nodeGraph`, `ui.scanOverlay`, `ui.isometricTilt`, `ui.stateMorph` (`type/gfx/ui.js`); `uiCues(id, {at, params})` gives one sound per UI action | generic layout, labelled placeholder data; set `scale` 1.3-1.6 on 16:9; demo `templates/demo-ui-kit` |
+| motion that settles like a spring but stays seekable | `springTrack(t, changes, cls)` in `type/ease.js` (same copy in `layers/`, `camera/`): classes `ui`, `panel`, `camera`, `headline`, `mascot` | one class per kind of thing; never a live spring simulation |
 | data | `chart.bar`, `.line`, `.donut`, `.race`, `map.route` | placeholder data is labelled; replace it and cite |
 | two shots at once | `layout.splitScreen` (vertical / horizontal / diagonal / 3up / grid), `.pip`, `.beforeAfter`, `.freezeFrame` | the overlay sits above the shots |
 | draw an icon or logo outline on | `type/gfx/drawon.js` (`drawOnAt`, `trimAt`) | run SVGs through the motion-stack SVGO config first |

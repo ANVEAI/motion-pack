@@ -18,6 +18,8 @@ A plan is a single JSON file, `out/plan.json`, containing shots, transitions wit
 |---|---|---|---|
 | L7 metaphor manifesto, 14.8 s 16:9: uses `look.duotone`, `look.threshold1bit`, `background.gridTunnel`, `background.dotGrid`, `type/outlineFill`, `transitions/ditherDissolve` on original, neutral copy and the pack's own renders | `demo-l7/` | `node make.mjs` then `npx -y hyperframes@0.8.142 render . -o out/demo-l7.mp4 --crf 23` | `out/demo-l7.mp4` -14.1 LUFS / -1.3 dBTP (WAV master -2.3), 3.7 MB, sheet `out/sheet.jpg` |
 
+**Demos (not genre templates; no `config.mjs`, so `tools/count.py` does not count them):** `demo-ui-kit/` cuts the seven `ui.*` parts of `type/gfx/ui.js` into a 17 s 16:9 film for a fictional product (Acme): `node make.mjs`, then `npx -y hyperframes@0.8.142 render . -o out/demo-ui-kit.mp4 --crf 23`. Hard cuts on a 120 BPM beat grid, `music/bed_tech_pulse_loop8`, one sound per UI action from `uiCues`. Measured from the delivered file (2026-10-14): -14.1 LUFS-I, -1.5 dBTP, 1.8 MB, CRF 23; plan ceilingDb -2.5 so HyperFrames does not lower the track. The MP4 is gitignored; `out/plan.json` and `out/sheet.jpg` are committed.
+
 Run the three.js templates before `beat-edit` and `talking-head`, because those two use the 3D renders as their footage.
 
 ## How a template wires the other modules (by id only, never copied)

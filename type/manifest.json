@@ -3784,6 +3784,527 @@
     "three-overlay"
    ],
    "test": "type/tests/type.test.mjs"
+  },
+  {
+   "id": "ui.agentActivity",
+   "file": "type/gfx/ui.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 4.4,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.08,
+     0.2,
+     0.4,
+     0.6
+    ],
+    "steps": [
+     {
+      "verb": "Checking",
+      "obj": "Inbox"
+     },
+     {
+      "verb": "Reading",
+      "obj": "Supplier notes"
+     },
+     {
+      "verb": "Comparing",
+      "obj": "Prices"
+     },
+     {
+      "verb": "Writing",
+      "obj": "Follow-up"
+     },
+     {
+      "verb": "Planning",
+      "obj": "Schedule"
+     }
+    ],
+    "start": 0.35,
+    "step": 0.6,
+    "rowH": 66,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "card": null,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "agent",
+    "ai-at-work",
+    "list",
+    "product-film"
+   ],
+   "doc": "vertical list of agent steps (verb + object chip) scrolling up on the panel spring; active row full opacity with a spinner, others faded by distance; optional dark map card (dot-grid land, pulsing points, count-up counters, source line)",
+   "hero_s": 1.75,
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.promptBar",
+   "file": "type/gfx/ui.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3.2,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.2,
+     0.45,
+     0.6,
+     0.11
+    ],
+    "text": "Plan next week's restock",
+    "placeholder": "Ask Acme anything…",
+    "typeAt": 0.45,
+    "cps": 22,
+    "sendAt": null,
+    "title": "What should we work on?",
+    "chip": "Suggested: restock plan",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "cursor": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "prompt",
+    "chat",
+    "input",
+    "cursor",
+    "click"
+   ],
+   "doc": "chat input: text typed with a caret (tspan, so it sits exactly after the glyphs), cursor glides to send on the panel spring and clicks (press on the ui spring + ripple), send turns into a spinner; optional title and suggestion chip",
+   "hero_s": 1.95,
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.checklist",
+   "file": "type/gfx/ui.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3.8,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.3,
+     0.24,
+     0.4,
+     0.52
+    ],
+    "title": "Acme is working",
+    "steps": [
+     "Building…",
+     "Connecting to database",
+     "Syncing assets",
+     "Preparing preview"
+    ],
+    "start": 0.35,
+    "step": 0.62,
+    "progress": true,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "card": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "checklist",
+    "progress",
+    "ai-at-work",
+    "building"
+   ],
+   "doc": "steps tick one by one (spinner -> check badge on the headline spring) over a progress bar that steps on the panel spring; header spinner turns into a check when all are done",
+   "hero_s": 1.75,
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.nodeGraph",
+   "file": "type/gfx/ui.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 4.2,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "start": 0.3,
+    "stagger": 0.6,
+    "cam": true,
+    "zoom": 1.3,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "nodes": [
+     {
+      "id": "t",
+      "kind": "trigger",
+      "title": "Every morning",
+      "sub": "Scheduled run",
+      "x": 0,
+      "y": 0
+     },
+     {
+      "id": "a",
+      "kind": "action",
+      "title": "Read new orders",
+      "sub": "From the shop inbox",
+      "x": 0,
+      "y": 210
+     },
+     {
+      "id": "c",
+      "kind": "condition",
+      "title": "Stock running low?",
+      "sub": "Checked per item",
+      "x": 0,
+      "y": 420
+     },
+     {
+      "id": "y",
+      "kind": "action",
+      "title": "Draft a reorder",
+      "sub": "Sent for approval",
+      "x": -290,
+      "y": 660
+     },
+     {
+      "id": "n",
+      "kind": "action",
+      "title": "Log and wait",
+      "sub": "Check again tomorrow",
+      "x": 290,
+      "y": 660
+     }
+    ],
+    "edges": [
+     {
+      "from": "t",
+      "to": "a"
+     },
+     {
+      "from": "a",
+      "to": "c"
+     },
+     {
+      "from": "c",
+      "to": "y",
+      "label": "Yes"
+     },
+     {
+      "from": "c",
+      "to": "n",
+      "label": "No"
+     }
+    ],
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "workflow",
+    "node-graph",
+    "automation",
+    "diagram"
+   ],
+   "doc": "trigger / action / condition cards, elbow connectors that draw on, Yes/No branch labels; the camera glides along the nodes (camera spring, clamped to the graph bounds); nodeGraphCam() gives the same pan as a cam2d state for a DOM wrapper",
+   "hero_s": 2.9,
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.scanOverlay",
+   "file": "type/gfx/ui.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/camera_ping",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3.2,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.38,
+     0.2,
+     0.24,
+     0.56
+    ],
+    "from": [
+     0.12,
+     0.08,
+     0.76,
+     0.84
+    ],
+    "mask": null,
+    "lockAt": 0.1,
+    "sweepAt": 0.55,
+    "sweepDur": 1.1,
+    "color": "#2FD47A",
+    "bracket": "#FFFFFF",
+    "label": "Scanning…",
+    "done": "Done",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "status": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "scan",
+    "brackets",
+    "segmentation",
+    "ai-at-work",
+    "status"
+   ],
+   "doc": "corner brackets lock from a loose rect onto the subject box (ui spring), a coloured sweep fills a supplied mask path (box-local 0..1) or a rounded-rect fallback, with a scan line; status pill Scanning… -> Done",
+   "hero_s": 1.1,
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.isometricTilt",
+   "file": "type/gfx/ui.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_xs",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 3.4,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.3,
+     0.22,
+     0.4,
+     0.56
+    ],
+    "inner": null,
+    "tiltAt": 0.35,
+    "backAt": 2.4,
+    "angle": 45,
+    "squash": 0.57735,
+    "lift": 46,
+    "shrink": 0.86,
+    "shadow": true,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "isometric",
+    "tilt",
+    "perspective",
+    "panel",
+    "camera"
+   ],
+   "doc": "a flat panel (default mock dashboard, or any gfx id via inner) tilts into an isometric plane (rotate + squash, affine) and back on the panel spring, lifted over a blurred floor shadow; isoTiltCss() gives a true-perspective CSS transform for DOM panels",
+   "hero_s": 1.4,
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.stateMorph",
+   "file": "type/gfx/ui.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 8.6,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "center": [
+     0.5,
+     0.5
+    ],
+    "states": [
+     {
+      "at": 0,
+      "kind": "pill",
+      "w": 250,
+      "h": 84,
+      "r": 42,
+      "fill": "#16151B",
+      "label": "Acme"
+     },
+     {
+      "at": 0.7,
+      "kind": "button",
+      "w": 360,
+      "h": 96,
+      "r": 48,
+      "fill": "#4A18ED",
+      "label": "Get started"
+     },
+     {
+      "at": 1.6,
+      "kind": "input",
+      "w": 640,
+      "h": 104,
+      "r": 22,
+      "fill": "#FFFFFF",
+      "label": "you@acme.example",
+      "placeholder": "Email"
+     },
+     {
+      "at": 2.95,
+      "kind": "loader",
+      "w": 128,
+      "h": 128,
+      "r": 64,
+      "fill": "#4A18ED"
+     },
+     {
+      "at": 3.75,
+      "kind": "check",
+      "w": 128,
+      "h": 128,
+      "r": 64,
+      "fill": "#17A865"
+     },
+     {
+      "at": 4.45,
+      "kind": "card",
+      "w": 620,
+      "h": 360,
+      "r": 30,
+      "fill": "#FFFFFF",
+      "label": "This week"
+     },
+     {
+      "at": 5.5,
+      "kind": "chart",
+      "w": 760,
+      "h": 430,
+      "r": 30,
+      "fill": "#FFFFFF",
+      "label": "Orders (illustrative)",
+      "series": [
+       0.2,
+       0.28,
+       0.24,
+       0.42,
+       0.38,
+       0.6,
+       0.72,
+       0.9
+      ]
+     },
+     {
+      "at": 6.9,
+      "kind": "toast",
+      "w": 600,
+      "h": 104,
+      "r": 52,
+      "fill": "#16151B",
+      "label": "Order sent to supplier"
+     },
+     {
+      "at": 8,
+      "kind": "pill",
+      "w": 250,
+      "h": 84,
+      "r": 42,
+      "fill": "#16151B",
+      "label": "Acme"
+     }
+    ],
+    "path": [
+     {
+      "at": 0.25,
+      "x": 0.66,
+      "y": 0.78
+     },
+     {
+      "at": 1.5,
+      "x": 0.52,
+      "y": 0.51,
+      "click": true
+     },
+     {
+      "at": 2.85,
+      "x": 0.645,
+      "y": 0.515,
+      "click": true
+     },
+     {
+      "at": 5.35,
+      "x": 0.56,
+      "y": 0.47,
+      "click": true
+     },
+     {
+      "at": 6.2,
+      "x": 0.74,
+      "y": 0.86
+     }
+    ],
+    "cls": "panel",
+    "loop": false,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "cursor": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "morph",
+    "state",
+    "container",
+    "cursor",
+    "loop",
+    "product-film"
+   ],
+   "doc": "ONE container morphs size, radius and colour (springTrack per property) through a list of states (pill, button, input, loader, check, card, chart, toast), driven by a cursor path with real clicks; loop: true + last state = first gives a seamless loop",
+   "hero_s": 6.1,
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
+  },
+  {
+   "id": "ease.springTrack",
+   "file": "type/ease.js",
+   "kind": "engine",
+   "doc": "closed-form stacked springs: springTrack(t, changes, cls) = v0 + sum (v_i - v_i-1) * spring(t - t_i); classes ui (1.1% overshoot, settles 0.31 s to 1%), panel (0.15%, 0.60 s), camera (critically damped, 1.17 s), headline (9.5%, 0.32 s), mascot (31%, 0.97 s) or {zeta, f}; numbers or arrays; identical copy in layers/ and camera/",
+   "tags": [
+    "easing",
+    "spring",
+    "motion-class",
+    "seek-safe"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/ui.test.mjs"
   }
  ]
 }

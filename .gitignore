@@ -53,3 +53,6 @@ __pycache__/
 .pytest_cache/
 _site/
 .DS_Store
+
+# --- demo-ui-kit: the rendered MP4 stays out of git (plan.json + sheet.jpg are committed) ---
+templates/demo-ui-kit/out/*.mp4
