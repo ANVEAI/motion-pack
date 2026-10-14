@@ -50,6 +50,8 @@ jobs:
         run: node type/tests/r45type.test.mjs
       - name: round-4/5 layers (Canvas2D on a recording context, node, no browser)
         run: node layers/tests/r45.test.mjs
+      - name: proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)
+        run: node templates/proof-film/proof-film.test.mjs
       - name: physics table player (the baked table is committed; no npm install)
         run: node physics/tests/test-player.mjs
       - name: blender scripts compile (no Blender on CI; renders are tested locally with blender/tests/smoke.sh)

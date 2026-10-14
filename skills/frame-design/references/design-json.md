@@ -57,6 +57,9 @@ One JSON object per video. motion-pack reads it when it fills a template's `CONF
 | `layers` | ad, talking-head, beat-edit | `look.grain`, `look.vignette` | `[{ kind: 'vignette', params: {} }, { kind: 'grain', params: { stock: 'digital-soft' } }]` |
 | `layers` (string ids), `stage.grade.vignette` | film-scene | `look.grain`, `look.vignette` | `['layers/grain', 'layers/vignette']`, `0.12` |
 | `platform` | ad, talking-head, beat-edit | `safe.platform` | `'yt.ad.15'` |
+| `brand.accent`, `brand.ink`, `brand.paper`, `brand.muted` | proof-film | `palette.accent`, `palette.ink`, `palette.paper`, `palette.muted` | `'#4a18ed'`, `'#16151B'`, `'#F4F2EE'`, `'#5D5A66'` |
+| `claim` (one `*accent*` word, at most 6 words), `end.line`, `brand.url` | proof-film | `frames.cover.words` (the claim), `frames.end_card.line`, `frames.end_card.fine_print` | `'Better answers, *lower* cost.'` |
+| `layers` | proof-film | `look.grain` | `[{ kind: 'grain', params: { stock: 'digital-soft' } }]` |
 | `captions.accent`, `captions.y`, `captions.maxWords`, `captions.maxChars` | talking-head | `palette.accent`, caption rules in `type` | `'#C2410C'`, `0.56`, `3`, `15` |
 | `lowerThird.name`, `lowerThird.title`, `type.lowerThird` | talking-head | `frames.lower_third`, `motion.type_presets.sub` | |
 | `type.word`, `type.title` | beat-edit | `motion.type_presets.headline`, `.card` | `'type/scaleSlam'`, `'type/maskRise'` |

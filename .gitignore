@@ -76,3 +76,9 @@ type/demo/out/matte-tmp-*/
 
 # --- multi-voice-doc: the placeholder demo MP4 stays out of git (plan.json, transcript.json and sheet.jpg are committed; vo.wav is covered by templates/.gitignore) ---
 templates/multi-voice-doc/out/*.mp4
+
+# --- proof-film: the rendered MP4s (16:9 and 9:16) stay out of git (plan.json, plan-tall.json and the sheets are committed) ---
+templates/proof-film/out/*.mp4
+templates/proof-film/out/ears*.md
+templates/proof-film/out/transcript.json
+templates/proof-film/tall/assets/

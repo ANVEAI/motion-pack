@@ -5,7 +5,7 @@ All paths are relative to the repository root. Each module README holds the full
 ## Templates (start here)
 
 ```bash
-cd templates/<ad|beat-edit|talking-head|multi-voice-doc>  && node make.mjs [--set key=value ...]   # plan.json + mix.wav + index.html (+ out/tx.json windows)
+cd templates/<ad|beat-edit|talking-head|multi-voice-doc|proof-film>  && node make.mjs [--set key=value ...]   # plan.json + mix.wav + index.html (+ out/tx.json windows)
 npx --yes hyperframes@0.8.142 render . -o out/<name>.mp4 --crf 23
 bash templates/_shared/render3d.sh templates/<film-scene|character-spot> scene.html <wide|tall> [crf]   # three.js: plan, GPU render, mix, mux, sheet
 node templates/_shared/cues.mjs <dir> [--set k=v]       # export the plan only (no browser)
@@ -18,6 +18,10 @@ python3 templates/_shared/sheet.py <mp4> <sheet.jpg> t1,t2,...       # contact s
   - `beatGrid(bpm, fps, seconds)`: BPM snapped to whole frames per beat.
   - `sequence` (frame-exact) and `TX_SFX`.
   - `chunkCaptions`, `autocut`, `remap`.
+- **`templates/proof-film`** (the proof film, 16:9 + 9:16): `node make.mjs [--set format=tall] [--set builder.kind=scatter|trace|table] [--set vo.words=/abs/words.json]` (`trace` is landscape-only: the gate refuses it with `format=tall`); the 9:16 page is its own HyperFrames project, `tall/index.html`: `(cd tall && hyperframes render . -o ../out/proof-film-tall.mp4)`.
+  - `honesty.mjs` (pure): `problems(CONFIG, { voWords })` -> messages that name the field, `assertHonest` (throws `HonestyError`), `numberFields`, `claimWords`, `numberIn(text)` (a digit in any script, a currency or percent sign, or a number word: the gate's idea of "a number in prose"), `weak('source'|'method', text)` (filler, too short); `config.mjs gateProblems(CONFIG)` adds the VO transcript; make.mjs exits 2 and `cues.mjs` fails on any of them.
+  - `panels.mjs` (pure, node + browser): `stage(plan, st, t)` draws one cell, `cameraFor(plan)` -> `{ pan, zoom }` (two nested cam2d state functions), `mapCell`, `safeInset(zone, W, H, push)`; `config.mjs` `buildPlan(CONFIG)` -> `plan.stages`, `plan.camera`, `plan.honesty`, `plan.audio` (`quiet` open + hold, `events`, `role` proof).
+  - plan cue `overVoDb` (negative dB, read by `templates/_shared/audio.py`) puts a cue relative to the VOICE; without it a cue sits over the un-ducked bed. Plan cue `overBedDb` (dB, negative = under the bed) sets a LOOP cue's level against the un-dipped bed (the mixer's loop default is -10 dB): the proof film's `sfx/amb/room_tone` under the quiet hold sits at -26.
 - **`templates/_shared/txplan.mjs`**:
   - `txPlan(shots, fps, {bpm})` gives `{wins, todo}`.
   - `span(P, {sel, start, dur, mediaStart})` stretches clips around each window.
