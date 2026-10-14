@@ -89,7 +89,7 @@ The skills pair well with [charlie947/social-media-skills](https://github.com/ch
 | `type/` | 217 kinetic-type presets, caption styles, icons, editor graphics and stickers | `type/README.md` |
 | `camera/` | 49 2D and 3D camera moves | `camera/README.md` |
 | `objects/` | 30 three.js props, set pieces and one rigged character | `objects/README.md` |
-| `templates/` | 10 genre templates: ad, beat-edit, character-spot, demo-r3-type, demo-r45-type, demo-type-layout, film-scene, multi-voice-doc, proof-film, talking-head | `templates/README.md` |
+| `templates/` | 11 genre templates: ad, beat-edit, character-spot, demo-r3-type, demo-r45-type, demo-r6-type, demo-type-layout, film-scene, multi-voice-doc, proof-film, talking-head | `templates/README.md` |
 | `blender/` | 12 Blender recipes for photoreal plates (9 product and scene plates, 3 seamless art loops), 4 device presets, 8 showcase previews | `blender/README.md` |
 | `physics/` | build-time rigid-body baking (Rapier) with a dependency-free table player; 2 example specs, 1 baked table | `physics/README.md` |
 | `terminal/` | 5 baked flock looks (cbirds, fetched and built at a pinned commit): flock, braille, a word the flock writes, 3D murmuration, code that flies | `terminal/README.md` |
