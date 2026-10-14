@@ -2504,7 +2504,7 @@
     "intensity": 1,
     "seed": 3
    },
-   "doc": "n dots + thumbs (<= 48) media tiles in `clusters` seeded gaussian clusters (spread), radius = cloud radius (fraction of H), spin turns/s (or loop: L s per exact turn), tilt rad, fov camera distance in radii; query chip text flies in at queryAt, the k nearest neighbours (precomputed) lift by `lift` toward the camera with lines; collapseAt: every point lands on the outline of `mark` (an SVG path d in a 100 box, e.g. your icon or logo; null = the pack placeholder mark; markSize = its height as a fraction of H); images: optional thumbnail sources",
+   "doc": "n dots + thumbs (<= 48) media tiles in `clusters` seeded gaussian clusters (spread), radius = cloud radius (fraction of H), spin turns/s (or loop: L s per exact turn), tilt rad, fov camera distance in radii; query chip text flies in at queryAt, the k nearest neighbours (precomputed) lift by `lift` toward the camera with lines; collapseAt: every point lands on the outline of `mark` (an SVG path d in a 100 box, e.g. your icon or logo; null = the pack placeholder mark; markSize = its height as a fraction of H); images: optional thumbnail sources (URLs / data URLs, or decoded images; each point always shows the same one). Await stack.ready() before the first frame, like fonts: until a source is decoded its tile is a placeholder, after that every frame draws the image",
    "demo": "layers/demo/out/r45-sheet.png",
    "test": "layers/tests/r45.test.mjs"
   },
@@ -2555,11 +2555,15 @@
     "width": 2.2,
     "glow": 10,
     "readout": true,
+    "readoutAt": [
+     0.5,
+     0.93
+    ],
     "readColor": "#CFEFFF",
-    "source": "computed from the path drawn here",
+    "source": "mean distance of the drawn curve from the input path",
     "intensity": 1
    },
-   "doc": "path = an SVG d string, a preset (wave, arc, swoop, loop, spiral, bird) or [[x, y], ...] in pathBox px; closed auto (default: closed when the path ends in z or returns to its start) | true = a closed outline | false = an open path traced there and back (a Fourier series is periodic); samples = DFT size, even (resampled by arc length; sharp corners round off by under 1 px at 1024); terms N (or steps [[t, N | \"full\"], ...]: each step re-traces at higher fidelity); period = s per trace; loop (single step: exact repeat every period); trail = fraction of the figure kept behind the tip (1 = all); circles / arms / inset [x, y, w, h] fractions + insetZoom; readout prints N, the mean error at the sampled points and a `source` note",
+   "doc": "path = an SVG d string, a preset (wave, arc, swoop, loop, spiral, bird) or [[x, y], ...] in pathBox px; closed auto (default: closed when the path ends in z or returns to its start) | true = a closed outline | false = an open path traced there and back (a Fourier series is periodic); samples = DFT size, even (resampled by arc length; sharp corners round off by under 1 px at 1024); terms N (or steps [[t, N | \"full\"], ...]: each step re-traces at higher fidelity); period = s per trace; loop (single step: exact repeat every period); trail = fraction of the figure kept behind the tip (1 = all); circles / arms / inset [x, y, w, h] fractions + insetZoom; readout prints N, the mean distance of the drawn curve from the INPUT path (every segment of it, not only the samples; N = full is under 0.05%, not exactly 0) and the `source` note under it, always (an empty `source` falls back to the default note; readout: false hides the numbers), type from the shorter frame side, at readoutAt [x, y] (move it up inside a 9:16 safe zone)",
    "demo": "layers/demo/out/r45-sheet.png",
    "test": "layers/tests/r45.test.mjs"
   },
@@ -2621,7 +2625,7 @@
     "intensity": 1,
     "seed": 6
    },
-   "doc": "radius = hex circumradius px @1080, gap px; faces = sequence of tile faces (color | engrave | image) a wave flips each tile to the next; waves [{ at, from: [x, y] fractions, speed px/s @1080 }]; flip = s per tile flip; loop L: one wave every L / faces from loopFrom, exact repeat; images: sources for image faces (clip-path); panel { rect: [x, y, w, h] fractions, color, radius } floats above",
+   "doc": "radius = hex circumradius px @1080, gap px; faces = sequence of tile faces (color | engrave | image) a wave flips each tile to the next; waves [{ at, from: [x, y] fractions, speed px/s @1080 }]; flip = s per tile flip; loop L: one wave every L / faces from loopFrom, exact repeat (the panel bob then makes a whole number of 4 s swings per loop, so the seam holds with a panel too); images: sources for image faces (clip-path); panel { rect: [x, y, w, h] fractions, color, radius } floats above. Image faces are preloaded like embeddingCloud images (await stack.ready()); the lattice is offset rows of pointy-top hexes (the same geometry as axial coordinates)",
    "demo": "layers/demo/out/r45-sheet.png",
    "test": "layers/tests/r45.test.mjs"
   },

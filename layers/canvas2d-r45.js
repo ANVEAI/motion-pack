@@ -10,7 +10,8 @@
                      panel can float above. loop: L repeats the waves exactly every L s (a brand-texture background).
      convergeToDot   a flat paper-style network (hollow nodes, small dots, thin lines) that contracts into one solid dot ("many -> one"), or blooms from it
                      (reverse). Lines are recomputed from the node positions every frame (stateless). Pair with overlay `paper` for grain.
-   embeddingState / epicycleState / hexState / convergeState expose the maths (tests, and DOM elements that must follow a point). */
+   embeddingState / epicycleState / hexState / convergeState expose the maths (tests, and DOM elements that must follow a point).
+   Images (embeddingCloud, hexMosaic): loaded once per source and shared; preloadImages(srcs) / mountStack(...).ready() resolve when they are decoded (await before the first frame). */
 import { E, clamp, lerp, seg, TAU } from './ease.js';
 import { flattenPath, arcTable, resample, PATHS } from '../type/gfx/pathsample.js';
 import { DEFAULT_MARK } from '../type/gfx/media.js';
@@ -22,7 +23,19 @@ const mixC = (a, b, k) => a.map((v, i) => Math.round(lerp(v, b[i], clamp(k))));
 const gauss = (a, b) => Math.sqrt(-2 * Math.log(Math.max(1e-9, a))) * Math.cos(TAU * b);
 const MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace", SANS = "Manrope, 'Helvetica Neue', Arial, sans-serif";
 const textW = (g, s, px) => { const m = typeof g.measureText === 'function' ? g.measureText(s) : null; return m && m.width > 0 ? m.width : s.length * px * 0.56; };
-const imgOf = (src) => { if (!src) return null; if (typeof src === 'object' && (src.naturalWidth || src.width)) return src; if (typeof Image === 'undefined') return null; const im = new Image(); im.src = src; return im.complete && im.naturalWidth ? im : null; };
+/* images: ONE load per source, shared by every frame, so a frame is a pure function of t once preloadImages() has resolved (await it, or stack.ready(), before the first
+   frame, as with fonts). A string source loads through new Image() exactly once; an object (ImageBitmap, canvas, a loaded <img>) passes through. Until a source is decoded, or if it
+   failed, its placeholder is drawn (never a half state), and a failed source stays a placeholder for good. */
+const imgCache = new Map();
+function loadImg(src) {
+  let e = imgCache.get(src); if (e) return e; e = { im: null, ok: false }; imgCache.set(src, e);
+  if (typeof Image === 'undefined') { e.p = Promise.resolve(e); return e; }
+  const im = new Image(), fin = (ok) => { e.ok = ok && im.naturalWidth > 0; return e; }; e.im = im;
+  e.p = new Promise((res) => { im.onload = () => (im.decode ? im.decode().then(() => res(fin(true)), () => res(fin(true))) : res(fin(true))); im.onerror = () => res(fin(false)); }); im.src = src; return e;
+}
+const imgOf = (src) => { if (!src) return null; if (typeof src === 'object') return src.naturalWidth || src.width ? src : null; const e = loadImg(src); return e.ok ? e.im : null; };
+/* resolves when every string source is decoded (or failed); layers call it from setParams, mountStack(...).ready() waits for all of them */
+export const preloadImages = (srcs = []) => Promise.all([...new Set((srcs || []).filter((x) => typeof x === 'string'))].map((x) => loadImg(x).p));
 /* loop phase: frame-exact so t and t + L give the same bits */
 const loopPhase = (t, L, fps = 30) => { const F = Math.round(L * fps), f = Math.round(t * fps); return (((f % F) + F) % F) / F; };
 const THUMB_PAL = [['#F7D9B5', '#FF7A3D', '#3E7C59'], ['#CFE6FF', '#FFD23A', '#2B4BA8'], ['#FFE3EC', '#FF4F7B', '#5B2EA6'], ['#E8F5E1', '#2BD9A0', '#2F6B3E'], ['#FFF1C9', '#FF9F1C', '#7A2E1E'], ['#DFF6F4', '#00B3A4', '#1F3A93']];
@@ -33,7 +46,7 @@ export function cloudPlan(p, W, H) {
   const key = JSON.stringify([p.n, p.clusters, p.spread, p.thumbs, p.seed, p.queryCluster, p.k, p.to, p.markSize, p.mark, p.center, W, H]); if (cloudPlans.has(key)) return cloudPlans.get(key);
   const nT = Math.min(48, Math.max(0, Math.round(p.thumbs))), n = Math.max(1, Math.round(p.n)) + nT, C = Math.max(1, Math.round(p.clusters)), s = p.seed;
   const cen = Array.from({ length: C }, (_, j) => { const a = TAU * hashf(s, j, 1), b = Math.acos(2 * hashf(s, j, 2) - 1), r = 0.62 * Math.cbrt(0.35 + 0.65 * hashf(s, j, 3)); return [r * Math.sin(b) * Math.cos(a), r * Math.cos(b) * 0.8, r * Math.sin(b) * Math.sin(a)]; });
-  const pts = Array.from({ length: n }, (_, i) => { const j = i % C, o = [0, 1, 2].map((d) => gauss(hashf(s, i, 10 + d), hashf(s, i, 20 + d)) * p.spread); return { pos: cen[j].map((v, d) => v + o[d]), cl: j, thumb: i >= n - nT, pal: Math.floor(hashf(s, i, 30) * THUMB_PAL.length) }; });
+  const pts = Array.from({ length: n }, (_, i) => { const j = i % C, o = [0, 1, 2].map((d) => gauss(hashf(s, i, 10 + d), hashf(s, i, 20 + d)) * p.spread); return { pos: cen[j].map((v, d) => v + o[d]), cl: j, thumb: i >= n - nT, ti: i - (n - nT), pal: Math.floor(hashf(s, i, 30) * THUMB_PAL.length) }; });
   const qc = cen[(p.queryCluster ?? 0) % C], q = qc.map((v, d) => v + 0.4 * p.spread * gauss(hashf(s, 99, d), hashf(s, 98, d)));
   const order = pts.map((pt, i) => [Math.hypot(pt.pos[0] - q[0], pt.pos[1] - q[1], pt.pos[2] - q[2]), i]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
   const nn = order.slice(0, Math.max(1, Math.round(p.k))).map(([, i]) => i), rank = new Map(nn.map((i, r) => [i, r]));
@@ -50,14 +63,14 @@ export function embeddingState(t, pIn, { W = 1920, H = 1080 } = {}) {
   const pts = P.pts.map((pt, i) => { const nb = P.rank.has(i) ? P.rank.get(i) : -1, lit = nb >= 0 ? kl * clamp(1.4 - nb * 0.06) : 0, q = proj(pt.pos, nb >= 0 ? p.lift * kl : 0);
     const kc = p.collapseAt == null ? 0 : E.cam(seg(t, p.collapseAt + 0.35 * hashf(p.seed, i, 40), p.collapseAt + 0.35 * hashf(p.seed, i, 40) + p.collapse)), [tx, ty] = P.tgt[i];
     const base = (pt.thumb ? p.thumbSize : p.dot) * S * q.k * (1 + 0.6 * lit), r = lerp(base, p.dot * S * 1.1, pt.thumb ? kc : kc * 0.5), a = clamp(0.35 + 0.65 * (q.z + 1) / 2) * (1 - 0.6 * kq * (nb < 0 ? 1 : 0)) + lit * 0.5;
-    return { x: lerp(q.x, tx, kc), y: lerp(q.y, ty, kc), z: q.z, r, a: clamp(lerp(a, 1, kc)), thumb: pt.thumb, pal: pt.pal, nb, lit, kc }; });
+    return { x: lerp(q.x, tx, kc), y: lerp(q.y, ty, kc), z: q.z, r, a: clamp(lerp(a, 1, kc)), thumb: pt.thumb, ti: pt.ti, pal: pt.pal, nb, lit, kc }; });
   const qp = proj(P.q), chip = { x: lerp(cx, qp.x, kq), y: lerp(-0.1 * H, qp.y - 70 * S, kq), k: kq, tx: qp.x, ty: qp.y };
   return { pts, chip, kq, kl };
 }
 
 /* ---------------- epicycleDraw ---------------- */
 const dftCache = new Map(), curveCache = new Map();
-/* the DFT of the path: { coef: [{ k, re, im, amp }] sorted by amplitude (k = 0 first), M, pts (px, resampled input), size } */
+/* the DFT of the path: { coef: [{ k, re, im, amp }] sorted by amplitude (k = 0 first), M, pts (px, resampled input), ref (px, the input path as drawn), size } */
 export function epicycleDFT(p, W, H) {
   const d = Array.isArray(p.path) ? null : PATHS[p.path] || p.path, key = JSON.stringify([d || p.path, p.samples, p.pathBox, p.closed, p.scale, p.center, W, H]); if (dftCache.has(key)) return dftCache.get(key);
   const [bw, bh] = p.pathBox, s = Math.min(W / bw, H / bh) * p.scale, ox = p.center[0] * W - (bw * s) / 2, oy = p.center[1] * H - (bh * s) / 2;
@@ -68,16 +81,20 @@ export function epicycleDFT(p, W, H) {
   const coef = []; for (let k = -Math.floor(M / 2); k < Math.ceil(M / 2); k++) { let re = 0, im = 0; for (let n = 0; n < M; n++) { const a = (-TAU * k * n) / M, c = Math.cos(a), sn = Math.sin(a); re += pts[n][0] * c - pts[n][1] * sn; im += pts[n][0] * sn + pts[n][1] * c; } coef.push({ k, re: re / M, im: im / M, amp: Math.hypot(re, im) / M }); }
   coef.sort((a, b) => (a.k === 0 ? -1 : b.k === 0 ? 1 : b.amp - a.amp || a.k - b.k));
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity; for (const [x, y] of pts) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
-  const out = { coef, M, pts, closed, size: Math.hypot(x1 - x0, y1 - y0), key }; dftCache.set(key, out); return out;
+  const ref = closed && Math.hypot(raw[0][0] - raw.at(-1)[0], raw[0][1] - raw.at(-1)[1]) > 1e-9 ? [...raw, raw[0]] : raw;   /* the input path itself (px), what the error is measured against */
+  const out = { coef, M, pts, ref, closed, size: Math.hypot(x1 - x0, y1 - y0), key }; dftCache.set(key, out); return out;
 }
 /* tip of the first N terms at phase phi (0..1, one trace) */
 export function epicycleTip(D, N, phi) { let x = 0, y = 0; for (let j = 0; j < Math.min(N, D.coef.length); j++) { const c = D.coef[j], a = TAU * c.k * phi, cs = Math.cos(a), sn = Math.sin(a); x += c.re * cs - c.im * sn; y += c.re * sn + c.im * cs; } return [x, y]; }
-/* the analytic curve for N terms, sampled once at R phases (+ its mean error against the input path, % of the figure's diagonal) */
+/* the analytic curve for N terms, sampled once at R phases (+ its mean distance from the INPUT PATH (every segment of it, not just the DFT's samples), % of the figure's diagonal) */
+const segDist = (x, y, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy || 1, k = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / l2)); return Math.hypot(x - a[0] - k * dx, y - a[1] - k * dy); };
 export function epicycleCurve(D, N, R = 1440) {
   const key = D.key + '|' + N + '|' + R; if (curveCache.has(key)) return curveCache.get(key);
-  const pts = Array.from({ length: R + 1 }, (_, i) => epicycleTip(D, N, i / R)); let e = 0; for (let n = 0; n < D.M; n++) { const q = epicycleTip(D, N, n / D.M); e += Math.hypot(q[0] - D.pts[n][0], q[1] - D.pts[n][1]); }
-  const out = { pts, R, err: (100 * e) / D.M / Math.max(1, D.size) }; curveCache.set(key, out); return out;
+  const pts = Array.from({ length: R + 1 }, (_, i) => epicycleTip(D, N, i / R)); let e = 0; for (let i = 0; i < R; i++) { const [x, y] = pts[i]; let m = Infinity; for (let j = 0; j < D.ref.length - 1; j++) m = Math.min(m, segDist(x, y, D.ref[j], D.ref[j + 1])); e += m; }
+  const out = { pts, R, err: (100 * e) / R / Math.max(1, D.size) }; curveCache.set(key, out); return out;
 }
+/* the error as printed: two decimals, or '<0.01' once it is below what two decimals can show (never a bare 0.00) */
+export const errText = (e) => (e < 0.01 ? '<0.01' : e.toFixed(2));
 const termsOf = (v, D) => (v === 'full' ? D.coef.length : Math.max(1, Math.min(D.coef.length, Math.round(v))));
 /* state at t: { N, phi, step, tip: [x, y], progressive } */
 export function epicycleState(t, pIn, { W = 1920, H = 1080 } = {}) {
@@ -140,7 +157,8 @@ export const K2D_R45 = {
     d: { n: 260, clusters: 6, spread: 0.13, thumbs: 22, thumbSize: 34, dot: 2.8, radius: 0.55, center: [0.5, 0.52], spin: 0.03, loop: 0, fps: 30, tilt: 0.28, fov: 2.6, color: '#9FE3B4', accent: '#FFE07A',
       query: 'a dog on the beach', queryAt: 1.0, queryDur: 0.7, liftDur: 0.6, k: 6, lift: 0.45, queryCluster: 0, lines: true, chipBg: 'rgba(14,20,16,0.82)', chipInk: '#FFFFFF',
       collapseAt: null, collapse: 0.9, markSize: 0.34, mark: null, images: [], intensity: 1, seed: 3 },
-    doc: 'n dots + thumbs (<= 48) media tiles in `clusters` seeded gaussian clusters (spread), radius = cloud radius (fraction of H), spin turns/s (or loop: L s per exact turn), tilt rad, fov camera distance in radii; query chip text flies in at queryAt, the k nearest neighbours (precomputed) lift by `lift` toward the camera with lines; collapseAt: every point lands on the outline of `mark` (an SVG path d in a 100 box, e.g. your icon or logo; null = the pack placeholder mark; markSize = its height as a fraction of H); images: optional thumbnail sources',
+    doc: 'n dots + thumbs (<= 48) media tiles in `clusters` seeded gaussian clusters (spread), radius = cloud radius (fraction of H), spin turns/s (or loop: L s per exact turn), tilt rad, fov camera distance in radii; query chip text flies in at queryAt, the k nearest neighbours (precomputed) lift by `lift` toward the camera with lines; collapseAt: every point lands on the outline of `mark` (an SVG path d in a 100 box, e.g. your icon or logo; null = the pack placeholder mark; markSize = its height as a fraction of H); images: optional thumbnail sources (URLs / data URLs, or decoded images; each point always shows the same one). Await stack.ready() before the first frame, like fonts: until a source is decoded its tile is a placeholder, after that every frame draws the image',
+    assets: (p) => p.images,   // sources the layer preloads (Canvas2DLayer.ready / mountStack(...).ready)
     draw(g, W, H, t, p) {
       const st = embeddingState(t, p, { W, H }), S = H / 1080, C = hexRGB(p.color), A = hexRGB(p.accent), I = p.intensity;
       g.fillStyle = rgba(C, 0.8 * I); g.beginPath(); let any = false;
@@ -150,7 +168,7 @@ export const K2D_R45 = {
         g.strokeStyle = rgba(A, 0.55 * I * (1 - q.kc * 2)); g.beginPath(); g.moveTo(st.chip.tx, st.chip.ty); g.lineTo(lerp(st.chip.tx, q.x, kk), lerp(st.chip.ty, q.y, kk)); g.stroke(); } }
       const th = st.pts.filter((q) => q.thumb || q.nb >= 0).sort((a, b) => a.z - b.z || a.nb - b.nb);
       for (const q of th) { g.globalAlpha = clamp(q.a * I);
-        if (q.thumb) { const w = q.r * 2 * 1.33, h = q.r * 2, im = imgOf(p.images && p.images.length ? p.images[(q.pal + Math.round(q.x)) % p.images.length] : null), P = THUMB_PAL[q.pal];
+        if (q.thumb) { const w = q.r * 2 * 1.33, h = q.r * 2, im = imgOf(p.images && p.images.length ? p.images[q.ti % p.images.length] : null), P = THUMB_PAL[q.pal];
           if (q.kc > 0.6) { g.fillStyle = rgba(mixC(C, A, q.lit), 1); g.beginPath(); g.arc(q.x, q.y, q.r, 0, TAU); g.fill(); continue; }
           g.save(); g.beginPath(); g.roundRect(q.x - w / 2, q.y - h / 2, w, h, 3 * S); g.clip();
           if (im) g.drawImage(im, q.x - w / 2, q.y - h / 2, w, h); else { g.fillStyle = P[0]; g.fillRect(q.x - w / 2, q.y - h / 2, w, h); g.fillStyle = P[1]; g.beginPath(); g.arc(q.x + w * 0.2, q.y - h * 0.15, h * 0.16, 0, TAU); g.fill(); g.fillStyle = P[2]; g.fillRect(q.x - w / 2, q.y + h * 0.12, w, h * 0.4); }
@@ -163,8 +181,8 @@ export const K2D_R45 = {
     } },
   epicycleDraw: { blend: 'normal', order: 56, tags: ['epicycles', 'fourier', 'math', 'drawing', 'line-art', 'fidelity-ladder', 'explainer', 'glow'],
     d: { path: 'bird', pathBox: [1920, 1080], closed: 'auto', scale: 0.9, center: [0.5, 0.48], samples: 1024, terms: 64, steps: null, period: 4, at: 0, loop: false, fps: 30, trail: 1, progressive: true,
-      circles: true, maxCircles: 80, arms: true, inset: null, insetZoom: 4, color: '#8FDBFF', circleColor: '#8FDBFF', width: 2.2, glow: 10, readout: true, readColor: '#CFEFFF', source: 'computed from the path drawn here', intensity: 1 },
-    doc: 'path = an SVG d string, a preset (wave, arc, swoop, loop, spiral, bird) or [[x, y], ...] in pathBox px; closed auto (default: closed when the path ends in z or returns to its start) | true = a closed outline | false = an open path traced there and back (a Fourier series is periodic); samples = DFT size, even (resampled by arc length; sharp corners round off by under 1 px at 1024); terms N (or steps [[t, N | "full"], ...]: each step re-traces at higher fidelity); period = s per trace; loop (single step: exact repeat every period); trail = fraction of the figure kept behind the tip (1 = all); circles / arms / inset [x, y, w, h] fractions + insetZoom; readout prints N, the mean error at the sampled points and a `source` note',
+      circles: true, maxCircles: 80, arms: true, inset: null, insetZoom: 4, color: '#8FDBFF', circleColor: '#8FDBFF', width: 2.2, glow: 10, readout: true, readoutAt: [0.5, 0.93], readColor: '#CFEFFF', source: 'mean distance of the drawn curve from the input path', intensity: 1 },
+    doc: 'path = an SVG d string, a preset (wave, arc, swoop, loop, spiral, bird) or [[x, y], ...] in pathBox px; closed auto (default: closed when the path ends in z or returns to its start) | true = a closed outline | false = an open path traced there and back (a Fourier series is periodic); samples = DFT size, even (resampled by arc length; sharp corners round off by under 1 px at 1024); terms N (or steps [[t, N | "full"], ...]: each step re-traces at higher fidelity); period = s per trace; loop (single step: exact repeat every period); trail = fraction of the figure kept behind the tip (1 = all); circles / arms / inset [x, y, w, h] fractions + insetZoom; readout prints N, the mean distance of the drawn curve from the INPUT path (every segment of it, not only the samples; N = full is under 0.05%, not exactly 0) and the `source` note under it, always (an empty `source` falls back to the default note; readout: false hides the numbers), type from the shorter frame side, at readoutAt [x, y] (move it up inside a 9:16 safe zone)',
     draw(g, W, H, t, p) {
       const st = epicycleState(t, p, { W, H }); if (!st.on) return; const D = st.D, S = H / 1080, C = hexRGB(p.color), CC = hexRGB(p.circleColor), I = p.intensity, cv = epicycleCurve(D, st.N), R = cv.R;
       const phi = st.phi, f = phi % 1, i1 = Math.floor(f * R), lo = st.first && p.progressive ? Math.max(0, f - p.trail) : f - p.trail;
@@ -186,14 +204,16 @@ export const K2D_R45 = {
         g.save(); g.fillStyle = 'rgba(4,10,20,0.72)'; g.strokeStyle = rgba(CC, 0.5 * I); g.lineWidth = 1 * S; g.beginPath(); g.rect(ix, iy, iw, ih); g.fill(); g.stroke(); g.clip();
         g.strokeStyle = rgba(C, 0.9 * I); g.lineWidth = p.width * S; g.beginPath(); for (let q = -60; q <= 0; q++) { const qq = (((i1 + q) % R) + R) % R, pt = tr(...cv.pts[qq]); if (q === -60) g.moveTo(...pt); else g.lineTo(...pt); } g.stroke();
         chain(tr, z, 1 * S); g.restore(); }
-      if (p.readout) { g.fillStyle = rgba(hexRGB(p.readColor), 0.9 * I); g.font = `600 ${(24 * S).toFixed(1)}px ${MONO}`; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
-        g.fillText(`N = ${st.N}`, W / 2, H - 100 * S); g.font = `500 ${(17 * S).toFixed(1)}px ${MONO}`; g.fillText(`${st.N} rotating circles  ·  mean error ${cv.err.toFixed(2)}% of size`, W / 2, H - 72 * S);
-        if (p.source) { g.fillStyle = rgba(hexRGB(p.readColor), 0.55 * I); g.font = `500 ${(14 * S).toFixed(1)}px ${MONO}`; g.fillText(p.source, W / 2, H - 48 * S); } }
+      if (p.readout) { const Sr = Math.min(W, H) / 1080, [rx, ry] = p.readoutAt, src = p.source || K2D_R45.epicycleDraw.d.source;   /* type from the shorter side; a printed number always carries its note */
+        g.fillStyle = rgba(hexRGB(p.readColor), 0.92 * I); g.font = `600 ${(38 * Sr).toFixed(1)}px ${MONO}`; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+        g.fillText(`N = ${st.N}`, rx * W, ry * H - 66 * Sr); g.font = `500 ${(26 * Sr).toFixed(1)}px ${MONO}`; g.fillText(`${st.N} rotating circles  ·  mean error ${errText(cv.err)}% of size`, rx * W, ry * H - 28 * Sr);
+        g.fillStyle = rgba(hexRGB(p.readColor), 0.72 * I); g.font = `500 ${(22 * Sr).toFixed(1)}px ${MONO}`; g.fillText(src, rx * W, ry * H + 4 * Sr); }
     } },
   hexMosaic: { blend: 'normal', order: 1, tags: ['hex', 'mosaic', 'tiles', 'texture', 'background', 'brand-texture', 'flip', 'wave', 'engraved'],
     d: { radius: 64, gap: 5, faces: ['color', 'engrave'], palette: ['#3557D6', '#F2B33D', '#E4572E', '#2BB673', '#9B5DE5', '#00A6A6', '#F3F1EC'], texBg: '#E7E4DC', texInk: '#3B3B44', images: [],
       waves: [{ at: 0.3, from: [0, 0.5] }], speed: 1500, flip: 0.32, loop: 0, loopFrom: [0, 0.5], fps: 30, bg: '#F3F1EC', panel: null, intensity: 1, seed: 6 },
-    doc: 'radius = hex circumradius px @1080, gap px; faces = sequence of tile faces (color | engrave | image) a wave flips each tile to the next; waves [{ at, from: [x, y] fractions, speed px/s @1080 }]; flip = s per tile flip; loop L: one wave every L / faces from loopFrom, exact repeat; images: sources for image faces (clip-path); panel { rect: [x, y, w, h] fractions, color, radius } floats above',
+    doc: 'radius = hex circumradius px @1080, gap px; faces = sequence of tile faces (color | engrave | image) a wave flips each tile to the next; waves [{ at, from: [x, y] fractions, speed px/s @1080 }]; flip = s per tile flip; loop L: one wave every L / faces from loopFrom, exact repeat (the panel bob then makes a whole number of 4 s swings per loop, so the seam holds with a panel too); images: sources for image faces (clip-path); panel { rect: [x, y, w, h] fractions, color, radius } floats above. Image faces are preloaded like embeddingCloud images (await stack.ready()); the lattice is offset rows of pointy-top hexes (the same geometry as axial coordinates)',
+    assets: (p) => (p.faces.includes('image') ? p.images : []),
     draw(g, W, H, t, p) {
       const P = hexPlan(p, W, H), S = P.S, r = P.r - p.gap * S * 0.5, I = p.intensity, tiles = hexState(t, p, { W, H });
       if (p.bg) { g.fillStyle = p.bg; g.fillRect(0, 0, W, H); }
@@ -206,7 +226,7 @@ export const K2D_R45 = {
           g.globalAlpha = I; g.lineWidth = 1.6 * S; g.beginPath(); g.arc(tl.x + (hashf(tl.i, 3) - 0.5) * r * 0.5 * sx, tl.y + (hashf(tl.i, 4) - 0.5) * r * 0.5, r * (0.3 + 0.25 * hashf(tl.i, 5)) * sx, 0, TAU); g.stroke(); g.restore(); continue; }
         hexPath(g, tl.x, tl.y, r, sx); g.fillStyle = p.palette[Math.floor(tl.h * p.palette.length) % p.palette.length]; g.fill(); }
       g.globalAlpha = 1;
-      if (p.panel) { const pn = { color: '#FFFFFF', radius: 18, bob: 6, ...p.panel }, [px, py, pw, ph] = [pn.rect[0] * W, pn.rect[1] * H + Math.sin((TAU * t) / 4) * pn.bob * S, pn.rect[2] * W, pn.rect[3] * H];
+      if (p.panel) { const pn = { color: '#FFFFFF', radius: 18, bob: 6, ...p.panel }, [px, py, pw, ph] = [pn.rect[0] * W, pn.rect[1] * H + Math.sin(p.loop > 0 ? TAU * Math.max(1, Math.round(p.loop / 4)) * loopPhase(t, p.loop, p.fps) : (TAU * t) / 4) * pn.bob * S, pn.rect[2] * W, pn.rect[3] * H];
         g.save(); g.shadowColor = 'rgba(0,0,0,0.28)'; g.shadowBlur = 40 * S; g.shadowOffsetY = 16 * S; g.fillStyle = pn.color; g.beginPath(); g.roundRect(px, py, pw, ph, pn.radius * S); g.fill(); g.restore();
         g.fillStyle = '#E9E7F0'; g.fillRect(px, py + 46 * S, pw, 1.5 * S); [0.62, 0.48, 0.55, 0.3].forEach((w, i) => { g.fillStyle = i ? '#E3E3EA' : '#4A18ED'; g.beginPath(); g.roundRect(px + 28 * S, py + (78 + i * 34) * S, pw * w, 14 * S, 7 * S); g.fill(); });
         [0, 1, 2].forEach((i) => { g.fillStyle = ['#FF5F57', '#FEBC2E', '#28C840'][i]; g.beginPath(); g.arc(px + (24 + i * 20) * S, py + 23 * S, 6 * S, 0, TAU); g.fill(); }); }

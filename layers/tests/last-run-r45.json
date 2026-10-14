@@ -1,6 +1,6 @@
 {
  "name": "layers round 4/5",
- "total": 61,
+ "total": 75,
  "failed": 0,
  "rows": [
   {
@@ -39,7 +39,7 @@
    "detail": ""
   },
   {
-   "label": "embeddingCloud: 13 param variants all change the draw and stay finite",
+   "label": "embeddingCloud: 14 param variants all change the draw and stay finite",
    "pass": true,
    "detail": ""
   },
@@ -134,7 +134,67 @@
    "detail": ""
   },
   {
+   "label": "hexMosaic loop 4 with a panel: frame t and t + 4 s are identical (5 times); a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic loop 5 with a panel: frame t and t + 5 s are identical (5 times); a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic loop 6 with a panel: frame t and t + 6 s are identical (5 times); a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic loop 7 with a panel: frame t and t + 7 s are identical (5 times); a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic loop 10 with a panel: frame t and t + 10 s are identical (5 times); a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
    "label": "embeddingCloud without loop: it keeps rotating (frame t and t + 6 s differ)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud images: each thumbnail keeps its own image while the cloud turns (the same 22 draws, tally [[\"IMGA\",8],[\"IMGB\",7],[\"IMGC\",7]], at 0.4 s and 3.7 s; the index is a property of the point, not of where it is on screen)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud images: a string source that is not decoded (no Image in node, or not loaded yet) draws the placeholder tile, exactly the frame without images",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "hexMosaic image faces: every tile draws an image (hundreds of drawImage calls), each tile always the same one, and the frame is identical on a repeat render",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud with images: identical draw calls in forward and shuffled seek order (70 seeks)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "preloadImages: resolves at once with nothing to load, with objects and with strings when there is no Image (node); K2D kinds list their sources in assets()",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw readout: three lines (N = 64 | 64 rotating circles  ·  mean error 0.08% of size | mean distance of the drawn curve from the input path), type 22..38 px at 1080p (note >= 22, never the 14 px of before), the same px on a 1080 x 1920 frame (shorter side); an empty or null source falls back to the default note (a printed number is never unlabelled); a custom source replaces it; readout: false prints nothing",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw readoutAt moves the readout (N line at y 938 by default, 690 at readoutAt y 0.7, so it can sit inside a 9:16 safe zone)",
    "pass": true,
    "detail": ""
   },
@@ -154,7 +214,7 @@
    "detail": ""
   },
   {
-   "label": "embeddingCloud collapse: after collapseAt + spread + collapse every one of the 282 points lies on the mark outline (worst 1.1e-13 px off)",
+   "label": "embeddingCloud collapse: after collapseAt + spread + collapse every one of the 282 points lies on the mark outline (worst 1.1e-13 px off); with mark: your own SVG path (a triangle) they land on that outline instead (1.9e-13 px)",
    "pass": true,
    "detail": ""
   },
@@ -169,7 +229,7 @@
    "detail": ""
   },
   {
-   "label": "epicycleDraw: the mean error falls as terms are added (N = 4, 16, 64, full: 7.55%, 1.23%, 0.14%, 0.00% of the figure size)",
+   "label": "epicycleDraw: the mean error (distance of the drawn curve from the INPUT path, not from the DFT's own samples) falls as terms are added (N = 4, 16, 64, full: 2.23%, 0.60%, 0.08%, 0.00% of the figure size); at full it is small but not a computed 0 (7.9e-4%, printed as <0.01)",
    "pass": true,
    "detail": ""
   },
@@ -184,7 +244,7 @@
    "detail": ""
   },
   {
-   "label": "hexMosaic: 315 tiles on an axial hex lattice (row step 1.5 r, column step sqrt(3) r, odd rows offset half a column) and the field covers the frame (farthest of 300 random points is 61.4 px from a centre, r = 64)",
+   "label": "hexMosaic: 315 tiles on an axial hex lattice (row step 1.5 r, column step sqrt(3) r, odd rows offset half a column) and the field covers the frame (farthest of 300 random points is 62.7 px from a centre, r = 64)",
    "pass": true,
    "detail": ""
   },
@@ -289,17 +349,27 @@
    "detail": ""
   },
   {
-   "label": "hexMosaic at 4K (3840 x 2160, wave + panel): 16.9 ms per frame (budget 120 ms)",
+   "label": "hexMosaic image faces (real images): placeholders before the images decode (0 image-coloured pixels), the images drawn once they have (466740), identical pixels at t 1 on every repeat and after other times, 3 Image objects for 3 sources over 10 frames",
    "pass": true,
    "detail": ""
   },
   {
-   "label": "embeddingCloud at 1080p (420 dots + 48 thumbnails): 1.4 ms per frame (budget 40 ms)",
+   "label": "embeddingCloud thumbnails (real images): placeholders before the images decode (0 image-coloured pixels), the images drawn once they have (9949), identical pixels at t 1 on every repeat and after other times, 3 Image objects for 3 sources over 10 frames",
    "pass": true,
    "detail": ""
   },
   {
-   "label": "epicycleDraw at 1080p (all terms, inset): 1.7 ms per frame (budget 40 ms)",
+   "label": "hexMosaic at 4K (3840 x 2160, wave + panel): 15.5 ms per frame (budget 120 ms)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "embeddingCloud at 1080p (420 dots + 48 thumbnails): 1.1 ms per frame (budget 40 ms)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "epicycleDraw at 1080p (all terms, inset): 1.5 ms per frame (budget 40 ms)",
    "pass": true,
    "detail": ""
   },

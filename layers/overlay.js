@@ -78,7 +78,7 @@ export function mountStack(root, layers, { width = 1920, height = 1080, fps = 30
     if (l.blend) c.style.mixBlendMode = l.blend; if (l.opacity != null) c.style.opacity = String(l.opacity);
     root.appendChild(c); const layer = makeLayer(c, l.kind, l.params || {}, { width, height, fps, seed: (l.params && l.params.seed) ?? seed }); if (l.blend) c.style.mixBlendMode = l.blend; out.push(layer);
   }
-  return { layers: out, render(t, o = {}) { for (const L of out) L.render(t, o); return this; }, dispose() { for (const L of out) { L.canvas.remove(); L.gl?.getExtension('WEBGL_lose_context')?.loseContext(); } } };
+  return { layers: out, ready() { return Promise.all(out.map((L) => (L.ready ? L.ready() : null))); }, render(t, o = {}) { for (const L of out) L.render(t, o); return this; }, dispose() { for (const L of out) { L.canvas.remove(); L.gl?.getExtension('WEBGL_lose_context')?.loseContext(); } } };
 }
 /* lint a layer list: one of each (grain, vignette, paper, scanlines, bars), warn when a plate bakes the same thing (plateBaked: {grain, vignette, bloom}) */
 export function lintOverlayStack(layers, { plateBaked = {} } = {}) {
@@ -90,6 +90,8 @@ export function lintOverlayStack(layers, { plateBaked = {} } = {}) {
 }
 /* HyperFrames: re-render on every seek (the documented hf-seek / __hfThreeTime contract). t0 = the clip's data-start if the stack lives inside a timed clip. */
 export function bindHF(stack, { t0 = 0, fps = 30 } = {}) {
-  const f = (t) => stack.render(t - t0, { frame: Math.round((t - t0) * fps) });
-  window.addEventListener('hf-seek', (e) => f(e.detail.time)); f(window.__hfThreeTime || 0); return f;
+  let last = window.__hfThreeTime || 0; const f = (t) => { last = t; return stack.render(t - t0, { frame: Math.round((t - t0) * fps) }); };
+  window.addEventListener('hf-seek', (e) => f(e.detail.time)); f(last);
+  if (stack.ready) stack.ready().then(() => f(last));   // layer images (embeddingCloud, hexMosaic) decode once: repaint the current frame, so frame t is the same on every seek order
+  return f;
 }

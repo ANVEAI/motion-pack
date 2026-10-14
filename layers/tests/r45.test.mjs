@@ -1,15 +1,16 @@
 /* layers round-4/5 parts (2026-10-14): layers.embeddingCloud, layers.epicycleDraw, layers.hexMosaic, layers.convergeToDot (layers/canvas2d-r45.js, merged into K2D).
    Node only by default, so CI runs it (no browser, no GPU): every draw is recorded on a recording 2D context and compared as text.
      defaults, params (each variant changes the draw and stays finite), shuffled-seek identity at 16:9 and 9:16, nothing visible before the start cue,
-     loop seams exact (embeddingCloud loop, epicycleDraw loop, hexMosaic loop), and the maths: nearest neighbours vs brute force, lift = the lift parameter,
+     loop seams exact (embeddingCloud loop, epicycleDraw loop, hexMosaic loop with and without a panel, for loops that are and are not multiples of 4 s), images (stable per point, cached, placeholder until decoded), and the maths: nearest neighbours vs brute force, lift = the lift parameter,
      collapse lands on the mark outline, DFT passes through its samples, Hausdorff < 1 px at 1080p for N = full, fidelity rises with N, hex lattice + wave
      onset = distance / speed, outside-in delays, converge ends on the centre, lines are recomputed from the node positions (no stored state).
-   --chrome (local, real Chrome): mounts every kind through overlay.js mountStack, bit-identical pixels after another t and in shuffled order,
-     render-time budgets (hexMosaic at 4K, embeddingCloud at 1080p), no console errors; writes layers/demo/out/r45-sheet.png + tests/last-run-r45.json.
+   --chrome (local, real Chrome): mounts every kind through overlay.js mountStack, bit-identical pixels after another t and in shuffled order, real images through
+     stack.ready() (the image is drawn from the first frame, the same pixels on every seek, one Image object per source), render-time budgets (hexMosaic at 4K,
+     embeddingCloud at 1080p), no console errors; writes layers/demo/out/r45-sheet.png + tests/last-run-r45.json.
    run: node layers/tests/r45.test.mjs [--chrome] */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
 import { K2D } from '../canvas2d.js'; import { K2D_R3 } from '../canvas2d-r3.js'; import { ALL_KINDS } from '../overlay.js';
-import { K2D_R45, CUES_R45, cuesR45, cloudPlan, embeddingState, epicycleDFT, epicycleTip, epicycleCurve, epicycleState, hexState, convergeState } from '../canvas2d-r45.js';
+import { K2D_R45, CUES_R45, cuesR45, cloudPlan, embeddingState, epicycleDFT, epicycleTip, epicycleCurve, epicycleState, hexState, convergeState, preloadImages, errText } from '../canvas2d-r45.js';
 import { flattenPath, PATHS } from '../../type/gfx/pathsample.js'; import { DEFAULT_MARK } from '../../type/gfx/media.js';
 import { reporter, ROOT } from './harness.mjs';
 const R = reporter('layers round 4/5'), here = path.dirname(fileURLToPath(import.meta.url)), near = (a, b, e = 1e-6) => Math.abs(a - b) <= e, CHROME = process.argv.includes('--chrome');
@@ -59,10 +60,34 @@ for (const k of KINDS) for (const [w, h, name] of [[W, H, '16:9'], [1080, 1920, 
   R.check('convergeToDot: before at every node is home (k = 0, only the slow wobble moves it) and the dot has its start radius', c.nodes.every((n) => n.k === 0) && near(c.hub, p.hub, 1e-9) && c.nodes.every((n, i) => Math.hypot(n.x - home.nodes[i].x, n.y - home.nodes[i].y) < 2 * p.wobble + 1e-6)); }
 
 /* 5. loop seams */
-const LOOPS = [['embeddingCloud', { loop: 6, queryAt: null, collapseAt: null }, 6], ['epicycleDraw', { loop: true, period: 4, steps: null, terms: 32, at: 0 }, 4], ['hexMosaic', { loop: 6, waves: [] }, 6]];
+const PANEL = { rect: [0.3, 0.3, 0.4, 0.4] };
+const LOOPS = [['embeddingCloud', { loop: 6, queryAt: null, collapseAt: null }, 6], ['epicycleDraw', { loop: true, period: 4, steps: null, terms: 32, at: 0 }, 4], ['hexMosaic', { loop: 6, waves: [] }, 6],
+  ...[4, 5, 6, 7, 10].map((L) => ['hexMosaic', { loop: L, waves: [], panel: PANEL }, L])];
 for (const [k, p, L] of LOOPS) { let ok = true; for (const t of [0, 0.4, 1.3, 2.9, 4.1]) if (recS(k, t, p) !== recS(k, t + L, p)) ok = false; const moves = recS(k, 0.7, p) !== recS(k, 0.7 + L / 3, p);
-  R.check(`${k} loop ${L}: frame t and t + ${L} s are identical (5 times); a third of a loop later it is a different frame`, ok && moves); }
+  R.check(`${k} loop ${L}${p.panel ? ' with a panel' : ''}: frame t and t + ${L} s are identical (5 times); a third of a loop later it is a different frame`, ok && moves); }
 { const a = recS('embeddingCloud', 1.3, { loop: 0, queryAt: null }), b = recS('embeddingCloud', 7.3, { loop: 0, queryAt: null }); R.check('embeddingCloud without loop: it keeps rotating (frame t and t + 6 s differ)', a !== b); }
+
+/* 5b. images: stable per point, cached, placeholder until decoded (node: fake decoded images) */
+const fake = (tag) => ({ naturalWidth: 64, naturalHeight: 48, toString: () => 'IMG' + tag }), IMGS = [fake('A'), fake('B'), fake('C')];
+{ const drawn = (log) => log.filter((x) => x.startsWith('drawImage')).map((x) => x.split(',')[0].replace('drawImage', '')), tally = (a) => { const m = {}; for (const k of a) m[k] = (m[k] || 0) + 1; return JSON.stringify(Object.entries(m).sort()); };
+  const ta = tally(drawn(rec('embeddingCloud', 0.4, { images: IMGS, queryAt: null }))), tb = tally(drawn(rec('embeddingCloud', 3.7, { images: IMGS, queryAt: null }))), n = drawn(rec('embeddingCloud', 0.4, { images: IMGS, queryAt: null })).length;
+  const a = embeddingState(0.4, { ...K2D.embeddingCloud.d, queryAt: null }, { W, H }), b = embeddingState(3.7, { ...K2D.embeddingCloud.d, queryAt: null }, { W, H }), same = a.pts.every((q, i) => q.ti === b.pts[i].ti && q.thumb === b.pts[i].thumb);
+  R.check(`embeddingCloud images: each thumbnail keeps its own image while the cloud turns (the same ${n} draws, tally ${ta}, at 0.4 s and 3.7 s; the index is a property of the point, not of where it is on screen)`, n === K2D.embeddingCloud.d.thumbs && ta === tb && same && /A/.test(ta) && /B/.test(ta) && /C/.test(ta));
+  const noImg = recS('embeddingCloud', 1.3), strImg = recS('embeddingCloud', 1.3, { images: ['not-decoded.png'] });
+  R.check('embeddingCloud images: a string source that is not decoded (no Image in node, or not loaded yet) draws the placeholder tile, exactly the frame without images', noImg === strImg && !/drawImage/.test(strImg));
+  const hx = (t) => recS('hexMosaic', t, { faces: ['image'], images: IMGS, waves: [] }), hv = hx(1.1);
+  R.check('hexMosaic image faces: every tile draws an image (hundreds of drawImage calls), each tile always the same one, and the frame is identical on a repeat render', /drawImage/.test(hv) && hv === hx(1.1) && drawn(rec('hexMosaic', 1.1, { faces: ['image'], images: IMGS, waves: [] })).length > 100);
+  const sh = shuffle(ts.map((_, i) => i)), want = ts.map((t) => recS('embeddingCloud', t, { images: IMGS })), got = new Map(sh.map((i) => [i, recS('embeddingCloud', ts[i], { images: IMGS })]));
+  R.check('embeddingCloud with images: identical draw calls in forward and shuffled seek order (70 seeks)', want.every((x, i) => x === got.get(i)));
+  R.check('preloadImages: resolves at once with nothing to load, with objects and with strings when there is no Image (node); K2D kinds list their sources in assets()', (await preloadImages([])).length === 0 && (await preloadImages(IMGS)).length === 0 && (await preloadImages(['x.png'])).length === 1 && K2D.embeddingCloud.assets({ images: ['a'] })[0] === 'a' && K2D.hexMosaic.assets({ faces: ['color'], images: ['a'] }).length === 0 && K2D.hexMosaic.assets({ faces: ['image'], images: ['a'] }).length === 1); }
+/* 5c. epicycle readout: legible type, a note that cannot be blanked, movable */
+{ const fonts = (log) => log.filter((x) => x.startsWith('font=')).map((x) => parseFloat(/([\d.]+)px/.exec(x)[1])), texts = (log) => log.filter((x) => x.startsWith('fillText')).map((x) => x.slice(8).split(',')[0]);
+  const log = rec('epicycleDraw', 2.0), f = fonts(log), tx = texts(log), blank = recS('epicycleDraw', 2.0, { source: '' }), nul = recS('epicycleDraw', 2.0, { source: null }), base = recS('epicycleDraw', 2.0), custom = recS('epicycleDraw', 2.0, { source: 'my own note' });
+  const tall = fonts(rec('epicycleDraw', 2.0, {}, 1080, 1920)), tt = texts(rec('epicycleDraw', 2.0, {}, 1080, 1920));
+  R.check(`epicycleDraw readout: three lines (${tx.join(' | ')}), type ${Math.min(...f)}..${Math.max(...f)} px at 1080p (note >= 22, never the 14 px of before), the same px on a 1080 x 1920 frame (shorter side); an empty or null source falls back to the default note (a printed number is never unlabelled); a custom source replaces it; readout: false prints nothing`,
+    tx.length === 3 && /^N = \d+/.test(tx[0]) && Math.min(...f) >= 22 && Math.max(...f) >= 36 && JSON.stringify(f) === JSON.stringify(tall) && tt.length === 3 && blank === base && nul === base && custom !== base && texts(rec('epicycleDraw', 2.0, { readout: false })).length === 0);
+  const up = rec('epicycleDraw', 2.0, { readoutAt: [0.5, 0.7] }).filter((x) => x.startsWith('fillText') && /N = /.test(x))[0], lo = log.filter((x) => x.startsWith('fillText') && /N = /.test(x))[0], ay = (x) => +x.split(',')[2];
+  R.check(`epicycleDraw readoutAt moves the readout (N line at y ${ay(lo).toFixed(0)} by default, ${ay(up).toFixed(0)} at readoutAt y 0.7, so it can sit inside a 9:16 safe zone)`, ay(up) < ay(lo) - 150); }
 
 /* 6. embeddingCloud maths */
 { const p = { ...K2D.embeddingCloud.d }, P = cloudPlan(p, W, H), d = (pt) => Math.hypot(pt.pos[0] - P.q[0], pt.pos[1] - P.q[1], pt.pos[2] - P.q[2]);
@@ -89,7 +114,7 @@ const hausdorff = (name, closed) => { const p = { ...K2D.epicycleDraw.d, path: n
 { const hs = [['bird', 'auto'], ['wave', false], ['spiral', false], ['swoop', false]].map(([n, c]) => [n, hausdorff(n, c === 'auto' ? true : c)]);
   R.check(`epicycleDraw N = full: the trace matches the input path at 1080p, Hausdorff ${hs.map(([n, v]) => n + ' ' + v.toFixed(2)).join(', ')} px (< 1; closed outline sampled once, open paths traced there and back)`, hs.every(([, v]) => v < 1)); }
 { const p = { ...K2D.epicycleDraw.d }, D = epicycleDFT(p, W, H), e = [4, 16, 64, 'full'].map((n) => epicycleCurve(D, n === 'full' ? D.coef.length : n).err);
-  R.check(`epicycleDraw: the mean error falls as terms are added (N = 4, 16, 64, full: ${e.map((v) => v.toFixed(2) + '%').join(', ')} of the figure size)`, e[0] > e[1] && e[1] > e[2] && e[2] > e[3] && e[3] < 1e-6 && e[0] > 3);
+  R.check(`epicycleDraw: the mean error (distance of the drawn curve from the INPUT path, not from the DFT's own samples) falls as terms are added (N = 4, 16, 64, full: ${e.map((v) => v.toFixed(2) + '%').join(', ')} of the figure size); at full it is small but not a computed 0 (${e[3].toExponential(1)}%, printed as ${errText(e[3])})`, e[0] > e[1] && e[1] > e[2] && e[2] > e[3] && e[3] < 0.01 && e[3] > 0 && e[0] > 2 && errText(e[3]) === '<0.01' && errText(0.5) === '0.50');
   const steps = [[0, 4], [3, 16], [6, 64]], pp = { ...p, steps, at: 0.5, period: 3 }, s1 = epicycleState(0.5 + 1.5, pp, { W, H }), s2 = epicycleState(0.5 + 3.0, pp, { W, H }), s3 = epicycleState(0.5 + 6.9, pp, { W, H });
   R.check('epicycleDraw steps: the term count follows the step table and every step re-traces from phase 0 (N 4 -> 16 -> 64)', s1.N === 4 && near(s1.phi, 0.5) && s2.N === 16 && near(s2.phi, 0) && s3.N === 64 && near(s3.phi, 0.3, 1e-9));
   const c1 = rec('epicycleDraw', 0.2 + 0.5 * 4, { at: 0.2, steps: null, terms: 32 }).filter((x) => x.startsWith('lineTo')).length, c2 = rec('epicycleDraw', 0.2 + 1.5 * 4, { at: 0.2, steps: null, terms: 32 }).filter((x) => x.startsWith('lineTo')).length;
@@ -122,7 +147,7 @@ const hausdorff = (name, closed) => { const p = { ...K2D.epicycleDraw.d, path: n
 
 /* 10. Chrome (hardware GPU not needed for Canvas2D, but the harness refuses software GL): mounts, pixels, budgets */
 if (CHROME) {
-  const { open, decodePNG } = await import('./harness.mjs'); const h = await open('/layers/demo/r45.html'); await h.page.setViewport({ width: 960, height: 540 }); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-r45-')), tiles = [];
+  const { open, decodePNG, png } = await import('./harness.mjs'); const h = await open('/layers/demo/r45.html'); await h.page.setViewport({ width: 960, height: 540 }); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-r45-')), tiles = [];
   const shot = async (name) => { const f = path.join(dir, name + '.png'); await h.page.screenshot({ path: f, clip: { x: 0, y: 0, width: 960, height: 540 } }); return f; };
   const STACKS = [
     ['embeddingCloud: query + neighbours', [{ kind: 'embeddingCloud', params: {} }], 2.4, '#0B1210'], ['embeddingCloud: collapsed into the mark', [{ kind: 'embeddingCloud', params: { collapseAt: 3.0 } }], 5.4, '#0B1210'],
@@ -139,6 +164,19 @@ if (CHROME) {
     for (const t of order) { await h.page.evaluate((t) => window.again(t), t); ref.push(await h.page.evaluate(() => window.pixels())); }
     let ok = true; for (const i of shuffle(order.map((_, i) => i))) { await h.page.evaluate((t) => window.again(t), order[i]); if ((await h.page.evaluate(() => window.pixels())) !== ref[i]) ok = false; }
     R.check(`${k}: pixels identical when the same 6 times are rendered again in shuffled order`, ok); }
+  /* real images: three solid-colour PNG data URLs through stack.ready(). Before the images decode a tile is a placeholder; after it every frame draws the image, the same pixels on every
+     repeat and in any seek order, and the page makes ONE Image object per source however many frames and tiles there are. */
+  { const solid = (r, g, b) => { const bf = Buffer.alloc(64 * 48 * 4); for (let i = 0; i < bf.length; i += 4) { bf[i] = r; bf[i + 1] = g; bf[i + 2] = b; bf[i + 3] = 255; } return 'data:image/png;base64,' + png(64, 48, bf).toString('base64'); };
+    const SETS = [[[255, 0, 255], [0, 255, 255], [255, 255, 0]], [[255, 128, 0], [0, 128, 255], [128, 255, 0]]];
+    for (const [label, mk, hero, plate, rgbs] of [['hexMosaic image faces', (U) => ({ kind: 'hexMosaic', params: { faces: ['image'], images: U, waves: [] } }), 1.0, '#101010', SETS[0]], ['embeddingCloud thumbnails', (U) => ({ kind: 'embeddingCloud', params: { images: U, thumbs: 40, queryAt: null } }), 1.0, '#0B1210', SETS[1]]]) {
+      const URLS = rgbs.map(([r, g, b]) => solid(r, g, b)), layer = mk(URLS);
+      await h.page.evaluate(() => { window.__imgs = 0; if (!window.__Image) { window.__Image = window.Image; window.Image = class extends window.__Image { constructor(...a) { super(...a); window.__imgs++; } }; } });
+      await h.page.evaluate((l, t, pl) => window.stack([l], t, 960, 540, pl), layer, hero, plate); const before = await h.page.evaluate((rg) => rg.reduce((a, [r, g, b]) => a + window.countColor(r, g, b), 0), rgbs);
+      await h.page.evaluate(() => window.ready()); await h.page.evaluate((t) => window.again(t), hero); const first = await h.page.evaluate(() => window.pixels()), after = await h.page.evaluate((rg) => rg.reduce((a, [r, g, b]) => a + window.countColor(r, g, b), 0), rgbs);
+      let same = true; for (const t of [0.3, 2.2, hero, 5.1, hero, 0.7, hero]) { await h.page.evaluate((t) => window.again(t), t); if (t === hero && (await h.page.evaluate(() => window.pixels())) !== first) same = false; }
+      const n = await h.page.evaluate(() => window.__imgs);
+      R.check(`${label} (real images): placeholders before the images decode (${before} image-coloured pixels), the images drawn once they have (${after}), identical pixels at t ${hero} on every repeat and after other times, ${n} Image objects for ${URLS.length} sources over 10 frames`,
+        before === 0 && after > 800 && same && n === URLS.length); } }
   await h.page.evaluate((l) => window.stack(l, 1, 3840, 2160, '#000'), [{ kind: 'hexMosaic', params: { waves: [{ at: 0.2, from: [0, 0.5] }], panel: { rect: [0.3, 0.28, 0.4, 0.44] } } }]); await h.page.evaluate(() => window.timeIt(0.2, 4));
   const ms4k = await h.page.evaluate(() => window.timeIt(0.2, 24)); R.check(`hexMosaic at 4K (3840 x 2160, wave + panel): ${ms4k.toFixed(1)} ms per frame (budget 120 ms)`, ms4k < 120);
   await h.page.evaluate((l) => window.stack(l, 1, 1920, 1080, '#000'), [{ kind: 'embeddingCloud', params: { n: 420, thumbs: 48 } }]); await h.page.evaluate(() => window.timeIt(2, 4));

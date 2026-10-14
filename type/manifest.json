@@ -5331,15 +5331,15 @@
     "steps": [
      [
       0,
-      "STILL"
+      "DAWN"
      ],
      [
       0.8,
-      "CLIP"
+      "NOON"
      ],
      [
       1.6,
-      "SONG"
+      "DUSK"
      ]
     ],
     "text": "NEW NAME",
@@ -5491,7 +5491,7 @@
    "in_frames": 1,
    "out_frames": 8,
    "params": {
-    "text": "1",
+    "text": "4",
     "size": 300,
     "at": [
      0.78,
@@ -5504,6 +5504,7 @@
     "line": 3,
     "glow": 9,
     "glowOp": 0.95,
+    "halo": 0.3,
     "draw": 0.55,
     "stagger": 0.12,
     "jitter": 2.6,

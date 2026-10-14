@@ -1,20 +1,24 @@
 /* motion-pack / type / gfx / r45-type.js: round 4/5 lockups and layout type (2026-10-14). Same contract as every gfx item (core.js): { tags, dur, inF, outF, d, svg(L, p, c) }
    -> SVG markup, a pure function of t (seek-safe). Positions are frame fractions, sizes px @1080 (scaled by c.s).
-     title.partnerLockup    "A x B": two marks balanced for optical weight (equal ink area, or matched height), a divider (x, +, rule), equal gaps; enters as
-                            one unit and holds on a quiet tail. Ships with owned placeholder marks only; a supplied mark without licensed: true is refused
-                            (drawn as a dashed "unlicensed mark" box) and lintPartnerMarks() says why.
+     title.partnerLockup    "A x B": two marks balanced for optical weight (equal ink area measured from each image's alpha mask, or matched height), a divider
+                            (x, +, rule), equal gaps; enters as one unit and holds on a quiet tail. Ships with owned placeholder marks only; a supplied mark
+                            without licensed: true is refused (drawn as a dashed "unlicensed mark" box) and lintPartnerMarks() says why. The ink of a supplied
+                            mark comes from its mask: markFromImage(img) in a browser, tools/mark_ink.py anywhere, or inkFromMask() on RGBA bytes.
      layout.iconMergeLockup outlined icon tiles draw on down a diagonal staircase, fill outline -> solid on planned hits, line up in a row, then collapse into
                             one product name (each icon flies into its letter position as the name types)
      type.flankWords        a short phrase splits left and right of a subject box (static or keyframed): the words ride the box edges, so they never cover
                             it; flankShots() carries one sentence across several shots in the same style
-     type.behindSubject     giant type placed behind a subject using a SUPPLIED alpha matte (image, frame sequence or inline SVG): plate -> type -> plate
-                            masked by the matte. No segmentation model, no downloads; without a plate it uses an owned procedural figure.
+     type.behindSubject     giant type placed behind a subject using a SUPPLIED alpha matte (image, PNG frame sequence or inline SVG; a video alpha becomes a
+                            frame sequence with tools/alpha_frames.py): plate -> type -> plate masked by the matte. No segmentation model, no downloads;
+                            without a plate it uses an owned procedural figure.
+   Type sizes scale from the SHORTER frame side (a 1080 x 1920 frame keeps 1080p type) and each part fits itself inside the platform safe rect.
    Craft learned from public launch films (round 4/5 study, October 2026): techniques only, never a brand, logo, footage, wording or sequence. Owned code. */
 import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, INK, PAPER, f2, esc, text, measure, hashf, uidOf, blurDef, blurAttr } from './core.js';
 import { stepAt, mixHex } from './swap.js';
 
 const op = (L) => clamp(L.in * 1.5) * (1 - L.out);
 const FR = 30, frameOf = (u) => Math.floor(u * FR + 1e-6);
+const sc = (c) => (c.H > c.W ? c.W / 1080 : c.s);   // type scale from the shorter frame side (the data-ui lane idiom)
 
 /* ---------------- partnerLockup ---------------- */
 /* owned placeholder marks: box w x h (h = 100) and the EXACT ink area of the shape (for optical balancing) */
@@ -26,27 +30,48 @@ export const PARTNER_MARKS = {
   tri: { w: 110, h: 100, svg: '<path d="M55 4 L106 96 H4 Z"/>', area: 0.5 * 102 * 92, placeholder: true },
   pill: { w: 220, h: 100, svg: '<rect x="4" y="22" width="212" height="56" rx="28"/>', area: 212 * 56 - (4 - Math.PI) * 28 * 28, placeholder: true },
 };
-const markOf = (m) => (typeof m === 'string' ? { ...PARTNER_MARKS[m] || PARTNER_MARKS.ring, name: m } : m || PARTNER_MARKS.ring);
-/* problems with the marks: a supplied asset needs licensed: true (you hold the right to use it in this video) and its ink fraction `area` */
-export function lintPartnerMarks(p) {
-  const out = []; (p.marks || []).forEach((m0, i) => { const m = markOf(m0); if (m.placeholder) return;
-    if (m.licensed !== true) out.push(`mark ${i + 1}: refused, no licensed: true flag (supply only marks you have the right to use)`);
-    if (!(m.area > 0) && !(m.ink > 0)) out.push(`mark ${i + 1}: no ink fraction (ink: 0..1 of its box); balanced as 0.5`); }); return out;
+const markOf = (m) => (typeof m === 'string' ? { ...(PARTNER_MARKS[m] || PARTNER_MARKS.ring), name: m } : m || PARTNER_MARKS.ring);
+const licensedMark = (m) => m.placeholder || m.licensed === true;
+/* ink of a mark = the share of its own box that the mark covers, measured from the image's mask: RGBA bytes { data, width, height }. channel 'alpha' (default) weights by alpha, so soft
+   edges count in part; 'luma' = dark ink on an opaque ground (1 - luma), 'luma-light' = light ink on dark. Measured once per image, then kept in the mark as `ink`. */
+export function inkFromMask(mask, { channel = 'alpha' } = {}) {
+  const { data, width: w, height: h } = mask || {}; if (!data || !(w > 0) || !(h > 0)) return 0; let s = 0;
+  for (let i = 0, n = w * h; i < n; i++) { const a = data[i * 4 + 3] / 255; if (channel === 'alpha') s += a; else { const L = (0.2126 * data[i * 4] + 0.7152 * data[i * 4 + 1] + 0.0722 * data[i * 4 + 2]) / 255; s += a * (channel === 'luma' ? 1 - L : L); } }
+  return s / (w * h);
 }
-/* layout at full entrance: per mark { x, y, w, h, ink (px^2) }, the divider centre, and the unit's box. Pure. */
+/* browser: a supplied image -> a mark { href, w, h (100 tall), ink, licensed }, the ink measured from the image's alpha (sampled once, at most `max` px on the long side; crop the file to the mark first,
+   transparent margins count as part of its box). licensed stays false until YOU set it: the lockup refuses a mark you did not say you may use. */
+export function markFromImage(img, { licensed = false, name, channel = 'alpha', max = 256 } = {}) {
+  const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height, k = Math.min(1, max / Math.max(iw, ih)), w = Math.max(1, Math.round(iw * k)), h = Math.max(1, Math.round(ih * k));
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h; const g = cv.getContext('2d', { willReadFrequently: true }); g.drawImage(img, 0, 0, w, h);
+  return { href: img.currentSrc || img.src, w: Math.round((100 * iw) / ih), h: 100, ink: +inkFromMask(g.getImageData(0, 0, w, h), { channel }).toFixed(4), licensed, name };
+}
+/* the ink fraction used to balance a mark: an owned placeholder's exact area, else the declared `ink` / `area`, else the measure of its `mask`; null = unknown */
+const inkOf = (m) => (!licensedMark(m) ? 0.5 : m.placeholder || m.area > 0 ? m.area / (m.w * m.h) : m.ink > 0 ? m.ink : m.mask ? inkFromMask(m.mask, m) || null : null);
+/* problems with the marks: a supplied asset needs licensed: true (you hold the right to use it in this video) and an ink measure (mask, ink or area) to balance by area */
+export function lintPartnerMarks(p) {
+  const out = [], list = p.marks || []; if (!list.length) out.push('no marks: nothing is drawn'); if (list.length > 2) out.push(`${list.length} marks: only the first two are laid out`);
+  list.forEach((m0, i) => { if (typeof m0 === 'string' && !PARTNER_MARKS[m0]) out.push(`mark ${i + 1}: unknown placeholder '${m0}', drawn as the ring`); const m = markOf(m0); if (m.placeholder) return;
+    if (m.licensed !== true) out.push(`mark ${i + 1}: refused, no licensed: true flag (supply only marks you have the right to use)`);
+    else if (inkOf(m) == null) out.push(`mark ${i + 1}: no ink measure (mask, ink or area): the lockup falls back to matched height; measure it with markFromImage() or tools/mark_ink.py`); }); return out;
+}
+/* layout at full entrance: per mark { x, y, w, h, ink (px^2) }, the divider centre, and the unit's box; balance = 'area' | 'height' (what was used: 'height' when asked or when a mark has no ink measure). Pure.
+   Fewer than two marks: none draws nothing, one is centred with no divider; extra marks are ignored (lint says so). */
 export function partnerLockupLayout(p, c) {
-  const S = c.s, stack = p.layout === 'stack' || (p.layout === 'auto' && c.tall), M = p.marks.map(markOf), gap = p.gap * p.size * S;
-  const frac = (m) => (m.placeholder || (m.licensed === true && m.area > 0) ? m.area / (m.w * m.h) : m.ink > 0 ? m.ink : 0.5), asp = (m) => m.w / m.h;
-  const T = (p.size * S) ** 2 * 0.42; let hs = M.map((m, i) => (p.balance === 'height' ? p.size * S * 0.8 : Math.sqrt(T / (frac(m) * asp(m) * (p.weights?.[i] ?? 1)))));
-  const dv = p.divider === 'rule' ? 2 * S : p.dividerSize * p.size * S, ws = M.map((m, i) => hs[i] * asp(m)), maxW = (c.safe.x1 - c.safe.x0) * 0.9, maxH = (c.safe.y1 - c.safe.y0) * 0.8;
-  const span = stack ? hs[0] + hs[1] + 2 * gap + dv : ws[0] + ws[1] + 2 * gap + dv, lim = stack ? Math.min(maxH / span, maxW / Math.max(...ws)) : maxW / span, k = Math.min(1, lim);
-  hs = hs.map((h) => h * k); const W2 = ws.map((w) => w * k), G = gap * k, D = dv * (p.divider === 'rule' ? 1 : k), cx = p.at[0] * c.W, cy = p.at[1] * c.H;
+  const S = c.s, M = (p.marks || []).slice(0, 2).map(markOf), n = M.length, cx = p.at[0] * c.W, cy = p.at[1] * c.H;
+  if (!n) return { stack: false, boxes: [], divider: null, gap: 0, balance: 'none' };
+  const stack = n === 2 && (p.layout === 'stack' || (p.layout === 'auto' && c.tall)), gap = p.gap * p.size * S, ink = M.map(inkOf), balance = p.balance === 'height' || ink.some((v) => v == null) ? 'height' : 'area', frac = (i) => ink[i] ?? 0.5, asp = (m) => m.w / m.h;
+  const T = (p.size * S) ** 2 * 0.42; let hs = M.map((m, i) => (balance === 'height' ? p.size * S * 0.8 : Math.sqrt(T / (frac(i) * asp(m) * (p.weights?.[i] ?? 1)))));
+  const dv = n < 2 ? 0 : p.divider === 'rule' ? 2 * S : p.dividerSize * p.size * S, gp = n < 2 ? 0 : 2 * gap, ws = M.map((m, i) => hs[i] * asp(m)), maxW = (c.safe.x1 - c.safe.x0) * 0.9, maxH = (c.safe.y1 - c.safe.y0) * 0.8;
+  const span = stack ? hs[0] + hs[1] + gp + dv : ws.reduce((a, b) => a + b, 0) + gp + dv, lim = stack ? Math.min(maxH / span, maxW / Math.max(...ws)) : Math.min(maxW / span, maxH / Math.max(...hs)), k = Math.min(1, lim);
+  hs = hs.map((h) => h * k); const W2 = ws.map((w) => w * k), G = gap * k, D = dv * (p.divider === 'rule' ? 1 : k);
   let boxes;
-  if (stack) { const tot = hs[0] + hs[1] + 2 * G + D, y0 = cy - tot / 2; boxes = [{ x: cx - W2[0] / 2, y: y0, w: W2[0], h: hs[0] }, { x: cx - W2[1] / 2, y: y0 + hs[0] + 2 * G + D, w: W2[1], h: hs[1] }]; }
+  if (n === 1) boxes = [{ x: cx - W2[0] / 2, y: cy - hs[0] / 2, w: W2[0], h: hs[0] }];
+  else if (stack) { const tot = hs[0] + hs[1] + 2 * G + D, y0 = cy - tot / 2; boxes = [{ x: cx - W2[0] / 2, y: y0, w: W2[0], h: hs[0] }, { x: cx - W2[1] / 2, y: y0 + hs[0] + 2 * G + D, w: W2[1], h: hs[1] }]; }
   else { const tot = W2[0] + W2[1] + 2 * G + D, x0 = cx - tot / 2; boxes = [{ x: x0, y: cy - hs[0] / 2, w: W2[0], h: hs[0] }, { x: x0 + W2[0] + 2 * G + D, y: cy - hs[1] / 2, w: W2[1], h: hs[1] }]; }
-  boxes.forEach((b, i) => { b.ink = frac(M[i]) * b.w * b.h; b.mark = M[i]; });
-  const dc = stack ? [cx, boxes[0].y + boxes[0].h + G + D / 2] : [boxes[0].x + boxes[0].w + G + D / 2, cy];
-  return { stack, boxes, divider: { x: dc[0], y: dc[1], size: D }, gap: G };
+  boxes.forEach((b, i) => { b.ink = frac(i) * b.w * b.h; b.mark = M[i]; });
+  const dc = n < 2 ? null : stack ? [cx, boxes[0].y + boxes[0].h + G + D / 2] : [boxes[0].x + boxes[0].w + G + D / 2, cy];
+  return { stack, boxes, divider: dc ? { x: dc[0], y: dc[1], size: D } : null, gap: G, balance };
 }
 function drawMark(b, color, font, s, id) {
   const m = b.mark, licensed = m.placeholder || m.licensed === true;
@@ -66,17 +91,24 @@ export const MERGE_ICONS = {
   cube: { d: 'M50 10 L86 30 V70 L50 90 L14 70 V30 Z', inner: 'M14 30 L50 50 L86 30 M50 50 V90' },
   note: { d: 'M30 14 H62 L76 28 V86 H30 Z', inner: 'M40 44 H66 M40 56 H66 M40 68 H56' },
 };
-/* tile states at local time u: [{ x, y, size, fill (0..1), frame (0..1 tile-frame opacity), draw (0..1), op }] + letters [{ ch, x, op }] */
+/* the size factor that keeps the staircase, the row and the name inside the safe rect (about the part's centre): { kT (tile size), kN (name size) }. 1 on 16:9; < 1 on a narrow frame. */
+export function iconMergeFit(p, c) {
+  const n = (p.icons || []).length, S = sc(c), T = p.tile * S, cx = p.at[0] * c.W, cy = p.at[1] * c.H, hw = Math.min(cx - c.safe.x0, c.safe.x1 - cx), hh = Math.min(cy - c.safe.y0, c.safe.y1 - cy);
+  const stair = (((n - 1) * p.step) / 2 + 0.5) * T, rowT = T * p.rowScale, row = (n * rowT + (n - 1) * rowT * 0.35) / 2, NS = p.nameSize * S, chars = [...String(p.name ?? '')];
+  const tot = chars.reduce((a, ch) => a + measure(ch, NS, { weight: p.weight, font: p.font }) + p.ls * NS, 0) / 2;
+  return { kT: n ? Math.min(1, hw / stair, hh / stair, hw / Math.max(row, 1e-6)) : 1, kN: tot > 0 ? Math.min(1, hw / tot) : 1 };
+}
+/* tile states at local time u: [{ x, y, size, fill (0..1), frame (0..1 tile-frame opacity), draw (0..1), op }] + letters [{ ch, x, op }]. No icons: no tiles; no name: the icons stay in their row (nothing merges). */
 export function iconMergeState(u, p, c) {
-  const S = c.s, n = p.icons.length, T = p.tile * S, step = p.step * T, cx = p.at[0] * c.W, cy = p.at[1] * c.H, NS = p.nameSize * S;
-  const chars = [...String(p.name)], adv = chars.map((ch) => measure(ch, NS, { weight: p.weight, font: p.font }) + p.ls * NS), tot = adv.reduce((a, b) => a + b, 0);
+  const icons = p.icons || [], n = icons.length, fit = iconMergeFit(p, c), S = sc(c), T = p.tile * S * fit.kT, step = p.step * T, cx = p.at[0] * c.W, cy = p.at[1] * c.H, NS = p.nameSize * S * fit.kN;
+  const chars = [...String(p.name ?? '')], adv = chars.map((ch) => measure(ch, NS, { weight: p.weight, font: p.font }) + p.ls * NS), tot = adv.reduce((a, b) => a + b, 0);
   let acc = cx - tot / 2; const lx = adv.map((w) => { const x = acc + w / 2; acc += w; return x; });
-  const kl = E.move(seg(u, p.lineAt, p.lineAt + p.line)), km = p.mergeAt == null ? 0 : seg(u, p.mergeAt, p.mergeAt + p.merge), rowT = T * p.rowScale, rowGap = rowT * 0.35, rowW = n * rowT + (n - 1) * rowGap;
-  const tiles = p.icons.map((_, i) => {
+  const kl = E.move(seg(u, p.lineAt, p.lineAt + p.line)), km = p.mergeAt == null || !chars.length ? 0 : seg(u, p.mergeAt, p.mergeAt + p.merge), rowT = T * p.rowScale, rowGap = rowT * 0.35, rowW = n * rowT + (n - 1) * rowGap;
+  const tiles = icons.map((_, i) => {
     const sx = cx + ((n - 1) / 2 - i) * step, sy = cy + (i - (n - 1) / 2) * step, rx = cx - rowW / 2 + rowT / 2 + i * (rowT + rowGap), ry = cy;
-    const kd = E.soft(seg(u, p.drawAt + i * p.stagger, p.drawAt + i * p.stagger + p.draw)), hit = p.hits[i] ?? p.hits.at(-1), kf = E.soft(seg(u, hit, hit + p.fillF / FR)), pop = 1 + 0.07 * Math.sin(Math.PI * kf);
-    const li = Math.min(chars.length - 1, Math.max(0, Math.round(((i + 0.5) * chars.length) / n - 0.5))), d = 0.07 * i, kk = E.cam(seg(km, d, d + 0.6 * (1 - 0.07 * (n - 1)) + 0.25));
-    const x = lerp(lerp(sx, rx, kl), lx[li], kk), y = lerp(lerp(sy, ry, kl), cy, kk), size = lerp(lerp(T, rowT, kl), NS * 0.7, kk) * pop;
+    const kd = E.soft(seg(u, p.drawAt + i * p.stagger, p.drawAt + i * p.stagger + p.draw)), hit = p.hits[i] ?? p.hits.at(-1) ?? 0, kf = E.soft(seg(u, hit, hit + p.fillF / FR)), pop = 1 + 0.07 * Math.sin(Math.PI * kf);
+    const li = chars.length ? Math.min(chars.length - 1, Math.max(0, Math.round(((i + 0.5) * chars.length) / n - 0.5))) : 0, d = 0.07 * i, kk = E.cam(seg(km, d, d + 0.6 * (1 - 0.07 * (n - 1)) + 0.25));
+    const x = lerp(lerp(sx, rx, kl), chars.length ? lx[li] : rx, kk), y = lerp(lerp(sy, ry, kl), cy, kk), size = lerp(lerp(T, rowT, kl), NS * 0.7, kk) * pop;
     return { x, y, size, fill: kf, frame: kd * (1 - kl), draw: kd, op: (1 - clamp(kk * 1.25 - 0.2)) * (kd > 0 ? 1 : 0), letter: li };
   });
   const letters = chars.map((ch, j) => { const tj = p.mergeAt == null ? 1e9 : p.mergeAt + p.merge * (0.35 + (0.55 * j) / Math.max(1, chars.length - 1)); return { ch, x: lx[j], op: E.soft(seg(u, tj, tj + 0.18)) }; });
@@ -92,15 +124,32 @@ export function flankBox(u, p, c) {
   else { b = sb.box || [0.4, 0.22, 0.2, 0.56]; e = sb.arriveAt == null ? 1 : E.hero(seg(u, sb.arriveAt, sb.arriveAt + (sb.arrive ?? 0.6))); }
   const [x, y, w, h] = [b[0] * c.W, b[1] * c.H, b[2] * c.W, b[3] * c.H], we = w * e; return { x: x + (w - we) / 2, y, w: we, h, e };
 }
-/* words of shot `shot` of a sentence split by ranges: [{ words, split }] params for each shot, same style token */
-export function flankShots(sentence, ranges, style = {}) { const ws = String(sentence).split(/\s+/); return ranges.map(([a, b], i) => ({ ...style, words: ws.slice(a, b), shot: i })); }
+/* the factor (<= 1, constant over time) that keeps both halves of the phrase inside the safe rect beside the subject box, over every box the subject takes (all its keyframes); the type never grows */
+export function flankFitK(p, c) {
+  const S0 = p.size * sc(c), m = p.margin * sc(c), words = p.words || [], sp = Math.min(Math.max(1, p.split ?? Math.ceil(words.length / 2)), words.length), fo = { weight: p.weight, font: p.font, ls: p.ls * S0 }, gap = measure(' ', S0, fo);
+  const run = (a, b) => { let w = 0; for (let i = a; i < b; i++) w += measure(words[i], S0, fo) + (i > a ? gap : 0); return w; }, wl = run(0, sp), wr = run(sp, words.length), sb = p.subject || {};
+  const boxes = sb.keys && sb.keys.length ? sb.keys.map((k) => k[1]) : [sb.box || [0.4, 0.22, 0.2, 0.56]]; let k = 1;
+  for (const b of boxes) { const aL = b[0] * c.W - m - c.safe.x0, aR = c.safe.x1 - (b[0] + b[2]) * c.W - m; if (wl > 0) k = Math.min(k, Math.max(0, aL) / wl); if (wr > 0) k = Math.min(k, Math.max(0, aR) / wr); }
+  return Math.max(0.3, k);
+}
+/* problems: the phrase had to shrink a lot (split it across shots with flankShots), or no room beside the box even at 30% */
+export function lintFlank(p, c) {
+  const k = flankFitK(p, c), out = []; if (k < 0.55) out.push(`flankWords: the phrase shrank to ${Math.round(k * 100)}% to fit beside the subject; split it across shots (flankShots) or widen the gap`);
+  return out;
+}
+/* words of shot `shot` of a sentence split by ranges: [{ words, split }] params for each shot, same style token. With a ctx `c` (and `style.subject`), every shot gets the SAME size: the smallest fit of any shot. */
+export function flankShots(sentence, ranges, style = {}, c = null) {
+  const ws = String(sentence).split(/\s+/).filter(Boolean), d = TYPE_R45['type.flankWords'].d, shots = ranges.map(([a, b], i) => ({ ...style, words: ws.slice(a, b), shot: i }));
+  if (c) { const k = Math.min(...shots.map((q) => flankFitK({ ...d, ...q }, c))); if (k < 1) shots.forEach((q) => { q.size = Math.floor((style.size ?? d.size) * k * 100) / 100; }); }
+  return shots;
+}
 /* word boxes at u: [{ word, x, y, w, h, side }] (px). Pure. */
 export function flankState(u, p, c) {
-  const S = p.size * c.s, B = flankBox(u, p, c), m = p.margin * c.s, words = p.words, sp = Math.min(Math.max(1, p.split ?? Math.ceil(words.length / 2)), words.length), fo = { weight: p.weight, font: p.font, ls: p.ls * S };
+  const k = flankFitK(p, c), S = p.size * sc(c) * k, B = flankBox(u, p, c), m = p.margin * sc(c), words = p.words || [], sp = Math.min(Math.max(1, p.split ?? Math.ceil(words.length / 2)), words.length), fo = { weight: p.weight, font: p.font, ls: p.ls * S };
   const yb = (p.row == null ? B.y + B.h / 2 : p.row * c.H) + S * 0.35, out = [], space = measure(' ', S, fo);
   let x = B.x - m; for (let i = sp - 1; i >= 0; i--) { const w = measure(words[i], S, fo); x -= w; out.unshift({ word: words[i], x, y: yb - S * 0.74, w, h: S * 0.96, side: 'left', i }); x -= space; }
   x = B.x + B.w + m; for (let i = sp; i < words.length; i++) { const w = measure(words[i], S, fo); out.push({ word: words[i], x, y: yb - S * 0.74, w, h: S * 0.96, side: 'right', i }); x += w + space; }
-  return { box: B, words: out, base: yb };
+  return { box: B, words: out, base: yb, k };
 }
 
 /* ---------------- behindSubject ---------------- */
@@ -129,12 +178,14 @@ export const TYPE_R45 = {
     d: { marks: ['ring', 'bars'], labels: ['Brand A', 'Brand B'], balance: 'area', weights: [1, 1], divider: 'x', dividerSize: 0.26, size: 240, gap: 0.3, at: [0.5, 0.5], layout: 'auto',
       color: INK, divColor: '#8A8A94', labelColor: '#8A8A94', rise: 0.06, blur: 10, font: MONO },
     svg(L, p, c) {
-      const s = c.s, lay = partnerLockupLayout(p, c), id = uidOf('partnerLockup', p), kin = E.hero(L.in), z = lerp(0.94, 1, kin), bl = (1 - kin) * p.blur * s, cx = p.at[0] * c.W, cy = p.at[1] * c.H;
-      let out = lay.boxes.map((b) => drawMark(b, p.color, p.font, s, id)).join(''); const { x, y, size: D } = lay.divider, sw = Math.max(1.5 * s, D * 0.09);
-      if (p.divider === 'rule') { const ln = lay.stack ? Math.max(...lay.boxes.map((b) => b.w)) * 0.5 : Math.max(...lay.boxes.map((b) => b.h)) * 1.05;
-        out += lay.stack ? `<rect x="${f2(x - ln / 2)}" y="${f2(y - 1 * s)}" width="${f2(ln)}" height="${f2(2 * s)}" fill="${p.divColor}"/>` : `<rect x="${f2(x - 1 * s)}" y="${f2(y - ln / 2)}" width="${f2(2 * s)}" height="${f2(ln)}" fill="${p.divColor}"/>`; }
-      else { const h = D / 2, d = p.divider === '+' ? `M${f2(x - h)} ${f2(y)} H${f2(x + h)} M${f2(x)} ${f2(y - h)} V${f2(y + h)}` : `M${f2(x - h)} ${f2(y - h)} L${f2(x + h)} ${f2(y + h)} M${f2(x + h)} ${f2(y - h)} L${f2(x - h)} ${f2(y + h)}`;
-        out += `<path d="${d}" stroke="${p.divColor}" stroke-width="${f2(sw)}" stroke-linecap="round" fill="none"/>`; }
+      const s = c.s, lay = partnerLockupLayout(p, c); if (!lay.boxes.length) return '';
+      const id = uidOf('partnerLockup', p), kin = E.hero(L.in), z = lerp(0.94, 1, kin), bl = (1 - kin) * p.blur * s, cx = p.at[0] * c.W, cy = p.at[1] * c.H;
+      let out = lay.boxes.map((b) => drawMark(b, p.color, p.font, s, id)).join('');
+      if (lay.divider) { const { x, y, size: D } = lay.divider, sw = Math.max(1.5 * s, D * 0.09);
+        if (p.divider === 'rule') { const ln = lay.stack ? Math.max(...lay.boxes.map((b) => b.w)) * 0.5 : Math.max(...lay.boxes.map((b) => b.h)) * 1.05;
+          out += lay.stack ? `<rect x="${f2(x - ln / 2)}" y="${f2(y - 1 * s)}" width="${f2(ln)}" height="${f2(2 * s)}" fill="${p.divColor}"/>` : `<rect x="${f2(x - 1 * s)}" y="${f2(y - ln / 2)}" width="${f2(2 * s)}" height="${f2(ln)}" fill="${p.divColor}"/>`; }
+        else { const h = D / 2, d = p.divider === '+' ? `M${f2(x - h)} ${f2(y)} H${f2(x + h)} M${f2(x)} ${f2(y - h)} V${f2(y + h)}` : `M${f2(x - h)} ${f2(y - h)} L${f2(x + h)} ${f2(y + h)} M${f2(x + h)} ${f2(y - h)} L${f2(x - h)} ${f2(y + h)}`;
+          out += `<path d="${d}" stroke="${p.divColor}" stroke-width="${f2(sw)}" stroke-linecap="round" fill="none"/>`; } }
       const ly = lay.stack ? null : Math.max(...lay.boxes.map((b) => b.y + b.h)) + 46 * s;
       if (p.labels) lay.boxes.forEach((b, i) => { if (p.labels[i]) out += text(p.labels[i], b.x + b.w / 2, ly ?? b.y + b.h + 40 * s, { size: 22 * s, weight: 600, fill: p.labelColor, anchor: 'middle', font: p.font, ls: 2 * s }); });
       const dy = (1 - kin) * p.rise * c.H;
@@ -144,7 +195,7 @@ export const TYPE_R45 = {
     d: { icons: ['play', 'bolt', 'chat', 'cube'], name: 'The Bundle', tile: 190, step: 0.62, rowScale: 0.55, at: [0.5, 0.5], drawAt: 0, draw: 0.6, stagger: 0.2, hits: [1.2, 1.45, 1.7, 1.95], fillF: 4,
       lineAt: 2.2, line: 0.45, mergeAt: 2.8, merge: 0.6, nameSize: 84, weight: 700, ls: -0.02, font: FONT, ink: INK, paper: '#FFFFFF', frameColor: 'rgba(14,14,20,0.55)' },
     svg(L, p, c) {
-      const s = c.s, st = iconMergeState(L.u, p, c); let out = '';
+      const s = sc(c), st = iconMergeState(L.u, p, c); let out = '';
       st.tiles.forEach((t, i) => { if (t.op <= 0.004) return; const ic = MERGE_ICONS[p.icons[i]] || (typeof p.icons[i] === 'object' ? p.icons[i] : MERGE_ICONS.play), sc = (t.size * 0.62) / 100, sw = (2.4 * s) / sc;
         let g = '';
         if (t.frame > 0.01) g += `<rect x="${f2(t.x - t.size / 2)}" y="${f2(t.y - t.size / 2)}" width="${f2(t.size)}" height="${f2(t.size)}" fill="none" stroke="${p.frameColor}" stroke-width="${f2(1.6 * s)}" opacity="${f2(t.frame)}" pathLength="100" stroke-dasharray="100 101" stroke-dashoffset="${f2(100 * (1 - t.draw))}"/>`;
@@ -158,7 +209,7 @@ export const TYPE_R45 = {
     d: { words: ['All-day', 'comfort'], split: null, subject: { box: [0.41, 0.2, 0.18, 0.6], arriveAt: 0, arrive: 0.6 }, margin: 44, size: 92, weight: 700, ls: -0.02, font: FONT, color: INK, row: null,
       stagger: 0.06, rise: 0.25, drawSubject: false, subjectColor: '#DCD5C6', shot: 0 },
     svg(L, p, c) {
-      const S = p.size * c.s, st = flankState(L.u, p, c), B = st.box, id = uidOf('flankWords', p); let out = '';
+      const st = flankState(L.u, p, c), S = p.size * sc(c) * st.k, B = st.box, id = uidOf('flankWords', p); let out = '';
       if (p.drawSubject && B.w > 1) out += `<defs><linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.45"/><stop offset="0.4" stop-color="#FFFFFF" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.22"/></linearGradient></defs>` +
         `<ellipse cx="${f2(B.x + B.w / 2)}" cy="${f2(B.y + B.h + 12 * c.s)}" rx="${f2(B.w * 0.45)}" ry="${f2(10 * c.s)}" fill="#000" opacity="${f2(0.14 * B.e)}"/>` +
         `<rect x="${f2(B.x)}" y="${f2(B.y)}" width="${f2(B.w)}" height="${f2(B.h)}" rx="${f2(Math.min(B.w, B.h) / 2)}" fill="${p.subjectColor}"/><rect x="${f2(B.x)}" y="${f2(B.y)}" width="${f2(B.w)}" height="${f2(B.h)}" rx="${f2(Math.min(B.w, B.h) / 2)}" fill="url(#${id}g)"/>`;
@@ -167,15 +218,18 @@ export const TYPE_R45 = {
       return `<g opacity="${f2(1 - L.out)}">${out}</g>`; } },
 
   'type.behindSubject': { file: 'type/gfx/r45-type.js', tags: ['type', 'depth', 'matte', 'behind-subject', 'giant-type', 'marquee', 'label', 'occlusion'], dur: 3, inF: 4, outF: 8,
-    d: { mode: 'label', steps: [[0, 'STILL'], [0.8, 'CLIP'], [1.6, 'SONG']], text: 'NEW NAME', sep: '  /  ', speed: 260, loop: null, size: 400, y: 0.56, weight: 800, ls: -0.04, font: FONT, color: '#FF6B4A',
+    d: { mode: 'label', steps: [[0, 'DAWN'], [0.8, 'NOON'], [1.6, 'DUSK']], text: 'NEW NAME', sep: '  /  ', speed: 260, loop: null, size: 400, y: 0.56, weight: 800, ls: -0.04, font: FONT, color: '#FF6B4A',
       outline: false, plate: null, matte: null, matteMode: 'alpha', edge: 'soft', swap: 0.16 },
     svg(L, p, c) {
-      const u = L.u, S = p.size * c.s, id = uidOf('behindSubject', p), fo = { weight: p.weight, font: p.font, ls: p.ls * S }, base = p.y * c.H + S * 0.36;
+      const u = L.u, id = uidOf('behindSubject', p), steps = p.steps && p.steps.length ? p.steps : [[0, String(p.text ?? '')]], S0 = p.size * sc(c), avail = 2 * Math.min(c.W / 2 - c.safe.x0, c.safe.x1 - c.W / 2);
+      /* label mode: the widest label must fit the safe width (the type shrinks, it never runs off a narrow frame); a marquee scrolls, so it keeps its size */
+      const wide = p.mode === 'marquee' ? 0 : Math.max(...steps.map(([, str]) => measure(String(str), S0, { weight: p.weight, font: p.font, ls: p.ls * S0 }))), S = wide > avail ? (S0 * avail) / wide : S0;
+      const fo = { weight: p.weight, font: p.font, ls: p.ls * S }, base = p.y * c.H + S * 0.36;
       const paint = (str, x, anchor = 'middle', o = 1) => text(str, x, base, { size: S, weight: p.weight, fill: p.outline ? 'none' : p.color, anchor, font: p.font, ls: p.ls * S, op: o, extra: p.outline ? `stroke="${p.color}" stroke-width="${f2(S * 0.012)}"` : '' });
       let type = '';
-      if (p.mode === 'marquee') { const unit = p.text + p.sep, uw = measure(unit, S, fo), f = frameOf(u), Fp = p.loop ? Math.round(p.loop * FR) : 0, off = Fp ? ((f % Fp) / Fp) * uw : ((f * p.speed * c.s) / FR) % uw;
-        for (let x = -off; x < c.W + uw; x += uw) type += paint(unit, x, 'start'); }
-      else { const st = stepAt(p.steps, u, p.swap), k = E.hero(st.k); if (st.k < 1 && st.j > 0) type += `<g transform="translate(0 ${f2(-k * S * 0.18)})">${paint(st.prev, c.W / 2, 'middle', 1 - k)}</g>`;
+      if (p.mode === 'marquee') { const unit = String(p.text ?? '') + String(p.sep ?? ''), uw = measure(unit, S, fo), f = frameOf(u), Fp = p.loop ? Math.round(p.loop * FR) : 0, off = Fp ? ((f % Fp) / Fp) * uw : ((f * p.speed * sc(c)) / FR) % uw;
+        if (uw > 0) for (let x = -off; x < c.W + uw; x += uw) type += paint(unit, x, 'start'); }
+      else { const st = stepAt(steps, u, p.swap), k = E.hero(st.k); if (st.k < 1 && st.j > 0) type += `<g transform="translate(0 ${f2(-k * S * 0.18)})">${paint(st.prev, c.W / 2, 'middle', 1 - k)}</g>`;
         type += `<g transform="translate(0 ${f2((1 - k) * S * 0.18)})">${paint(st.cur, c.W / 2, 'middle', st.j > 0 ? k : 1)}</g>`; }
       const own = !p.plate && !p.matte, fp = own ? figurePlate(u, c) : null, plate = own ? fp.plate : srcAt(p.plate, u, c), matte = own ? fp.matte : srcAt(p.matte, u, c), inv = !own && !p.plate;
       const fn = (p.matteMode === 'luminance' ? '<feColorMatrix type="luminanceToAlpha"/>' : '') + (p.edge === 'hard' ? `<feComponentTransfer><feFuncA type="discrete" tableValues="${inv ? '1 0' : '0 1'}"/></feComponentTransfer>` : inv ? '<feComponentTransfer><feFuncA type="table" tableValues="1 0"/></feComponentTransfer>' : '');
@@ -189,5 +243,5 @@ export const TYPE_R45_CUES = {
   'layout.iconMergeLockup': (p) => [{ t: p.drawAt, id: 'sfx/whoosh/swish_xs', why: 'outlines draw on' }, ...p.icons.map((_, i) => ({ t: p.hits[i] ?? p.hits.at(-1), id: 'sfx/hit/soft', why: `tile ${i + 1} fills` })),
     { t: p.lineAt, id: 'sfx/whoosh/swish_s', why: 'tiles line up' }, ...(p.mergeAt == null ? [] : [{ t: p.mergeAt, id: 'sfx/sparkle/letter_assemble', why: 'icons merge into the name' }])],
   'type.flankWords': (p) => [{ t: p.subject?.arriveAt ?? 0, id: 'sfx/whoosh/swish_s', why: 'words part around the subject' }],
-  'type.behindSubject': (p) => (p.mode === 'marquee' ? [{ t: 0, id: 'sfx/whoosh/whoosh_in_m', why: 'marquee slides behind the subject' }] : p.steps.map(([t], i) => ({ t, id: i ? 'sfx/tx/cut_tick' : 'sfx/whoosh/whoosh_in_m', why: 'label ' + (i + 1) }))),
+  'type.behindSubject': (p) => (p.mode === 'marquee' ? [{ t: 0, id: 'sfx/whoosh/whoosh_in_m', why: 'marquee slides behind the subject' }] : (p.steps && p.steps.length ? p.steps : [[0]]).map(([t], i) => ({ t, id: i ? 'sfx/tx/cut_tick' : 'sfx/whoosh/whoosh_in_m', why: 'label ' + (i + 1) }))),
 };

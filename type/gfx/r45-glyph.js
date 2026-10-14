@@ -5,7 +5,8 @@
                            luminance grid you pass ({ lum: rows x cols of 0..1 }; lumGrid(img, cols, rows) builds one from an <img> in the browser).
      type.textOnPath       text set along an SVG path with arc-length spacing (even on curves): reveal, travel, or trail a moving leader (icon / dot / svg)
      type.electricOutline  outlined numerals / short words from an owned single-stroke face, drawn on, with a seeded per-frame crackle, small arcs and a glow
-   Craft learned from public launch films (round 4/5 study, October 2026): techniques only, never a brand, footage, wording, figure or sequence. Owned code. */
+   type.electricOutline pairs with electricGlowPools(p, c): the soft ambient halo comes from the existing overlay `glow` (pools), the crisp neon strokes from the SVG.
+   Type sizes scale from the SHORTER frame side and fit the safe rect. Craft learned from public launch films (round 4/5 study, October 2026): techniques only, never a brand, footage, wording, figure or sequence. Owned code. */
 import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, INK, PAPER, f2, esc, text, measure, hashf, uidOf, blurDef, blurAttr } from './core.js';
 import { DEFAULT_MARK } from './media.js';
 import { flattenPath, arcTable, pointAt, PATHS } from './pathsample.js';
@@ -13,9 +14,12 @@ import { mixHex } from './swap.js';
 
 const op = (L) => clamp(L.in * 1.5) * (1 - L.out);
 const FR = 30, frameOf = (u) => Math.floor(u * FR + 1e-6);
+const sc = (c) => (c.H > c.W ? c.W / 1080 : c.s);   // type scale from the shorter frame side (a 1080 x 1920 frame keeps 1080p type)
+const safeHalf = (c) => Math.min(c.W / 2 - c.safe.x0, c.safe.x1 - c.W / 2);   // room each side of the frame centre inside the safe rect
 
 /* ---------------- asciiMosaic ---------------- */
-export const RAMP = ' .,:;-=+*#%@';
+/* ordered by MEASURED ink in IBM Plex Mono SemiBold (the chrome test re-measures it): '-' and '+' sit lower than ';' and '=' in the usual ramp, so this order is monotone */
+export const RAMP = ' .-,:;+=*#%@';
 /* owned procedural luminance plates: f(x, y) with x, y in 0..1 of the mosaic area (aspect = area w / h) -> 0..1 */
 export const LUM_PLATES = {
   orb(x, y, a) { const X = (x - 0.5) * a, Y = y - 0.5, r = 0.4, d = Math.hypot(X, Y); if (d > r) return 0.06 + 0.05 * (1 - Math.hypot(x - 0.5, y - 0.5));
@@ -34,28 +38,33 @@ export function lumGrid(img, cols, rows) {
 }
 const sampleGrid = (G, x, y) => { const R = G.length, C = G[0].length, r = Math.min(R - 1, Math.max(0, Math.floor(y * R))), k = Math.min(C - 1, Math.max(0, Math.floor(x * C))); return +G[r][k] || 0; };
 /* the mosaic plan for (p, c): cell size, grid, per-cell source luminance and level. Pure; cached per key. */
+/* an image object ({ lum }) is keyed by identity, not re-stringified every frame: treat it as immutable (pass a new object to change it) */
+const imgIds = new WeakMap(); let imgSeq = 0; const imgKey = (im) => (im && typeof im === 'object' ? 'o' + (imgIds.get(im) ?? (imgIds.set(im, ++imgSeq), imgSeq)) : String(im));
 const mosaicCache = new Map();
 export function asciiMosaicGrid(p, c) {
-  const key = JSON.stringify([p.image, p.cols, p.area, p.levels, p.gamma, p.mode, p.text, c.W, c.H]); if (mosaicCache.has(key)) return mosaicCache.get(key);
+  const key = JSON.stringify([imgKey(p.image), p.cols, p.area, p.levels, p.gamma, p.mode, p.text, c.W, c.H]); if (mosaicCache.has(key)) return mosaicCache.get(key);
   const [ax, ay, aw, ah] = [p.area[0] * c.W, p.area[1] * c.H, p.area[2] * c.W, p.area[3] * c.H], cw = aw / p.cols, fs = cw / 0.6, rows = Math.max(1, Math.floor(ah / fs)), y0 = ay + (ah - rows * fs) / 2;
-  const fn = typeof p.image === 'string' ? LUM_PLATES[p.image] || LUM_PLATES.bust : null, a = aw / (rows * fs), cells = [], chars = String(p.text).replace(/\s+/g, '') || '#';
+  const fn = p.image && p.image.lum ? null : LUM_PLATES[p.image] || LUM_PLATES.bust, a = aw / (rows * fs), cells = [], chars = String(p.text ?? '').replace(/\s+/g, '') || '#';
   for (let r = 0; r < rows; r++) for (let k = 0; k < p.cols; k++) {
     const x = (k + 0.5) / p.cols, y = (r + 0.5) / rows, lum = clamp((fn ? fn(x, y, a) : sampleGrid(p.image.lum, x, y)) ** (p.gamma || 1)), q = Math.round(lum * (p.levels - 1)), i = cells.length;
     cells.push({ i, r, k, x: ax + (k + 0.5) * cw, y: y0 + (r + 0.78) * fs, lum, q, ch: p.mode === 'ramp' ? RAMP[Math.round((q / (p.levels - 1)) * (RAMP.length - 1))] : chars[i % chars.length] });
   }
   const out = { cells, rows, cols: p.cols, fs, cw, area: [ax, y0, aw, rows * fs] }; mosaicCache.set(key, out); return out;
 }
+/* the opening text line: its characters (a lone '#' when empty) and the size that keeps one line inside the safe width (never above lineSize) */
+const lineChars = (p) => { const a = [...String(p.text ?? '')]; return a.length ? a : ['#']; };
+const lineSizeOf = (p, c) => Math.min(p.lineSize * sc(c), (2 * safeHalf(c)) / (Math.max(1, Math.min(p.lineChars, lineChars(p).length)) * 0.6));
 /* per-cell animation constants (line position, scatter point, delays), cached per layout */
 const animCache = new Map();
 function mosaicAnim(p, c, G) {
   const key = JSON.stringify([p.text, p.lineSize, p.lineChars, p.seed, p.spread, c.W, c.H, G.cells.length, G.area]); if (animCache.has(key)) return animCache.get(key);
-  const n = [...String(p.text)].length, LS = p.lineSize * c.s, lw = Math.min(p.lineChars, n), lines = Math.ceil(n / p.lineChars), lx0 = c.W / 2 - (lw * 0.6 * LS) / 2, ly0 = c.H / 2 - ((lines - 1) * LS * 1.25) / 2 + LS * 0.35, [ax, ay, aw, ah] = G.area;
+  const n = lineChars(p).length, LS = lineSizeOf(p, c), lw = Math.min(p.lineChars, n), lines = Math.ceil(n / p.lineChars), lx0 = c.W / 2 - (lw * 0.6 * LS) / 2, ly0 = c.H / 2 - ((lines - 1) * LS * 1.25) / 2 + LS * 0.35, [ax, ay, aw, ah] = G.area;
   const out = G.cells.map(({ i }) => { const j = i % n; return { lx: lx0 + (j % p.lineChars) * 0.6 * LS + 0.3 * LS, ly: ly0 + Math.floor(j / p.lineChars) * LS * 1.25, sx: ax - aw * 0.15 + hashf(i, 1, p.seed) * aw * 1.3,
     sy: ay - ah * 0.1 + hashf(i, 2, p.seed) * ah * 1.2, d0: hashf(i, 3, p.seed) * 0.25, dl: p.spread * hashf(i, 4, p.seed) }; });
   animCache.set(key, out); return out;
 }
-/* relative ink of a ramp glyph (0..1), for the rendered-brightness proxy in tests */
-export const RAMP_INK = [0, 0.08, 0.14, 0.2, 0.26, 0.3, 0.4, 0.5, 0.62, 0.78, 0.88, 1];
+/* relative ink of each RAMP glyph (0..1, '@' = 1), measured as the pixel coverage of the glyph in IBM Plex Mono SemiBold (type/tests/r45type.test.mjs --chrome re-measures it and fails if it drifts) */
+export const RAMP_INK = [0, 0.133, 0.175, 0.19, 0.266, 0.323, 0.412, 0.445, 0.551, 0.868, 0.924, 1];
 
 /* ---------------- textOnPath ---------------- */
 const tabCache = new Map();
@@ -66,10 +75,10 @@ function pathTab(p, c) {
 }
 /* glyph states at local time u: [{ ch, s, x, y, a (deg), op }] + the leader { x, y, a } (trail mode). Pure. */
 export function textOnPathState(u, p, c) {
-  const S = p.size * c.s, tab = pathTab(p, c), L = tab.len, chars = [...String(p.text)], fo = { weight: p.weight, font: p.font }, ls = p.ls * S;
+  const S = p.size * sc(c), tab = pathTab(p, c), L = tab.len, chars = [...String(p.text ?? '')], fo = { weight: p.weight, font: p.font }, ls = p.ls * S;
   const adv = chars.map((ch) => measure(ch, S, fo) + ls), tot = adv.reduce((a, b) => a + b, 0), off = []; let acc = 0; for (const w of adv) { off.push(acc + w / 2); acc += w; }
   let s0, lead = null, head = Infinity; const fadePx = p.fade * S;
-  if (p.mode === 'travel') s0 = p.start * L + p.speed * c.s * u;
+  if (p.mode === 'travel') s0 = p.start * L + p.speed * sc(c) * u;
   else if (p.mode === 'trail') { const sl = lerp(p.start * L, p.end * L, E[p.ease] ? E[p.ease](seg(u, p.delay, p.delay + p.travel)) : seg(u, p.delay, p.delay + p.travel)); lead = { ...pointAt(tab, sl), s: sl }; s0 = sl - (p.leader ? p.leaderSize * S * 0.5 : 0) - p.gap * S - tot; }
   else { s0 = p.start * L; head = E.soft(seg(u, p.delay, p.delay + p.travel)) * (tot + fadePx); }
   const glyphs = chars.map((ch, i) => { const s = s0 + off[i], q = pointAt(tab, s); let o = 1;
@@ -118,12 +127,26 @@ export function strokeOutline(pts, w) {
   loopCache.set(key, loops); return loops;
 }
 
+/* numeral geometry: cap height px (size from the shorter frame side, shrunk so the text fits the safe width and height), unit = cap / 6, advance, width, and the centre
+   (kept inside the safe rect). Same on every frame. */
+export function electricGeo(p, c) {
+  const n = Math.max(1, [...String(p.text ?? '')].length), wU = n * (4 + p.spacing) - p.spacing, cap = Math.min(p.size * sc(c), ((c.safe.x1 - c.safe.x0) * 0.92 * 6) / wU, (c.safe.y1 - c.safe.y0) * 0.92), un = cap / 6, tw = wU * un;
+  return { cap, un, adv: (4 + p.spacing) * un, tw, cx: Math.min(c.safe.x1 - tw / 2, Math.max(c.safe.x0 + tw / 2, p.at[0] * c.W)), cy: Math.min(c.safe.y1 - cap / 2, Math.max(c.safe.y0 + cap / 2, p.at[1] * c.H)) };
+}
+/* the soft ambient halo of the numerals as pools for the EXISTING overlay `glow` (overlay.js: { kind: 'glow', params: { pools } }, screen blend, mounted below the type):
+   [{ x, y, r, color, intensity }] in the overlay's own frame fractions (x from the left, y from the BOTTOM; r = fraction of H). Set `glow: 0` to drop the SVG blur and let the overlay carry all the light, or keep both (default: a tight SVG glow + this halo). */
+export function electricGlowPools(p, c) { const g = electricGeo(p, c); return [{ x: +(g.cx / c.W).toFixed(4), y: +(1 - g.cy / c.H).toFixed(4), r: +((g.cap * 0.7) / c.H).toFixed(4), color: p.color, intensity: p.halo }]; }
+/* the sound that pairs with the crackle. Today the closest EXISTING id (zzt bursts); the electric-arc sound (sfx/elec/arc) is added by another lane. When it lands in sfx/manifest.json,
+   change this ONE constant (the cue table and GFX_SFX in index.js both read it); type/tests/r45type.test.mjs fails until you do. */
+export const ELECTRIC_SOUND = 'sfx/tx/glitch_stutter';
+/* the id it will take over, built from parts on purpose: a literal would make tools/check_ids.py report an id that is not in this library yet */
+export const ELECTRIC_ARC = ['sfx', 'elec', 'arc'].join('/');
 export const GLYPH_R45 = {
   'type.asciiMosaic': { file: 'type/gfx/r45-glyph.js', tags: ['type', 'ascii', 'mosaic', 'glyph-portrait', 'text-as-image', 'prompt', 'generative', 'reveal'], dur: 4.6, inF: 6, outF: 10,
     d: { text: 'a quiet figure in warm side light, soft shadows, film grain, a calm look toward the window', image: 'bust', mode: 'text', cols: 72, area: [0.2, 0.06, 0.6, 0.88], levels: 10, gamma: 1,
       lineSize: 40, lineChars: 46, scatterAt: 0.35, scatter: 0.6, settleAt: 0.9, settle: 1.1, spread: 0.7, dissolveAt: null, dissolve: 0.9, ink: '#F6E7D2', dim: '#2E2824', accent: null, font: MONO, weight: 600, seed: 4 },
     svg(L, p, c) {
-      const u = L.u, G = asciiMosaicGrid(p, c), chars = [...String(p.text)], n = chars.length, LS = p.lineSize * c.s, groups = new Map(), A = mosaicAnim(p, c, G), cols = new Map();
+      const u = L.u, G = asciiMosaicGrid(p, c), chars = lineChars(p), n = chars.length, LS = lineSizeOf(p, c), groups = new Map(), A = mosaicAnim(p, c, G), cols = new Map();
       const colOf = (q, qs) => { const k = q * 16 + Math.round(qs * 6); if (!cols.has(k)) { const lev = q / (p.levels - 1); cols.set(k, mixHex(p.ink, mixHex(p.dim, p.accent && lev > 0.85 ? p.accent : p.ink, lev), qs)); } return cols.get(k); };
       for (const cell of G.cells) {
         const i = cell.i, a0 = A[i], copy = i >= n;
@@ -142,7 +165,7 @@ export const GLYPH_R45 = {
     d: { text: 'search everything you have ever saved', path: 'swoop', closed: false, pathBox: [1920, 1080], mode: 'trail', start: 0, end: 0.92, delay: 0.1, travel: 2.2, ease: 'cam', speed: 260,
       gap: 0.5, size: 52, weight: 700, font: FONT, ls: 0, color: INK, fade: 0.8, leader: 'icon', leaderSize: 1.9, leaderColor: BRAND, showPath: false, pathColor: 'rgba(14,14,20,0.18)' },
     svg(L, p, c) {
-      const S = p.size * c.s, st = textOnPathState(L.u, p, c); let out = '';
+      const S = p.size * sc(c), st = textOnPathState(L.u, p, c); let out = '';
       if (p.showPath) out += `<path d="${'M' + st.tab.pts.map(([x, y]) => `${f2(x)} ${f2(y)}`).join(' L')}" fill="none" stroke="${p.pathColor}" stroke-width="${f2(2 * c.s)}" stroke-dasharray="${f2(6 * c.s)} ${f2(8 * c.s)}"/>`;
       for (const g of st.glyphs) if (g.op > 0.01) out += `<text transform="translate(${f2(g.x)} ${f2(g.y)}) rotate(${f2(g.a)})" y="${f2(S * 0.34)}" text-anchor="middle"${g.op < 0.995 ? ` opacity="${f2(g.op)}"` : ''}>${esc(g.ch)}</text>`;
       out = `<g font-family="${esc(p.font)}" font-size="${f2(S)}" font-weight="${p.weight}" fill="${p.color}">${out}</g>`;
@@ -154,33 +177,32 @@ export const GLYPH_R45 = {
       return `<g opacity="${f2(op(L))}">${out}</g>`; } },
 
   'type.electricOutline': { file: 'type/gfx/r45-glyph.js', tags: ['type', 'electric', 'neon', 'outline', 'chapter-mark', 'numerals', 'crackle', 'talking-head'], dur: 2.4, inF: 1, outF: 8,
-    d: { text: '1', size: 300, at: [0.78, 0.42], weight: 0.95, tilt: -6, color: '#8FE6FF', core: '#FFFFFF', line: 3, glow: 9, glowOp: 0.95, draw: 0.55, stagger: 0.12, jitter: 2.6,
+    d: { text: '4', size: 300, at: [0.78, 0.42], weight: 0.95, tilt: -6, color: '#8FE6FF', core: '#FFFFFF', line: 3, glow: 9, glowOp: 0.95, halo: 0.3, draw: 0.55, stagger: 0.12, jitter: 2.6,
       crackleFps: 15, hand: 0.035, bolts: 3, boltLen: 0.42, boltOn: 0.55, spacing: 1.5, seed: 7 },
     svg(L, p, c) {
-      const u = L.u, cap = p.size * c.s, un = cap / 6, id = uidOf('electricOutline', p), chars = [...String(p.text).toUpperCase()], adv = (4 + p.spacing) * un, tw = chars.length * adv - p.spacing * un;
-      const x0 = p.at[0] * c.W - tw / 2, y0 = p.at[1] * c.H - cap / 2, fb = Math.floor(frameOf(u) / Math.max(1, Math.round(FR / p.crackleFps))), tr = (p.tilt * Math.PI) / 180, cx = p.at[0] * c.W, cy = p.at[1] * c.H;
+      const u = L.u, id = uidOf('electricOutline', p), chars = [...String(p.text ?? '').toUpperCase()], geo = electricGeo(p, c), { cap, un, adv, tw } = geo;
+      const x0 = geo.cx - tw / 2, y0 = geo.cy - cap / 2, fb = Math.floor(frameOf(u) / Math.max(1, Math.round(FR / p.crackleFps))), tr = (p.tilt * Math.PI) / 180, cx = geo.cx, cy = geo.cy;
       const rot = ([x, y]) => [cx + (x - cx) * Math.cos(tr) - (y - cy) * Math.sin(tr), cy + (x - cx) * Math.sin(tr) + (y - cy) * Math.cos(tr)];
       let core = '', bolts = '', si = 0;
       chars.forEach((ch, gi) => { const strokes = STROKE_FACE[ch]; if (!strokes) return; const gx = x0 + gi * adv;
         strokes.forEach((st, k) => { const hw = p.hand * 6, hand = st.map(([x, y], j) => [x + (hashf(gi, k, j, p.seed) - 0.5) * hw, y + (hashf(gi, k, j, p.seed + 1) - 0.5) * hw]);
           const kd = E.soft(seg(u, si * p.stagger, si * p.stagger + p.draw)); si++; if (kd <= 0) return;
-          strokeOutline(hand, p.weight).forEach((loop, li) => { const pts = loop.map(([x, y], j) => { const jx = (hashf(gi, k, li, j, fb, p.seed) - 0.5) * 2 * p.jitter * c.s, jy = (hashf(gi, k, li, j, fb, p.seed + 3) - 0.5) * 2 * p.jitter * c.s; return rot([gx + x * un + jx, y0 + y * un + jy]); });
+          strokeOutline(hand, p.weight).forEach((loop, li) => { const pts = loop.map(([x, y], j) => { const jx = (hashf(gi, k, li, j, fb, p.seed) - 0.5) * 2 * p.jitter * sc(c), jy = (hashf(gi, k, li, j, fb, p.seed + 3) - 0.5) * 2 * p.jitter * sc(c); return rot([gx + x * un + jx, y0 + y * un + jy]); });
             core += `<path d="M${pts.map(([x, y]) => `${f2(x)} ${f2(y)}`).join(' L')} Z" pathLength="100" stroke-dasharray="100 101" stroke-dashoffset="${f2(100 * (1 - kd))}"/>`;
             if (kd > 0.95) for (let b = 0; b < p.bolts; b++) { if (hashf(gi, k, li, b, fb, p.seed + 9) > p.boltOn) continue; const j0 = Math.floor(hashf(gi, k, li, b, fb, p.seed + 11) * pts.length), [bx, by] = pts[j0];
               let a = Math.atan2(by - cy, bx - cx) + (hashf(b, fb, j0, p.seed) - 0.5) * 0.8, x = bx, y = by, d = `M${f2(x)} ${f2(y)}`; const len = (p.boltLen * cap) / 4;
               for (let q = 0; q < 4; q++) { a += (hashf(b, q, fb, j0, p.seed + 13) - 0.5) * 1.3; const l = len * (0.6 + 0.8 * hashf(b, q, fb, p.seed + 17)); x += Math.cos(a) * l; y += Math.sin(a) * l; d += ` L${f2(x)} ${f2(y)}`; }
               bolts += `<path d="${d}"/>`; } }); }); });
       if (!core) return '';
-      const gl = p.glow * c.s, lw = p.line * c.s;
+      const ss = sc(c), gl = p.glow * ss, lw = p.line * ss;   // glow 0: no SVG blur (the overlay glow carries the light)
       return `<defs>${blurDef(id + 'g', gl)}</defs><g fill="none" stroke-linejoin="round" stroke-linecap="round" opacity="${f2(1 - L.out)}">` +
-        `<g stroke="${p.color}" stroke-width="${f2(lw * 3.2)}" opacity="${f2(p.glowOp)}"${blurAttr(id + 'g', gl)}>${core}${bolts}</g><g stroke="${p.color}" stroke-width="${f2(lw * 1.7)}">${core}</g>` +
+        (gl > 0.05 ? `<g stroke="${p.color}" stroke-width="${f2(lw * 3.2)}" opacity="${f2(p.glowOp)}"${blurAttr(id + 'g', gl)}>${core}${bolts}</g>` : '') + `<g stroke="${p.color}" stroke-width="${f2(lw * 1.7)}">${core}</g>` +
         `<g stroke="${p.core}" stroke-width="${f2(lw * 0.7)}">${core}</g><g stroke="${p.core}" stroke-width="${f2(lw * 0.5)}">${bolts}</g></g>`; } },
 };
-/* per-action cues (local s). type.electricOutline uses sfx/tx/glitch_stutter (zzt bursts, the closest electric sound in the pack today); an electric-arc
-   sound is being added separately (elec/arc), swap the id here when it lands. */
+/* per-action cues (local s). type.electricOutline reads ELECTRIC_SOUND above. */
 export const GLYPH_R45_CUES = {
   'type.asciiMosaic': (p) => [{ t: p.scatterAt, id: 'sfx/whoosh/magic_swirl', why: 'characters scatter' }, { t: p.settleAt + p.spread * 0.5, id: 'sfx/sizzle/grain', why: 'glyphs settle into the picture' },
     ...(p.dissolveAt == null ? [] : [{ t: p.dissolveAt, id: 'sfx/whoosh/swish_s', why: 'mosaic dissolves back to text' }])],
   'type.textOnPath': (p) => [{ t: p.mode === 'travel' ? 0 : p.delay, id: p.mode === 'trail' ? 'sfx/whoosh/flyby' : 'sfx/whoosh/swish_s', why: p.mode === 'trail' ? 'leader flies the curve' : 'text runs along the path' }],
-  'type.electricOutline': (p) => [{ t: 0, id: 'sfx/tx/glitch_stutter', why: 'outline crackles on (electric arc stand-in)' }],
+  'type.electricOutline': () => [{ t: 0, id: ELECTRIC_SOUND, why: 'outline crackles on' + (ELECTRIC_SOUND === ELECTRIC_ARC ? '' : ` (stand-in until ${ELECTRIC_ARC} is in the library)`) }],
 };

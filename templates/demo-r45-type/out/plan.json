@@ -190,8 +190,7 @@
       ],
       "period": 0.8,
       "width": 3.4,
-      "glow": 14,
-      "source": "computed from the path drawn here"
+      "glow": 14
      }
     }
    ],
@@ -245,15 +244,15 @@
       "steps": [
        [
         0,
-        "STILL"
+        "DAWN"
        ],
        [
         0.6,
-        "CLIP"
+        "NOON"
        ],
        [
         1.2,
-        "SONG"
+        "DUSK"
        ]
       ],
       "size": 420,
@@ -265,9 +264,9 @@
      "at": 0.1,
      "dur": 0.35,
      "params": {
-      "text": "1",
+      "size": 360,
       "draw": 0.3,
-      "size": 360
+      "text": "04"
      }
     },
     {
@@ -275,23 +274,38 @@
      "at": 0.75,
      "dur": 0.35,
      "params": {
-      "text": "2",
+      "size": 360,
       "draw": 0.3,
-      "size": 360
+      "text": "07"
      }
     },
     {
      "part": "type.electricOutline",
-     "at": 1.4,
+     "at": 1.4000000000000001,
      "dur": 0.35,
      "params": {
-      "text": "3",
+      "size": 360,
       "draw": 0.3,
-      "size": 360
+      "text": "11"
      }
     }
    ],
-   "layers": [],
+   "layers": [
+    {
+     "kind": "glow",
+     "params": {
+      "pools": [
+       {
+        "x": 0.78,
+        "y": 0.58,
+        "r": 0.2333,
+        "color": "#8FE6FF",
+        "intensity": 0.3
+       }
+      ]
+     }
+    }
+   ],
    "bg": "ink",
    "hold": false,
    "dur": 2,
@@ -450,7 +464,7 @@
    "id": "sfx/tx/glitch_stutter",
    "t": 15.1,
    "gainDb": 0,
-   "why": "chapters: outline crackles on (electric arc stand-in)"
+   "why": "chapters: outline crackles on (stand-in until sfx/elec/arc is in the library)"
   },
   {
    "id": "sfx/tx/cut_tick",
@@ -462,7 +476,7 @@
    "id": "sfx/tx/glitch_stutter",
    "t": 15.75,
    "gainDb": 0,
-   "why": "chapters: outline crackles on (electric arc stand-in)"
+   "why": "chapters: outline crackles on (stand-in until sfx/elec/arc is in the library)"
   },
   {
    "id": "sfx/tx/cut_tick",
@@ -474,7 +488,7 @@
    "id": "sfx/tx/glitch_stutter",
    "t": 16.4,
    "gainDb": 0,
-   "why": "chapters: outline crackles on (electric arc stand-in)"
+   "why": "chapters: outline crackles on (stand-in until sfx/elec/arc is in the library)"
   },
   {
    "id": "sfx/hit/soft",
@@ -486,7 +500,7 @@
  "claims": [
   {
    "text": "N circles and a mean error on the drawing scene",
-   "source": "computed live from the drawn path (layers/canvas2d-r45.js epicycleCurve); the readout carries the same label in frame"
+   "source": "computed live from the drawn path (layers/canvas2d-r45.js epicycleCurve, distance of the drawn curve from the input path); the readout carries the same label in frame"
   }
  ],
  "ceilingDb": -2,

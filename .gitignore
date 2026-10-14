@@ -68,3 +68,6 @@ templates/demo-r3-fx/out/plate-env.jpg
 templates/demo-r3-fx/out/*.frames.json
 # --- demo-r45-type: the rendered MP4 stays out of git (plan.json + sheet.jpg are committed) ---
 templates/demo-r45-type/out/*.mp4
+
+# a transient matte sequence made by type/tests/r45type.test.mjs --chrome (deleted after the run)
+type/demo/out/matte-tmp-*/

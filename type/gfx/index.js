@@ -12,10 +12,10 @@ import { EDITORIAL } from './editorial.js'; import { CALLOUTS } from './callouts
 import { KINETIC } from './kinetic.js'; import { COLLAGE } from './collage.js';
 import { life, ctxFor } from './core.js'; import { UI as UI1, UI_CUES as UI1_CUES, hooks as uiHooks } from './ui.js'; import { UI2, UI2_CUES } from './ui-data.js'; import { UI3, UI3_CUES } from './ui-nav.js';
 const UI = { ...UI1, ...UI2, ...UI3 }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES }; import { DOC } from './doc.js';
-import { SWAP, SWAP_CUES } from './swap.js'; import { TYPE_R45, TYPE_R45_CUES } from './r45-type.js'; import { GLYPH_R45, GLYPH_R45_CUES } from './r45-glyph.js'; import { BADGES, BADGE_CUES } from './badges.js'; import { BRAND_LAYOUTS, BRAND_CUES } from './brand.js';
+import { SWAP, SWAP_CUES } from './swap.js'; import { TYPE_R45, TYPE_R45_CUES } from './r45-type.js'; import { GLYPH_R45, GLYPH_R45_CUES, ELECTRIC_SOUND } from './r45-glyph.js'; import { BADGES, BADGE_CUES } from './badges.js'; import { BRAND_LAYOUTS, BRAND_CUES } from './brand.js';
 export { stepAt, mixHex } from './swap.js';
-export { PARTNER_MARKS, MERGE_ICONS, lintPartnerMarks, partnerLockupLayout, iconMergeState, flankBox, flankShots, flankState, srcAt, figurePlate } from './r45-type.js';
-export { RAMP, LUM_PLATES, lumGrid, asciiMosaicGrid, textOnPathState, STROKE_FACE, strokeOutline } from './r45-glyph.js'; export { flattenPath, arcTable, pointAt, resample, PATHS } from './pathsample.js'; export { selectionZoom, selectionZoomCss } from './badges.js'; export { CIRCLE4, SPARK4, PLATES } from './brand.js';
+export { PARTNER_MARKS, MERGE_ICONS, lintPartnerMarks, inkFromMask, markFromImage, partnerLockupLayout, iconMergeFit, iconMergeState, flankBox, flankFitK, lintFlank, flankShots, flankState, srcAt, figurePlate } from './r45-type.js';
+export { RAMP, RAMP_INK, LUM_PLATES, lumGrid, asciiMosaicGrid, textOnPathState, STROKE_FACE, strokeOutline, electricGeo, electricGlowPools, ELECTRIC_SOUND, ELECTRIC_ARC } from './r45-glyph.js'; export { flattenPath, arcTable, pointAt, resample, PATHS } from './pathsample.js'; export { selectionZoom, selectionZoomCss } from './badges.js'; export { CIRCLE4, SPARK4, PLATES } from './brand.js';
 export { nodeGraphCam, isoTiltCss } from './ui.js'; export { pageFlyCam } from './ui-nav.js'; export { wrapWords } from './ui-data.js';
 export { SHAPES, PIXEL5x7, pixelGlyph, tokenize } from './kinetic.js'; export { photoTile, slotMedia, placeholderLogo, MARKS, DEFAULT_MARK } from './media.js'; export { measure } from './core.js';
 export { CARDS, CARD_IDS, cardsAt, stackFlipTimes, drawCards, renderCards, mountCards, placeholderCard, placeholderCards, loadImages } from './cards.js';
@@ -49,9 +49,9 @@ export const GFX_SFX = {
   'type.glowWord': ['sfx/sparkle/shimmer', 0, -4], 'type.ledDigits': ['sfx/device/loading_tick', 0, -4], 'title.timeCard': ['sfx/cartoon/surprise_sting', 0, -2],
   'layout.paletteColumns': ['sfx/whoosh/swish_s', 0, -3], 'layout.logoConstruction': ['sfx/sparkle/letter_assemble', 30, -4], 'layout.mockupInContext': ['sfx/whoosh/whoosh_in_m', 0, -4],
   'layout.typeSpecimen': ['sfx/ui/tick', 11, -4], 'layout.backdropSwap': ['sfx/tx/cut_tick', 15, -4], 'layout.lineup': ['sfx/whoosh/swish_s', 0, -3],
-  /* round 4/5 (2026-10-14): r45-type.js + r45-glyph.js; electricOutline uses the glitch stutter until an electric-arc sound lands (being added separately) */
+  /* round 4/5 (2026-10-14): r45-type.js + r45-glyph.js; electricOutline reads ELECTRIC_SOUND (the glitch stutter until sfx/elec/arc is in the library) */
   'title.partnerLockup': ['sfx/hit/soft', 1, -2], 'layout.iconMergeLockup': ['sfx/hit/soft', 1, -3], 'type.asciiMosaic': ['sfx/whoosh/magic_swirl', 10, -4], 'type.textOnPath': ['sfx/whoosh/flyby', 3, -4],
-  'type.flankWords': ['sfx/whoosh/swish_s', 0, -4], 'type.electricOutline': ['sfx/tx/glitch_stutter', 0, -6], 'type.behindSubject': ['sfx/whoosh/whoosh_in_m', 0, -4] };
+  'type.flankWords': ['sfx/whoosh/swish_s', 0, -4], 'type.electricOutline': [ELECTRIC_SOUND, 0, -6], 'type.behindSubject': ['sfx/whoosh/whoosh_in_m', 0, -4] };
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 export function renderInner(id, t, { at = 0, dur, params = {} } = {}, ctx) {
   const g = GFX[id]; if (!g) throw new Error('unknown gfx ' + id); const p = { ...g.d, ...params }, L = life(t, at, dur ?? p.dur ?? g.dur, g.inF ?? 12, g.outF ?? 9);
