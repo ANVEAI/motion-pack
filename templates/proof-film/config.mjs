@@ -30,7 +30,7 @@ export const CONFIG = {
       { label: 'Systems', value: 7, source: SRC, method: 'count of systems in the placeholder field' }] },
   builder: { kind: 'scatter',                       // ONE builder: 'scatter' (chart.scatterFrontier) | 'trace' (ui.branchTrace) | 'table' (ui.dataTable; it IS the head-to-head, so that stage is skipped)
     scatter: { title: 'Score against cost per task', source: SRC, method: 'score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring',
-      points: [{ label: 'System A', x: 12.4, y: 54.0 }, { label: 'System B', x: 9.1, y: 52.5 }, { label: 'System C', x: 6.8, y: 47.0 }, { label: 'System D', x: 4.7, y: 42.5 }, { label: 'System E', x: 2.9, y: 36.0 }, { label: 'System F', x: 7.9, y: 40.5 }, { label: 'System G', x: 5.6, y: 34.0 }],
+      points: [{ label: 'System A', x: 12.4, y: 54.0 }, { label: 'System B', x: 9.1, y: 52.5 }, { label: 'System C', x: 6.8, y: 47.0 }, { label: 'System D', x: 4.7, y: 42.5 }, { label: 'System E', x: 3.9, y: 36.0 }, { label: 'System F', x: 7.9, y: 40.5 }, { label: 'System G', x: 5.6, y: 34.0 }],
       hero: { label: 'Acme Reader', x: 3.6, y: 58.5, callout: ['Highest score', 'at the lowest cost'] },
       x: { min: 0, max: 14, ticks: [0, 2, 4, 6, 8, 10, 12, 14], prefix: '$', label: 'Cost per task  ·  cheaper →', invert: true }, y: { min: 30, max: 70, ticks: [30, 40, 50, 60, 70], label: 'Score' } },
     trace: { source: 'illustrative placeholder run', input: { title: 'Question', lines: ['"Which clause covers', 'late delivery?"'], icon: 'mail' }, run: ['r-flat'],   // one wrong fork: the red runs down the line to the result
@@ -51,12 +51,12 @@ export const CONFIG = {
     { label: 'Cheaper', value: 3.6, dec: 2, unit: '$', line: 'cost per task', alt: 9.1, altLabel: 'alternative', source: SRC, method: 'list price x tokens, placeholder run' }],
   end: { line: 'Replace every placeholder before you publish.', chips: [] },   // the URL is brand.url; chips are benefit pills without digits
   tail: { holdS: 5.4, liftS: 0.8, fadeMs: 600, bedDb: -30 },   // end card: quiet hold (plan.audio.quiet kind hold): the bed lifts liftS, then drops to bedDb; NO stinger. The near-silent part must be 3 to 9 s
-  timing: { travelS: 1.1, enterS: 0.4, ease: 'soft', dip: 0.08, push: 0.035, holdS: 1.4, claim: 2.4, name: 1.8, setting: 2.6, numbers: 2.8, cards: 3.0, endBuild: 1.2, quietOpenS: 1.2 },   // seconds of build per stage; stages are rounded up to whole beats; a stage's content starts `enterS` after the camera leaves for it (the camera is still settling); the camera dips `dip` in a move and pushes `push` while it dwells
+  timing: { travelS: 1.1, enterS: 0.15, ease: 'soft', dip: 0.08, push: 0.035, holdS: 1.4, claim: 2.4, name: 1.8, setting: 2.6, numbers: 2.8, cards: 3.0, endBuild: 1.2, quietOpenS: 1.2 },   // seconds of build per stage; stages are rounded up to whole beats; a stage's content starts `enterS` after the camera leaves for it (the camera is still settling); the camera dips `dip` in a move and pushes `push` while it dwells
   cut: {},                                           // a motivated hard cut instead of a camera move: { 'builder>h2h': 'EMOTION: ...' } (a boundary 'from>to'; the reason is required)
   vo: { words: null, audio: null },                  // optional sparse VO: words = a words.json [{w, s, e}] (seconds) turns it on; audio = your recording (null = a labelled guide signal for a dry run)
-  music: 'music/bed_playful_bounce_loop8', bpm: 120, musicGainDb: 0, ceilingDb: -2.0, fadeInMs: 40, duckDb: 16, sfxUnderVoDb: -22,   // bpm = the bed's snapped tempo (music/manifest.json); stages start on its beats
+  music: 'music/bed_playful_bounce_loop8', bpm: 120, musicGainDb: 0, ceilingDb: -3.0, fadeInMs: 40, duckDb: 16, sfxUnderVoDb: -22,   // bpm = the bed's snapped tempo (music/manifest.json); stages start on its beats
   layers: [{ kind: 'grain', params: { stock: 'digital-soft' } }],
-  sfx: { claim: 'sfx/ui/tick', travel: 'sfx/ui/slide', arrive: 'sfx/ui/tick', numbers: 'sfx/hit/soft', count: 'sfx/ui/count_run', card: 'sfx/ui/pop', cut: 'sfx/tx/cut_tick' },   // saas_launch / product_ad palette; no end sting
+  sfx: { claim: 'sfx/ui/tick', travel: ['sfx/ui/slide', 'sfx/whoosh/swish_xs'], arrive: 'sfx/ui/tick', numbers: 'sfx/hit/soft', count: 'sfx/ui/count_run', card: 'sfx/ui/pop', cut: 'sfx/tx/cut_tick' },   // saas_launch / product_ad palette; no end sting
 };
 /* ============================================================================== */
 
@@ -121,14 +121,15 @@ export function buildPlan(C) {
   /* the camera: one move per boundary (or a motivated hard cut); focus = the cell centre of each stage */
   const camera = { travelS: sec(travel), ease: T.ease, dip: T.dip, push: T.push, pitch: fm.pitch, legs: stages.slice(1).map((s) => ({ from: s.i - 1, to: s.i, t0: s.t0, dur: s.cut ? 0 : sec(travel) })) };
   /* ---- sound: a quiet UI tick per state change, one soft hit on the number reveal, nothing on the end card ---- */
-  const X = C.sfx, cues = [], add = (id, t, why) => { if (id) cues.push({ id, t: +t.toFixed(4), why }); };
+  const X = C.sfx, cues = [], add = (id, t, why, k = 0) => { if (id) cues.push({ id: Array.isArray(id) ? id[k % id.length] : id, t: +t.toFixed(4), why }); };   // an array of ids rotates by k (the stage index), so a repeated move does not repeat one sound
   const claimSt = stages[0]; add(X.claim, claimSt.at + T.quietOpenS, 'accent word underlined: the sound enters on the first visual event');
-  for (const s of stages.slice(1)) { if (s.cut) add(X.cut, s.t0, `hard cut: ${s.why}`); else add(X.travel, s.t0 + 0.05, `camera leaves for ${s.kind}`);
+  for (const s of stages.slice(1)) { if (s.cut) add(X.cut, s.t0, `hard cut: ${s.why}`); else add(X.travel, s.t0 + 0.05, `camera leaves for ${s.kind}`, s.i);
     if (s.part) for (const c of gfxCues(s.part.id, { at: s.at, params: s.part.params })) { if (c.t < s.until - 0.1) cues.push({ id: c.id, t: c.t, why: `${s.kind}: ${c.why}` }); }
     else if (s.kind === 'numbers') { add(X.numbers, s.at + 0.1, 'ONE soft hit on the number reveal'); add(X.count, s.at + 0.2, 'numbers count up'); }
     else if (s.kind === 'cards') C.cards.forEach((_, j) => add(X.card, s.at + 0.2 + 0.3 * j, `stat card ${j + 1}`));
     else if (s.kind !== 'end') add(X.arrive, s.at + 0.05, `${s.kind} lands`);
     else add(X.arrive, s.at + 0.05, 'end card lands (a tick, no stinger: the quiet hold follows)'); }
+  for (const c of cues) c.t = +(Math.floor(c.t * fps + 0.5 + 1e-9) / fps).toFixed(4);   // whole frames: the mixer places a cue on round(t * fps) and a cue at half a frame would round the two ways in node and python
   cues.sort((a, b) => a.t - b.t);
   /* under a voice the cue sits relative to the VOICE (the mixer's default is over the un-ducked bed, which is as loud as the bed was before it ducked) */
   if (hasVo) for (const c of cues) if (vo.words.some((w) => c.t >= w.s - 0.1 && c.t <= w.e + 0.15)) c.overVoDb = C.sfxUnderVoDb;

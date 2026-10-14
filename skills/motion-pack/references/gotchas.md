@@ -14,6 +14,18 @@
 - **A mix that starts on a hit can make HyperFrames lower the whole track by 4–5 dB.** HyperFrames re-encodes its AAC mix (AAC to AAC) before muxing; a full-level transient in the first ~15 ms overshoots by several dB in the second encode even when the WAV sits at −2 dBTP, and the whole track is then lowered (the demo-type-layout render dropped to −18.9 LUFS). Fade the first 40 ms in (`plan.fadeInMs: 40` in `templates/_shared/audio.py`) and set `plan.ceilingDb: -2.0` when UI clicks are dense; then check `Audio lowered by` in the render log.
 - **The GSAP binding is one paused proxy tween per transition window, driving `p` linearly.** The easing lives inside `applyDom`, so do not add an ease on the proxy.
 
+## Proof film (templates/proof-film)
+
+- **One camera over a wide world needs two wrappers.** cam2d scales a wrapper about ITS OWN centre, so scaling a world several frames wide drifts every panel but the middle one. The template pans the world (`#world`, `pan2d` legs) inside a frame-sized wrapper (`#cam`) that carries the zoom about the frame centre; then `W/2 + zoom * (cell centre - focus)` holds and a cell centre projects to the frame centre whenever the camera rests (`panels.mjs mapCell`, tested).
+- **A slow push moves the content out of the safe zone.** A 3.5% dwell push takes a point at the edge of the 9:16 conservative rect past it. `safeInset` pulls the rect in by `1 + push` and every box and footer is laid out in the pulled-in rect.
+- **Start a panel's build while the camera is still settling.** A cell whose content starts only after the camera arrives leaves an empty paper frame mid-move (0.4 s measured with a 0.4 s lead); `timing.enterS` 0.15 s keeps something moving in the frame at every moment.
+- **Dense UI cues tripped HyperFrames' AAC again.** With `ceilingDb: -2.0` the render logged `Audio lowered by 0.9 dB` and the delivered file read -15.2 LUFS; `-2.5` delivered -14.2 LUFS / -1.7 dBTP with nothing lowered. Grep the render log for `lowered` after every change to the cue list.
+- **A cue time at half a frame rounds two ways.** The mixer places `round(t * fps)` in python (half to even) and a JS plan can mean the other neighbour: `ears` reported cues 1.0 f off (anchors 0.79). `buildPlan` quantises every cue to a whole frame (anchors 0.97).
+- **Under a voice, cues sit over the UN-ducked bed.** The mixer's level reference is the bed before it ducks, so a tick in a sentence is as loud as the bed was before the duck. Set the cue's `overVoDb` (the plan cue field `templates/_shared/audio.py` hands to the mixer) to put it under the voice.
+- **A pulsing bed hides its own duck from `ears`.** `ears` reads the duck in the band under 100 Hz; the proof bed's kick-locked bass moves 8 dB between bars, so a 12 dB duck measured 7-9 dB and one line failed. A 16 dB duck read 12.9 dB median and passes (a warning stays on the longest line). For a VO film pick the duck from the stems, not the plan.
+- **The `--set` parser turns whitespace into 0.** `make.mjs` and `cues.mjs` read `k=  ` as the number 0 (`+'  ' === 0`); the gate counts a non-string `source` or `method` as missing, so it still fails with the field named.
+- **`hyperframes snapshot` takes no `-c`.** To look at the 9:16 page, copy `index-tall.html` into a scratch folder as `index.html` and symlink `assets/` next to it.
+
 ## Transitions
 
 - **DOM gaps.** The DOM back-end covers 13 of 23 transitions. Its limits:

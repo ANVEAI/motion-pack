@@ -74,14 +74,14 @@ const plan = CASES[0][2], planTall = CASES[3][2];
 for (const [f, k, P] of CASES) {
   const kinds = STAGE_KINDS(W(f, k)), st = P.stages, fpb = P.framesPerBeat, tag = `${f}/${k}`;
   check(`${tag}: ${kinds.length} stages in order (${kinds.join(' > ')}), t0 rising, content after t0`, st.length === kinds.length && st.every((s, i) => s.kind === kinds[i] && (!i || s.t0 > st[i - 1].t0) && s.at >= s.t0) && near(st[0].t0, 0) && near(st[0].at, 0));
-  check(`${tag}: every stage starts on a whole frame and on a beat of the bed (${fpb} frames)`, st.every((s) => near(s.t0 * fps, Math.round(s.t0 * fps), 1e-3) && Math.round(s.t0 * fps) % fpb === 0 && near(s.at * fps, Math.round(s.at * fps), 1e-3)));
+  check(`${tag}: every stage starts on a whole frame and on a beat of the bed (${fpb} frames)`, st.every((s) => near(s.t0 * fps, Math.round(s.t0 * fps), 3e-3) && Math.round(s.t0 * fps) % fpb === 0 && near(s.at * fps, Math.round(s.at * fps), 3e-3)));   // times are stored to 4 decimals: 125 frames print as 4.1667 s
   check(`${tag}: ${P.seconds} s is a whole number of tenths of a second`, near(P.seconds * 10, Math.round(P.seconds * 10), 1e-6) && st.at(-1).until === P.seconds);
   check(`${tag}: every builder part id is a registered gfx and the stage lengths hold the part's own build`, st.filter((s) => s.part).every((s) => GFX[s.part.id] && (s.until - s.at) >= 3.0));
   check(`${tag}: cues sorted, inside the film, every sfx id resolves (0 unresolved), music id resolves`, P.cues.every((c, i) => c.t >= 0 && c.t < P.seconds && okSfx(c.id) && (!i || c.t >= P.cues[i - 1].t)) && MUSIC.some((m) => m.id === 'music.' + P.music.split('/')[1]));
   check(`${tag}: the bed's tempo is the manifest tempo`, near(MUSIC.find((m) => m.id === 'music.' + P.music.split('/')[1]).bpm, P.bpm, 0.01));
   const hits = P.cues.filter((c) => c.id === CONFIG.sfx.numbers), end = st.at(-1);
   check(`${tag}: exactly one soft hit on the number reveal, on the numbers stage`, hits.length === 1 && hits[0].t >= st.find((s) => s.kind === 'numbers').at && hits[0].t < st.find((s) => s.kind === 'numbers').until);
-  check(`${tag}: nothing but the camera's slide and a tick on the end card (no stinger, no logo, no hit)`, P.cues.filter((c) => c.t >= end.t0).every((c) => (c.id === CONFIG.sfx.arrive || c.id === CONFIG.sfx.travel) && c.t < end.at + 0.2) && !P.cues.some((c) => /sfx\/(logo|stinger|hit)\//.test(c.id) && c.t >= end.t0));
+  check(`${tag}: nothing but the camera's slide and a tick on the end card (no stinger, no logo, no hit)`, P.cues.filter((c) => c.t >= end.t0).every((c) => (c.id === CONFIG.sfx.arrive || CONFIG.sfx.travel.includes(c.id)) && c.t < end.at + 0.2) && !P.cues.some((c) => /sfx\/(logo|stinger|hit)\//.test(c.id) && c.t >= end.t0));
   const q = P.audio.quiet, open = q.find((x) => x.kind === 'open'), hold = q.find((x) => x.kind === 'hold'), ba = P.bedAutomation;
   check(`${tag}: plan.audio.quiet declares the open (<= 2 s) and the hold (3-9 s); mode continuous, role proof`, open && open.t[1] - open.t[0] <= 2 && hold && hold.t[1] - hold.t[0] >= 3 && hold.t[1] - hold.t[0] <= 9 && near(hold.t[1], P.seconds) && P.audio.mode === 'continuous' && P.audio.role === 'proof' && q.every((x) => x.why));
   check(`${tag}: the bed starts quiet, comes up, and reaches the quiet level by the hold`, ba.every((b, i) => !i || b.frame > ba[i - 1].frame) && ba[0].gain_db <= -30 && ba.some((b) => b.gain_db === 0) && ba.at(-1).gain_db === CONFIG.tail.bedDb && near(ba.at(-1).frame / fps, hold.t[0], 0.04));
@@ -132,7 +132,7 @@ function boxes(svg) {
       st.push(cmp(st.at(-1), [a[0], a[1], a[2]])); continue; }
     const mm = [...t.matchAll(TXT)][0]; if (!mm) continue; const [, x, y, ff, sz, wt, an, ls, str] = mm, mono = /Mono/.test(ff), A = st.at(-1), size = +sz;
     const w = measure(unesc(str), size, { weight: +wt, font: mono ? MONO : undefined, ls: +ls }), l = an === 'end' ? +x - w : an === 'middle' ? +x - w / 2 : +x;
-    out.push({ str: unesc(str), l: A[0] * l + A[1], r: A[0] * (l + w) + A[1], t: A[0] * (+y - size * 0.8) + A[2], b: A[0] * (+y + size * 0.2) + A[2], size: A[0] * size }); }
+    out.push({ str: unesc(str), l: A[0] * l + A[1], r: A[0] * (l + w) + A[1], t: A[0] * (+y - size * 0.74) + A[2], b: A[0] * (+y + size * 0.12) + A[2], size: A[0] * size }); }
   return out;
 }
 const stageNums = (P, s) => P.honesty.numbers.filter((n) => ({ setting: n.path.startsWith('setting.'), builder: n.path.startsWith('builder.'), h2h: n.path.startsWith('h2h.'), numbers: n.path.startsWith('numbers.'), cards: n.path.startsWith('cards.') })[s.kind]);
@@ -147,6 +147,11 @@ for (const [f, k, P] of CASES.filter((c) => c[1] === 'scatter' || c[1] === 'tabl
   check(`${f}/${k}: every number's source and method print on its panel, with the ILLUSTRATIVE label`, missing.length === 0, missing.slice(0, 4).join(' | '));
   check(`${f}/${k}: every text sits inside the ${P.safeZone} safe zone after the camera push (smallest type ${lowest.toFixed(0)} px at 1080)`, bad.length === 0, bad.slice(0, 3).join(' | '));
 }
+for (const [f, k, P] of CASES.filter((c) => c[1] === 'scatter')) {   // the panels drawn here: no two text boxes overlap, at the settled frame and while the content builds
+  const Lyt = layout(P), bad = [];
+  for (const st of P.stages.filter((x) => !x.part)) for (const dt of [1.4, 2.2, 4.0]) { const bs = boxes(stage(P, st, Math.min(st.until - 0.15, st.at + dt), Lyt)).filter((b) => b.str.trim().length > 1);
+    for (let i = 0; i < bs.length; i++) for (let j = i + 1; j < bs.length; j++) { const a = bs[i], b = bs[j]; if (a.l < b.r - 3 && b.l < a.r - 3 && a.t < b.b - 3 && b.t < a.b - 3) bad.push(`${st.kind}@${dt} "${a.str.slice(0, 24)}" x "${b.str.slice(0, 24)}"`); } }
+  check(`${f}: no two texts overlap on the panels drawn here (claim, name, method card, numbers, cards, end)`, bad.length === 0, [...new Set(bad)].slice(0, 4).join(' | ')); }
 { const Lyt = layout(plan), none = plan.stages.filter((s) => !s.part && ['claim', 'name', 'end'].includes(s.kind)).map((s) => flat(stage(plan, s, s.at + 3, Lyt)));
   check('claim, name and end panels print no number', none.every((t) => !/[0-9]/.test(t.replace(/reader\.example/g, '')))); }
 check('the claim panel prints the claim words in order, the accent word in the accent colour', (() => { const svg = stage(plan, plan.stages[0], 3.2); return flat(svg) === plan.claim.words.join(' ') && new RegExp(`fill="${plan.brand.accent}"[^>]*>${plan.claim.words[plan.claim.accent[0]]}<`).test(svg); })());

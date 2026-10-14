@@ -1,7 +1,7 @@
 {
  "template": "proof-film",
  "fps": 30,
- "seconds": 39.3,
+ "seconds": 37.6,
  "format": "wide",
  "size": [
   1920,
@@ -64,8 +64,8 @@
    "id": "name",
    "kind": "name",
    "t0": 4,
-   "at": 4.4,
-   "until": 8,
+   "at": 4.1667,
+   "until": 7.5,
    "data": {
     "intro": "Introducing",
     "brand": "Acme Reader",
@@ -76,9 +76,9 @@
    "i": 2,
    "id": "setting",
    "kind": "setting",
-   "t0": 8,
-   "at": 8.4,
-   "until": 12.5,
+   "t0": 7.5,
+   "at": 7.6667,
+   "until": 12,
    "data": {
     "title": "How we measured",
     "rows": [
@@ -124,9 +124,9 @@
    "i": 3,
    "id": "builder",
    "kind": "builder",
-   "t0": 12.5,
-   "at": 12.9,
-   "until": 18.5,
+   "t0": 12,
+   "at": 12.1667,
+   "until": 18,
    "part": {
     "id": "chart.scatterFrontier",
     "params": {
@@ -164,7 +164,7 @@
       },
       {
        "label": "System E",
-       "x": 2.9,
+       "x": 3.9,
        "y": 36,
        "source": "illustrative placeholder, replace"
       },
@@ -235,9 +235,9 @@
    "i": 4,
    "id": "h2h",
    "kind": "h2h",
-   "t0": 18.5,
-   "at": 18.9,
-   "until": 23.5,
+   "t0": 18,
+   "at": 18.1667,
+   "until": 22.5,
    "part": {
     "id": "ui.dataTable",
     "params": {
@@ -302,9 +302,9 @@
    "i": 5,
    "id": "numbers",
    "kind": "numbers",
-   "t0": 23.5,
-   "at": 23.9,
-   "until": 28.5,
+   "t0": 22.5,
+   "at": 22.6667,
+   "until": 27,
    "data": {
     "items": [
      {
@@ -330,9 +330,9 @@
    "i": 6,
    "id": "cards",
    "kind": "cards",
-   "t0": 28.5,
-   "at": 28.9,
-   "until": 33.5,
+   "t0": 27,
+   "at": 27.1667,
+   "until": 32,
    "data": [
     {
      "label": "Better",
@@ -373,9 +373,9 @@
    "i": 7,
    "id": "end",
    "kind": "end",
-   "t0": 33.5,
-   "at": 33.9,
-   "until": 39.3,
+   "t0": 32,
+   "at": 32.1667,
+   "until": 37.6,
    "hold": true,
    "data": {
     "brand": "Acme Reader",
@@ -404,37 +404,37 @@
    {
     "from": 1,
     "to": 2,
-    "t0": 8,
+    "t0": 7.5,
     "dur": 1.1
    },
    {
     "from": 2,
     "to": 3,
-    "t0": 12.5,
+    "t0": 12,
     "dur": 1.1
    },
    {
     "from": 3,
     "to": 4,
-    "t0": 18.5,
+    "t0": 18,
     "dur": 1.1
    },
    {
     "from": 4,
     "to": 5,
-    "t0": 23.5,
+    "t0": 22.5,
     "dur": 1.1
    },
    {
     "from": 5,
     "to": 6,
-    "t0": 28.5,
+    "t0": 27,
     "dur": 1.1
    },
    {
     "from": 6,
     "to": 7,
-    "t0": 33.5,
+    "t0": 32,
     "dur": 1.1
    }
   ]
@@ -451,43 +451,43 @@
   {
    "id": "name",
    "start": 4,
-   "dur": 4,
+   "dur": 3.5,
    "move": "cam2d.pan"
   },
   {
    "id": "setting",
-   "start": 8,
+   "start": 7.5,
    "dur": 4.5,
    "move": "cam2d.pan"
   },
   {
    "id": "builder",
-   "start": 12.5,
+   "start": 12,
    "dur": 6,
    "move": "cam2d.pan"
   },
   {
    "id": "h2h",
-   "start": 18.5,
-   "dur": 5,
+   "start": 18,
+   "dur": 4.5,
    "move": "cam2d.pan"
   },
   {
    "id": "numbers",
-   "start": 23.5,
-   "dur": 5,
+   "start": 22.5,
+   "dur": 4.5,
    "move": "cam2d.pan"
   },
   {
    "id": "cards",
-   "start": 28.5,
+   "start": 27,
    "dur": 5,
    "move": "cam2d.pan"
   },
   {
    "id": "end",
-   "start": 33.5,
-   "dur": 5.8,
+   "start": 32,
+   "dur": 5.6,
    "hold": true,
    "move": "cam2d.pan"
   }
@@ -499,169 +499,169 @@
    "why": "accent word underlined: the sound enters on the first visual event"
   },
   {
-   "id": "sfx/ui/slide",
-   "t": 4.05,
+   "id": "sfx/whoosh/swish_xs",
+   "t": 4.0667,
    "why": "camera leaves for name"
   },
   {
    "id": "sfx/ui/tick",
-   "t": 4.45,
+   "t": 4.2333,
    "why": "name lands"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 8.05,
+   "t": 7.5667,
    "why": "camera leaves for setting"
   },
   {
    "id": "sfx/ui/tick",
-   "t": 8.45,
+   "t": 7.7333,
    "why": "setting lands"
   },
   {
-   "id": "sfx/ui/slide",
-   "t": 12.55,
+   "id": "sfx/whoosh/swish_xs",
+   "t": 12.0667,
    "why": "camera leaves for builder"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 12.95,
+   "t": 12.2333,
    "why": "builder: axes draw on"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 13.45,
+   "t": 12.7333,
    "why": "builder: point 1 drops in"
   },
   {
    "id": "sfx/device/card_flip",
-   "t": 13.61,
+   "t": 12.8667,
    "why": "builder: point 2 drops in"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 13.77,
+   "t": 13.0333,
    "why": "builder: point 3 drops in"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 13.93,
+   "t": 13.2,
    "why": "builder: point 4 drops in"
   },
   {
    "id": "sfx/device/card_flip",
-   "t": 14.09,
+   "t": 13.3667,
    "why": "builder: point 5 drops in"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 14.25,
+   "t": 13.5333,
    "why": "builder: point 6 drops in"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 14.41,
+   "t": 13.6667,
    "why": "builder: point 7 drops in"
   },
   {
    "id": "sfx/ui/scan_sweep",
-   "t": 14.72,
+   "t": 14,
    "why": "builder: frontier draws"
   },
   {
    "id": "sfx/sparkle/shimmer",
-   "t": 15.72,
+   "t": 15,
    "why": "builder: hero point + star"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 16.02,
+   "t": 15.3,
    "why": "builder: callout"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 18.55,
+   "t": 18.0667,
    "why": "camera leaves for h2h"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 19.15,
+   "t": 18.4333,
    "why": "h2h: header slides in"
   },
   {
    "id": "sfx/ui/tick",
-   "t": 19.4,
+   "t": 18.6667,
    "why": "h2h: row 1"
   },
   {
    "id": "sfx/ui/count_run",
-   "t": 19.43,
+   "t": 18.7,
    "why": "h2h: numbers count up"
   },
   {
    "id": "sfx/ui/count_tick",
-   "t": 19.54,
+   "t": 18.8,
    "why": "h2h: row 2"
   },
   {
    "id": "sfx/device/loading_tick",
-   "t": 19.68,
+   "t": 18.9333,
    "why": "h2h: row 3"
   },
   {
    "id": "sfx/ui/blip",
-   "t": 20.78,
+   "t": 20.0333,
    "why": "h2h: highlight pulses"
   },
   {
-   "id": "sfx/ui/slide",
-   "t": 23.55,
+   "id": "sfx/whoosh/swish_xs",
+   "t": 22.5667,
    "why": "camera leaves for numbers"
   },
   {
    "id": "sfx/hit/soft",
-   "t": 24,
+   "t": 22.7667,
    "why": "ONE soft hit on the number reveal"
   },
   {
    "id": "sfx/ui/count_run",
-   "t": 24.1,
+   "t": 22.8667,
    "why": "numbers count up"
   },
   {
    "id": "sfx/ui/slide",
-   "t": 28.55,
+   "t": 27.0667,
    "why": "camera leaves for cards"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 29.1,
+   "t": 27.3667,
    "why": "stat card 1"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 29.4,
+   "t": 27.6667,
    "why": "stat card 2"
   },
   {
    "id": "sfx/ui/pop",
-   "t": 29.7,
+   "t": 27.9667,
    "why": "stat card 3"
   },
   {
-   "id": "sfx/ui/slide",
-   "t": 33.55,
+   "id": "sfx/whoosh/swish_xs",
+   "t": 32.0667,
    "why": "camera leaves for end"
   },
   {
    "id": "sfx/ui/tick",
-   "t": 33.95,
+   "t": 32.2333,
    "why": "end card lands (a tick, no stinger: the quiet hold follows)"
   }
  ],
  "music": "music/bed_playful_bounce_loop8",
  "musicGainDb": 0,
- "ceilingDb": -2,
+ "ceilingDb": -3,
  "fadeInMs": 40,
  "bedAutomation": [
   {
@@ -677,11 +677,11 @@
    "gain_db": 0
   },
   {
-   "frame": 1041,
+   "frame": 989,
    "gain_db": 0
   },
   {
-   "frame": 1059,
+   "frame": 1007,
    "gain_db": -30
   }
  ],
@@ -698,8 +698,8 @@
    },
    {
     "t": [
-     35.3,
-     39.3
+     33.5667,
+     37.6
     ],
     "kind": "hold",
     "why": "end card on near-silence: no stinger, the URL holds"
@@ -709,51 +709,51 @@
    0,
    1.2,
    4,
-   4.05,
-   4.4,
-   4.45,
-   8,
-   8.05,
-   8.4,
-   8.45,
-   12.5,
-   12.55,
-   12.9,
-   12.95,
-   13.45,
-   13.61,
-   13.77,
-   13.93,
-   14.09,
-   14.25,
-   14.41,
-   14.72,
-   15.72,
-   16.02,
-   18.5,
-   18.55,
-   18.9,
-   19.15,
-   19.4,
-   19.43,
-   19.54,
-   19.68,
-   20.78,
-   23.5,
-   23.55,
-   23.9,
-   24,
-   24.1,
-   28.5,
-   28.55,
-   28.9,
-   29.1,
-   29.4,
-   29.7,
-   33.5,
-   33.55,
-   33.9,
-   33.95
+   4.067,
+   4.167,
+   4.233,
+   7.5,
+   7.567,
+   7.667,
+   7.733,
+   12,
+   12.067,
+   12.167,
+   12.233,
+   12.733,
+   12.867,
+   13.033,
+   13.2,
+   13.367,
+   13.533,
+   13.667,
+   14,
+   15,
+   15.3,
+   18,
+   18.067,
+   18.167,
+   18.433,
+   18.667,
+   18.7,
+   18.8,
+   18.933,
+   20.033,
+   22.5,
+   22.567,
+   22.667,
+   22.767,
+   22.867,
+   27,
+   27.067,
+   27.167,
+   27.367,
+   27.667,
+   27.967,
+   32,
+   32.067,
+   32.167,
+   32.233
   ],
   "role": "proof"
  },
@@ -839,7 +839,7 @@
    {
     "path": "builder.scatter.points[4].x",
     "label": "System E x",
-    "value": 2.9,
+    "value": 3.9,
     "source": "illustrative placeholder, replace",
     "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
    },
@@ -1051,7 +1051,7 @@
    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
   },
   {
-   "text": "System E x: 2.9",
+   "text": "System E x: 3.9",
    "source": "illustrative placeholder, replace",
    "method": "score = mean graded answer; cost = list price x tokens; frontier = no other system is both cheaper and higher scoring"
   },
@@ -1171,7 +1171,7 @@
   "unmotivatedTransitions": [],
   "pace": {
    "shots": 8,
-   "asl": 4.91,
+   "asl": 4.7,
    "longest": 6,
    "pass": true
   }

@@ -100,7 +100,7 @@ Its two strongest forms (round 4/5, both tier A):
 
 - **Cuts:** usually none. The camera moves between slides or the diagram grows, so score sync by motion events (`plan.audio.mode: "continuous"`, or `"vo"` with a voice; `references/critic.md`).
 - **Bed:** a proof or explainer bed at 20–36% bass share, so numbers and VO sit on top; −14 LUFS master.
-- **Parts:** `chart.scatterFrontier`, `ui.dataTable`, `ui.branchTrace` and `cuts.story.diagramWalkthrough` (round 4/5, planned in parallel; a proof-film template is a listed gap); today `counter.statCard`, `chart.bar`, `type/maskRise`.
+- **Parts:** `templates/proof-film` builds this archetype (one continuous cam2d camera, an honesty gate that refuses a number without its source and method, 16:9 and a 9:16 re-layout, optional sparse VO); its parts are `chart.scatterFrontier`, `ui.dataTable`, `ui.branchTrace` and `cuts.story.diagramWalkthrough` (the VO path).
 - **Honesty:** measured numbers only, each with its source and method. If the numbers do not exist yet, stop and measure; never borrow them.
 
 ### L9 multi-voice documentary (~2:30; 1:45–3:00)
