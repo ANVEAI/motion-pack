@@ -122,6 +122,18 @@ SVG kinetic pieces and field layouts (`type/gfx/kinetic.js`, `type/gfx/collage.j
 
 Round 3 (`type/gfx/swap.js`, `badges.js`, `brand.js`): `type.accentSwap`, `type.wordSplitMedia`, `type.imageFill`, `type.strikeOut`, `type.glowWord`, `type.ledDigits`, `callout.selectionBox` (+ `selectionZoomCss`), `counter.scoreIterate`, `counter.stepPill`, `caption.speakerTag`, `title.timeCard`, `layout.paletteColumns`, `layout.logoConstruction` (`CIRCLE4`, `SPARK4`), `layout.mockupInContext` (`PLATES`), `layout.typeSpecimen`, `layout.backdropSwap`, `layout.lineup`. Sound per action: `gfxCues(id, { at, params, dur })` -> `[{ t, id, why }]`.
 
+Round 4+5 (`type/gfx/ui-proof.js`, `ui-trace.js`; `ui.promptBar` takes an `attach` param in `ui.js`): `chart.scatterFrontier`, `ui.dataTable`, `ui.branchTrace`, `caption.sceneBubble`, `ui.costTicker`, `type.paramReadout`, `lowerThird.personalTag`, `ui.promptBar.attach`. Numbers are illustrative by default and the frame says so; a point, table or ticker without its `source` renders a red "needs a source" card (and one `sfx/ui/error` cue).
+
+```js
+import { renderSVG, gfxCues, frontierOf, fmtUnit, keysAt, trackAt, lintBranchTrace, traceTimes, traceCaptions, bubbleGeo, readoutGeo } from './type/gfx/index.js';
+renderSVG('chart.scatterFrontier', t, { at: 0, params: { points: [{ label: 'A', x: 4, y: 41, source: 'run 12' }, { label: 'B', x: 7, y: 47, source: 'run 12' }], hero: { label: 'Ours', x: 3, y: 50, source: 'run 12', callout: ['Highest score', 'under $4'] } } });   // frontierOf(points, { x: 'low', y: 'high' }) is monotone for any input order
+renderSVG('ui.dataTable', t, { at: 0, params: { columns: [{ label: 'Metric' }, { label: 'Mon' }, { label: 'Tue' }], rows: [{ label: 'Calls', unit: 'K', values: [12400, 15800] }], finding: 'Tuesday handled more calls.', highlight: { row: 0, col: 2 }, source: 'call log, 2 days' } });   // units: K M % dur s ms $ '' (fmtUnit)
+renderSVG('ui.branchTrace', t, { at: 0, params: { run: ['id-name'] } });   // lanes / decision default to a generic booking example; run [] = pass; lintBranchTrace(params) -> [] when every picked id exists
+renderSVG('caption.sceneBubble', t, { at: 0, params: { words: [{ w: 'Hello', s: 0.5, e: 0.8 }], anchor: [[0, 0.4, 0.3], [4, 0.45, 0.32]], dock: { at: 3, to: [0.64, 0.17], scale: 0.62, title: 'Reminders' } } });   // words.json shape; anchor = [x, y] or a [[t, x, y], ...] track in local time
+renderSVG('ui.promptBar.attach', t, { at: 0, params: { attach: { kind: 'sketch', name: 'banner-sketch.png', from: [0.3, 0.17], dropAt: 1.15 } } });   // `href` swaps in your own thumbnail
+gfxCues('caption.sceneBubble', { at: 2, params });   // [{ t, id, why }]: pop on the first word, success on "Captured", swish on the dock
+```
+
 ## Camera
 
 ```js

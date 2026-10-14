@@ -5,16 +5,23 @@
    unsorted input; a point / table / ticker without a source is refused (red card); branchTrace caption text matches the plan at every step time, red never
    outruns the run, the lint catches an unknown fork id; the table keeps its units and passes the readability floor; scene-bubble words follow their own
    timestamps without reflow and stay inside the 9:16 safe zone; the ticker is piecewise linear and stays inside the safe zone; the readout line never shifts
-   (100 sampled frames); the personal tag's second tier arrives 0.3 s after the name and leaves first, inside the 9:16 safe zone; the attachment chip lands on its frame. */
+   (100 sampled frames); the personal tag's second tier arrives 0.3 s after the name and leaves first, inside the 9:16 safe zone and readable at 360 px; the attachment chip
+   lands on its frame. Phone checks (1080 x 1920 -> 360 px wide): the table's number cells >= 12 px with every text inside the panel and no overlaps, the scatter's axis
+   label and footnote never collide, the docked list card of the scene bubble is clamped inside the safe zone. */
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
 import { GFX, renderSVG, gfxCues, uiCues, sfxFor, frontierOf, keysAt, fmtUnit, lintBranchTrace, traceTimes, traceCaptions, captionAt, bubbleGeo } from '../gfx/index.js';
-import { ctxFor } from '../gfx/core.js';
+import { ctxFor, measure } from '../gfx/core.js';
 const here = path.dirname(fileURLToPath(import.meta.url)), ROOT = path.resolve(here, '../..');
 let pass = 0, fail = 0; const check = (name, ok, info = '') => { if (ok) pass++; else fail++; console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${ok || !info ? '' : '  ' + info}`); };
 const rng = (() => { let a = 45; return () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; })();
 const shuffle = (arr) => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const SFX = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'sfx/manifest.json'), 'utf8')).sounds.map((s) => s.id)), okSfx = (id) => SFX.has('snd.' + id.split('/').slice(1).join('.'));
 const num = (s, re) => [...s.matchAll(re)].map((m) => +m[1]);
+/* every <text> in an SVG string with an estimated box (core.js measure(): canvas metrics in a browser, an estimate in node), and the largest rect (the panel) */
+const TXT = /<text x="([\d.-]+)" y="([\d.-]+)" font-family="[^"]*" font-size="([\d.]+)" font-weight="(\d+)" fill="[^"]*" text-anchor="(\w+)"[^>]*>([^<]*)<\/text>/g;
+const boxes = (svg) => [...svg.matchAll(TXT)].map(([, x, y, sz, wt, an, str]) => { const w = measure(str.replace(/&amp;/g, '&'), +sz, { weight: +wt }), l = an === 'end' ? +x - w : an === 'middle' ? +x - w / 2 : +x; return { str, size: +sz, l, r: l + w, t: +y - 0.8 * +sz, b: +y + 0.25 * +sz }; });
+const panelOf = (svg) => [...svg.matchAll(/<rect x="([\d.-]+)" y="([\d.-]+)" width="([\d.]+)" height="([\d.]+)"/g)].map((m) => m.slice(1).map(Number)).sort((a, b) => b[2] * b[3] - a[2] * a[3])[0];
+const overlaps = (bs) => { const out = []; for (let i = 0; i < bs.length; i++) for (let j = i + 1; j < bs.length; j++) { const a = bs[i], b = bs[j]; if (a.l < b.r - 1 && b.l < a.r - 1 && a.t < b.b - 1 && b.t < a.b - 1) out.push(`"${a.str}" x "${b.str}"`); } return out; };
 
 /* ---------- 1. every id: defaults + variants ---------- */
 const CASES = [['chart.scatterFrontier', 4.0, {}, 'illustrative data'], ['ui.branchTrace', 4.6, {}, 'illustrative run'], ['ui.branchTrace', 4.6, { run: [] }, 'illustrative run'],
@@ -46,6 +53,9 @@ check('scatterFrontier: no point off the frontier beats a frontier point on both
 { const p = GFX['chart.scatterFrontier'].d, a = renderSVG('chart.scatterFrontier', 0.6, { params: p }), b = renderSVG('chart.scatterFrontier', 4.0, { params: p });
   check('scatterFrontier: the hero star and callout land last (absent at 0.6 s, present at 4 s)', !a.includes('Highest score') && b.includes('Highest score') && b.includes('Acme')); }
 
+{ for (const [name, W, H, params] of [['16:9', 1920, 1080, {}], ['9:16', 1080, 1920, { box: [0.04, 0.2, 0.92, 0.6] }]]) { const sv = renderSVG('chart.scatterFrontier', 4.6, { params }, { W, H }), bs = boxes(sv), pn = panelOf(sv), axis = bs.filter((q) => q.str.startsWith('Cost per task')), ov = overlaps(bs.filter((q) => !/^Model |^Acme$/.test(q.str)));
+    check(`scatterFrontier ${name}: axis label, footnote and every text inside the panel with no text overlapping the axis label or footnote`, axis.length === 1 && bs.every((q) => q.l >= pn[0] - 1 && q.r <= pn[0] + pn[2] + 1 && q.b <= pn[1] + pn[3] + 1) && ov.length === 0, ov.slice(0, 3).join('; ')); } }
+
 /* ---------- 3. ui.branchTrace ---------- */
 const BT = GFX['ui.branchTrace'].d;
 for (const [name, run] of [['fail', BT.run], ['pass', []]]) { const p = { ...BT, run }, caps = traceCaptions(p); let ok = true, why = '';
@@ -64,7 +74,10 @@ for (const [name, run] of [['fail', BT.run], ['pass', []]]) { const p = { ...BT,
   check('dataTable: units are formatted by the part (K, %, m s, $, ms) and counts end on the data', ['12.4K', '81.9%', '7m 14s', '$0.35', '505 ms'].every((v) => s.includes('>' + v + '<')) && fmtUnit(2.5e6, 'M') === '2.50M' && fmtUnit(65, 'dur') === '1m 05s');
   check('dataTable: numerals are tabular (columns do not jitter while counting)', (s.match(/tabular-nums/g) || []).length >= d.rows.length * 3);
   const sizes = num(s.replace(/<text[^>]*>source:[^<]*<\/text>/, ''), /font-size="([\d.]+)"/g), minCell = Math.min(...num(s, /font-size="([\d.]+)"[^>]*text-anchor="end"[^>]*font-variant-numeric/g));
-  check(`dataTable 360 px check: cells ${minCell} px, all text >= ${Math.min(...sizes)} px at 1080p (cells >= 30 px = ${(minCell * 360 / 1920).toFixed(1)} px on a 360 px wide phone)`, minCell >= 30 && Math.min(...sizes) >= 24);
+  check(`dataTable 16:9 floor: cells ${minCell} px, all text >= ${Math.min(...sizes)} px at 1080p (a 16:9 table on a 360 px phone is 6 px, so phones get the 9:16 layout below)`, minCell >= 30 && Math.min(...sizes) >= 24);
+  { const o = { params: { box: [0.04, 0.14, 0.92, 0.72], scale: 1.15 } }, s9 = renderSVG('ui.dataTable', 4.0, o, { W: 1080, H: 1920 }), bs = boxes(s9), pn = panelOf(s9), cells = bs.filter((q) => /^[\d$]/.test(q.str)), min9 = Math.min(...cells.map((q) => q.size));
+    check(`dataTable 360 px check (9:16, 1080 x 1920, scale 1.15): ${cells.length} number cells are >= ${min9.toFixed(1)} px = ${(min9 * 360 / 1080).toFixed(1)} px on a 360 px wide phone (floor 12 px); every text, the wrapped finding included, sits inside the panel and none overlap`,
+      cells.length >= 18 && min9 * 360 / 1080 >= 12 && bs.every((q) => q.l >= pn[0] - 1 && q.r <= pn[0] + pn[2] + 1) && overlaps(bs).length === 0, overlaps(bs).slice(0, 3).join('; ')); }
   const mid = renderSVG('ui.dataTable', 0.5 + 0.55, {}), early = renderSVG('ui.dataTable', 0.3, {}); check('dataTable: rows stagger in and count up (row 6 absent early, values below final mid-count)', !early.includes('Median reply time') && !mid.includes('>18.1K<'));
   const r = renderSVG('ui.dataTable', 3, { params: { source: '' } }); check('dataTable: no source -> refused (red card, no numbers)', r.includes('needs a source') && !r.includes('12.4K')); }
 
@@ -75,6 +88,9 @@ for (const [name, run] of [['fail', BT.run], ['pass', []]]) { const p = { ...BT,
   const cues = gfxCues('caption.sceneBubble', { at: 2, params: p }), cap = cues.find((q) => q.why === 'captured'); check('sceneBubble: "captured" cue is sfx/ui/success at the last word end + 0.3 s', cap && cap.id === 'sfx/ui/success' && Math.abs(cap.t - (2 + 1.9 + 0.3)) < 1e-6);
   const d = GFX['caption.sceneBubble'].d, tall = ctxFor(1080, 1920); let inside = true; for (const an of [[0.4, 0.3], [0.95, 0.04], [0.02, 0.97], [[0, 0.1, 0.1], [3, 0.9, 0.9]]]) for (const u of [1, 2.5, 4]) { const G = bubbleGeo({ ...d, anchor: an }, tall, u), S = tall.safe; if (G.x < S.x0 - 0.5 || G.x + G.bw > S.x1 + 0.5 || G.y < S.y0 - 0.5 || G.y + G.bh > S.y1 + 0.5) inside = false; }
   check('sceneBubble: the bubble stays inside the 9:16 safe zone for any anchor (corners and a moving track)', inside);
+  const dk = { dock: { at: 1.5, to: [0.5, 0.5], scale: 0.6 } }; let dockIn = true; for (const to of [[0.99, 0.01], [0.01, 0.99], [0.5, 0.5]]) for (const u of [0, 2.5, 4]) { const G = bubbleGeo({ ...d, dock: { ...dk.dock, to } }, tall, u), S = tall.safe;
+    if (G.dx - 24 * G.S / d.size < S.x0 - 0.5 || G.dx - 24 * G.S / d.size + G.dw > S.x1 + 0.5 || G.dy - 74 * G.S / d.size < S.y0 - 0.5 || G.dy - 74 * G.S / d.size + G.dh > S.y1 + 0.5) dockIn = false; }
+  check('sceneBubble: the docked list card is clamped inside the 9:16 safe zone for any dock target (corners included)', dockIn);
   const t2 = renderSVG('caption.sceneBubble', 3.3, { params: { anchor: [[0, 0.3, 0.3], [4, 0.6, 0.5]] } }), t3 = renderSVG('caption.sceneBubble', 3.6, { params: { anchor: [[0, 0.3, 0.3], [4, 0.6, 0.5]] } }); check('sceneBubble: a tracked anchor moves the bubble with time', t2 !== t3); }
 
 /* ---------- 6. ui.costTicker ---------- */
@@ -95,6 +111,7 @@ for (const [name, run] of [['fail', BT.run], ['pass', []]]) { const p = { ...BT,
 { const d = GFX['lowerThird.personalTag'], at = 0.5, tot = (d.inF + d.outF) / 30 + d.dur, has = (t) => renderSVG('lowerThird.personalTag', t, { at }).includes(d.d.personal);
   check('personalTag: tier 2 arrives 0.3 s after the name and leaves before it', renderSVG('lowerThird.personalTag', at + 0.2, { at }).includes(d.d.name) && !has(at + 0.29) && has(at + 0.4) && has(at + tot - d.outF / 30 - 0.4) && !has(at + tot - d.outF / 30 + 0.02) && renderSVG('lowerThird.personalTag', at + tot - d.outF / 30 + 0.02, { at }).includes(d.d.name));
   const s = renderSVG('lowerThird.personalTag', 1.5, {}, { W: 1080, H: 1920 }), S = ctxFor(1080, 1920).safe, rs = [...s.matchAll(/<rect x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"[^>]*fill="rgba\(12,12,18,0.74\)"/g)].map((m) => m.slice(1).map(Number));
+  const fs9 = Math.min(...[d.d.name, d.d.role, d.d.personal].map((w) => +(new RegExp(`font-size="([\\d.]+)"[^>]*>${w}<`).exec(s) || [0, 0])[1])); check(`personalTag 360 px check: name, role and personal line are >= ${fs9.toFixed(1)} px on a 1080 px wide 9:16 frame = ${(fs9 * 360 / 1080).toFixed(1)} px on a 360 px wide phone (floor 12 px; the avatar initials are decoration)`, fs9 * 360 / 1080 >= 12);
   check(`personalTag: both tiers inside the 9:16 safe zone (${rs.length} panels)`, rs.length === 2 && rs.every(([x, y, w, h]) => x >= S.x0 - 0.5 && x + w <= S.x1 + 0.5 && y >= S.y0 - 0.5 && y + h <= S.y1 + 0.5)); }
 
 /* ---------- 9. ui.promptBar.attach ---------- */

@@ -61,6 +61,8 @@ _site/
 # --- demo-ui-kit: the rendered MP4 stays out of git (plan.json + sheet.jpg are committed) ---
 templates/demo-ui-kit/out/*.mp4
 templates/demo-r3-ui/out/*.mp4
+# --- demo-r45-ui: the rendered MP4 stays out of git (plan.json + sheet.jpg are committed) ---
+templates/demo-r45-ui/out/*.mp4
 # --- demo-r3-fx: MP4s (demo + logo plate), the environment still and its render folder stay out of git; plan.json, screen-quad.json, sheet.jpg are committed ---
 templates/demo-r3-fx/out/*.mp4
 templates/demo-r3-fx/out/env/

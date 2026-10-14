@@ -2,7 +2,8 @@
    closed-form springs from ../ease.js, `scale` / `theme` / `accent` on every item, one sound per action through gfxCues / uiCues). Generic layouts of our own:
    no reference brand, logo, product name, layout or copy is reproduced. HONESTY: every number these parts print is ILLUSTRATIVE by default and the frame says so;
    chart.scatterFrontier refuses to draw a point without its own `source`, ui.dataTable and ui.costTicker refuse to draw numbers without `source`
-   (a red "needs a source" card renders instead, so the mistake is visible on the contact sheet and in the film).
+   (a red "needs a source" card renders instead, so the mistake is visible on the contact sheet and in the film). The two dense parts (scatter, table) size their type
+   from the shorter frame side, so a 9:16 frame keeps the 16:9 type size (give it a taller `box`); the finding and the footnote wrap inside the panel.
      chart.scatterFrontier  cost (x) vs score (y) scatter: axes + ticks draw on, points drop in one by one with labels, a Pareto frontier draws through the best
                             points (stroke-dashoffset on a precomputed polyline), the hero point lands last with a star and a two-line callout; optional `better` quadrant
      ui.dataTable           table that builds: header slides in, rows stagger, numeric cells count up with units formatted by the part (K / M / % / dur / s / ms / $),
@@ -14,6 +15,7 @@ import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, f2, text, measure, polylin
 import { springTrack, spring } from '../ease.js';
 import { KIT, rr, TICKS, POPS } from './ui.js';
 import { mixHex } from './swap.js';
+import { wrapWords } from './ui-data.js';
 const { th, GREEN, AMBER, bx, uid, op, rect, shadowDef, softShadow } = KIT;
 const RED = '#E5484D';
 const fade = (L) => op(clamp(L.in * 1.5) * (1 - L.out));
@@ -67,17 +69,18 @@ export const PROOF = {
     d: { box: [0.07, 0.08, 0.86, 0.82], title: 'Score against cost per task', points: PTS, hero: { label: 'Acme', x: 3.9, y: 62.4, source: 'illustrative', callout: ['Highest score', 'under $4 a task'] },
       x: { min: 0, max: 14, ticks: [0, 2, 4, 6, 8, 10, 12, 14], prefix: '$', label: 'Cost per task  ·  cheaper →', invert: true }, y: { min: 30, max: 70, ticks: [30, 40, 50, 60, 70], label: 'Score' },
       better: { x: 'low', y: 'high' }, quadrant: { x: 6, y: 52, label: 'better' }, frontier: true, axesAt: 0.05, axesDur: 0.6, pointsAt: 0.55, stagger: 0.16, frontierAt: null, frontierDur: 0.8, heroAt: null,
-      calloutOffset: [-380, 96], note: 'illustrative data', method: 'frontier: no other point is both cheaper and higher scoring', panel: true, theme: 'light', accent: BRAND },
+      calloutOffset: [-200, 110], note: 'illustrative data', method: 'frontier: no other point is both cheaper and higher scoring', panel: true, theme: 'light', accent: BRAND },
     svg(L, p, c) { const T = th(p), s = c.s, u = L.u, [x, y, w, h] = bx(p.box, c), id = uid('sf', x, y, w, h), all = [...p.points, ...(p.hero ? [p.hero] : [])], miss = all.filter((q) => !q.source);
       if (miss.length) return `<g${fade(L)}>${refuse(c, x, y, Math.min(w, 980 * s), `chart.scatterFrontier: ${miss.length} point(s) without a source (${miss.slice(0, 3).map((q) => q.label).join(', ')})`)}</g>`;
-      const tm = scatterTimes(p), px0 = x + 96 * s, py0 = y + 116 * s, pw = w - 96 * s - 44 * s, ph = h - 116 * s - 112 * s, X = (v) => px0 + pw * (p.x.invert ? (p.x.max - v) : (v - p.x.min)) / (p.x.max - p.x.min), Y = (v) => py0 + ph * (1 - (v - p.y.min) / (p.y.max - p.y.min));
+      const srcs = [...new Set(all.map((q) => q.source))], foot = [p.note, 'sources: ' + srcs.join(', '), p.method].filter(Boolean).join('  ·  '), fl = wrapWords(foot, 17 * s, 600, w - 80 * s).map((l) => l.join(' '));   // the footnote wraps (phone-width frames) and the plot makes room for it
+      const tm = scatterTimes(p), px0 = x + 96 * s, py0 = y + 116 * s, pw = w - 96 * s - 44 * s, ph = h - 116 * s - 122 * s - (fl.length - 1) * 24 * s, X = (v) => px0 + pw * (p.x.invert ? (p.x.max - v) : (v - p.x.min)) / (p.x.max - p.x.min), Y = (v) => py0 + ph * (1 - (v - p.y.min) / (p.y.max - p.y.min));
       const ak = E.enter(seg(u, p.axesAt, p.axesAt + p.axesDur)); let o = '';
       if (p.quadrant) { const qx = X(p.quadrant.x), bxE = X(p.better.x === 'low' ? p.x.min : p.x.max), qy = Y(p.quadrant.y), by = Y(p.better.y === 'high' ? p.y.max : p.y.min), qk = seg(u, p.axesAt + 0.3, p.axesAt + 0.9);
         o += rect(Math.min(qx, bxE), Math.min(qy, by), Math.abs(bxE - qx), Math.abs(by - qy), 0, p.accent, `opacity="${f2(0.07 * qk)}"`) + (p.quadrant.label ? text(p.quadrant.label + ' ↗', Math.max(qx, bxE) - 14 * s, Math.min(qy, by) + 30 * s, { size: 19 * s, weight: 700, fill: p.accent, anchor: 'end', op: 0.75 * qk }) : ''); }
       p.y.ticks.forEach((v, i) => { const yy = Y(v), k = seg(ak, i * 0.08, i * 0.08 + 0.6); o += `<line x1="${f2(px0)}" x2="${f2(px0 + pw * k)}" y1="${f2(yy)}" y2="${f2(yy)}" stroke="${T.line}" stroke-width="${f2(1.2 * s)}"/>` + text(String(v), px0 - 16 * s, yy + 7 * s, { size: 19 * s, weight: 600, fill: T.muted, anchor: 'end', op: k, extra: TAB }); });
       p.x.ticks.forEach((v, i) => { const xx = X(v), k = seg(ak, 0.2 + i * 0.05, 0.6 + i * 0.05); o += `<line x1="${f2(xx)}" x2="${f2(xx)}" y1="${f2(py0 + ph)}" y2="${f2(py0 + ph + 10 * s * k)}" stroke="${T.muted}" stroke-width="${f2(1.5 * s)}"/>` + text((p.x.prefix || '') + v, xx, py0 + ph + 38 * s, { size: 19 * s, weight: 600, fill: T.muted, anchor: 'middle', op: k, extra: TAB }); });
       o += `<line x1="${f2(px0)}" x2="${f2(px0 + pw * ak)}" y1="${f2(py0 + ph)}" y2="${f2(py0 + ph)}" stroke="${T.ink}" stroke-width="${f2(2 * s)}" opacity="0.6"/><line x1="${f2(px0)}" x2="${f2(px0)}" y1="${f2(py0 + ph)}" y2="${f2(py0 + ph - ph * ak)}" stroke="${T.ink}" stroke-width="${f2(2 * s)}" opacity="0.6"/>` +
-        text(p.x.label, px0 + pw, py0 + ph + 76 * s, { size: 20 * s, weight: 700, fill: T.muted, anchor: 'end', op: ak }) + text(p.y.label, px0 - 16 * s, py0 - 22 * s, { size: 20 * s, weight: 700, fill: T.muted, op: ak });
+        text(p.x.label, px0 + pw, py0 + ph + 72 * s, { size: 20 * s, weight: 700, fill: T.muted, anchor: 'end', op: ak }) + text(p.y.label, px0 - 16 * s, py0 - 22 * s, { size: 20 * s, weight: 700, fill: T.muted, op: ak });
       if (p.frontier) { const fr = frontierOf(p.points, p.better).map((q) => [X(q.x), Y(q.y)]).sort((a, b) => a[0] - b[0]), len = polylineLen(fr), fk = E.soft(seg(u, tm.frontierAt, tm.frontierAt + p.frontierDur));
         if (fk > 0 && fr.length > 1) o += `<path d="${fr.map((q, i) => (i ? 'L' : 'M') + f2(q[0]) + ' ' + f2(q[1])).join(' ')}" fill="none" stroke="${T.ink}" stroke-width="${f2(2.6 * s)}" stroke-linejoin="round" stroke-linecap="round" opacity="0.55" ${dash(len, fk)}/>`; }
       p.points.forEach((q, i) => { const k = spring(u - tm.pointAt(i), 'ui'); if (k <= 0) return; const cx = X(q.x), cy = Y(q.y), right = cx < px0 + pw - 170 * s;
@@ -88,9 +91,8 @@ export const PROOF = {
           const ck = spring(u - tm.calloutAt, 'panel'), lines = q.callout || []; if (ck > 0 && lines.length) { const ox = cx + p.calloutOffset[0] * s, oy = cy + p.calloutOffset[1] * s, lw = Math.max(...lines.map((l) => measure(l, 34 * s, { weight: 700 })));
             o += `<g${op(clamp(ck * 1.4))}><path d="M${f2(cx - 10 * s)} ${f2(cy + 14 * s)} L${f2(ox + lw + 12 * s)} ${f2(oy - 26 * s)}" stroke="${p.accent}" stroke-width="${f2(2 * s)}" fill="none" ${dash(Math.hypot(ox + lw - cx, oy - cy) + 40 * s, ck)}/>` +
               lines.map((l, j) => text(l, ox, oy + j * 44 * s + 10 * s * (1 - ck), { size: 34 * s, weight: 700, fill: T.ink })).join('') + '</g>'; } } }
-      const srcs = [...new Set(all.map((q) => q.source))], foot = [p.note, 'sources: ' + srcs.join(', '), p.method].filter(Boolean).join('  ·  ');
       const panel = p.panel ? softShadow(id + 's', x, y, w, h, 26 * s, s, 0.8) + rect(x, y, w, h, 26 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.5 * s)}"`) : '';
-      return `<defs>${shadowDef(id + 's', s)}</defs><g${fade(L)}>${panel}${text(p.title, x + 40 * s, y + 52 * s, { size: 26 * s, weight: 800, fill: T.ink, op: ak })}${o}${text(foot, x + 40 * s, y + h - 24 * s, { size: 17 * s, weight: 600, fill: T.muted, op: ak })}</g>`; } },
+      return `<defs>${shadowDef(id + 's', s)}</defs><g${fade(L)}>${panel}${text(p.title, x + 40 * s, y + 52 * s, { size: 26 * s, weight: 800, fill: T.ink, op: ak })}${o}${fl.map((l, i) => text(l, x + 40 * s, y + h - 24 * s - (fl.length - 1 - i) * 24 * s, { size: 17 * s, weight: 600, fill: T.muted, op: ak })).join('')}</g>`; } },
 
   'ui.dataTable': { file: 'type/gfx/ui-proof.js', tags: ['ui', 'table', 'data', 'finding', 'count-up', 'benchmark', 'proof', 'product-film'], dur: 4.6, inF: 8, outF: 8,
     d: { box: [0.1, 0.1, 0.8, 0.8], finding: 'Week 3 resolved more calls in the call, at a lower cost per call.', columns: TABLE.columns, rows: TABLE.rows, highlight: { row: 1, col: 3 },
@@ -98,12 +100,12 @@ export const PROOF = {
     svg(L, p, c) { const T = th(p), s = c.s, u = L.u, id = uid('dt', ...bx(p.box, c)), pad = 44 * s, k = spring(u, 'panel'); let [x, y, w, h] = bx(p.box, c);
       let panel = softShadow(id + 's', x, y, w, h, 26 * s, s, 0.8) + rect(x, y, w, h, 26 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.5 * s)}"`);
       if (!p.source) return `<defs>${shadowDef(id + 's', s)}</defs><g${fade(L)}>${panel}${refuse(c, x + pad, y + pad, w - 2 * pad, 'ui.dataTable: set `source` (where the numbers come from)')}</g>`;
-      const nr0 = p.rows.length, fit = (p.finding ? 74 * s : 0) + (p.bars ? (p.bars.h ?? 0.3) * h + 18 * s : 0) + 60 * s + nr0 * 70 * s + 46 * s + 2 * pad;   // content height at full row size
+      const fl = p.finding ? wrapWords(p.finding, 34 * s, 700, w - 2 * pad).map((l) => l.join(' ')) : [], nr0 = p.rows.length, fit = (p.finding ? 74 * s + (fl.length - 1) * 42 * s : 0) + (p.bars ? (p.bars.h ?? 0.3) * h + 18 * s : 0) + 60 * s + nr0 * 70 * s + 46 * s + 2 * pad;   // content height at full row size
       if (fit < h) { const y0 = y; h = fit; y = y0 + (bx(p.box, c)[3] - fit) / 2; }   // shrink the panel to its content, centred in the box
       panel = softShadow(id + 's', x, y, w, h, 26 * s, s, 0.8) + rect(x, y, w, h, 26 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.5 * s)}"`);
       const tm = tableTimes(p), nc = p.columns.length, nr = p.rows.length, fs = 32 * s, hs = 26 * s, lw = Math.max(...p.rows.map((r) => measure(r.label, fs, { weight: 600 })), measure(p.columns[0].label, hs, { weight: 700 })) + 48 * s;
       const cw = (w - 2 * pad - lw) / Math.max(1, nc - 1), colX = (j) => x + pad + lw + cw * j, fy = y + pad + 34 * s, fk = seg(u, 0.1, 0.45);
-      let o = p.finding ? text(p.finding, x + pad, fy + 8 * s * (1 - fk), { size: 34 * s, weight: 700, fill: T.ink, op: fk }) : '', top = p.finding ? fy + 40 * s : y + pad;
+      let o = fl.map((l, i) => text(l, x + pad, fy + i * 42 * s + 8 * s * (1 - fk), { size: 34 * s, weight: 700, fill: T.ink, op: fk })).join(''), top = p.finding ? fy + 40 * s + (fl.length - 1) * 42 * s : y + pad;   // the finding wraps inside the panel
       if (p.bars) { const r = p.rows[p.bars.row ?? 0], vals = r.values, mx = Math.max(...vals) || 1, bh = (p.bars.h ?? 0.3) * h, by = top + bh, bw = Math.min(140 * s, cw * 0.5);
         o += text(p.bars.title || r.label, x + pad, top + 30 * s, { size: 22 * s, weight: 700, fill: T.muted, op: fk });
         vals.forEach((v, j) => { const g = E.expoOut(seg(u, tm.barsAt + j * 0.12, tm.barsAt + j * 0.12 + p.countDur)), hh = (bh - 96 * s) * v / mx * g, bx0 = colX(j) + cw / 2 - bw / 2, hi = p.highlight && (p.highlight.col ?? -1) === j + 1;
@@ -153,7 +155,9 @@ export const PROOF = {
       const plate = p.plate ? rect(G.x0 - S * 0.6, G.y - S * 1.6, G.W + S * 1.2, S * 2.5, S * 0.3, 'rgba(10,10,14,0.62)') : '';
       return `<defs>${clips}</defs><g${fade(L)}>${plate}${o}${p.source ? text(p.source, G.x0 + G.W, G.y + S * 0.85, { size: Math.max(16 * c.s, S * 0.36), weight: 600, fill: p.labelColor, anchor: 'end', extra: sh }) : ''}</g>`; } },
 };
-for (const g of Object.values(PROOF)) { const f = g.svg; g.d.scale = 1; g.svg = (L, p, c) => f(L, p, p.scale && p.scale !== 1 ? { ...c, s: c.s * p.scale } : c); }
+/* the two dense parts (scatter, table) size their type from the SHORTER side of the frame (ctx.s is H / 1080, which blows type up 1.78x on a 1080x1920 frame): same type size in 16:9 and 9:16, `scale` enlarges it */
+const DENSE = new Set(['chart.scatterFrontier', 'ui.dataTable']);
+for (const [id, g] of Object.entries(PROOF)) { const f = g.svg; g.d.scale = 1; g.svg = (L, p, c) => { const b = DENSE.has(id) && c.tall ? { ...c, s: c.W / 1080 } : c; return f(L, p, p.scale && p.scale !== 1 ? { ...b, s: b.s * p.scale } : b); }; }
 
 /* ---------- sound: one cue per action (local times; index.js adds the item's at) ---------- */
 export const PROOF_CUES = {

@@ -52,6 +52,10 @@
 - **Round-3 UI parts measure text, so fonts must be in before the first frame.** `ui.liveTranscript` wraps turns and `ui.wordRegenerate` / `ui.tabPillNav` size words with `measure()` (canvas metrics in the browser). A frame drawn before Manrope loads wraps with the fallback font. Kick off `document.fonts.load()` for the weights you use and repaint the current time when they resolve (`templates/demo-r3-ui/make.mjs`).
 - **A spinner inside a looping part must turn a whole number of times per loop.** The kit spinner turns 1.15 times a second, so a loop of 2.2 s does not repeat exactly; `ui.windowWall` drives its spinners from the loop phase (3 turns per loop) so frame t and t + period are identical (tested).
 - **Real UI is small on a 16:9 frame.** At `scale: 1` the kit uses true UI sizes (30-34 px body); for video use `scale` 1.3-1.6 and check a 360 px wide still.
+- **A missing `source` is refused, not drawn.** `chart.scatterFrontier` (per point), `ui.dataTable` and `ui.costTicker` render a red "needs a source" card in place of the numbers, and their cue list collapses to one `sfx/ui/error`. If a film shows that card, add the `source` string; do not hide the card.
+- **Dense parts size their type from the shorter frame side.** `ctx.s` is `H / 1080`, which blows type up 1.78x on a 1080 x 1920 frame; `chart.scatterFrontier` and `ui.dataTable` use `W / 1080` on tall frames so a 9:16 table keeps its 16:9 type size. A 16:9 table at default size is 6 px on a 360 px wide frame: for a phone give it a taller `box` and `scale` about 1.15 (`tests/r45ui.test.mjs` has the working 9:16 case). `ui.branchTrace` is a landscape diagram and overflows a 9:16 frame: put it on a 16:9 plate.
+- **Anchors are frame fractions in the part's local time.** `caption.sceneBubble` and `ui.costTicker` take `[x, y]` or a track `[[t, x, y], ...]` where `t` is seconds since the part's `at`, not absolute time. Scale about the right point: the docked bubble scales about its top-left corner, the free bubble about its tail side, so the docked box sits exactly in the list card.
+- **`ui.branchTrace` runs are linted.** `run` must name fork ids that exist, one pick per step; otherwise the part draws a red "does not match the diagram" card instead of a wrong diagram. An empty `run` means every step takes its correct fork (a pass).
 
 - **`scramble` swaps glyph text.** Use the canvas renderer or `driveType`, not `bakeType`.
 - **`flipSplit` on canvas is a vertical squash.** The DOM version uses a real rotateX.
@@ -90,6 +94,7 @@
 
 - **Leave disk headroom for renders.** `templates/_shared/render3d.sh` prints free space first and asks the renderer to stop under 10 GiB free. On macOS a render killed with exit code 143 often means the disk filled up.
 - **A hidden browser pane throttles animations.** `document.hidden` freezes counters and reveals, so check `visibilityState` before debugging. A hidden Chrome also stalls X and LinkedIn video uploads.
+- **A demo page opened in a plain Chrome tab has a zero-height `#root`.** `#root { height: 100% }` collapses without HyperFrames sizing it, so a screenshot is blank paper. Add `html, body, #root { width: 1920px; height: 1080px }` before screenshotting, then dispatch `hf-seek` events to step time (the same frame comes out in any seek order: `templates/demo-r45-ui` was checked forward and reversed in two browser sessions).
 - **Image models garble UI.** Never let one redraw UI or text. Generate the room and composite the real screenshot.
 - **References are craft, not copy.** Learn the method from reference work and never build a literal replica.
 - **Write it down the same day.** Every new gotcha goes into this file and the module README.

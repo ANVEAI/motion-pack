@@ -4,7 +4,7 @@
                             of chosen fork ids: 'pass' lights the path, a wrong pick turns red and the red runs down the lane's edges to the decision and the result.
                             Edge colour is a function of t and the run's step times (never accumulated). A caption bar under the diagram changes per step.
      caption.sceneBubble    a speech bubble anchored beside a speaker in footage (static or tracked anchor). Words appear on their own timestamps (words.json shape
-                            [{w, s, e}]), the bubble ticks "Captured" and can dock into an app card. Width is fixed from the final text (no reflow). Speaker label
+                            [{w, s, e}]), the bubble ticks "Captured" and can dock into a dark glass list card (`dock.fill` overrides it). Width is fixed from the final text (no reflow). Speaker label
                             always on; `ai: true` adds an "AI voice" badge for synthetic speech.
      lowerThird.personalTag name + role super with a second tier: a round avatar / initials chip and one personal line; tier 2 arrives 0.3 s after the name, leaves first
      ui.promptBar.attach    ui.promptBar with its `attach` param set (a thumbnail is dragged in and docks as a chip before the request is typed); same code (ui.js) */
@@ -64,8 +64,10 @@ export function bubbleGeo(p, c, u) { const s = c.s, S = p.size * s, pad = 0.75 *
   const hs = 0.62 * S, head = hs + 0.7 * S, badgeW = p.ai && p.aiLabel ? measure(p.aiLabel, hs * 0.9, { weight: 700 }) + 0.9 * S : 0, headW = 1.3 * S + measure(p.speaker + (p.capturedLabel ? '  ·  ' + p.capturedLabel : ''), hs, { weight: 700 }) + badgeW;
   const lw = lines.map((ln) => measure(ln.join(' '), S, { weight: 600 })), bw = Math.max(headW, ...lw) + 2 * pad, bh = head + lines.length * 1.3 * S + 1.3 * pad, [fx, fy] = trackAt(p.anchor, u), ax = fx * c.W, ay = fy * c.H;
   let x0 = p.side === 'left' ? ax - p.offset[0] * s - bw : ax + p.offset[0] * s, y0 = ay + p.offset[1] * s; x0 = clamp(x0, Sf.x0, Sf.x1 - bw); y0 = clamp(y0, Sf.y0, Sf.y1 - bh);
-  let x = x0, y = y0, sc = 1, dk = 0; if (p.dock) { dk = clamp(springTrack(u, [[0, 0], [p.dock.at, 1]], 'panel'), 0, 1.05); const tx = p.dock.to[0] * c.W, ty = p.dock.to[1] * c.H; x = lerp(x0, tx, dk); y = lerp(y0, ty, dk); sc = lerp(1, p.dock.scale, dk); }
-  return { S, pad, hs, head, lines, bw, bh, ax, ay, x, y, sc, dk, badgeW }; }
+  let x = x0, y = y0, sc = 1, dk = 0, dx = 0, dy = 0, dw = 0, dh = 0; if (p.dock) { dk = clamp(springTrack(u, [[0, 0], [p.dock.at, 1]], 'panel'), 0, 1.05);
+    dw = bw * p.dock.scale + 48 * s; dh = bh * p.dock.scale + 150 * s; dx = clamp(p.dock.to[0] * c.W, Sf.x0 + 24 * s, Sf.x1 - dw + 24 * s); dy = clamp(p.dock.to[1] * c.H, Sf.y0 + 74 * s, Sf.y1 - dh + 74 * s);   // the dock card (list) is clamped inside the safe rect too
+    x = lerp(x0, dx, dk); y = lerp(y0, dy, dk); sc = lerp(1, p.dock.scale, dk); }
+  return { S, pad, hs, head, lines, bw, bh, ax, ay, x, y, sc, dk, badgeW, dx, dy, dw, dh }; }
 /* balanced wrap: same line count as a greedy wrap at maxW, but the narrowest width that keeps it (no one-word orphan line) */
 function balanced(str, S, maxW) { const g = wrapWords(str, S, 600, maxW), n = g.length; if (n < 2) return g; const tot = measure(str, S, { weight: 600 });
   for (let w = tot / n; w < maxW; w += S * 0.5) { const t = wrapWords(str, S, 600, w); if (t.length === n) return t; } return g; }
@@ -137,10 +139,10 @@ export const TRACE = {
         if (a > 0) body += text(wd, wx, ly + 0.15 * S * (1 - a), { size: S, weight: 600, fill: p.ink, op: a }); wx += measure(wd + ' ', S, { weight: 600 }); } });
       const tailOn = (1 - G.dk) * clamp(k), tx0 = p.side === 'left' ? x + G.bw : x, ty0 = y + G.bh * 0.7, tail = tailOn > 0.02 && Math.hypot(G.ax - tx0, G.ay - ty0) > 30 * s ? (() => { const dx = G.ax - tx0, dy = G.ay - ty0, dl = Math.hypot(dx, dy), ux = dx / dl, uy = dy / dl, tip = [tx0 + ux * Math.min(dl * 0.55, 46 * s), ty0 + uy * Math.min(dl * 0.55, 46 * s)];
         return `<path d="M${f2(tx0)} ${f2(ty0 - 14 * s)} L${f2(tip[0])} ${f2(tip[1])} L${f2(tx0)} ${f2(ty0 + 14 * s)} Z" fill="${p.fill}" opacity="${f2(tailOn)}"/>`; })() : '';
-      const cx = x + (p.side === 'left' ? G.bw : 0), cy = y + G.bh * 0.7, sc = G.sc * lerp(0.86, 1, k);
-      const dockCard = p.dock ? (() => { const dk2 = spring(u - p.dock.at + 0.25, 'panel'); if (dk2 <= 0) return ''; const tx = p.dock.to[0] * c.W, ty = p.dock.to[1] * c.H, cw = G.bw * p.dock.scale + 48 * s, chh = G.bh * p.dock.scale + 150 * s;
-        return `<g${op(clamp(dk2 * 1.3))}>${rect(tx - 24 * s, ty - 74 * s, cw, chh, 22 * s, 'rgba(250,249,246,0.94)')}${text(p.dock.title || 'Notes', tx, ty - 30 * s, { size: 24 * s, weight: 800, fill: '#16151B' })}` +
-          rect(tx, ty + G.bh * p.dock.scale + 22 * s, cw * 0.62, 12 * s, 6 * s, '#D9D6DE') + rect(tx, ty + G.bh * p.dock.scale + 46 * s, cw * 0.4, 12 * s, 6 * s, '#E7E4EA') + '</g>'; })() : '';
+      const d1 = clamp(G.dk, 0, 1), cx = lerp(x + (p.side === 'left' ? G.bw : 0), x, d1), cy = lerp(y + G.bh * 0.7, y, d1), sc = G.sc * lerp(0.86, 1, k);   // scale about the tail side, and about the top-left once docked (the docked box then sits exactly in the card)
+      const dockCard = p.dock ? (() => { const dk2 = spring(u - p.dock.at + 0.25, 'panel'); if (dk2 <= 0) return ''; const tx = G.dx, ty = G.dy, cw = G.dw, chh = G.dh;
+        return `<g${op(clamp(dk2 * 1.3))}>${rect(tx - 24 * s, ty - 74 * s, cw, chh, 22 * s, p.dock.fill || 'rgba(14,13,20,0.86)', `stroke="rgba(255,255,255,0.14)" stroke-width="${f2(1.5 * s)}"`)}${text(p.dock.title || 'Notes', tx, ty - 30 * s, { size: 24 * s, weight: 800, fill: p.ink })}` +
+          rect(tx, ty + G.bh * p.dock.scale + 22 * s, cw * 0.62, 12 * s, 6 * s, 'rgba(255,255,255,0.16)') + rect(tx, ty + G.bh * p.dock.scale + 46 * s, cw * 0.4, 12 * s, 6 * s, 'rgba(255,255,255,0.09)') + '</g>'; })() : '';
       return `<g${op(clamp(k * 1.5) * (1 - L.out))}>${dockCard}${tail}<g transform="translate(${f2(cx)} ${f2(cy)}) scale(${f2(Math.max(0.001, sc))}) translate(${f2(-cx)} ${f2(-cy)})">` +
         rect(x, y, G.bw, G.bh, 0.55 * S, p.fill, `stroke="rgba(255,255,255,0.22)" stroke-width="${f2(1.4 * s)}"`) + head + body + '</g></g>'; } },
 
