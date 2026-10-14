@@ -83,3 +83,6 @@ templates/proof-film/out/*.mp4
 templates/proof-film/out/ears*.md
 templates/proof-film/out/transcript.json
 templates/proof-film/tall/assets/
+
+# scratch template copies (tests and measurements make templates/wx-*; a template must live two folders under the pack)
+templates/wx-*/

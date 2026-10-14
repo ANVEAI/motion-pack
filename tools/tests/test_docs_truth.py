@@ -125,7 +125,7 @@ def test_apis_lists_every_music_preset():
     spec = importlib.util.spec_from_file_location("mp_presets", os.path.join(REPO, "music", "presets.py"))
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
-    line = next(l for l in _apis().split("\n") if "music/presets.py" in l and "presets (the original 10 plus" in l)
+    line = next(l for l in _apis().split("\n") if "music/presets.py" in l and "presets (the original 10" in l)
     missing = [k for k in m.PRESETS if k not in line]
     assert not missing, f"apis.md does not name the music presets {missing}"
 
