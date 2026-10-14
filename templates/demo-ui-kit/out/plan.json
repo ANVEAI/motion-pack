@@ -1,0 +1,322 @@
+{
+ "template": "demo-ui-kit",
+ "fps": 30,
+ "seconds": 17,
+ "W": 1920,
+ "H": 1080,
+ "music": "music/bed_tech_pulse_loop8",
+ "musicGainDb": 0,
+ "ceilingDb": -2.5,
+ "shots": [
+  {
+   "id": "ask",
+   "start": 0,
+   "dur": 2.5,
+   "parts": [
+    "ui.promptBar"
+   ],
+   "transition": "transitions/cut",
+   "why": "hook: the typed prompt is the action beat (frame 0 already moving)"
+  },
+  {
+   "id": "work",
+   "start": 2.5,
+   "dur": 3,
+   "parts": [
+    "ui.agentActivity"
+   ],
+   "transition": "transitions/cut",
+   "why": "AI at work: verbs on objects, the data card beside it"
+  },
+  {
+   "id": "flow",
+   "start": 5.5,
+   "dur": 2.5,
+   "parts": [
+    "ui.nodeGraph"
+   ],
+   "transition": "transitions/cut",
+   "why": "the rule it follows, drawn as a workflow; the camera glides down the graph"
+  },
+  {
+   "id": "build",
+   "start": 8,
+   "dur": 2.5,
+   "parts": [
+    "ui.isometricTilt",
+    "ui.checklist"
+   ],
+   "transition": "transitions/cut",
+   "why": "building: the checklist tilts into an isometric plane while it works, then settles flat"
+  },
+  {
+   "id": "scan",
+   "start": 10.5,
+   "dur": 2,
+   "parts": [
+    "ui.scanOverlay"
+   ],
+   "transition": "transitions/cut",
+   "why": "proof in the world: the delivery is scanned and verified"
+  },
+  {
+   "id": "close",
+   "start": 12.5,
+   "dur": 4.5,
+   "parts": [
+    "ui.stateMorph"
+   ],
+   "transition": "transitions/cut",
+   "why": "one container carries the close: approve -> working -> done -> notified -> the name; ends on its first state"
+  }
+ ],
+ "cues": [
+  {
+   "t": 0.05,
+   "id": "sfx/ui/typing_burst",
+   "why": "typing",
+   "scene": "ask"
+  },
+  {
+   "t": 1.75,
+   "id": "sfx/ui/click",
+   "why": "send click",
+   "scene": "ask"
+  },
+  {
+   "t": 1.83,
+   "id": "sfx/device/message_sent",
+   "why": "prompt sent",
+   "scene": "ask"
+  },
+  {
+   "t": 2.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: whoosh peaks on the cut",
+   "scene": "work"
+  },
+  {
+   "t": 2.75,
+   "id": "sfx/ui/tick",
+   "why": "step 1 becomes active",
+   "scene": "work"
+  },
+  {
+   "t": 2.85,
+   "id": "sfx/ui/blip",
+   "why": "map point",
+   "scene": "work"
+  },
+  {
+   "t": 3.25,
+   "id": "sfx/ui/count_tick",
+   "why": "step 2 becomes active",
+   "scene": "work"
+  },
+  {
+   "t": 3.61,
+   "id": "sfx/ui/blip",
+   "why": "map point",
+   "scene": "work"
+  },
+  {
+   "t": 3.75,
+   "id": "sfx/device/loading_tick",
+   "why": "step 3 becomes active",
+   "scene": "work"
+  },
+  {
+   "t": 4.25,
+   "id": "sfx/ui/tick",
+   "why": "step 4 becomes active",
+   "scene": "work"
+  },
+  {
+   "t": 4.37,
+   "id": "sfx/ui/blip",
+   "why": "map point",
+   "scene": "work"
+  },
+  {
+   "t": 4.75,
+   "id": "sfx/ui/count_tick",
+   "why": "step 5 becomes active",
+   "scene": "work"
+  },
+  {
+   "t": 5.25,
+   "id": "sfx/ui/success",
+   "why": "last step done",
+   "scene": "work"
+  },
+  {
+   "t": 5.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: whoosh peaks on the cut",
+   "scene": "flow"
+  },
+  {
+   "t": 5.62,
+   "id": "sfx/ui/pop",
+   "why": "trigger card lands",
+   "scene": "flow"
+  },
+  {
+   "t": 6.02,
+   "id": "sfx/device/card_flip",
+   "why": "action card lands",
+   "scene": "flow"
+  },
+  {
+   "t": 6.42,
+   "id": "sfx/ui/toggle_on",
+   "why": "condition card lands",
+   "scene": "flow"
+  },
+  {
+   "t": 6.82,
+   "id": "sfx/ui/pop",
+   "why": "action card lands",
+   "scene": "flow"
+  },
+  {
+   "t": 7.22,
+   "id": "sfx/device/card_flip",
+   "why": "action card lands",
+   "scene": "flow"
+  },
+  {
+   "t": 8,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: whoosh peaks on the cut",
+   "scene": "build"
+  },
+  {
+   "t": 8.25,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "panel tilts",
+   "scene": "build"
+  },
+  {
+   "t": 8.61,
+   "id": "sfx/ui/pop",
+   "why": "step 1 ticked",
+   "scene": "build"
+  },
+  {
+   "t": 8.97,
+   "id": "sfx/device/card_flip",
+   "why": "step 2 ticked",
+   "scene": "build"
+  },
+  {
+   "t": 9.33,
+   "id": "sfx/ui/blip",
+   "why": "step 3 ticked",
+   "scene": "build"
+  },
+  {
+   "t": 9.69,
+   "id": "sfx/ui/pop",
+   "why": "step 4 ticked",
+   "scene": "build"
+  },
+  {
+   "t": 9.74,
+   "id": "sfx/ui/success",
+   "why": "all done",
+   "scene": "build"
+  },
+  {
+   "t": 9.75,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "panel returns",
+   "scene": "build"
+  },
+  {
+   "t": 10.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: whoosh peaks on the cut",
+   "scene": "scan"
+  },
+  {
+   "t": 10.6,
+   "id": "sfx/ui/camera_ping",
+   "why": "brackets lock",
+   "scene": "scan"
+  },
+  {
+   "t": 10.95,
+   "id": "sfx/device/progress_fill",
+   "why": "sweep starts",
+   "scene": "scan"
+  },
+  {
+   "t": 11.85,
+   "id": "sfx/ui/success",
+   "why": "scan done",
+   "scene": "scan"
+  },
+  {
+   "t": 12.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "cut: whoosh peaks on the cut",
+   "scene": "close"
+  },
+  {
+   "t": 12.88,
+   "id": "sfx/ui/pop",
+   "why": "morph to button",
+   "scene": "close"
+  },
+  {
+   "t": 13.45,
+   "id": "sfx/ui/click",
+   "why": "cursor click",
+   "scene": "close"
+  },
+  {
+   "t": 13.53,
+   "id": "sfx/ui/ai_think_pulse",
+   "why": "morph to loader",
+   "scene": "close"
+  },
+  {
+   "t": 14.13,
+   "id": "sfx/ui/success",
+   "why": "morph to check",
+   "scene": "close"
+  },
+  {
+   "t": 14.53,
+   "id": "sfx/ui/notify",
+   "why": "morph to toast",
+   "scene": "close"
+  },
+  {
+   "t": 14.95,
+   "id": "sfx/logo/two_note",
+   "why": "sonic logo on the name",
+   "scene": "close"
+  },
+  {
+   "t": 14.98,
+   "id": "sfx/ui/pop_down",
+   "why": "morph to pill",
+   "scene": "close"
+  }
+ ],
+ "honesty": "fictional product (Acme); placeholder copy; map-card numbers labelled \"illustrative data\"",
+ "lint": {
+  "cutsOnBeat": true,
+  "partsUsed": [
+   "ui.promptBar",
+   "ui.agentActivity",
+   "ui.nodeGraph",
+   "ui.isometricTilt",
+   "ui.checklist",
+   "ui.scanOverlay",
+   "ui.stateMorph"
+  ]
+ }
+}

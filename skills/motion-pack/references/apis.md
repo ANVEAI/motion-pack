@@ -104,6 +104,13 @@ import { SAFE, safeRect, captionBox, lintRect } from './type/safezones.js';
 
 The 14 presets are maskRise, charRise, wordStagger, charStagger, blurIn, scaleSlam, typewriter, trackingCollapse, weightMorph, wipe, flipSplit, elasticPop, scramble and glitchSplit.
 
+```js
+import { renderSVG, mountGfx, bindHF, uiCues, nodeGraphCam, isoTiltCss } from './type/gfx/index.js';   // editor graphics + the ui.* kit
+renderSVG('ui.promptBar', t, { at: 0, params: { text: 'Plan the week', sendAt: 1.8, scale: 1.4 } }, { W: 1920, H: 1080 });   // full-frame SVG string ('' off screen)
+uiCues('ui.promptBar', { at: 0, params: { text: 'Plan the week', sendAt: 1.8 } });   // [{ t, id: 'sfx/ui/click', why }] -> plan cues
+import { springTrack, spring, springSettle, SPRING } from './type/ease.js';   // springTrack(t, [[t0, v0], [t1, v1], ...], 'ui' | 'panel' | 'camera' | 'headline' | 'mascot' | { zeta, f })
+```
+
 ## Camera
 
 ```js

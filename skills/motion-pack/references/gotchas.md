@@ -10,6 +10,7 @@
 - **Pin the version:** `npx --yes hyperframes@0.8.142 ...`. Everything in this file was measured on 0.8.142.
 - **The whole track drops if the AAC is too hot.** If the encoded AAC true peak is over -1 dBTP, HyperFrames lowers the entire track, and it logs this only with `--debug`. The 30 s ad lost 1 dB this way. The mixer's AAC probes catch it, so keep the WAV at -1.5 dBTP.
 - **GL in HyperFrames is proven with canvas sources only.** A `<video>` used as a WebGL texture during a render is untested, so draw video frames into a canvas or use the DOM back-end.
+- **UI clicks overshoot HyperFrames' own AAC more than the mixer's probe predicts.** The UI-kit demo's master sat at -1.5 dBTP with mixer AAC probes at -1.1 / -1.2, yet HyperFrames logged `Audio lowered by 2.2 dB` and the delivered file measured -16.4 LUFS. Set `ceilingDb: -2.5` in the plan (read by `templates/_shared/audio.py`) for click-dense UI mixes; the re-render delivered -14.1 LUFS / -1.5 dBTP with nothing lowered. Always grep the render log for `lowered`.
 - **The GSAP binding is one paused proxy tween per transition window, driving `p` linearly.** The easing lives inside `applyDom`, so do not add an ease on the proxy.
 
 ## Transitions
@@ -39,6 +40,9 @@
 - **Talking-head demo.** The SFX stem sits under the input's own audio, so its LUFS is low on purpose (around -37 for the stem alone).
 
 ## Type and captions
+
+- **UI-kit text widths are estimated.** `ui.*` sizes chips and pills from `textW` (no DOM measurement), so a long label can overrun its chip; check the sheet. The prompt caret is a `<tspan>` after the typed text, so it always sits right after the glyphs.
+- **Real UI is small on a 16:9 frame.** At `scale: 1` the kit uses true UI sizes (30-34 px body); for video use `scale` 1.3-1.6 and check a 360 px wide still.
 
 - **`scramble` swaps glyph text.** Use the canvas renderer or `driveType`, not `bakeType`.
 - **`flipSplit` on canvas is a vertical squash.** The DOM version uses a real rotateX.

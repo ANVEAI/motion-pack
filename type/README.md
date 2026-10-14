@@ -44,10 +44,31 @@ drawCaptions(g, chunks, t, CAPTION_STYLES.karaoke, { W, H, platform: 'conservati
 | Charts + map | `chart.bar`, `.line`, `.donut`, `.race`, `map.route` (abstract map, no tiles; every chart carries a `source` line) | `gfx/social.js` |
 | Stickers + reactions | `sticker.place` (56 owned stickers: 12 faces + 44 objects incl. diya, rangoli, kite, chai), `reaction.place`, `reaction.burst`; motions popBounce, wiggle, float, shake, orbit, spin, pulse, rise | `gfx/stickers.js` |
 | Layouts (DOM shots) | `layout.splitScreen` (vertical / horizontal / diagonal / 3up / grid), `layout.pip`, `layout.beforeAfter`, `layout.freezeFrame` | `gfx/layout.js` |
+| UI kit (generic product UI, own layout, no trade dress) | `ui.agentActivity` (agent steps + map card), `ui.promptBar` (typed prompt, cursor click on send), `ui.checklist` (spinner -> check + progress), `ui.nodeGraph` (workflow cards, elbow connectors, camera pan; `nodeGraphCam` for a DOM wrapper), `ui.scanOverlay` (brackets lock, mask sweep, status), `ui.isometricTilt` (flat -> isometric and back, floor shadow; wraps any gfx via `inner`; `isoTiltCss` for DOM), `ui.stateMorph` (one container through many states, cursor clicks, loops) | `gfx/ui.js` |
 | Draw-on engine | `prepareDrawOn`, `drawOnAt`, `trimAt`, `bindDrawOn`: stroke-dashoffset, seek-safe, works on licensed icon SVGs (Lucide / Phosphor / Fluent after the ORIGIN check) | `gfx/drawon.js` |
 
 Reaction glyphs are placeholders by design: `setGlyphSource(fn)` swaps in a licensed emoji set, for example the Fluent Emoji subset fetched by `scripts/fetch-external.sh` (Apple Color Emoji is not licensed for this use). Candidates read on 2026-10-13 (not downloaded): Noto Emoji (github.com/googlefonts/noto-emoji: README states images under Apache-2.0, font under OFL 1.1, flags separately licensed) and Fluent Emoji (github.com/microsoft/fluentui-emoji: repository licence MIT; the page does not say the licence covers the assets specifically, so confirm before use). Fetched sets arrive with an ORIGIN.txt and pinned checksums; see THIRD_PARTY.md. Demos: `demo/out/gfx-*.jpg`, `demo/out/gfx-sticker-grid.jpg`; test: `node tests/gfx-sheet.mjs` (every id non-empty at its hero time, empty before its start, identical when rendered twice, no page errors).
 Honest limits: text widths are estimated (no DOM measurement), so very long names can overrun a box (check the sheet); Devanagari in `caption.bilingual` falls back to a system font; charts and the testimonial ship with placeholder data / copy.
+
+## UI kit and closed-form springs (2026-10-14)
+
+**Where it lives and why.** The UI kit is the `ui.*` family in `gfx/ui.js`, registered in the same `GFX` registry as `device.*` and `callout.*`. It follows the gfx contract exactly (`svg(L, p, ctx)` -> SVG markup, `life()` entrance / hold / exit, params merged over defaults, `sfxFor(id)`), so `renderSVG`, `mountGfx` + `bindHF`, the gfx demo page and `tests/gfx-sheet.mjs` work on it unchanged. A new top-level module was not needed: the pieces are 2D overlay graphics like the other families, and a module of their own would have duplicated the registry, the safe-zone context and the sheet harness. The motivation is a study of recent product launch films and a published one-prompt motion method (October 2026): agent-at-work lists, self-drawing workflows, prompt-to-result beats, scan overlays, isometric UI and the single morphing container. We took the techniques only, never any brand, footage, copy or sequence.
+
+**Springs** live in `ease.js` (identical copy in `layers/` and `camera/`): `spring(tau, cls)`, `springSettle(cls, eps)`, `springTrack(t, changes, cls)` with `v(t) = v0 + sum_i (v_i - v_{i-1}) * spring(t - t_i)`. A retarget mid-flight keeps the motion running, and the value at t never depends on which t was evaluated before. Values may be numbers or arrays (`[x, y]`, RGB).
+
+| class | zeta | f (Hz) | overshoot | settles to 1% | use |
+|---|---|---|---|---|---|
+| `ui` | 0.82 | 3.2 | 1.1% | 0.31 s | buttons, presses, chips, small snaps |
+| `panel` | 0.9 | 1.6 | 0.15% | 0.60 s | cards, lists, sizes, cursor glides |
+| `camera` | 1.0 | 0.9 | none (critically damped) | 1.17 s | pans and pushes |
+| `headline` | 0.6 | 4.0 | 9.5% | 0.32 s | big type and check badges that land hard |
+| `mascot` | 0.35 | 2.2 | 31% | 0.97 s | characters and playful bounces |
+
+**Every ui item** takes `scale` (multiplies the size unit; real UI is small on a 16:9 frame, 1.3-1.6 reads on a phone), `theme` (`light` / `dark`) and `accent`. **Sound:** `uiCues(id, { at, params })` returns one cue per UI action (keystroke bursts, clicks, ticks, lock-on, sweep, morphs) with sibling sounds round-robined so the mixer's repeat lint stays clean; feed the list into the plan's cue sheet. **Honesty:** the map card and the chart state print a `source` / "(illustrative)" label; replace the placeholder data and cite before real use.
+
+Measured (`tests/ui.test.mjs`, 45 checks, node only, runs in CI): every class gives the same value in forward and shuffled seek order, settles to 0.1% of the span and stays, is continuous through each retarget; overshoot ui 1.11%, panel 0.15%, camera 0, headline 9.5%, mascot 30.9%; all 7 ids render, are empty before `at`, give identical SVG in shuffled seek order and contain no NaN over [-1, 12] s; `scale` grows the type; every cue resolves to a real sfx id; `nodeGraphCam` glides (max 10.9 px/frame); `isoTiltCss` returns flat; `ui.stateMorph` with `loop: true` renders the same frame at the end as at frame 0. Sheet: `demo/out/gfx-ui.jpg`. Demo film: `templates/demo-ui-kit/`.
+
+Honest limits: text widths are estimated (no DOM measurement), so very long chip or card labels can overrun (check the sheet); `ui.isometricTilt` is affine (isometric, no perspective foreshortening) in SVG, while `isoTiltCss` gives true perspective for DOM panels; the colour morph interpolates in RGB, so blue -> green passes through teal for a few frames.
 
 ## Measured (`tests/type.test.mjs`, 26 checks)
 Determinism in any order for all 14 presets; every timing contract above asserted; captions (5 styles x 6 tall platforms x 70 times) never leave the safe zone; DOM bake under random-access seeks equals the pure function (deviation 0) for 7 presets; caption bake within 2%.

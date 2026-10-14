@@ -12,6 +12,8 @@ A plan is a single JSON file, `out/plan.json`, containing shots, transitions wit
 | Talking-head / human edit (input MP4 + words.json: jump cuts, captions, B-roll, punch-ins, lower third) | `talking-head/` | HyperFrames | `node make.mjs [--set input=/abs/talk.mp4]` then render | `out/talking-head.mp4` 9:16, 6.5 s (input audio + SFX stem; no master pass) |
 | Music / beat edit (cuts from a BPM) | `beat-edit/` | HyperFrames | `node make.mjs [--set bpm=128]` then render | `out/beat-edit.mp4` 12 s at 120 BPM (15 f/beat), flash on section changes + scalePunch on the drop cuts, -14.8 LUFS / -1.6 dBTP |
 
+**Demos (not genre templates; no `config.mjs`, so `tools/count.py` does not count them):** `demo-ui-kit/` cuts the seven `ui.*` parts of `type/gfx/ui.js` into a 17 s 16:9 film for a fictional product (Acme): `node make.mjs`, then `npx -y hyperframes@0.8.142 render . -o out/demo-ui-kit.mp4 --crf 23`. Hard cuts on a 120 BPM beat grid, `music/bed_tech_pulse_loop8`, one sound per UI action from `uiCues`. Measured from the delivered file (2026-10-14): -14.1 LUFS-I, -1.5 dBTP, 1.8 MB, CRF 23; plan ceilingDb -2.5 so HyperFrames does not lower the track. The MP4 is gitignored; `out/plan.json` and `out/sheet.jpg` are committed.
+
 Run the three.js templates before `beat-edit` and `talking-head`, because those two use the 3D renders as their footage.
 
 ## How a template wires the other modules (by id only, never copied)

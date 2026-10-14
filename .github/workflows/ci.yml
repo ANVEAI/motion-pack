@@ -38,6 +38,8 @@ jobs:
         run: node transitions/tools/lint.mjs
       - name: camera maths
         run: node camera/tests/camera.test.mjs
+      - name: UI kit + closed-form springs (node, no browser)
+        run: node type/tests/ui.test.mjs
       - name: physics table player (the baked table is committed; no npm install)
         run: node physics/tests/test-player.mjs
       - name: blender scripts compile (no Blender on CI; renders are tested locally with blender/tests/smoke.sh)
