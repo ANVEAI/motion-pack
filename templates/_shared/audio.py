@@ -48,7 +48,7 @@ def via_music_mixer(P, out, bed, a):
     y, sr = sf.read(bed, always_2d=True); n = int(round(P['seconds'] * sr)) + sr
     if len(y) < n: y = np.concatenate([y] * (n // len(y) + 1), axis=0)[:n]
     bed_full = os.path.join(d, 'bed.wav'); sf.write(bed_full, y, sr, subtype='FLOAT')
-    sheet = {'fps': fps, 'length_s': P['seconds'], 'bed': {'file': bed_full, 'gain_db': P.get('musicGainDb', 0.0), 'loop': False}, 'cues': cues, 'master': {'lufs': a.target, 'ceiling_db': P.get('ceilingDb', -1.5)}}   # plan.ceilingDb: lower it (-2.0 to -2.5) when clicky UI transients or a hit at the start push HyperFrames' own AAC over -1 dBTP
+    sheet = {'fps': fps, 'length_s': P['seconds'], 'bed': {'file': bed_full, 'gain_db': P.get('musicGainDb', 0.0), 'loop': False}, 'cues': cues, 'master': {'lufs': a.target, 'ceiling_db': P.get('ceilingDb', P.get('masterCeilingDb', -1.5))}}   # plan.ceilingDb: lower it (-2.0 to -2.5) when clicky UI transients or a hit at the start push HyperFrames' own AAC over -1 dBTP
     sp = os.path.join(d, 'sheet.json'); json.dump(sheet, open(sp, 'w'))
     r = subprocess.run([sys.executable, os.path.join(MUSIC, 'mixer.py'), sp, '--out', d], capture_output=True, text=True, cwd=MUSIC)
     if r.returncode != 0: print(r.stdout[-2000:], r.stderr[-2000:]); raise SystemExit('music mixer failed')

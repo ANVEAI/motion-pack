@@ -1,0 +1,152 @@
+{
+ "name": "cards",
+ "total": 29,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "layout.cardStack: same cards for the same t in any order (80 random seeks), finite",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "layout.cardRiver: same cards for the same t in any order (80 random seeks), finite",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "evidenceBoard: same state for the same t in any order",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cardStack: all backs before the riffle; flip k lands on top with image k; a card shows its back until mid-flip",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cardStack: flips beyond n re-flip cards (front -> front with the next image); flip times are riffleAt + k * every",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cardStack: inline placement (x, y) moves the stack centre; cards pop in from enterAt",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cardRiver: no card centre-disc enters the keep-out rect (40 frames x every card): words sit still in the gap",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cardRiver: cards travel along the lane angle at speed (px/frame = speed / fps)",
+   "pass": true,
+   "detail": "[[15.304424942888545,-8.137507088289055],[15.304424942888659,-8.137507088288999]]"
+  },
+  {
+   "label": "cardRiver: seed changes the layout, same seed reproduces it",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "homography maps the 4 source corners onto the quad (< 1e-6 px)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "matrix3d (CSS column-major) lands each element corner on its quad corner",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cornersAt: static quads pass through, keys interpolate (linear by default), clamp outside the key range",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "lintQuad flags a crossed (wrong corner order) quad, passes a convex one",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "layout.cornerPin slot: transform-origin 0 0, a matrix3d, opacity follows fadeIn",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "evidenceBoard: slots pin on in stagger order, strings draw on after, the title slaps on at title.at",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "evidenceBoard: the push eases from push.from to push.to",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "string draw-on: the de Casteljau split ends on B at k = 1 and on the curve midpoint at k = 0.5",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "docSuper: the name is set in caps, condensed (scale x < 1), hidden before its start",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "subtitleSpeedGag: subtitle only, then the menu with 0.25 / 0.5 / 0.75 / Normal, then the pick (check mark + new line)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "new ids carry a default sound (sfxFor)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "invertFlash: at most 3 flash onsets in any second (extras dropped + linted), frames capped at 3",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "brandField registered as a normal-blend canvas layer above the grain (order 97)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "stack before riffle: draws (6.1% of pixels) and is seek-stable (t, t + 0.77, t -> identical pixels)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "stack mid-riffle: draws (5.7% of pixels) and is seek-stable (t, t + 0.77, t -> identical pixels)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "stack inline in a sentence: draws (3.1% of pixels) and is seek-stable (t, t + 0.77, t -> identical pixels)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "river, no blur: draws (23.1% of pixels) and is seek-stable (t, t + 0.77, t -> identical pixels)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "river, keep-out + 6-sample blur: draws (17.3% of pixels) and is seek-stable (t, t + 0.77, t -> identical pixels)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "evidence board: draws (100.0% of pixels) and is seek-stable (t, t + 0.77, t -> identical pixels)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no page errors",
+   "pass": true,
+   "detail": "[\"error: Failed to load resource: the server responded with a status of 404 (Not Found)\",\"warn: Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently\",\"warn: Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently\"]"
+  }
+ ]
+}

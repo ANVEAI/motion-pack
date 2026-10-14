@@ -12,10 +12,11 @@ import * as METER from './lib/meter.js';
 import * as PANELS from './lib/panels.js';
 import * as DEV from './lib/devices.js';
 import * as MATS from './lib/mat.js';
+import * as DOME from './lib/dome.js';
 import * as WORKER from './characters/worker.js';
 import * as POSES from './characters/poses.js';
 
-export const O = { ...SET, ...BOX, ...CHROME, ...PAPER, ...READ, ...METER, ...PANELS, ...DEV, ...MATS, ...WORKER, ...POSES };
+export const O = { ...SET, ...BOX, ...CHROME, ...PAPER, ...READ, ...METER, ...PANELS, ...DEV, ...MATS, ...DOME, ...WORKER, ...POSES };
 
 const r = (build, tags, state, doc) => ({ build, tags, state, doc });
 export const REGISTRY = {
@@ -43,6 +44,9 @@ export const REGISTRY = {
   'objects/laptop': r((ctx, p, o) => DEV.makeLaptop(ctx, p, o), ['device', 'computer', 'screen', 'new'], 'set({open, screen, ui}), pose(p, yaw)', 'NEW anodised laptop: instanced keys, hinged lid, live canvas screen'),
   'objects/phone': r((ctx, p, o) => DEV.makePhone(ctx, p, o), ['device', 'mobile', 'screen', 'new'], 'set({screen, ui}), pose(p, euler)', 'NEW phone: bevelled frame, glass front, camera island, live screen'),
   'objects/mug': r((ctx, p, o) => DEV.makeMug(ctx, p, o), ['prop', 'coffee', 'ceramic', 'new'], 'set({fill, slosh, tilt}), pose(p, yaw)', 'NEW thrown ceramic mug with real wall, handle, crema surface, slosh'),
+  'objects/glass-dome': r((ctx, p, o) => DOME.makeGlassDome(ctx, p, o), ['set', 'platform', 'dome', 'glass', 'floating', 'new'], 'update(t), set({y, yaw, lift})', 'NEW floating round platform under a clear iridescent glass dome; props go in .inside'),
+  'objects/icon-orbit': r((ctx, p, o) => DOME.makeIconOrbit(ctx, p, o), ['icons', 'orbit', 'apps', 'integrations', 'tiles', 'new'], 'update(t)', 'NEW generic rounded app-icon tiles (own line icons, no brand logos) orbiting on a tilted ring'),
+  'objects/clay': r((_ctx, _p, o) => ({ material: DOME.makeClay(o.color, o), group: null }), ['material', 'clay', 'matte', 'subsurface', 'character', 'new'], 'material uniforms userData.clay', 'NEW clay material preset: soft matte, warm core + light-bleed rim; objects/worker takes spec.clay'),
   'objects/worker': r((ctx, p, o) => WORKER.makeWorker(ctx, p, o.spec || o, o.zoneX, o.rimLight), ['character', 'mascot', 'pantomime', 'original'], 'update(t) from spec {keys, path, blinks}', 'periwinkle ceramic worker: rig, hops, follow-through, blinks'),
 };
 export function create(ctx, parent, id, params = {}) { const e = REGISTRY[id]; if (!e) throw new Error('objects: unknown id ' + id + ' (have ' + Object.keys(REGISTRY).join(', ') + ')'); return e.build(ctx, parent, params); }

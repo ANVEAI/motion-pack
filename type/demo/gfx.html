@@ -11,7 +11,7 @@ const plate = (light) => light === 'paper' ? '#F3F1EC' : light ? 'linear-gradien
 const shotBg = ['linear-gradient(135deg,#ff8a3d,#ff3d7a)', 'linear-gradient(135deg,#2bd9a0,#1a6cff)', 'linear-gradient(135deg,#ffd23a,#ff6a1a)', 'linear-gradient(135deg,#8e6bff,#3a1fb0)'];
 window.show = (id, t, params = {}, W = 1920, H = 1080, o = {}) => {
   Object.assign(root.style, { width: W + 'px', height: H + 'px' }); bg.style.background = plate(o.light); shots.innerHTML = ''; ov.innerHTML = '';
-  if (LAYOUTS[id]) { const n = { 'layout.splitScreen': params.mode === '3up' ? 3 : params.mode === 'grid' ? 4 : 2, 'layout.pip': 2, 'layout.beforeAfter': 2, 'layout.freezeFrame': 1 }[id];
+  if (LAYOUTS[id]) { const n = { 'layout.splitScreen': params.mode === '3up' ? 3 : params.mode === 'grid' ? 4 : 2, 'layout.pip': 2, 'layout.beforeAfter': 2, 'layout.freezeFrame': 1, 'layout.cornerPin': 1 }[id] || 1;
     const els = Array.from({ length: n }, (_, i) => { const d = document.createElement('div'); d.className = 'shot'; d.style.background = shotBg[i]; d.innerHTML = `<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 ${H * 0.12}px Manrope;color:#fff">SHOT ${'ABCD'[i]}</div>`; shots.appendChild(d); return d; });
     const st = layoutAt(id, t, params, { W, H }); applyLayout(els, st); ov.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="position:absolute;inset:0">${st.svg}</svg>`; return true; }
   ov.innerHTML = renderSVG(id, t, { params, at: 0 }, { W, H, platform: o.platform || null }); return ov.innerHTML.length > 0;

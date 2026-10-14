@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><title>motion-pack card systems demo</title>
+<style>@font-face{font-family:Manrope;src:url(/templates/_shared/fonts/Manrope-Variable.ttf) format('truetype');font-weight:200 800}
+html,body{margin:0;background:#000}#root{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:Manrope;background:#F4F1EA}#host{position:absolute;inset:0}
+.word{position:absolute;font:800 96px Manrope;letter-spacing:-0.035em;color:#141218;white-space:nowrap}</style></head><body>
+<div id="root"><div id="host"></div><div id="words"></div></div>
+<script type="module">
+/* card systems demo: window.setup(id, params, opts) mounts ONE system (layout.cardStack | layout.cardRiver | layout.evidenceBoard) with procedural placeholder
+   pictures; window.at(t) renders it; window.hash() -> FNV hash of the canvas pixels (seek-stability checks). Used by type/tests/cards.test.mjs. */
+import { mountCards, mountBoard, placeholderCards } from '../gfx/index.js';
+const host = document.getElementById('host'), words = document.getElementById('words'); let cur = null;
+window.setup = (id, params = {}, o = {}) => {
+  host.innerHTML = ''; words.innerHTML = o.words || ''; document.getElementById('root').style.background = id === 'layout.evidenceBoard' ? '#2a1d12' : '#F4F1EA';
+  const images = placeholderCards(12, o.seed || 3, { w: 480, h: 600 });
+  cur = id === 'layout.evidenceBoard' ? mountBoard(host, params, { W: 1920, H: 1080, images }) : mountCards(host, id, params, { W: 1920, H: 1080, images });
+  return true;
+};
+window.at = (t) => { cur.render(t); return true; };
+window.hash = () => { const c = host.querySelector('canvas'), d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let h = 2166136261 >>> 0, ink = 0;
+  for (let i = 0; i < d.length; i += 4) { h = Math.imul(h ^ d[i] ^ (d[i + 1] << 8) ^ (d[i + 2] << 16) ^ (d[i + 3] << 24), 16777619) >>> 0; if (d[i + 3] > 0) ink++; } return { h, ink: ink / (d.length / 4) }; };
+document.fonts.load('800 40px Manrope').then(() => { window.__gpu = 'canvas2d'; window.__ready = true; });
+</script></body></html>

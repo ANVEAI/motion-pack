@@ -10,6 +10,7 @@
 import * as THREE from 'three';
 import { clamp, lerp, seg, E, springU, rad } from '../kit/util.js';
 import { EASE } from '../kit/tl.js';
+import { makeClay } from '../lib/dome.js';
 
 const FPS = 30;
 export const BASE = { yaw: 0, lean: 0, roll: 0, twist: 0, crouch: 0, sy: 1, sit: 0,
@@ -22,19 +23,22 @@ const R = { foot: [0.078, 0.046, 0.112], footZ: 0.03, leg: [0.052, 0.07], hipX: 
 
 export function makeWorker(ctx, parent, spec, zoneX = () => 0, rimLight = null) {
   const col = spec.color || '#8d84d4';
-  const body = new THREE.MeshPhysicalMaterial({ color: col, roughness: 0.5, metalness: 0, clearcoat: 0.32, clearcoatRoughness: 0.42, sheen: 0.35, sheenRoughness: 0.75, sheenColor: new THREE.Color('#ffffff') });
+  // spec.clay (true or makeClay options): the soft matte clay preset (objects/lib/dome.js makeClay) instead of the glazed ceramic body
+  const body = spec.clay ? makeClay(col, spec.clay === true ? {} : spec.clay) : new THREE.MeshPhysicalMaterial({ color: col, roughness: 0.5, metalness: 0, clearcoat: 0.32, clearcoatRoughness: 0.42, sheen: 0.35, sheenRoughness: 0.75, sheenColor: new THREE.Color('#ffffff') });
   // fix r1: clamp the RED rim on the worker only (it left a pink patch on the crown). The set's rim spot is matched in the shader by its
   // view-space position (uRimPos) and its direct light scaled by uRimK; the violet rim (solution) and every other light are untouched.
   const rimU = { uRimPos: { value: new THREE.Vector3(1e6, 1e6, 1e6) }, uRimK: { value: 1 } };
   if (rimLight) {
-    body.onBeforeCompile = (sh) => {
+    const prevCompile = body.onBeforeCompile, prevKey = body.customProgramCacheKey.bind(body);   // chain: the clay preset patches the same shader
+    body.onBeforeCompile = (sh, r) => {
+      prevCompile.call(body, sh, r);
       Object.assign(sh.uniforms, rimU);
       const chunk = THREE.ShaderChunk.lights_fragment_begin.replace('getSpotLightInfo( spotLight, geometryPosition, directLight );',
         'getSpotLightInfo( spotLight, geometryPosition, directLight );\n\t\tif ( distance( spotLight.position, uRimPos ) < 0.001 ) directLight.color *= uRimK;');
       if (chunk === THREE.ShaderChunk.lights_fragment_begin) throw new Error('worker: rim clamp hook not found');
       sh.fragmentShader = 'uniform vec3 uRimPos;\nuniform float uRimK;\n' + sh.fragmentShader.replace('#include <lights_fragment_begin>', chunk);
     };
-    body.customProgramCacheKey = () => 'worker-rimclamp';
+    body.customProgramCacheKey = () => 'worker-rimclamp|' + prevKey();
   }
   const RIM_RED_K = 0.3;
   const rimSync = (cam) => { rimU.uRimPos.value.setFromMatrixPosition(rimLight.matrixWorld).applyMatrix4(cam.matrixWorldInverse);

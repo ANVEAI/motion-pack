@@ -7,6 +7,7 @@ const T = 1.4, GROUPS = {
   particles: [['sparks', { burstAt: 1.0 }], ['sparks', {}], ['embers', {}], ['smoke', {}], ['confetti', { burstAt: 0.8 }], ['confetti', {}], ['snow', {}], ['motes', {}]],
   frames: [['recHUD', {}], ['timecode', { style: 'vhs' }], ['timecode', { style: 'crt' }], ['timecode', { style: 'film' }], ['sprocket', {}], ['gateEdge', {}], ['polaroid', { caption: 'Diwali 2026' }], ['instax', { caption: 'first demo!' }],
     ['arBars', { beats: [1.3] }], ['arRing', { beats: [1.35] }], ['arWave', { beats: [1.3] }], ['arSpectrum', { beats: [1.3] }]],
+  edit: [['invertFlash', { at: [T - 0.01] }], ['brandField', { at: T - 1.2 }], ['brandField', { at: T - 0.12, reveal: 'iris', revealDur: 0.3 }]],
 };
 const h = await open('/layers/demo/overlays.html'); await h.page.setViewport({ width: 1920, height: 1080 }); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-ov2-'));
 const md5 = (f) => crypto.createHash('md5').update(fs.readFileSync(f)).digest('hex'); let fail = 0;

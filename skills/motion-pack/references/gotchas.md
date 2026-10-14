@@ -32,6 +32,8 @@
 - **Hit contract.** The anchor sample lands at `(F + 1) x SR / fps`: one frame after the visual (the rule from ANVE's v9 launch film). Risers end one frame **before** the hit.
 - **The library is normalised to -6 dBFS peak.** Real levels come from the mixer's over-bed solver (hero +4.5, whoosh +2, ui +4, logo +5 dB over the bed). Never gain by hand.
 - **Sub-heavy cues are not phone-safe.** `phone_safe=false` means the cue drops more than 6 dB on a phone speaker. Pair it with a mid-range cue (lint R12).
+- **Sound ids use the registry segment, not the manifest category.** The transition sounds are `sfx/tx/*` and the impacts `sfx/hit/*` (category names `transition` and `impact` are not ids). The music-mixer path of `templates/_shared/audio.py` skips an unknown id silently, so run `python3 tools/check_ids.py` before every mix and compare the cue count it prints.
+- **A dense SFX cue sheet can still trip the AAC probe.** The 16 s cards demo decoded 0.9 LU quiet at a -1.5 dBTP WAV ceiling (HyperFrames lowered the whole track); `plan.masterCeilingDb: -2.0` fixed it (-14.2 LUFS / -1.6 dBTP decoded).
 - **No human listening pass yet.** Everything was verified by measurement and spectrograms. The glass, bell, metal and bubble tables are research grade C, and the babble, boing and formant voices need one ear pass before a hero use.
 - **Loudness targets.**
   - IG, TikTok, X and LinkedIn publish no loudness spec (grade D).
@@ -51,6 +53,9 @@
 - **Mask-rise type is clipped while it rises.** A frame grabbed mid-reveal shows clipped lines, which is correct. Judge legibility after the reveal settles: check the hold frame, not the first 14 frames.
 - **Emphasis scale can collide.** At 1.15x, an emphasised word can overlap its neighbour ("So I flipped" in the talking-head demo). Add tracking or lower the emphasis scale for long words.
 - **Some ffmpeg builds have no libass** (the one the pack was built with does not). Burn captions through the type module or PNG overlays, not the `subtitles` filter.
+
+- **Canvas card systems load pictures once.** `mountCards` / `mountBoard` start URL images at mount; mount at module run so the page load waits for them, or pass decoded images or canvases. A picture that is not decoded yet draws the card back (a dark slot on the board), never a crash.
+- **Corner pin sits on top of the plate.** A 3D object passing in front of the pinned plane is not occluded by it: keep foreground props out of the pinned quad (the cards demo moves its panel outside the icon orbit for this reason).
 
 ## Layers and camera
 

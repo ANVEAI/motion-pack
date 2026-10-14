@@ -58,19 +58,11 @@
  "sticker.place": 1,
  "reaction.place": 1,
  "reaction.burst": 1.4,
- "type.wordWheel": 1.9,
- "type.inlineMedia": 2.4,
- "type.letterAssemble": 0.9,
- "type.glyphMorphCursor": 2.9,
- "type.marquee": 1,
- "type.bleedWord": 1,
- "layout.scatterCollage": 2.6,
- "layout.mosaicBurst": 1.6,
- "layout.logoWall": 1.6,
- "layout.orbitRing": 2,
- "callout.connectorLabel": 2,
+ "lowerThird.docSuper": 0.8,
+ "caption.subtitleSpeedGag": 1.6,
  "layout.splitScreen": 1,
  "layout.pip": 1,
  "layout.beforeAfter": 1,
- "layout.freezeFrame": 1
+ "layout.freezeFrame": 1,
+ "layout.cornerPin": 1
 }

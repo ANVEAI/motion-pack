@@ -2368,6 +2368,1173 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "ui.agentActivity",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 4.4,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.08,
+     0.2,
+     0.4,
+     0.6
+    ],
+    "steps": [
+     {
+      "verb": "Checking",
+      "obj": "Inbox"
+     },
+     {
+      "verb": "Reading",
+      "obj": "Supplier notes"
+     },
+     {
+      "verb": "Comparing",
+      "obj": "Prices"
+     },
+     {
+      "verb": "Writing",
+      "obj": "Follow-up"
+     },
+     {
+      "verb": "Planning",
+      "obj": "Schedule"
+     }
+    ],
+    "start": 0.35,
+    "step": 0.6,
+    "rowH": 66,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "card": null,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "agent",
+    "ai-at-work",
+    "list",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.promptBar",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3.2,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.2,
+     0.45,
+     0.6,
+     0.11
+    ],
+    "text": "Plan next week's restock",
+    "placeholder": "Ask Acme anything…",
+    "typeAt": 0.45,
+    "cps": 22,
+    "sendAt": null,
+    "title": "What should we work on?",
+    "chip": "Suggested: restock plan",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "cursor": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "prompt",
+    "chat",
+    "input",
+    "cursor",
+    "click"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.checklist",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3.8,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.3,
+     0.24,
+     0.4,
+     0.52
+    ],
+    "title": "Acme is working",
+    "steps": [
+     "Building…",
+     "Connecting to database",
+     "Syncing assets",
+     "Preparing preview"
+    ],
+    "start": 0.35,
+    "step": 0.62,
+    "progress": true,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "card": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "checklist",
+    "progress",
+    "ai-at-work",
+    "building"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.nodeGraph",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 4.2,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "start": 0.3,
+    "stagger": 0.6,
+    "cam": true,
+    "zoom": 1.3,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "nodes": [
+     {
+      "id": "t",
+      "kind": "trigger",
+      "title": "Every morning",
+      "sub": "Scheduled run",
+      "x": 0,
+      "y": 0
+     },
+     {
+      "id": "a",
+      "kind": "action",
+      "title": "Read new orders",
+      "sub": "From the shop inbox",
+      "x": 0,
+      "y": 210
+     },
+     {
+      "id": "c",
+      "kind": "condition",
+      "title": "Stock running low?",
+      "sub": "Checked per item",
+      "x": 0,
+      "y": 420
+     },
+     {
+      "id": "y",
+      "kind": "action",
+      "title": "Draft a reorder",
+      "sub": "Sent for approval",
+      "x": -290,
+      "y": 660
+     },
+     {
+      "id": "n",
+      "kind": "action",
+      "title": "Log and wait",
+      "sub": "Check again tomorrow",
+      "x": 290,
+      "y": 660
+     }
+    ],
+    "edges": [
+     {
+      "from": "t",
+      "to": "a"
+     },
+     {
+      "from": "a",
+      "to": "c"
+     },
+     {
+      "from": "c",
+      "to": "y",
+      "label": "Yes"
+     },
+     {
+      "from": "c",
+      "to": "n",
+      "label": "No"
+     }
+    ],
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "workflow",
+    "node-graph",
+    "automation",
+    "diagram"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.scanOverlay",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/camera_ping",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3.2,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.38,
+     0.2,
+     0.24,
+     0.56
+    ],
+    "from": [
+     0.12,
+     0.08,
+     0.76,
+     0.84
+    ],
+    "mask": null,
+    "lockAt": 0.1,
+    "sweepAt": 0.55,
+    "sweepDur": 1.1,
+    "color": "#2FD47A",
+    "bracket": "#FFFFFF",
+    "label": "Scanning…",
+    "done": "Done",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "status": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "scan",
+    "brackets",
+    "segmentation",
+    "ai-at-work",
+    "status"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.isometricTilt",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_xs",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 3.4,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.3,
+     0.22,
+     0.4,
+     0.56
+    ],
+    "inner": null,
+    "tiltAt": 0.35,
+    "backAt": 2.4,
+    "angle": 45,
+    "squash": 0.57735,
+    "lift": 46,
+    "shrink": 0.86,
+    "shadow": true,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "isometric",
+    "tilt",
+    "perspective",
+    "panel",
+    "camera"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.stateMorph",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 8.6,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "center": [
+     0.5,
+     0.5
+    ],
+    "states": [
+     {
+      "at": 0,
+      "kind": "pill",
+      "w": 250,
+      "h": 84,
+      "r": 42,
+      "fill": "#16151B",
+      "label": "Acme"
+     },
+     {
+      "at": 0.7,
+      "kind": "button",
+      "w": 360,
+      "h": 96,
+      "r": 48,
+      "fill": "#4A18ED",
+      "label": "Get started"
+     },
+     {
+      "at": 1.6,
+      "kind": "input",
+      "w": 640,
+      "h": 104,
+      "r": 22,
+      "fill": "#FFFFFF",
+      "label": "you@acme.example",
+      "placeholder": "Email"
+     },
+     {
+      "at": 2.95,
+      "kind": "loader",
+      "w": 128,
+      "h": 128,
+      "r": 64,
+      "fill": "#4A18ED"
+     },
+     {
+      "at": 3.75,
+      "kind": "check",
+      "w": 128,
+      "h": 128,
+      "r": 64,
+      "fill": "#17A865"
+     },
+     {
+      "at": 4.45,
+      "kind": "card",
+      "w": 620,
+      "h": 360,
+      "r": 30,
+      "fill": "#FFFFFF",
+      "label": "This week"
+     },
+     {
+      "at": 5.5,
+      "kind": "chart",
+      "w": 760,
+      "h": 430,
+      "r": 30,
+      "fill": "#FFFFFF",
+      "label": "Orders (illustrative)",
+      "series": [
+       0.2,
+       0.28,
+       0.24,
+       0.42,
+       0.38,
+       0.6,
+       0.72,
+       0.9
+      ]
+     },
+     {
+      "at": 6.9,
+      "kind": "toast",
+      "w": 600,
+      "h": 104,
+      "r": 52,
+      "fill": "#16151B",
+      "label": "Order sent to supplier"
+     },
+     {
+      "at": 8,
+      "kind": "pill",
+      "w": 250,
+      "h": 84,
+      "r": 42,
+      "fill": "#16151B",
+      "label": "Acme"
+     }
+    ],
+    "path": [
+     {
+      "at": 0.25,
+      "x": 0.66,
+      "y": 0.78
+     },
+     {
+      "at": 1.5,
+      "x": 0.52,
+      "y": 0.51,
+      "click": true
+     },
+     {
+      "at": 2.85,
+      "x": 0.645,
+      "y": 0.515,
+      "click": true
+     },
+     {
+      "at": 5.35,
+      "x": 0.56,
+      "y": 0.47,
+      "click": true
+     },
+     {
+      "at": 6.2,
+      "x": 0.74,
+      "y": 0.86
+     }
+    ],
+    "cls": "panel",
+    "loop": false,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "cursor": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "morph",
+    "state",
+    "container",
+    "cursor",
+    "loop",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.wordWheel",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/tick",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "words": [
+     "Plans",
+     "Docs",
+     "Sites",
+     "Build it all",
+     "Design",
+     "Data",
+     "Automations"
+    ],
+    "steps": [
+     [
+      0,
+      0
+     ],
+     [
+      0.45,
+      1
+     ],
+     [
+      0.9,
+      2
+     ],
+     [
+      1.35,
+      3
+     ]
+    ],
+    "move": 0.32,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "size": 84,
+    "gap": 1.18,
+    "prefix": "",
+    "align": "center",
+    "color": "#0E0E14",
+    "falloff": 0.3,
+    "dim": 0.3,
+    "rows": 3,
+    "wActive": 800,
+    "wIdle": 500,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif"
+   },
+   "tags": [
+    "type",
+    "list",
+    "wheel",
+    "slot",
+    "agent-at-work",
+    "feature-list"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.inlineMedia",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 3.5,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "text": "Every [stack] idea, in [photo] *one* place",
+    "size": 72,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "stagger": 0.16666666666666666,
+    "wordDur": 0.3333333333333333,
+    "slotDur": 0.4666666666666667,
+    "slotW": 1.7,
+    "slotH": 1.5,
+    "riffle": 0.5,
+    "media": [],
+    "seed": 4,
+    "color": "#0E0E14",
+    "accent": "#4A18ED",
+    "pillInk": "#FFFFFF",
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "weight": 700,
+    "lineGap": 1.6,
+    "reflow": true
+   },
+   "tags": [
+    "type",
+    "sentence",
+    "inline-media",
+    "card-stack",
+    "editorial",
+    "hook"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.letterAssemble",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/magic_swirl",
+    "offset_f": 12,
+    "gain_db": -4
+   },
+   "dur_s": 2.6,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "text": "Meet",
+    "size": 140,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "spread": [
+     0.34,
+     0.3
+    ],
+    "hold0": 0.4,
+    "fly": 0.85,
+    "stagger": 0.1,
+    "dots": 8,
+    "dotColors": [
+     "#FF5A36",
+     "#2BD9A0",
+     "#5AB0FF",
+     "#FFCF3A",
+     "#B57BFF"
+    ],
+    "seed": 5,
+    "color": "#FFFFFF",
+    "weight": 700,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif"
+   },
+   "tags": [
+    "type",
+    "opener",
+    "letters",
+    "assemble",
+    "dots",
+    "hook",
+    "logo-reveal"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.glyphMorphCursor",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/typing_burst",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 3.4,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "text": "Build your",
+    "size": 64,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "charRate": 0.1,
+    "blink": 0.5,
+    "shapes": [
+     "circle",
+     "square",
+     "triangle"
+    ],
+    "morph": 0.2,
+    "hold": 0.1,
+    "mark": "M50 4 C54 34 66 46 96 50 C66 54 54 66 50 96 C46 66 34 54 4 50 C34 46 46 34 50 4 Z",
+    "markViewBox": 100,
+    "glyph": 0.9,
+    "color": "#0E0E14",
+    "accent": "#4A18ED",
+    "font": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
+    "weight": 600
+   },
+   "tags": [
+    "type",
+    "typing",
+    "cursor",
+    "morph",
+    "logo-reveal",
+    "mark",
+    "tech"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.marquee",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 1,
+   "out_frames": 6,
+   "params": {
+    "text": "all in one workspace ·",
+    "accent": "one",
+    "accentStyle": "color",
+    "size": 0.36,
+    "speed": 0.42,
+    "dir": -1,
+    "y": 0.5,
+    "color": "#FFFFFF",
+    "accentColor": "#4A18ED",
+    "bg": null,
+    "font": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
+    "weight": 600,
+    "phase": 0
+   },
+   "tags": [
+    "type",
+    "marquee",
+    "monospace",
+    "full-bleed",
+    "ticker",
+    "pixel",
+    "manifesto"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.bleedWord",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whip_pan",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "dur_s": 2.2,
+   "in_frames": 8,
+   "out_frames": 6,
+   "params": {
+    "text": "OPEN",
+    "size": 0.9,
+    "from": [
+     0.06,
+     1.08
+    ],
+    "to": [
+     -0.2,
+     1.08
+    ],
+    "color": "#4A18ED",
+    "weight": 800,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "ls": -0.05,
+    "slideIn": 0.08
+   },
+   "tags": [
+    "type",
+    "oversized",
+    "cropped",
+    "bleed",
+    "brand-system",
+    "editorial"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.scatterCollage",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_m",
+    "offset_f": 34,
+    "gain_db": -2
+   },
+   "dur_s": 3.6,
+   "in_frames": 1,
+   "out_frames": 10,
+   "params": {
+    "text": "Your team dreams big",
+    "size": 64,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "stagger": 0.16666666666666666,
+    "explodeAt": 1.2,
+    "fly": 0.75,
+    "spread": 0.2,
+    "seed": 7,
+    "stickers": [
+     "star",
+     "bolt",
+     "heart",
+     "rocket",
+     "sparkle",
+     "chat"
+    ],
+    "photos": 5,
+    "dots": 4,
+    "arrow": true,
+    "media": [],
+    "area": [
+     0.05,
+     0.08,
+     0.9,
+     0.84
+    ],
+    "cols": 6,
+    "rows": 4,
+    "color": "#0E0E14",
+    "dotColor": "#FF3D9A",
+    "arrowColor": "#0E0E14",
+    "weight": 700,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "float": 3
+   },
+   "tags": [
+    "layout",
+    "collage",
+    "scatter",
+    "zine",
+    "explode",
+    "stickers",
+    "hook"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.mosaicBurst",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_l",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "dur_s": 2.6,
+   "in_frames": 1,
+   "out_frames": 8,
+   "params": {
+    "cols": 14,
+    "rows": 7,
+    "area": [
+     0.04,
+     0.07,
+     0.92,
+     0.86
+    ],
+    "gap": 0.22,
+    "fly": 0.8,
+    "spread": 0.5,
+    "seed": 3,
+    "media": [],
+    "radius": 0.08,
+    "kinds": null,
+    "bg": null
+   },
+   "tags": [
+    "layout",
+    "mosaic",
+    "burst",
+    "thumbnails",
+    "grid",
+    "explosion",
+    "montage"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.logoWall",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 9,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 12,
+   "out_frames": 10,
+   "params": {
+    "headline": "More than N teams build here",
+    "source": "",
+    "logos": [],
+    "cols": 5,
+    "rows": 3,
+    "box": [
+     0.13,
+     0.4,
+     0.74,
+     0.42
+    ],
+    "headY": 0.26,
+    "headSize": 60,
+    "start": 0.3,
+    "stagger": 0.06666666666666667,
+    "fade": 0.3333333333333333,
+    "seed": 2,
+    "color": "#0E0E14",
+    "slotColor": "#6E6E7A",
+    "cellColor": "#E4E4EA",
+    "placeholderNote": "PLACEHOLDER LOGOS",
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif"
+   },
+   "tags": [
+    "layout",
+    "logo-wall",
+    "social-proof",
+    "grid",
+    "placeholder",
+    "customers"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.orbitRing",
+   "file": "type/gfx/social.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 13,
+    "gain_db": -3
+   },
+   "dur_s": 3.4,
+   "in_frames": 1,
+   "out_frames": 10,
+   "params": {
+    "text": "Every task, connected",
+    "size": 54,
+    "at": [
+     0.5,
+     0.5
+    ],
+    "rings": [
+     0.29,
+     0.39,
+     0.49
+    ],
+    "ringColor": "#D9D9E0",
+    "ringW": 2,
+    "speed": [
+     7,
+     -5,
+     3.5
+    ],
+    "iconSize": 0.078,
+    "ringDraw": 0.6,
+    "iconStart": 0.45,
+    "stagger": 0.13333333333333333,
+    "icons": [
+     {
+      "name": "chat",
+      "label": "Chat",
+      "ring": 0,
+      "angle": -140
+     },
+     {
+      "name": "calendar",
+      "label": "Plans",
+      "ring": 1,
+      "angle": -40
+     },
+     {
+      "name": "bolt",
+      "label": "Automate",
+      "ring": 2,
+      "angle": 20
+     },
+     {
+      "name": "lock",
+      "label": "Secure",
+      "ring": 1,
+      "angle": 150
+     },
+     {
+      "name": "chartUp",
+      "label": "Reports",
+      "ring": 2,
+      "angle": 220
+     },
+     {
+      "name": "mic",
+      "label": "Voice",
+      "ring": 0,
+      "angle": 60
+     }
+    ],
+    "color": "#0E0E14",
+    "labelColor": "#55556A",
+    "badge": "#FFFFFF",
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "weight": 700
+   },
+   "tags": [
+    "layout",
+    "orbit",
+    "rings",
+    "integrations",
+    "icons",
+    "connected"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.connectorLabel",
+   "file": "type/gfx/callouts.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 3,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "items": [
+     {
+      "label": "From the first idea",
+      "at": [
+       0.34,
+       0.38
+      ],
+      "tint": "#FFD8C2",
+      "ink": "#3A1E10"
+     },
+     {
+      "label": "to the final deploy",
+      "at": [
+       0.55,
+       0.64
+      ],
+      "tint": "#D6E2FF",
+      "ink": "#14213D"
+     }
+    ],
+    "origin": [
+     0.22,
+     0.16
+    ],
+    "grid": true,
+    "gridStep": 0.042,
+    "gridColor": "#E6E6EC",
+    "paper": null,
+    "line": "#2A2A33",
+    "lineW": 2.5,
+    "size": 40,
+    "step": 0.8,
+    "draw": 0.5,
+    "radius": 22,
+    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
+    "weight": 600
+   },
+   "tags": [
+    "callout",
+    "connector",
+    "tag",
+    "elbow",
+    "workflow",
+    "grid",
+    "draw-on"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "lowerThird.docSuper",
+   "file": "type/gfx/doc.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/cut_tick",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 2.6,
+   "in_frames": 4,
+   "out_frames": 6,
+   "params": {
+    "name": "THE FOLDER",
+    "role": "Missing since Tuesday",
+    "pos": "tl",
+    "color": "#FFFFFF",
+    "roleColor": "#FFFFFF",
+    "condense": 0.8,
+    "size": 84,
+    "roleSize": 30,
+    "rule": false,
+    "accent": "#FFE45C",
+    "scrim": 0.55
+   },
+   "tags": [
+    "lower-third",
+    "name",
+    "documentary",
+    "doc-parody",
+    "comedy",
+    "deadpan",
+    "interview"
+   ],
+   "demo": "type/demo/out/gfx-lowerthirds.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.subtitleSpeedGag",
+   "file": "type/gfx/doc.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/click",
+    "offset_f": 46,
+    "gain_db": -2
+   },
+   "dur_s": 3.2,
+   "in_frames": 3,
+   "out_frames": 6,
+   "params": {
+    "line": "[talks very, very slowly]",
+    "after": "[still talking slowly]",
+    "options": [
+     "0.25",
+     "0.5",
+     "0.75",
+     "Normal"
+    ],
+    "pick": 0,
+    "menuAt": 0.6,
+    "pickAt": 1.5,
+    "closeAt": 1.9,
+    "cursor": true,
+    "accent": "#FFFFFF",
+    "size": 46
+   },
+   "tags": [
+    "caption",
+    "subtitle",
+    "speed-menu",
+    "playback",
+    "comedy",
+    "doc-parody",
+    "gag"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "layout.splitScreen",
    "file": "type/gfx/layout.js",
    "kind": "layout",
@@ -2482,600 +3649,318 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
-   "id": "type.wordWheel",
-   "file": "type/gfx/kinetic.js",
-   "kind": "gfx",
+   "id": "layout.cornerPin",
+   "file": "type/gfx/cornerpin.js",
+   "kind": "layout",
    "sfx": {
-    "id": "sfx/ui/tick",
+    "id": "sfx/ui/pop",
     "offset_f": 1,
     "gain_db": -4
    },
-   "dur_s": 3,
-   "in_frames": 10,
-   "out_frames": 8,
    "params": {
-    "words": [
-     "Plans",
-     "Docs",
-     "Sites",
-     "Build it all",
-     "Design",
-     "Data",
-     "Automations"
-    ],
-    "steps": [
+    "w": 1280,
+    "h": 800,
+    "corners": [
      [
-      0,
-      0
+      600,
+      300
      ],
      [
-      0.45,
+      1300,
+      340
+     ],
+     [
+      1290,
+      760
+     ],
+     [
+      610,
+      740
+     ]
+    ],
+    "units": "px",
+    "at": 0,
+    "fadeIn": 0,
+    "out": null,
+    "fadeOut": 0,
+    "opacity": 1,
+    "z": 3
+   },
+   "tags": [
+    "layout",
+    "corner-pin",
+    "warp",
+    "perspective",
+    "logo-on-window",
+    "ui-on-footage",
+    "screen-replace"
+   ],
+   "demo": "type/demo/out/gfx-layouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.cardStack",
+   "file": "type/gfx/cards.js",
+   "kind": "card-system",
+   "backend": "canvas2d",
+   "sfx": {
+    "id": "sfx/paper/flip",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "params": {
+    "x": 0.5,
+    "y": 0.5,
+    "n": 6,
+    "cardH": 300,
+    "aspect": 0.78,
+    "fan": 4,
+    "spread": 10,
+    "jitter": 3,
+    "landJitter": 8,
+    "lift": 26,
+    "enterAt": 0,
+    "enterStagger": 0.04,
+    "riffleAt": 0.5,
+    "every": 0.14,
+    "flipDur": 0.22,
+    "count": null,
+    "images": 8,
+    "exitAt": null,
+    "seed": 3,
+    "radius": 18,
+    "border": 0,
+    "borderColor": "#FFFFFF",
+    "back": "#4A18ED",
+    "backInk": "#FFFFFF",
+    "shadow": 0.28,
+    "samples": 1,
+    "shutter": 0.5
+   },
+   "tags": [
+    "cards",
+    "stack",
+    "riffle",
+    "flip",
+    "inline-media",
+    "photos"
+   ],
+   "demo": "type/demo/out/cards.png",
+   "test": "type/tests/cards.test.mjs"
+  },
+  {
+   "id": "layout.cardRiver",
+   "file": "type/gfx/cards.js",
+   "kind": "card-system",
+   "backend": "canvas2d",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "params": {
+    "angle": -28,
+    "cx": 0.5,
+    "cy": 0.5,
+    "lanes": [
+     -0.3,
+     0.3
+    ],
+    "spacing": 260,
+    "cardH": 190,
+    "aspect": 0.78,
+    "landscape": 0.25,
+    "sizeJitter": 0.18,
+    "rotJitter": 7,
+    "wobble": 70,
+    "speed": 520,
+    "t0": 0,
+    "fill": true,
+    "keepOut": [],
+    "margin": 40,
+    "soft": 220,
+    "images": 12,
+    "fadeAt": null,
+    "seed": 7,
+    "radius": 16,
+    "border": 0,
+    "borderColor": "#FFFFFF",
+    "back": "#4A18ED",
+    "backInk": "#FFFFFF",
+    "shadow": 0.22,
+    "samples": 6,
+    "shutter": 0.5
+   },
+   "tags": [
+    "cards",
+    "river",
+    "stream",
+    "diagonal",
+    "motion-blur",
+    "photos",
+    "collage"
+   ],
+   "demo": "type/demo/out/cards.png",
+   "test": "type/tests/cards.test.mjs"
+  },
+  {
+   "id": "layout.evidenceBoard",
+   "file": "type/gfx/board.js",
+   "kind": "card-system",
+   "backend": "canvas2d",
+   "sfx": {
+    "id": "sfx/foley/stamp",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "params": {
+    "seed": 5,
+    "boardW": 1.25,
+    "boardH": 1.25,
+    "cork": "#B98A5A",
+    "corkDark": "#8C6239",
+    "frame": "#4A2F1B",
+    "frameW": 0.035,
+    "slots": [
+     {
+      "x": 0.2,
+      "y": 0.24,
+      "w": 0.17,
+      "h": 0.26,
+      "rot": -6,
+      "kind": "photo",
+      "img": 0,
+      "label": "EXHIBIT A"
+     },
+     {
+      "x": 0.47,
+      "y": 0.18,
+      "w": 0.15,
+      "h": 0.2,
+      "rot": 4,
+      "kind": "paper",
+      "lines": 6
+     },
+     {
+      "x": 0.77,
+      "y": 0.27,
+      "w": 0.17,
+      "h": 0.24,
+      "rot": 7,
+      "kind": "photo",
+      "img": 1,
+      "label": "LAST SEEN"
+     },
+     {
+      "x": 0.24,
+      "y": 0.7,
+      "w": 0.18,
+      "h": 0.22,
+      "rot": 5,
+      "kind": "paper",
+      "lines": 7,
+      "redact": true
+     },
+     {
+      "x": 0.53,
+      "y": 0.75,
+      "w": 0.16,
+      "h": 0.24,
+      "rot": -4,
+      "kind": "photo",
+      "img": 2,
+      "label": "?"
+     },
+     {
+      "x": 0.8,
+      "y": 0.72,
+      "w": 0.15,
+      "h": 0.21,
+      "rot": -8,
+      "kind": "photo",
+      "img": 3
+     }
+    ],
+    "strings": [
+     [
+      0,
       1
      ],
      [
-      0.9,
+      1,
       2
      ],
      [
-      1.35,
+      0,
       3
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      2
+     ],
+     [
+      4,
+      5
+     ],
+     [
+      1,
+      4
      ]
     ],
-    "move": 0.32,
-    "at": [
-     0.5,
-     0.5
-    ],
-    "size": 84,
-    "gap": 1.18,
-    "prefix": "",
-    "align": "center",
-    "color": "#0E0E14",
-    "falloff": 0.3,
-    "dim": 0.3,
-    "rows": 3,
-    "wActive": 800,
-    "wIdle": 500,
-    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif"
+    "string": "#C8102E",
+    "sag": 0.06,
+    "stringW": 4,
+    "title": {
+     "text": "WHERE DID IT GO?",
+     "sub": "a documentary",
+     "x": 0.5,
+     "y": 0.47,
+     "size": 0.2,
+     "rot": -3,
+     "at": 1.1,
+     "color": "#FFE45C",
+     "ink": "#16130F"
+    },
+    "slotsAt": 0,
+    "stagger": 0.12,
+    "stringsAt": 0.55,
+    "stringStagger": 0.1,
+    "stringDur": 0.4666666666666667,
+    "push": {
+     "from": [
+      0.5,
+      0.5,
+      0.84
+     ],
+     "to": [
+      0.48,
+      0.47,
+      1.12
+     ],
+     "at": 0,
+     "dur": 3.6,
+     "ease": "cam"
+    },
+    "images": 4,
+    "pin": "#D7263D",
+    "exitAt": null
    },
    "tags": [
-    "type",
-    "list",
-    "wheel",
-    "slot",
-    "agent-at-work",
-    "feature-list"
+    "board",
+    "evidence",
+    "conspiracy",
+    "documentary",
+    "comedy",
+    "title-device",
+    "red-string",
+    "push"
    ],
-   "demo": "type/demo/out/gfx-kinetic.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "type.inlineMedia",
-   "file": "type/gfx/kinetic.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/pop",
-    "offset_f": 1,
-    "gain_db": -3
-   },
-   "dur_s": 3.5,
-   "in_frames": 1,
-   "out_frames": 8,
-   "params": {
-    "text": "Every [stack] idea, in [photo] *one* place",
-    "size": 72,
-    "at": [
-     0.5,
-     0.5
-    ],
-    "stagger": 0.16666666666666666,
-    "wordDur": 0.3333333333333333,
-    "slotDur": 0.4666666666666667,
-    "slotW": 1.7,
-    "slotH": 1.5,
-    "riffle": 0.5,
-    "media": [],
-    "seed": 4,
-    "color": "#0E0E14",
-    "accent": "#4A18ED",
-    "pillInk": "#FFFFFF",
-    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
-    "weight": 700,
-    "lineGap": 1.6,
-    "reflow": true
-   },
-   "tags": [
-    "type",
-    "sentence",
-    "inline-media",
-    "card-stack",
-    "editorial",
-    "hook"
-   ],
-   "demo": "type/demo/out/gfx-kinetic.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "type.letterAssemble",
-   "file": "type/gfx/kinetic.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/whoosh/magic_swirl",
-    "offset_f": 12,
-    "gain_db": -4
-   },
-   "dur_s": 2.6,
-   "in_frames": 1,
-   "out_frames": 8,
-   "params": {
-    "text": "Meet",
-    "size": 140,
-    "at": [
-     0.5,
-     0.5
-    ],
-    "spread": [
-     0.34,
-     0.3
-    ],
-    "hold0": 0.4,
-    "fly": 0.85,
-    "stagger": 0.1,
-    "dots": 8,
-    "dotColors": [
-     "#FF5A36",
-     "#2BD9A0",
-     "#5AB0FF",
-     "#FFCF3A",
-     "#B57BFF"
-    ],
-    "seed": 5,
-    "color": "#FFFFFF",
-    "weight": 700,
-    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif"
-   },
-   "tags": [
-    "type",
-    "opener",
-    "letters",
-    "assemble",
-    "dots",
-    "hook",
-    "logo-reveal"
-   ],
-   "demo": "type/demo/out/gfx-kinetic.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "type.glyphMorphCursor",
-   "file": "type/gfx/kinetic.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/typing_burst",
-    "offset_f": 0,
-    "gain_db": -6
-   },
-   "dur_s": 3.4,
-   "in_frames": 1,
-   "out_frames": 8,
-   "params": {
-    "text": "Build your",
-    "size": 64,
-    "at": [
-     0.5,
-     0.5
-    ],
-    "charRate": 0.1,
-    "blink": 0.5,
-    "shapes": [
-     "circle",
-     "square",
-     "triangle"
-    ],
-    "morph": 0.2,
-    "hold": 0.1,
-    "mark": "M50 4 C54 34 66 46 96 50 C66 54 54 66 50 96 C46 66 34 54 4 50 C34 46 46 34 50 4 Z",
-    "markViewBox": 100,
-    "glyph": 0.9,
-    "color": "#0E0E14",
-    "accent": "#4A18ED",
-    "font": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
-    "weight": 600
-   },
-   "tags": [
-    "type",
-    "typing",
-    "cursor",
-    "morph",
-    "logo-reveal",
-    "mark",
-    "tech"
-   ],
-   "demo": "type/demo/out/gfx-kinetic.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "type.marquee",
-   "file": "type/gfx/kinetic.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/whoosh/swish_s",
-    "offset_f": 0,
-    "gain_db": -4
-   },
-   "dur_s": 3,
-   "in_frames": 1,
-   "out_frames": 6,
-   "params": {
-    "text": "all in one workspace ·",
-    "accent": "one",
-    "accentStyle": "color",
-    "size": 0.36,
-    "speed": 0.42,
-    "dir": -1,
-    "y": 0.5,
-    "color": "#FFFFFF",
-    "accentColor": "#4A18ED",
-    "bg": null,
-    "font": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
-    "weight": 600,
-    "phase": 0
-   },
-   "tags": [
-    "type",
-    "marquee",
-    "monospace",
-    "full-bleed",
-    "ticker",
-    "pixel",
-    "manifesto"
-   ],
-   "demo": "type/demo/out/gfx-kinetic.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "type.bleedWord",
-   "file": "type/gfx/kinetic.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/whoosh/whip_pan",
-    "offset_f": 0,
-    "gain_db": -2
-   },
-   "dur_s": 2.2,
-   "in_frames": 8,
-   "out_frames": 6,
-   "params": {
-    "text": "OPEN",
-    "size": 0.9,
-    "from": [
-     0.06,
-     1.08
-    ],
-    "to": [
-     -0.2,
-     1.08
-    ],
-    "color": "#4A18ED",
-    "weight": 800,
-    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
-    "ls": -0.05,
-    "slideIn": 0.08
-   },
-   "tags": [
-    "type",
-    "oversized",
-    "cropped",
-    "bleed",
-    "brand-system",
-    "editorial"
-   ],
-   "demo": "type/demo/out/gfx-kinetic.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "layout.scatterCollage",
-   "file": "type/gfx/collage.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/whoosh/whoosh_m",
-    "offset_f": 34,
-    "gain_db": -2
-   },
-   "dur_s": 3.6,
-   "in_frames": 1,
-   "out_frames": 10,
-   "params": {
-    "text": "Your team dreams big",
-    "size": 64,
-    "at": [
-     0.5,
-     0.5
-    ],
-    "stagger": 0.16666666666666666,
-    "explodeAt": 1.2,
-    "fly": 0.75,
-    "spread": 0.2,
-    "seed": 7,
-    "stickers": [
-     "star",
-     "bolt",
-     "heart",
-     "rocket",
-     "sparkle",
-     "chat"
-    ],
-    "photos": 5,
-    "dots": 4,
-    "arrow": true,
-    "media": [],
-    "area": [
-     0.05,
-     0.08,
-     0.9,
-     0.84
-    ],
-    "cols": 6,
-    "rows": 4,
-    "color": "#0E0E14",
-    "dotColor": "#FF3D9A",
-    "arrowColor": "#0E0E14",
-    "weight": 700,
-    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
-    "float": 3
-   },
-   "tags": [
-    "layout",
-    "collage",
-    "scatter",
-    "zine",
-    "explode",
-    "stickers",
-    "hook"
-   ],
-   "demo": "type/demo/out/gfx-collage.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "layout.mosaicBurst",
-   "file": "type/gfx/collage.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/whoosh/whoosh_l",
-    "offset_f": 0,
-    "gain_db": -2
-   },
-   "dur_s": 2.6,
-   "in_frames": 1,
-   "out_frames": 8,
-   "params": {
-    "cols": 14,
-    "rows": 7,
-    "area": [
-     0.04,
-     0.07,
-     0.92,
-     0.86
-    ],
-    "gap": 0.22,
-    "fly": 0.8,
-    "spread": 0.5,
-    "seed": 3,
-    "media": [],
-    "radius": 0.08,
-    "kinds": null,
-    "bg": null
-   },
-   "tags": [
-    "layout",
-    "mosaic",
-    "burst",
-    "thumbnails",
-    "grid",
-    "explosion",
-    "montage"
-   ],
-   "demo": "type/demo/out/gfx-collage.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "layout.logoWall",
-   "file": "type/gfx/collage.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/pop",
-    "offset_f": 9,
-    "gain_db": -4
-   },
-   "dur_s": 3,
-   "in_frames": 12,
-   "out_frames": 10,
-   "params": {
-    "headline": "More than N teams build here",
-    "source": "",
-    "logos": [],
-    "cols": 5,
-    "rows": 3,
-    "box": [
-     0.13,
-     0.4,
-     0.74,
-     0.42
-    ],
-    "headY": 0.26,
-    "headSize": 60,
-    "start": 0.3,
-    "stagger": 0.06666666666666667,
-    "fade": 0.3333333333333333,
-    "seed": 2,
-    "color": "#0E0E14",
-    "slotColor": "#6E6E7A",
-    "cellColor": "#E4E4EA",
-    "placeholderNote": "PLACEHOLDER LOGOS",
-    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif"
-   },
-   "tags": [
-    "layout",
-    "logo-wall",
-    "social-proof",
-    "grid",
-    "placeholder",
-    "customers"
-   ],
-   "demo": "type/demo/out/gfx-collage.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "layout.orbitRing",
-   "file": "type/gfx/collage.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/whoosh/swish_s",
-    "offset_f": 13,
-    "gain_db": -3
-   },
-   "dur_s": 3.4,
-   "in_frames": 1,
-   "out_frames": 10,
-   "params": {
-    "text": "Every task, connected",
-    "size": 54,
-    "at": [
-     0.5,
-     0.5
-    ],
-    "rings": [
-     0.29,
-     0.39,
-     0.49
-    ],
-    "ringColor": "#D9D9E0",
-    "ringW": 2,
-    "speed": [
-     7,
-     -5,
-     3.5
-    ],
-    "iconSize": 0.078,
-    "ringDraw": 0.6,
-    "iconStart": 0.45,
-    "stagger": 0.13333333333333333,
-    "icons": [
-     {
-      "name": "chat",
-      "label": "Chat",
-      "ring": 0,
-      "angle": -140
-     },
-     {
-      "name": "calendar",
-      "label": "Plans",
-      "ring": 1,
-      "angle": -40
-     },
-     {
-      "name": "bolt",
-      "label": "Automate",
-      "ring": 2,
-      "angle": 20
-     },
-     {
-      "name": "lock",
-      "label": "Secure",
-      "ring": 1,
-      "angle": 150
-     },
-     {
-      "name": "chartUp",
-      "label": "Reports",
-      "ring": 2,
-      "angle": 220
-     },
-     {
-      "name": "mic",
-      "label": "Voice",
-      "ring": 0,
-      "angle": 60
-     }
-    ],
-    "color": "#0E0E14",
-    "labelColor": "#55556A",
-    "badge": "#FFFFFF",
-    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
-    "weight": 700
-   },
-   "tags": [
-    "layout",
-    "orbit",
-    "rings",
-    "integrations",
-    "icons",
-    "connected"
-   ],
-   "demo": "type/demo/out/gfx-collage.png",
-   "test": "type/tests/gfx-sheet.mjs"
-  },
-  {
-   "id": "callout.connectorLabel",
-   "file": "type/gfx/collage.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/slide",
-    "offset_f": 1,
-    "gain_db": -3
-   },
-   "dur_s": 3,
-   "in_frames": 10,
-   "out_frames": 8,
-   "params": {
-    "items": [
-     {
-      "label": "From the first idea",
-      "at": [
-       0.34,
-       0.38
-      ],
-      "tint": "#FFD8C2",
-      "ink": "#3A1E10"
-     },
-     {
-      "label": "to the final deploy",
-      "at": [
-       0.55,
-       0.64
-      ],
-      "tint": "#D6E2FF",
-      "ink": "#14213D"
-     }
-    ],
-    "origin": [
-     0.22,
-     0.16
-    ],
-    "grid": true,
-    "gridStep": 0.042,
-    "gridColor": "#E6E6EC",
-    "paper": null,
-    "line": "#2A2A33",
-    "lineW": 2.5,
-    "size": 40,
-    "step": 0.8,
-    "draw": 0.5,
-    "radius": 22,
-    "font": "Manrope, 'Helvetica Neue', Arial, sans-serif",
-    "weight": 600
-   },
-   "tags": [
-    "callout",
-    "connector",
-    "tag",
-    "elbow",
-    "workflow",
-    "grid",
-    "draw-on"
-   ],
-   "demo": "type/demo/out/gfx-collage.png",
-   "test": "type/tests/gfx-sheet.mjs"
+   "demo": "type/demo/out/cards.png",
+   "test": "type/tests/cards.test.mjs"
   },
   {
    "id": "sticker.heart",
@@ -4380,527 +5265,6 @@
     "three-overlay"
    ],
    "test": "type/tests/type.test.mjs"
-  },
-  {
-   "id": "ui.agentActivity",
-   "file": "type/gfx/ui.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/pop",
-    "offset_f": 1,
-    "gain_db": -2
-   },
-   "dur_s": 4.4,
-   "in_frames": 10,
-   "out_frames": 8,
-   "params": {
-    "box": [
-     0.08,
-     0.2,
-     0.4,
-     0.6
-    ],
-    "steps": [
-     {
-      "verb": "Checking",
-      "obj": "Inbox"
-     },
-     {
-      "verb": "Reading",
-      "obj": "Supplier notes"
-     },
-     {
-      "verb": "Comparing",
-      "obj": "Prices"
-     },
-     {
-      "verb": "Writing",
-      "obj": "Follow-up"
-     },
-     {
-      "verb": "Planning",
-      "obj": "Schedule"
-     }
-    ],
-    "start": 0.35,
-    "step": 0.6,
-    "rowH": 66,
-    "theme": "light",
-    "accent": "#4A18ED",
-    "card": null,
-    "scale": 1
-   },
-   "tags": [
-    "ui",
-    "agent",
-    "ai-at-work",
-    "list",
-    "product-film"
-   ],
-   "doc": "vertical list of agent steps (verb + object chip) scrolling up on the panel spring; active row full opacity with a spinner, others faded by distance; optional dark map card (dot-grid land, pulsing points, count-up counters, source line)",
-   "hero_s": 1.75,
-   "demo": "type/demo/out/gfx-ui.png",
-   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
-  },
-  {
-   "id": "ui.promptBar",
-   "file": "type/gfx/ui.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/click",
-    "offset_f": 1,
-    "gain_db": -2
-   },
-   "dur_s": 3.2,
-   "in_frames": 10,
-   "out_frames": 8,
-   "params": {
-    "box": [
-     0.2,
-     0.45,
-     0.6,
-     0.11
-    ],
-    "text": "Plan next week's restock",
-    "placeholder": "Ask Acme anything…",
-    "typeAt": 0.45,
-    "cps": 22,
-    "sendAt": null,
-    "title": "What should we work on?",
-    "chip": "Suggested: restock plan",
-    "theme": "light",
-    "accent": "#4A18ED",
-    "cursor": true,
-    "scale": 1
-   },
-   "tags": [
-    "ui",
-    "prompt",
-    "chat",
-    "input",
-    "cursor",
-    "click"
-   ],
-   "doc": "chat input: text typed with a caret (tspan, so it sits exactly after the glyphs), cursor glides to send on the panel spring and clicks (press on the ui spring + ripple), send turns into a spinner; optional title and suggestion chip",
-   "hero_s": 1.95,
-   "demo": "type/demo/out/gfx-ui.png",
-   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
-  },
-  {
-   "id": "ui.checklist",
-   "file": "type/gfx/ui.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/pop",
-    "offset_f": 1,
-    "gain_db": -2
-   },
-   "dur_s": 3.8,
-   "in_frames": 10,
-   "out_frames": 8,
-   "params": {
-    "box": [
-     0.3,
-     0.24,
-     0.4,
-     0.52
-    ],
-    "title": "Acme is working",
-    "steps": [
-     "Building…",
-     "Connecting to database",
-     "Syncing assets",
-     "Preparing preview"
-    ],
-    "start": 0.35,
-    "step": 0.62,
-    "progress": true,
-    "theme": "light",
-    "accent": "#4A18ED",
-    "card": true,
-    "scale": 1
-   },
-   "tags": [
-    "ui",
-    "checklist",
-    "progress",
-    "ai-at-work",
-    "building"
-   ],
-   "doc": "steps tick one by one (spinner -> check badge on the headline spring) over a progress bar that steps on the panel spring; header spinner turns into a check when all are done",
-   "hero_s": 1.75,
-   "demo": "type/demo/out/gfx-ui.png",
-   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
-  },
-  {
-   "id": "ui.nodeGraph",
-   "file": "type/gfx/ui.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/pop",
-    "offset_f": 1,
-    "gain_db": -2
-   },
-   "dur_s": 4.2,
-   "in_frames": 8,
-   "out_frames": 8,
-   "params": {
-    "box": [
-     0,
-     0,
-     1,
-     1
-    ],
-    "start": 0.3,
-    "stagger": 0.6,
-    "cam": true,
-    "zoom": 1.3,
-    "theme": "light",
-    "accent": "#4A18ED",
-    "nodes": [
-     {
-      "id": "t",
-      "kind": "trigger",
-      "title": "Every morning",
-      "sub": "Scheduled run",
-      "x": 0,
-      "y": 0
-     },
-     {
-      "id": "a",
-      "kind": "action",
-      "title": "Read new orders",
-      "sub": "From the shop inbox",
-      "x": 0,
-      "y": 210
-     },
-     {
-      "id": "c",
-      "kind": "condition",
-      "title": "Stock running low?",
-      "sub": "Checked per item",
-      "x": 0,
-      "y": 420
-     },
-     {
-      "id": "y",
-      "kind": "action",
-      "title": "Draft a reorder",
-      "sub": "Sent for approval",
-      "x": -290,
-      "y": 660
-     },
-     {
-      "id": "n",
-      "kind": "action",
-      "title": "Log and wait",
-      "sub": "Check again tomorrow",
-      "x": 290,
-      "y": 660
-     }
-    ],
-    "edges": [
-     {
-      "from": "t",
-      "to": "a"
-     },
-     {
-      "from": "a",
-      "to": "c"
-     },
-     {
-      "from": "c",
-      "to": "y",
-      "label": "Yes"
-     },
-     {
-      "from": "c",
-      "to": "n",
-      "label": "No"
-     }
-    ],
-    "scale": 1
-   },
-   "tags": [
-    "ui",
-    "workflow",
-    "node-graph",
-    "automation",
-    "diagram"
-   ],
-   "doc": "trigger / action / condition cards, elbow connectors that draw on, Yes/No branch labels; the camera glides along the nodes (camera spring, clamped to the graph bounds); nodeGraphCam() gives the same pan as a cam2d state for a DOM wrapper",
-   "hero_s": 2.9,
-   "demo": "type/demo/out/gfx-ui.png",
-   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
-  },
-  {
-   "id": "ui.scanOverlay",
-   "file": "type/gfx/ui.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/camera_ping",
-    "offset_f": 1,
-    "gain_db": -2
-   },
-   "dur_s": 3.2,
-   "in_frames": 6,
-   "out_frames": 8,
-   "params": {
-    "box": [
-     0.38,
-     0.2,
-     0.24,
-     0.56
-    ],
-    "from": [
-     0.12,
-     0.08,
-     0.76,
-     0.84
-    ],
-    "mask": null,
-    "lockAt": 0.1,
-    "sweepAt": 0.55,
-    "sweepDur": 1.1,
-    "color": "#2FD47A",
-    "bracket": "#FFFFFF",
-    "label": "Scanning…",
-    "done": "Done",
-    "theme": "light",
-    "accent": "#4A18ED",
-    "status": true,
-    "scale": 1
-   },
-   "tags": [
-    "ui",
-    "scan",
-    "brackets",
-    "segmentation",
-    "ai-at-work",
-    "status"
-   ],
-   "doc": "corner brackets lock from a loose rect onto the subject box (ui spring), a coloured sweep fills a supplied mask path (box-local 0..1) or a rounded-rect fallback, with a scan line; status pill Scanning… -> Done",
-   "hero_s": 1.1,
-   "demo": "type/demo/out/gfx-ui.png",
-   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
-  },
-  {
-   "id": "ui.isometricTilt",
-   "file": "type/gfx/ui.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/whoosh/swish_xs",
-    "offset_f": 0,
-    "gain_db": -3
-   },
-   "dur_s": 3.4,
-   "in_frames": 8,
-   "out_frames": 8,
-   "params": {
-    "box": [
-     0.3,
-     0.22,
-     0.4,
-     0.56
-    ],
-    "inner": null,
-    "tiltAt": 0.35,
-    "backAt": 2.4,
-    "angle": 45,
-    "squash": 0.57735,
-    "lift": 46,
-    "shrink": 0.86,
-    "shadow": true,
-    "theme": "light",
-    "accent": "#4A18ED",
-    "scale": 1
-   },
-   "tags": [
-    "ui",
-    "isometric",
-    "tilt",
-    "perspective",
-    "panel",
-    "camera"
-   ],
-   "doc": "a flat panel (default mock dashboard, or any gfx id via inner) tilts into an isometric plane (rotate + squash, affine) and back on the panel spring, lifted over a blurred floor shadow; isoTiltCss() gives a true-perspective CSS transform for DOM panels",
-   "hero_s": 1.4,
-   "demo": "type/demo/out/gfx-ui.png",
-   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
-  },
-  {
-   "id": "ui.stateMorph",
-   "file": "type/gfx/ui.js",
-   "kind": "gfx",
-   "sfx": {
-    "id": "sfx/ui/click",
-    "offset_f": 1,
-    "gain_db": -2
-   },
-   "dur_s": 8.6,
-   "in_frames": 6,
-   "out_frames": 6,
-   "params": {
-    "center": [
-     0.5,
-     0.5
-    ],
-    "states": [
-     {
-      "at": 0,
-      "kind": "pill",
-      "w": 250,
-      "h": 84,
-      "r": 42,
-      "fill": "#16151B",
-      "label": "Acme"
-     },
-     {
-      "at": 0.7,
-      "kind": "button",
-      "w": 360,
-      "h": 96,
-      "r": 48,
-      "fill": "#4A18ED",
-      "label": "Get started"
-     },
-     {
-      "at": 1.6,
-      "kind": "input",
-      "w": 640,
-      "h": 104,
-      "r": 22,
-      "fill": "#FFFFFF",
-      "label": "you@acme.example",
-      "placeholder": "Email"
-     },
-     {
-      "at": 2.95,
-      "kind": "loader",
-      "w": 128,
-      "h": 128,
-      "r": 64,
-      "fill": "#4A18ED"
-     },
-     {
-      "at": 3.75,
-      "kind": "check",
-      "w": 128,
-      "h": 128,
-      "r": 64,
-      "fill": "#17A865"
-     },
-     {
-      "at": 4.45,
-      "kind": "card",
-      "w": 620,
-      "h": 360,
-      "r": 30,
-      "fill": "#FFFFFF",
-      "label": "This week"
-     },
-     {
-      "at": 5.5,
-      "kind": "chart",
-      "w": 760,
-      "h": 430,
-      "r": 30,
-      "fill": "#FFFFFF",
-      "label": "Orders (illustrative)",
-      "series": [
-       0.2,
-       0.28,
-       0.24,
-       0.42,
-       0.38,
-       0.6,
-       0.72,
-       0.9
-      ]
-     },
-     {
-      "at": 6.9,
-      "kind": "toast",
-      "w": 600,
-      "h": 104,
-      "r": 52,
-      "fill": "#16151B",
-      "label": "Order sent to supplier"
-     },
-     {
-      "at": 8,
-      "kind": "pill",
-      "w": 250,
-      "h": 84,
-      "r": 42,
-      "fill": "#16151B",
-      "label": "Acme"
-     }
-    ],
-    "path": [
-     {
-      "at": 0.25,
-      "x": 0.66,
-      "y": 0.78
-     },
-     {
-      "at": 1.5,
-      "x": 0.52,
-      "y": 0.51,
-      "click": true
-     },
-     {
-      "at": 2.85,
-      "x": 0.645,
-      "y": 0.515,
-      "click": true
-     },
-     {
-      "at": 5.35,
-      "x": 0.56,
-      "y": 0.47,
-      "click": true
-     },
-     {
-      "at": 6.2,
-      "x": 0.74,
-      "y": 0.86
-     }
-    ],
-    "cls": "panel",
-    "loop": false,
-    "theme": "light",
-    "accent": "#4A18ED",
-    "cursor": true,
-    "scale": 1
-   },
-   "tags": [
-    "ui",
-    "morph",
-    "state",
-    "container",
-    "cursor",
-    "loop",
-    "product-film"
-   ],
-   "doc": "ONE container morphs size, radius and colour (springTrack per property) through a list of states (pill, button, input, loader, check, card, chart, toast), driven by a cursor path with real clicks; loop: true + last state = first gives a seamless loop",
-   "hero_s": 6.1,
-   "demo": "type/demo/out/gfx-ui.png",
-   "test": "type/tests/ui.test.mjs | gfx-sheet.mjs"
-  },
-  {
-   "id": "ease.springTrack",
-   "file": "type/ease.js",
-   "kind": "engine",
-   "doc": "closed-form stacked springs: springTrack(t, changes, cls) = v0 + sum (v_i - v_i-1) * spring(t - t_i); classes ui (1.1% overshoot, settles 0.31 s to 1%), panel (0.15%, 0.60 s), camera (critically damped, 1.17 s), headline (9.5%, 0.32 s), mascot (31%, 0.97 s) or {zeta, f}; numbers or arrays; identical copy in layers/ and camera/",
-   "tags": [
-    "easing",
-    "spring",
-    "motion-class",
-    "seek-safe"
-   ],
-   "demo": "type/demo/out/gfx-ui.png",
-   "test": "type/tests/ui.test.mjs"
   }
  ]
 }

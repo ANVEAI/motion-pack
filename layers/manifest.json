@@ -1428,6 +1428,66 @@
    "test": "layers/tests/overlay2-sheet.mjs"
   },
   {
+   "id": "overlay.invertFlash",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "difference",
+   "tags": [
+    "flash",
+    "invert",
+    "negative",
+    "comedy",
+    "impact",
+    "doc-parody",
+    "cut"
+   ],
+   "params": {
+    "at": [],
+    "frames": 2,
+    "fps": 30,
+    "color": "#FFFFFF",
+    "intensity": 1,
+    "maxPerSec": 3
+   },
+   "demo": "layers/demo/out/fx2-edit.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
+   "id": "overlay.brandField",
+   "file": "layers/canvas2d.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "end-card",
+    "brand",
+    "logo",
+    "cta",
+    "full-bleed",
+    "outro"
+   ],
+   "params": {
+    "at": 0,
+    "color": "#4A18ED",
+    "ink": "#FFFFFF",
+    "name": "Orbit",
+    "line": "Every idea, in one place.",
+    "logo": null,
+    "mark": "orbit",
+    "reveal": "cut",
+    "revealDur": 0.35,
+    "settle": 0.9,
+    "scaleFrom": 1.08,
+    "lineDelay": 0.18,
+    "y": 0.46,
+    "size": 0.11,
+    "intensity": 1
+   },
+   "demo": "layers/demo/out/fx2-edit.png",
+   "test": "layers/tests/overlay2-sheet.mjs"
+  },
+  {
    "id": "look.bleach-bypass",
    "file": "layers/looks/look.bleach-bypass.cube",
    "kind": "look",
