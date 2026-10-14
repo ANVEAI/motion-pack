@@ -65,7 +65,7 @@ Run the three.js templates before `beat-edit` and `talking-head`, because those 
 |---|---|
 | `_shared/plan.mjs` | pure helpers: `PLATFORMS` (safe zones, brand-cue deadline, loudness), `beatGrid` (BPM snapped to whole frames: 128 -> 128.57, 110 -> 112.5), `sequence` (frame-exact, no drift), `TX_SFX` (transition -> paired sound), `chunkCaptions`, `autocut`, `remap` |
 | `_shared/pack.mjs` | browser glue `MP` (register / transition / type / layer, with logged fallbacks) |
-| `_shared/compose.mjs` | stage a HyperFrames project: fonts, media and other modules are hard-linked into `assets/` |
+| `_shared/compose.mjs` | stage a HyperFrames project: fonts, media and other modules are hard-linked into `assets/`; `runPlan(DIR)` runs `cues.mjs` first in every `make.mjs` and exits with its code (2 on a lint gate) |
 | `_shared/cues.mjs` | `node cues.mjs <dir> [--set k=v] [--allow-lint]` exports the plan without a browser and enforces the lint gates (exit 2) |
 | `_shared/audio.py` | plan -> mix (music mixer when a bed is set; `--stem` for a stem that sits under dialogue) |
 | `_shared/render3d.sh` | three.js template end to end: plan, GPU render, mix, mux, contact sheet, loudness (`AUDIO_ONLY=1` remuxes sound only) |
