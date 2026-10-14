@@ -52,6 +52,10 @@ jobs:
         run: node type/tests/r45type.test.mjs
       - name: round-4/5 layers (Canvas2D on a recording context, node, no browser)
         run: node layers/tests/r45.test.mjs
+      - name: gfx def ids never collide (two items of every id in one host; node, no browser)
+        run: node type/tests/ids.test.mjs
+      - name: no part hangs or exhausts memory on 0, -1, NaN, Infinity, 1e9 or 1e-6 params (every gfx id, Canvas2D kind and background; node, watchdog per render)
+        run: node tools/tests/fuzz-params.test.mjs
       - name: proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)
         run: node templates/proof-film/proof-film.test.mjs
       - name: physics table player (the baked table is committed; no npm install)

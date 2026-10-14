@@ -31,7 +31,7 @@ drawCaptions(g, chunks, t, CAPTION_STYLES.karaoke, { W, H, platform: 'conservati
 
 ## Expansion (2026-10-13): editor-staple graphics (`gfx/`), 56 owned stickers, layouts, draw-on
 
-`gfx/index.js`: `renderSVG(id, t, {at, dur, params}, {W, H, platform})` -> full-frame SVG string; `mountGfx(root, items)` + `bindHF()` for HyperFrames. Every item has an entrance / hold / exit (`gfx/core.js life()`), sits inside the platform safe rect, and is a pure function of t. `GFX_SFX` / `sfxFor(id)` give each one a default sound by id.
+`gfx/index.js`: `renderSVG(id, t, {at, dur, params}, {W, H, platform})` -> full-frame SVG string; `mountGfx(root, items)` + `bindHF()` for HyperFrames. Every item has an entrance / hold / exit (`gfx/core.js life()`), sits inside the platform safe rect, and is a pure function of t. `GFX_SFX` / `sfxFor(id)` give each one a default sound by id. Def ids (clipPath, gradient, filter, mask) are namespaced per item with a hash of its markup, so any number of items of one id share a host safely (`tests/ids.test.mjs`, CI). Loop-driving numbers (counts, steps, radii, rates) are clamped to the ranges in `gfx/limits.js` and NaN / Infinity read as the default (`gfx/safe.js saneParams`), so no parameter value can hang a page or exhaust memory (`tools/tests/fuzz-params.test.mjs`, CI).
 
 | Family | Ids | File |
 |---|---|---|
