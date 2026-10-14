@@ -70,7 +70,9 @@ def via_music_mixer(P, out, bed, a):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('plan'); ap.add_argument('out'); ap.add_argument('--target', type=float, default=-14.0); ap.add_argument('--ceiling', type=float, default=-2.0); ap.add_argument('--stem', action='store_true', help='no loudness normalisation: cue gains are absolute (library sounds peak at their registry peak_db); for SFX stems mixed under dialogue')
     a = ap.parse_args(); P = json.load(open(a.plan)); fps = P.get('fps', 30); N = int(round(P['seconds'] * SR)) + SR
+    os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)   # a template that links no media has no assets/media yet (compose.stage() makes it too)
     bed = music_bed_file(P.get('music'))
+    if bed and not os.path.exists(bed): raise SystemExit(f'music bed WAV missing: {bed}\nthe music WAV masters are not in git: run `python3 music/build_music.py` once (about a minute)')
     if P.get('music') and not bed: print('TODO hook: music bed', P.get('music'), 'not found in music/manifest.json: SFX-only mix')
     if bed and not a.stem: return via_music_mixer(P, a.out, bed, a)
     mix = np.zeros((N, 2), np.float32); rep = {'placed': [], 'todo': [], 'sfx_modules_missing': MISSING_MODULES}

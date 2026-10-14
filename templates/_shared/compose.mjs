@@ -13,6 +13,7 @@ const jsUnder = (d) => (fs.existsSync(d) ? fs.readdirSync(d, { recursive: true }
 
 export function stage(dir, { media = [], layers = false } = {}) {
   const A = path.join(dir, 'assets'), todo = [], adapters = [];
+  fs.mkdirSync(path.join(A, 'media'), { recursive: true });   // always: the mix (audio.py) is written to assets/media/mix.wav even when a template links no media (media: [])
   for (const f of ['Manrope-Variable.ttf', 'IBMPlexMono-SemiBold.ttf']) link(path.join(SH, 'fonts', f), path.join(A, 'fonts', f));
   for (const f of ['pack.mjs', 'plan.mjs']) link(path.join(SH, f), path.join(A, 'mp', f));
   for (const m of media) link(m, path.join(A, 'media', path.basename(m)));
