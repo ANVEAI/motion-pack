@@ -22,8 +22,8 @@ def counts():
     c['transition_aliases'] = len(al)
     c['xfade_modes'] = sum(1 for k in al if k.startswith('xfade-'))
     pat = J('cuts/patterns.json')
-    c['cut_patterns'] = sum(len(pat[g]) for g in ('beat', 'sections', 'split', 'talking_head', 'pace') if isinstance(pat.get(g), dict))
-    c['cut_rules'] = sum(1 for g in ('interrupts', 'smash') if isinstance(pat.get(g), dict))
+    c['cut_patterns'] = sum(len(pat[g]) for g in ('beat', 'sections', 'split', 'talking_head', 'story', 'pace') if isinstance(pat.get(g), dict))
+    c['cut_rules'] = sum(1 for g in ('interrupts', 'smash', 'onset_snap') if isinstance(pat.get(g), dict))
     c['retime_presets'] = len(J('cuts/retime.json')['presets']) if os.path.exists(os.path.join(REPO, 'cuts/retime.json')) else 0
     sm = J('sfx/manifest.json')
     c['sfx'] = len(sm['sounds'])
@@ -67,7 +67,7 @@ def table(c):
     rows = [
         ('`transitions/`', f"{c['transitions']} transitions: {c['transitions_dom']} with an exact DOM back-end, {c['transitions_dom_approx']} WebGL with a DOM approximation, "
                            f"{c['transitions_timing_only']} timing-only (speed ramp); {c['transition_aliases']} aliases incl. {c['xfade_modes']} ffmpeg xfade modes", '`transitions/README.md`'),
-        ('`cuts/`', f"{c['cut_patterns']} cut patterns (beat grids, sections, J/L splits, talking-head, pace) + {c['cut_rules']} rule sets + {c['retime_presets']} retime presets", '`cuts/README.md`'),
+        ('`cuts/`', f"{c['cut_patterns']} cut patterns (beat grids, sections, J/L splits, talking-head, story shapes, pace) + {c['cut_rules']} rule sets + {c['retime_presets']} retime presets", '`cuts/README.md`'),
         ('`sfx/`', f"{c['sfx']} synthesised sounds in {c['sfx_families']} families, {c['sfx_bundles']} role bundles per video type", '`sfx/README.md`'),
         ('`music/`', f"{c['music_beds']} beds from {c['music_presets']} style presets, {c['music_stingers']} stingers, {c['music_logos']} sonic logos, plus the mixer", '`music/README.md`'),
         ('`layers/`', f"{c['layers']} finishing components (overlays, grades, grain stocks, finisher) incl. {c['looks']} looks; {c['lut_files']} `.cube` LUTs", '`layers/README.md`'),

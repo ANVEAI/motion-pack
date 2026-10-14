@@ -15,6 +15,8 @@ bundle). They are tunable heuristics, not platform facts.
 | `talking_head` | autocut numbers, reframe_alternate 1.0/1.15/1.0/1.25 on the eyes, punch_in 1.12 max 1 per 4 s, slow_push, beat_hold, cut_tick | talking-head, retention, jump-cut |
 | `smash` | 200 ms pre-silence, 12 dB / 0.4 luma contrast minimums, impact at cut + 1 frame | smash, comedy, mime |
 | `interrupts` | minor 2.5 s / medium 5 s / major 9 s, 25% jitter, majors >= 6 s apart | retention, short-form |
+| `story` | interruptOpen (cliche setup, stop sound + 300 ms freeze, new format), verbLadder (one verb per beat, the last holds 2 beats), mockumentaryReaction (0.3-0.5 s reaction inserts, silence before and a 1.2 s deadpan hold after the payoff line), sentenceLed (word-by-word build at <= 3.5 words/s, hold, result on the next downbeat) | story, hook, comedy, launch |
+| `onset_snap` | cuts within +-2 frames of a sound onset; target share 60% (studied films: 45-80%) | sync, lint |
 | `pace` | ASL and shots-per-30 s per format (hype ad, beat edit, talking head, mime-style spot, short film) | lint |
 
 ## `cutgen.py`
@@ -26,6 +28,11 @@ python3 cutgen.py split --mode J --cut-frame 120 --fps 30 [--ms 400] [--sr 48000
 python3 cutgen.py talking --cuts 0,72,150,260 --fps 30 --end-frame 330 --claims 150
 python3 cutgen.py smash --cut-frame 120 --fps 30
 python3 cutgen.py interrupts --duration 30 --fps 30 --seed 1
+python3 cutgen.py interrupt-open --fps 30 [--setup 3.0] [--freeze-ms 300]
+python3 cutgen.py verbs --verbs "Build it all.,Expand.,Automate.,Multiply." --bpm 120 --fps 30 [--snap]
+python3 cutgen.py mockumentary --lines 0:75,90:160,200:260 --fps 30 [--payoff -1]
+python3 cutgen.py sentence --words "Your clients dream big" --bpm 120 --fps 30 [--snap]
+python3 cutgen.py snap --cuts 0,44,91 --fps 30 (--onsets 1.5,3.0 | --study study.json [--use onsets|beats|hits_top10pct]) [--tol 2]
 ```
 
 - **Frame-exact:** each cut is `round((offset + beat * 60 / bpm) * fps)` computed from the beat index, never by
@@ -41,6 +48,14 @@ python3 cutgen.py interrupts --duration 30 --fps 30 --seed 1
 - **`smash`** gives the pre-silence start sample, the ramp length and the impact anchor (cut + 1 frame).
 - **`interrupts`** produces a seeded, jittered ladder (a higher level absorbs a lower one within 0.6 s).
 
+- **Story shapes** (`interrupt-open`, `verbs`, `mockumentary`, `sentence`) return contiguous shots and sound cues for the
+  storyboard shapes in `../skills/motion-pack/references/success-patterns.md`. Cue rows carry `visual_frame` (pass it to
+  `music/mixer.py add_cue`) and `anchor_frame` (= visual frame + 1, where the anchor sample lands). Each prints `warnings`
+  when the input breaks the pattern (a setup longer than 8 s, verbs too fast to read, a reaction running into the payoff).
+- **`snap`** moves each cut to the nearest sound onset within +-2 frames and reports `share_snapped` against the 60% target.
+  Onsets come from a list or from a `tools/refstudy.py` `study.json` (`audio.onsets`, `audio.beats` or `audio.hits_top10pct`);
+  a snap that would collide with or cross a neighbouring cut is refused. Library use: `cutgen.snap_cuts_to_onsets(cuts, onsets_s, fps)`.
+
 Analysis of real footage (silence detection, filler words) belongs to the `talking-head-recut` and `video-use` skills;
 this module only holds the numbers and the frame math.
 
@@ -55,6 +70,6 @@ The rate curve is integrated exactly; each 2-frame piece gets its exact source i
 
 ## Tests
 
-`python3 -m unittest test_cutgen` (10 tests: exact grids, half-frame bound over 400 bars, snapping, patterns, section
+`python3 -m unittest test_cutgen` (17 tests: exact grids, half-frame bound over 400 bars, snapping, patterns, section
 hero on the downbeat, transition windows on the beat with overlap warnings, J/L/B-roll splits, talking-head ladder and
-punch-in gap, smash anchors, seeded interrupts, CLI).
+punch-in gap, smash anchors, seeded interrupts, the four story shapes, onset snapping incl. collisions and a study.json, CLI).

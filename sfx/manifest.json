@@ -3,7 +3,7 @@
  "sample_rate": 48000,
  "bit_depth": 24,
  "peak_dbfs_target": -6.0,
- "count": 288,
+ "count": 295,
  "notes": "All sounds synthesised in code (numpy/scipy). Library level is peak -6 dBFS; real levels are set by the mixer (over-bed rules). anchor_sample = the sample that must land on (visual frame + 1) x SR/fps.",
  "sounds": [
   {
@@ -5699,6 +5699,54 @@
    "file": "library/impact/snd.hit.braam.wav"
   },
   {
+   "id": "snd.hit.brand_field_slam",
+   "category": "impact",
+   "tags": [
+    "family:impact",
+    "tier:2",
+    "tonal:no",
+    "anchor:crest",
+    "size:m",
+    "mood:warm",
+    "soft"
+   ],
+   "tier": 2,
+   "desc": "brand-field slam: soft low thump (95 to 52 Hz) with a papery body and a wide air bloom, for the cut to the solid brand colour",
+   "use": [
+    "launch",
+    "ad",
+    "kinetic"
+   ],
+   "duration_s": 1.4012,
+   "samples": 67259,
+   "anchor_sample": 665,
+   "anchor_ms": 13.85,
+   "anchor_kind": "peak",
+   "tonal": false,
+   "loop": false,
+   "seed": 560,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.96,
+   "lufs_integrated": -24.08,
+   "lufs_m_max": -19.41,
+   "lufs_s_max": -28.13,
+   "centroid_hz": 119,
+   "crest_db": 18.7,
+   "sub28_db": -38.3,
+   "sha": "c6f02417708f75b9",
+   "phone_drop_db": -5.7,
+   "phone_safe": true,
+   "pairs_with": [
+    "dip",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/impact/snd.hit.brand_field_slam.wav"
+  },
+  {
    "id": "snd.hit.cinema",
    "category": "impact",
    "tags": [
@@ -8654,6 +8702,104 @@
    "file": "library/metal/snd.metal.scrape.wav"
   },
   {
+   "id": "snd.paper.card_riffle",
+   "category": "paper",
+   "tags": [
+    "family:paper",
+    "tier:3",
+    "tonal:no",
+    "anchor:scatter",
+    "size:s",
+    "foley",
+    "rr:4",
+    "cards"
+   ],
+   "tier": 3,
+   "desc": "card-stack riffle: 16-23 fast paper flicks with a little air, panned across the stack (4 round-robin takes)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.4203,
+   "samples": 20173,
+   "anchor_sample": 3708,
+   "anchor_ms": 77.25,
+   "anchor_kind": "peak",
+   "tonal": false,
+   "loop": false,
+   "seed": 520,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.63,
+   "lufs_integrated": -24.65,
+   "lufs_m_max": -24.65,
+   "lufs_s_max": -33.4,
+   "centroid_hz": 5132,
+   "crest_db": 25.0,
+   "sub28_db": -55.5,
+   "sha": "e4b33ff0ece40487",
+   "phone_drop_db": 0.7,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 3.0,
+   "file": "library/paper/snd.paper.card_riffle.wav"
+  },
+  {
+   "id": "snd.paper.card_shuffle_settle",
+   "category": "paper",
+   "tags": [
+    "family:paper",
+    "tier:3",
+    "tonal:no",
+    "anchor:end",
+    "size:m",
+    "foley",
+    "rr:4",
+    "cards"
+   ],
+   "tier": 3,
+   "desc": "card shuffle: two interleaving riffles (L and R), a short bridge flutter, then the stack squared on the table (anchor = the settle tap)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 1.0789,
+   "samples": 51785,
+   "anchor_sample": 41399,
+   "anchor_ms": 862.48,
+   "anchor_kind": "fixed",
+   "tonal": false,
+   "loop": false,
+   "seed": 524,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.27,
+   "lufs_integrated": -25.13,
+   "lufs_m_max": -22.69,
+   "lufs_s_max": -29.63,
+   "centroid_hz": 4228,
+   "crest_db": 24.1,
+   "sub28_db": -41.1,
+   "sha": "f8617d9f4201b61a",
+   "phone_drop_db": 0.5,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 3.0,
+   "file": "library/paper/snd.paper.card_shuffle_settle.wav"
+  },
+  {
    "id": "snd.paper.crumple",
    "category": "paper",
    "tags": [
@@ -9560,6 +9706,55 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 3.0,
    "file": "library/sparkle/snd.sizzle.grain.wav"
+  },
+  {
+   "id": "snd.sparkle.letter_assemble",
+   "category": "sparkle",
+   "tags": [
+    "family:sparkle",
+    "tier:3",
+    "tonal:yes",
+    "anchor:end",
+    "size:m",
+    "key:A",
+    "mood:warm",
+    "type"
+   ],
+   "tier": 3,
+   "desc": "letters assembling: a swarm of tiny ticks that thickens, narrows to the centre and converges on A-major pitches, then a soft set-ting (anchor = the letters lock)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 2.5675,
+   "samples": 123241,
+   "anchor_sample": 37675,
+   "anchor_ms": 784.9,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 570,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.97,
+   "lufs_integrated": -16.69,
+   "lufs_m_max": -13.65,
+   "lufs_s_max": -21.31,
+   "centroid_hz": 3100,
+   "crest_db": 20.7,
+   "sub28_db": -60.9,
+   "sha": "29471ebe0222759a",
+   "phone_drop_db": 1.2,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "maskReveal"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 3.0,
+   "file": "library/sparkle/snd.sparkle.letter_assemble.wav"
   },
   {
    "id": "snd.sparkle.shimmer",
@@ -10625,6 +10820,56 @@
    "file": "library/transition/snd.tx.morph_warble.wav"
   },
   {
+   "id": "snd.tx.pixel_dissolve",
+   "category": "transition",
+   "tags": [
+    "family:transition",
+    "tier:2",
+    "tonal:no",
+    "anchor:noise",
+    "size:m",
+    "mood:tech",
+    "bitcrush",
+    "pixel"
+   ],
+   "tier": 2,
+   "desc": "pixel dissolve: a dense cloud of 8-bit blips and crushed noise that thins out while the sample rate drops, 0.9 s",
+   "use": [
+    "ad",
+    "launch",
+    "beat_edit"
+   ],
+   "duration_s": 0.9013,
+   "samples": 43262,
+   "anchor_sample": 292,
+   "anchor_ms": 6.08,
+   "anchor_kind": "peak",
+   "tonal": false,
+   "loop": false,
+   "seed": 540,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.81,
+   "lufs_integrated": -21.2,
+   "lufs_m_max": -17.33,
+   "lufs_s_max": -25.42,
+   "centroid_hz": 1363,
+   "crest_db": 18.0,
+   "sub28_db": -31.0,
+   "sha": "6174aa3df18a4f08",
+   "phone_drop_db": 1.1,
+   "phone_safe": true,
+   "pairs_with": [
+    "dissolve",
+    "glitch",
+    "pixelSort"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 2.5,
+   "file": "library/transition/snd.tx.pixel_dissolve.wav"
+  },
+  {
    "id": "snd.tx.push",
    "category": "transition",
    "tags": [
@@ -10986,6 +11231,55 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 2.5,
    "file": "library/transition/snd.tx.zoom_through.wav"
+  },
+  {
+   "id": "snd.ui.agent_working",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "anchor:loop",
+    "size:m",
+    "key:A",
+    "mood:tech",
+    "loop",
+    "agent"
+   ],
+   "tier": 3,
+   "desc": "AI at work: low-key 120 BPM texture (soft beat pulse, quiet 16th ticks, A-major data blips, breathing A2/E3 drone), 4.0 s seamless loop; sits under step lists and progress UI",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 4.0,
+   "samples": 192000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": true,
+   "loop": true,
+   "seed": 550,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -17.29,
+   "lufs_m_max": -14.77,
+   "lufs_s_max": -16.72,
+   "centroid_hz": 171,
+   "crest_db": 13.2,
+   "sub28_db": -48.7,
+   "sha": "f25962e96473a570",
+   "phone_drop_db": -1.9,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.agent_working.wav"
   },
   {
    "id": "snd.ui.ai_reply",
@@ -11686,6 +11980,56 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.0,
    "file": "library/ui/snd.ui.pop_down.wav"
+  },
+  {
+   "id": "snd.ui.scan_sweep",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "anchor:end",
+    "size:m",
+    "key:A",
+    "mood:tech",
+    "scan"
+   ],
+   "tier": 3,
+   "desc": "scan overlay: soft rising resonant noise sweep 350 Hz to 7 kHz with a faint A3-to-A5 glide, 1.2 s (anchor = the crest near the end, the scan line reaching the far edge)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 1.1282,
+   "samples": 54153,
+   "anchor_sample": 45422,
+   "anchor_ms": 946.29,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 530,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.84,
+   "lufs_integrated": -16.23,
+   "lufs_m_max": -13.73,
+   "lufs_s_max": -22.0,
+   "centroid_hz": 1845,
+   "crest_db": 17.1,
+   "sub28_db": -54.3,
+   "sha": "52c4d614d07b2746",
+   "phone_drop_db": 0.6,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "lumaWipe",
+    "maskReveal"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.scan_sweep.wav"
   },
   {
    "id": "snd.ui.slide",
@@ -13516,6 +13860,7 @@
    "snd.whoosh.whip_pan"
   ],
   "dip": [
+   "snd.hit.brand_field_slam",
    "snd.tx.dip_to_black"
   ],
   "dipToBlack": [
@@ -13582,6 +13927,7 @@
    "snd.tx.dissolve_pad",
    "snd.tx.ink_bloom",
    "snd.tx.light_leak",
+   "snd.tx.pixel_dissolve",
    "snd.whoosh.magic_swirl"
   ],
   "filmBurn": [
@@ -13646,6 +13992,7 @@
    "snd.metal.scrape",
    "snd.stinger.alert",
    "snd.tx.glitch_stutter",
+   "snd.tx.pixel_dissolve",
    "snd.ui.error",
    "snd.whoosh.scifi_pass"
   ],
@@ -13766,6 +14113,7 @@
    "snd.glass.tap",
    "snd.hit.bass_drop_wobble",
    "snd.hit.braam",
+   "snd.hit.brand_field_slam",
    "snd.hit.cinema",
    "snd.hit.deep_impact",
    "snd.hit.explosion_small",
@@ -13818,6 +14166,8 @@
    "snd.logo.question",
    "snd.logo.two_note",
    "snd.metal.clang",
+   "snd.paper.card_riffle",
+   "snd.paper.card_shuffle_settle",
    "snd.paper.crumple",
    "snd.plastic.click",
    "snd.plastic.switch",
@@ -13834,6 +14184,7 @@
    "snd.riser.string_tension",
    "snd.riser.supersaw_2bar",
    "snd.riser.tape_up",
+   "snd.sparkle.letter_assemble",
    "snd.stinger.alert",
    "snd.stinger.bump",
    "snd.stinger.cut_to_black",
@@ -13842,6 +14193,7 @@
    "snd.stinger.win",
    "snd.tx.cut_tick",
    "snd.tx.smash_cut",
+   "snd.ui.agent_working",
    "snd.ui.ai_think_pulse",
    "snd.ui.click",
    "snd.ui.error",
@@ -13851,6 +14203,7 @@
    "snd.ui.mic_on",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.scan_sweep",
    "snd.ui.success",
    "snd.ui.tick",
    "snd.ui.toggle_off",
@@ -13898,7 +14251,8 @@
    "snd.whoosh.whoosh_xl"
   ],
   "lumaWipe": [
-   "snd.tx.luma_wipe"
+   "snd.tx.luma_wipe",
+   "snd.ui.scan_sweep"
   ],
   "maskReveal": [
    "snd.cartoon.tada",
@@ -13919,10 +14273,12 @@
    "snd.paper.flip",
    "snd.paper.rustle",
    "snd.sizzle.grain",
+   "snd.sparkle.letter_assemble",
    "snd.sparkle.shimmer",
    "snd.stinger.reveal",
    "snd.tx.mask_reveal",
    "snd.ui.ai_reply",
+   "snd.ui.scan_sweep",
    "snd.whoosh.blade",
    "snd.whoosh.whoosh_in_m",
    "snd.whoosh.whoosh_l"
@@ -13943,12 +14299,15 @@
   ],
   "pixelSort": [
    "snd.sizzle.grain",
-   "snd.tx.glitch_stutter"
+   "snd.tx.glitch_stutter",
+   "snd.tx.pixel_dissolve"
   ],
   "push": [
    "snd.cloth.swish",
    "snd.device.card_flip",
    "snd.foley.door_open",
+   "snd.paper.card_riffle",
+   "snd.paper.card_shuffle_settle",
    "snd.paper.flip",
    "snd.tx.luma_wipe",
    "snd.tx.push",
@@ -14065,6 +14424,9 @@
   ]
  },
  "by_tag": {
+  "agent": [
+   "snd.ui.agent_working"
+  ],
   "anchor:crest": [
    "snd.cartoon.boing",
    "snd.cartoon.boing_hi",
@@ -14107,6 +14469,7 @@
    "snd.foley.stamp",
    "snd.hit.bass_drop_wobble",
    "snd.hit.boom_meme",
+   "snd.hit.brand_field_slam",
    "snd.hit.cinema",
    "snd.hit.deep_impact",
    "snd.hit.explosion_small",
@@ -14182,6 +14545,7 @@
    "snd.foley.drawer",
    "snd.hit.cymbal_swell",
    "snd.lift.inhale",
+   "snd.paper.card_shuffle_settle",
    "snd.riser.glitch_stutter",
    "snd.riser.heartbeat",
    "snd.riser.noise_1bar",
@@ -14195,9 +14559,11 @@
    "snd.riser.string_tension",
    "snd.riser.supersaw_2bar",
    "snd.riser.tape_up",
+   "snd.sparkle.letter_assemble",
    "snd.tx.mask_reveal",
    "snd.ui.ai_think_pulse",
-   "snd.ui.mic_on"
+   "snd.ui.mic_on",
+   "snd.ui.scan_sweep"
   ],
   "anchor:loop": [
    "snd.amb.applause",
@@ -14225,6 +14591,7 @@
    "snd.amb.vinyl_crackle",
    "snd.amb.wind",
    "snd.indian.shruti_drone",
+   "snd.ui.agent_working",
    "snd.ui.listening_loop"
   ],
   "anchor:noise": [
@@ -14297,6 +14664,7 @@
    "snd.tx.light_leak",
    "snd.tx.luma_wipe",
    "snd.tx.morph_warble",
+   "snd.tx.pixel_dissolve",
    "snd.tx.push",
    "snd.tx.shutter_flash",
    "snd.tx.speed_ramp",
@@ -14338,6 +14706,7 @@
    "snd.liquid.fizz",
    "snd.liquid.glug",
    "snd.liquid.pour",
+   "snd.paper.card_riffle",
    "snd.paper.crumple",
    "snd.paper.rustle",
    "snd.sizzle.grain",
@@ -14380,6 +14749,9 @@
   "bars:4": [
    "snd.riser.noise_4bar"
   ],
+  "bitcrush": [
+   "snd.tx.pixel_dissolve"
+  ],
   "bpm:120": [
    "snd.riser.glitch_stutter",
    "snd.riser.noise_1bar",
@@ -14393,6 +14765,10 @@
   ],
   "brass": [
    "snd.hit.braam"
+  ],
+  "cards": [
+   "snd.paper.card_riffle",
+   "snd.paper.card_shuffle_settle"
   ],
   "char:adult": [
    "snd.voice.mumble"
@@ -14588,6 +14964,7 @@
   ],
   "family:impact": [
    "snd.hit.bass_drop_wobble",
+   "snd.hit.brand_field_slam",
    "snd.hit.cymbal_swell",
    "snd.hit.explosion_small",
    "snd.hit.glass_hit",
@@ -14651,6 +15028,8 @@
    "snd.metal.scrape"
   ],
   "family:paper": [
+   "snd.paper.card_riffle",
+   "snd.paper.card_shuffle_settle",
    "snd.paper.crumple",
    "snd.paper.flip",
    "snd.paper.rustle"
@@ -14675,6 +15054,7 @@
    "snd.riser.tape_up"
   ],
   "family:sparkle": [
+   "snd.sparkle.letter_assemble",
    "snd.sparkle.shimmer"
   ],
   "family:stinger": [
@@ -14702,6 +15082,7 @@
    "snd.tx.mask_reveal",
    "snd.tx.match_link",
    "snd.tx.morph_warble",
+   "snd.tx.pixel_dissolve",
    "snd.tx.push",
    "snd.tx.scale_punch",
    "snd.tx.shutter_flash",
@@ -14712,6 +15093,7 @@
    "snd.tx.zoom_through"
   ],
   "family:ui": [
+   "snd.ui.agent_working",
    "snd.ui.ai_reply",
    "snd.ui.ai_think_pulse",
    "snd.ui.blip",
@@ -14727,6 +15109,7 @@
    "snd.ui.notify",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.scan_sweep",
    "snd.ui.slide",
    "snd.ui.success",
    "snd.ui.swipe_ding",
@@ -14797,6 +15180,8 @@
    "snd.foley.stamp",
    "snd.foley.tape_tear",
    "snd.foley.zipper",
+   "snd.paper.card_riffle",
+   "snd.paper.card_shuffle_settle",
    "snd.paper.crumple",
    "snd.paper.flip",
    "snd.paper.rustle",
@@ -14909,10 +15294,12 @@
    "snd.metal.ping",
    "snd.riser.string_tension",
    "snd.riser.supersaw_2bar",
+   "snd.sparkle.letter_assemble",
    "snd.sparkle.shimmer",
    "snd.stinger.question",
    "snd.stinger.reveal",
    "snd.stinger.win",
+   "snd.ui.agent_working",
    "snd.ui.ai_reply",
    "snd.ui.ai_think_pulse",
    "snd.ui.blip",
@@ -14921,6 +15308,7 @@
    "snd.ui.mic_off",
    "snd.ui.mic_on",
    "snd.ui.notify",
+   "snd.ui.scan_sweep",
    "snd.ui.success",
    "snd.ui.swipe_ding",
    "snd.ui.toggle_off",
@@ -14928,6 +15316,7 @@
   ],
   "loop": [
    "snd.indian.shruti_drone",
+   "snd.ui.agent_working",
    "snd.ui.listening_loop"
   ],
   "loopable": [
@@ -15063,6 +15452,9 @@
    "snd.riser.glitch_stutter",
    "snd.riser.supersaw_2bar",
    "snd.tx.glitch_stutter",
+   "snd.tx.pixel_dissolve",
+   "snd.ui.agent_working",
+   "snd.ui.scan_sweep",
    "snd.whoosh.scifi_pass"
   ],
   "mood:tense": [
@@ -15097,6 +15489,7 @@
    "snd.drum.dhol_rim",
    "snd.foley.chai_cup_clink",
    "snd.foley.coin_drop",
+   "snd.hit.brand_field_slam",
    "snd.hit.soft",
    "snd.hit.thud",
    "snd.indian.harmonium_chord",
@@ -15106,6 +15499,7 @@
    "snd.logo.fifth_lift",
    "snd.logo.question",
    "snd.logo.two_note",
+   "snd.sparkle.letter_assemble",
    "snd.sparkle.shimmer",
    "snd.stinger.question",
    "snd.tx.dissolve_pad",
@@ -15116,6 +15510,9 @@
    "snd.ui.ai_reply",
    "snd.ui.success",
    "snd.wood.tap"
+  ],
+  "pixel": [
+   "snd.tx.pixel_dissolve"
   ],
   "region:in": [
    "snd.amb.indian_street_horns",
@@ -15199,7 +15596,12 @@
    "snd.indian.tabla_te",
    "snd.indian.tabla_tin",
    "snd.indian.tabla_tirakita",
-   "snd.indian.tabla_tun"
+   "snd.indian.tabla_tun",
+   "snd.paper.card_riffle",
+   "snd.paper.card_shuffle_settle"
+  ],
+  "scan": [
+   "snd.ui.scan_sweep"
   ],
   "size:l": [
    "snd.cartoon.sad_brass",
@@ -15281,6 +15683,7 @@
    "snd.foley.door_close",
    "snd.foley.door_open",
    "snd.foley.drawer",
+   "snd.hit.brand_field_slam",
    "snd.hit.rock",
    "snd.hit.slam",
    "snd.hit.stab",
@@ -15301,10 +15704,12 @@
    "snd.liquid.glug",
    "snd.liquid.splash",
    "snd.metal.clang",
+   "snd.paper.card_shuffle_settle",
    "snd.paper.crumple",
    "snd.riser.noise_2bar",
    "snd.riser.reverse_cymbal",
    "snd.sizzle.grain",
+   "snd.sparkle.letter_assemble",
    "snd.stinger.reveal",
    "snd.tx.blur_cross",
    "snd.tx.dissolve_pad",
@@ -15313,12 +15718,15 @@
    "snd.tx.glitch_stutter",
    "snd.tx.luma_wipe",
    "snd.tx.morph_warble",
+   "snd.tx.pixel_dissolve",
    "snd.tx.speed_ramp",
    "snd.tx.tape_down",
    "snd.tx.zoom_through",
+   "snd.ui.agent_working",
    "snd.ui.ai_reply",
    "snd.ui.count_run",
    "snd.ui.listening_loop",
+   "snd.ui.scan_sweep",
    "snd.ui.typing_burst",
    "snd.voice.giggle",
    "snd.voice.grunt",
@@ -15372,6 +15780,7 @@
    "snd.indian.tabla_tun",
    "snd.metal.ping",
    "snd.metal.scrape",
+   "snd.paper.card_riffle",
    "snd.paper.flip",
    "snd.paper.rustle",
    "snd.riser.noise_1bar",
@@ -15456,6 +15865,9 @@
   "sneaky": [
    "snd.cartoon.tiptoe"
   ],
+  "soft": [
+   "snd.hit.brand_field_slam"
+  ],
   "sub": [
    "snd.drum.808",
    "snd.drum.kick_sub",
@@ -15530,6 +15942,7 @@
    "snd.foley.stamp",
    "snd.glass.crack",
    "snd.hit.boom_meme",
+   "snd.hit.brand_field_slam",
    "snd.hit.cymbal_swell",
    "snd.hit.explosion_small",
    "snd.hit.glass_hit",
@@ -15570,6 +15983,7 @@
    "snd.tx.ink_bloom",
    "snd.tx.light_leak",
    "snd.tx.luma_wipe",
+   "snd.tx.pixel_dissolve",
    "snd.tx.speed_ramp",
    "snd.tx.tape_down",
    "snd.tx.tape_stop",
@@ -15713,12 +16127,15 @@
    "snd.liquid.pour",
    "snd.metal.ping",
    "snd.metal.scrape",
+   "snd.paper.card_riffle",
+   "snd.paper.card_shuffle_settle",
    "snd.paper.crumple",
    "snd.paper.flip",
    "snd.paper.rustle",
    "snd.plastic.click",
    "snd.plastic.switch",
    "snd.sizzle.grain",
+   "snd.sparkle.letter_assemble",
    "snd.sparkle.shimmer",
    "snd.stinger.bump",
    "snd.stinger.question",
@@ -15733,6 +16150,7 @@
    "snd.tx.push",
    "snd.tx.scale_punch",
    "snd.tx.shutter_flash",
+   "snd.ui.agent_working",
    "snd.ui.ai_think_pulse",
    "snd.ui.blip",
    "snd.ui.camera_ping",
@@ -15747,6 +16165,7 @@
    "snd.ui.notify",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.scan_sweep",
    "snd.ui.slide",
    "snd.ui.success",
    "snd.ui.swipe_ding",
@@ -15825,6 +16244,7 @@
    "snd.foley.zipper",
    "snd.glass.crack",
    "snd.glass.shatter",
+   "snd.hit.brand_field_slam",
    "snd.hit.cymbal_swell",
    "snd.hit.explosion_small",
    "snd.hit.rock",
@@ -15838,6 +16258,8 @@
    "snd.liquid.pour",
    "snd.liquid.splash",
    "snd.metal.scrape",
+   "snd.paper.card_riffle",
+   "snd.paper.card_shuffle_settle",
    "snd.paper.crumple",
    "snd.paper.flip",
    "snd.paper.rustle",
@@ -15856,6 +16278,7 @@
    "snd.tx.glitch_stutter",
    "snd.tx.ink_bloom",
    "snd.tx.luma_wipe",
+   "snd.tx.pixel_dissolve",
    "snd.tx.push",
    "snd.tx.shutter_flash",
    "snd.tx.speed_ramp",
@@ -15999,6 +16422,7 @@
    "snd.riser.string_tension",
    "snd.riser.supersaw_2bar",
    "snd.riser.tape_up",
+   "snd.sparkle.letter_assemble",
    "snd.sparkle.shimmer",
    "snd.stinger.alert",
    "snd.stinger.bump",
@@ -16020,6 +16444,7 @@
    "snd.tx.tape_down",
    "snd.tx.tape_stop",
    "snd.tx.zoom_through",
+   "snd.ui.agent_working",
    "snd.ui.ai_reply",
    "snd.ui.ai_think_pulse",
    "snd.ui.blip",
@@ -16033,6 +16458,7 @@
    "snd.ui.notify",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.scan_sweep",
    "snd.ui.success",
    "snd.ui.swipe_ding",
    "snd.ui.tick",
@@ -16047,6 +16473,9 @@
   ],
   "trailer": [
    "snd.hit.deep_impact"
+  ],
+  "type": [
+   "snd.sparkle.letter_assemble"
   ],
   "typing": [
    "snd.device.keyboard_mech_clack",

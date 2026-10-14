@@ -80,11 +80,12 @@ aliases = J('transitions/aliases.json')['aliases'] if os.path.exists(os.path.joi
 
 # ---------- cuts ----------
 pat = J('cuts/patterns.json')
-for grp in ('beat', 'sections', 'split', 'talking_head', 'interrupts', 'pace', 'smash'):
+for grp in ('beat', 'sections', 'split', 'talking_head', 'story', 'interrupts', 'pace', 'smash', 'onset_snap'):
     v = pat.get(grp)
     if not isinstance(v, dict): continue
-    if grp in ('interrupts', 'smash'):
-        add('cuts', f'cuts/{grp}', grp.replace('_', ' '), ['cuts', grp], desc=v.get('use', '') if isinstance(v.get('use'), str) else '', params={k: x for k, x in v.items() if k != 'use'}, file='cuts/patterns.json')
+    if grp in ('interrupts', 'smash', 'onset_snap'):
+        d = v.get('use') or v.get('note') or ''
+        add('cuts', f'cuts/{grp}', grp.replace('_', ' '), ['cuts', grp], desc=d if isinstance(d, str) else '', params={k: x for k, x in v.items() if k not in ('use', 'note')}, file='cuts/patterns.json')
         continue
     for k, x in v.items():
         d = x.get('desc') or x.get('use') or x.get('doc') or '' if isinstance(x, dict) else ''

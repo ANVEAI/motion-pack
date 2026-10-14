@@ -197,7 +197,9 @@ class Mix:
     def add_vo(self, audio, start_frame=0, gain_db=0.0):
         dsp.add_at(self.vo, np.asarray(audio, float), start_frame * self.spf, dsp.db(gain_db))
 
-    def add_cue(self, sid, frame, tier=None, over_bed_db=None, over_vo_db=None, gain_db=0.0, pan=0.0, seed=None, why=""):
+    def add_cue(self, sid, frame, tier=None, over_bed_db=None, over_vo_db=None, gain_db=0.0, pan=0.0, seed=None, why="", until_frame=None):
+        """until_frame (loops only): the loop stops at that visual frame with a 40 ms fade (e.g. snd.ui.agent_working under one "AI at work" state);
+        without it a loop runs to the end of the mix"""
         e = self.lib.entry(sid)
         k = self.counts.get(sid, 0)
         self.counts[sid] = k + 1
@@ -212,7 +214,8 @@ class Mix:
             over_bed_db = e.get("over_bed_db")
         pos = (int(frame) + 1 + e.get("anchor_frame_offset", 0)) * self.spf     # sample where the ANCHOR must land
         self.cues.append({"id": sid, "frame": int(frame), "tier": tier, "over_bed_db": over_bed_db, "over_vo_db": over_vo_db, "gain_db": gain_db, "pan": pan, "audio": audio,
-                          "anchor": int(anchor), "pos": pos, "cat": e["category"], "loop": e["loop"], "why": why, "kind": e["anchor_kind"], "trim_db": 0.0, "tags": e["tags"]})
+                          "anchor": int(anchor), "pos": pos, "cat": e["category"], "loop": e["loop"], "why": why, "kind": e["anchor_kind"], "trim_db": 0.0, "tags": e["tags"],
+                          "until": None if until_frame is None or not e["loop"] else int(until_frame) * self.spf})
 
     def add_transition(self, kind, frame, duration_frames=0, energy=0.5, direction=None):
         for c in sweeteners.sweeten(kind, frame, duration_frames, energy, direction):
@@ -244,6 +247,8 @@ class Mix:
             a = self._cue_signal(c)
             if c["loop"]:
                 a = tile_rows(a, self.n - c["pos"] + len(a))
+                if c.get("until") is not None:
+                    a = dsp.fade_out(a[:max(0, c["until"] - c["pos"])], dsp.ms(40))
                 start = c["pos"] - 0
             else:
                 start = c["pos"] - c["anchor"]
@@ -464,7 +469,7 @@ def mix_from_cuesheet(sheet, base_dir="."):
     if v:
         m.add_vo(rd(v["file"]), v.get("start_frame", 0), v.get("gain_db", 0.0))
     for c in sheet.get("cues", []):
-        m.add_cue(c["id"], c["frame"], c.get("tier"), c.get("over_bed_db"), c.get("over_vo_db"), c.get("gain_db", 0.0), c.get("pan", 0.0), c.get("seed"), c.get("why", ""))
+        m.add_cue(c["id"], c["frame"], c.get("tier"), c.get("over_bed_db"), c.get("over_vo_db"), c.get("gain_db", 0.0), c.get("pan", 0.0), c.get("seed"), c.get("why", ""), c.get("until_frame"))
     for t in sheet.get("transitions", []):
         m.add_transition(t["kind"], t["frame"], t.get("duration_frames", 0), t.get("energy", 0.5), t.get("direction"))
     return m

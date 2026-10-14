@@ -2,7 +2,8 @@
 import importlib
 
 MODULES = ["whoosh", "impacts", "risers", "ui", "materials", "liquid", "cartoon", "voices", "ambience", "stingers", "drums", "transitions",
-           "indian", "foley", "device", "fx_extra", "ambience2"]          # 2026-10-13 expansion
+           "indian", "foley", "device", "fx_extra", "ambience2",          # 2026-10-13 expansion
+           "saas"]                                                         # 2026-10-14: cards, scan, pixel dissolve, agent texture, brand slam, letters
 
 
 def load_all():

@@ -51,6 +51,22 @@ BUNDLES = {
                                 "phone": "snd.device.phone_buzz", "laptop_shut": "snd.foley.laptop_close", "typing": "snd.device.keyboard_mech_clack", "laugh_turn": "snd.cartoon.surprise_sting",
                                 "aww": "snd.crowd.aww_synth", "cheer": "snd.crowd.cheer_synth", "boo": "snd.crowd.boo_synth", "bonk": "snd.cartoon.bonk_pitch", "button": "snd.cartoon.rimshot"},
                       "notes": "foley ids have 4 round-robin takes (repeat an id and the mixer changes the take); keep crowd reactions 6-10 dB under the bed's loudest moment"},
+    # 2026-10-14: the two storyboard shapes in skills/motion-pack/references/success-patterns.md (sentence-led product film, mockumentary)
+    "saas_launch": {"desc": "sentence-led SaaS / AI product film: a UI tick on every state change, card whooshes, the agent-at-work texture under step lists, a soft slam on the brand colour field, logo last",
+                    "bed": ["tech_pulse", "corporate_bright", "deep_house"], "bpm": [120, 136], "lufs": -14,
+                    "roles": {"word": "snd.ui.tick", "state_change": "snd.ui.tick", "click": "snd.device.mouse_click", "type": "snd.device.keyboard_mech_soft", "send": "snd.device.message_sent",
+                              "card_move": "snd.whoosh.swish_s", "card_fly": "snd.whoosh.whoosh_m", "card_riffle": "snd.paper.card_riffle", "card_settle": "snd.paper.card_shuffle_settle",
+                              "scan": "snd.ui.scan_sweep", "working": "snd.ui.agent_working", "step_done": "snd.device.loading_tick", "result": "snd.ui.success", "number": "snd.ui.count_run",
+                              "pixel_wipe": "snd.tx.pixel_dissolve", "letters": "snd.sparkle.letter_assemble", "brand_field": "snd.hit.brand_field_slam", "logo": "snd.logo.hybrid"},
+                    "notes": "target >= 60% of cuts within 2 frames of an onset (cuts/cutgen.py snap); end the 'working' loop at the result frame (mixer add_cue until_frame); one slam only, on the cut to the brand field"},
+    "mockumentary": {"desc": "documentary-parody comedy: room tone under every interview, hard dialogue cuts, a record scratch or tape stop on the format break, deadpan stingers, silence before the punchline",
+                     "bed": ["documentary_marimba", "comedy_pizzicato", "suspense_tick"], "bpm": [90, 120], "lufs": -14,
+                     "roles": {"room": "snd.amb.room_tone", "office": "snd.amb.office", "format_break": "snd.cartoon.record_scratch", "tape_stop": "snd.tx.tape_stop", "jump_cut": "snd.tx.cut_tick",
+                               "deadpan": "snd.stinger.bump", "doubt": "snd.stinger.question", "to_black": "snd.stinger.cut_to_black", "title_card": "snd.hit.soft", "reaction_take": "snd.cartoon.pop_eye",
+                               "aww": "snd.crowd.aww_synth", "typing": "snd.device.keyboard_mech_clack", "phone": "snd.device.phone_buzz", "proof_wall": "snd.ui.count_run", "logo": "snd.logo.hybrid",
+                               "punchline_pause_frames": 9},
+                     "levels_re_voice_db": {"room": -30, "deadpan": -14, "jump_cut": -24, "format_break": -8},
+                     "notes": "dialogue drives the cut (cuts/patterns.json mockumentaryReaction: 0.3-0.5 s reaction inserts); the stinger lands after the line, never over it"},
 }
 
 
