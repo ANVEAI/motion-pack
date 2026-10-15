@@ -1,0 +1,86 @@
+[
+ {
+  "i": 4,
+  "key": "whip",
+  "id": "transitions/whip",
+  "params": {},
+  "startF": 265,
+  "endF": 274,
+  "cutF": 270,
+  "start": 8.833333333333334,
+  "end": 9.133333333333333,
+  "cut": 9
+ },
+ {
+  "i": 5,
+  "key": "zoomThrough",
+  "id": "transitions/zoom-through",
+  "params": {},
+  "startF": 383,
+  "endF": 398,
+  "cutF": 390,
+  "start": 12.766666666666667,
+  "end": 13.266666666666667,
+  "cut": 13
+ },
+ {
+  "i": 6,
+  "key": "push",
+  "id": "transitions/push",
+  "params": {},
+  "startF": 864,
+  "endF": 875,
+  "cutF": 870,
+  "start": 28.8,
+  "end": 29.166666666666668,
+  "cut": 29
+ },
+ {
+  "i": 7,
+  "key": "push",
+  "id": "transitions/push",
+  "params": {},
+  "startF": 984,
+  "endF": 995,
+  "cutF": 990,
+  "start": 32.8,
+  "end": 33.166666666666664,
+  "cut": 33
+ },
+ {
+  "i": 8,
+  "key": "push",
+  "id": "transitions/push",
+  "params": {},
+  "startF": 1104,
+  "endF": 1115,
+  "cutF": 1110,
+  "start": 36.8,
+  "end": 37.166666666666664,
+  "cut": 37
+ },
+ {
+  "i": 10,
+  "key": "blurCross",
+  "id": "transitions/blur-cross",
+  "params": {},
+  "startF": 1344,
+  "endF": 1355,
+  "cutF": 1350,
+  "start": 44.8,
+  "end": 45.166666666666664,
+  "cut": 45
+ },
+ {
+  "i": 12,
+  "key": "push",
+  "id": "transitions/push",
+  "params": {},
+  "startF": 1569,
+  "endF": 1580,
+  "cutF": 1575,
+  "start": 52.3,
+  "end": 52.666666666666664,
+  "cut": 52.5
+ }
+]

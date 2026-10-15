@@ -36,7 +36,7 @@ export const CONFIG = {
   media: {                         // every footage / screenshot slot is nullable: null = the labelled HTML placeholder screen
     hook: { src: null, label: '' }, tour: { src: null, start: 0, w: 1920, h: 1080, label: '' }, runs: { src: null, label: '' }, payoffBefore: { src: null }, payoffAfter: { src: null },
   },
-  claims: [{ text: 'Requests routed in the private beta: 12,400', source: 'placeholder data, replace with your measured number and where it comes from' }],
+  claims: [{ text: 'Requests routed in the private beta: 12,400', source: 'placeholder data: replace with your measured number' }],
   proof: { value: 12400, label: 'requests routed', claim: 0 },   // the counter reads claims[proof.claim].source and prints it under the number
   pricing: { source: 'placeholder data', plans: [{ name: 'Starter', price: '$0', per: '/ month', blurb: 'For trying it out', features: ['Up to three flows', 'Email support'], cta: 'Start free' },
     { name: 'Team', price: '$10', per: '/ seat / month', blurb: 'For a whole team', features: ['Unlimited flows', 'Shared inbox', 'Run history'], cta: 'Start trial', featured: true },

@@ -32,10 +32,10 @@ export const SCREEN_CSS = (B) => `
 .af-dim{color:#8A8693;font-weight:600}
 .af-grow{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .af-canvas{flex:1;border-radius:18px;background-color:#FBFAF8;background-image:radial-gradient(circle,#D9D5DE 1.3px,transparent 1.6px);background-size:26px 26px;border:1px solid #E6E3EA;position:relative;overflow:hidden}
-.af-node{position:absolute;width:330px;background:#fff;border:1.5px solid #E1DEE6;border-radius:16px;padding:16px 18px;box-shadow:0 6px 18px rgba(20,18,30,.07)}
+.af-node{position:absolute;width:330px;background:#fff;border:1.5px solid #E1DEE6;border-radius:16px;padding:10px 18px;box-shadow:0 6px 18px rgba(20,18,30,.07)}
 .af-node .k{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8A8693}
-.af-node .t{font-size:19px;font-weight:800;margin-top:6px}
-.af-node .d{font-size:15px;font-weight:600;color:#77737F;margin-top:4px}
+.af-node .t{font-size:19px;font-weight:800;margin-top:4px}
+.af-node .d{font-size:15px;font-weight:600;color:#77737F;margin-top:2px}
 .af-node.hl{border-color:${B.accent};box-shadow:0 0 0 5px ${B.accent}22,0 10px 26px rgba(20,18,30,.12)}
 .af-node.run{border-color:#17A865}
 .af-ok{width:22px;height:22px;border-radius:11px;background:#17A865;display:inline-grid;place-items:center;color:#fff;font-size:13px;font-weight:900;vertical-align:-4px}
@@ -74,10 +74,10 @@ export const BUILDER_NODES = [{ k: 'When', t: 'A request comes in', d: 'Email, c
   { k: 'Then', t: 'Post to that team', d: 'With the request attached' }, { k: 'Then', t: 'Reply to the customer', d: 'Tell them who has it' }];
 function builder(st, B) {
   const n = +st.nodes || 0, sw = cl(+st.swap || 0), run = +st.run || 0, lerp = (a, b, k) => a + (b - a) * k;
-  const P = [[90, 40], [90, 168], [90, 296], [90, 440], [520, 440]], at = (i) => (i === 4 ? [lerp(520, 90, sw), lerp(440, 572, sw)] : P[i]);   // the reply node is dragged from beside the post node to below it (st.swap)
+  const P = [[90, 16], [90, 128], [90, 240], [90, 360], [520, 360]], at = (i) => (i === 4 ? [lerp(520, 90, sw), lerp(360, 472, sw)] : P[i]);   // compact: the whole flow fits in the top 75% of the screen (a 16:9 window crops the bottom)   // the reply node is dragged from beside the post node to below it (st.swap)
   const nodes = BUILDER_NODES.map((nd, i) => { const a = cl(n - i); if (a <= 0) return ''; const [x, y] = at(i), hl = st.hl === i, ok = run > i;
     return `<div class="af-node${hl ? ' hl' : ''}${ok ? ' run' : ''}" style="left:${f2(x)}px;top:${f2(y + (1 - a) * 18)}px;opacity:${f2(a)}"><div class="k">${nd.k}${ok ? ' <span class="af-ok">✓</span>' : ''}</div><div class="t">${esc(nd.t)}</div><div class="d">${esc(nd.d)}</div></div>`; }).join('');
-  const link = (i, j) => { if (n < j + 0.6) return ''; const [x1, y1] = at(i), [x2, y2] = at(j), a = cl(n - j); const sx = x1 + 165, sy = y1 + 104, ex = x2 + 165, ey = y2 - 2; return `<path d="M${f2(sx)} ${f2(sy)} C${f2(sx)} ${f2(sy + 30)} ${f2(ex)} ${f2(ey - 30)} ${f2(ex)} ${f2(ey)}" fill="none" stroke="#BDB8C6" stroke-width="2.5" opacity="${f2(a)}"/>`; };
+  const link = (i, j) => { if (n < j + 0.6) return ''; const [x1, y1] = at(i), [x2, y2] = at(j), a = cl(n - j); const sx = x1 + 165, sy = y1 + 98, ex = x2 + 165, ey = y2 - 2; return `<path d="M${f2(sx)} ${f2(sy)} C${f2(sx)} ${f2(sy + 30)} ${f2(ex)} ${f2(ey - 30)} ${f2(ex)} ${f2(ey)}" fill="none" stroke="#BDB8C6" stroke-width="2.5" opacity="${f2(a)}"/>`; };
   const svg = `<svg width="1100" height="760" style="position:absolute;left:0;top:0">${link(0, 1)}${link(1, 2)}${link(2, 3)}${sw < 0.5 ? link(2, 4) : link(3, 4)}</svg>`;
   const ready = n >= 5;
   return `<div class="af">${side(B, 'Flows', { Inbox: 48 })}<div class="af-main"><div class="af-top"><div><div class="af-h1">Route new requests</div><div class="af-sub">${ready ? (run >= 5 ? 'Test run passed' : 'Ready to test') : n > 0 ? 'Building…' : 'Empty flow'}</div></div><div style="display:flex;gap:10px"><div class="af-btn ghost">Share</div><div class="af-btn${st.hoverRun ? ' hov' : ''}">▶ Run test</div></div></div>` +

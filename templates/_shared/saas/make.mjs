@@ -77,7 +77,7 @@ function frame(t) {
     S[i].style.visibility = 'visible'; shown[i] = true; HOST[i].innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">' + sceneSVG(sc, t, env) + '</svg>'; placeVideos(i, t); });
   clearOv(); if (w) applyDom(w.key, Math.min(1, Math.max(0, (t - w.start) / (w.end - w.start))), { a: S[w.i - 1], b: S[w.i], root, params: w.params, cut: (w.cut - w.start) / (w.end - w.start) });
 }
-const qt = new URLSearchParams(location.search).get('t'); let last = qt != null && Number.isFinite(+qt) ? +qt : window.__hfThreeTime || 0;   // ?t=12.5 opens the page on that time (stills without a render) window.addEventListener('hf-seek', (e) => frame((last = e.detail.time))); frame(last); window.__seek = (t) => frame((last = t));
+const qt = new URLSearchParams(location.search).get('t'); let last = qt != null && Number.isFinite(+qt) ? +qt : window.__hfThreeTime || 0;   /* ?t=12.5 opens the page on that time (stills without a render) */ window.addEventListener('hf-seek', (e) => frame((last = e.detail.time))); frame(last); window.__seek = (t) => frame((last = t));
 Promise.all(['500', '600', '700', '800'].map((wt) => document.fonts.load(wt + ' 30px Manrope')).concat([document.fonts.load('600 20px "IBM Plex Mono"')])).then(() => { frame(last); window.__ready = true; });
 const tl = gsap.timeline({ paused: true }); tl.set({}, {}, ${T});
 window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl;

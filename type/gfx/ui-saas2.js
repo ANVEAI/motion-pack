@@ -77,7 +77,7 @@ const integrationGrid = { tags: ['ui', 'integrations', 'works-with', 'hub', 'con
       tiles += `<g transform="translate(${f2(tx)} ${f2(ty)}) scale(${f2(Math.max(0.001, k))})">${rect(-ts / 2, -ts / 2, ts, ts, 26 * s, TINTS[i % TINTS.length], `stroke="${T.line}" stroke-width="${f2(1.2 * s)}"`)}${glyph(names[i], -24 * s, -24 * s, 48 * s, '#3B3946', 2.2)}</g>`;
       if (p.labels && GLYPH_NAMES[names[i]]) tiles += text(GLYPH_NAMES[names[i]], tx, ty + ts / 2 + 32 * s, { size: 22 * s, weight: 700, fill: T.muted, anchor: 'middle', op: clamp(k) }); void sz; });
     const hk = spring(u, 'headline'), hr = 84 * s, hub = `<g transform="translate(${f2(G.hub[0])} ${f2(G.hub[1])}) scale(${f2(Math.max(0.001, hk))})"><defs>${shadowDef(id + 's', s)}</defs>${softShadow(id + 's', -hr, -hr, 2 * hr, 2 * hr, hr, s, 0.8)}<circle r="${f2(hr)}" fill="${p.accent}"/>${text(String(p.hub).slice(0, 2), 0, 22 * s, { size: 64 * s, weight: 800, fill: '#FFFFFF', anchor: 'middle' })}</g>`;
-    const [bx, by, bw, bh] = box4(p.box, c), note = p.note ? text(p.note, bx + bw / 2, by + bh + 34 * s, { size: 22 * s, weight: 600, fill: T.muted, anchor: 'middle', op: clamp(u / 0.3) }) : '';
+    const [bx, by, bw, bh] = box4(p.box, c), low = Math.max(by + bh, ...G.pts.map((q) => q[1] + ts / 2 + (p.labels ? 40 * s : 0))), note = p.note ? text(p.note, bx + bw / 2, low + 44 * s, { size: 22 * s, weight: 600, fill: T.muted, anchor: 'middle', op: clamp(u / 0.3) }) : '';
     return `<g${op(1 - L.out)}>${lines}${tiles}${hub}${note}</g>`; } };
 
 /* ---------- 3. before / after split ---------- */

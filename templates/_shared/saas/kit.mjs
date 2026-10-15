@@ -11,8 +11,10 @@ export const EASE = { enter: bez(0.16, 1, 0.3, 1), exit: bez(0.7, 0, 0.84, 0), p
 const FONT = "Manrope, 'Helvetica Neue', Arial, sans-serif", MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace";
 
 /* ---------- headlines ---------- */
-/* words of a line with *accent* spans: [{ w, accent }] */
-export function words(str) { const out = []; let acc = false; for (const part of String(str ?? '').split(/(\*)/)) { if (part === '*') { acc = !acc; continue; } for (const w of part.split(/\s+/).filter(Boolean)) out.push({ w, accent: acc }); } return out; }
+/* words of a line with *accent* spans: [{ w, runs: [{ s, accent }], accent }]. The accent toggles on '*' anywhere, so '*everywhere*.' keeps its full stop on the word (no space before it) */
+export function words(str) { const out = []; let acc = false; for (const raw of String(str ?? '').split(/\s+/).filter(Boolean)) { const runs = []; let cur = '';
+  for (const ch of raw) { if (ch === '*') { if (cur) runs.push({ s: cur, accent: acc }); cur = ''; acc = !acc; continue; } cur += ch; } if (cur) runs.push({ s: cur, accent: acc });
+  if (runs.length) out.push({ w: runs.map((r) => r.s).join(''), runs, accent: runs.some((r) => r.accent) }); } return out; }
 export const plain = (str) => String(str ?? '').replace(/\*/g, '');
 /* break into lines that fit head.w (px); head.size px; returns { lines: [{ ws: [{w, accent, x, width}], y }], box: [x0, y0, x1, y1], lh } */
 export function headLayout(h, measure) {
@@ -31,8 +33,8 @@ export function headSVG(h, t, env) {
   let i = 0, o = '';
   lay.lines.forEach((ln, li) => { const cid = `hm${Math.abs(Math.round(h.x * 7 + h.y * 13 + li * 101 + size))}`, top = ln.y - size * 0.86, hh = lay.lh * 1.02;
     let g = ''; for (const w of ln.ws) { const k = h.cut ? 1 : EASE.enter(cl((u - i * st) / dur)), dy = (1 - k) * size * 0.95 - outK * size * 0.95; i++;
-      g += `<text x="${f2(w.x)}" y="${f2(ln.y + dy)}" font-family="${esc(FONT)}" font-size="${f2(size)}" font-weight="${h.weight ?? 800}" letter-spacing="${f2(-0.03 * size)}" fill="${w.accent ? acc : ink}">${esc(w.w)}</text>`; }
-    o += `<clipPath id="${cid}"><rect x="${f2(h.x - size)}" y="${f2(top - size * 0.08)}" width="${f2(h.w + 2 * size)}" height="${f2(hh + size * 0.14)}"/></clipPath><g clip-path="url(#${cid})">${g}</g>`; });
+      g += `<text x="${f2(w.x)}" y="${f2(ln.y + dy)}" font-family="${esc(FONT)}" font-size="${f2(size)}" font-weight="${h.weight ?? 800}" letter-spacing="${f2(-0.03 * size)}" fill="${ink}">${w.runs.map((r) => (r.accent ? `<tspan fill="${acc}">${esc(r.s)}</tspan>` : esc(r.s))).join('')}</text>`; }
+    o += `<clipPath id="${cid}"><rect x="${f2(h.x - size)}" y="${f2(top - size * 0.12)}" width="${f2(h.w + 2 * size)}" height="${f2(size * 1.36)}"/></clipPath><g clip-path="url(#${cid})">${g}</g>`; });
   return h.opacity != null && h.opacity < 1 ? `<g opacity="${f2(h.opacity)}">${o}</g>` : o;
 }
 /* a small kicker pill above a headline ("NEW", "Step 1", "How it works") */
@@ -84,7 +86,7 @@ export function captionSVG(cap, t, env) {
 /* ---------- a scene at time t ---------- */
 const BG = (bg, B) => (bg === 'accent' ? B.accent : bg === 'ink' ? B.ink : bg === 'soft' ? B.soft ?? '#ECEAF7' : B.paper);
 export function resolveScreen(it, t, env) {
-  const p = it.params || {}, B = env.B, html = (sc) => env.screenHTML(sc.name, env.stateAt(sc.keys, t - it.at, sc.ease ?? 0.45), B);
+  const p = it.params || {}, B = env.B, html = (sc) => { const st = env.stateAt(sc.keys, t - it.at, sc.ease ?? 0.45); return env.screenHTML(st._screen || sc.name, st, B); };   // a `_screen` key switches the screen (flows -> builder)
   if (it.screen && !(p.screen && p.screen.src)) return { ...p, screen: { ...(p.screen || {}), html: html(it.screen) } };
   if (it.screens) { const q = { ...p }; for (const side of ['before', 'after']) if (it.screens[side] && !(p[side] && p[side].src)) q[side] = { ...(p[side] || {}), html: html(it.screens[side]) }; return q; }
   return p;
