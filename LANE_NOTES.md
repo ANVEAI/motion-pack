@@ -133,4 +133,56 @@ Also add to the decision tree:
 
 ## Demo, measurements and limits
 
-See the final section, which is filled in after the demo renders.
+### The demo project
+
+`examples/project.example.json` (Fernwick, a fictional brand) drives `ad` and `proof-film` from ONE file:
+- the same brand, palette from `mp brand` on the CC0 mark: accent #0F766E, ink #181F1E, paper #F2F6F5;
+- the same headline;
+- 16:9 + 9:16;
+- proof-film keeps its own bed and tempo through `overrides`.
+
+Folder: `mp new ad,proof-film <dir> --project examples/project.example.json`, then `mp render`.
+
+The MP4s are kept outside git in `~/Developer/mp-xp-editable-demo/`. The contact sheets and plans are committed in `examples/project-demo/`.
+
+### Loudness of the delivered files
+
+Decoded from the delivered MP4 with `templates/_shared/sheet.py`:
+
+| file | length | LUFS-I | true peak |
+|---|---|---|---|
+| ad-16x9.mp4 | 15.0 s | -14.14 | -1.89 dBTP |
+| ad-9x16.mp4 | 15.0 s | -14.14 | -1.89 dBTP |
+| proof-film-16x9.mp4 | 37.6 s | -14.22 | -1.93 dBTP |
+| proof-film-9x16.mp4 | 37.6 s | -14.22 | -1.93 dBTP |
+
+All four are within -14 ± 0.5 LUFS-I and at or under -1.0 dBTP. eyes on ad-16x9 (run before the lock rule): frame0 pass, exit 0.
+
+### What the sheets show (looked at)
+
+- **ad 9:16:** every line re-fitted inside x 65-960 / y 269-1248 at 96-200 px, the null product slot shows the labelled placeholder card, and the end card carries the logo + CTA pill.
+- **proof-film:** the brand name flows into the scatter hero, the table column, the findings and the method lines; the ILLUSTRATIVE · PLACEHOLDER DATA pill is on every number panel; the 9:16 uses its own tall layout.
+
+### PENDING (the disk was under 10 GiB and the shared render lock refused; not retried, per the coordinator)
+
+1. Re-render `ad` 16:9 + 9:16. The project now points the problem slot at `plate-cast.mp4`. The current ad MP4s were rendered with `plate-film.mp4`, a pack render whose diegetic "FILES SENT OUT" counter shows digits (partly visible in 16:9). Command:
+   ```
+   cd <demo dir> && MP_RENDER_PREFIX=~/Developer/motion-pack-xp/render-lock.sh mp render --template ad --workers 1
+   ```
+2. `ears` and `eyes` on all four MP4s, and the full `mp check`:
+   ```
+   MP_RENDER_PREFIX=~/Developer/motion-pack-xp/render-lock.sh mp check
+   ```
+   It runs eyes and ears through the lock.
+3. Untested so far:
+   - a 3D template render from a project: the plan is verified (`mp build` for character-spot applies brand, accent and end line), but the `scene.html ?config=` path is not render-verified;
+   - the ad at 1:1 and 4:5: it builds, but has not been rendered.
+
+### Weaker than I'd like
+
+- **Footage in 9:16** is re-framed around its centre (object-position 50%). A 16:9 plate loses its sides. The proper fix is a per-aspect `src`, which the schema does not have yet.
+- **The generic re-layout fits text with a width model** (rounded up), not by measuring in the browser. Lines can sit a little narrower than the box, and `plan.texts` boxes are estimates for eyes.
+- **4:5 has no `plan.mjs` platform or size.** The ad uses linkedin.video's safe fractions. beat-edit and talking-head mark 4:5 as manual, because `eyes/manifest.json` copies the plan tables and its tests fail on drift.
+- **multi-voice-doc 9:16 is marked manual:** it uses fixed 16:9 px sizes.
+- **`mp brand` on an SVG** weights colours by how often they appear, not by painted area. A raster logo is weighted by pixel share.
+- **Stricter `--set` is a behaviour change:** an unknown CONFIG key now exits 2 with a suggestion. It still allows a field name the CONFIG already uses elsewhere, such as `.source` and `.method` (proof-film's honesty tests rely on that).
