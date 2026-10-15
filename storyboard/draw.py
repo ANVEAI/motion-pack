@@ -267,7 +267,7 @@ def draw_camera(d, cam, ctx):
 # ---------------------------------------------------------------------------------------------------------------- subject blocks
 def subject_label(action):
     first = re.split(r'[;,.]', action or '')[0].strip()
-    ws = first.split()[:4]
+    ws = first.split()[:3]
     s = ' '.join(ws)
     return s if len(s) <= 28 else s[:27] + '.'
 
@@ -331,8 +331,23 @@ def draw_subject(d, blocks, shot, ctx):
             d.ellipse(((b['x0'] + b['x1']) / 2 - r, b['y0'] + r * 0.4, (b['x0'] + b['x1']) / 2 + r, b['y0'] + r * 2.4), outline=ink + (255,), width=lw)
         if i == len(blocks) - 1 or b['kind'] != 'person':
             lab = subject_label(shot.get('action')) if b['kind'] != 'insert' else 'INSERT: ' + subject_label(shot.get('action'))
-            cx, cy = (b['x0'] + b['x1']) / 2, (b['y0'] + b['y1']) / 2
-            d.text((cx, cy), lab, font=font, fill=ink + (255,), anchor='mm')
+            lf = ctx.fonts.get('mono', 38)
+            cx = (b['x0'] + b['x1']) / 2
+            narrow = (b['x1'] - b['x0']) < ctx.W * 0.35
+            maxw = max(b['x1'] - b['x0'] - 20, ctx.W * 0.3) if narrow else b['x1'] - b['x0'] - 20
+            lines, cur = [], ''
+            for w in lab.split():
+                t = (cur + ' ' + w).strip()
+                if cur and lf.getlength(t) > maxw:
+                    lines.append(cur)
+                    cur = w
+                else:
+                    cur = t
+            lines.append(cur)
+            y = b['y1'] + 14 if narrow else (b['y0'] + b['y1']) / 2 - len(lines) * 24
+            for ln in lines:
+                d.text((cx, y), ln, font=lf, fill=ink + (255,), anchor='ma')
+                y += 48
 
 
 # ---------------------------------------------------------------------------------------------------------------- the frame
@@ -351,7 +366,7 @@ def dashed_rect(d, rect, color, w, dash=18, gap=12, phase=HATCH_PHASE):
             t += dash + gap
 
 
-def chip(d, xy, text, ctx, anchor='ra', bg=CHIP_BG, fg=CHIP_FG, size=30):
+def chip(d, xy, text, ctx, anchor='ra', bg=CHIP_BG, fg=CHIP_FG, size=40):
     font = ctx.fonts.get('mono', size)
     w = font.getlength(text)
     pad = size * 0.4
@@ -378,8 +393,8 @@ def render_board(shot, layout, ctx, real=None, source_label=None):
         if scale in SCALES or scale in ('2S', 'OTS', 'POV'):
             d.line([(0, H * 0.74), (W, H * 0.74)], fill=rgb(ctx.muted) + (120,), width=3)
         draw_subject(d, layout['subject'], shot, ctx)
-    draw_camera(d, parse_camera(shot.get('camera')), ctx)
     if real is None:
+        draw_camera(d, parse_camera(shot.get('camera')), ctx)        # a real frame already shows the move
         if layout['text']:
             draw_rows(d, layout['text'], ctx, ctx.ink, ctx.accent)
         if layout['honesty']:
@@ -394,6 +409,6 @@ def render_board(shot, layout, ctx, real=None, source_label=None):
     dashed_rect(d, (S['x0'], S['y0'], S['x1'], S['y1']), rgb(ACCENT) + (210,), max(3, int(W / 640)))
     y = 18
     y = chip(d, (W - 18, y), (shot.get('scale') or '?').upper(), ctx) + 8
-    chip(d, (W - 18, y), source_label or 'SCHEMATIC', ctx, bg='#FFFFFF', fg='#141414', size=24)
+    chip(d, (W - 18, y), source_label or 'SCHEMATIC', ctx, bg='#FFFFFF', fg='#141414', size=30)
     out = Image.alpha_composite(base, ov).convert('RGB')
     return out.resize((ctx.bw, ctx.bh), Image.LANCZOS)

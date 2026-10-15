@@ -1,0 +1,345 @@
+{
+ "module": "storyboard",
+ "version": "0.1.0",
+ "inputs": {
+  "shotlist": "skills/story-script/assets/shotlist.example.json",
+  "design": "skills/frame-design/assets/design.example.json",
+  "plan": null
+ },
+ "lint": {
+  "rc": 0,
+  "waived": false,
+  "summary": "Every draft, saved: 7 shots, 16.00 s, ASL 2.29 s | 0 FAIL, 0 WARN | PASS",
+  "findings": []
+ },
+ "safe": {
+  "platform": "wideTitle",
+  "verify": false,
+  "canvas": [
+   1920,
+   1080
+  ],
+  "rect": {
+   "x0": 96.0,
+   "y0": 54.0,
+   "x1": 1824.0,
+   "y1": 1026.0
+  }
+ },
+ "fonts": {
+  "display": {
+   "file": "templates/_shared/fonts/Manrope-Variable.ttf",
+   "weight": 800,
+   "family": "Manrope"
+  },
+  "text": {
+   "file": "templates/_shared/fonts/Manrope-Variable.ttf",
+   "weight": 600,
+   "family": "Manrope"
+  },
+  "mono": {
+   "file": "templates/_shared/fonts/IBMPlexMono-SemiBold.ttf",
+   "weight": 600,
+   "family": "IBM Plex Mono"
+  }
+ },
+ "frame_source": "schematic",
+ "real": null,
+ "summary": {
+  "title": "Every draft, saved",
+  "format": "character-spot",
+  "aspect": "16:9",
+  "length_s": 16.0,
+  "fps": 30,
+  "shots": 7,
+  "platform": "wideTitle",
+  "platform_verify": false,
+  "lint": "pass, 0 WARN",
+  "warnings": 1
+ },
+ "panels": [
+  {
+   "id": "s01",
+   "beat": "HOOK",
+   "role": "stake",
+   "scale": "WS",
+   "start_s": 0.0,
+   "dur_s": 2.5,
+   "start_frame": 0,
+   "frames": 75,
+   "action": "the worker types at speed on a white desk; the full mug edges toward the laptop with each keystroke",
+   "sound": "typing burst on frame 0; a pleased wordless hum",
+   "text": "",
+   "text_kind": "super",
+   "transition": {
+    "kind": "cut",
+    "reason": null
+   },
+   "camera": "locked, 35 mm, 3% push in",
+   "camera_parsed": "in",
+   "honesty": null,
+   "source": "schematic",
+   "hero_s": null,
+   "text_layout": null,
+   "honesty_layout": null,
+   "reading": null,
+   "safe_violations": [],
+   "warnings": [],
+   "png": "panels/s01.png"
+  },
+  {
+   "id": "s02",
+   "beat": "SETUP",
+   "role": "stake",
+   "scale": "MS",
+   "start_s": 2.5,
+   "dur_s": 2.5,
+   "start_frame": 75,
+   "frames": 75,
+   "action": "a big satisfied stretch; one arm sweeps out past the mug",
+   "sound": "inhale on the stretch",
+   "text": "",
+   "text_kind": "super",
+   "transition": {
+    "kind": "cut",
+    "reason": null
+   },
+   "camera": "locked, 50 mm",
+   "camera_parsed": "locked",
+   "honesty": null,
+   "source": "schematic",
+   "hero_s": null,
+   "text_layout": null,
+   "honesty_layout": null,
+   "reading": null,
+   "safe_violations": [],
+   "warnings": [],
+   "png": "panels/s02.png"
+  },
+  {
+   "id": "s03",
+   "beat": "ESC",
+   "role": "stake",
+   "scale": "WS",
+   "start_s": 5.0,
+   "dur_s": 3.0,
+   "start_frame": 150,
+   "frames": 90,
+   "action": "the hand clips the mug; coffee floods under the laptop; the screen dies; the worker freezes",
+   "sound": "ceramic clink; splash; pour; a tape-stop as the screen dies; a gasp",
+   "text": "",
+   "text_kind": "super",
+   "transition": {
+    "kind": "cut",
+    "reason": null
+   },
+   "camera": "locked, 35 mm, no move on the impact",
+   "camera_parsed": "locked",
+   "honesty": null,
+   "source": "schematic",
+   "hero_s": null,
+   "text_layout": null,
+   "honesty_layout": null,
+   "reading": null,
+   "safe_violations": [],
+   "warnings": [],
+   "png": "panels/s03.png"
+  },
+  {
+   "id": "s04",
+   "beat": "FREEZE",
+   "role": "reaction",
+   "scale": "CU",
+   "start_s": 8.0,
+   "dur_s": 2.0,
+   "start_frame": 240,
+   "frames": 60,
+   "action": "the worker's face; shoulders drop; only the eyes move",
+   "sound": "sad brass, then near silence",
+   "text": "",
+   "text_kind": "super",
+   "transition": {
+    "kind": "smash",
+    "reason": "EMOTION: the loss lands on the face"
+   },
+   "camera": "slow push in, 85 mm",
+   "camera_parsed": "in",
+   "honesty": null,
+   "source": "schematic",
+   "hero_s": null,
+   "text_layout": null,
+   "honesty_layout": null,
+   "reading": null,
+   "safe_violations": [],
+   "warnings": [],
+   "png": "panels/s04.png"
+  },
+  {
+   "id": "s05",
+   "beat": "TURN",
+   "role": "turn",
+   "scale": "INSERT",
+   "start_s": 10.0,
+   "dur_s": 1.5,
+   "start_frame": 300,
+   "frames": 45,
+   "action": "the dead screen wakes by itself; the draft is back, the cursor blinking where it stopped",
+   "sound": "a bright win sting on the wake",
+   "text": "",
+   "text_kind": "super",
+   "transition": {
+    "kind": "smash",
+    "reason": "STORY: the reversal"
+   },
+   "camera": "locked, 100 mm macro, 2% push in",
+   "camera_parsed": "in",
+   "honesty": "Illustration \u00b7 fictional product",
+   "source": "schematic",
+   "hero_s": null,
+   "text_layout": null,
+   "honesty_layout": {
+    "size_px": 28,
+    "rect": {
+     "x0": 96.0,
+     "y0": 981.0,
+     "x1": 640.0,
+     "y1": 1014.0
+    }
+   },
+   "reading": null,
+   "safe_violations": [],
+   "warnings": [
+    "honesty label shown 1.5 s in a row, under the 2.0 s minimum"
+   ],
+   "png": "panels/s05.png"
+  },
+  {
+   "id": "s06",
+   "beat": "PAYOFF",
+   "role": "payoff",
+   "scale": "MS",
+   "start_s": 11.5,
+   "dur_s": 1.5,
+   "start_frame": 345,
+   "frames": 45,
+   "action": "a slow wow, then a two-armed cheer",
+   "sound": "a wordless wow; a tada on the cheer",
+   "text": "",
+   "text_kind": "super",
+   "transition": {
+    "kind": "cut",
+    "reason": null
+   },
+   "camera": "pan right, 35 mm",
+   "camera_parsed": "pan",
+   "honesty": null,
+   "source": "schematic",
+   "hero_s": null,
+   "text_layout": null,
+   "honesty_layout": null,
+   "reading": null,
+   "safe_violations": [],
+   "warnings": [],
+   "png": "panels/s06.png"
+  },
+  {
+   "id": "s07",
+   "beat": "CARD",
+   "role": "card",
+   "scale": "CARD",
+   "start_s": 13.0,
+   "dur_s": 3.0,
+   "start_frame": 390,
+   "frames": 90,
+   "action": "the white world pulls back; end line, logo and fine print",
+   "sound": "two-note sonic sting",
+   "text": "Every draft, saved.",
+   "text_kind": "card",
+   "transition": {
+    "kind": "cut",
+    "reason": null
+   },
+   "camera": "pull back, locked at the end",
+   "camera_parsed": "out",
+   "honesty": "Illustration \u00b7 fictional product",
+   "source": "schematic",
+   "hero_s": null,
+   "text_layout": {
+    "size_px": 96,
+    "font": "templates/_shared/fonts/Manrope-Variable.ttf",
+    "role": "display",
+    "lines": [
+     "Every draft, saved."
+    ],
+    "rect": {
+     "x0": 519.0,
+     "y0": 483.4,
+     "x1": 1401.0,
+     "y1": 596.6
+    }
+   },
+   "honesty_layout": {
+    "size_px": 28,
+    "rect": {
+     "x0": 96.0,
+     "y0": 981.0,
+     "x1": 640.0,
+     "y1": 1014.0
+    }
+   },
+   "reading": {
+    "words": 3,
+    "dur_s": 3.0,
+    "wps": 1.0,
+    "wps_max": 3.5,
+    "hold_needed_s": 1.19,
+    "ok": true,
+    "issues": []
+   },
+   "safe_violations": [],
+   "warnings": [],
+   "png": "panels/s07.png"
+  }
+ ],
+ "files": {
+  "sheet_png": "storyboard.png",
+  "sheet_html": "storyboard.html",
+  "pdf": "storyboard.pdf",
+  "pdf_pages": 2
+ },
+ "notes": [],
+ "animatic": {
+  "plan": "animatic.plan.json",
+  "frames": 480,
+  "bed": {
+   "kind": "click",
+   "id": null,
+   "bpm": 120.0,
+   "chosen_by": "default"
+  },
+  "measured": {
+   "file": "animatic.mp4",
+   "frames": 480,
+   "expected_frames": 480,
+   "duration_s": 16.0,
+   "size": [
+    960,
+    540
+   ],
+   "audio_samples_master": 768000,
+   "audio_samples_expected": 768000,
+   "delivered_lufs_i": -14.06,
+   "delivered_true_peak_db": -2.59,
+   "mixer_ceiling_db_used": -1.5,
+   "mixer_lufs_i": -14.02,
+   "mixer_true_peak_db": -2.98,
+   "cue_trim_warnings": [],
+   "sound_lint": [
+    "R4 tier-1 hits snd.tx.smash_cut@240 and snd.tx.smash_cut@300 are closer than 3 s (hero hit every 8-10 s)",
+    "R4 3 tier-1 cues in 13.0 s: more than one per 5 s"
+   ],
+   "attempts": 1
+  },
+  "file": "animatic.mp4"
+ }
+}

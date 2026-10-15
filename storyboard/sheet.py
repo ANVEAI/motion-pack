@@ -100,7 +100,7 @@ def header_lines(info):
             ('%s  |  %s  |  %.2f s at %s fps  |  %d shots  |  lead aspect %s' % (s['format'], s['aspect'], s['length_s'], s['fps'], s['shots'], s['aspect']), 'sub'),
             ('Schematic panels are drawings of the shot, not the picture. Safe zone: %s%s. Lint: %s.' % (
                 s['platform'], ' (a working estimate, verify before a paid campaign)' if s['platform_verify'] else '', s['lint']), 'sub'),
-            ('%d warnings. %s' % (s['warnings'], 'Approve this sheet and the animatic before the full render (SKILL.md production gates).'), 'sub')]
+            ('%d warning%s. %s' % (s['warnings'], '' if s['warnings'] == 1 else 's', 'Approve this sheet and the animatic before the full render (SKILL.md production gates).'), 'sub')]
 
 
 def render_header(info, width):

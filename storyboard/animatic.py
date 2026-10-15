@@ -128,17 +128,20 @@ def bed_info(music_id, bpm, plan):
 
 
 def click_track(bpm, seconds):
-    """a soft click on every beat (higher on the bar), 4/4, SR 48k stereo. Deterministic; a placeholder pulse, not music."""
+    """a soft click on every beat (higher on the bar), 4/4, plus a steady tone about as loud as the clicks, so the bed has the same level in every window (the mixer sets every cue's
+    level against the bed under it; clicks alone left silent windows and cues were trimmed by tens of dB). SR 48k stereo, deterministic. A placeholder pulse at the plan's tempo, not music."""
     n = int(round((seconds + 1) * SR))
-    y = np.zeros(n)
+    t_all = np.arange(n) / SR
+    y = 0.05 * np.sin(2 * np.pi * 196.0 * t_all)
     beat = 60.0 / bpm
     k = 0
     while k * beat < seconds + 1:
         f0 = 1500.0 if k % 4 == 0 else 1000.0
         i0 = int(round(k * beat * SR))
-        L = int(0.02 * SR)
-        t = np.arange(min(L, n - i0)) / SR
-        y[i0:i0 + len(t)] += 0.5 * np.sin(2 * np.pi * f0 * t) * np.exp(-t * 180.0)
+        L = min(int(0.03 * SR), n - i0)
+        t = np.arange(L) / SR
+        env = np.exp(-t * 150.0) * np.minimum(1.0, t / 0.002)               # 2 ms attack: a step at the onset overshoots the AAC encoder
+        y[i0:i0 + L] += 0.12 * np.sin(2 * np.pi * f0 * t) * env
         k += 1
     return np.stack([y, y], 1)
 

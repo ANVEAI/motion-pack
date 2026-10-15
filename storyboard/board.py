@@ -161,6 +161,8 @@ def build(shotlist_path, design_path=None, plan_path=None, out='storyboard-out',
         log('animatic: %s  %d frames (expected %d), %.2f LUFS-I, %.2f dBTP decoded from the MP4' % (m['file'], m['frames'], m['expected_frames'], m['delivered_lufs_i'], m['delivered_true_peak_db']))
         for i in m['sound_lint']:
             log('  SOUND-LINT  ' + i)
+        for i in m['cue_trim_warnings']:
+            log('  MIXER  ' + i)
     return 0, report
 
 
