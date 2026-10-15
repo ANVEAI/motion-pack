@@ -5,7 +5,7 @@ Thanks for helping. The pack stays useful because every part follows the same fe
 ## The rules
 
 1. **Pure functions of time.** A component draws or sounds the same for the same `t` (or frame and fps), whatever was rendered before. No `Date.now()`, no `Math.random()`, no `performance.now()`, no state carried between frames. Use the seeded generators already in the pack (`mulberry32`, `hashf`, `rng(seed)`).
-2. **Ids, not paths.** Reference other modules by id (`transitions/<name>`, `sfx/<cat>/<name>`, `music/<id>`, `type/<preset>`, `objects/<name>`, `cuts/<group>/<name>`). Add new ids to the module's registry, then run `python3 tools/check_ids.py`.
+2. **Ids, not paths.** Reference other modules by id (`transitions/<name>`, `sfx/<cat>/<name>`, `music/<id>`, `type/<preset>`, `objects/<name>`, `cuts/<group>/<name>`). Add new ids to the module's registry, then run `python3 tools/check_ids.py --docs` (it reads Markdown too).
 3. **Owned or nothing.** Code you write, sound you synthesise, renders you make. Do not commit third-party media, samples, icons, logos or LUTs, and no font beyond the three OFL families already bundled (`THIRD_PARTY.md` section 1). A render of a fetched set may go in `lab/` only if the set is listed in `THIRD_PARTY.md` section 1b with its notice in `licenses/`; it is never described as CC0. Outside assets go through `scripts/fetch-external.sh` (pinned URL + SHA-256 in `scripts/external.lock`) and, for audio, `sfx/tools/check_origin.py` and `sfx/tools/catalog_import.py`. Only permissive licences are accepted for fetched sets: CC0 (no attribution), MIT, ISC, Apache-2.0 and OFL (these require the copyright and licence notice to travel with any copy, which is why every set shown in a committed image has its notice in `licenses/` and its row in `lab/provenance.json`). A set with no stated licence, a share-alike licence (CC BY-SA) or a no-redistribution licence is never rendered into a committed image.
 4. **Measured, not claimed.** Numbers in READMEs come from the code (manifests, QA reports, `tools/count.py`). If a README is generated (`sfx/make_readme.py`, `music/make_readme.py`, `transitions/tools/build.mjs`), edit the generator, not the output.
 5. **No real people, brands or logos in demos.** Use the fictional placeholders (`Orbit`, `Maya Rao`, ...).
@@ -15,8 +15,8 @@ Thanks for helping. The pack stays useful because every part follows the same fe
 ## Before you push
 
 ```bash
-python3 tools/check_ids.py                      # 0 unresolved
-python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
+python3 tools/check_ids.py --docs               # 0 unresolved (code, config, data and Markdown)
+python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py sfx/tests music/tests tools/tests cloud/tests
 python3 tools/check_names.py                    # no studied account or brand name outside docs/research
 node type/tests/honesty-defaults.test.mjs       # every part's defaults carry a placeholder label
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs

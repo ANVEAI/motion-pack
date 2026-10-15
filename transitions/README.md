@@ -4,7 +4,7 @@
 beat edits, talking heads, short films): the original 23, 24 added on 2026-10-13 (ripple, swirl, crossWarp, directionalWarp,
 cube, doorway, kaleido, hexagonalize, windowSlice, blinds, squeeze, polkaDots, tvStatic, burnOut, dreamyZoom, linearBlur, gridFlip,
 bookFlip, pinwheel, radial, waterDrop, wind, luminanceMelt, overexposure) and `ditherDissolve` (2026-10-14: the frame breaks into accent pixel blocks in an ordered-dither order and clears into the next shot; GL and a real DOM back-end, paired sound `sfx/tx/glitch_stutter` + `sfx/sizzle/grain`) and, on 2026-10-14 (round 3), `sharedElement` (magic move: `[data-share]` elements spring from their A rect to their B rect while the rest dissolves; GL version moves one rect region) and `sketchToRender` (line art of the next shot draws on over paper, takes a clay tone, then colour; Sobel edges in GL, an SVG Laplacian in DOM). Since 2026-10-13 every visual transition also plays in DOM
-templates: 26 have a real DOM back-end and the other 23 GL-only looks run a DOM approximation (`lib/tx-dom-x.js` APPROX, `dom~` below),
+templates: <!--n:transitions_dom-->26<!--/n--> have a real DOM back-end and the other <!--n:transitions_dom_approx-->23<!--/n--> GL-only looks run a DOM approximation (`lib/tx-dom-x.js` APPROX, `dom~` below),
 so DOM templates no longer hard-cut on them. All 58 ffmpeg xfade modes + `custom` are pack ids too (`transitions/xfade-<mode>`, `lib/xfade.js`). Every one renders from `p` (or `t`) alone, so it is seek-safe in
 HyperFrames 0.8.142, in the three.js studio kit and in the spec-to-loop renderer. All GLSL and JS here is ours;
 gl-transitions (gl-transitions.com, MIT) was read for vocabulary; the 2026-10-13 shaders are our own GLSL for effects that collection named, and each entry's `credit` field names the original idea's author. Nothing vendored. No media files are used.
@@ -14,12 +14,12 @@ gl-transitions (gl-transitions.com, MIT) was read for vocabulary; the 2026-10-13
 | path | what |
 |---|---|
 | `lib/registry.js` | **source of truth**: params + defaults, beat-grid timing, sound pairing, edit grammar, tags |
-| `lib/tx-shaders.js` | the GLSL (ES 1.00; also valid in three `ShaderMaterial`): prelude + 22 shaders; `lib/tx-shaders-x.js` adds 25 (merged) |
-| `lib/registry-x.js` | registry entries for the 25 added transitions (merged into REGISTRY; `credit` = idea source) |
-| `lib/tx-dom-x.js` | 11 more real DOM back-ends (ditherDissolve as run-length `clip-path: path()` blocks, (cube in CSS 3D, clip-path slices/blinds, conic masks, ...) + `APPROX`: a DOM look for every GL-only key |
+| `lib/tx-shaders.js` | the GLSL (ES 1.00; also valid in three `ShaderMaterial`): prelude + 22 shaders; `lib/tx-shaders-x.js` adds <!--n:shaders_x-->27<!--/n--> (merged: <!--n:transitions_visual-->49<!--/n--> in all) |
+| `lib/registry-x.js` | registry entries for the <!--n:registry_x-->27<!--/n--> added transitions (merged into REGISTRY; `credit` = idea source) |
+| `lib/tx-dom-x.js` | <!--n:dom_x-->13<!--/n--> more real DOM back-ends (ditherDissolve as run-length `clip-path: path()` blocks, (cube in CSS 3D, clip-path slices/blinds, conic masks, ...) + `APPROX`: a DOM look for every GL-only key |
 | `lib/xfade.js` | ffmpeg xfade map: 58 modes + custom as `transitions/xfade-<mode>`, nearest pack key per mode, `xfadeFilter(id, {duration, offset})` |
 | `lib/tx-gl.js` | raw WebGL runner `createTxRenderer(canvas).render({key, from, to, p, params})` + text-mask/anchor solver |
-| `lib/tx-dom.js` | DOM/CSS back-end `applyDom(key, p, {a, b, root, params})`: 26 real back-ends + 23 approximations (shots are DOM layers) |
+| `lib/tx-dom.js` | DOM/CSS back-end `applyDom(key, p, {a, b, root, params})`: <!--n:transitions_dom-->26<!--/n--> real back-ends + <!--n:transitions_dom_approx-->23<!--/n--> approximations (shots are DOM layers) |
 | `lib/tx-three.js` | `makeTransitionPass(THREE, key, params)` for the three.js kit (parity-tested against tx-gl) |
 | `lib/tx-hf.js` | `hfBind(renderAt, {compositionId, duration})`: drives any renderAt(t) from HyperFrames seeks |
 | `lib/sequence.js` | edit list on a beat grid -> what is on screen at t (`planEdits`, `stateAt`, `lintPlan`) |
@@ -50,7 +50,7 @@ Root needs `data-duration` and `data-no-timeline` (no GSAP needed; HyperFrames d
 `[0:v][1:v]xfade=transition=circleopen:duration=0.5000:offset=2.2500[v]`; a pack key also works (`xfadeFilter('whip', ...)` uses PACK_TO_XFADE).
 All 59 strings were run through local ffmpeg 8.0.1 on a lavfi test source.
 
-**HyperFrames, shots are DOM layers (all 49 visual effects; 26 exact, 23 approximated):** `applyDom(key, p, { a, b, root, params })`, see `examples/hf-dom`.
+**HyperFrames, shots are DOM layers (all <!--n:transitions_visual-->49<!--/n--> visual effects; <!--n:transitions_dom-->26<!--/n--> exact, <!--n:transitions_dom_approx-->23<!--/n--> approximated):** `applyDom(key, p, { a, b, root, params })`, see `examples/hf-dom`.
 Put `a`/`b` inside clips, never tween `.clip` itself. DOM gives no mirrored edges (spin shows the background), no
 chroma fringe on whip and only linear/radial luma mattes; use the GL path when that matters.
 

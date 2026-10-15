@@ -9,8 +9,8 @@
    Not a genre template (no config.mjs, so tools/count.py does not count it). HONESTY: every number on screen is ILLUSTRATIVE and each part prints that in frame
    (scatter footnote, table source line, "illustrative run", ticker source line); the "footage" in the last scene is the pack's own procedural placeholder plate
    (a generic silhouette, labelled in frame) and nobody is quoted. No third-party brand, logo, product name or footage. */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, write } from '../_shared/compose.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+import { stage, head, write, mix, lintPlan, lintStop } from '../_shared/compose.mjs';
 import { gfxCues } from '../../type/gfx/index.js';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..');
 
@@ -50,8 +50,10 @@ const shots = C.scenes.map((s) => ({ id: s.id, start: s.start, dur: +(s.end - s.
 const plan = { template: 'demo-r45-ui', fps: F, seconds: T, W: C.W, H: C.H, music: C.music, musicGainDb: C.musicGainDb, ceilingDb: C.ceilingDb, fadeInMs: C.fadeInMs, shots, cues: kept,
   honesty: 'every number is illustrative and labelled so in frame by the part itself; the speaker plate is a procedural placeholder (labelled in frame); no real recording, no quotes, no third-party marks',
   claims: [{ text: 'Highest score under $4 a task (the starred point)', source: 'illustrative data, printed in the chart footnote' }, { text: 'Week 3 resolved more calls in the call, at a lower cost per call', source: 'illustrative data, printed under the table' }, { text: '$0 per query on device (the usage chip)', source: 'illustrative values, printed under the chip' }],
-  lint: { cutsOnBeat: shots.every((s) => Math.abs(s.start * 2 - Math.round(s.start * 2)) < 1e-9), partsUsed: [...new Set(shots.flatMap((s) => s.parts))], everyClaimHasSource: true } };
+  lint: { cutsOnBeat: shots.every((s) => Math.abs(s.start * 2 - Math.round(s.start * 2)) < 1e-9), partsUsed: [...new Set(shots.flatMap((s) => s.parts))] } };   // lintPlan adds claimsWithoutSource (computed from the claims, never asserted)
+const fails = lintPlan(plan);   // lint.proof + lint.tx: the gate cues.mjs runs for the genre templates (compose.mjs)
 fs.mkdirSync(path.join(DIR, 'out'), { recursive: true }); fs.writeFileSync(path.join(DIR, 'out', 'plan.json'), JSON.stringify(plan, null, 1));
+lintStop(fails, 'demo-r45-ui');
 console.log(`plan: ${shots.length} shots, ${kept.length} cues, parts ${plan.lint.partsUsed.length} (${plan.lint.partsUsed.join(', ')}), cuts on beat: ${plan.lint.cutsOnBeat}`);
 
 /* ---------- stage: fonts, layers + type modules (compose.mjs), plus type/gfx (the proof parts live there) ---------- */
@@ -59,7 +61,7 @@ const st = stage(DIR, { layers: C.layers.length > 0 });
 const link = (src, dst) => { fs.mkdirSync(path.dirname(dst), { recursive: true }); try { fs.rmSync(dst, { force: true }); fs.linkSync(src, dst); } catch { fs.copyFileSync(src, dst); } };
 for (const f of fs.readdirSync(path.join(PACK, 'type', 'gfx')).filter((f) => f.endsWith('.js'))) link(path.join(PACK, 'type', 'gfx', f), path.join(DIR, 'assets', 'mp', 'type', 'gfx', f));
 fs.mkdirSync(path.join(DIR, 'assets', 'media'), { recursive: true });
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 
 /* ---------- page ---------- */
 const css = `#bg { z-index: 0; } #stage { z-index: 2; } #fx { pointer-events: none; } #fx canvas { z-index: 5; }`;

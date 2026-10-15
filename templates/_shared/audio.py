@@ -49,6 +49,8 @@ def via_music_mixer(P, out, bed, a):
     if len(y) < n: y = np.concatenate([y] * (n // len(y) + 1), axis=0)[:n]
     bed_full = os.path.join(d, 'bed.wav'); sf.write(bed_full, y, sr, subtype='FLOAT')
     sheet = {'fps': fps, 'length_s': P['seconds'], 'bed': {'file': bed_full, 'gain_db': P.get('musicGainDb', 0.0), 'loop': False}, 'cues': cues, 'master': {'lufs': a.target, 'ceiling_db': P.get('ceilingDb', P.get('masterCeilingDb', -1.5))}}   # plan.ceilingDb: lower it (-2.0 to -2.5) when clicky UI transients or a hit at the start push HyperFrames' own AAC over -1 dBTP
+    q = (P.get('audio') or {}).get('quiet') or P.get('quiet')   # plan.audio.quiet: a planned quiet open waives the mixer's R10 lint, like ears
+    if q: sheet['quiet'] = q
     if P.get('bedAutomation'): sheet['bed']['automation'] = P['bedAutomation']   # [{frame, gain_db}] breakpoints (cuts/story45.py dropouts, quiet holds)
     if P.get('vo'):   # a dialogue / VO track placed on the timeline (plan.vo = path, relative to the plan's folder): the mixer ducks the bed under it
         vp = P['vo'] if os.path.isabs(P['vo']) else os.path.join(os.path.dirname(os.path.abspath(a.plan)), P['vo']); sheet['vo'] = {'file': vp, 'start_frame': 0}
@@ -56,6 +58,8 @@ def via_music_mixer(P, out, bed, a):
     sp = os.path.join(d, 'sheet.json'); json.dump(sheet, open(sp, 'w'))
     r = subprocess.run([sys.executable, os.path.join(MUSIC, 'mixer.py'), sp, '--out', d], capture_output=True, text=True, cwd=MUSIC)
     if r.returncode != 0: print(r.stdout[-2000:], r.stderr[-2000:]); raise SystemExit('music mixer failed')
+    for line in r.stdout.splitlines():   # a level the mixer could not reach (a trim outside -30..+24 dB) is said out loud, not buried in mix.wav.json
+        if line.startswith('WARN'): print('mixer', line)
     shutil.copyfile(os.path.join(d, 'master.wav'), out)
     if P.get('fadeInMs'):   # a bed that starts on a hit leaves a step at sample 0; some AAC encoders overshoot it by several dB (HyperFrames then lowers the whole track)
         import soundfile as sf
@@ -70,7 +74,9 @@ def via_music_mixer(P, out, bed, a):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('plan'); ap.add_argument('out'); ap.add_argument('--target', type=float, default=-14.0); ap.add_argument('--ceiling', type=float, default=-2.0); ap.add_argument('--stem', action='store_true', help='no loudness normalisation: cue gains are absolute (library sounds peak at their registry peak_db); for SFX stems mixed under dialogue')
     a = ap.parse_args(); P = json.load(open(a.plan)); fps = P.get('fps', 30); N = int(round(P['seconds'] * SR)) + SR
+    os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)   # a template that links no media has no assets/media yet (compose.stage() makes it too)
     bed = music_bed_file(P.get('music'))
+    if bed and not os.path.exists(bed): raise SystemExit(f'music bed WAV missing: {bed}\nthe music WAV masters are not in git: run `python3 music/build_music.py` once (about a minute)')
     if P.get('music') and not bed: print('TODO hook: music bed', P.get('music'), 'not found in music/manifest.json: SFX-only mix')
     if bed and not a.stem: return via_music_mixer(P, a.out, bed, a)
     mix = np.zeros((N, 2), np.float32); rep = {'placed': [], 'todo': [], 'sfx_modules_missing': MISSING_MODULES}

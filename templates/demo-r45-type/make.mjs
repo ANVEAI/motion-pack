@@ -1,15 +1,15 @@
 /* templates/demo-r45-type/make.mjs: plan -> mix (music mixer) -> HyperFrames index.html. Each scene is one timed clip (hard cuts on the beat grid) holding gfx items
    (mountGfx, SVG from t) and/or Canvas2D layers of layers/canvas2d-r45.js (mountStack + bindHF with t0 = the scene start); both re-render on hf-seek.
      node make.mjs   then   npx -y hyperframes@0.8.142 render . -o out/demo-r45-type.mp4 --crf 23 */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, write } from '../_shared/compose.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+import { stage, runPlan, head, write, mix } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared');
-execFileSync('node', [path.join(SH, 'cues.mjs'), DIR, ...process.argv.slice(2)], { stdio: 'inherit' });
+runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(DIR, 'out', 'plan.json'), 'utf8'));
 const { CONFIG: C } = await import('./config.mjs');
 const st = stage(DIR, { layers: true });
 fs.mkdirSync(path.join(DIR, 'assets', 'media'), { recursive: true });
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 const [W, H] = plan.size, F = plan.fps, T = plan.seconds, f = (x) => (+x).toFixed(4);
 const css = `.scene { overflow: hidden; } .part { position: absolute; inset: 0; }`;
 let body = '', js = '';

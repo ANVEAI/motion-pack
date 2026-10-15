@@ -85,7 +85,7 @@ Craft-only references teach technique, not reach.
 |---|---|---|
 | Integrated loudness | −9.2 to −14.9 LUFS, several peaking above 0 dBFS | **Don't copy the clipping.** Keep the pack master at −14 LUFS / ≤ −1 dBTP; it plays back at the same level on platforms that normalise |
 | Bass share (<150 Hz) | 32–66%, mostly 40–66% | Warm, bass-led beds; the highs stay low (1–6%) and UI ticks carry the sparkle |
-| Cuts on a sound onset | 45–80% over five pieces (the three best-synced at 75–80%, the least at 45%) | **Cut on hits.** Target ≥ 60% of cuts within 2 frames of an onset (`cuts/cutgen.py snap`) |
+| Cuts on a sound onset | 45–80% over five pieces (the three best-synced at 75–80%, the least at 45%) | **Cut on hits** in a music-led, cut-driven piece: target ≥ 60% of cuts within 2 frames of an onset (`cuts/cutgen.py snap`); VO-led and continuous films are scored by their mode (§9, `critic.md`) |
 | Tempo (estimate) | about 120–140 BPM for the product films | 120–136 BPM fits a 1.5–3 s beat cadence |
 | Voice | one product film: sparse VO, ~1 line per beat (57 words in 52 s); the mockumentary: dialogue at 145 wpm; the others: no VO | A product film is text-led or uses a sparse VO "verb ladder" (*Build it all. Expand. Automate. Multiply.*). Comedy uses real dialogue |
 
@@ -148,7 +148,7 @@ Per-piece studies with source links: `docs/research/reference-round3-2026-10.md`
 |---|---|---|
 | Integrated loudness | -22.5 to -8.1 LUFS, median -16.1; 7 peak at or above 0 dBFS | Keep the -14 LUFS / <= -1 dBTP master; copy neither end |
 | Bass share (<150 Hz) | two clusters: music-led motion 52-87%, VO-led live action 14-22% | Pick the bed by format |
-| Cuts on an onset | median 40%; tier A music pieces 61-83% | The >= 60% target stands for cut-driven pieces; with few cuts, motion hits carry the sync |
+| Cuts on an onset | median 40%; tier A music pieces 61-83% | The >= 60% target stands for music-led, cut-driven pieces; with few cuts, motion hits carry the sync (`continuous` mode); VO-led films are scored on speech continuity (`critic.md`) |
 | Tempo (conf >= 0.5) | 60-108 BPM | Half-time feels of 120-180 BPM beds; hits every 1.5-1.7 s suit a 1.5-3 s beat cadence |
 | VO rate | 87 (ad read), 145-163 (explainer), 176-188 (founder to camera) | Text-led A pieces use no VO |
 

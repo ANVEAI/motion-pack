@@ -41,7 +41,7 @@ def _amb(id, tags, desc, seed, **kw):
     return snd(id, "ambience", ["family:amb", "tier:3", "anchor:loop", *tags], tier=3, loop=True, kind="fixed", desc=desc, seed=seed, **kw)
 
 
-@_amb("snd.amb.room_tone", ["mood:warm", "use:short_film"], "empty room tone with 50 Hz mains hum (India), -48 dBFS style floor", 160, use=["short_film", "talking_head"], pairs=["cut", "jcut"])
+@_amb("snd.amb.room_tone", ["mood:warm", "use:short_film"], "empty room tone with 50 Hz mains hum (India); ships at -18 LUFS-I, so sit it 20-26 dB under the bed (plan overBedDb)", 160, use=["short_film", "talking_head"], pairs=["cut", "jcut"])
 def room_tone(seed):
     st = stereo_noise(seed)
     st = np.stack([dsp.fft_filter(st[:, 0], 40, 1400, 2), dsp.fft_filter(st[:, 1], 40, 1400, 2)], 1)

@@ -6,13 +6,48 @@
        plus _shared/adapters/{type,transitions}.mjs -> assets/mp/adapters/ (they register ids with MP.register)
      Missing modules are listed in the returned `todo` (the template still renders: hard cuts, plain fades, no layers).
    head({ W, H, title, bg }) -> the <head> with GSAP 3.14.2, @font-face for the shared fonts and the base clip CSS. */
-import fs from 'node:fs'; import path from 'node:path';
+import fs from 'node:fs'; import path from 'node:path'; import { spawnSync } from 'node:child_process';
+import { lintClaims, lintTransitions, lintFailures } from './plan.mjs';
 const SH = path.dirname(new URL(import.meta.url).pathname), PACK = path.resolve(SH, '..', '..');
 const link = (src, dst) => { fs.mkdirSync(path.dirname(dst), { recursive: true }); try { fs.rmSync(dst, { force: true }); fs.linkSync(src, dst); } catch { fs.copyFileSync(src, dst); } };
 const jsUnder = (d) => (fs.existsSync(d) ? fs.readdirSync(d, { recursive: true }).filter((f) => /\.(m?js)$/.test(f)).map((f) => path.join(d, f)) : []);
 
+/* runPlan(dir, args): run _shared/cues.mjs (plan export + the lint gates) for a make.mjs. When it fails, this process exits with ITS code
+   (2 = lint.proof / lint.tx, see templates/README.md) and no Node stack trace; nothing after it (stage, mix, page) runs. */
+export function runPlan(dir, args = process.argv.slice(2)) {
+  const r = spawnSync('node', [path.join(SH, 'cues.mjs'), dir, ...args], { stdio: 'inherit' });
+  if (r.status !== 0) process.exit(r.status ?? 1);
+}
+
+/* THE LINT GATE, shared: cues.mjs uses it, and so does every make.mjs that builds its own plan instead of running cues.mjs (the part demos).
+   allowLint(): --allow-lint on the command line or MP_ALLOW_LINT=1 (render3d.sh), the one documented waiver.
+   lintPlan(plan): fills plan.lint.claimsWithoutSource (lint.proof: a claim with a digit and no source) and plan.lint.unmotivatedTransitions (lint.tx: a non-cut transition
+     with no txReason) from plan.claims and plan.shots, keeps the other lint fields, records the failures in plan.lint.allowed when waived, and returns them.
+   lintStop(fails, who): call it after the plan is written (plan.lint shows what failed): prints the failures and exits 2 unless waived, before anything is staged, mixed or rendered. */
+export const allowLint = (argv = process.argv) => argv.includes('--allow-lint') || process.env.MP_ALLOW_LINT === '1';
+export function lintPlan(plan, waive = allowLint()) {
+  const { claimsWithoutSource, unmotivatedTransitions, ...rest } = plan.lint || {};   // the two gate fields first, then whatever else the plan's lint holds (pace, cutsOnBeat, ...)
+  plan.lint = { claimsWithoutSource: lintClaims(plan.claims).map((c) => c.text), unmotivatedTransitions: lintTransitions(plan.shots || []), ...rest };
+  const fails = lintFailures(plan.lint); if (fails.length && waive) plan.lint.allowed = fails;   // a waived problem stays on the record (ears, the critic and a reviewer can see it)
+  return fails;
+}
+export function lintStop(fails, who, waive = allowLint()) {
+  if (!fails.length) return;
+  console.error(`\n${who}: ${fails.length} lint problem${fails.length === 1 ? '' : 's'}${waive ? ' (waived by --allow-lint, recorded in plan.lint.allowed)' : ', build stopped (exit 2)'}\n  - ${fails.join('\n  - ')}`);
+  if (!waive) { console.error('\nFix the CONFIG block, or pass --allow-lint to build anyway (MP_ALLOW_LINT=1 for render3d.sh). Never waive a stat that has no source.'); process.exit(2); }
+}
+
+/* mix(planJson, wav, py = 'python3'): run _shared/audio.py (music/mixer.py under it). Like runPlan, a failure (a missing music bed, a mixer error) ends this process with audio.py's own
+   message and exit code, not a Node stack trace on top of it. */
+export function mix(planJson, wav, py = 'python3') {
+  const r = spawnSync(py, [path.join(SH, 'audio.py'), planJson, wav], { stdio: 'inherit' });
+  if (r.error) { console.error(`mix: could not run ${py} (${r.error.message})`); process.exit(1); }
+  if (r.status !== 0) process.exit(r.status ?? 1);
+}
+
 export function stage(dir, { media = [], layers = false } = {}) {
   const A = path.join(dir, 'assets'), todo = [], adapters = [];
+  fs.mkdirSync(path.join(A, 'media'), { recursive: true });   // always: the mix (audio.py) is written to assets/media/mix.wav even when a template links no media (media: [])
   for (const f of ['Manrope-Variable.ttf', 'IBMPlexMono-SemiBold.ttf']) link(path.join(SH, 'fonts', f), path.join(A, 'fonts', f));
   for (const f of ['pack.mjs', 'plan.mjs']) link(path.join(SH, f), path.join(A, 'mp', f));
   for (const m of media) link(m, path.join(A, 'media', path.basename(m)));
@@ -22,7 +57,7 @@ export function stage(dir, { media = [], layers = false } = {}) {
   if (fs.existsSync(path.join(TY, 'dom.js'))) { for (const f of fs.readdirSync(TY).filter((f) => /\.js$/.test(f))) link(path.join(TY, f), path.join(A, 'mp', 'type', f)); for (const f of fs.readdirSync(path.join(TY, 'gfx')).filter((f) => /\.js$/.test(f))) link(path.join(TY, 'gfx', f), path.join(A, 'mp', 'type', 'gfx', f)); link(path.join(SH, 'adapters', 'type.mjs'), path.join(A, 'mp', 'adapters', 'type.mjs')); adapters.push('assets/mp/adapters/type.mjs'); }
   else todo.push('type/dom.js (type module) not found: plain fades used');
   // TRANSITIONS module: lib/{registry,tx-core,tx-dom,ids}.js + our adapter that registers 'transitions/<id>' with MP. The template
-  // stretches clips around each windowed cut (txplan.mjs span) so both shots are present; GL-only keys stay hard cuts (logged).
+  // stretches clips around each windowed cut (txplan.mjs span) so both shots are present; the 23 GL-only looks run their DOM approximation (tx-dom-x.js), only speedRamp (timing-only) stays a logged hard cut.
   const TX = path.join(PACK, 'transitions', 'lib');
   if (fs.existsSync(path.join(TX, 'tx-dom.js'))) { for (const f of fs.readdirSync(TX).filter((f) => f.endsWith('.js'))) link(path.join(TX, f), path.join(A, 'mp', 'transitions', 'lib', f)); link(path.join(SH, 'adapters', 'transitions.mjs'), path.join(A, 'mp', 'adapters', 'transitions.mjs')); adapters.push('assets/mp/adapters/transitions.mjs'); }
   else todo.push('transitions/lib/tx-dom.js (transitions module) not found: hard cuts used');

@@ -694,7 +694,7 @@
     "use:short_film"
    ],
    "tier": 3,
-   "desc": "empty room tone with 50 Hz mains hum (India), -48 dBFS style floor",
+   "desc": "empty room tone with 50 Hz mains hum (India); ships at -18 LUFS-I, so sit it 20-26 dB under the bed (plan overBedDb)",
    "use": [
     "short_film",
     "talking_head"

@@ -13,7 +13,7 @@
      s5 13-16  full-bleed brand field end card                                  layers brandField
    Placeholder pictures: stills grabbed from the pack's own renders (templates/_shared/media, other templates' outputs) + procedural cards. */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, esc, write } from '../_shared/compose.mjs';
+import { stage, head, esc, write, mix, lintPlan, lintStop } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..'), OUT = path.join(DIR, 'out');
 const W = 1920, H = 1080, F = 30, T = 16, FORCE = process.argv.includes('--plate'); fs.mkdirSync(OUT, { recursive: true });
 
@@ -53,12 +53,14 @@ const cues = [
 ];
 const plan = { template: 'demo-cards-objects', fps: F, seconds: T, size: [W, H], music: 'music/bed_corporate_bright_loop8', musicGainDb: -2, masterCeilingDb: -2.0, shots, cues: cues.sort((a, b) => a.t - b.t), claims: [],
   parts: ['layout.cardStack', 'layout.cardRiver', 'layout.evidenceBoard', 'layout.cornerPin', 'lowerThird.docSuper', 'caption.subtitleSpeedGag', 'layers/invertFlash', 'layers/brandField', 'objects/glass-dome', 'objects/icon-orbit', 'objects/clay', 'type/maskRise'] };
+const fails = lintPlan(plan);   // lint.proof + lint.tx: the gate cues.mjs runs for the genre templates (compose.mjs)
 fs.writeFileSync(path.join(OUT, 'plan.json'), JSON.stringify(plan, null, 1));
+lintStop(fails, 'demo-cards-objects');
 
 /* 4. stage the project (fonts, type, layers, plate) + the gfx files the comp imports, then the mix */
 const st = stage(DIR, { media: [plate], layers: true });
 for (const f of fs.readdirSync(path.join(PACK, 'type', 'gfx'))) if (f.endsWith('.js')) { const d = path.join(DIR, 'assets', 'mp', 'type', 'gfx', f); fs.mkdirSync(path.dirname(d), { recursive: true }); fs.rmSync(d, { force: true }); fs.linkSync(path.join(PACK, 'type', 'gfx', f), d); }
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(OUT, 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(OUT, 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 
 /* 5. the composition */
 const css = `

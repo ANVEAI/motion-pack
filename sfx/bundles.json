@@ -345,7 +345,7 @@
    "brand_field": "snd.hit.brand_field_slam",
    "logo": "snd.logo.hybrid"
   },
-  "notes": "target >= 60% of cuts within 2 frames of an onset (cuts/cutgen.py snap); end the 'working' loop at the result frame (mixer add_cue until_frame); one slam only, on the cut to the brand field"
+  "notes": "in a music-led cut, target >= 60% of cuts within 2 frames of an onset (cuts/cutgen.py snap; a VO-led or continuous film is scored by its mode, references/critic.md); end the 'working' loop at the result frame (mixer add_cue until_frame); one slam only, on the cut to the brand field"
  },
  "mockumentary": {
   "desc": "documentary-parody comedy: room tone under every interview, hard dialogue cuts, a record scratch or tape stop on the format break, deadpan stingers, silence before the punchline",

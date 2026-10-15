@@ -16,21 +16,21 @@
    "start": 0,
    "dur": 3,
    "tx": "transitions/sharedElement",
-   "why": "LINK: the idea becomes the plan; nothing cuts away"
+   "txReason": "LINK: the idea becomes the plan; nothing cuts away"
   },
   {
    "id": "s2",
    "start": 3,
    "dur": 3.4,
    "tx": "transitions/sketchToRender",
-   "why": "REVEAL: the plan turns into the made thing, sketch first"
+   "txReason": "REVEAL: the plan turns into the made thing, sketch first"
   },
   {
    "id": "s3",
    "start": 6.4,
    "dur": 4,
    "tx": "transitions/cut",
-   "why": "the pull-back is a camera move, not a transition"
+   "txReason": "the pull-back is a camera move, not a transition"
   },
   {
    "id": "s4",
@@ -171,5 +171,9 @@
    0.349,
    0.59619
   ]
- ]
+ ],
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": []
+ }
 }

@@ -8,7 +8,7 @@ All paths are relative to the repository root. Each module README holds the full
 cd templates/<ad|beat-edit|talking-head|multi-voice-doc|proof-film>  && node make.mjs [--set key=value ...]   # plan.json + mix.wav + index.html (+ out/tx.json windows)
 npx --yes hyperframes@0.8.142 render . -o out/<name>.mp4 --crf 23
 bash templates/_shared/render3d.sh templates/<film-scene|character-spot> scene.html <wide|tall> [crf]   # three.js: plan, GPU render, mix, mux, sheet
-node templates/_shared/cues.mjs <dir> [--set k=v]       # export the plan only (no browser)
+node templates/_shared/cues.mjs <dir> [--set k=v]       # export the plan only (no browser); exits 2 on lint.proof / lint.tx, `--allow-lint` waives (recorded in plan.lint.allowed)
 python3 templates/_shared/audio.py <plan.json> <out.wav> [--stem]   # plan -> mix (music mixer when a bed is set)
 python3 templates/_shared/sheet.py <mp4> <sheet.jpg> t1,t2,...       # contact sheet from the DELIVERED file + LUFS-I / TP
 ```
@@ -42,7 +42,7 @@ import { txWindow, snapBpm, speedRamp } from './transitions/lib/tx-core.js';    
 ```
 
 - **Python:** `cuts/cutgen.py beats --bpm 128 --pattern every_2 --tx whip --snap` gives the same windows plus sound-cue anchor frames.
-- **Kinds:** cut, smash (hard cut with the smash sound), dom (23 exact keys, plus `approx: true` for the 23 GL looks run through `transitions/lib/tx-dom-x.js` APPROX), gl (GL-only, canvas sources).
+- **Kinds:** cut, smash (hard cut with the smash sound), dom (<!--n:transitions_dom-->26<!--/n--> exact keys, plus `approx: true` for the <!--n:transitions_dom_approx-->23<!--/n--> GL looks run through `transitions/lib/tx-dom-x.js` APPROX), gl (no DOM back-end at all: today only `speedRamp`, which is timing-only; use `cuts/retime.py` or canvas sources).
 - **2026-10-14 round 3:** `sharedElement` (DOM: `[data-share="key"]` in both shots; params `bounce`, `stagger`, `shadow`; GL: `rectA` / `rectB` vec4) and `sketchToRender` (`paper`, `ink`, `line`, `threshold`, `draw`, `tone`, `dir`), both GL + DOM; `springStep(x, bounce)` and `shareProgress` in `tx-dom-x.js`.
 - **2026-10-13 additions:** `transitions/lib/registry-x.js` + `transitions/lib/tx-shaders-x.js` (24 GL transitions: ripple, swirl, crossWarp, directionalWarp, cube, doorway, kaleido, hexagonalize, windowSlice, blinds, squeeze, polkaDots, tvStatic, burnOut, dreamyZoom, linearBlur, gridFlip, bookFlip, pinwheel, radial, waterDrop, wind, luminanceMelt, overexposure); `transitions/lib/xfade.js` `xfadeFilter('transitions/xfade-<mode>', { duration, offset })` for ffmpeg-only finishes.
 
@@ -58,7 +58,7 @@ python3 cuts/retime.py ffmpeg --preset heroRamp|rampIn|rampOut|bulletTime|freeze
 python3 cuts/cutgen.py beats   --bpm 128 --fps 30 --pattern every_2 --bars 8 [--snap] [--tx whip]
 python3 cuts/cutgen.py section --bpm 120 --fps 30 --plan build_accelerate
 python3 cuts/cutgen.py split   --mode J --cut-frame 120 --fps 30
-python3 cuts/cutgen.py talking | smash | interrupts ...      # see cuts/README.md
+python3 cuts/cutgen.py talking | smash | interrupts | lint-interrupts ...      # see cuts/README.md
 python3 cuts/cutgen.py walkthrough --words words.json [--steps N]        # round 4/5 story shapes (cuts/story45.py): words.json = [{w, s, e}] in seconds
 python3 cuts/cutgen.py query-ladder --dur 45 --rungs "video:1,pdf:3" [--bpm 120] [--words words.json]
 python3 cuts/cutgen.py fidelity-ladder --bpm 99 --params 3,10,36,1024 [--dropout-s 3]
@@ -85,12 +85,12 @@ rep = m.render('out_dir')                        # master.wav -14 LUFS / -1.5 dB
 
 - **CLI:** `python3 music/mixer.py cuesheet.json --out DIR` (the JSON cue sheet format is in `music/README.md`).
 - **Ids:** `sfx/<cat>/<name>` maps to `snd.<cat>.<name>` (`sfx/manifest.json`: anchor, LUFS, centroid, `phone_safe`, `pairs_with`).
-- **Bundles:** `sfx/bundles.json` maps roles to ids for `launch_film`, `mime_spot`, `beat_edit`, `talking_head`, `short_film`, `product_ad`, `kinetic_type`, `loop_short`, `india_festive`, `voice_agent_demo` and `office_comedy`.
-- **SFX families (301):** cartoon 30, indian 26, ambience 24, transition 24, ui 23, foley 20, impact 18, drum 17, device 16, riser 16, whoosh 15, voice 12, and smaller liquid / logo / stinger / glass / wood / cloth / crowd / metal / paper / plastic / sparkle / camera / cash / elec. Ids tagged `rr:4` have four round-robin takes (seeds s..s+3).
+- **Bundles:** `sfx/bundles.json` maps roles to ids; its <!--n:sfx_bundles-->15<!--/n--> bundles are `launch_film`, `mime_spot`, `beat_edit`, `talking_head`, `short_film`, `product_ad`, `kinetic_type`, `loop_short`, `india_festive`, `voice_agent_demo`, `office_comedy`, `saas_launch`, `mockumentary`, `archive_open` and `neon_power_on`.
+- **SFX families (<!--n:sfx-->301<!--/n--> sounds in <!--n:sfx_families-->26<!--/n--> families):** the largest are cartoon, indian, ui, ambience, transition, foley, impact, drum, device, riser, whoosh and voice, then smaller liquid / logo / stinger / glass / paper / wood / cloth / crowd / elec / metal / sparkle / plastic / camera / cash (per-family counts: `sfx/README.md`). Ids tagged `rr:4` have four round-robin takes (seeds s..s+3).
 - **Electric (round 4/5):** `sfx/elec/arc` (`snd.elec.arc`, a 0.4 s zap, anchor = the crack, `rr:4` four strikes), `sfx/elec/crackle_loop` (4.0 s seamless loop on a seeded random-walk envelope, sit it under the bed with `Mix.add_cue(..., until_frame=F)`) and `sfx/elec/zap_off` (1.2 s power-down, anchor = the snap: put it on the frame the light dies). The buzz is tuned to A2 (110 Hz). Bundle `neon_power_on`. Pairs with electric / neon outline type and `blender/cableTangle` bulb-out frames.
 - **Sweeteners:** `sfx/sweeteners.json` has a row for every transition kind (incl. the formerly pending shutter, swipeUp, spin, pagePeel, pixelSort); new visual transitions fall back to their `transitions/catalog.json` sfx list.
 - **Music:**
-  - `music/compose.py` + `music/presets.py`: 27 presets (the original 10 plus indian_fusion, bhangra_hype, raga_calm, festive_dhol, lofi_jazz, synthwave, deep_house, dnb_170, ambient_pad, chiptune_8bit, acoustic_folk_pluck, documentary_marimba, orchestral_synth_epic, jazz_walk, comedy_pizzicato, corporate_bright, suspense_pulse). Indian presets use `tuning="ji"` and raga scales.
+  - `music/compose.py` + `music/presets.py`: <!--n:music_presets_py-->28<!--/n--> presets (the original 10, tech_pulse, uplift_corporate, hype_house, trap_half, cinematic_drone, playful_bounce, lofi_warm, desi_bounce, suspense_tick and anthem_build, plus indian_fusion, bhangra_hype, raga_calm, festive_dhol, lofi_jazz, synthwave, deep_house, dnb_170, ambient_pad, chiptune_8bit, acoustic_folk_pluck, documentary_marimba, orchestral_synth_epic, jazz_walk, comedy_pizzicato, corporate_bright, suspense_pulse, anthem_ramp). Indian presets use `tuning="ji"` and raga scales.
   - `music/theka.py`: `render_theka('teental'|'keherwa'|'dadra', fps, cycles, seed)`, `render_bhangra(fps, bars, seed)`; sidecars carry sam / khali frames.
   - `music/grid.py`: `snap_bpm`, `cut_map`, `tempo_ramp_map` (`music/tempo_maps.json`: 11 tempos x 24/30/60 fps + ramps).
   - `music/logo.py`: `motif_from_name(name)`; sitar variants `logo_sitar_*`.
@@ -122,7 +122,7 @@ import { chunkWords, CAPTION_STYLES } from './type/captions.js';    // karaoke i
 import { SAFE, safeRect, captionBox, lintRect } from './type/safezones.js';
 ```
 
-The 14 presets are maskRise, charRise, wordStagger, charStagger, blurIn, scaleSlam, typewriter, trackingCollapse, weightMorph, wipe, flipSplit, elasticPop, scramble and glitchSplit.
+The <!--n:type_presets-->15<!--/n--> presets are maskRise, charRise, wordStagger, charStagger, blurIn, scaleSlam, typewriter, trackingCollapse, weightMorph, wipe, flipSplit, elasticPop, scramble, glitchSplit and outlineFill.
 
 ```js
 import { renderSVG, mountGfx, bindHF, uiCues, nodeGraphCam, isoTiltCss } from './type/gfx/index.js';   // editor graphics + the ui.* kit
@@ -207,7 +207,7 @@ python3 ears/listen.py out/film.mp4 --plan out/plan.json [--mode music|vo|contin
 ## Checks
 
 ```bash
-python3 tools/check_ids.py
+python3 tools/check_ids.py --docs
 python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
 python3 -m pytest -q ears/tests
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs

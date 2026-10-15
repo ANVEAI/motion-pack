@@ -1,6 +1,6 @@
 # Launch-film playbook
 
-How to plan, build and ship a product launch film that travels. Derived from 15 launch films from 2023–2026 (founder launches, AI hardware including two failures, and software and UI launches celebrated for motion). **No names in this file:** the products, accounts and sources are named, linked and hedged in `docs/research/launch-films-2026.md`; here you get formats, counts and measured figures. Reception figures are observations of public metrics on the day they were read, not findings about why a film travelled.
+How to plan, build and ship a product launch film that travels. Derived from <!--n:launch_films-->20<!--/n--> launch films from 2023–2026 (founder launches, AI hardware including two failures, and software and UI launches celebrated for motion). **No names in this file:** the products, accounts and sources are named, linked and hedged in `docs/research/launch-films-2026.md`; here you get formats, counts and measured figures. Reception figures are observations of public metrics on the day they were read, not findings about why a film travelled.
 
 Numbers here are tunable defaults drawn from those films, not laws. RECIPE L in `SKILL.md` builds what this page plans.
 

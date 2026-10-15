@@ -1,10 +1,10 @@
 /* templates/talking-head/make.mjs: input MP4 + words.json -> jump-cut edit with captions, B-roll, punch-ins, lower third (HyperFrames).
      node make.mjs [--set input=/abs/talk.mp4 --set platform=yt.ad.15]   then   hyperframes render . -o out/talking-head.mp4
    The input's own audio rides on each kept segment (data-has-audio); the SFX mix is a separate <audio>. */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, esc, write } from '../_shared/compose.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+import { stage, runPlan, head, esc, write, mix } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared');
-execFileSync('node', [path.join(SH, 'cues.mjs'), DIR, ...process.argv.slice(2)], { stdio: 'inherit' });
+runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(DIR, 'out', 'plan.json'), 'utf8'));
 const { CONFIG } = await import('./config.mjs'); const C = structuredClone(CONFIG);
 for (let i = 2; i < process.argv.length; i++) if (process.argv[i] === '--set') { const [k, v] = process.argv[++i].split('='); let o = C; const ks = k.split('.'); for (const q of ks.slice(0, -1)) o = o[q]; o[ks.at(-1)] = v !== '' && !isNaN(+v) ? +v : v; }
@@ -12,7 +12,7 @@ const abs = (p) => (path.isAbsolute(p) ? p : path.resolve(DIR, p));
 const input = abs(C.input); if (!fs.existsSync(input)) { console.error('input MP4 not found: ' + input); process.exit(2); }
 const st = stage(DIR, { media: [...new Set(plan.broll.map((b) => abs(b.src)))], layers: (C.layers || []).length > 0 });
 fs.rmSync(path.join(DIR, 'assets', 'media', 'input.mp4'), { force: true }); fs.linkSync(input, path.join(DIR, 'assets', 'media', 'input.mp4'));
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'), '--stem'], { stdio: 'inherit' });   // a stem under the dialogue: never normalised on its own
+mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'), '--stem');   // audio.py: a failure ends the build with its own message, no stack trace   // a stem under the dialogue: never normalised on its own
 const [W, H] = plan.size, F = plan.fps, T = plan.seconds, A = C.framing.anchor, acc = C.captions.accent, f = (x) => (+x).toFixed(4);
 const css = `
 .frame { position: absolute; inset: 0; transform-origin: ${A[0] * 100}% ${A[1] * 100}%; }

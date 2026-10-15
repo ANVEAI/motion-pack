@@ -1,6 +1,6 @@
 # motion-pack / objects
 
-Reusable three.js props, set pieces and one character, extracted from the ANVE launch film kits (v9 studio, v10 set, story B) into a library with one small API, plus three new generic props. Every component is procedural code we own. None of them uses `Date` or `Math.random`, so any frame renders from `t` alone and seeking is safe.
+Reusable three.js props, set pieces and <!--n:objects_characters-->2<!--/n--> characters (a rigged 3D worker and a flat 2D mascot), extracted from the ANVE launch film kits (v9 studio, v10 set, story B) into a library with one small API, plus three new generic props. Every component is procedural code we own. None of them uses `Date` or `Math.random`, so any frame renders from `t` alone and seeking is safe.
 
 - **One import:** `import { O, REGISTRY, create } from './index.js'`.
 - **Calling a builder:** call `O.makeX(ctx, parent, params)` directly, or call `create(ctx, parent, 'objects/<name>', params)`.
@@ -47,7 +47,7 @@ Reusable three.js props, set pieces and one character, extracted from the ANVE l
 
 Character data lives in `characters/poses.js`:
 
-- **`POSES`:** 45 film poses plus 6 generic ones (`front`, `pointR`, `waveR`, `shrug`, `facepalm`, `armsCrossed`).
+- **`POSES`:** <!--n:poses_film-->41<!--/n--> film poses plus 6 generic ones (`front`, `pointR`, `waveR`, `shrug`, `facepalm`, `armsCrossed`).
 - **`EMOTIONS`:** 6 emotions (neutral, happy, sad, surprised, angry, scheming), applied with `emote(pose, emotion)`.
 - **`ACTS`:** timed acts that return pose keys at 30 fps: `doubleTake`, `shrug`, `wave`, `point`, `cheer`, `facepalm`, `slowBurn`, `slump`, `jumpScare`, `danceBob(beats)`.
 - **Helpers:** `keysOf(...)` merges keys and `blinkTimes(t0, t1, seed)` seeds the blinks.

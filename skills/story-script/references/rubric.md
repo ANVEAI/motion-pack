@@ -9,7 +9,7 @@ Score every draft before it leaves this skill. Each criterion is 0, 1 or 2. **Sh
 | 3 | **Product as the quiet turn** | it pitches, explains or performs | present but not what changes the story | it quietly causes the turn and never asks for attention |
 | 4 | **Payoff** | a generic cheer or a logo | partly resolves the stake | the stake from the opening, visibly resolved |
 | 5 | **Clarity** | the sound-off sentence cannot be written | needs sound or captions to follow | the muted test passes (3 of 5 people can say what happened) |
-| 6 | **Hook** | black, logo, title card or a name in the first second | a situation label or a still face | the stake in motion on frame 0, with a sound on frame 0 |
+| 6 | **Hook** | black, a logo bumper or a title card in the first second | a situation label or a still face | the stake in motion on frame 0, its first sound on frames 0-3 or planned 1-2 s later on the first visual event (a small name super over moving footage is fine; the hook rule: motion-pack `virality.md` §1) |
 | 7 | **Honesty** | an invented number, quote or review; a concept passed off as real | a label or source missing somewhere | every digit sourced; every illustration, demo figure and planned feature labelled in frame and in copy |
 | 8 | **Economy** | a feature parade, or every note added | one or two passengers | nothing left to cut; nothing after the button except the brand |
 | 9 | **Originality** | a replica of a reference | recognisably derivative | the craft absorbed into our own story |

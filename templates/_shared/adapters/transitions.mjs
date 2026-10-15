@@ -2,7 +2,8 @@
    HyperFrames DOM templates. It uses the module's own DOM back-end (transitions/lib/tx-dom.js applyDom: styles set from p alone).
    The template stretches the clips around each cut first (_shared/txplan.mjs span()), so both shots are on screen for the window.
    One paused GSAP proxy tween per window drives p linearly from start to end; the swap lands on ctx.cut (exact frame).
-   cut / smash: registered as deliberate hard cuts. GL-only keys are not registered here: MP logs them as TODO and hard-cuts. */
+   cut / smash: registered as deliberate hard cuts. Every kind 'dom' id is registered, including the 23 GL-only looks that run a DOM approximation (approx: true);
+   only kind 'gl' (speedRamp, timing-only) is not: MP logs it as TODO and hard-cuts. */
 import { MP } from '../pack.mjs';
 import { applyDom } from '../transitions/lib/tx-dom.js';
 import { ALIASES, resolveTx } from '../transitions/lib/ids.js';

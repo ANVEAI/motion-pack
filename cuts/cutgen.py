@@ -189,7 +189,60 @@ def interrupts(duration, fps, seed=1):
             continue
         kept.append(e)
         last[e["level"]] = e["time_s"]
-    return {"duration_s": duration, "fps": fps, "seed": seed, "events": kept, "menu": cfg["levels"]}
+    kept = _relieve_fatigue(kept, duration)         # the schedule never fails its own lint
+    return {"duration_s": duration, "fps": fps, "seed": seed, "events": kept, "menu": cfg["levels"], "lint": lint_interrupts(kept, duration)}
+
+
+def _window_totals(events, duration, w):
+    """summed levels (L1 = 1, L2 = 2, L3 = 3) in each FULL window of w seconds from 0; a trailing partial window is not judged"""
+    tot = [0] * int(duration // w + 1e-9)
+    for e in events:
+        k = int(e["time_s"] // w)
+        if k < len(tot):
+            tot[k] += e["level"]
+    return tot
+
+
+def _fatigue_run(totals, k):
+    """index of the last window of the first run of k consecutive windows that each rise over the one before, or None"""
+    run = 1
+    for i in range(1, len(totals)):
+        run = run + 1 if totals[i] > totals[i - 1] else 1
+        if run >= k:
+            return i
+    return None
+
+
+def _relieve_fatigue(events, duration):
+    """drop the lowest-level event (the latest of them) from the last window of a fatigue run until none is left: the run stops rising"""
+    cfg, ev = PATTERNS["interrupts"], list(events)
+    w, k = cfg["fatigue_window_s"], cfg["fatigue_rising_windows"]
+    while True:
+        i = _fatigue_run(_window_totals(ev, duration, w), k)
+        if i is None:
+            return ev
+        inside = [e for e in ev if int(e["time_s"] // w) == i]
+        ev.remove(min(inside, key=lambda e: (e["level"], -e["time_s"])))
+
+
+def lint_interrupts(events, duration=None):
+    """the interrupt ladder's lint (references/virality.md 2). `events` is [{level, time_s}] (the `events` of interrupts()). Returns {"fail": [messages], "windows": per-window totals};
+    exit code 1 from `cutgen.py lint-interrupts` when `fail` is not empty. Two checks, both tunable in patterns.json `interrupts`:
+      major_pair  two level-3 events closer than major_pair_min_gap_s (1.5 s)
+      fatigue     fatigue_rising_windows (4) consecutive full windows of fatigue_window_s (5 s) whose summed levels each rise over the one before (the cadence only ever escalates)"""
+    cfg, ev = PATTERNS["interrupts"], sorted(events, key=lambda e: e["time_s"])
+    fail = []
+    maj = [e["time_s"] for e in ev if e["level"] == 3]
+    for a, b in zip(maj, maj[1:]):
+        if b - a < cfg["major_pair_min_gap_s"] - 1e-9:
+            fail.append("major_pair: two level-3 interrupts %.2f s apart (at %.2f s and %.2f s), under %.1f s" % (b - a, a, b, cfg["major_pair_min_gap_s"]))
+    dur = duration if duration is not None else (ev[-1]["time_s"] if ev else 0.0)
+    tot = _window_totals(ev, dur, cfg["fatigue_window_s"])
+    i = _fatigue_run(tot, cfg["fatigue_rising_windows"])
+    if i is not None:
+        k, w = cfg["fatigue_rising_windows"], cfg["fatigue_window_s"]
+        fail.append("fatigue: %d windows of %.1f s in a row rise in intensity (%s, from %.1f s to %.1f s): ease off, or break the climb with a quiet window" % (k, w, " < ".join(str(x) for x in tot[i - k + 1:i + 1]), (i - k + 1) * w, (i + 1) * w))
+    return {"fail": fail, "windows": tot}
 
 
 # ---------------------------------------------------------------------------------------------------------- story shapes (2026-10-14)
@@ -501,6 +554,8 @@ def main(argv=None):
     t.add_argument("--end-frame", type=int); t.add_argument("--claims", default="")
     m = sub.add_parser("smash"); m.add_argument("--cut-frame", type=int, required=True); m.add_argument("--fps", type=float, default=30); m.add_argument("--sr", type=int, default=48000)
     i = sub.add_parser("interrupts"); i.add_argument("--duration", type=float, required=True); i.add_argument("--fps", type=float, default=30); i.add_argument("--seed", type=int, default=1)
+    li = sub.add_parser("lint-interrupts", help="lint an interrupt schedule: two level-3 within 1.5 s, or 4 rising windows (fatigue); exit 1 on a failure")
+    li.add_argument("events", help="JSON: the output of `interrupts`, or a list of {level, time_s}"); li.add_argument("--duration", type=float)
     io = sub.add_parser("interrupt-open"); io.add_argument("--fps", type=float, default=30); io.add_argument("--setup", type=float); io.add_argument("--freeze-ms", type=float)
     v = sub.add_parser("verbs"); v.add_argument("--verbs", required=True); v.add_argument("--bpm", type=float, required=True); v.add_argument("--fps", type=float, default=30)
     v.add_argument("--start-beat", type=float, default=0.0); v.add_argument("--snap", action="store_true")
@@ -538,6 +593,10 @@ def main(argv=None):
         r = smash(a.cut_frame, a.fps, a.sr)
     elif a.cmd == "interrupts":
         r = interrupts(a.duration, a.fps, a.seed)
+    elif a.cmd == "lint-interrupts":
+        with open(a.events) as f:
+            doc = json.load(f)
+        r = lint_interrupts(doc["events"] if isinstance(doc, dict) else doc, a.duration if a.duration is not None else (doc.get("duration_s") if isinstance(doc, dict) else None))
     elif a.cmd == "interrupt-open":
         r = interrupt_open(a.fps, a.setup, a.freeze_ms)
     elif a.cmd == "verbs":
@@ -565,6 +624,8 @@ def main(argv=None):
         r = snap_cuts_to_onsets(ints(a.cuts), ons, a.fps, a.tol)
     json.dump(r, sys.stdout, indent=1)
     sys.stdout.write("\n")
+    if a.cmd == "lint-interrupts" and r["fail"]:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

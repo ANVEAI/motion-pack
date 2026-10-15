@@ -57,7 +57,7 @@ Six Agent Skills that take a video from a one-line brief to a published post: th
 
 **One skill by hand:** copy its folder (for example `story-script/`) into `~/.claude/skills/` for every project, or into a project's `.claude/skills/`. In the repository the folders live under `skills/`. Any agent that reads Agent Skills (a folder with a `SKILL.md`) can use them.
 
-**Requirements by skill:** story-script and frame-design need only Python 3 for their checkers; social-video's upload copier needs ffmpeg with libx264; motion-pack and spec-to-loop need Node, Chrome with a hardware GPU, ffmpeg and Python with numpy, scipy and Pillow (each `SKILL.md` lists its own `compatibility`).
+**Requirements by skill:** story-script and frame-design need only Python 3 for their checkers; social-video's upload copier needs ffmpeg with libx264; motion-pack needs Node 22+, Chrome with a hardware GPU, ffmpeg and Python 3.11 in a venv with the pack's pinned `requirements.txt` (numpy, scipy, numba, soundfile, Pillow; 3.13 and newer cannot install the pins), plus `puppeteer-core` for its three.js templates; spec-to-loop needs Node, Chrome with a hardware GPU, ffmpeg and Python with numpy, scipy and Pillow (each `SKILL.md` lists its own `compatibility`).
 
 ## House rules every skill follows
 

@@ -1,5 +1,6 @@
 # Python side of motion-pack (sfx, music, cuts, catalog, previews). Tested with Python 3.11 and these exact versions.
-# Newer versions work, but numpy / scipy / numba updates can change the last bits of synthesised audio, so the
+# Python 3.10 to 3.12 install these pins as binary wheels (checked with pip's resolver); 3.13 and newer cannot, so
+# make the venv with python3.11 (`python3.11 -m venv .venv`). Newer package versions work, but numpy / scipy / numba updates can change the last bits of synthesised audio, so the
 # SHA-256 values in sfx/manifest.json are only guaranteed with these pins.
 numpy==1.26.4
 scipy==1.11.4

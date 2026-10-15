@@ -37,13 +37,15 @@ This folder is the unedited output of a real run; only local paths were made gen
   - the exact repeatability procedure;
   - the GSAP settings.
 
-**Reproduce:** copy `template/` into `templates/brewly/` in your clone, then:
+**Reproduce** (from the root of a clone, after the Quickstart's step 1 has built the sound libraries; templates find the pack two folders up, so the copy has to sit inside `templates/`):
 
 ```bash
-node make.mjs
+mkdir templates/brewly && cp examples/brewly-teaser/template/* templates/brewly/
+cd templates/brewly
+node make.mjs                      # plan, SFX + music mix, index.html; prints "todo: none" when every id resolves
 npx --yes hyperframes@0.8.142 render . -o out/brewly-9x16.mp4 --crf 23
 ```
 
-For the wide version, run `node make.mjs --set aspect=16:9 --set platform=x.video`.
+For the wide version, run `node make.mjs --set aspect=16:9 --set platform=x.video` instead. CI runs the `make.mjs` steps on every push (`tools/tests/test_worked_example.py`), so this recipe cannot rot unnoticed. The render itself needs Chrome (and a GPU for the best frames) and is not run in CI. Do not expect a re-render to match the committed MP4s byte for byte; see "What is and is not deterministic" in the top-level `README.md`.
 
 Brewly is a fictional brand made for this demo: no users, no numbers, no reviews, no real screens. The film labels it as fictional, and so does the post.

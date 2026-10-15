@@ -14,9 +14,9 @@ bundle). They are tunable heuristics, not platform facts.
 | `split` | J (audio leads 400 ms), L (audio lingers 600 ms), film_J (12-24 frames), broll_lead (picture leads VO by 150 ms) | jcut, lcut, dialogue, film, talking-head |
 | `talking_head` | autocut numbers, reframe_alternate 1.0/1.15/1.0/1.25 on the eyes, punch_in 1.12 max 1 per 4 s, slow_push, beat_hold, cut_tick | talking-head, retention, jump-cut |
 | `smash` | 200 ms pre-silence, 12 dB / 0.4 luma contrast minimums, impact at cut + 1 frame | smash, comedy, mime |
-| `interrupts` | minor 2.5 s / medium 5 s / major 9 s, 25% jitter, majors >= 6 s apart | retention, short-form |
+| `interrupts` | minor 2.5 s / medium 5 s / major 9 s, 25% jitter, majors >= 6 s apart; lint: two L3s within 1.5 s, 4 rising 5 s windows | retention, short-form |
 | `story` | problemPivot (round 6, `story6.py`: a continuous typographic film: a typed sentence with an accent punchline, a 3-beat problem ladder, a 1.5-2 s audio gap into the pivot frame, a 3-beat value ladder, a typed command CTA, a quiet hold >= 2 s), interruptOpen (cliche setup, stop sound + 300 ms freeze, new format), verbLadder (one verb per beat, the last holds 2 beats), mockumentaryReaction (0.3-0.5 s reaction inserts, silence before and a 1.2 s deadpan hold after the payoff line), sentenceLed (word-by-word build at <= 3.5 words/s, hold, result on the next downbeat); round 3: lateDrop (problem on UI ticks + texture for 10-60% of the runtime, optional 0.5-1 s speech gap, the beat drops on the turn line), preStingSilence (lockup, bed out, 1-3 s near-silence, one final sting), voiceHandoff (presenter starts the line, the consented synthetic voice finishes it; caption tag flips, honesty label on every synthetic frame), pipelineReveal (prompt -> plan -> passes -> teardown -> file chip -> product in the world -> title, breakdown before the world shot); round 4/5: diagramWalkthrough (the diagram advances only in the speech gaps), queryLadder (one UI, 4-6 rungs of harder input, pull back to where it runs), fidelityLadder (same output at rising quality, one step per bar, dropout, new dimension), voicesColdOpen (4-6 faces mid-sentence with J audio, the lead's line, a name super), commandRapidFire (a response on the frame after each command's last word), anaphoraCut (a cut on every repeat of a word), trailerArc (dialogue, title cards, build, wall, one question over near-silence, crescendo, title, stop, date, sting), styleLadder (one composition, the look swaps on hits) | story, hook, comedy, launch, end, sound, documentary, explainer, trailer |
-| `onset_snap` | cuts within +-2 frames of a sound onset; target share 60% (studied films: 45-80%) | sync, lint |
+| `onset_snap` | cuts within +-2 frames of a sound onset; target share 60% for music-led, cut-driven pieces only (studied films: 45-80%; VO-led and continuous films: `critic.md`) | sync, lint |
 | `pace` | ASL and shots-per-30 s per format (hype ad, beat edit, talking head, mime-style spot, short film) | lint |
 
 ## `cutgen.py`
@@ -28,6 +28,7 @@ python3 cutgen.py split --mode J --cut-frame 120 --fps 30 [--ms 400] [--sr 48000
 python3 cutgen.py talking --cuts 0,72,150,260 --fps 30 --end-frame 330 --claims 150
 python3 cutgen.py smash --cut-frame 120 --fps 30
 python3 cutgen.py interrupts --duration 30 --fps 30 --seed 1
+python3 cutgen.py lint-interrupts schedule.json                      # exit 1: two L3s within 1.5 s, or 4 rising windows (fatigue)
 python3 cutgen.py interrupt-open --fps 30 [--setup 3.0] [--freeze-ms 300]
 python3 cutgen.py verbs --verbs "Build it all.,Expand.,Automate.,Multiply." --bpm 120 --fps 30 [--snap]
 python3 cutgen.py mockumentary --lines 0:75,90:160,200:260 --fps 30 [--payoff -1]
@@ -61,7 +62,8 @@ python3 cutgen.py style-ladder --looks live,look.bw-neutral,look.pastel,look.duo
 - **`talking`** assigns the alternating reframe ladder per jump-cut segment, schedules punch-ins on claim frames while
   enforcing the 4 s minimum gap, adds a slow push to static shots longer than 4 s, and lists cut-tick cues.
 - **`smash`** gives the pre-silence start sample, the ramp length and the impact anchor (cut + 1 frame).
-- **`interrupts`** produces a seeded, jittered ladder (a higher level absorbs a lower one within 0.6 s).
+- **`interrupts`** produces a seeded, jittered ladder (a higher level absorbs a lower one within 0.6 s, majors stay `major_min_gap_s` apart) and prints its own `lint`. A fatigue relief pass drops the lowest event from the last window of any climb that would fail it (76 of 2,793 sampled schedules, durations 6-90 s, seeds 1-399, needed it).
+- **`lint-interrupts schedule.json [--duration S]`** lints any schedule (the `interrupts` output, or a list of `{level, time_s}`) and exits 1 on a failure: two level-3 events closer than `major_pair_min_gap_s` (1.5 s), or `fatigue_rising_windows` (4) consecutive full windows of `fatigue_window_s` (5 s) whose summed levels (L1 = 1, L2 = 2, L3 = 3) each rise over the one before. All four numbers are in `patterns.json` `interrupts`; they are house heuristics, not platform facts.
 
 - **Story shapes** (`interrupt-open`, `verbs`, `mockumentary`, `sentence`) return contiguous shots and sound cues for the
   storyboard shapes in `../skills/motion-pack/references/success-patterns.md`. Cue rows carry `visual_frame` (pass it to
@@ -89,7 +91,7 @@ python3 cutgen.py style-ladder --looks live,look.bw-neutral,look.pastel,look.duo
   - `trailer` (trailerArc): sections 30 / 25 / 20 / 5 / 10 / 10 % (dialogue, build, wall, question, crescendo, end) scaled to `--dur`, the question clamped to 2-4 s, dialogue lines with 10-frame dips to black, two title-card slots (small line over large line), a wall cut list (1 cut/s, or every 2 beats with `--bpm`), the end split title / hard stop / date / sting, and bed automation that puts the question **32 dB under the wall**.
   - `style-ladder` (styleLadder): a plan only. Look k swaps in on beat `start + k * beats_per_style` (doubled until a style holds 0.5 s, the last holds 2 beats); `look.*` and `grade.*` ids are checked against `layers/manifest.json`, free names such as `live` pass. The renderer holds one composition and swaps its grade layer on the planned frames.
   - **Bed automation** (`bed_automation`: [{frame, gain_db}], linear in dB between breakpoints, held outside): `walkthrough`, `fidelity-ladder` and `trailer` emit it; `music/mixer.py` reads it from the cue sheet (`"bed": {"automation": [...]}`) and `templates/_shared/audio.py` passes `plan.bedAutomation` through. It acts on the bed before the duck. A VO-led mix can also set `"vo": {"duck_db": 12}` (plan `duckDb`); the default is still 9.
-- **`snap`** moves each cut to the nearest sound onset within +-2 frames and reports `share_snapped` against the 60% target.
+- **`snap`** moves each cut to the nearest sound onset within +-2 frames and reports `share_snapped` against the 60% target (the target of a music-led, cut-driven piece; a VO-led film keeps its cuts out of words instead).
   Onsets come from a list or from a `tools/refstudy.py` `study.json` (`audio.onsets`, `audio.beats` or `audio.hits_top10pct`);
   a snap that would collide with or cross a neighbouring cut is refused. Library use: `cutgen.snap_cuts_to_onsets(cuts, onsets_s, fps)`.
 

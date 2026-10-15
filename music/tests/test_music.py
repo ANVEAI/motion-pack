@@ -88,6 +88,17 @@ def test_cue_lint():
     assert any("R4" in i for i in iss) and any("R2" in i for i in iss) and any("R10" in i for i in iss)
 
 
+def test_r10_accepts_a_planned_quiet_open_and_still_flags_the_rest():
+    late = [{"id": "snd.hit.soft", "frame": 40, "tier": 2}]
+    assert any("R10" in i for i in mixer.lint_cues(late, 30)), "no plan: an unplanned late first sound is still flagged"
+    plan = [{"t": [0, 1.5], "kind": "open", "why": "sound enters on the first visual event"}]
+    assert not any("R10" in i for i in mixer.lint_cues(late, 30, quiet=plan)), "frame 40 = 1.33 s, inside the planned open"
+    assert any("R10" in i and "after the planned quiet open" in i for i in mixer.lint_cues([{"id": "snd.hit.soft", "frame": 70, "tier": 2}], 30, quiet=plan)), "2.33 s is past the plan"
+    hold = [{"t": [30.0, 36.0], "kind": "hold", "why": "end card"}]
+    assert any("R10" in i for i in mixer.lint_cues(late, 30, quiet=hold)), "only a quiet OPEN at frame 0 waives it"
+    assert not any("R10" in i for i in mixer.lint_cues([{"id": "snd.hit.soft", "frame": 1, "tier": 2}], 30)), "an event on frames 0-3 needs no plan"
+
+
 if __name__ == "__main__":
     n = 0
     for k, v in sorted(globals().items()):

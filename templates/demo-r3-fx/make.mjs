@@ -14,7 +14,7 @@
    Rule kept for the magic move: the DOM clones are snapshots taken when the window is entered, so each shared element is held still inside the
    window (the mascots draw at min(t, 3.0) and max(t, 3.8)) and any seek order gives the same frame. */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, write } from '../_shared/compose.mjs';
+import { stage, head, write, mix, lintPlan, lintStop } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..'), OUT = path.join(DIR, 'out');
 const W = 1920, H = 1080, F = 30, T = 15, FORCE = process.argv.includes('--plates'); fs.mkdirSync(OUT, { recursive: true });
 const R = path.join(PACK, 'tools/render.mjs');
@@ -31,9 +31,9 @@ const quadPx = JSON.parse(fs.readFileSync(quadF, 'utf8')), inset = 0.012, cx = q
 const QUAD = quadPx.map(([x, y]) => [(x + (cx - x) * inset) / W, (y + (cy - y) * inset) / H].map((v) => +v.toFixed(5)));   // a hair inside the bezel
 
 /* 2. plan: the shots + the sound cue sheet (anchor on frame + 1; audio.py hands it to music/mixer.py, which solves the levels over the bed) */
-const shots = [{ id: 's1', start: 0, dur: 3.0, tx: 'transitions/sharedElement', why: 'LINK: the idea becomes the plan; nothing cuts away' },
-  { id: 's2', start: 3.0, dur: 3.4, tx: 'transitions/sketchToRender', why: 'REVEAL: the plan turns into the made thing, sketch first' },
-  { id: 's3', start: 6.4, dur: 4.0, tx: 'transitions/cut', why: 'the pull-back is a camera move, not a transition' },
+const shots = [{ id: 's1', start: 0, dur: 3.0, tx: 'transitions/sharedElement', txReason: 'LINK: the idea becomes the plan; nothing cuts away' },
+  { id: 's2', start: 3.0, dur: 3.4, tx: 'transitions/sketchToRender', txReason: 'REVEAL: the plan turns into the made thing, sketch first' },
+  { id: 's3', start: 6.4, dur: 4.0, tx: 'transitions/cut', txReason: 'the pull-back is a camera move, not a transition' },
   { id: 's4', start: 10.4, dur: 4.6, hold: true }];
 const cues = [
   { id: 'sfx/ui/pop', t: 0, why: 'frame 0: the mascot pops in' }, { id: 'sfx/voice/chirp', t: 0.4, why: 'the hop' },
@@ -48,13 +48,15 @@ const cues = [
 const plan = { template: 'demo-r3-fx', fps: F, seconds: T, size: [W, H], music: 'music/bed_playful_bounce_loop8', musicGainDb: -3, ceilingDb: -2.2, fadeInMs: 40, shots, cues: cues.sort((a, b) => a.t - b.t), claims: [],
   parts: ['background.meshGradient', 'layers.dotCondense', 'objects/mascot2d', 'transitions/sharedElement', 'transitions/sketchToRender', 'objects/logo-extrude', 'overlay.hologramBeam', 'cam2d.pullbackToScreen', 'layout.cornerPin', 'look.gradeIn'],
   screenQuad: QUAD };
+const fails = lintPlan(plan);   // lint.proof + lint.tx: the gate cues.mjs runs for the genre templates (compose.mjs)
 fs.writeFileSync(path.join(OUT, 'plan.json'), JSON.stringify(plan, null, 1));
+lintStop(fails, 'demo-r3-fx');
 
 /* 3. stage (fonts, layers, type + gfx, transitions lib, plates) + the camera and mascot modules the comp imports, then the mix */
 const st = stage(DIR, { media: [logo, env], layers: true });
 const lnk = (src, dst) => { const d = path.join(DIR, 'assets', 'mp', dst); fs.mkdirSync(path.dirname(d), { recursive: true }); fs.rmSync(d, { force: true }); fs.linkSync(path.join(PACK, src), d); };
 lnk('camera/cam2d.js', 'camera/cam2d.js'); lnk('camera/ease.js', 'camera/ease.js'); lnk('objects/characters/mascot2d.js', 'objects/mascot2d.js');
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(OUT, 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(OUT, 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 
 /* 4. the composition: one director draw(t) on every hf-seek (scenes are untimed wrappers inside one clip; the logo clip is framework-owned media) */
 const css = `

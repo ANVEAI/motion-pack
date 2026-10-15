@@ -228,5 +228,9 @@
   "objects/icon-orbit",
   "objects/clay",
   "type/maskRise"
- ]
+ ],
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": []
+ }
 }

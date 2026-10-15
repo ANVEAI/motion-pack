@@ -79,6 +79,49 @@ class T(unittest.TestCase):
         maj = [e["time_s"] for e in ev if e["level"] == 3]
         self.assertTrue(all(y - x >= 6.0 for x, y in zip(maj, maj[1:])))
 
+    # ---- the interrupt lint (virality.md 2 documented it; it did not exist until 2026-10-15)
+    def test_interrupt_lint_flags_two_majors_within_1_5_s(self):
+        ev = lambda *t: [{"level": 3, "time_s": x} for x in t]
+        bad = cutgen.lint_interrupts(ev(4.0, 5.2), 30)["fail"]
+        self.assertEqual(len(bad), 1)
+        self.assertIn("major_pair", bad[0])
+        self.assertIn("1.20 s apart", bad[0])
+        self.assertEqual(cutgen.lint_interrupts(ev(4.0, 5.5), 30)["fail"], [])      # exactly the minimum gap is fine
+
+    def test_interrupt_lint_flags_four_rising_windows_only(self):
+        def sched(*per_window, w=5.0):   # n level-1 events (1 point each) in window i, spread 0.5 s apart
+            return [{"level": 1, "time_s": i * w + 0.5 * (k + 1)} for i, n in enumerate(per_window) for k in range(n)]
+        three = cutgen.lint_interrupts(sched(1, 2, 3, 3), 20)                # totals 1 < 2 < 3, then level: three rises are not four windows in a row
+        self.assertEqual((three["windows"], three["fail"]), ([1, 2, 3, 3], []))
+        four = cutgen.lint_interrupts(sched(1, 2, 3, 4), 20)                 # 1 < 2 < 3 < 4: four windows that each rise over the one before
+        self.assertEqual(four["windows"], [1, 2, 3, 4])
+        self.assertEqual(len(four["fail"]), 1)
+        self.assertIn("fatigue", four["fail"][0])
+        self.assertIn("1 < 2 < 3 < 4", four["fail"][0])
+        self.assertEqual(cutgen.lint_interrupts(sched(1, 2, 3, 1, 2, 3), 30)["fail"], [])   # it falls back in between: the climb restarts
+        self.assertEqual(cutgen.lint_interrupts(sched(1, 2, 3, 4), 18)["fail"], [], "the fourth window is only 3 s long at 18 s: a trailing partial window is not judged")
+
+    def test_generated_interrupts_never_fail_their_own_lint(self):
+        # before the relief pass about 3% of seeds produced four rising windows
+        for dur in (6, 15, 20, 30, 45, 60, 90):
+            for seed in range(1, 150):
+                r = cutgen.interrupts(dur, 30, seed)
+                self.assertEqual(r["lint"]["fail"], [], (dur, seed))
+                self.assertEqual(r["lint"], cutgen.lint_interrupts(r["events"], dur))
+
+    def test_lint_interrupts_cli_exit_codes(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            good, badf = os.path.join(td, "good.json"), os.path.join(td, "bad.json")
+            json.dump(cutgen.interrupts(30, 30, 3), open(good, "w"))
+            json.dump([{"level": 3, "time_s": 2.0}, {"level": 3, "time_s": 2.5}], open(badf, "w"))
+            ok = subprocess.run([sys.executable, cutgen.__file__, "lint-interrupts", good], capture_output=True, text=True)
+            self.assertEqual(ok.returncode, 0, ok.stderr)
+            self.assertEqual(json.loads(ok.stdout)["fail"], [])
+            no = subprocess.run([sys.executable, cutgen.__file__, "lint-interrupts", badf, "--duration", "10"], capture_output=True, text=True)
+            self.assertEqual(no.returncode, 1)
+            self.assertIn("major_pair", json.loads(no.stdout)["fail"][0])
+
     # ---- story shapes + onset snapping (2026-10-14)
     def test_story_patterns_present(self):
         for k in ("interruptOpen", "verbLadder", "mockumentaryReaction", "sentenceLed"):

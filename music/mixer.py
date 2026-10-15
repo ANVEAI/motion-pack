@@ -319,6 +319,7 @@ class Mix:
                 trim = lr + tgt - lc
                 src = "vo" if c["over_vo_db"] is not None else "bed"
             c["trim_db"] = float(np.clip(trim, -30, 24))
+            c["trim_wanted_db"] = float(trim) if abs(trim - c["trim_db"]) > 1e-6 else None   # the solver's range is -30..+24 dB: a request outside it is reported, never silently met
             info.append((c, lc, lr, src))
         return info
 
@@ -439,13 +440,18 @@ class Mix:
                 lpr = -0.691 + 10 * np.log10(np.sum(np.mean(rp ** 2, axis=0)) + 1e-20)
                 row["phone_over_bed_db"] = round(lpc - lpr, 2)
                 row["phone_ok"] = bool(lpc - lpr >= 2.0 - 1.0)
+            if c.get("trim_wanted_db") is not None:
+                row["trim_clipped_from_db"] = round(c["trim_wanted_db"], 2)
+                r.setdefault("warnings", []).append("%s@%d: the level asked for needs a %.1f dB trim; the mixer stops at %.0f dB (measured over the bed: %s dB)"
+                                                     % (c["id"], c["frame"], c["trim_wanted_db"], c["trim_db"], row.get("measured_over_bed_db")))
             r["cues"].append(row)
         return r
 
 
 # ---------------------------------------------------------------------------------------------------------------- lint
-def lint_cues(cues, fps=30, short_form=True, voice_first_frame=None, lib=None):
-    """house-rule linter (docs/research/sound.md section 3). cues: list of dicts with id, frame, tier. returns list of issue strings"""
+def lint_cues(cues, fps=30, short_form=True, voice_first_frame=None, lib=None, quiet=None):
+    """house-rule linter (docs/research/sound.md section 3). cues: list of dicts with id, frame, tier. returns list of issue strings.
+    quiet: the plan's audio.quiet [{t: [a, b], kind, why}]; a planned quiet OPEN (kind open, starting at frame 0) waives R10 when the first cue lands by its end + 0.25 s, the same rule ears applies"""
     issues = []
     cs = sorted(cues, key=lambda c: c["frame"])
     t1 = [c for c in cs if c.get("tier") == 1]
@@ -473,7 +479,11 @@ def lint_cues(cues, fps=30, short_form=True, voice_first_frame=None, lib=None):
                 if not partner:
                     issues.append("R12 %s@%d loses %.1f dB on a phone speaker: pair it with a mid-range cue within 3 frames" % (c["id"], c["frame"], e["phone_drop_db"]))
     if short_form and cs and cs[0]["frame"] > 2 and voice_first_frame is None:
-        issues.append("R10 short-form needs an audible event on frames 0-3 (first cue at frame %d)" % cs[0]["frame"])
+        q = next((x for x in (quiet or []) if x.get("kind", "open") == "open" and x["t"][0] <= 1.0 / fps + 1e-6), None)   # a planned quiet open: the sound enters 1-2 s after a moving frame 0
+        if q is None:
+            issues.append("R10 short-form needs an audible event on frames 0-3 (first cue at frame %d); if the quiet open is intended, plan it: audio.quiet [{\"t\": [0, %.1f], \"kind\": \"open\", \"why\": \"...\"}]" % (cs[0]["frame"], min(2.0, cs[0]["frame"] / fps)))
+        elif cs[0]["frame"] / fps > q["t"][1] + 0.25 + 1e-9:
+            issues.append("R10 the first cue (frame %d, %.2f s) comes after the planned quiet open (0-%.1f s): the open must end on the first meaningful event" % (cs[0]["frame"], cs[0]["frame"] / fps, q["t"][1]))
     return issues
 
 
@@ -510,5 +520,7 @@ if __name__ == "__main__":
     rep = mx.render(out, lufs=ms_.get("lufs", -14.0), ceiling_db=ms_.get("ceiling_db", -1.5))
     rep.pop("_audio", None)
     print(json.dumps({k: v for k, v in rep.items() if k != "cues"}, indent=1))
-    for issue in lint_cues([{"id": c["id"], "frame": c["frame"], "tier": c["tier"], "over_bed_db": c["over_bed_db"]} for c in mx.cues], fps=sheet.get("fps", 30), lib=mx.lib):
+    for w in rep.get("warnings", []):
+        print("WARN", w)
+    for issue in lint_cues([{"id": c["id"], "frame": c["frame"], "tier": c["tier"], "over_bed_db": c["over_bed_db"]} for c in mx.cues], fps=sheet.get("fps", 30), lib=mx.lib, quiet=sheet.get("quiet")):
         print("LINT", issue)

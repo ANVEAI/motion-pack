@@ -305,6 +305,8 @@
   }
  ],
  "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
   "cutsOnBeat": true,
   "partsUsed": [
    "chart.scatterFrontier",
@@ -312,7 +314,6 @@
    "ui.dataTable",
    "caption.sceneBubble",
    "ui.costTicker"
-  ],
-  "everyClaimHasSource": true
+  ]
  }
 }

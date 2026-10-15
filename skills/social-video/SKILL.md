@@ -123,7 +123,7 @@ Read the numbers at 24 hours and 72 hours (and 7 days for long-form), never at o
 | Clicks on the UTM links | your analytics, by `utm_content` | whether the video moved anyone to act |
 
 - **Volume without reach does nothing.** An account that publishes hundreds of automated videos into silence can sit at single-digit views per post; more posts will not fix it. Check views per post on the last ten before adding volume, and fix the hook and the format first.
-- **Fix in this order:** the first two seconds (stake on frame 0, a sound on frame 0, no title card), then the format and length, then the topic, then covers and copy. Thumbnails and hashtags are not the lever for Shorts and Reels feeds.
+- **Fix in this order:** the first two seconds (the stake in motion on frame 0, the first sound on frames 0-3 or planned 1-2 s later, no title card; the rule is in motion-pack `references/virality.md` §1), then the format and length, then the topic, then covers and copy. Thumbnails and hashtags are not the lever for Shorts and Reels feeds.
 - **One change per test**, logged before and after; keep the body identical when you test hooks (story-script writes three).
 - **Never repost a flop as new**; re-cut its opening instead.
 - **People behind the first hour** beat any scheduling trick: reply to every comment, and share it personally with a few people who would care (one personal message each, no request to like or share).

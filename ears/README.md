@@ -26,11 +26,17 @@ numpy and scipy only (plus ffmpeg to decode). It reuses the pack's one loudness 
 
 ```bash
 python3 ears/listen.py out/film-9x16.mp4 \
-    --plan templates/<your-video>/out/plan.json \     # cuts from the shots, cue anchors from the cues
-    --transcript refs/<name>/study.json \             # or a Whisper JSON, or the talking-head words.json
-    --ref refs/a/study.json refs/b/study.json \       # tools/refstudy.py studies to compare against
+    --plan templates/<your-video>/out/plan.json \
+    --transcript refs/<name>/study.json \
+    --ref refs/a/study.json refs/b/study.json \
     --json reviews/r1/ears.json --md reviews/r1/ears.md
 ```
+
+Replace the `<placeholders>`; every flag except the video is optional.
+- `--plan`: the cuts come from the plan's shots and the cue anchors from its cues.
+- `--transcript`: a refstudy `study.json`, a Whisper JSON, or the talking-head `words.json`.
+- `--ref`: one or more `tools/refstudy.py` studies to compare against.
+- `--json` and `--md`: where the report goes.
 
 Other flags:
 - `--mode auto|music|vo|continuous` sets what the edit is scored on (below); `--events study.json` gives the motion events for `continuous` (a refstudy `study.json`, or a JSON list of seconds, `{t}` or `{frame}`); `--role proof|explainer|hype|trailer|vo_doc|brand_launch` names the bed's role for the bass-share note.

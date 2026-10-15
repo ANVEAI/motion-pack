@@ -3,7 +3,8 @@
    applyDom(key, p, {a, b, root, params}) sets every style it owns from p alone (seek-safe, no tweens, no state
    besides one lazily created overlay per root). GSAP is optional: drive it from hf-seek or a proxy tween (tx-hf.js).
    a / b: two full-frame, absolutely positioned layers (NOT the .clip element itself: put them inside a clip).
-   Covers 13 of the 23 transitions; GL-only effects (glitch, ink, film burn, ...) need tx-gl.js on canvas sources. */
+   Covers all 49 visual transitions: 26 real back-ends (13 here, 13 in tx-dom-x.js DOM_X) and a DOM approximation (APPROX) for each of the 23 GL-only looks (glitch, ink, film burn, ...);
+   the exact GL look needs tx-gl.js on canvas sources. speedRamp is timing-only and has no picture effect. */
 import { REGISTRY } from './registry.js';
 import { ease, resolveParams, matchPose, poseToCss, bell } from './tx-core.js';
 import { DOM_X, APPROX, APPROX_KEYS } from './tx-dom-x.js';

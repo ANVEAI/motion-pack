@@ -1,7 +1,7 @@
 /* TEMPLATE ad: hook -> problem -> product -> proof -> CTA (docs/research/edit.md 4, ABCD-mapped), 15 s or 30 s, HyperFrames.
    Edit the CONFIG block only; `node make.mjs [--set length=30]` writes index.html + the SFX mix; then `hyperframes render`.
    DEMO CONTENT: "Orbit" is a FICTIONAL placeholder brand, and every line is placeholder copy. Proof lines carry no numbers on purpose:
-   any claim with a digit must carry `source` or lint.proof fails the build (no fabricated stats). */
+   any claim with a digit must carry `source` or lint.proof fails the build (node make.mjs exits 2; `--allow-lint` waives it and the plan records the waiver). */
 import { sequence, PLATFORMS } from '../_shared/plan.mjs';
 
 /* ============================== CONFIG (edit me) ============================== */
@@ -16,7 +16,7 @@ export const CONFIG = {
   proof: [ { text: 'Works with the tools you already use.' }, { text: 'Your files stay on your desk.' }, { text: 'Set up in one *afternoon*.' }, { text: 'Quiet. No new tabs.' } ],   // a digit needs { source }
   proofCount: { 15: 2, 30: 4 },    // how many proof lines each length uses (>= 1.5 s per line to read)
   plateAsl: 2.2,                   // plate shots longer than this are split into coverage cuts (new frames of the same plate)
-  transitions: {                   // boundary between sections: id + the REASON (lint refuses unmotivated transitions)
+  transitions: {                   // boundary between sections: id + the REASON (lint refuses unmotivated transitions: make.mjs exits 2)
     'hook>problem': ['transitions/smash', 'EMOTION: payoff -> pain'],
     'problem>product': ['transitions/whip', 'ENERGY: tension released into the reveal'],
     'product>proof': ['transitions/push', 'STORY: reveal -> evidence'],
