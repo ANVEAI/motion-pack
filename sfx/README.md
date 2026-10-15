@@ -247,7 +247,7 @@ Cartoon motion (pitch follows motion; one sound per action beat): boings, squeak
 | `cartoon.boing_hi` | smaller, higher boing for small hops | 0.55 | 5 | -12.9 | 342 | 10 | mime,ad | hardCut | tier:3 anchor:crest tonal:yes mood:comic size:s |
 | `cartoon.bonk` | bonk on the head: wood block + thud + star ring | 0.70 | 4 | -22.8 | 1547 | 21 | mime,ad | hardCut,smash | tier:2 anchor:noise tonal:yes mood:comic size:m |
 | `cartoon.bonk_pitch` | pitched wooden bonk with a downward glide (tune per character) | 0.40 | 3 | -19.8 | 382 | 16 | mime,ad,talking_head | hardCut | tier:3 anchor:crest mood:comic tonal:yes size:s |
-| `cartoon.cuckoo` | cuckoo: falling minor third, twice | 0.88 | 681 | -14.2 | 853 | 11 | mime,short_film | hardCut | tier:3 anchor:crest tonal:yes mood:comic size:s |
+| `cartoon.cuckoo` | cuckoo: falling minor third, twice | 0.88 | 181 | -14.2 | 853 | 11 | mime,short_film | hardCut | tier:3 anchor:crest tonal:yes mood:comic size:s |
 | `cartoon.gulp` | comic gulp: pitch-down blip + bubble | 0.14 | 3 | -19.9 | 864 | 12 | mime,ad | hardCut | tier:3 anchor:scatter tonal:yes mood:comic size:s |
 | `cartoon.poof` | puff of smoke: noise bell + sub + sparkle tail | 0.71 | 8 | -18.7 | 2756 | 17 | mime,ad | dissolve,hardCut | tier:2 anchor:noise tonal:no mood:comic size:m |
 | `cartoon.pop_eye` | take / eye bulge: fast chirp + boing | 0.44 | 36 | -14.4 | 297 | 11 | mime | hardCut,scalePunch | tier:3 anchor:crest tonal:yes mood:comic size:s |

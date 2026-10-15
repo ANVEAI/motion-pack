@@ -10,9 +10,12 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/jav
 function threeDir() { if (process.env.THREE_DIR) return process.env.THREE_DIR; const p = path.join(ROOT, 'node_modules/three'); return fs.existsSync(path.join(p, 'build/three.module.js')) ? p : null; }
 function gsapFile() { if (process.env.GSAP_JS) return process.env.GSAP_JS; const f = path.join(ROOT, 'node_modules/gsap/dist/gsap.min.js'); return fs.existsSync(f) ? f : null; }
 export async function open(pagePath, query = '', { allowSoftware = false } = {}) {
+  const missing = new Set();   // optional dependencies the page asked for and the harness could not find (a clear error instead of 'gsap is not defined' or a 120 s timeout)
   const server = http.createServer((req, res) => {
     const url = decodeURIComponent(new URL(req.url, 'http://x').pathname); let p;
     if (url.startsWith('/ext/kitfonts/')) { p = path.join(ROOT, 'objects/kit/fonts', path.basename(url)); } else if (url === '/ext/gsap.min.js') { const f = gsapFile(); p = f || '/nonexistent'; } else if (url.startsWith('/ext/three/')) { const td = threeDir(); p = td ? path.join(td, url.slice('/ext/three/'.length)) : '/nonexistent'; if (td && !p.startsWith(td)) p = '/nonexistent'; } else { p = path.join(ROOT, url); if (!p.startsWith(ROOT)) p = '/nonexistent'; }
+    if (url === '/ext/gsap.min.js' && !gsapFile()) missing.add('gsap: npm i --no-save gsap@3.14.2 in the repo root, or set GSAP_JS to a gsap.min.js');
+    if (url.startsWith('/ext/three/') && !threeDir()) missing.add('three: npm i --no-save three@0.160.0 in the repo root, or set THREE_DIR to a three.js package folder');
     if (!fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
     res.writeHead(200, { 'content-type': MIME[path.extname(p)] || 'application/octet-stream', 'cache-control': 'no-store' }); fs.createReadStream(p).pipe(res);
   });
@@ -21,16 +24,25 @@ export async function open(pagePath, query = '', { allowSoftware = false } = {})
   const browser = await findPuppeteer().launch({ executablePath: findChrome(), headless: true, userDataDir: udd, protocolTimeout: 600000,
     args: chromeArgs() });
   const page = await browser.newPage(); const errors = [];
-  page.on('console', (m) => { if (['error', 'warn', 'warning'].includes(m.type())) errors.push(m.type() + ': ' + m.text()); });
+  /* errors: console errors / warnings, page exceptions, and every failed request WITH its path ('http 404: /layers/x.png', 'request failed: /x (net::...)'). Chrome's own
+     'Failed to load resource' console line carries no URL, so it is dropped in favour of the response record: a test can then allow one known path (pageErrors) instead of every 404. */
+  page.on('console', (m) => { if (['error', 'warn', 'warning'].includes(m.type()) && !/^Failed to load resource/.test(m.text())) errors.push(m.type() + ': ' + m.text()); });
   page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
+  const where = (u) => { try { return new URL(u).pathname; } catch { return String(u); } };
+  page.on('response', (r) => { if (r.status() >= 400) errors.push(`http ${r.status()}: ${where(r.url())}`); });
+  page.on('requestfailed', (r) => errors.push(`request failed: ${where(r.url())} (${(r.failure() && r.failure().errorText) || '?'})`));
+  const needs = () => { if (missing.size) throw new Error(`${pagePath} needs ${[...missing].join('; ')}`); };
   await page.goto(`http://127.0.0.1:${server.address().port}${pagePath}${query ? '?' + query : ''}`, { waitUntil: 'load', timeout: 120000 });
-  await page.waitForFunction('window.__ready === true || window.__error', { timeout: 120000, polling: 200 });
+  try { needs(); await page.waitForFunction('window.__ready === true || window.__error', { timeout: 120000, polling: 200 }); } catch (e) { const c = async () => { try { await browser.close(); } catch {} server.close(); }; await c(); needs(); throw e; }
   const err = await page.evaluate('window.__error || null'); if (err) throw new Error('page error: ' + err);
   const gpu = await page.evaluate('window.__gpu || ""');
   if (!allowSoftware && /SwiftShader|llvmpipe|Basic Render/i.test(gpu)) throw new Error('software GL: ' + gpu);
   const close = async () => { try { await browser.close(); } catch {} server.close(); try { fs.rmSync(udd, { recursive: true, force: true }); } catch {} };
   return { page, errors, gpu, close };
 }
+/* the errors a test must fail on: everything open() recorded except the browser's own favicon request and the paths / messages a test allows by name
+   (e.g. pageErrors(h.errors, [/willReadFrequently/])). A missing module, texture or font is an 'http 404: /path' row and fails unless allowed explicitly. */
+export const pageErrors = (errors, allow = []) => errors.filter((e) => !/^http 404: \/favicon\.ico$/.test(e) && !allow.some((re) => re.test(e)));
 /* RGBA (top row first) -> PNG (RGB) */
 export function png(w, h, rgba) {
   const raw = Buffer.alloc((w * 3 + 1) * h);

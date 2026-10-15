@@ -31,12 +31,12 @@
   {
    "label": "rendered frame identical after another frame in between; blurred whip identical; blur actually differs from the sharp frame",
    "pass": true,
-   "detail": "[\"3988c4a1\",\"a976a766\",\"2ad75146\"]"
+   "detail": "[\"7b40be94\",\"68128684\",\"386a2aec\"]"
   },
   {
    "label": "no console errors",
    "pass": true,
-   "detail": "[\"error: Failed to load resource: the server responded with a status of 404 (Not Found)\"]"
+   "detail": "[\"http 404: /favicon.ico\"]"
   }
  ]
 }

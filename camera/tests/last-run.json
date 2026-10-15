@@ -1,6 +1,6 @@
 {
  "name": "camera",
- "total": 25,
+ "total": 26,
  "failed": 0,
  "rows": [
   {
@@ -105,6 +105,11 @@
   },
   {
    "label": "bakeGSAP writes one tl.set per frame (61 for 2 s) identical to toGSAP(cam(t)); CSS transform numbers match GSAP vars",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "bakeGSAP vs driveSeek agree at every timeline position for t0 = 0, 0.4, 2, 3.5, 7.25 (425 positions incl. before and after the window; worst deviation 0.0e+0); the t0 > 0 runs really move (340 of 340 positions off scale 1)",
    "pass": true,
    "detail": ""
   },

@@ -1,7 +1,7 @@
 /* layers module tests (real Chrome + GPU): determinism, grain sigma vs table, grade parity (GLSL / SVG / .cube / ffmpeg lut3d vs the JS reference), identity, vignette, bars,
    flash / hit peaks, dust, overlay determinism, lint, perf.   run: node layers/tests/layers.test.mjs   (exit 1 on any failure) */
 import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path'; import { spawnSync } from 'node:child_process';
-import { open, decodePNG, reporter, ROOT } from './harness.mjs';
+import { open, decodePNG, reporter, ROOT, pageErrors } from './harness.mjs';
 import { GRADES, GRADE_NAMES } from '../presets/grades.js'; import { STOCKS } from '../presets/stocks.js'; import { gradeRGB, prepare, toCube, cubeLookup } from '../grade.js'; import { FINISH_PRESETS } from '../presets/finish.js'; import { lintStack } from '../finisher.js'; import { lintOverlayStack } from '../overlay.js';
 const R = reporter('layers'); const J = (x) => JSON.stringify(x);
 const labs = (c) => { const f = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; const [r, g, b] = c.map(f); const X = (0.4124 * r + 0.3576 * g + 0.1805 * b) / 0.95047, Y = 0.2126 * r + 0.7152 * g + 0.0722 * b, Z = (0.0193 * r + 0.1192 * g + 0.9505 * b) / 1.08883; const q = (t) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116); return [116 * q(Y) - 16, 500 * (q(X) - q(Y)), 200 * (q(Y) - q(Z))]; };
@@ -103,6 +103,6 @@ R.check('lintStack flags baked-and-doubled grain, overlay+finisher grain; clean 
 R.check('lintOverlayStack: duplicate grain flagged, baked-plate vignette flagged, clean stack passes', lintOverlayStack([{ kind: 'grain' }, { kind: 'grain' }]).length === 1 && lintOverlayStack([{ kind: 'vignette' }], { plateBaked: { vignette: true } }).length === 1 && lintOverlayStack([{ kind: 'leaks' }, { kind: 'vignette' }, { kind: 'dust' }, { kind: 'grain' }]).length === 0);
 const perf = await pg.evaluate(() => { const o = {}; for (const n of ['premium-product', 'warm-film', 'retro-vhs']) { mp.fin.setPreset(n); mp.drawPlate(mp.pg, mp.W, mp.H, 0, {}); const px = new Uint8Array(4); mp.fin.render(0, { frame: 0 }); mp.fin.gl.readPixels(0, 0, 1, 1, mp.fin.gl.RGBA, mp.fin.gl.UNSIGNED_BYTE, px); const t0 = performance.now(); for (let i = 0; i < 30; i++) { mp.fin.render(i / 30, { frame: i }); } mp.fin.gl.readPixels(0, 0, 1, 1, mp.fin.gl.RGBA, mp.fin.gl.UNSIGNED_BYTE, px); o[n] = +((performance.now() - t0) / 30).toFixed(1); } return o; });
 R.check(`perf @1080p (info): ms/frame ${J(perf)}`, Object.values(perf).every((v) => v < 60));
-R.check('no console errors in the finisher page', h.errors.filter((e) => !/favicon|404/.test(e)).length === 0, J(h.errors.slice(0, 3)));
+R.check('no console errors in the finisher page', pageErrors(h.errors).length === 0, J(h.errors.slice(0, 3)));
 await h.close();
 const res = R.done(); fs.writeFileSync(path.join(ROOT, 'layers/tests/last-run.json'), J({ ...res, gradeStats, svgStats, perf }, null, 1)); process.exit(R.failed ? 1 : 0);

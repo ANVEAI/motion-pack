@@ -209,9 +209,15 @@ python3 ears/listen.py out/film.mp4 --plan out/plan.json [--mode music|vo|contin
 ```bash
 python3 tools/check_ids.py --docs
 python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
+python3 tools/check_ids.py
+python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests blender/tests
 python3 -m pytest -q ears/tests
+python3 tools/check_generated.py --ignore-field sha sfx/manifest.json   # right after sfx/build_library.py (music/manifest.json byte for byte)
+node tools/tests/fuzz-params.test.mjs; node tools/tests/xproc-hash.test.mjs; node type/tests/ids.test.mjs; node tools/tests/template-plans.test.mjs
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs
 node camera/tests/camera.test.mjs; node type/tests/type.test.mjs; bash layers/tests/run-all.sh
 python3 sfx/qa.py; python3 music/qa.py
 python3 catalog/build.py
 ```
+
+The full CI list, and what only runs on a GPU, is in `docs/testing.md`.

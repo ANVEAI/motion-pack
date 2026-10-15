@@ -461,10 +461,10 @@
    "why": "chapters: label 1"
   },
   {
-   "id": "sfx/tx/glitch_stutter",
+   "id": "sfx/elec/arc",
    "t": 15.1,
    "gainDb": 0,
-   "why": "chapters: outline crackles on (stand-in until sfx/elec/arc is in the library)"
+   "why": "chapters: outline crackles on"
   },
   {
    "id": "sfx/tx/cut_tick",
@@ -473,10 +473,10 @@
    "why": "chapters: label 2"
   },
   {
-   "id": "sfx/tx/glitch_stutter",
+   "id": "sfx/elec/arc",
    "t": 15.75,
    "gainDb": 0,
-   "why": "chapters: outline crackles on (stand-in until sfx/elec/arc is in the library)"
+   "why": "chapters: outline crackles on"
   },
   {
    "id": "sfx/tx/cut_tick",
@@ -485,10 +485,10 @@
    "why": "chapters: label 3"
   },
   {
-   "id": "sfx/tx/glitch_stutter",
+   "id": "sfx/elec/arc",
    "t": 16.4,
    "gainDb": 0,
-   "why": "chapters: outline crackles on (stand-in until sfx/elec/arc is in the library)"
+   "why": "chapters: outline crackles on"
   },
   {
    "id": "sfx/hit/soft",

@@ -14,7 +14,7 @@
    Images (embeddingCloud, hexMosaic): loaded once per source and shared; preloadImages(srcs) / mountStack(...).ready() resolve when they are decoded (await before the first frame). */
 import { E, clamp, lerp, seg, TAU } from './ease.js';
 import { flattenPath, arcTable, resample, PATHS } from '../type/gfx/pathsample.js';
-import { DEFAULT_MARK } from '../type/gfx/media.js';
+import { DEFAULT_MARK } from '../type/gfx/media.js'; import { saneParams, wrapIndex } from '../type/gfx/safe.js'; import { K2D_LIM } from './limits.js';
 
 function hashf(...k) { let h = 2166136261 >>> 0; for (const v of k) { h ^= (v * 2654435761) >>> 0; h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0; h = Math.imul(h ^ (h >>> 13), 3266489909) >>> 0; h ^= h >>> 16; } return (h >>> 0) / 4294967296; }
 const hexRGB = (h) => { const n = parseInt(String(h).replace('#', ''), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
@@ -33,7 +33,7 @@ function loadImg(src) {
   const im = new Image(), fin = (ok) => { e.ok = ok && im.naturalWidth > 0; return e; }; e.im = im;
   e.p = new Promise((res) => { im.onload = () => (im.decode ? im.decode().then(() => res(fin(true)), () => res(fin(true))) : res(fin(true))); im.onerror = () => res(fin(false)); }); im.src = src; return e;
 }
-const imgOf = (src) => { if (!src) return null; if (typeof src === 'object') return src.naturalWidth || src.width ? src : null; const e = loadImg(src); return e.ok ? e.im : null; };
+export const imgOf = (src) => { if (!src) return null; if (typeof src === 'object') return src.naturalWidth || src.width ? src : null; const e = loadImg(src); return e.ok ? e.im : null; };
 /* resolves when every string source is decoded (or failed); layers call it from setParams, mountStack(...).ready() waits for all of them */
 export const preloadImages = (srcs = []) => Promise.all([...new Set((srcs || []).filter((x) => typeof x === 'string'))].map((x) => loadImg(x).p));
 /* loop phase: frame-exact so t and t + L give the same bits */
@@ -47,7 +47,7 @@ export function cloudPlan(p, W, H) {
   const nT = Math.min(48, Math.max(0, Math.round(p.thumbs))), n = Math.max(1, Math.round(p.n)) + nT, C = Math.max(1, Math.round(p.clusters)), s = p.seed;
   const cen = Array.from({ length: C }, (_, j) => { const a = TAU * hashf(s, j, 1), b = Math.acos(2 * hashf(s, j, 2) - 1), r = 0.62 * Math.cbrt(0.35 + 0.65 * hashf(s, j, 3)); return [r * Math.sin(b) * Math.cos(a), r * Math.cos(b) * 0.8, r * Math.sin(b) * Math.sin(a)]; });
   const pts = Array.from({ length: n }, (_, i) => { const j = i % C, o = [0, 1, 2].map((d) => gauss(hashf(s, i, 10 + d), hashf(s, i, 20 + d)) * p.spread); return { pos: cen[j].map((v, d) => v + o[d]), cl: j, thumb: i >= n - nT, ti: i - (n - nT), pal: Math.floor(hashf(s, i, 30) * THUMB_PAL.length) }; });
-  const qc = cen[(p.queryCluster ?? 0) % C], q = qc.map((v, d) => v + 0.4 * p.spread * gauss(hashf(s, 99, d), hashf(s, 98, d)));
+  const qc = cen[wrapIndex(p.queryCluster ?? 0, C)], q = qc.map((v, d) => v + 0.4 * p.spread * gauss(hashf(s, 99, d), hashf(s, 98, d)));
   const order = pts.map((pt, i) => [Math.hypot(pt.pos[0] - q[0], pt.pos[1] - q[1], pt.pos[2] - q[2]), i]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
   const nn = order.slice(0, Math.max(1, Math.round(p.k))).map(([, i]) => i), rank = new Map(nn.map((i, r) => [i, r]));
   const S = H / 1080, cx = p.center[0] * W, cy = p.center[1] * H, m = arcTable(flattenPath(p.mark || DEFAULT_MARK, { seg: 16 }), true), ms = (p.markSize * H) / 100;
@@ -56,7 +56,7 @@ export function cloudPlan(p, W, H) {
 }
 /* screen state at t: points [{ x, y, z, r, a, thumb, nb (neighbour rank or -1), lit (0..1) }], chip { x, y, k }. Closed form. */
 export function embeddingState(t, pIn, { W = 1920, H = 1080 } = {}) {
-  const p = { ...K2D_R45.embeddingCloud.d, ...pIn }, P = cloudPlan(p, W, H), S = P.S, R = p.radius * H, cx = p.center[0] * W, cy = p.center[1] * H;
+  const p = saneParams({ ...K2D_R45.embeddingCloud.d, ...pIn }, K2D_R45.embeddingCloud.d, K2D_LIM.embeddingCloud), P = cloudPlan(p, W, H), S = P.S, R = p.radius * H, cx = p.center[0] * W, cy = p.center[1] * H;
   const th = p.loop > 0 ? TAU * loopPhase(t, p.loop, p.fps) : TAU * p.spin * t, ct = Math.cos(th), st = Math.sin(th), cxr = Math.cos(p.tilt), sxr = Math.sin(p.tilt);
   const kq = p.queryAt == null ? 0 : E.hero(seg(t, p.queryAt, p.queryAt + p.queryDur)), kl = p.queryAt == null ? 0 : E.hero(seg(t, p.queryAt + p.queryDur * 0.6, p.queryAt + p.queryDur * 0.6 + p.liftDur));
   const proj = ([x, y, z], dz = 0) => { const x1 = x * ct + z * st, z1 = -x * st + z * ct, y2 = y * cxr - z1 * sxr, z2 = y * sxr + z1 * cxr + dz, k = p.fov / (p.fov - z2); return { x: cx + x1 * R * k, y: cy + y2 * R * k, z: z2, k }; };
@@ -98,7 +98,7 @@ export const errText = (e) => (e < 0.01 ? '<0.01' : e.toFixed(2));
 const termsOf = (v, D) => (v === 'full' ? D.coef.length : Math.max(1, Math.min(D.coef.length, Math.round(v))));
 /* state at t: { N, phi, step, tip: [x, y], progressive } */
 export function epicycleState(t, pIn, { W = 1920, H = 1080 } = {}) {
-  const p = { ...K2D_R45.epicycleDraw.d, ...pIn }, D = epicycleDFT(p, W, H), steps = p.steps && p.steps.length ? p.steps : [[0, p.terms]];
+  const p = saneParams({ ...K2D_R45.epicycleDraw.d, ...pIn }, K2D_R45.epicycleDraw.d, K2D_LIM.epicycleDraw), D = epicycleDFT(p, W, H), steps = p.steps && p.steps.length ? p.steps : [[0, p.terms]];
   let j = 0; for (let i = 0; i < steps.length; i++) if (t >= p.at + steps[i][0]) j = i; const N = termsOf(steps[j][1], D), u = t - p.at - steps[j][0];
   const phi = p.loop && steps.length === 1 ? loopPhase(t - p.at, p.period, p.fps) : Math.max(0, u) / p.period;
   return { D, N, phi, step: j, tip: epicycleTip(D, N, phi % 1), first: !(p.loop && steps.length === 1) && phi < 1, on: t >= p.at };
@@ -114,7 +114,7 @@ function hexPlan(p, W, H) {
 }
 /* wave times: explicit [{ at, from, speed }] or, with loop L, one wave every L / faces from loopFrom (infinite both ways, frame-exact) */
 export function hexState(t, pIn, { W = 1920, H = 1080 } = {}) {
-  const p = { ...K2D_R45.hexMosaic.d, ...pIn }, P = hexPlan(p, W, H), nF = Math.max(1, p.faces.length);
+  const p = saneParams({ ...K2D_R45.hexMosaic.d, ...pIn }, K2D_R45.hexMosaic.d, K2D_LIM.hexMosaic), P = hexPlan(p, W, H), nF = Math.max(1, p.faces.length);
   const tt = p.loop > 0 ? loopPhase(t, p.loop, p.fps) * p.loop : t;
   return P.tiles.map((tl) => {
     let n = 0, last = -1e9;
@@ -142,7 +142,7 @@ function netPlan(p, W, H) {
 }
 /* node positions at t: [{ x, y, r, k }] + the hub radius. k = 0 home, 1 merged into the dot. Outer nodes leave first (order 'outside-in'). */
 export function convergeState(t, pIn, { W = 1920, H = 1080 } = {}) {
-  const p = { ...K2D_R45.convergeToDot.d, ...pIn }, P = netPlan(p, W, H), S = P.S, ease = E[p.ease] || E.move;
+  const p = saneParams({ ...K2D_R45.convergeToDot.d, ...pIn }, K2D_R45.convergeToDot.d, K2D_LIM.convergeToDot), P = netPlan(p, W, H), S = P.S, ease = E[p.ease] || E.move;
   const nodes = P.nodes.map((q, i) => { if (!i) return { x: q.x, y: q.y, r: q.r * S, k: 0, kind: q.kind };
     const rd = q.d / P.dmax, dl = p.stagger * (p.order === 'inside-out' ? rd : 1 - rd), kk = ease(seg(t, p.at + dl, p.at + dl + p.dur)), k = p.reverse ? 1 - ease(seg(t, p.at + p.stagger - dl, p.at + p.stagger - dl + p.dur)) : kk;
     const w = p.wobble * S * (1 - k), wx = w * Math.sin(TAU * (0.13 + 0.1 * hashf(p.seed, i, 8)) * t + TAU * hashf(p.seed, i, 9)), wy = w * Math.cos(TAU * (0.11 + 0.1 * hashf(p.seed, i, 10)) * t + TAU * hashf(p.seed, i, 11));

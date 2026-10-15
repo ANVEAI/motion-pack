@@ -9,7 +9,7 @@
      embeddingCloud at 1080p), no console errors; writes layers/demo/out/r45-sheet.png + tests/last-run-r45.json.
    run: node layers/tests/r45.test.mjs [--chrome] */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
-import { K2D } from '../canvas2d.js'; import { K2D_R3 } from '../canvas2d-r3.js'; import { ALL_KINDS } from '../overlay.js';
+import { K2D, Canvas2DLayer } from '../canvas2d.js'; import { K2D_R3 } from '../canvas2d-r3.js'; import { ALL_KINDS } from '../overlay.js';
 import { K2D_R45, CUES_R45, cuesR45, cloudPlan, embeddingState, epicycleDFT, epicycleTip, epicycleCurve, epicycleState, hexState, convergeState, preloadImages, errText } from '../canvas2d-r45.js';
 import { flattenPath, PATHS } from '../../type/gfx/pathsample.js'; import { DEFAULT_MARK } from '../../type/gfx/media.js';
 import { reporter, ROOT } from './harness.mjs';
@@ -80,6 +80,18 @@ const fake = (tag) => ({ naturalWidth: 64, naturalHeight: 48, toString: () => 'I
   const sh = shuffle(ts.map((_, i) => i)), want = ts.map((t) => recS('embeddingCloud', t, { images: IMGS })), got = new Map(sh.map((i) => [i, recS('embeddingCloud', ts[i], { images: IMGS })]));
   R.check('embeddingCloud with images: identical draw calls in forward and shuffled seek order (70 seeks)', want.every((x, i) => x === got.get(i)));
   R.check('preloadImages: resolves at once with nothing to load, with objects and with strings when there is no Image (node); K2D kinds list their sources in assets()', (await preloadImages([])).length === 0 && (await preloadImages(IMGS)).length === 0 && (await preloadImages(['x.png'])).length === 1 && K2D.embeddingCloud.assets({ images: ['a'] })[0] === 'a' && K2D.hexMosaic.assets({ faces: ['color'], images: ['a'] }).length === 0 && K2D.hexMosaic.assets({ faces: ['image'], images: ['a'] }).length === 1); }
+/* 5b2. brandField with a URL `logo`: stack.ready() resolves once it is decoded, so the FIRST frame already draws it and no frame depends on load timing (it used to draw the placeholder mark on frame 0
+   and the logo from the next frame on, because the kind had no assets() and loaded the image inside draw()). A fake async Image stands in for the browser's: onload fires 15 ms after src is set. */
+{ const had = 'Image' in globalThis, saved = globalThis.Image;
+  globalThis.Image = class { constructor() { this.complete = false; this.naturalWidth = 0; } set src(v) { this._src = v; setTimeout(() => { if (/broken/.test(v)) { this.onerror && this.onerror(); return; } this.naturalWidth = 80; this.naturalHeight = 40; this.complete = true; this.onload && this.onload(); }, 15); } get src() { return this._src; } decode() { return Promise.resolve(); } };
+  const mk = (logo) => { const { g, log } = recorder(); return { layer: new Canvas2DLayer({ getContext: () => g, style: {}, dataset: {} }, 'brandField', { logo, at: 0 }, { width: W, height: H }), log }; }, nDraw = (log) => log.filter((x) => x.startsWith('drawImage')).length, frame = (o, t) => { o.log.length = 0; o.layer.render(t); return o.log.join('|'); };
+  let firstOk = 0, stable = 0; const N = 6;
+  for (let i = 0; i < N; i++) { const o = mk('race-logo-' + i + '.png'); await o.layer.ready(); const f0 = frame(o, 1.5); if (nDraw(o.log) === 1) firstOk++; await new Promise((r) => setTimeout(r, 40)); if (frame(o, 1.5) === f0) stable++; }
+  R.check(`brandField URL logo: after stack.ready() the first frame already draws the logo (${firstOk} of ${N} fresh logos) and the same frame is identical once any late load would have landed (${stable} of ${N}); the kind lists the source in assets()`, firstOk === N && stable === N && K2D.brandField.assets({ logo: 'a.png' })[0] === 'a.png' && K2D.brandField.assets({ logo: null }).length === 0 && K2D.brandField.assets({ logo: IMGS[0] }).length === 0);
+  { const o = mk('broken-logo.png'); await o.layer.ready(); const a = frame(o, 1.5); await new Promise((r) => setTimeout(r, 40)); const b = frame(o, 1.5);
+    R.check('brandField URL logo that fails to load: ready() still resolves, the placeholder mark is drawn, and it stays the same frame (never a half state)', a === b && nDraw(o.log) === 0 && /fillText/.test(a)); }
+  { const o = mk(fake('L')); await o.layer.ready(); frame(o, 1.5); R.check('brandField with an already decoded logo object draws it on the first frame', nDraw(o.log) === 1); }
+  if (had) globalThis.Image = saved; else delete globalThis.Image; }
 /* 5c. epicycle readout: legible type, a note that cannot be blanked, movable */
 { const fonts = (log) => log.filter((x) => x.startsWith('font=')).map((x) => parseFloat(/([\d.]+)px/.exec(x)[1])), texts = (log) => log.filter((x) => x.startsWith('fillText')).map((x) => x.slice(8).split(',')[0]);
   const log = rec('epicycleDraw', 2.0), f = fonts(log), tx = texts(log), blank = recS('epicycleDraw', 2.0, { source: '' }), nul = recS('epicycleDraw', 2.0, { source: null }), base = recS('epicycleDraw', 2.0), custom = recS('epicycleDraw', 2.0, { source: 'my own note' });
@@ -139,15 +151,21 @@ const hausdorff = (name, closed) => { const p = { ...K2D.epicycleDraw.d, path: n
   R.check(`convergeToDot: after at + stagger + dur all ${c.nodes.length} nodes sit on the centre (${Math.max(...c.nodes.map((n) => Math.hypot(n.x - cx, n.y - cy))).toExponential(1)} px off) and the dot has grown to ${p.dot} px`, c.nodes.every((n) => near(n.x, cx, 1e-9) && near(n.y, cy, 1e-9)) && c.nodes.slice(1).every((n) => n.k === 1) && near(c.hub, p.dot * S, 1e-9));
   const t1 = p.at + 0.15, a = convergeState(t1, p, { W, H }), b = convergeState(t1, { ...p, order: 'inside-out' }, { W, H }), home = convergeState(0, { ...p, wobble: 0 }, { W, H }), dist = home.nodes.map((n) => Math.hypot(n.x - cx, n.y - cy)), idx = dist.map((d, i) => [d, i]).filter(([, i]) => i > 0).sort((x, y) => x[0] - y[0]), nearI = idx[0][1], farI = idx.at(-1)[1];
   R.check(`convergeToDot order: outside-in leaves the farthest node first (k ${a.nodes[farI].k.toFixed(2)} vs nearest ${a.nodes[nearI].k.toFixed(2)} at 0.15 s); inside-out reverses it (${b.nodes[nearI].k.toFixed(2)} vs ${b.nodes[farI].k.toFixed(2)})`, a.nodes[farI].k > 0 && a.nodes[nearI].k === 0 && b.nodes[nearI].k > 0 && b.nodes[farI].k === 0);
-  const t2 = p.at + 1.3, st = convergeState(t2, p, { W, H }), log = rec('convergeToDot', t2).filter((x) => /^(moveTo|lineTo)/.test(x)), pts = new Set(st.nodes.map((n) => n.x.toFixed(3) + ',' + n.y.toFixed(3))), got = log.map((x) => x.replace(/^(moveTo|lineTo)/, ''));
-  const live = st.edges.filter(([i, j]) => Math.max(st.nodes[i].k, st.nodes[j].k) <= 0.985).length;
-  R.check(`convergeToDot: the ${live} drawn lines have both ends on the node positions of that same frame (recomputed every frame, no stored state), lines whose end reached the dot are dropped`, got.length === live * 2 && got.every((q) => pts.has(q)) && live < st.edges.length);
+  /* the line check needs a frame where lines are on screen AND some have already been dropped: the first frame (30 fps) after at with 0 < live < edges. (It used to probe at + 1.3 s, where
+     every line is gone, so it compared 0 drawn lines with 0 expected and passed whatever the lines did.) Each drawn moveTo/lineTo pair must be exactly one live edge, end to end. */
+  const key = (n) => n.x.toFixed(3) + ',' + n.y.toFixed(3), liveOf = (st) => st.edges.filter(([i, j]) => Math.max(st.nodes[i].k, st.nodes[j].k) <= 0.985);
+  let t2 = null; for (let f = 0; f < 30 * (p.stagger + p.dur + 1) && t2 === null; f++) { const tt = p.at + f / 30, L2 = liveOf(convergeState(tt, p, { W, H })).length; if (L2 > 0 && L2 < convergeState(tt, p, { W, H }).edges.length) t2 = tt; }
+  const st = convergeState(t2 ?? p.at, p, { W, H }), live = liveOf(st), want = new Set(live.map(([i, j]) => [key(st.nodes[i]), key(st.nodes[j])].sort().join('|')));
+  const log = rec('convergeToDot', t2 ?? p.at).filter((x) => /^(moveTo|lineTo)/.test(x)), pairs = []; for (let k = 0; k + 1 < log.length; k += 2) pairs.push(/^moveTo/.test(log[k]) && /^lineTo/.test(log[k + 1]) ? [log[k].slice(6), log[k + 1].slice(6)].sort().join('|') : 'not a moveTo/lineTo pair');
+  R.check(`convergeToDot: at ${t2 == null ? 'no frame' : (t2 - p.at).toFixed(2) + ' s after at'} the ${pairs.length} drawn lines are exactly the ${live.length} live edges of ${st.edges.length}, both ends on that frame's node positions (recomputed every frame, no stored state); lines whose end reached the dot are dropped`,
+    t2 !== null && live.length > 0 && live.length < st.edges.length && log.length === live.length * 2 && pairs.length === want.size && pairs.every((q) => want.has(q)) && new Set(pairs).size === pairs.length);
+
   const r0 = convergeState(p.at - 0.1, { ...p, reverse: true }, { W, H }), r1 = convergeState(p.at + p.stagger + p.dur + 0.05, { ...p, reverse: true, wobble: 0 }, { W, H }), h0 = convergeState(0, { ...p, wobble: 0 }, { W, H });
   R.check('convergeToDot reverse (one dot blooming into a network): before at only the solid dot is on screen (1 arc), after at + stagger + dur every node is back home', r0.nodes.slice(1).every((n) => n.k === 1) && rec('convergeToDot', p.at - 0.1, { reverse: true }).filter((x) => x.startsWith('arc')).length === 1 && r1.nodes.every((n, i) => near(n.x, h0.nodes[i].x, 1e-9) && near(n.y, h0.nodes[i].y, 1e-9) && n.k === 0)); }
 
 /* 10. Chrome (hardware GPU not needed for Canvas2D, but the harness refuses software GL): mounts, pixels, budgets */
 if (CHROME) {
-  const { open, decodePNG, png } = await import('./harness.mjs'); const h = await open('/layers/demo/r45.html'); await h.page.setViewport({ width: 960, height: 540 }); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-r45-')), tiles = [];
+  const { open, decodePNG, png, pageErrors } = await import('./harness.mjs'); const h = await open('/layers/demo/r45.html'); await h.page.setViewport({ width: 960, height: 540 }); const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-r45-')), tiles = [];
   const shot = async (name) => { const f = path.join(dir, name + '.png'); await h.page.screenshot({ path: f, clip: { x: 0, y: 0, width: 960, height: 540 } }); return f; };
   const STACKS = [
     ['embeddingCloud: query + neighbours', [{ kind: 'embeddingCloud', params: {} }], 2.4, '#0B1210'], ['embeddingCloud: collapsed into the mark', [{ kind: 'embeddingCloud', params: { collapseAt: 3.0 } }], 5.4, '#0B1210'],
@@ -183,7 +201,7 @@ if (CHROME) {
   const msC = await h.page.evaluate(() => window.timeIt(2, 24)); R.check(`embeddingCloud at 1080p (420 dots + 48 thumbnails): ${msC.toFixed(1)} ms per frame (budget 40 ms)`, msC < 40);
   await h.page.evaluate((l) => window.stack(l, 1, 1920, 1080, '#000'), [{ kind: 'epicycleDraw', params: { steps: [[0, 'full']], inset: [0.7, 0.06, 0.26, 0.3] } }]); await h.page.evaluate(() => window.timeIt(2, 4));
   const msE = await h.page.evaluate(() => window.timeIt(2, 24)); R.check(`epicycleDraw at 1080p (all terms, inset): ${msE.toFixed(1)} ms per frame (budget 40 ms)`, msE < 40);
-  const errs = h.errors.filter((e) => !/favicon|404|willReadFrequently/.test(e)); R.check('no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
+  const errs = pageErrors(h.errors, [/willReadFrequently/]); R.check('no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
   const out = path.join(ROOT, 'layers/demo/out/r45-sheet.png');
   const py = `
 import sys, json

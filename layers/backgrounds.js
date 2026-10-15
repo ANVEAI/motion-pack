@@ -12,6 +12,7 @@
      mountStack(el, [{ kind: 'gridTunnel', params: { color: '#4A18ED', bg: '#F5F2EA' } }], { width, height, fps })
    Sizes are px at 1080 (scaled by H / 1080), so 16:9 and 9:16 share numbers. Pure functions of t: no clock, no random. */
 import { BG_R6 } from './backgrounds-r6.js';   // round 6 (2026-10-15): auroraRibbon
+import { BG_LIM, guardKinds } from './limits.js';
 const rgba = (hex, a) => { const n = parseInt(String(hex).slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${Math.min(1, Math.max(0, a)).toFixed(4)})`; };
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
@@ -103,6 +104,7 @@ export const BG = {
     } },
 };
 Object.assign(BG, BG_R6);
+guardKinds(BG, BG_LIM);   // draw sanitises p first (layers/limits.js)
 export const BG_KINDS = Object.keys(BG);
 
 export class BackgroundLayer {

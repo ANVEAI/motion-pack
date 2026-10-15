@@ -7,7 +7,7 @@
      ui.optionPicker    "picks a ...:" slot: option pills spin on a vertical drum and lock on the target (mode 'arc'), or quiz chips get a cursor click (mode 'chips') */
 import { E, clamp, lerp, seg, TAU, BRAND, f2, text, hashf, measure, srcOf } from './core.js';
 import { springTrack, spring } from '../ease.js';
-import { KIT, rr, TICKS, POPS } from './ui.js';
+import { KIT, rr, TICKS, POPS } from './ui.js'; import { clampIndex } from './safe.js';
 const { th, GREEN, AMBER, SPOT, bx, uid, op, rect, shadowDef, softShadow, icon, spinner, checkBadge, cursorSvg, ripple, pressAt } = KIT;
 const fade = (L) => op(clamp(L.in * 1.5) * (1 - L.out));
 const pill = (x, y, w, h, fill, extra = '') => rect(x, y, w, h, h / 2, fill, extra);
@@ -75,7 +75,7 @@ export const UI3 = {
 
   'ui.tabPillNav': { file: 'type/gfx/ui-nav.js', tags: ['ui', 'tabs', 'navigation', 'feature-tour', 'pill', 'panel', 'cursor', 'product-film'], dur: 4.6, inF: 8, outF: 8,
     d: { box: [0.2, 0.15, 0.6, 0.7], title: 'Acme Voice', tabs: TABS, steps: [[1.0, 1], [1.9, 2], [2.8, 3]], first: 0, cursor: true, theme: 'light', accent: BRAND, source: 'illustrative data' },
-    svg(L, p, c) { const T = th(p), s = c.s, u = L.u, [x, y, w, h] = bx(p.box, c), id = uid('tp', x, y, w, h), pad = 34 * s, k = spring(u, 'panel'), ty = y + 92 * s, th2 = 56 * s, G = tabGeo(p, s, x + pad + 8 * s);
+    svg(L, p0, c) { const nT = p0.tabs.length, p = { ...p0, first: clampIndex(p0.first, nT), steps: p0.steps.map(([t, i]) => [t, clampIndex(i, nT)]) }; const T = th(p), s = c.s, u = L.u, [x, y, w, h] = bx(p.box, c), id = uid('tp', x, y, w, h), pad = 34 * s, k = spring(u, 'panel'), ty = y + 92 * s, th2 = 56 * s, G = tabGeo(p, s, x + pad + 8 * s);
       const ch = [{ t: 0, v: p.first }, ...p.steps.map(([t, i]) => ({ t, v: i }))], track = (f) => springTrack(u, ch.map((q) => ({ t: q.t, v: f(G[q.v]) })), 'ui'), px = track((g) => g.x), pw = track((g) => g.w);
       let ai = p.first, ti = 0; p.steps.forEach(([t, i], j) => { if (u >= t) { ai = i; ti = j + 1; } }); const prevI = ti > 0 ? (ti > 1 ? p.steps[ti - 2][1] : p.first) : null, uc = ti > 0 ? u - p.steps[ti - 1][0] : u, dir = prevI == null ? 1 : Math.sign(ai - prevI) || 1;
       const labels = (fill) => p.tabs.map((tb, i) => icon(tb.icon || 'doc', G[i].x + 18 * s, ty + th2 / 2 - 11 * s, 22 * s, fill === 'act' ? '#FFFFFF' : T.muted, 2.2 * s) + text(tb.label, G[i].x + 48 * s, ty + th2 / 2 + 8 * s, { size: 24 * s, weight: 700, fill: fill === 'act' ? '#FFFFFF' : T.muted })).join('');

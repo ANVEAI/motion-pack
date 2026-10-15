@@ -45,8 +45,12 @@ for (const id of UIIDS) {
   const times = Array.from({ length: 60 }, (_, i) => -1 + i * 0.22), a = times.map((t) => renderSVG(id, t, { at: 0 })), order = shuffle(times.map((_, i) => i)), b = []; for (const i of order) b[i] = renderSVG(id, times[i], { at: 0 });
   const bad = a.find((s) => /NaN|undefined|Infinity|\[object/.test(s));
   check(`${id}: non-empty at hero ${HERO[id]} s, empty before at, same SVG in shuffled seek order, no NaN/undefined over [-1, 12] s`, renderSVG(id, HERO[id], { at: 0 }).length > 500 && renderSVG(id, -0.3, { at: 0 }) === '' && a.every((s, i) => s === b[i]) && !bad, bad ? bad.slice(0, 120) : '');
-  const big = renderSVG(id, HERO[id], { at: 0, params: { scale: 1.5 } }), sz = (s) => Math.max(...[...s.matchAll(/font-size="([\d.]+)"/g)].map((m) => +m[1]), 0);
-  check(`${id}: scale 1.5 grows the type (${sz(renderSVG(id, HERO[id], { at: 0 }))} -> ${sz(big)} px)`, sz(big) > sz(renderSVG(id, HERO[id], { at: 0 })) * 1.4 || ['ui.isometricTilt', 'ui.pageFlythrough'].includes(id) && big !== renderSVG(id, HERO[id], { at: 0 }));
+  const big = renderSVG(id, HERO[id], { at: 0, params: { scale: 1.5 } });
+  /* two parts carry no font-size of their own: ui.isometricTilt's placeholder panel has no text (its size unit shows in the title-bar dot radius, 8 * s) and ui.pageFlythrough scales the page
+     through its camera transform (`rotate(..) scale(z)`, z = zoom * s); for them the check measures that unit instead, so it fails when `scale` stops reaching the drawing */
+  const UNIT = { 'ui.isometricTilt': ['title-bar dot radius', /<circle [^>]*?r="([\d.]+)"/g], 'ui.pageFlythrough': ['page zoom', /rotate\([-\d.]+\) scale\(([\d.]+)\)/g] }, [what, re] = UNIT[id] || ['type', /font-size="([\d.]+)"/g];
+  const sz = (s) => Math.max(...[...s.matchAll(re)].map((m) => +m[1]), 0), s0 = sz(renderSVG(id, HERO[id], { at: 0 })), s1 = sz(big);
+  check(`${id}: scale 1.5 grows the ${what} (${s0} -> ${s1}${UNIT[id] ? '' : ' px'})`, s0 > 0 && s1 > s0 * 1.4 && s1 < s0 * 1.6);
   const cues = uiCues(id, { at: 2 }), miss = cues.filter((c) => !sfx.has('snd.' + c.id.split('/').slice(1).join('.')));
   check(`${id}: uiCues gives ${cues.length} cues, all sfx ids resolve, all after the item's at`, cues.length > 0 && !miss.length && cues.every((c) => c.t >= 2 - 1e-9 && c.why), miss.map((c) => c.id).join(' '));
 }
@@ -83,7 +87,7 @@ const R = (id, t, params = {}) => renderSVG(id, t, { at: 0, dur: 30, params }), 
 { const d = D('ui.pageFlythrough'), ts2 = Array.from({ length: 120 }, (_, i) => i * 0.05), a = ts2.map((t) => JSON.stringify(pageFlyCam(t))), b = []; for (const i of shuffle(ts2.map((_, i) => i))) b[i] = JSON.stringify(pageFlyCam(ts2[i]));
   let mx = 0; for (let f = 1; f < 180; f++) mx = Math.max(mx, Math.abs(pageFlyCam(f / 30).focus - pageFlyCam((f - 1) / 30).focus)); const end = pageFlyCam(d.pullAt + 4);
   check(`pageFlyCam: pure in shuffled order, focus glides (max ${(mx * 100).toFixed(2)}% of the page per frame), pulls out to fit (zoom ${end.zoom.toFixed(3)} -> ${d.fit}) with the blur gone (${end.blur.toFixed(4)})`, a.every((s, i) => s === b[i]) && mx < 0.02 && Math.abs(end.zoom - d.fit) < 1e-3 && end.blur < 0.01 && /rotateX/.test(end.transform)); }
-{ const d = D('ui.tabPillNav'), G = tabGeo(d, 1, 1920 * d.box[0] + 42), px = (t) => +/<clipPath id="tp\d+p"><rect x="([\d.]+)"/.exec(R('ui.tabPillNav', t))[1], last = d.steps.at(-1);
+{ const d = D('ui.tabPillNav'), G = tabGeo(d, 1, 1920 * d.box[0] + 42), px = (t) => +/<clipPath id="tp\d+p-[a-z0-9]+"><rect x="([\d.]+)"/.exec(R('ui.tabPillNav', t))[1], last = d.steps.at(-1);
   check(`ui.tabPillNav: pill starts on tab ${d.first} (x ${px(0.5)}), is between tabs mid-slide, settles on tab ${last[1]} (x ${px(last[0] + 1)} vs ${G[last[1]].x.toFixed(2)}); the active list swaps`, Math.abs(px(0.5) - G[d.first].x) < 0.5 && Math.abs(px(last[0] + 1) - G[last[1]].x) < 0.5 &&
     px(d.steps[0][0] + 0.06) > G[d.first].x + 1 && px(d.steps[0][0] + 0.06) < G[d.steps[0][1]].x - 1 && R('ui.tabPillNav', last[0] + 1).includes(d.tabs[last[1]].items[0][0]) && !R('ui.tabPillNav', last[0] + 1).includes(d.tabs[0].items[0][0])); }
 { const d = D('ui.windowWall'), t0 = d.panAt + d.panDur + 0.6; check(`ui.windowWall: every window loops (frame at ${t0.toFixed(1)} s = frame one period ${d.period} s later once the camera has stopped)`, R('ui.windowWall', t0) === R('ui.windowWall', t0 + d.period) && R('ui.windowWall', t0) !== R('ui.windowWall', t0 + d.period / 3)); }

@@ -8,7 +8,7 @@
      ui.fileChip        file chip (type tile, name, size) with a Download button: cursor click -> progress -> check -> "Open" */
 import { E, clamp, lerp, seg, TAU, FONT, BRAND, f2, text, hashf, measure, srcOf } from './core.js';
 import { springTrack, spring } from '../ease.js';
-import { KIT, rr, TICKS } from './ui.js';
+import { KIT, rr, TICKS } from './ui.js'; import { wrapIndex } from './safe.js';
 const { th, GREEN, AMBER, bx, uid, op, rect, shadowDef, softShadow, icon, spinner, checkBadge, cursorSvg, ripple, pressAt, typed } = KIT;
 const RED = '#E5484D';
 const fade = (L) => op(clamp(L.in * 1.5) * (1 - L.out));
@@ -131,7 +131,7 @@ export const UI2 = {
   'ui.failoverRoute': { file: 'type/gfx/ui-data.js', tags: ['ui', 'routing', 'failover', 'diagram', 'network', 'uptime', 'infrastructure', 'product-film'], dur: 4.4, inF: 8, outF: 8,
     d: { box: [0.05, 0.16, 0.9, 0.66], source: { label: 'Your app', icon: 'doc' }, hub: { label: 'Acme router', icon: 'branch' }, providers: PROVIDERS, active: 0, start: 0.25, rate: 0.17, travel: 1.0, failAt: 1.9, rerouteAt: 2.3,
       status: ['Routing', 'Provider A down', 'Rerouted to Provider B'], note: 'timings illustrative', theme: 'dark', accent: BRAND },
-    svg(L, p, c) { const T = th(p), u = L.u, G = routeGeo(p, c), s = G.s, id = uid('fr', G.src[0], G.hub[0], p.providers.length), nx = nextUp(p), failed = u >= p.failAt, moved = u >= p.rerouteAt, kin = spring(u, 'panel');
+    svg(L, p0, c) { const p = { ...p0, active: wrapIndex(p0.active, p0.providers.length) }; const T = th(p), u = L.u, G = routeGeo(p, c), s = G.s, id = uid('fr', G.src[0], G.hub[0], p.providers.length), nx = nextUp(p), failed = u >= p.failAt, moved = u >= p.rerouteAt, kin = spring(u, 'panel');
       const lineC = (i) => (i === p.active ? (failed ? RED : p.accent) : i === nx && moved ? GREEN : T.faint);
       let o = `<line x1="${f2(G.seg1[0][0])}" y1="${f2(G.seg1[0][1])}" x2="${f2(G.seg1[1][0])}" y2="${f2(G.seg1[1][1])}" stroke="${p.accent}" stroke-width="${f2(4 * s)}" stroke-linecap="round" opacity="0.85"/>`;
       G.curves.forEach((cv, i) => { const lit = (i === p.active && !failed) || (i === nx && moved), dk = seg(u, 0.1 + i * 0.1, 0.5 + i * 0.1);

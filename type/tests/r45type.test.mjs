@@ -74,6 +74,16 @@ for (const image of ['bust', 'orb', 'spark']) { const p = P('type.asciiMosaic', 
   check(`asciiMosaic: the opening shows the text as one line (${n0} glyphs), the hold shows the mosaic (${n} glyphs = cells above the dark cutoff ${lit})`, n0 === [...P('type.asciiMosaic').text].length && n === lit); }
 { const p = { dissolveAt: 3.4 }, s = renderSVG('type.asciiMosaic', 4.6 + 0.2, { params: p }), s1 = renderSVG('type.asciiMosaic', 4.6, { params: p });
   check('asciiMosaic: dissolve returns the copies to the text line (only the text glyphs remain visible)', (s1.match(/<text /g) || []).length <= [...P('type.asciiMosaic').text].length + 5 || s === ''); }
+/* textOnPath direction and rotation (travel mode; trail mode's direction is checked below): on a straight path the tangent is exact, so each glyph's angle must be 0 deg going right, 90 going
+   down, -90 going up and 45 on the diagonal, and the drawn <text> must carry that same rotate(); every glyph moves FORWARD along the path by the same arc length (speed x 1 s), and later glyphs sit
+   further along it (the text reads in the direction it travels). A flipped angle sign or a reversed travel direction fails here. */
+{ const base = P('type.textOnPath', { mode: 'travel', start: 0.1, speed: 260, text: 'ABCD', fade: 0.01 }), G = (path, u) => textOnPathState(u, { ...base, path }, wide).glyphs;
+  const paths = { right: ['M100 540 L1800 540', 0], down: ['M960 60 L960 1020', 90], up: ['M960 1020 L960 60', -90], diagonal: ['M300 100 L1100 900', 45] };
+  const angErr = Math.max(...Object.values(paths).flatMap(([d, want]) => G(d, 0.8).map((q) => Math.abs(q.a - want))));
+  const drawn = Object.values(paths).map(([d, want]) => [...renderSVG('type.textOnPath', 0.8, { at: 0, params: { ...base, path: d } }).matchAll(/<text transform="translate\([^)]*\) rotate\(([-\d.]+)\)"/g)].map((m) => +m[1] - want));
+  const a0 = G(paths.right[0], 0.5), a1 = G(paths.right[0], 1.5), ds = a1.map((q, i) => q.s - a0[i].s);
+  check(`textOnPath travel: glyph angles follow the tangent (0 / 90 / -90 / 45 deg on straight paths, max error ${angErr.toExponential(1)} deg; the drawn rotate() matches), the text moves forward ${ds[0].toFixed(1)} px of arc in 1 s and reads in its direction of travel`,
+    angErr < 0.01 && drawn.every((r) => r.length === 4 && r.every((e) => Math.abs(e) < 0.02)) && ds.every((d) => d > 100 && Math.abs(d - ds[0]) < 1e-6) && a1.every((q, i) => q.x > a0[i].x && (i === 0 || q.s > a1[i - 1].s && q.x > a1[i - 1].x))); }
 /* textOnPath: even spacing on a tight curve (arc-length parameterisation) vs naive equal-t spacing */
 { const circle = 'M960 340 C1070 340 1160 430 1160 540 C1160 650 1070 740 960 740 C850 740 760 650 760 540 C760 430 850 340 960 340 Z', p = P('type.textOnPath', { path: circle, closed: true, mode: 'travel', speed: 0, start: 0, text: 'MMMMMMMMMMMMMMMMMMMM', font: "'IBM Plex Mono', monospace", size: 40 });
   const g = textOnPathState(1, p, wide).glyphs, ds = g.slice(1).map((q, i) => Math.hypot(q.x - g[i].x, q.y - g[i].y)), m = ds.reduce((a, b) => a + b, 0) / ds.length, cv = Math.sqrt(ds.reduce((a, b) => a + (b - m) ** 2, 0) / ds.length) / m;
@@ -118,8 +128,8 @@ const rasterMark = (name, S = 4, ss = 3) => { const m = PARTNER_MARKS[name], w =
       L.balance === 'area' && Math.abs(ratio - 1) < 0.03 && L.boxes.every((bx, i) => Math.abs(bx.w / R.boxes[i].w - 1) < 0.015 && Math.abs(bx.h / R.boxes[i].h - 1) < 0.015) && lintPartnerMarks({ marks: [supplied(a), supplied(b)] }).length === 0); }
   const none = { href: 'x.png', w: 200, h: 100, licensed: true }, F = partnerLockupLayout(P('title.partnerLockup', { marks: ['ring', none] }), wide), msg = lintPartnerMarks({ marks: ['ring', none] });
   check('partnerLockup: a licensed mark with no ink measure is never silently treated as half its box: the lockup says balance "height" (equal heights) and the lint names the fix', F.balance === 'height' && Math.abs(F.boxes[0].h - F.boxes[1].h) < 1e-9 && msg.length === 1 && /markFromImage|mark_ink/.test(msg[0]));
-  const opaque = { data: new Uint8ClampedArray(40 * 40 * 4).fill(255), width: 40, height: 40 }; for (let y = 0; y < 40; y++) for (let x = 0; x < 20; x++) { const i = (y * 40 + x) * 4; opaque.data[i] = opaque.data[i + 1] = opaque.data[i + 2] = 0; }
-  check('inkFromMask channels: alpha counts coverage; luma reads dark ink on an opaque ground (half the image) and luma-light the white half; an empty or missing mask is 0', Math.abs(inkFromMask(opaque, { channel: 'luma' }) - 0.5) < 1e-9 && Math.abs(inkFromMask(opaque, { channel: 'luma-light' }) - 0.5) < 1e-9 && inkFromMask(opaque) === 1 && inkFromMask(null) === 0 && inkFromMask({ data: [], width: 0, height: 0 }) === 0); }
+  const opaque = { data: new Uint8ClampedArray(40 * 40 * 4).fill(255), width: 40, height: 40 }; for (let y = 0; y < 40; y++) for (let x = 0; x < 8; x++) { const i = (y * 40 + x) * 4; opaque.data[i] = opaque.data[i + 1] = opaque.data[i + 2] = 0; }
+  check('inkFromMask channels: alpha counts coverage; luma reads the dark ink on an opaque white ground (20% of the image is black: 0.2) and luma-light the light part (0.8; an asymmetric fixture, so swapping the two channels fails); an empty or missing mask is 0', Math.abs(inkFromMask(opaque, { channel: 'luma' }) - 0.2) < 1e-9 && Math.abs(inkFromMask(opaque, { channel: 'luma-light' }) - 0.8) < 1e-9 && inkFromMask(opaque) === 1 && inkFromMask(null) === 0 && inkFromMask({ data: [], width: 0, height: 0 }) === 0); }
 /* sound pairing: one constant, and a guard that makes the swap compulsory once the electric-arc sound is in the library */
 { const arc = okSfx(ELECTRIC_ARC), cue = gfxCues('type.electricOutline', { at: 0, params: {} })[0];
   check(`electricOutline sound: ELECTRIC_SOUND '${ELECTRIC_SOUND}' is what sfxFor and the cue table return (one place to change); ${arc ? ELECTRIC_ARC + ' is in the library, so it MUST be the pairing (set ELECTRIC_SOUND in type/gfx/r45-glyph.js)' : ELECTRIC_ARC + ' is not in this library yet, the stand-in stays until it merges'}`,
@@ -162,7 +172,7 @@ for (const [W2, H2, name] of FRAMES) { const c = ctxFor(W2, H2, null, 1), sx0 = 
   check('type/manifest.json lists all 7 ids with file, tags, params, a default sound and the r45type sheet (node layers/tests/make-manifests.mjs rewrites it)',
     rows.every((r, i) => r && /type\/gfx\/r45-(type|glyph)\.js$/.test(r.file) && r.tags.length >= 5 && r.params && r.sfx && r.demo === 'type/demo/out/gfx-r45type.png' && r.test === 'type/tests/gfx-sheet.mjs')); }
 if (process.argv.includes('--chrome')) {
-  const { open, png, decodePNG } = await import('../../layers/tests/harness.mjs'); const h = await open('/type/demo/gfx.html'); await h.page.setViewport({ width: 1920, height: 1080 });
+  const { open, png, decodePNG, pageErrors } = await import('../../layers/tests/harness.mjs'); const h = await open('/type/demo/gfx.html'); await h.page.setViewport({ width: 1920, height: 1080 });
   const W = 1920, H = 1080, grad = Buffer.alloc(W * H * 4); for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const v = Math.round((x / (W - 1)) * 255), i = (y * W + x) * 4; grad[i] = grad[i + 1] = grad[i + 2] = v; grad[i + 3] = 255; }
   const black = Buffer.alloc(W * H * 4); for (let i = 3; i < black.length; i += 4) black[i] = 255;
   const url = (b) => 'data:image/png;base64,' + png(W, H, b).toString('base64'), plate = { svg: `<rect width="${W}" height="${H}" fill="#0000FF"/>`, viewBox: `0 0 ${W} ${H}` };
@@ -206,7 +216,7 @@ if (process.argv.includes('--chrome')) {
   { const h2 = await open('/layers/demo/r45.html'); await h2.page.setViewport({ width: 960, height: 540 }); const pe = P('type.electricOutline', { text: '24' }), cw = ctxFor(1920, 1080, null, 1), pools = electricGlowPools(pe, cw), g0 = electricGeo(pe, cw);
     const b64 = await h2.page.evaluate((pl) => { window.stack([{ kind: 'glow', params: { pools: pl } }], 0, 960, 540, '#000'); return window.pixels(); }, pools), d = Buffer.from(b64, 'base64'); let sx = 0, sy = 0, sw = 0; for (let y = 0; y < 540; y++) for (let x = 0; x < 960; x++) { const v = d[(y * 960 + x) * 4]; sx += x * v; sy += y * v; sw += v; }
     const mx = (sx / sw) * 2, my = (sy / sw) * 2; check(`chrome electric halo: the overlay glow's light centroid (${mx.toFixed(0)}, ${my.toFixed(0)}) is on the numerals (${g0.cx.toFixed(0)}, ${g0.cy.toFixed(0)}) at 1920 x 1080 (y of the pool is measured from the bottom)`, Math.abs(mx - g0.cx) < 20 && Math.abs(my - g0.cy) < 20 && sw > 0);
-    const e2 = h2.errors.filter((e) => !/favicon|404|willReadFrequently/.test(e)); check('chrome: the glow page has no console errors', e2.length === 0, JSON.stringify(e2.slice(0, 3))); await h2.close(); }
-  const errs = h.errors.filter((e) => !/favicon|404/.test(e)); check('chrome: no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
+    const e2 = pageErrors(h2.errors, [/willReadFrequently/]); check('chrome: the glow page has no console errors', e2.length === 0, JSON.stringify(e2.slice(0, 3))); await h2.close(); }
+  const errs = pageErrors(h.errors); check('chrome: no console errors', errs.length === 0, JSON.stringify(errs.slice(0, 3))); await h.close();
 }
 console.log(`\nr45 type: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

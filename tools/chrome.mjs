@@ -50,3 +50,12 @@ export function chromeArgs(extra = []) {
 }
 
 export const isSoftwareGL = (gpu) => /SwiftShader|llvmpipe|software|Basic Render/i.test(gpu || '');
+
+/* `node tools/chrome.mjs --check`: exit 0 when puppeteer-core and Chrome are both found (prints where), else exit 1 with the reason and the one-line fix.
+   templates/_shared/render3d.sh runs it before anything else, so a missing prerequisite is the first and only message, not an ffmpeg error later. */
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url) && process.argv.includes('--check')) {
+  const miss = [];
+  try { findPuppeteer(); } catch (e) { miss.push(e.message); }
+  try { console.log('chrome: ' + findChrome()); } catch (e) { miss.push(e.message); }
+  if (miss.length) { console.error('missing prerequisite:\n  ' + miss.join('\n  ') + '\nprerequisites for renders and browser tests (repo root): npm i --no-save puppeteer-core gsap@3.14.2 three@0.160.0'); process.exit(1); }
+}

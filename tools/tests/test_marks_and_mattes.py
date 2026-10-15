@@ -51,9 +51,9 @@ def test_mark_ink_matches_the_analytic_area_and_crops_the_margin():
 
 def test_mark_ink_luma_channels_read_dark_and_light_ink_on_an_opaque_ground():
     a = np.full((10, 10, 4), 255, np.uint8)            # white ground
-    a[:, :5, :3] = 0                                   # left half black ink
-    assert mark_ink.ink_of(a, "luma") == pytest.approx(0.5)
-    assert mark_ink.ink_of(a, "luma-light") == pytest.approx(0.5)      # the white half counts for light ink
+    a[:, :2, :3] = 0                                   # 20% black ink (asymmetric: swapping the channels must fail)
+    assert mark_ink.ink_of(a, "luma") == pytest.approx(0.2)            # dark ink on a light ground
+    assert mark_ink.ink_of(a, "luma-light") == pytest.approx(0.8)      # the white 80% counts for light ink
     assert mark_ink.ink_of(a, "alpha") == pytest.approx(1.0)           # fully opaque: alpha alone carries no shape
 
 

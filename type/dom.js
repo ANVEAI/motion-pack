@@ -3,7 +3,10 @@
    bakeType(tl, mounted, spec, opts)           -> one GSAP tl.set per CHANGED frame per unit (deduped): the timeline stays the single source of truth, seek-safe
    driveType(mounted, spec, opts)              -> same states applied straight from 'hf-seek' (no timeline cost)
    mountCaptions / bakeCaptions / driveCaptions -> the caption engine on DOM spans, positioned in the platform safe zone.
-   units: x/y in em of the font size, blur in px @1080 scaled by H/1080. Mask presets clip to the line box (overflow hidden on .mp-line).                                              */
+   units: x/y in em of the font size, blur in px @1080 scaled by H/1080. Mask presets clip to the line box (overflow hidden on .mp-line).
+   t0 = where the window starts on the COMPOSITION timeline (s). spec.at / spec.out / chunk times are composition time too (as in drawType and the canvas renderer), so the state at timeline position T is
+   unitStates(spec, texts, T) whatever t0 is. bake* writes frames T = t0 + i/fps and holds the T = t0 state before the window and the last sample after it; drive* does the same from 'hf-seek' (pass dur to
+   hold the end too). They used opposite signs of t0 until 2026-10-15 (test: type/tests/dom-t0.test.mjs).                                                                                    */
 import { PRESETS, unitStates } from './presets.js';
 import { captionFrame } from './captions.js';
 import { captionBox } from './safezones.js';
@@ -39,8 +42,8 @@ export function bakeType(tl, m, spec, { t0 = 0, dur, fps = 30 } = {}) {
   if (spec.preset === 'scramble') console.warn('type/dom: scramble swaps glyph text, which a timeline cannot hold seek-safely: use driveType (hf-seek) or the canvas renderer');
   return tl;
 }
-export function driveType(m, spec, { t0 = 0 } = {}) {
-  const f = (t) => { const R = unitStates(spec, m.texts, t - t0); m.units.forEach((u, k) => { const v = stateToVars(R.states[k], m.fontPx, m.H, u.text), e = u.el; e.style.transform = `perspective(${v.transformPerspective || 0}px) translate(${v.x}px, ${v.y}px) rotateX(${v.rotationX}deg) rotate(${v.rotation}deg) scale(${v.scale})`.replace('perspective(0px) ', ''); e.style.opacity = v.opacity; e.style.clipPath = v.clipPath; e.style.letterSpacing = v.letterSpacing; e.style.fontVariationSettings = v.fontVariationSettings; e.style.filter = v.filter; if (v['--mp-fill'] != null) { e.style.setProperty('--mp-fill', v['--mp-fill']); e.style.setProperty('--mp-stroke', v['--mp-stroke']); } if (e.textContent !== v.textContent) e.textContent = v.textContent; }); return R; };
+export function driveType(m, spec, { t0 = 0, dur = Infinity } = {}) {
+  const f = (T) => { const R = unitStates(spec, m.texts, Math.min(Math.max(T, t0), t0 + dur)); m.units.forEach((u, k) => { const v = stateToVars(R.states[k], m.fontPx, m.H, u.text), e = u.el; e.style.transform = `perspective(${v.transformPerspective || 0}px) translate(${v.x}px, ${v.y}px) rotateX(${v.rotationX}deg) rotate(${v.rotation}deg) scale(${v.scale})`.replace('perspective(0px) ', ''); e.style.opacity = v.opacity; e.style.clipPath = v.clipPath; e.style.letterSpacing = v.letterSpacing; e.style.fontVariationSettings = v.fontVariationSettings; e.style.filter = v.filter; if (v['--mp-fill'] != null) { e.style.setProperty('--mp-fill', v['--mp-fill']); e.style.setProperty('--mp-stroke', v['--mp-stroke']); } if (e.textContent !== v.textContent) e.textContent = v.textContent; }); return R; };
   window.addEventListener('hf-seek', (e) => f(e.detail.time)); f(window.__hfThreeTime || 0); return f;
 }
 /* ---- captions ---- */
@@ -61,8 +64,8 @@ export function bakeCaptions(tl, m, chunks, { t0 = 0, dur, fps = 30 } = {}) {
       if (v) e.words.forEach((s, k) => { const w = v.words[k]; if (i === 0) tl.fromTo(s, w, { ...w, duration: 1 / fps / 2, ease: 'none', immediateRender: true }, t0); else tl.set(s, w, t0 + t); }); }); }
   return tl;
 }
-export function driveCaptions(m, chunks, { t0 = 0 } = {}) {
-  const f = (t) => { m.els.forEach((e, ci) => { const F = captionFrame(chunks, t - t0 + 0, m.style), v = F && F.index === ci ? capVars(m, F) : null; e.el.style.opacity = v ? '1' : '0'; if (v) e.words.forEach((s, k) => { const w = v.words[k]; s.style.opacity = w.opacity; s.style.transform = `scale(${w.scale})`; s.style.color = w.color; s.style.background = w.background; }); }); };
+export function driveCaptions(m, chunks, { t0 = 0, dur = Infinity } = {}) {
+  const f = (T) => { m.els.forEach((e, ci) => { const F = captionFrame(chunks, Math.min(Math.max(T, t0), t0 + dur), m.style), v = F && F.index === ci ? capVars(m, F) : null; e.el.style.opacity = v ? '1' : '0'; if (v) e.words.forEach((s, k) => { const w = v.words[k]; s.style.opacity = w.opacity; s.style.transform = `scale(${w.scale})`; s.style.color = w.color; s.style.background = w.background; }); }); };
   window.addEventListener('hf-seek', (e) => f(e.detail.time)); f(window.__hfThreeTime || 0); return f;
 }
 export { iconSVG };

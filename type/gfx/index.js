@@ -12,7 +12,7 @@
    Card systems (canvas): layout.cardStack + layout.cardRiver (cards.js), layout.evidenceBoard (board.js): mountCards / mountBoard -> { render(t) }. */
 import { EDITORIAL } from './editorial.js'; import { CALLOUTS } from './callouts.js'; import { SOCIAL } from './social.js'; import { STICKER_GFX, STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource } from './stickers.js';
 import { KINETIC } from './kinetic.js'; import { COLLAGE } from './collage.js';
-import { life, ctxFor } from './core.js'; import { UI as UI1, UI_CUES as UI1_CUES, hooks as uiHooks } from './ui.js'; import { UI2, UI2_CUES } from './ui-data.js'; import { UI3, UI3_CUES } from './ui-nav.js';
+import { life, ctxFor } from './core.js'; import { saneParams } from './safe.js'; import { GFX_LIM } from './limits.js'; import { UI as UI1, UI_CUES as UI1_CUES, hooks as uiHooks } from './ui.js'; import { UI2, UI2_CUES } from './ui-data.js'; import { UI3, UI3_CUES } from './ui-nav.js';
 import { PROOF, PROOF_CUES } from './ui-proof.js'; import { TRACE, TRACE_CUES } from './ui-trace.js'; import { R6, R6_CUES } from './r6.js';
 /* round 4+5 (ui-proof.js, ui-trace.js): the ui.* ones join the UI kit (uiCues); chart.*, caption.*, type.* and lowerThird.* ones get per-action cues through gfxCues */
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
@@ -63,10 +63,20 @@ export const GFX_SFX = {
   /* round 6 (2026-10-15): r6.js; gfxCues / uiCues give one cue per action */
   'chart.hoverTooltip': ['sfx/ui/tick', 1, -4], 'ui.dockLaunch': ['sfx/device/mouse_click', 1, -2], 'title.verbCard': ['sfx/hit/soft', 1, -2], 'ui.connectRows': ['sfx/device/mouse_click', 1, -2], 'layout.degradingDiagram': ['sfx/ui/pop', 1, -4], 'type.commandPill': ['sfx/ui/type_key', 1, -5] };
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
+/* def ids are document-wide: every <svg> of every host in a page shares one id namespace, and url(#id) resolves to the FIRST match. Parts used to name their defs by hand ('lc' / 'lg' in chart.line, 'neon', 'odo',
+   'dsScrim') or by a hash of a few params (uidOf: no `at`, most params missing), so two items in one host (two chart.line items; two ui.stateMorph with the same text at different times) shared a def and the second
+   was clipped with the first one's progress: a picture that depended on the OTHER item, not on t. renderInner now namespaces every id an item defines (and the url(#...) references to them) with a 64-bit hash of the
+   item's own markup: the same id then always means the same defs, whatever else is in the host, and equal pictures (however the params were spelled) keep equal strings. Pure: a function of the markup. */
+const hash64 = (str) => { let a = 2166136261 >>> 0, b = 0x9e3779b9; for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); a = Math.imul(a ^ c, 16777619) >>> 0; b = Math.imul(b ^ c, 2246822519) >>> 0; b = (b ^ (b >>> 15)) >>> 0; } return 'k' + a.toString(36) + b.toString(36); };
+const ID_ATTR = /(?<![\w-])id="([^"]+)"/g, URL_REF = /url\(#([^)\s"']+)\)/g;
+export function nsIds(svg) {
+  const ids = new Set(); for (const m of svg.matchAll(ID_ATTR)) ids.add(m[1]); if (!ids.size) return svg;
+  const key = hash64(svg); return svg.replace(ID_ATTR, (_, i) => `id="${i}-${key}"`).replace(URL_REF, (m, i) => (ids.has(i) ? `url(#${i}-${key})` : m));
+}
 export function renderInner(id, t, { at = 0, dur, params = {} } = {}, ctx) {
-  const g = GFX[id]; if (!g) throw new Error('unknown gfx ' + id); const p = { ...g.d, ...params }, L = life(t, at, dur ?? p.dur ?? g.dur, g.inF ?? 12, g.outF ?? 9);
+  const g = GFX[id]; if (!g) throw new Error('unknown gfx ' + id); const p = saneParams({ ...g.d, ...params }, g.d, GFX_LIM[id]), L = life(t, at, dur ?? p.dur ?? g.dur, g.inF ?? 12, g.outF ?? 9);
   L.t = t; L.at = at;   // composition time and the item's start: lets a part follow layout.cornerPin data, whose keys are in composition time (ui.costTicker, caption.sceneBubble anchors)
-  return L.on ? g.svg(L, p, ctx) : '';
+  return L.on ? nsIds(g.svg(L, p, ctx)) : '';
 }
 export function renderSVG(id, t, opts = {}, { W = 1920, H = 1080, platform = null, seed = 1 } = {}) {
   const ctx = ctxFor(W, H, platform, seed), inner = renderInner(id, t, opts, ctx);

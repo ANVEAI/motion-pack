@@ -4,7 +4,7 @@
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process';
 import { cardsAt, stackFlipTimes, CARDS } from '../gfx/cards.js'; import { homography, applyH, matrix3d, cornersAt, lintQuad, PIN_LAYOUTS } from '../gfx/cornerpin.js';
 import { boardAt, BOARD_D, qsplit } from '../gfx/board.js'; import { renderSVG, sfxFor, GFX } from '../gfx/index.js'; import { safeFlashes, lintFlashes, K2D } from '../../layers/canvas2d.js';
-import { open, reporter, ROOT } from '../../layers/tests/harness.mjs';
+import { open, reporter, ROOT, pageErrors } from '../../layers/tests/harness.mjs';
 const R = reporter('cards'), S = { W: 1920, H: 1080 }, J = (x) => JSON.stringify(x), near = (a, b, e = 1e-6) => Math.abs(a - b) <= e;
 
 /* 1. determinism: same state for the same t in any order, for both card systems and the board */
@@ -68,7 +68,7 @@ for (const [id, params, t, label, words] of CASES) {
   R.check(`${label}: draws (${(100 * a.ink).toFixed(1)}% of pixels) and is seek-stable (t, t + 0.77, t -> identical pixels)`, a.ink > 0.01 && a.h === b.h);
   const f = path.join(dir, tiles.length + '.png'); await h.page.screenshot({ path: f, clip: { x: 0, y: 0, width: 1920, height: 1080 } }); tiles.push([`${id} t=${t} ${label}`, f]);
 }
-R.check('no page errors', h.errors.filter((e) => !/favicon|404|willReadFrequently/.test(e)).length === 0, J(h.errors.slice(0, 3))); await h.close();
+R.check('no page errors', pageErrors(h.errors, [/willReadFrequently/]).length === 0, J(h.errors.slice(0, 3))); await h.close();
 const py = `
 import sys, json
 from PIL import Image, ImageDraw

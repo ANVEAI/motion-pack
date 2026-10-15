@@ -10,9 +10,9 @@ permissions:
 jobs:
   test:
     # Headless checks that need no GPU. The browser tests (layers/tests/run-all.sh) and renders need a hardware GPU
-    # and run locally; see CONTRIBUTING.md.
+    # and run locally; docs/testing.md lists what CI covers and what it cannot.
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -28,18 +28,37 @@ jobs:
         run: pip install -r requirements.txt
       - name: cross-module ids resolve (code, config, data and Markdown)
         run: python3 tools/check_ids.py --docs
-      - name: build the sound library (WAV masters are not in git; regenerated bit for bit)
+      - name: build the sound library (WAV masters are not in git; rebuilt from the recipes)
         run: python3 sfx/build_library.py
-      - name: python tests (cuts, sfx, music, refstudy smoke test)
-        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py sfx/tests music/tests tools/tests cloud/tests
+      # The build rewrites sfx/manifest.json (every sound's sha) BEFORE the tests read it, so without this step a recipe change that the commit's manifest
+      # does not reflect stays invisible. Shas are bit-exact per platform only (x86-64 Linux and arm64 macOS differ by one 24-bit LSB in most sounds), so
+      # they are left out here; every measured field (anchors, peaks, loudness, durations) must match the commit exactly.
+      - name: the rebuilt sound manifest matches the commit (all measured fields; shas are per platform)
+        run: python3 tools/check_generated.py --ignore-field sha sfx/manifest.json
+      - name: sound QA (peaks, true peak, loudness, DC, edges, tails, loop seams, determinism vs the rebuilt manifest)
+        run: python3 sfx/qa.py
+      - name: build the music library (beds, stingers, sonic logos)
+        run: python3 music/build_music.py
+      - name: the rebuilt music manifest matches the commit byte for byte
+        run: python3 tools/check_generated.py music/manifest.json
+      - name: music QA (every bed, stinger and logo; python vs ffmpeg loudness)
+        run: python3 music/qa.py
+      - name: the layers / type / camera manifests match their generator
+        run: node layers/tests/make-manifests.mjs && python3 tools/check_generated.py layers/manifest.json type/manifest.json camera/manifest.json
+      - name: python tests (cuts, sfx, music, tools incl. the no-clock gate and the run-all / CI suite lists, cloud, blender recipes vs manifest)
+        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py sfx/tests music/tests tools/tests cloud/tests blender/tests
       - name: ears tests (automated listening, synthetic signals)
         run: python3 -m pytest -q ears/tests
       - name: transitions core tests
         run: node transitions/tests/core.test.mjs
       - name: transitions lint
         run: node transitions/tools/lint.mjs
+      - name: every transition id resolves to a back-end that can play it (GL-only ids have a DOM approximation; node, no browser)
+        run: node transitions/tests/backends.test.mjs
       - name: camera maths
         run: node camera/tests/camera.test.mjs
+      - name: type DOM bake and drive agree for any t0 (node, fake timeline and elements)
+        run: node type/tests/dom-t0.test.mjs
       - name: UI kit + closed-form springs (node, no browser)
         run: node type/tests/ui.test.mjs
       - name: round-3 type + layout parts (node, no browser)
@@ -64,6 +83,14 @@ jobs:
         run: python3 tools/mutation_check.py templates/demo-r6-pivot/pivot.mutants.json
       - name: ears brand_launch role mutation proof
         run: python3 tools/mutation_check.py ears/tests/brand_launch.manifest.mutants.json && python3 tools/mutation_check.py ears/tests/brand_launch.checks.mutants.json
+      - name: gfx def ids never collide (two items of every id in one host; node, no browser)
+        run: node type/tests/ids.test.mjs
+      - name: no part hangs or exhausts memory on 0, -1, NaN, Infinity, 1e9 or 1e-6 params (every gfx id, Canvas2D kind and background; node, watchdog per render)
+        run: node tools/tests/fuzz-params.test.mjs
+      - name: cross-process determinism (every gfx id, Canvas2D kind, background, camera preset, type preset and caption style hash the same in two fresh processes with different call histories)
+        run: node tools/tests/xproc-hash.test.mjs
+      - name: every template with a config builds its plan without a browser, passes its lints, and matches the committed out/plan.json
+        run: node tools/tests/template-plans.test.mjs
       - name: proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)
         run: node templates/proof-film/proof-film.test.mjs
       - name: physics table player (the baked table is committed; no npm install)

@@ -7,5 +7,9 @@ import { applyDom, DOM_KEYS, APPROX_KEYS } from '../lib/tx-dom.js';
 const a = document.getElementById('a'), b = document.getElementById('b'), root = document.getElementById('root');
 window.KEYS = { dom: DOM_KEYS, approx: APPROX_KEYS.filter((k) => !DOM_KEYS.includes(k)) };
 window.at = (key, p) => { applyDom(key, p, { a, b, root }); return [a.style.cssText, b.style.cssText, root.querySelector('.mptx-ov')?.innerHTML.length || 0].join('|'); };
+/* the endpoint references: shot A alone and shot B alone, with the page's own styles (no transition applied); tests compare p = 0 and p = 1 against them pixel for pixel */
+const A0 = a.style.cssText, B0 = b.style.cssText;
+window.alone = (which) => { root.querySelectorAll('.mptx-ov').forEach((e) => e.remove()); a.style.cssText = A0; b.style.cssText = B0; (which === 'a' ? b : a).style.visibility = 'hidden'; return true; };
+window.reset = () => { root.querySelectorAll('.mptx-ov').forEach((e) => e.remove()); a.style.cssText = A0; b.style.cssText = B0; return true; };
 window.__ready = true;
 </script></body></html>

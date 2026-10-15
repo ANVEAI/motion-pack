@@ -7,7 +7,7 @@
                    shimmer rings travelling along the beam, a source glow, frame-hashed flicker, and the window materialising (vertical scale +
                    scanlines + a sweep band). Screen blend: it reads on dark or mid plates; on a light plate lower `intensity` or use a darker colour.
    dotCondenseState(t, p, {W, H}) and hologramState(t, p) expose the maths (tests, and DOM elements that must follow the beam's window). */
-import { E, clamp, lerp, seg, TAU } from './ease.js';
+import { E, clamp, lerp, seg, TAU } from './ease.js'; import { saneParams } from '../type/gfx/safe.js'; import { K2D_LIM } from './limits.js';
 
 function hashf(...k) { let h = 2166136261 >>> 0; for (const v of k) { h ^= (v * 2654435761) >>> 0; h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0; h = Math.imul(h ^ (h >>> 13), 3266489909) >>> 0; h ^= h >>> 16; } return (h >>> 0) / 4294967296; }
 const hexRGB = (h) => { const n = parseInt(String(h).replace('#', ''), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
@@ -49,7 +49,7 @@ function plan(g, p, W, H) {
 }
 /* state at t: [{ x, y, r, k }] per dot (px, k = arrival 0..1) */
 export function dotCondenseState(t, pIn, { W = 1920, H = 1080, g = null } = {}) {
-  const p = { ...K2D_R3.dotCondense.d, ...pIn }, S = H / 1080, P = plan(g, p, W, H), ease = E[p.ease] || E.hero, r0 = p.radius * S;
+  const p = saneParams({ ...K2D_R3.dotCondense.d, ...pIn }, K2D_R3.dotCondense.d, K2D_LIM.dotCondense), S = H / 1080, P = plan(g, p, W, H), ease = E[p.ease] || E.hero, r0 = p.radius * S;
   return P.home.map(([hx, hy], i) => {
     const h = (k) => hashf(p.seed, i, k), w = p.drift * S, wx = hx + w * Math.sin(TAU * ((0.11 + 0.17 * h(3)) * t + h(4))), wy = hy + w * Math.cos(TAU * ((0.09 + 0.15 * h(5)) * t + h(6)));
     const d0 = p.at + p.stagger * h(7), k = ease(seg(t, d0, d0 + p.dur)), [tx, ty] = P.T[P.tgt[i]];
@@ -61,7 +61,7 @@ export function dotCondenseState(t, pIn, { W = 1920, H = 1080, g = null } = {}) 
 /* ---------------- hologramBeam ---------------- */
 /* beam = how far the cone has reached the window (0..1), win = how far the window has materialised (0..1), flick = this frame's flicker gain */
 export function hologramState(t, pIn = {}) {
-  const p = { ...K2D_R3.hologramBeam.d, ...pIn }, u = t - p.at;
+  const p = saneParams({ ...K2D_R3.hologramBeam.d, ...pIn }, K2D_R3.hologramBeam.d, K2D_LIM.hologramBeam), u = t - p.at;
   const beam = E.expoOut(seg(u, 0, p.on * 0.6)), win = E.hero(seg(u, p.on * 0.35, p.on)), f = Math.floor(t * p.fps + 1e-6);
   return { beam, win, flick: 1 - p.flicker * hashf(p.seed, f, 3) };
 }
