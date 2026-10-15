@@ -6,7 +6,7 @@ import math
 
 from mathutils import Vector
 
-from lib import device as DV, studio as ST, materials as MT, camera as CM
+from lib import device as DV, studio as ST, materials as MT, camera as CM, model as MD
 from lib.util import coll
 
 
@@ -56,7 +56,17 @@ def framing(ctx, half_w, half_h, lens, fill_wide, fill_tall):
     return CM.fit_dist(half_w, half_h, lens, ctx.W, ctx.H, fill_tall if ctx.tall else fill_wide)
 
 
+MODEL_PARAMS = {   # xp-hardware 2026-10-16: YOUR model instead of the procedural device (turntable, macroSweep, explode)
+    "model": {"type": "str", "default": "", "doc": "path to your .glb / .gltf / .obj (empty = the procedural device); stood on the floor, centred, scaled to model_size"},
+    "model_size": {"type": "float", "default": 0.3, "doc": "the model's width in metres (model_axis w | h | max)"},
+    "model_axis": {"type": "str", "default": "w", "doc": "which side model_size measures: w (width), h (height) or max"},
+    "model_yaw": {"type": "float", "default": 0.0, "doc": "turn the model at import (deg) so its front faces the camera"},
+}
+
+
 def device_from(ctx, p):
+    if p.get("model"):
+        return MD.load(p["model"], coll("device"), size=p.get("model_size", 0.3), axis=p.get("model_axis", "w"), yaw=math.radians(p.get("model_yaw", 0.0)))
     over = {}
     if p.get("band_strength") not in (None, ""):
         over["band"] = {"strength": float(p["band_strength"])}
@@ -84,9 +94,17 @@ def u_of(ctx, f):
 def look_point(D, where="front_right_band"):
     hw, hd, h = DV.footprint(D)
     c = D["corner_size"]
+    if D.get("model") and where == "front_right_band":   # your model: its front-right top corner (there is no band)
+        return Vector((hw - c * 0.5, -(hd - c * 0.5), h * 0.92))
     if where == "front_right_band":
         return Vector((hw - c * 0.5, -(hd - c * 0.5), D["z_band_c"]))
     return Vector((0, 0, h * 0.5))
+
+
+def set_band(D, K, *a, **k):
+    """the band of the procedural device; a no-op on your model (it has none)"""
+    if not D.get("model"):
+        DV.set_band(D, K, *a, **k)
 
 
 def deg(x):

@@ -88,6 +88,26 @@
      "type": "bool",
      "default": false,
      "doc": "ignite the band left-to-right over the first 0.9 s (not a loop)"
+    },
+    "model": {
+     "type": "str",
+     "default": "",
+     "doc": "path to your .glb / .gltf / .obj (empty = the procedural device); stood on the floor, centred, scaled to model_size"
+    },
+    "model_size": {
+     "type": "float",
+     "default": 0.3,
+     "doc": "the model's width in metres (model_axis w | h | max)"
+    },
+    "model_axis": {
+     "type": "str",
+     "default": "w",
+     "doc": "which side model_size measures: w (width), h (height) or max"
+    },
+    "model_yaw": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "turn the model at import (deg) so its front faces the camera"
     }
    },
    "id": "blender/turntable",
@@ -171,6 +191,26 @@
      "type": "float",
      "default": null,
      "doc": "override the preset's band strength"
+    },
+    "model": {
+     "type": "str",
+     "default": "",
+     "doc": "path to your .glb / .gltf / .obj (empty = the procedural device); stood on the floor, centred, scaled to model_size"
+    },
+    "model_size": {
+     "type": "float",
+     "default": 0.3,
+     "doc": "the model's width in metres (model_axis w | h | max)"
+    },
+    "model_axis": {
+     "type": "str",
+     "default": "w",
+     "doc": "which side model_size measures: w (width), h (height) or max"
+    },
+    "model_yaw": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "turn the model at import (deg) so its front faces the camera"
     }
    },
    "id": "blender/macroSweep",
@@ -253,6 +293,26 @@
      "type": "float",
      "default": null,
      "doc": "override the preset's band strength"
+    },
+    "model": {
+     "type": "str",
+     "default": "",
+     "doc": "path to your .glb / .gltf / .obj (empty = the procedural device); stood on the floor, centred, scaled to model_size"
+    },
+    "model_size": {
+     "type": "float",
+     "default": 0.3,
+     "doc": "the model's width in metres (model_axis w | h | max)"
+    },
+    "model_axis": {
+     "type": "str",
+     "default": "w",
+     "doc": "which side model_size measures: w (width), h (height) or max"
+    },
+    "model_yaw": {
+     "type": "float",
+     "default": 0.0,
+     "doc": "turn the model at import (deg) so its front faces the camera"
     }
    },
    "id": "blender/explode",
