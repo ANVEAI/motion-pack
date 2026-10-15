@@ -37,7 +37,7 @@ def solid(w, h, rgb):
 
 
 def moving_scene(w=540, h=960, seed=3):
-    """a function i -> frame: a bright disc that drifts across a dark graded backdrop with fine grain (so no check sees a flat or banded frame), one hero"""
+    """a function i -> frame: a bright disc that sways across a dark graded backdrop with fine grain (so no check sees a flat or banded frame), one hero"""
     rng = np.random.default_rng(seed)
     yy, xx = np.mgrid[0:h, 0:w]
     bg = (28 + 22 * (yy / h))[..., None] * np.ones((1, 1, 3))
@@ -45,7 +45,7 @@ def moving_scene(w=540, h=960, seed=3):
     grain = rng.normal(0, 2.0, (h, w, 1))
 
     def f(i):
-        cx, cy = w * (0.3 + 0.012 * i), h * 0.5
+        cx, cy = w * (0.5 + 0.22 * np.sin(0.18 * i)), h * (0.5 + 0.08 * np.cos(0.13 * i))
         r = min(w, h) * 0.13
         d = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
         disc = np.clip((r - d) / 2.0, 0, 1)[..., None]

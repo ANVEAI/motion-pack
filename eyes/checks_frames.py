@@ -214,8 +214,8 @@ def flashes(ctx):
                     rs.append([a, b])
             rs = [[round(a, 2), round(b, 2)] for a, b in rs]
             issues.append(issue('fail', rs[0], '%d %ss in one second at %s (WCAG 2.3.1 allows %d)' % (best, label, fmt_ranges(rs), sp['max_per_s']),
-                                ('keep the flashing area under a quarter of the frame, or space the flash onsets at least %.2f s apart (at most %d a second); layers flash `peak: 0.7`, '
-                                 'and fade a strobe over 4 or more frames' % (1.0 / sp['max_per_s'], sp['max_per_s'])) if name == 'general' else
+                                ('space the flash onsets at least %.2f s apart (at most %d a second), keep the flashing area under a quarter of the frame, or cut the luminance '
+                                 'swing under 10%%' % (1.0 / sp['max_per_s'], sp['max_per_s'])) if name == 'general' else
                                 ('swap the saturated red for a darker or less saturated red, or keep the red area under a quarter of the frame and at most %d changes a second' % sp['max_per_s']),
                                 'A strobing flash that can be uncomfortable or unsafe for photosensitive viewers.', name))
         elif best == sp['max_per_s']:

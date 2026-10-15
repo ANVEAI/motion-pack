@@ -113,7 +113,7 @@ def safezones(ctx):
                 sides = ', '.join('%s by %.0f px' % (a, b) for a, b in v)
                 issues.append(issue('fail', [round(t['t'][0], 2), round(t['t'][1], 2)], 'text "%s" (%s) leaves the %s safe area %s: %s' % (
                     t['text'][:30], t['id'], ctx['platform'], tuple(round(u) for u in rect), sides),
-                    'move the box inside x %d-%d, y %d-%d (type/safezones.js captionBox, or re-lay out the shot: faces and key text stay out of the bottom 35%% of a 9:16 frame)' % tuple(round(u) for u in rect),
+                    'move the box inside x %d-%d, y %d-%d (type/safezones.js captionBox, or re-lay out the shot: faces and key text stay out of the bottom 35%% of a 9:16 frame)' % tuple(round(u) for u in (rect[0], rect[2], rect[1], rect[3])),
                     'Part of the text is hidden behind the app interface (title, buttons, captions) or cut off.', 'safe'))
     else:
         for tr in detect_text_tracks(c):
@@ -163,7 +163,10 @@ def box_contrast(crop, fg=None):
     share = float(fgm.mean())
     if share < 0.005 or share > 0.9:
         return None
-    bg = lum[~fgm]
+    bgm = ~ndimage.binary_dilation(fgm, iterations=2)                      # the anti-aliased rim of the strokes is neither text nor backdrop
+    if bgm.mean() < 0.05:
+        bgm = ~fgm
+    bg = lum[bgm]
     p5, p95 = np.percentile(bg, [5, 95])
     return float(min(ratio(fl, p5), ratio(fl, p95))), fl, float(p5), float(p95), est, share
 
@@ -256,7 +259,7 @@ def readability(ctx):
             fgh = t['fg'] or 'the text colour'
             issues.append(issue(sev, [round(t['t'][0], 2), round(t['t'][1], 2)], 'text "%s" (%s) has %.2f:1 contrast against what is behind it at %.2f s (%s; needs %.1f:1, hard floor %.1f:1)' % (
                 t['text'][:30], t['id'], worst[0], worst[1], 'the text colour was estimated from the pixels' if est else 'from the plan colour %s' % fgh, sp['contrast_pass'], sp['contrast_fail']),
-                'put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair "%s" "#bg"' % (t['fg'] or '#fg'),
+                'put a scrim, plate or stroke behind it (40-60%% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair "%s" "#bg"' % (t['fg'] or '#fg'),
                 'The text blends into the picture behind it and is hard to read.', 'contrast'))
     hook = None
     first = min(texts, key=lambda x: x['t'][0])
