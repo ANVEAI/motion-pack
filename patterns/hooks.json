@@ -1,0 +1,140 @@
+{
+ "schema": "motion-pack/patterns/hooks@1",
+ "note": "Hook archetypes for the first 0-3 s. Every example line is written fresh for the pack and is generic: no brand, no real product, no number. A line with a digit needs a sourced claim (lint.proof). The universal frame-0 rule is the pack's one hook rule (skills/motion-pack/references/virality.md section 1); `frame0` here adds what each archetype needs on top of it. Evidence and grades: docs/research/launch-video-patterns.md section 2 (hooks).",
+ "grades": {
+  "platform": "published by the platform (its help pages, ad guides or commissioned studies it publishes)",
+  "study": "a measured study (academic, or a named research firm with a stated method)",
+  "practitioner": "editors, creators, agencies, vendors: belief from practice, not measured",
+  "inference": "our synthesis of the sources; a tunable house default"
+ },
+ "universal": {
+  "frame0": "A strong image already in motion; first visible change by frame 6; never black, never a logo bumper, never a fade-in from nothing.",
+  "first_sound": "On frames 0-3, or 1-2 s later on the first meaningful visual event over a moving frame 0 (a planned quiet open in plan.audio.quiet).",
+  "hook_text": "On screen by 0.3 s when the hook uses text; at most 7 words; at most 4 on the poster frame.",
+  "brand": "A brand cue inside the action (the product in frame, the UI, the brand colour) within the first 2-5 s for ads; never a standalone logo card first.",
+  "value_by_s": 3,
+  "hook_window_s": 6,
+  "grade": "platform",
+  "evidence": "docs/research/launch-video-patterns.md#hooks"
+ },
+ "hooks": [
+  {
+   "id": "payoff-first",
+   "label": "Show the result first",
+   "use_when": "The end state is visual and satisfying (a finished build, a clean desk, a solved problem). Tutorials, feature drops, output montages.",
+   "frame0": "The finished result fills the frame and is already moving (a slow push or a reveal sweep). Rewind or cut to the start by about 1.2 s.",
+   "examples": ["This took four minutes. Here's how.", "Same file. One click.", "From a blank page to this."],
+   "pairs_with": ["tutorial", "saas-feature-drop", "explainer"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "pattern-break",
+   "label": "Break the expected frame",
+   "use_when": "A crowded feed where the category looks the same; comedy; a format the viewer recognises and you can subvert in under 3 s.",
+   "frame0": "An odd or impossible image (wrong scale, wrong place, a familiar format interrupted). Three visual states in the first 3 s.",
+   "examples": ["Nobody asked the stapler.", "This meeting could have been a sticker.", "Wait. Wrong video."],
+   "pairs_with": ["ad-15", "ad-30", "vlog"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "claim-or-question",
+   "label": "Name the viewer's problem as a line",
+   "use_when": "The problem is common and wordable; software with no hero object; explainers.",
+   "frame0": "The line builds word by word on the beat from frame 0 (no blank frame before the first word); the picture behind it already moves.",
+   "examples": ["Why does every handoff break?", "Your notes are lying to you.", "Still copying this by hand?"],
+   "pairs_with": ["explainer", "saas-launch", "ad-15"],
+   "grade": "platform"
+  },
+  {
+   "id": "in-medias-res",
+   "label": "Start in the middle of the moment",
+   "use_when": "A story with a clear moment of failure or action; vlogs; short films; founder stories.",
+   "frame0": "The moment of failure or action is already happening (the cup tipping, the deadline alarm). Whip or cut back to the setup after it lands.",
+   "examples": ["Ten seconds before it all went wrong.", "The printer chose violence.", "That's the third time today."],
+   "pairs_with": ["vlog", "short-film", "founder-story", "ad-30"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "curiosity-gap",
+   "label": "Show part of it and hold the rest",
+   "use_when": "Teasers, hardware reveals, a design worth waiting for. The payoff must arrive in the same video or on a stated date.",
+   "frame0": "A partial or blurred reveal already in motion (an edge lit from the dark, a silhouette, a mask opening). The full reveal lands later on a music hit.",
+   "examples": ["You've never seen one from this side.", "Something is coming.", "Look closer."],
+   "pairs_with": ["teaser", "hardware-reveal", "trailer"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "social-proof",
+   "label": "Lead with a real, sourced result",
+   "use_when": "You have a measured number or a real quote with permission. Never with placeholder data.",
+   "frame0": "The number counts up or the quote card lands from frame 0, with its source on screen. A digit without a source fails lint.proof.",
+   "needs": "a claim with a real source in plan.claims",
+   "examples": ["Teams asked for this one first.", "What changed after the first week.", "Here's what the test showed."],
+   "pairs_with": ["saas-launch", "ad-30", "founder-story"],
+   "grade": "platform"
+  },
+  {
+   "id": "problem-agitate",
+   "label": "Make the problem worse, fast",
+   "use_when": "Ads with one clear pain; a 3-cut escalation into the product.",
+   "frame0": "The pain is visible on frame 0; three cuts escalate it inside 3 s; the last cut smashes to the product.",
+   "examples": ["One tab. Two tabs. Nine tabs.", "It was fine. Then it wasn't.", "And then the client called."],
+   "pairs_with": ["ad-15", "ad-30", "saas-feature-drop"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "live-demo",
+   "label": "Watch it do the thing",
+   "use_when": "AI products and tools whose action is the proof: a prompt typed and answered, an agent working, a one-take demo.",
+   "frame0": "The input is already being typed or the work is already running on frame 0 (a cursor moving, a prompt half-written). The real UI, never an image model's redraw.",
+   "examples": ["Ask it anything about this file.", "Watch it plan the whole week.", "One sentence in. A draft out."],
+   "pairs_with": ["saas-launch", "saas-feature-drop", "tutorial"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "cold-open",
+   "label": "An out-of-context moment",
+   "use_when": "Trailers and teasers; a story told later in order. The moment must make sense by the end.",
+   "frame0": "A striking moment from the middle of the story with its own sound (a line, a breath, an impact). A title or brand cue by 5 s on social cuts.",
+   "examples": ["Don't open that door.", "We have one try.", "Who left the lights on?"],
+   "pairs_with": ["trailer", "teaser", "short-film"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "light-from-dark",
+   "label": "An edge lit out of darkness",
+   "use_when": "Hardware and physical products; a hero object worth looking at.",
+   "frame0": "A sliver of the object already lit and moving (a band of light sweeping an edge); the first sound is a swell or a tone, not silence. Not a black frame: some light is on screen at frame 0.",
+   "examples": ["(no words: light and sound only)", "Made to be held.", "Quiet, until it isn't."],
+   "pairs_with": ["hardware-reveal", "teaser"],
+   "grade": "inference"
+  },
+  {
+   "id": "provocative-line",
+   "label": "The sharpest sentence first",
+   "use_when": "Podcast clips, interviews, talking heads: open on the most quotable or contrarian line of the window.",
+   "frame0": "The speaker is mid-sentence on frame 0 with the key phrase as large captions; the context comes after.",
+   "examples": ["Most meetings are a tax on focus.", "I'd never hire for that skill again.", "We were wrong about pricing."],
+   "pairs_with": ["podcast-clip", "vlog", "founder-story"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "promise",
+   "label": "Say what the viewer will get",
+   "use_when": "Tutorials and explainers where the viewer came with a question; long-form intros.",
+   "frame0": "The end result is visible (or the question on screen) while the line states the promise; the steps start inside 10 s.",
+   "examples": ["Three steps, no plugins.", "By the end you'll build this.", "The one setting that fixes it."],
+   "pairs_with": ["tutorial", "explainer"],
+   "grade": "practitioner"
+  },
+  {
+   "id": "founder-to-camera",
+   "label": "A person with a stake, talking straight to you",
+   "use_when": "Founder launches and personal stories where the person is the credibility.",
+   "frame0": "The founder already speaking on frame 0, mid-thought, beside the product or in the place the problem lives; a name super by about 5 s.",
+   "examples": ["I built this because I kept losing it.", "This is the thing I wanted for years.", "We spent a year on one button."],
+   "pairs_with": ["founder-story", "vlog"],
+   "grade": "practitioner"
+  }
+ ]
+}

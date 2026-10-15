@@ -1,0 +1,22 @@
+{
+ "file": "tools/structure_check.py",
+ "test": ["python3", "-m", "pytest", "-q", "-x", "tools/tests/test_structure_check.py"],
+ "timeout": 300,
+ "mutants": [
+  {"name": "timing tolerance never falls off", "find": "    if err <= tol:\n        return 1.0", "replace": "    if True:\n        return 1.0"},
+  {"name": "logo bumper on frame 0 not penalised", "find": "parts.append(0.0 if bumper else 1.0)", "replace": "parts.append(1.0)"},
+  {"name": "hook text window ignored", "find": "early = [t for t in tl['texts'] if t['a'] <= by + 1e-6]", "replace": "early = list(tl['texts'])"},
+  {"name": "first-sound rule off", "find": "parts.append(1.0 if (sound0 or quiet_open) else 0.0)", "replace": "parts.append(1.0)"},
+  {"name": "a quiet open of any length excuses the silence", "find": "(q['t'][1] - q['t'][0]) <= 2.0 + 1e-6", "replace": "True"},
+  {"name": "missing required section scores full", "find": "                scores.append(0.0)\n                fixes.append('timing: no", "replace": "                scores.append(1.0)\n                fixes.append('timing: no"},
+  {"name": "sections out of order not penalised", "find": "            sc *= 0.5", "replace": "            sc *= 1.0"},
+  {"name": "ASL range ignored", "find": "    err = _range_err(asl, lo, hi)", "replace": "    err = 0.0"},
+  {"name": "text floor ignored", "find": " and d >= floor - 1e-6", "replace": ""},
+  {"name": "chars-per-second ceiling ignored", "find": " and cps <= cps_max + 1e-6", "replace": ""},
+  {"name": "end-card hold ignored", "find": "sc_h = 1.0 if hold >= mh - 1e-6 else max(0.0, hold / mh)", "replace": "sc_h = 1.0"},
+  {"name": "continuous film gaps ignored", "find": "sc = max(0.0, 1.0 - sum((g - cap) / cap for _, g in long))", "replace": "sc = 1.0"},
+  {"name": "total ignores the parts", "find": "total = sum(W[k] * parts[k] for k in parts) / sum(W[k] for k in parts) * 100", "replace": "total = 100.0"},
+  {"name": "h2h-style ids lose their label", "find": "^([a-z][a-z_-]{2,}?)\\d+[a-z]?$", "replace": "^([a-z][a-z_-]{0,}?)\\d+[a-z]?$"},
+  {"name": "CLI passes a failing plan", "find": "    return 0 if r['score'] >= (a.min if a.min is not None else r['pass_score']) else 1", "replace": "    return 0"}
+ ]
+}

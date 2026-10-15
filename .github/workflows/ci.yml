@@ -105,6 +105,10 @@ jobs:
         run: python3 -m compileall -q blender
       - name: "no studied account or brand name outside docs/research (hashed denylist; the names themselves are never in the repo)"
         run: python3 tools/check_names.py
+      - name: "structure check (every genre template plan scored against its beat sheet in patterns/structures.json, or reported with a reason)"
+        run: python3 tools/structure_check.py --all
+      - name: "structure check mutation proof (each scoring rule fails its test when broken)"
+        run: python3 tools/mutation_check.py tools/tests/structure_check.mutants.json
       - name: "README counts are current"
         run: python3 tools/count.py --check
       - name: "catalog media all resolve"
