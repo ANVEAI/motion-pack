@@ -131,6 +131,7 @@ export const PROOF = {
       if (p.bars) { const r = p.rows[p.bars.row ?? 0], vals = r.values, mx = Math.max(...vals) || 1, bh = (p.bars.h ?? 0.3) * h, by = top + bh, bw = Math.min(140 * s, cw * 0.5);
         o += text(p.bars.title || r.label, x + pad, top + 30 * s, { size: 22 * s, weight: 700, fill: T.muted, op: fk });
         vals.forEach((v, j) => { const g = E.expoOut(seg(u, tm.barsAt + j * 0.12, tm.barsAt + j * 0.12 + p.countDur)), hh = (bh - 96 * s) * v / mx * g, bx0 = colX(j) + cw / 2 - bw / 2, hi = p.highlight && (p.highlight.col ?? -1) === j + 1;
+          if (c.geo) (c.geo.bars ||= []).push({ x: bx0, w: bw, top: by - 30 * s - (bh - 96 * s) * v / mx, base: by - 30 * s, value: v, unit: r.unit, dec: r.dec, label: p.columns[j + 1].label });   // geometry side channel (chart.hoverTooltip reads the bars it hovers from here)
           o += rect(bx0, by - 30 * s - hh, bw, hh, 8 * s, hi ? p.accent : T.faint) + (g > 0 ? text(fmtUnit(v * g, r.unit, r.dec), bx0 + bw / 2, by - 42 * s - hh, { size: 22 * s, weight: 700, fill: hi ? p.accent : T.ink, anchor: 'middle', extra: TAB }) : '') +
             text(p.columns[j + 1].label, bx0 + bw / 2, by - 4 * s, { size: 19 * s, weight: 600, fill: T.muted, anchor: 'middle', op: fk }); });
         top = by + 18 * s; }

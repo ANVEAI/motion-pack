@@ -3931,6 +3931,139 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "ui.dockLaunch",
+   "file": "type/gfx/r6.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/mouse_click",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 5.4,
+   "in_frames": 8,
+   "out_frames": 9,
+   "params": {
+    "icons": [
+     {
+      "name": "App A",
+      "icon": "chart",
+      "color": "#7A5CFF"
+     },
+     {
+      "name": "App B",
+      "icon": "mail",
+      "color": "#E8553D"
+     },
+     {
+      "name": "App C",
+      "icon": "doc",
+      "color": "#1FA37A"
+     },
+     {
+      "name": "App D",
+      "icon": "spark",
+      "color": "#E0A21B"
+     },
+     {
+      "name": "App E",
+      "icon": "play",
+      "color": "#2F7DE1"
+     },
+     {
+      "name": "App F",
+      "icon": "box",
+      "color": "#C94F9B"
+     }
+    ],
+    "target": 3,
+    "clickAt": 3.2,
+    "expandDur": 0.6,
+    "path": null,
+    "size": 84,
+    "magnify": 1.85,
+    "radius": 2.3,
+    "window": [
+     0.1,
+     0.1,
+     0.8,
+     0.62
+    ],
+    "theme": "dark",
+    "cursor": true,
+    "label": "illustrative: placeholder icons and window",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "dock",
+    "launch",
+    "magnify",
+    "cursor",
+    "app-window",
+    "shared-element",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-r6.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.connectRows",
+   "file": "type/gfx/r6.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/mouse_click",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 7,
+   "in_frames": 8,
+   "out_frames": 9,
+   "params": {
+    "rows": [
+     {
+      "name": "Service A",
+      "icon": "chart",
+      "color": "#4F6BFF"
+     },
+     {
+      "name": "Service B",
+      "icon": "mail",
+      "color": "#16A37F"
+     },
+     {
+      "name": "Service C",
+      "icon": "box",
+      "color": "#E8742C"
+     }
+    ],
+    "rowsAt": 0.25,
+    "clickAt": 1.5,
+    "clickGap": 1.5,
+    "reveal": "sequence",
+    "thinking": "Thinking",
+    "thinkAt": null,
+    "theme": "dark",
+    "accent": "#5B6BFF",
+    "connect": "Connect",
+    "done": "Connected",
+    "note": "illustrative: placeholder services",
+    "cursor": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "connect",
+    "rows",
+    "button",
+    "tick",
+    "cursor",
+    "integrations",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-r6.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "type.wordWheel",
    "file": "type/gfx/kinetic.js",
    "kind": "gfx",
@@ -6326,6 +6459,255 @@
     "talking-head"
    ],
    "demo": "type/demo/out/gfx-r45type.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "chart.hoverTooltip",
+   "file": "type/gfx/r6.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/tick",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 5.4,
+   "in_frames": 10,
+   "out_frames": 9,
+   "params": {
+    "target": "bar",
+    "draw": true,
+    "chart": {},
+    "fmt": null,
+    "dec": 0,
+    "suffix": null,
+    "source": "illustrative data",
+    "method": "delta: change from the previous slot",
+    "path": null,
+    "startAt": 1.3,
+    "visit": [
+     1,
+     3,
+     2
+    ],
+    "travel": 0.65,
+    "dwell": 0.5,
+    "lift": 12,
+    "hot": null,
+    "theme": "light",
+    "up": "#17A865",
+    "down": "#E5484D",
+    "cursor": true,
+    "scale": 1
+   },
+   "tags": [
+    "chart",
+    "tooltip",
+    "hover",
+    "cursor",
+    "bar",
+    "line",
+    "delta",
+    "data",
+    "proof",
+    "product-film"
+   ],
+   "demo": "type/demo/out/gfx-r6.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.verbCard",
+   "file": "type/gfx/r6.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/soft",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 7.2,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "words": [
+     {
+      "big": "Plan",
+      "rest": "the whole week"
+     },
+     {
+      "big": "Make",
+      "rest": "it look real"
+     },
+     {
+      "big": "Send",
+      "rest": "it to everyone"
+     }
+    ],
+    "ground": "#07060B",
+    "ink": "#FFFFFF",
+    "colors": [
+     "#6F4BFF",
+     "#FF4FA3",
+     "#3E7BFF"
+    ],
+    "chapterDur": 2.4,
+    "settleAt": 0.95,
+    "settleDur": 0.7,
+    "sweepDur": 0.8,
+    "bigSize": 420,
+    "lineSize": 84,
+    "weight": 800,
+    "glow": true,
+    "scale": 1
+   },
+   "tags": [
+    "title",
+    "chapter",
+    "verb",
+    "giant-word",
+    "feature-tour",
+    "gradient-sweep",
+    "typography"
+   ],
+   "demo": "type/demo/out/gfx-r6.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.degradingDiagram",
+   "file": "type/gfx/r6.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 13.2,
+   "in_frames": 8,
+   "out_frames": 9,
+   "params": {
+    "beats": [
+     {
+      "at": 0,
+      "caption": "Everything looks fine",
+      "layout": "trio",
+      "mood": "calm",
+      "links": "line"
+     },
+     {
+      "at": 1.8,
+      "caption": "Steps start to repeat",
+      "layout": "trio",
+      "mood": "worried",
+      "links": "loop"
+     },
+     {
+      "at": 3.6,
+      "caption": "Cracks begin to spread",
+      "layout": "trio",
+      "mood": "cracked",
+      "links": "loop"
+     },
+     {
+      "at": 5.4,
+      "caption": "Then it breaks",
+      "layout": "trio",
+      "mood": "broken",
+      "links": "broken"
+     },
+     {
+      "at": 7.6,
+      "caption": "One tidy layout",
+      "layout": "row4",
+      "mood": "tidy",
+      "links": "line"
+     },
+     {
+      "at": 9.4,
+      "caption": "Every part checked",
+      "layout": "row4",
+      "mood": "tidy",
+      "links": "line",
+      "marks": [
+       1,
+       1,
+       -1,
+       1
+      ]
+     },
+     {
+      "at": 11.2,
+      "caption": "Room for more",
+      "layout": "grid6",
+      "mood": "tidy",
+      "links": "line"
+     }
+    ],
+    "cls": "panel",
+    "ink": "#EDEDF2",
+    "ok": "#4BE08F",
+    "bad": "#FF6B6B",
+    "captionSize": 64,
+    "maxUnit": 150,
+    "swap": 0.5,
+    "reduced": false,
+    "ret": [
+     2,
+     0
+    ],
+    "scale": 1
+   },
+   "tags": [
+    "layout",
+    "diagram",
+    "boxes",
+    "faces",
+    "problem-ladder",
+    "value-ladder",
+    "captions",
+    "blur-through",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-r6.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.commandPill",
+   "file": "type/gfx/r6.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/type_key",
+    "offset_f": 1,
+    "gain_db": -5
+   },
+   "dur_s": 3.6,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "text": "ship --first-draft",
+    "prompt": "$",
+    "typeAt": 0.55,
+    "cps": 16,
+    "drawAt": 0.15,
+    "drawDur": 0.7,
+    "size": 46,
+    "pos": [
+     0.5,
+     0.5
+    ],
+    "ink": "#EDEDF2",
+    "accent": "#8E7BFF",
+    "stroke": 2.5,
+    "scale": 1
+   },
+   "tags": [
+    "type",
+    "terminal",
+    "command",
+    "pill",
+    "cta",
+    "monospace",
+    "typing",
+    "draw-on"
+   ],
+   "demo": "type/demo/out/gfx-r6.png",
    "test": "type/tests/gfx-sheet.mjs"
   },
   {

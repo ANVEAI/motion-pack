@@ -1,0 +1,487 @@
+{
+ "template": "demo-r6-type",
+ "fps": 30,
+ "seconds": 36,
+ "music": "music/bed_tech_pulse_loop8",
+ "size": [
+  1920,
+  1080
+ ],
+ "bpm": 120,
+ "beatSec": 0.5,
+ "shots": [
+  {
+   "id": "verbs",
+   "items": [
+    {
+     "part": "title.verbCard",
+     "params": {
+      "words": [
+       {
+        "big": "Plan",
+        "rest": "the whole week"
+       },
+       {
+        "big": "Ship",
+        "rest": "it before lunch"
+       }
+      ],
+      "chapterDur": 2.4
+     }
+    }
+   ],
+   "layers": [],
+   "bg": "night",
+   "hold": false,
+   "dur": 5,
+   "tx": "transitions/cut",
+   "start": 0
+  },
+  {
+   "id": "hover",
+   "items": [
+    {
+     "part": "chart.hoverTooltip",
+     "params": {
+      "scale": 1.5,
+      "chart": {
+       "label": "Illustrative weekly series",
+       "text": "#0E0E14"
+      }
+     }
+    }
+   ],
+   "layers": [],
+   "bg": "paper",
+   "hold": false,
+   "dur": 5.5,
+   "tx": "transitions/cut",
+   "start": 5
+  },
+  {
+   "id": "dock",
+   "items": [
+    {
+     "part": "ui.dockLaunch",
+     "params": {
+      "scale": 1.5
+     }
+    }
+   ],
+   "layers": [],
+   "bg": "ink",
+   "hold": false,
+   "dur": 5.5,
+   "tx": "transitions/cut",
+   "start": 10.5
+  },
+  {
+   "id": "connect",
+   "items": [
+    {
+     "part": "ui.connectRows",
+     "params": {
+      "scale": 1.5
+     }
+    }
+   ],
+   "layers": [],
+   "bg": "ink",
+   "hold": false,
+   "dur": 7,
+   "tx": "transitions/cut",
+   "start": 16
+  },
+  {
+   "id": "degrade",
+   "items": [
+    {
+     "part": "layout.degradingDiagram",
+     "params": {
+      "beats": [
+       {
+        "at": 0,
+        "caption": "Everything looks fine",
+        "layout": "trio",
+        "mood": "calm",
+        "links": "line"
+       },
+       {
+        "at": 1.5,
+        "caption": "Steps start to repeat",
+        "layout": "trio",
+        "mood": "worried",
+        "links": "loop"
+       },
+       {
+        "at": 3,
+        "caption": "Cracks begin to spread",
+        "layout": "trio",
+        "mood": "cracked",
+        "links": "loop"
+       },
+       {
+        "at": 4.5,
+        "caption": "Then it breaks",
+        "layout": "trio",
+        "mood": "broken",
+        "links": "broken"
+       },
+       {
+        "at": 6.4,
+        "caption": "One tidy layout",
+        "layout": "row4",
+        "mood": "tidy",
+        "links": "line"
+       },
+       {
+        "at": 7.9,
+        "caption": "Every part checked",
+        "layout": "row4",
+        "mood": "tidy",
+        "links": "line",
+        "marks": [
+         1,
+         1,
+         -1,
+         1
+        ]
+       }
+      ]
+     }
+    }
+   ],
+   "layers": [],
+   "bg": "night",
+   "hold": false,
+   "dur": 9,
+   "tx": "transitions/cut",
+   "start": 23
+  },
+  {
+   "id": "end",
+   "items": [
+    {
+     "part": "type.commandPill",
+     "params": {
+      "text": "ship --first-draft",
+      "size": 84,
+      "dur": 4
+     }
+    }
+   ],
+   "layers": [],
+   "bg": "ink",
+   "hold": true,
+   "dur": 4,
+   "tx": "transitions/cut",
+   "start": 32
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/hit/soft",
+   "t": 0,
+   "gainDb": 0,
+   "why": "verbs: giant word \"Plan\" lands"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 1.05,
+   "gainDb": 0,
+   "why": "verbs: it settles into the line"
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 1.92,
+   "gainDb": 0,
+   "why": "verbs: gradient sweep"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 2.4,
+   "gainDb": 0,
+   "why": "verbs: giant word \"Ship\" lands"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 3.45,
+   "gainDb": 0,
+   "why": "verbs: it settles into the line"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 6.5,
+   "gainDb": 0,
+   "why": "hover: tooltip chip appears"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 6.6167,
+   "gainDb": 0,
+   "why": "hover: bar 5 entered"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 6.75,
+   "gainDb": 0,
+   "why": "hover: bar 3 entered"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 6.9167,
+   "gainDb": 0,
+   "why": "hover: bar 2 entered"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 7.85,
+   "gainDb": 0,
+   "why": "hover: bar 3 entered"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 7.9667,
+   "gainDb": 0,
+   "why": "hover: bar 4 entered"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 8.9167,
+   "gainDb": 0,
+   "why": "hover: bar 3 entered"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 11.1833,
+   "gainDb": 0,
+   "why": "dock: icon 4 magnifies"
+  },
+  {
+   "id": "sfx/device/loading_tick",
+   "t": 11.3,
+   "gainDb": 0,
+   "why": "dock: icon 2 magnifies"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 11.4833,
+   "gainDb": 0,
+   "why": "dock: icon 1 magnifies"
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 12.35,
+   "gainDb": 0,
+   "why": "dock: icon 2 magnifies"
+  },
+  {
+   "id": "sfx/device/loading_tick",
+   "t": 12.55,
+   "gainDb": 0,
+   "why": "dock: icon 3 magnifies"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 12.8833,
+   "gainDb": 0,
+   "why": "dock: icon 4 magnifies"
+  },
+  {
+   "id": "sfx/device/mouse_click",
+   "t": 13.7,
+   "gainDb": 0,
+   "why": "dock: click on the icon"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 14.18,
+   "gainDb": 0,
+   "why": "dock: window content lands"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 16.25,
+   "gainDb": 0,
+   "why": "connect: Service A row arrives"
+  },
+  {
+   "id": "sfx/device/mouse_click",
+   "t": 17.5,
+   "gainDb": 0,
+   "why": "connect: click Connect on Service A"
+  },
+  {
+   "id": "sfx/ui/toggle_on",
+   "t": 17.64,
+   "gainDb": 0,
+   "why": "connect: Service A connected"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 17.9,
+   "gainDb": 0,
+   "why": "connect: Service B row arrives"
+  },
+  {
+   "id": "sfx/device/mouse_click",
+   "t": 19,
+   "gainDb": 0,
+   "why": "connect: click Connect on Service B"
+  },
+  {
+   "id": "sfx/ui/toggle_on",
+   "t": 19.14,
+   "gainDb": 0,
+   "why": "connect: Service B connected"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 19.4,
+   "gainDb": 0,
+   "why": "connect: Service C row arrives"
+  },
+  {
+   "id": "sfx/device/mouse_click",
+   "t": 20.5,
+   "gainDb": 0,
+   "why": "connect: click Connect on Service C"
+  },
+  {
+   "id": "sfx/ui/toggle_on",
+   "t": 20.64,
+   "gainDb": 0,
+   "why": "connect: Service C connected"
+  },
+  {
+   "id": "sfx/ui/ai_think_pulse",
+   "t": 21.25,
+   "gainDb": 0,
+   "why": "connect: thinking line"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 23.1,
+   "gainDb": 0,
+   "why": "degrade: diagram appears"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 24.5,
+   "gainDb": 0,
+   "why": "degrade: beat 2: worried / Steps start to repeat"
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 26,
+   "gainDb": 0,
+   "why": "degrade: beat 3: cracked / Cracks begin to spread"
+  },
+  {
+   "id": "sfx/hit/thud",
+   "t": 27.5,
+   "gainDb": 0,
+   "why": "degrade: beat 4: broken / Then it breaks"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 29.4,
+   "gainDb": 0,
+   "why": "degrade: beat 5: tidy / One tidy layout"
+  },
+  {
+   "id": "sfx/ui/toggle_on",
+   "t": 30.9,
+   "gainDb": 0,
+   "why": "degrade: beat 6: tidy / Every part checked"
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 32.15,
+   "gainDb": 0,
+   "why": "end: outline draws on"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 32.55,
+   "gainDb": 0,
+   "why": "end: key 1"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 32.675,
+   "gainDb": 0,
+   "why": "end: key 3"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 32.8625,
+   "gainDb": 0,
+   "why": "end: key 6"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 32.9875,
+   "gainDb": 0,
+   "why": "end: key 8"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 33.1125,
+   "gainDb": 0,
+   "why": "end: key 10"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 33.2375,
+   "gainDb": 0,
+   "why": "end: key 12"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 33.3625,
+   "gainDb": 0,
+   "why": "end: key 14"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 33.4875,
+   "gainDb": 0,
+   "why": "end: key 16"
+  },
+  {
+   "id": "sfx/ui/type_key",
+   "t": 33.6125,
+   "gainDb": 0,
+   "why": "end: key 18"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 33.725,
+   "gainDb": 0,
+   "why": "end: command ready"
+  }
+ ],
+ "claims": [
+  {
+   "text": "the weekly series on the hovered chart (bars, values, change pills)",
+   "source": "illustrative placeholder data defined in the part's own defaults (chart.hoverTooltip -> chart.bar); the chip and the chart carry that label in frame"
+  }
+ ],
+ "ceilingDb": -2,
+ "fadeInMs": 40,
+ "paceRule": {
+  "aslMax": 6.5,
+  "longMax": 9.5
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 6,
+   "asl": 6,
+   "longest": 9,
+   "pass": true
+  }
+ }
+}
