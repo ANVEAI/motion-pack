@@ -5,7 +5,8 @@ MODULES = ["whoosh", "impacts", "risers", "ui", "materials", "liquid", "cartoon"
            "indian", "foley", "device", "fx_extra", "ambience2",          # 2026-10-13 expansion
            "saas",                                                         # 2026-10-14: cards, scan, pixel dissolve, agent texture, brand slam, letters
            "archive",                                                      # 2026-10-14 round 3: projector loop, typewriter line, hologram beam
-           "elec"]                                                         # 2026-10-14 gap sfx/elec/arc: arc zap, crackle loop, zap-off power-down
+           "elec",                                                         # 2026-10-14 gap sfx/elec/arc: arc zap, crackle loop, zap-off power-down
+           "trailer"]                                                      # 2026-10-16 film lane: braams, booms, risers, clocks, heart, beds, silence patterns
 
 
 def load_all():

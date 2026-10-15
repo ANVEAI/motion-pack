@@ -2,6 +2,7 @@
    so every look emits GLSL uniforms, an SVG filter and a .cube through layers/grade.js (layers/tools/emit-looks.mjs writes layers/looks/*.cube + a contact sheet).
    Looks are creative starting points, tuned by eye on the pack's test plate; not emulations of any branded film stock or LUT product.
    Rule (same as grades): ONE look per piece; a look replaces the genre grade, it does not stack on it. */
+import { FILM_LOOKS } from './film-looks.js';   // 2026-10-16 film lane: eight genre looks (look.film-<genre>), merged below
 const L = (o, tags) => ({ ...o, _tags: tags });
 export const LOOKS = {
   'bleach-bypass': L({ contrast: 0.42, sat: 0.45, fade: 0.0, power: [1.05, 1.05, 1.05], split: { shadowHue: 200, shadowSat: 0.05, highHue: 40, highSat: 0.04 } }, ['war', 'gritty', 'thriller', 'desaturated']),
@@ -50,6 +51,7 @@ export const LOOKS = {
   'security-cam': L({ contrast: 0.2, slope: [0.9, 1.08, 0.92], sat: 0.25, fade: 0.06 }, ['cctv', 'found-footage', 'thriller']),
   'lofi-polaroid': L({ temp: 0.1, tint: -0.04, contrast: 0.08, slope: [1.02, 1.02, 0.9], sat: 0.8, split: { shadowHue: 175, shadowSat: 0.14, highHue: 52, highSat: 0.14 }, fade: 0.1 }, ['polaroid', 'memory', 'scrapbook', 'lofi']),
 };
+Object.assign(LOOKS, FILM_LOOKS);   // 2026-10-16 film lane (presets/film-looks.js)
 export const LOOK_NAMES = Object.keys(LOOKS);
 export const lookParams = (name) => { const { _tags, ...p } = LOOKS[name]; return p; };
 export const LOOK_TAGS = Object.fromEntries(LOOK_NAMES.map((k) => [k, LOOKS[k]._tags]));
