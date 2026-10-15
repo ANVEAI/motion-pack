@@ -30,6 +30,12 @@ def _music_modules():
     import mixer                                  # noqa: E402 (music/mixer.py)
     from mpaudio import meter, sweeteners, registry  # noqa: E402
     import importlib
+    # blender/recipes is also a package called `recipes`: when another suite in the same process imported it first, drop it so the sound recipes are the ones that load
+    # (the mixer imports `recipes` lazily for a repeated cue id)
+    r = sys.modules.get('recipes')
+    if r is not None and not os.path.abspath(getattr(r, '__file__', '') or '').startswith(os.path.join(core.PACK, 'sfx')):
+        for k in [k for k in sys.modules if k == 'recipes' or k.startswith('recipes.')]:
+            del sys.modules[k]
     import recipes
     for m in recipes.MODULES:
         importlib.import_module('recipes.' + m)
