@@ -95,3 +95,8 @@ storyboard/examples/*/storyboard.pdf
 storyboard/examples/*/storyboard.html
 storyboard/examples/*/panels/
 storyboard/examples/*/real/
+
+# --- the shared project file (templates/_shared/project.mjs): what a --project / --set build resolved, per template ---
+templates/*/out/config.resolved.json
+templates/*/out/project.report.json
+templates/*/out/voice.words.json

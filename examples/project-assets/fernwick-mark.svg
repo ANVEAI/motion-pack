@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Fernwick: a FICTIONAL demo brand made for motion-pack (CC0). An original mark: a rounded tile with one leaf. Not a real company's logo. -->
+  <rect x="4" y="4" width="112" height="112" rx="28" fill="#0F766E"/>
+  <path d="M60 96 C60 70 62 50 78 30 C70 52 66 70 64 96 Z" fill="#FFFFFF"/>
+  <path d="M61 78 C52 70 42 66 32 66 C42 60 54 62 62 70 Z" fill="#FFFFFF"/>
+  <path d="M62 62 C56 52 48 46 38 44 C50 42 58 46 64 56 Z" fill="#FFFFFF"/>
+  <circle cx="84" cy="84" r="6" fill="#134E4A"/>
+</svg>

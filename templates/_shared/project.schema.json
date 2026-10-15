@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ANVEAI/motion-pack/templates/_shared/project.schema.json",
+  "title": "motion-pack project file",
+  "description": "ONE file a person or an agent edits to make a video from any motion-pack template. Each template's config.mjs exports PROJECT_MAP, which maps the fields below onto its own CONFIG paths; templates/_shared/project.mjs validates this file against this schema, applies the map, then applies --set key=value on top. Keys that start with // are comments and are ignored everywhere. Paths (media src, logo, voice) are relative to the project file. A digit in on-screen copy (text.*, brand.cta, brand.line) needs a claim with a real source.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^//": {}
+  },
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "optional pointer to this schema, for editors"
+    },
+    "version": {
+      "const": 1,
+      "description": "project file format version"
+    },
+    "template": {
+      "description": "the template id this project builds by default (templates/<id>), or a list of ids it drives (the first one is the default). `mp list` shows them.",
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        }
+      ]
+    },
+    "brand": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^//": {}
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "description": "the product or brand name shown in frame (a fictional brand in demos, labelled)"
+        },
+        "accent": {
+          "$ref": "#/$defs/hex",
+          "description": "the ONE brand colour (accent words, buttons, the hero mark). `mp brand logo.svg` suggests one and checks its contrast"
+        },
+        "ink": {
+          "$ref": "#/$defs/hex",
+          "description": "text colour on paper (needs 4.5:1 against paper)"
+        },
+        "paper": {
+          "$ref": "#/$defs/hex",
+          "description": "background colour of cards and end cards"
+        },
+        "muted": {
+          "$ref": "#/$defs/hex",
+          "description": "secondary text and labels (optional)"
+        },
+        "logo": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "path to YOUR logo (SVG or PNG), or null for none. Never a third-party mark"
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "the URL on the end card, e.g. orbit.example"
+        },
+        "cta": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "the call to action on the end card (a digit needs a claim with a source)"
+        },
+        "line": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "an end line / tagline (optional; a digit needs a claim with a source)"
+        },
+        "fonts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "display": {
+              "type": "string",
+              "description": "display family (shipped: Manrope, IBM Plex Mono, STIX Two Text)"
+            },
+            "text": {
+              "type": "string",
+              "description": "text family"
+            }
+          },
+          "patternProperties": {
+            "^//": {}
+          }
+        }
+      }
+    },
+    "text": {
+      "type": "object",
+      "description": "ALL on-screen copy, keyed. Shared vocabulary (a template maps the keys it uses; `mp list` shows them): headline (the hook or claim line, at most 7 words, one *accent* word), subline, problem (a list of short lines), product, benefit, end, intro, promise, name, title, words (a list), availability. A key the chosen template does not use is reported, not silently dropped.",
+      "propertyNames": {
+        "pattern": "^(//.*|[a-z][a-zA-Z0-9_]*)$"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string",
+            "maxLength": 200
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "maxItems": 12
+          }
+        ]
+      },
+      "patternProperties": {
+        "^//": {}
+      }
+    },
+    "media": {
+      "type": "object",
+      "description": "named footage / screenshot slots. src null = the template renders a labelled pack placeholder ('placeholder' in frame).",
+      "propertyNames": {
+        "pattern": "^(//.*|[a-z][a-zA-Z0-9_]*)$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/slot"
+      },
+      "patternProperties": {
+        "^//": {}
+      }
+    },
+    "voice": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^//": {}
+      },
+      "properties": {
+        "words": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "word timings: a words.json ([{w, s, e}] or {words: [...]}) or an .srt file (each cue's words are spread evenly over the cue: approximate)"
+        },
+        "audio": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "your recording (WAV/MP3), or null"
+        }
+      }
+    },
+    "music": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^music/[a-z0-9_]+$",
+      "description": "a pack music id (music/manifest.json), e.g. music/bed_tech_pulse_loop8; null = no bed"
+    },
+    "length": {
+      "type": [
+        "number",
+        "string"
+      ],
+      "description": "a length in seconds or a named cut, for templates that have one (the ad: 15 | 30)"
+    },
+    "platforms": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "where it will be posted, as pack platform presets (templates/_shared/plan.mjs PLATFORMS). For each aspect the first preset of that shape sets the safe zone and brand-cue deadline.",
+      "items": {
+        "enum": [
+          "tiktok.organic",
+          "reels.organic",
+          "shorts.organic",
+          "yt.ad.15",
+          "yt.bumper.6",
+          "meta.ad.9x16",
+          "x.video",
+          "linkedin.video",
+          "hero.web"
+        ]
+      }
+    },
+    "aspects": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "the aspects to deliver. Each is a RE-LAYOUT, never a crop; `mp list` shows which aspects each template supports (native, generic re-layout, or manual).",
+      "items": {
+        "enum": [
+          "16:9",
+          "9:16",
+          "1:1",
+          "4:5"
+        ]
+      }
+    },
+    "claims": {
+      "type": "array",
+      "description": "every claim the video makes. A claim whose text contains a digit needs a `source` that says where the number comes from (lint.proof; 'internal benchmark' and other generic sources are refused). `key` ties a claim to the copy it backs (e.g. text.headline).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "source": {
+            "type": "string",
+            "description": "where the number comes from (a document, a measurement, a URL)"
+          },
+          "method": {
+            "type": "string",
+            "description": "how it was measured (proof-style templates require it next to the source)"
+          },
+          "key": {
+            "type": "string",
+            "pattern": "^(text\\.[a-zA-Z0-9_]+|brand\\.(cta|line))$",
+            "description": "the copy this claim backs"
+          }
+        },
+        "patternProperties": {
+          "^//": {}
+        }
+      }
+    },
+    "overrides": {
+      "type": "object",
+      "description": "raw CONFIG values per template id, for anything the shared fields do not cover: {\"ad\": {\"length\": 30}}. Applied after the map and before --set. Unknown CONFIG paths are an error.",
+      "propertyNames": {
+        "pattern": "^(//.*|[a-z0-9][a-z0-9-]*)$"
+      },
+      "additionalProperties": {
+        "type": "object"
+      },
+      "patternProperties": {
+        "^//": {}
+      }
+    }
+  },
+  "$defs": {
+    "hex": {
+      "type": "string",
+      "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^//": {}
+      },
+      "required": [
+        "src"
+      ],
+      "properties": {
+        "src": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "path to YOUR footage or screenshot (relative to the project file), or null for a labelled placeholder"
+        },
+        "start": {
+          "type": "number",
+          "minimum": 0,
+          "description": "seconds into the source where the slot starts"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "what belongs in the slot; printed on the placeholder until src is set"
+        }
+      }
+    }
+  }
+}

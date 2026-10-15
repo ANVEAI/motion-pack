@@ -1,0 +1,383 @@
+{
+ "template": "ad",
+ "fps": 30,
+ "seconds": 15,
+ "platform": "reels.organic",
+ "safe": {
+  "top": 0.14,
+  "bottom": 0.35,
+  "side": 0.06
+ },
+ "aspect": "9:16",
+ "size": [
+  1080,
+  1920
+ ],
+ "brandCueAt": 5,
+ "brandCueOk": true,
+ "shots": [
+  {
+   "id": "hook",
+   "sec": "hook",
+   "kind": "plate",
+   "media": "/Users/adarshkant/Developer/mp-xp-editable/templates/_shared/media/plate-devices.mp4",
+   "mediaStart": 2.2,
+   "text": "Every note, *found*.",
+   "type": "type/scaleSlam",
+   "dur": 1.266667,
+   "textDur": 2.5,
+   "start": 0
+  },
+  {
+   "id": "hook_1",
+   "sec": "hook",
+   "kind": "plate",
+   "media": "/Users/adarshkant/Developer/mp-xp-editable/templates/_shared/media/plate-devices.mp4",
+   "mediaStart": 1.5,
+   "text": "",
+   "type": "type/scaleSlam",
+   "dur": 1.233333,
+   "tx": "transitions/cut",
+   "start": 1.266667
+  },
+  {
+   "id": "problem0",
+   "sec": "problem",
+   "kind": "card",
+   "media": "/Users/adarshkant/Developer/mp-xp-editable/templates/_shared/media/plate-film.mp4",
+   "mediaStart": 0.4,
+   "text": "Notes everywhere.",
+   "type": "type/maskRise",
+   "dur": 1.266667,
+   "tx": "transitions/smash",
+   "txReason": "EMOTION: payoff -> pain",
+   "textDur": 1.25,
+   "start": 2.5
+  },
+  {
+   "id": "problem1",
+   "sec": "problem",
+   "kind": "plate",
+   "media": "/Users/adarshkant/Developer/mp-xp-editable/templates/_shared/media/plate-film.mp4",
+   "mediaStart": 1.4,
+   "text": "Answers *nowhere*.",
+   "type": "type/maskRise",
+   "dur": 1.233333,
+   "textDur": 1.25,
+   "start": 3.766667
+  },
+  {
+   "id": "reveal",
+   "sec": "product",
+   "kind": "reveal",
+   "hold": true,
+   "media": null,
+   "mediaStart": 1.2,
+   "text": "Fernwick",
+   "type": "type/scaleSlam",
+   "dur": 2.2,
+   "placeholder": "Fernwick on a laptop",
+   "tx": "transitions/whip",
+   "txReason": "ENERGY: tension released into the reveal",
+   "textDur": 2.2,
+   "start": 5
+  },
+  {
+   "id": "benefit",
+   "sec": "product",
+   "kind": "card",
+   "text": "One search for *everything* you wrote.",
+   "type": "type/maskRise",
+   "dur": 1.8,
+   "textDur": 1.8,
+   "start": 7.2
+  },
+  {
+   "id": "proof0",
+   "sec": "proof",
+   "kind": "proof",
+   "text": "Searches the notes you already keep.",
+   "type": "type/maskRise",
+   "dur": 1.766667,
+   "tx": "transitions/push",
+   "txReason": "STORY: reveal -> evidence",
+   "textDur": 1.75,
+   "start": 9
+  },
+  {
+   "id": "proof1",
+   "sec": "proof",
+   "kind": "proof",
+   "text": "Your notes stay on your laptop.",
+   "type": "type/maskRise",
+   "dur": 1.733333,
+   "textDur": 1.75,
+   "start": 10.766667
+  },
+  {
+   "id": "cta",
+   "sec": "cta",
+   "kind": "end",
+   "hold": true,
+   "text": "Try the demo",
+   "type": "type/elasticPop",
+   "dur": 2.5,
+   "tx": "transitions/dip-to-black",
+   "txReason": "RHYTHM: settle before the ask",
+   "textDur": 2.5,
+   "start": 12.5
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/hit/punch",
+   "t": 0,
+   "gainDb": -2,
+   "why": "first-frame hook"
+  },
+  {
+   "id": "sfx/amb/studio_air",
+   "t": 0,
+   "gainDb": -22,
+   "why": "air bed (loop)",
+   "loopTo": 15
+  },
+  {
+   "id": "sfx/tx/smash_cut",
+   "t": 2.5,
+   "gainDb": -4,
+   "why": "tx transitions/smash"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 2.566666666666667,
+   "gainDb": -8,
+   "why": "card line"
+  },
+  {
+   "id": "sfx/whoosh/whip_pan",
+   "t": 5,
+   "gainDb": -4,
+   "why": "tx transitions/whip"
+  },
+  {
+   "id": "sfx/riser/noise_1bar",
+   "t": 5,
+   "gainDb": -6,
+   "why": "riser ends on the reveal"
+  },
+  {
+   "id": "sfx/hit/cinema",
+   "t": 5,
+   "gainDb": -3,
+   "why": "reveal hit"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 7.266666666666667,
+   "gainDb": -8,
+   "why": "card line"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 9,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 9.066666666666666,
+   "gainDb": -8,
+   "why": "card line"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 10.833333666666666,
+   "gainDb": -8,
+   "why": "card line"
+  },
+  {
+   "id": "sfx/tx/dip_to_black",
+   "t": 12.5,
+   "gainDb": -4,
+   "why": "tx transitions/dip-to-black"
+  },
+  {
+   "id": "sfx/logo/two_note",
+   "t": 12.633333333333333,
+   "gainDb": -3,
+   "why": "sonic sting"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Searches the notes you already keep."
+  },
+  {
+   "text": "Your notes stay on your laptop."
+  }
+ ],
+ "music": "music/bed_tech_pulse_loop8",
+ "paceRule": {
+  "aslMax": 2.5,
+  "longMax": 4.5
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 9,
+   "asl": 1.67,
+   "longest": 1.8,
+   "pass": true
+  }
+ },
+ "texts": [
+  {
+   "text": "Every note, found.",
+   "t": [
+    0,
+    2.5
+   ],
+   "fontPx": 116,
+   "role": "line",
+   "box": [
+    65,
+    293,
+    725,
+    539
+   ]
+  },
+  {
+   "text": "Notes everywhere.",
+   "t": [
+    2.5,
+    3.75
+   ],
+   "fontPx": 138,
+   "role": "line",
+   "box": [
+    65,
+    612,
+    951,
+    905
+   ]
+  },
+  {
+   "text": "Answers nowhere.",
+   "t": [
+    3.766667,
+    5.0167
+   ],
+   "fontPx": 116,
+   "role": "line",
+   "box": [
+    65,
+    293,
+    608,
+    539
+   ]
+  },
+  {
+   "text": "Fernwick",
+   "t": [
+    5,
+    7.2
+   ],
+   "fontPx": 186,
+   "role": "title",
+   "box": [
+    65,
+    293,
+    956,
+    490
+   ]
+  },
+  {
+   "text": "One search for everything you wrote.",
+   "t": [
+    7.2,
+    9
+   ],
+   "fontPx": 126,
+   "role": "line",
+   "box": [
+    65,
+    558,
+    953,
+    959
+   ]
+  },
+  {
+   "text": "Searches the notes you already keep.",
+   "t": [
+    9,
+    10.75
+   ],
+   "fontPx": 100,
+   "role": "line",
+   "box": [
+    65,
+    600,
+    937,
+    918
+   ]
+  },
+  {
+   "text": "Your notes stay on your laptop.",
+   "t": [
+    10.766667,
+    12.5167
+   ],
+   "fontPx": 100,
+   "role": "line",
+   "box": [
+    65,
+    653,
+    833,
+    865
+   ]
+  },
+  {
+   "text": "Fernwick",
+   "t": [
+    12.5,
+    15
+   ],
+   "fontPx": 180,
+   "role": "title",
+   "box": [
+    109,
+    528,
+    960,
+    719
+   ]
+  },
+  {
+   "text": "Try the demo",
+   "t": [
+    12.5,
+    15
+   ],
+   "fontPx": 60,
+   "role": "line",
+   "box": [
+    346,
+    759,
+    734,
+    823
+   ]
+  }
+ ],
+ "relayout": {
+  "how": "generic card re-layout (_shared/relayout.mjs)",
+  "safe": {
+   "x0": 65,
+   "y0": 269,
+   "x1": 960,
+   "y1": 1248,
+   "w": 895,
+   "h": 979
+  }
+ }
+}

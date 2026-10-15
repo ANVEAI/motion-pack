@@ -14,7 +14,9 @@
 import { runScene, U, THREE } from './objects/kit/studio-lite.js';
 import { O } from './objects/index.js';
 import { stageConfig, makeStage, cutShots } from './objects/stage.js';
-import { CONFIG as C, buildPlan } from './config.mjs';
+import { CONFIG as C0, buildPlan } from './config.mjs';
+/* ?config=out/config.resolved.json: the CONFIG after a project file / --set (templates/_shared/project.mjs writes it; render3d.sh passes it when MP_PROJECT is set). Without it: config.mjs as is */
+const CFG = new URLSearchParams(location.search).get('config'), C = CFG ? await (await fetch(CFG)).json() : C0;
 const { E, seg, clamp, lerp, springU } = U, PLAN = buildPlan(C), EV = C.events, L = C.layout;
 window.CONFIG = stageConfig({ name: C.name, seconds: PLAN.seconds, fps: C.fps, colors: { backdrop: C.world.paper }, grade: { vignette: 0.06 }, env: { floor: 0.32 } });
 window.__PLAN = PLAN;

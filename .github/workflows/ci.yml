@@ -97,6 +97,8 @@ jobs:
         run: node tools/tests/xproc-hash.test.mjs
       - name: "every template with a config builds its plan without a browser, passes its lints, and matches the committed out/plan.json"
         run: node tools/tests/template-plans.test.mjs
+      - name: "the shared project file (templates/_shared/project.mjs): loader errors name the field, every PROJECT_MAP lands on a real CONFIG path, and an empty project builds the identical plan for every genre template (node, no browser)"
+        run: node tools/tests/project.test.mjs
       - name: "proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)"
         run: node templates/proof-film/proof-film.test.mjs
       - name: "physics table player (the baked table is committed; no npm install)"

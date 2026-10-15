@@ -38,6 +38,15 @@ export const CONFIG = {
 };
 /* ============================================================================== */
 
+/* the shared project file -> this CONFIG (`mp list multi-voice-doc`). Your interviews come in through media.clips (a clips.json, see the header); the first claim is the proof card */
+export const PROJECT_MAP = {
+  'brand.name': 'tail.wordmark', 'brand.url': ['tail.url', 'availability.sub'], 'text.availability': 'availability.line',
+  'media.clips.src': { to: 'clips', note: 'a clips.json: [{id, src, words, name, role, tag, lead?}]' },
+  'claims': { to: ['proof.card.text', 'proof.card.source'], fn: (cs) => [cs[0] && cs[0].text, cs[0] && cs[0].source] },
+  'music': 'music', 'platform': 'platform',
+};
+export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'manual', note: 'its cards and inserts use fixed 16:9 px sizes; a 9:16 cut needs its own layout constants' }, '1:1': { how: 'manual', note: 'as 9:16' }, '4:5': { how: 'manual', note: 'as 9:16' } };
+
 const endsSentence = (w) => /[.?!…]['")\]]*$/.test(w.w.trim());
 export function sentences(W) { const out = []; let cur = []; W.forEach((w, k) => { cur.push(w); if (k === W.length - 1 || endsSentence(w)) { out.push(cur); cur = []; } }); return out; }
 const inside = (t, W) => W.find((w) => w.s + 1e-9 < t && t < w.e - 1e-9);

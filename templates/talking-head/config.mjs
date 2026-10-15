@@ -24,8 +24,18 @@ export const CONFIG = {
 };
 /* ============================================================================== */
 
+/* the shared project file -> this CONFIG (`mp list talking-head`). media.input is REQUIRED (your MP4; there is no placeholder for a person) */
+export const PROJECT_MAP = {
+  'media.input.src': { to: 'input', required: true, note: 'your talking-head MP4 (its own audio is kept)' }, 'voice.words': 'words',
+  'brand.accent': 'captions.accent', 'text.name': 'lowerThird.name', 'text.title': 'lowerThird.title',
+  'media.broll.src': 'broll.0.src', 'media.broll.start': 'broll.0.mediaStart',
+  'aspect': { to: 'platform', values: { '16:9': 'yt.ad.15', '9:16': 'reels.organic', '1:1': 'linkedin.video' } }, 'platform': 'platform',
+};
+export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'native' }, '1:1': { how: 'native' }, '4:5': { how: 'manual', note: 'plan.mjs SIZES has no 4:5 shape yet (and eyes copies that table): add one to both first' } };
+
 export function buildPlan(C, dir = '.') {
-  const T = JSON.parse(fs.readFileSync(new URL('./' + C.words, import.meta.url), 'utf8')).words, P = PLATFORMS[C.platform], fps = C.fps;
+  const T = JSON.parse(fs.readFileSync(C.words.startsWith('/') ? C.words : new URL('./' + C.words, import.meta.url), 'utf8')).words,   // an absolute words.json (from the project file) or one next to this config
+    P = PLATFORMS[C.platform], fps = C.fps;
   const keep = autocut(T, C.autocut), q = (x) => Math.round(x * fps) / fps;
   let o = 0; const segs = keep.map(([a, b], i) => { const s = { id: 'seg' + i, src: a, start: q(o), dur: q(b - a), scale: C.framing.ladder[i % C.framing.ladder.length] }; o = q(o) + q(b - a); return s; });
   const seconds = +o.toFixed(4), words = T.map((w) => ({ ...w, os: +remap(keep, w.s).toFixed(3), oe: +remap(keep, w.e).toFixed(3) }));

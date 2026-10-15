@@ -2,12 +2,11 @@
      node make.mjs [--set input=/abs/talk.mp4 --set platform=yt.ad.15]   then   hyperframes render . -o out/talking-head.mp4
    The input's own audio rides on each kept segment (data-has-audio); the SFX mix is a separate <audio>. */
 import fs from 'node:fs'; import path from 'node:path';
-import { stage, runPlan, head, esc, write, mix } from '../_shared/compose.mjs';
+import { stage, runPlan, head, esc, write, mix } from '../_shared/compose.mjs'; import { loadConfig } from '../_shared/project.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared');
 runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(DIR, 'out', 'plan.json'), 'utf8'));
-const { CONFIG } = await import('./config.mjs'); const C = structuredClone(CONFIG);
-for (let i = 2; i < process.argv.length; i++) if (process.argv[i] === '--set') { const [k, v] = process.argv[++i].split('='); let o = C; const ks = k.split('.'); for (const q of ks.slice(0, -1)) o = o[q]; o[ks.at(-1)] = v !== '' && !isNaN(+v) ? +v : v; }
+const C = await loadConfig(DIR);   // CONFIG + --project (PROJECT_MAP) + --aspect + --set, exactly what cues.mjs built the plan from (_shared/project.mjs)
 const abs = (p) => (path.isAbsolute(p) ? p : path.resolve(DIR, p));
 const input = abs(C.input); if (!fs.existsSync(input)) { console.error('input MP4 not found: ' + input); process.exit(2); }
 const st = stage(DIR, { media: [...new Set(plan.broll.map((b) => abs(b.src)))], layers: (C.layers || []).length > 0 });

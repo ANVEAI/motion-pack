@@ -29,6 +29,12 @@ export const CONFIG = {
 };
 /* ============================================================================== */
 
+/* the shared project file -> this CONFIG (`mp list character-spot`). The aspect is a render argument (render3d.sh wide|tall), not a CONFIG field */
+export const PROJECT_MAP = {
+  'brand.name': 'brand.name', 'brand.accent': 'brand.accent', 'brand.paper': 'world.paper', 'brand.line': 'brand.line', 'text.end': 'brand.line', 'music': 'music',
+};
+export const ASPECTS = { '16:9': { how: 'native', tag: 'wide' }, '9:16': { how: 'native', tag: 'tall' }, '1:1': { how: 'manual', note: 'the stage camera is framed for wide and tall only' }, '4:5': { how: 'manual', note: 'the stage camera is framed for wide and tall only' } };
+
 export function buildPlan(C) {
   const { shots, cues: txCues, seconds } = sequence(C.beats, C.fps), E = C.events, S = C.sfx, at = (id) => shots.find((s) => s.id === id).start;
   const cues = [ ...txCues,

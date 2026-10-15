@@ -8,11 +8,9 @@
    when `vo` is set (vo.py) -> the mix (_shared/audio.py -> music/mixer.py: bed, a planned quiet open and quiet hold, -14 LUFS) -> the page. The page is ONE director draw(t) on every hf-seek:
    two nested wrappers carry the cam2d camera (#cam scales about the frame centre, #world pans), the cells inside the world are drawn by panels.mjs; nothing in it reads a clock. */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, runPlan, head, write, mix } from '../_shared/compose.mjs';
+import { stage, runPlan, head, write, mix } from '../_shared/compose.mjs'; import { loadConfig } from '../_shared/project.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared'), PACK = path.resolve(DIR, '..', '..'), OUT = path.join(DIR, 'out'), PY = process.env.PYTHON || 'python3';
-const { CONFIG, gateProblems } = await import('./config.mjs'); const C = structuredClone(CONFIG);
-for (let i = 2; i < process.argv.length; i++) if (process.argv[i] === '--set') { const arg = process.argv[++i], [k, ...rest] = arg.split('='), v = rest.join('='); let o = C; const ks = k.split('.');
-  try { for (const q of ks.slice(0, -1)) o = o[q]; o[ks.at(-1)] = v !== '' && !isNaN(+v) ? +v : v; } catch (e) { console.error(`make.mjs: cannot --set ${arg}: ${k} is not a field of CONFIG (${e.message})`); process.exit(2); } }
+const { gateProblems } = await import('./config.mjs'); const C = await loadConfig(DIR);   // CONFIG + --project (PROJECT_MAP) + --aspect + --set (_shared/project.mjs; an unknown field exits 2 with the reason)
 
 /* 0. the honesty gate: nothing is staged, mixed or written until every number has its source and its method */
 const bad = gateProblems(C);
