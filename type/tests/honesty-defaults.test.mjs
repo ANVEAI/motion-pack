@@ -47,6 +47,7 @@ const ALLOW = {
   'layout.paletteColumns': 'the hex codes of the colours it draws',
   'layout.typeSpecimen': 'the weight of the specimen line it renders ("Bold 700")',
   'ui.checklist': 'a progress counter n / total computed from the part\'s own step list',
+  'ui.stepCounter': 'the tutorial step ordinal n / total, computed from the part\'s own steps list (lane human)',
   /* layers kinds (canvas text), keyed 'layers.<kind>' */
   'layers.recHUD': 'a running timecode computed from t',
   'layers.timecode': 'a running timecode computed from t; the camcorder date stamp is part of the look',
