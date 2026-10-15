@@ -62,9 +62,9 @@
    "replace": "waves: [1, 50]"
   },
   {
-   "name": "NaN parameters accepted",
-   "find": "if (typeof v !== 'number' || Number.isNaN(v)) throw",
-   "replace": "if (false) throw"
+   "name": "bad numbers (NaN, strings, null, objects) not sanitised to the default",
+   "find": "const n = asNum(p[k]), v = Number.isFinite(n) ? n : AURORA_DEFAULTS[k];",
+   "replace": "const n = asNum(p[k]), v = n;"
   },
   {
    "name": "colour validation removed",
@@ -135,6 +135,26 @@
    "name": "halo ignores the rise",
    "find": "0.34 * p.halo * I * k * (1 - u) ** 2.2",
    "replace": "0.34 * p.halo * I * (1 - u) ** 2.2"
+  },
+  {
+   "name": "bad numbers fall back to 0, not to the default",
+   "find": "Number.isFinite(n) ? n : AURORA_DEFAULTS[k];",
+   "replace": "Number.isFinite(n) ? n : 0;"
+  },
+  {
+   "name": "numeric strings not read as numbers",
+   "find": "typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN",
+   "replace": "NaN"
+  },
+  {
+   "name": "cuesR6 takes raw params (not sanitised)",
+   "find": "return f(auroraParams(params)); };",
+   "replace": "return f({ ...AURORA_DEFAULTS, ...params }); };"
+  },
+  {
+   "name": "auroraRise takes raw params",
+   "find": "export function auroraRise(t, pIn) { const p = auroraParams(pIn);",
+   "replace": "export function auroraRise(t, pIn) { const p = { ...AURORA_DEFAULTS, ...pIn };"
   }
  ]
 }

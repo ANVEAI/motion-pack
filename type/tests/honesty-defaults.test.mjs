@@ -73,9 +73,15 @@ check(`GFX: ${frames} frames of ${GFX_IDS.length} parts at default params (${wit
 
 /* digit-bearing DEFAULT STRINGS that are not drawn as <text> (glyph systems, hidden until a time we did not sample) must not hide an unlabelled stat either:
    a default string with a digit means the part is in `needed` (it drew digits somewhere) or is a non-claim (id, colour, path, unit). */
-const walk = (o, p, out) => { if (typeof o === 'string') { if (/\d/.test(o) && !/^#|^sfx\/|^[Mm][\d .-]|^[\d.]+(px|%|s|ms|deg)?$|^rgba?\(|^[a-z]+\(|^\d+(?:\.\d+)?x?$|^[\w.-]+\.(png|jpg|svg|mp4|json)$|^https?:|^[a-z0-9_.-]+\/[a-z0-9_./-]+$|^M[\d. ,LCZVHSQTAmlczvhsqta-]+$/.test(o)) out.push(p + '=' + o.slice(0, 50)); } else if (Array.isArray(o)) o.forEach((v, i) => walk(v, p + '[' + i + ']', out)); else if (o && typeof o === 'object') for (const k in o) walk(o[k], p ? p + '.' + k : k, out); };
+/* ENUM_KEYS: a param whose value is the NAME of a built-in arrangement (layout: 'row4', 'grid6' in layout.degradingDiagram), looked up in a table and never drawn as text. Only an identifier under one of these keys is exempt:
+   a caption, a stat or any string with a space, a % or another symbol under the same key is still reported. */
+const ENUM_KEYS = new Set(['layout']), isEnumName = (k, o) => ENUM_KEYS.has(k) && /^[A-Za-z][A-Za-z0-9_-]*$/.test(o);
+const walk = (o, p, out, k = '') => { if (typeof o === 'string') { if (/\d/.test(o) && !isEnumName(k, o) && !/^#|^sfx\/|^[Mm][\d .-]|^[\d.]+(px|%|s|ms|deg)?$|^rgba?\(|^[a-z]+\(|^\d+(?:\.\d+)?x?$|^[\w.-]+\.(png|jpg|svg|mp4|json)$|^https?:|^[a-z0-9_.-]+\/[a-z0-9_./-]+$|^M[\d. ,LCZVHSQTAmlczvhsqta-]+$/.test(o)) out.push(p + '=' + o.slice(0, 50)); } else if (Array.isArray(o)) o.forEach((v, i) => walk(v, p + '[' + i + ']', out, k)); else if (o && typeof o === 'object') for (const kk in o) walk(o[kk], p ? p + '.' + kk : kk, out, kk); };
 { const hidden = []; for (const id of GFX_IDS) { const out = []; walk(GFX[id].d, '', out); if (out.length && !needed.has(id) && !ALLOW[id]) hidden.push(id + ' ' + out.slice(0, 2).join(' ; ')); }
   check('no part hides a digit-bearing default string that the frame sweep never saw (drawn as glyphs, or shown only at a time we did not sample)', !hidden.length, hidden.slice(0, 6).join(' | ')); }
+{ const hits = (d) => { const o = []; walk(d, '', o); return o.length; };   // the walker itself: the enum exemption is narrow, everything else with a digit is still reported
+  check('hidden-default walker: a layout NAME (row4) is exempt, but a caption, a stat or a free string with a digit (under layout or any other key) is still reported',
+    hits({ beats: [{ layout: 'row4' }, { layout: 'grid6' }] }) === 0 && hits({ beats: [{ caption: 'Saves 40% of your time' }] }) === 1 && hits({ layout: 'Saves 40%' }) === 1 && hits({ layout: 'row 4' }) === 1 && hits({ title: 'row4' }) === 1 && hits({ items: ['Top 5 picks'] }) === 1); }
 
 /* ---------- 2. every layers kind that draws text ---------- */
 const recorder = () => { const texts = []; const g = new Proxy({}, { get: (o, k) => { if (k in o) return o[k]; if (k === 'fillText' || k === 'strokeText') return (s) => { texts.push(String(s)); }; if (k === 'measureText') return (s) => ({ width: String(s).length * 10 });

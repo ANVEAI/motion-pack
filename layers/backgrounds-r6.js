@@ -11,8 +11,9 @@
                    loop L: every drift frequency is a whole number of cycles per L seconds and the grain index counts frames modulo L * fps, so frame t and t + L are the
                    same bits (exact seam). A looping ribbon is the steady, already-risen version (a loop has no rise: a one-shot rise cannot also repeat).
                    lead: the pivot sound (cuesR6) is placed `lead` s BEFORE riseAt, so the sound leads the picture by a few frames, as a hit does.
-   Guards: a non-number or NaN parameter throws a clear error; infinities and out-of-range numbers are clamped (res <= 1024 columns, grain <= 12000 specks, at most 5 strands),
-   so no parameter can hang the draw or allocate without bound. Colours must be #RGB / #RRGGBB or the draw throws.
+   Guards (the pack-wide policy, see layers/limits.js): a bad NUMBER is sanitised, never thrown: NaN, +-Infinity, a non-numeric string, null, undefined or an object becomes the default and out-of-range numbers
+   are clamped (res <= 1024 columns, grain <= 12000 specks, at most 5 strands), so no parameter can hang the draw or allocate without bound. A bad COLOUR (not #RGB / #RRGGBB, fewer than 2 colours) and a
+   bad t or frame size are not numbers to sanitise: they throw a clear error that names auroraRibbon.
    Pure functions of t (no clock, no Math.random, no module-level cache): the same t draws the same calls in any seek order and in any process. */
 import { E, clamp, lerp, seg } from './ease.js';
 
@@ -26,14 +27,15 @@ const mix = (a, b, k) => a.map((v, i) => Math.round(lerp(v, b[i], clamp(k))));
 /* the defaults. Colours are placeholders (violet, blue, pink), not any brand's: pass your own. Sizes are fractions of H, so 16:9, 9:16 and 1:1 share numbers. */
 export const AURORA_DEFAULTS = { colors: ['#7A3CFF', '#2F6BFF', '#FF4FA8'], bg: '#030206', riseAt: 0.4, rise: 1.4, lead: 0.1, height: 0.24, crest: 0.1, waves: 3, spread: 0.1, core: 0.7, halo: 0.45,
   speed: 0.035, kick: 0.3, kickDur: 0.35, loop: 0, fps: 30, grain: 0.4, grainFps: 24, res: 96, intensity: 1, seed: 6 };
-/* [lo, hi] per numeric parameter: finite values outside it are clamped, NaN / non-numbers throw */
-const RANGE = { riseAt: [0, 1e6], rise: [0.05, 600], lead: [0, 5], height: [0.02, 0.9], crest: [0, 0.5], waves: [1, 5], spread: [0.01, 0.5], core: [0, 2], halo: [0, 1], speed: [0, 2], kick: [0, 1.5], kickDur: [0.05, 5],
+/* [lo, hi] per numeric parameter: the pack-wide policy for bad numbers (type/gfx/safe.js, layers/limits.js): a value outside it is clamped, and NaN, +-Infinity, a non-numeric string, null, undefined or an object
+   becomes the DEFAULT (a numeric string such as '5' is read as 5). Nothing throws and nothing hangs. layers/limits.js lists this table as BG_LIM.auroraRibbon, so guardKinds applies it to every draw too. */
+export const AURORA_RANGE = { riseAt: [0, 1e6], rise: [0.05, 600], lead: [0, 5], height: [0.02, 0.9], crest: [0, 0.5], waves: [1, 5], spread: [0.01, 0.5], core: [0, 2], halo: [0, 1], speed: [0, 2], kick: [0, 1.5], kickDur: [0.05, 5],
   loop: [0, 3600], fps: [1, 240], grain: [0, 1], grainFps: [1, 60], res: [8, 1024], intensity: [0, 2], seed: [0, 4294967295] };
 const INT = new Set(['waves', 'res', 'seed']);
+const asNum = (v) => (typeof v === 'number' ? v : typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
 export function auroraParams(pIn = {}) {
   const p = { ...AURORA_DEFAULTS, ...pIn };
-  for (const [k, [lo, hi]] of Object.entries(RANGE)) { const v = p[k];
-    if (typeof v !== 'number' || Number.isNaN(v)) throw new Error(`auroraRibbon: ${k} must be a number, got ${String(v)}`);
+  for (const [k, [lo, hi]] of Object.entries(AURORA_RANGE)) { const n = asNum(p[k]), v = Number.isFinite(n) ? n : AURORA_DEFAULTS[k];
     p[k] = INT.has(k) ? Math.round(clamp(v, lo, hi)) : clamp(v, lo, hi); }
   if (!Array.isArray(p.colors) || p.colors.length < 2) throw new Error('auroraRibbon: colors must be an array of 2 to 5 hex colours');
   p.colors = p.colors.slice(0, 5); p.rgb = p.colors.map((c, i) => hexRGB(c, `colors[${i}]`)); p.bgRGB = p.bg == null ? null : hexRGB(p.bg, 'bg');

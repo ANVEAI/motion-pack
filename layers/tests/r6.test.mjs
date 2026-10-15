@@ -4,14 +4,14 @@
      processes (pure function of t, no module-level state), nothing of the ribbon before riseAt, the rise (monotonic, 0 -> 1, off-frame at 0 by a property test over random
      parameters), the closed-form centre line (flat at crest 0, bounded by crest, drift < 1.2 px per frame), colour weights, the pivot flash, loop seams (exact, for loops that
      are and are not multiples of anything), grain (seeded, re-seeded at grainFps, none at 0, capped), unique per item (no shared ids, two interleaved layers do not touch each
-     other), parameter guards (0, negative, NaN, huge, infinite: clamped or a clear error, bounded call count, no hang), the pivot cue (lead, loop = none, id resolves).
+     other), parameter guards (0, negative, NaN, huge, infinite, strings, null, objects: sanitised to the default or clamped, never thrown, bounded call count, no hang; bad colours, t and frame size throw), the pivot cue (lead, loop = none, id resolves).
    Every check can fail: layers/tests/r6.mutants.json lists the mutations tools/mutation_check.py applies to backgrounds-r6.js; each must make this file fail (CI runs it).
    --chrome (local, real Chrome): mounts through overlay.js mountStack, bit-identical pixels after another t and in shuffled order, black before riseAt, the ribbon lit in the bottom
      third and the top third still black, loop seam pixel-identical, render-time budget; writes layers/demo/out/r6-sheet.png + tests/last-run-r6.json.
    run: node layers/tests/r6.test.mjs [--chrome] */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import crypto from 'node:crypto'; import { execFileSync } from 'node:child_process'; import { fileURLToPath } from 'node:url';
 import { BG, BackgroundLayer } from '../backgrounds.js'; import { ALL_KINDS } from '../overlay.js';
-import { BG_R6, AURORA_DEFAULTS, auroraParams, auroraRise, auroraKick, auroraCentre, auroraWeight, auroraGrainIndex, cuesR6, CUES_R6 } from '../backgrounds-r6.js';
+import { BG_R6, AURORA_DEFAULTS, AURORA_RANGE, auroraParams, auroraRise, auroraKick, auroraCentre, auroraWeight, auroraGrainIndex, cuesR6, CUES_R6 } from '../backgrounds-r6.js';
 import { reporter, ROOT } from './harness.mjs';
 const here = path.dirname(fileURLToPath(import.meta.url)), CHROME = process.argv.includes('--chrome'), HASH = process.argv.includes('--hash'), W = 1920, H = 1080, KIND = 'auroraRibbon', HERO = 2.0;
 const recorder = () => { const log = []; const g = new Proxy({}, { get: (o, k) => (k in o ? o[k] : (k === 'createRadialGradient' || k === 'createLinearGradient' ? (...a) => { log.push(String(k) + a.map((v) => v.toFixed(3))); return { addColorStop: (s, c) => log.push(`stop${s.toFixed(4)}${c}`) }; } : (...a) => { log.push(String(k) + a.map((v) => (typeof v === 'number' ? v.toFixed(3) : String(v))).join(',')); return { width: 0 }; })), set: (o, k, v) => { log.push(`${String(k)}=${typeof v === 'object' ? 'obj' : v}`); o[k] = v; return true; } }); return { g, log }; };
@@ -125,14 +125,25 @@ for (const L of [2, 4, 5, 6, 7, 7.3, 10]) { let ok = true, num = true; const p =
   la.render(1.2); const A1 = a.calls.join('|'); a.calls.length = 0; lb.render(1.2); lb.render(0.4); la.render(1.2); const A2 = a.calls.join('|');
   R.check('unique per item: the draw emits no ids (no url(#...), clipPath, filter), and two layers of the same kind on one page (different colours and seed, rendered in turn) draw exactly what each would alone', noId && A1 === A2 && A1.length > 100 && b.calls.join('|') !== A1); }
 
-/* 9. guards: 0, negative, NaN, huge, infinite: clamped or a clear error, bounded call count, no hang */
+/* 9. guards: 0, negative, NaN, huge, infinite: sanitised (default / clamp), never thrown; bounded call count, no hang. A bad colour, t or frame size still throws a clear error */
 { const NUM = Object.keys(AURORA_DEFAULTS).filter((k) => typeof AURORA_DEFAULTS[k] === 'number'), bad = [], slow = [];
   let maxCalls = 0;
   for (const k of NUM) for (const v of [0, -1, -1e9, 1e9, 1e15, Infinity, -Infinity, 0.5]) { const t0 = Date.now(); let log; try { log = rec(HERO, { [k]: v }); } catch (e) { bad.push(`${k}=${v}: threw ${e.message}`); continue; } if (Date.now() - t0 > 4000) slow.push(`${k}=${v}`); maxCalls = Math.max(maxCalls, log.length); const s = log.join('|'); if (!finite(s) || log.length > 130000) bad.push(`${k}=${v}: ${log.length} calls / non-finite`); }
   R.check(`guards: ${NUM.length} numeric parameters x 8 hostile values (0, negative, +-1e9, 1e15, +-Infinity, 0.5) never throw, never hang (< 4 s each), stay finite, and draw at most ${maxCalls} canvas calls (cap 130000: res <= 1024 columns, <= 5 strands, <= 12000 specks)`, !bad.length && !slow.length && maxCalls > 0, bad.concat(slow).slice(0, 4).join(' ; ')); }
-{ const NUM = Object.keys(AURORA_DEFAULTS).filter((k) => typeof AURORA_DEFAULTS[k] === 'number'), notThrown = [], unclear = [];
-  for (const k of NUM) for (const v of [NaN, '5', null, undefined, {}]) { try { rec(HERO, { [k]: v }); notThrown.push(`${k}=${String(v)}`); } catch (e) { if (!e.message.includes(k) || !e.message.includes('auroraRibbon')) unclear.push(`${k}: ${e.message}`); } }
-  R.check(`guards: NaN, a string, null, undefined or an object for any of the ${NUM.length} numeric parameters throws an error that names auroraRibbon and the parameter`, !notThrown.length && !unclear.length, notThrown.concat(unclear).slice(0, 4).join(' ; ')); }
+{ /* the pack-wide policy (layers/limits.js): a bad number is SANITISED, never thrown: NaN / +-Infinity / a non-numeric string / null / undefined / an object / an array / a boolean become the default; a numeric string is read as the number */
+  const NUM = Object.keys(AURORA_DEFAULTS).filter((k) => typeof AURORA_DEFAULTS[k] === 'number'), threw = [], notDefault = [], notFinite = [], strBad = [], base = recS(HERO);
+  for (const k of NUM) {
+    for (const v of [NaN, Infinity, -Infinity, 'abc', '', ' ', null, undefined, {}, [], true]) { let s; try { s = recS(HERO, { [k]: v }); } catch (e) { threw.push(`${k}=${String(v)}: ${e.message}`); continue; } if (!finite(s)) notFinite.push(`${k}=${String(v)}`); if (s !== base) notDefault.push(`${k}=${String(v)}`); }
+    const q = AURORA_DEFAULTS[k] + 0.25 > AURORA_RANGE[k][1] ? AURORA_DEFAULTS[k] - 0.25 : AURORA_DEFAULTS[k] + 0.25;   // a value that is not the default and inside the range
+    try { if (recS(HERO, { [k]: String(q) }) !== recS(HERO, { [k]: q })) strBad.push(`${k}='${q}'`); } catch (e) { strBad.push(`${k}='${q}': ${e.message}`); } }
+  R.check(`guards: NaN, +-Infinity, a non-numeric string, '', null, undefined, an object, an array or a boolean for any of the ${NUM.length} numeric parameters throws nothing, stays finite and draws exactly the default (the pack-wide sanitising policy)`, !threw.length && !notFinite.length && !notDefault.length, threw.concat(notFinite, notDefault).slice(0, 4).join(' ; '));
+  R.check('guards: a numeric string is read as the number (every numeric parameter, a value inside its range that is not the default)', !strBad.length, strBad.slice(0, 4).join(' ; '));
+  /* the state functions parse their own params, so a direct call is guarded too: finite numbers for every hostile value, never a throw, equal to the defaults' */
+  const dir = [], d0 = JSON.stringify([auroraRise(HERO, {}), auroraKick(HERO, {}), auroraCentre(HERO, {}, 1, 0.3), auroraWeight(HERO, {}, 1, 0.3), auroraGrainIndex(HERO, {})]);
+  for (const k of NUM) for (const v of [NaN, Infinity, -Infinity, 'abc', null, undefined, {}]) { try { const q = { [k]: v }, got = JSON.stringify([auroraRise(HERO, q), auroraKick(HERO, q), auroraCentre(HERO, q, 1, 0.3), auroraWeight(HERO, q, 1, 0.3), auroraGrainIndex(HERO, q)]); if (got !== d0) dir.push(`${k}=${String(v)}`); } catch (e) { dir.push(`${k}=${String(v)}: ${e.message}`); } }
+  const stV = (q) => JSON.stringify([auroraRise(HERO, q), auroraKick(HERO, q), auroraCentre(HERO, q, 1, 0.3), auroraWeight(HERO, q, 1, 0.3), auroraGrainIndex(HERO, q), auroraParams(q).riseAt, auroraParams(q).rise, auroraParams(q).res]);
+  for (const k of NUM) { const q = AURORA_DEFAULTS[k] + 0.25 > AURORA_RANGE[k][1] ? AURORA_DEFAULTS[k] - 0.25 : AURORA_DEFAULTS[k] + 0.25; if (stV({ [k]: String(q) }) !== stV({ [k]: q })) dir.push(`${k}='${q}' (direct call)`); }
+  R.check('guards: the closed-form state functions (rise, kick, centre line, colour weight, grain index) and cuesR6 take the same sanitising: a hostile number gives the default state and no throw, a numeric string is read as the number', !dir.length && JSON.stringify(cuesR6(KIND, { riseAt: NaN, lead: 'x' })) === JSON.stringify(cuesR6(KIND, {})), dir.slice(0, 4).join(' ; ')); }
 { const throwsWith = (p, m) => { try { rec(HERO, p); return false; } catch (e) { return e.message.includes(m); } };
   R.check('guards: a colour that is not #RGB / #RRGGBB, fewer than 2 colours, or colors that is not an array throws a clear error; #RGB shorthand is accepted; more than 5 colours use the first 5',
     throwsWith({ colors: ['#7A3CFF', 'violet'] }, 'colors[1]') && throwsWith({ colors: ['#7A3CFF'] }, 'colors') && throwsWith({ colors: 'red' }, 'colors') && throwsWith({ bg: 'black' }, 'bg') && throwsWith({ colors: ['#7A3CFF', null] }, 'colors[1]') && !throwsWith({ colors: ['#abc', '#DEF'] }, 'x') && rec(HERO, { colors: ['#abc', '#DEF'] }).length > 100
