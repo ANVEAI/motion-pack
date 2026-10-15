@@ -11,9 +11,10 @@ export const PLATFORMS = {
   'meta.ad.9x16': { aspect: 'tall', safe: { top: 0.14, bottom: 0.35, side: 0.06 }, brandCueBy: 5, lufs: -14 },
   'x.video': { aspect: 'wide', safe: { top: 0.05, bottom: 0.08, side: 0.05 }, brandCueBy: 7, lufs: -14 },
   'linkedin.video': { aspect: 'square', safe: { top: 0.06, bottom: 0.1, side: 0.06 }, brandCueBy: 7, lufs: -14 },
+  'meta.feed.4x5': { aspect: 'portrait', safe: { top: 0.06, bottom: 0.12, side: 0.06 }, brandCueBy: 5, lufs: -14, verify: true },   // 4:5 feed: a working estimate (like linkedin.video plus room for the caption bar); check the current app
   'hero.web': { aspect: 'wide', safe: { top: 0.05, bottom: 0.05, side: 0.05 }, brandCueBy: 99, lufs: -16 },
 };
-export const SIZES = { wide: [1920, 1080], tall: [1080, 1920], square: [1080, 1080] };
+export const SIZES = { wide: [1920, 1080], tall: [1080, 1920], square: [1080, 1080], portrait: [1080, 1350] };
 
 /* beat grid: BPM snapped so one beat is a whole number of frames (sound.md: BPM_snap = fps*60/round(fps*60/BPM)) */
 export function beatGrid(bpm, fps, seconds, offset = 0) {

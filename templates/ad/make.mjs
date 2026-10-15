@@ -2,17 +2,25 @@
      node make.mjs [--set length=30 --set brand.name=Acme]   then   hyperframes render . -o out/ad.mp4
    Static clips only (HyperFrames reads media and timing from the HTML), the GSAP timeline is built from the same plan. */
 import fs from 'node:fs'; import path from 'node:path';
-import { stage, runPlan, head, esc, write, mix } from '../_shared/compose.mjs';
-import { txPlan, span, txCalls } from '../_shared/txplan.mjs';
+import { stage, runPlan, head, esc, write, mix } from '../_shared/compose.mjs'; import { loadConfig } from '../_shared/project.mjs';
+import { txPlan, span, txCalls } from '../_shared/txplan.mjs'; import { layoutFor, cardCss, roleSize, wrapLines, textEm } from '../_shared/relayout.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared');
 runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(DIR, 'out', 'plan.json'), 'utf8'));
-const { CONFIG } = await import('./config.mjs'); const C = structuredClone(CONFIG);
-for (let i = 2; i < process.argv.length; i++) if (process.argv[i] === '--set') { const [k, v] = process.argv[++i].split('='); let o = C; const ks = k.split('.'); for (const q of ks.slice(0, -1)) o = o[q]; o[ks.at(-1)] = v !== '' && !isNaN(+v) ? +v : v; }
-const media = [...new Set(plan.shots.filter((s) => s.media).map((s) => path.join(SH, 'media', s.media)))];
+const C = await loadConfig(DIR); const B0 = C.brand;   // CONFIG + --project (PROJECT_MAP) + --aspect + --set, exactly what cues.mjs built the plan from (_shared/project.mjs)
+const mediaPath = (m) => (path.isAbsolute(m) ? m : path.join(SH, 'media', m)), base = (m) => path.basename(m);   // a _shared/media plate name, or YOUR file (absolute, from the project file)
+const media = [...new Set(plan.shots.filter((s) => s.media).map((s) => mediaPath(s.media)))];
+if (B0.logo) media.push(B0.logo);
+const missing = media.filter((m) => !fs.existsSync(m)); if (missing.length) { console.error('media not found:\n  ' + missing.join('\n  ')); process.exit(2); }
 const st = stage(DIR, { media, layers: (C.layers || []).length > 0 });
 mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
-const W = 1920, H = 1080, B = C.brand, F = plan.fps, T = plan.seconds;
+const AS = plan.aspect || '16:9', L = layoutFor(AS, plan.safe), W = L.W, H = L.H, B = C.brand, F = plan.fps, T = plan.seconds, RL = AS !== '16:9';   // RL: the generic re-layout (_shared/relayout.mjs); 16:9 is the hand-set master below
+const fsz = (role, text) => (RL ? ` style="font-size: ${roleSize(L, role, text)}px"` : '');   // per-line font size fitted to the safe rect (none at 16:9: the master CSS sets it)
+const texts = [];   // plan.texts for eyes (box, size, time) on a re-laid aspect
+const note = (s, text, role) => { if (!RL || !text) return; const px = roleSize(L, role, text), lines = wrapLines(text, px, L.S.w), h = Math.round(lines.length * px * 1.06), w = Math.round(Math.max(...lines.map((l) => textEm(l))) * px);
+  const top = role === 'over' || role === 'reveal' ? Math.round(L.S.y0 + 24 * L.u) : role === 'name' ? Math.round((L.S.y0 + L.S.y1) / 2 - h - 40 * L.u) : role === 'cta' ? Math.round((L.S.y0 + L.S.y1) / 2) : Math.round((L.S.y0 + L.S.y1 - h) / 2);   // where cardCss puts it: top band, or centred
+  const x0 = role === 'name' || role === 'cta' ? Math.round((L.W - w) / 2) : L.S.x0, x0p = role === 'proof' && !L.tall ? x0 + Math.round(152 * L.u) : x0;
+  texts.push({ text: text.replace(/\*/g, ''), t: [s.start, +(s.start + (s.textDur ?? s.dur)).toFixed(4)], fontPx: px, role: role === 'name' || role === 'reveal' ? 'title' : 'line', box: [x0p, top, Math.min(L.S.x1, x0p + w), top + h] }); };
 const rich = (s) => esc(s).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 const css = `
 .card { background: ${B.paper}; display: flex; align-items: center; padding: 0 ${Math.round(W * 0.09)}px; }
@@ -31,19 +39,23 @@ const css = `
 .end .url { font-family: "IBM Plex Mono"; font-weight: 600; font-size: 34px; color: #5d5850; letter-spacing: 0.04em; }
 .reveal .hl { font-size: 220px; letter-spacing: -0.05em; }
 #fx { pointer-events: none; } #fx canvas { z-index: 5; }   /* layers over picture + type; z on the canvases, NOT on #fx (a stacking context on #fx would isolate mix-blend-mode) */
-video.clip { z-index: 0; } .card, .proof, .end { z-index: 1; } .over { z-index: 3; }   /* a later coverage cut must never cover the line */`;
+video.clip { z-index: 0; } .card, .proof, .end { z-index: 1; } .over { z-index: 3; }   /* a later coverage cut must never cover the line */`
+  + (plan.shots.some((s) => s.placeholder) ? `\n.ph { background: repeating-linear-gradient(135deg, #e6e2d8 0 22px, #ddd8cc 22px 44px); display: flex; align-items: flex-end; padding: 0 0 70px 110px; z-index: 0; } .ph .tag { font-family: "IBM Plex Mono"; font-weight: 600; font-size: 34px; color: #3d3a34; background: rgba(245,242,234,.92); padding: 12px 20px; border-radius: 8px; }` : '')
+  + (B.logo ? `\n.end .logo { max-width: 520px; max-height: 150px; }` : '');
+const cssOut = RL ? cardCss(L, B) + `\n#fx { pointer-events: none; } #fx canvas { z-index: 5; }\nvideo.clip, .ph { z-index: 0; } .card, .proof, .end { z-index: 1; } .over { z-index: 3; }` : css;
 let body = '', tl = '';
 const P = txPlan(plan.shots, F);   // transition overlap windows (transitions module registry); clips are stretched through span()
 const sp = (sel, start, dur, mediaStart) => { const o = span(P, { sel, start, dur, mediaStart }); return `data-start="${o.start.toFixed(4)}" data-duration="${o.dur.toFixed(4)}"` + (mediaStart != null ? ` data-media-start="${o.mediaStart}"` : ''); };
 for (const s of plan.shots) {
   const at = s.start.toFixed(4), d = s.dur.toFixed(4), tid = 't-' + s.id, ts = () => sp('#' + s.id, s.start, s.dur);
   if (s.kind === 'plate' || s.kind === 'reveal') {
-    const v = `<video id="v-${s.id}" class="clip fill" src="assets/media/${s.media}" muted playsinline ${sp('#v-' + s.id, s.start, s.dur, s.mediaStart)} data-track-index="0"></video>`;
+    const v = s.placeholder ? `<section id="v-${s.id}" class="clip ph" ${sp('#v-' + s.id, s.start, s.dur)} data-track-index="0"><div class="tag">placeholder: ${esc(s.placeholder)}</div></section>`   // null media: a labelled pack placeholder, never a fake shot
+      : `<video id="v-${s.id}" class="clip fill" src="assets/media/${base(s.media)}" muted playsinline ${sp('#v-' + s.id, s.start, s.dur, s.mediaStart)} data-track-index="0"></video>`;
     body += s.kind === 'reveal' ? `\n<div class="clip" id="w-${s.id}">${v}</div>` : '\n' + v;   // untimed wrapper: animate it, never the timed <video>
-    if (s.text) body += `\n<section id="${s.id}" class="clip over ${s.kind}" ${sp('#' + s.id, s.start, s.textDur ?? s.dur)} data-track-index="2"><div class="hl" id="${tid}">${rich(s.text)}</div></section>`;   // text spans its coverage cuts
-  } else if (s.kind === 'card') body += `\n<section id="${s.id}" class="clip card" ${ts()} data-track-index="1"><div class="hl" id="${tid}">${rich(s.text)}</div></section>`;
-  else if (s.kind === 'proof') body += `\n<section id="${s.id}" class="clip proof" ${ts()} data-track-index="1"><div class="tick"><svg viewBox="0 0 64 64"><path d="M14 33 L27 46 L51 19" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hl" id="${tid}">${rich(s.text)}</div></section>`;
-  else if (s.kind === 'end') body += `\n<section id="${s.id}" class="clip end" ${ts()} data-track-index="1"><div class="name" id="${tid}">${esc(B.name)}<i>.</i></div><div class="cta" id="${tid}-cta">${esc(s.text)}</div><div class="url" id="${tid}-url">${esc(B.url)}</div></section>`;
+    if (s.text) { body += `\n<section id="${s.id}" class="clip over ${s.kind}" ${sp('#' + s.id, s.start, s.textDur ?? s.dur)} data-track-index="2"><div class="hl" id="${tid}"${fsz(s.kind === 'reveal' ? 'reveal' : 'over', s.text)}>${rich(s.text)}</div></section>`; note(s, s.text, s.kind === 'reveal' ? 'reveal' : 'over'); }   // text spans its coverage cuts
+  } else if (s.kind === 'card') { body += `\n<section id="${s.id}" class="clip card" ${ts()} data-track-index="1"><div class="hl" id="${tid}"${fsz('card', s.text)}>${rich(s.text)}</div></section>`; note(s, s.text, 'card'); }
+  else if (s.kind === 'proof') body += `\n<section id="${s.id}" class="clip proof" ${ts()} data-track-index="1"><div class="tick"><svg viewBox="0 0 64 64"><path d="M14 33 L27 46 L51 19" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hl" id="${tid}"${fsz('proof', s.text)}>${rich(s.text)}</div></section>`, note(s, s.text, 'proof');
+  else if (s.kind === 'end') { body += `\n<section id="${s.id}" class="clip end" ${ts()} data-track-index="1">${B.logo ? `<img class="logo" src="assets/media/${base(B.logo)}" alt="">` : ''}<div class="name" id="${tid}"${fsz('name', B.name + '.')}>${esc(B.name)}<i>.</i></div><div class="cta" id="${tid}-cta"${fsz('cta', s.text)}>${esc(s.text)}</div><div class="url" id="${tid}-url">${esc(B.url)}</div></section>`; note(s, B.name, 'name'); note(s, s.text, 'cta'); }
   if (s.text) tl += `\n  MP.type(tl, ${JSON.stringify(s.type)}, '#${tid}', { at: ${at}, dur: ${(s.textDur ?? s.dur).toFixed(4)}, fps: ${F}, kind: ${JSON.stringify(s.kind)} });`;
   if (s.kind === 'end') tl += `\n  MP.type(tl, ${JSON.stringify(C.type.sub)}, '#${tid}-cta', { at: ${(s.start + 0.25).toFixed(4)}, dur: ${(s.dur - 0.25).toFixed(4)}, fps: ${F} });\n  MP.type(tl, ${JSON.stringify(C.type.sub)}, '#${tid}-url', { at: ${(s.start + 0.4).toFixed(4)}, dur: ${(s.dur - 0.4).toFixed(4)}, fps: ${F} });`;
   if (s.kind === 'reveal') tl += `\n  tl.fromTo('#w-${s.id}', { scale: 1.0 }, { scale: 1.06, duration: ${d}, ease: 'none' }, ${at});   // slow push on the hero hold (cam.push)`;
@@ -52,7 +64,8 @@ tl += txCalls(P, { W, H });
 if (P.todo.length) console.log('transitions todo:', P.todo.join(' | '));
 fs.writeFileSync(path.join(DIR, 'out', 'tx.json'), JSON.stringify(P.wins, null, 1));
 const layers = JSON.stringify(C.layers || []);
-const html = `${head({ W, H, title: 'motion-pack ad template: ' + B.name, bg: B.paper, css })}
+if (RL) { plan.texts = texts; plan.relayout = { how: 'generic card re-layout (_shared/relayout.mjs)', safe: L.S }; fs.writeFileSync(path.join(DIR, 'out', 'plan.json'), JSON.stringify(plan, null, 1)); }   // eyes reads the boxes
+const html = `${head({ W, H, title: 'motion-pack ad template: ' + B.name, bg: B.paper, css: cssOut })}
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-width="${W}" data-height="${H}" data-duration="${T}">${body}
 <div id="fx" class="clip" data-start="0" data-duration="${T}" data-track-index="5"></div>
