@@ -1,0 +1,36 @@
+{
+ "file": "storyboard/draw.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "storyboard/tests/test_storyboard.py",
+  "-k",
+  "deterministic or honesty_labels or designs_size or outside_the_safe or tall_frame"
+ ],
+ "timeout": 600,
+ "mutants": [
+  {
+   "name": "the safe-zone dashes start at a clock-dependent phase",
+   "find": "HATCH_PHASE = 0 ",
+   "replace": "HATCH_PHASE = __import__('time').time_ns() % 11 "
+  },
+  {
+   "name": "the honesty label is not drawn in the frame",
+   "find": "            d.text((h['x0'], h['y0']), h['text'], font=ctx.fonts.get(h['role'], h['size_px']), fill=rgb(ctx.muted))",
+   "replace": "            pass"
+  },
+  {
+   "name": "the end line ignores the design's size",
+   "find": "        return 'display', s.get('end_line', s.get('headline', 96))",
+   "replace": "        return 'display', 96"
+  },
+  {
+   "name": "text_at is ignored",
+   "find": "    if isinstance(at, dict):",
+   "replace": "    if False:"
+  }
+ ]
+}

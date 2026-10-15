@@ -1,0 +1,254 @@
+{
+ "module": "storyboard",
+ "version": "0.1.0",
+ "fps": 30,
+ "size": [
+  960,
+  540
+ ],
+ "frames": 480,
+ "seconds": 16.0,
+ "frame_source": "schematic",
+ "sound_from": "each shot's sound line (storyboard/sound_intents.json)",
+ "bed": {
+  "kind": "click",
+  "id": null,
+  "bpm": 120.0,
+  "chosen_by": "default"
+ },
+ "shots": [
+  {
+   "id": "s01",
+   "beat": "HOOK",
+   "start_frame": 0,
+   "frames": 75,
+   "start_tc": "00:00:00:00",
+   "transition": {
+    "kind": "cut",
+    "reason": null,
+    "render": "hard",
+    "frames": 0
+   },
+   "sound_intent": "typing burst on frame 0; a pleased wordless hum"
+  },
+  {
+   "id": "s02",
+   "beat": "SETUP",
+   "start_frame": 75,
+   "frames": 75,
+   "start_tc": "00:00:02:15",
+   "transition": {
+    "kind": "cut",
+    "reason": null,
+    "render": "hard",
+    "frames": 0
+   },
+   "sound_intent": "inhale on the stretch"
+  },
+  {
+   "id": "s03",
+   "beat": "ESC",
+   "start_frame": 150,
+   "frames": 90,
+   "start_tc": "00:00:05:00",
+   "transition": {
+    "kind": "cut",
+    "reason": null,
+    "render": "hard",
+    "frames": 0
+   },
+   "sound_intent": "ceramic clink; splash; pour; a tape-stop as the screen dies; a gasp"
+  },
+  {
+   "id": "s04",
+   "beat": "FREEZE",
+   "start_frame": 240,
+   "frames": 60,
+   "start_tc": "00:00:08:00",
+   "transition": {
+    "kind": "smash",
+    "reason": "EMOTION: the loss lands on the face",
+    "render": "hard",
+    "frames": 0
+   },
+   "sound_intent": "sad brass, then near silence"
+  },
+  {
+   "id": "s05",
+   "beat": "TURN",
+   "start_frame": 300,
+   "frames": 45,
+   "start_tc": "00:00:10:00",
+   "transition": {
+    "kind": "smash",
+    "reason": "STORY: the reversal",
+    "render": "hard",
+    "frames": 0
+   },
+   "sound_intent": "a bright win sting on the wake"
+  },
+  {
+   "id": "s06",
+   "beat": "PAYOFF",
+   "start_frame": 345,
+   "frames": 45,
+   "start_tc": "00:00:11:15",
+   "transition": {
+    "kind": "cut",
+    "reason": null,
+    "render": "hard",
+    "frames": 0
+   },
+   "sound_intent": "a wordless wow; a tada on the cheer"
+  },
+  {
+   "id": "s07",
+   "beat": "CARD",
+   "start_frame": 390,
+   "frames": 90,
+   "start_tc": "00:00:13:00",
+   "transition": {
+    "kind": "cut",
+    "reason": null,
+    "render": "hard",
+    "frames": 0
+   },
+   "sound_intent": "two-note sonic sting"
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/ui/typing_burst",
+   "frame": 0,
+   "shot": "s01",
+   "why": "typing burst on frame 0",
+   "until_frame": 75
+  },
+  {
+   "id": "sfx/voice/hmm",
+   "frame": 37,
+   "shot": "s01",
+   "why": "a pleased wordless hum",
+   "until_frame": 75
+  },
+  {
+   "id": "sfx/ceramic/clink",
+   "frame": 150,
+   "shot": "s03",
+   "why": "ceramic clink",
+   "until_frame": 240
+  },
+  {
+   "id": "sfx/liquid/splash",
+   "frame": 168,
+   "shot": "s03",
+   "why": "splash",
+   "until_frame": 240
+  },
+  {
+   "id": "sfx/liquid/pour",
+   "frame": 186,
+   "shot": "s03",
+   "why": "pour",
+   "until_frame": 240
+  },
+  {
+   "id": "sfx/tx/tape_stop",
+   "frame": 204,
+   "shot": "s03",
+   "why": "a tape-stop as the screen dies",
+   "until_frame": 240
+  },
+  {
+   "id": "sfx/voice/gasp",
+   "frame": 222,
+   "shot": "s03",
+   "why": "a gasp",
+   "until_frame": 240
+  },
+  {
+   "id": "sfx/cartoon/sad_brass",
+   "frame": 240,
+   "shot": "s04",
+   "why": "sad brass,",
+   "until_frame": 300
+  },
+  {
+   "id": "sfx/stinger/win",
+   "frame": 300,
+   "shot": "s05",
+   "why": "a bright win sting on the wake",
+   "until_frame": 345
+  },
+  {
+   "id": "sfx/voice/wow",
+   "frame": 345,
+   "shot": "s06",
+   "why": "a wordless wow",
+   "until_frame": 390
+  },
+  {
+   "id": "sfx/stinger/win",
+   "frame": 367,
+   "shot": "s06",
+   "why": "a tada on the cheer",
+   "until_frame": 390
+  },
+  {
+   "id": "sfx/logo/two_note",
+   "frame": 390,
+   "shot": "s07",
+   "why": "two-note sonic sting",
+   "until_frame": 480
+  }
+ ],
+ "sweeteners": [
+  {
+   "kind": "smash",
+   "frame": 240,
+   "duration_frames": 0,
+   "shot": "s04"
+  },
+  {
+   "kind": "smash",
+   "frame": 300,
+   "duration_frames": 0,
+   "shot": "s05"
+  }
+ ],
+ "intent_only": [
+  {
+   "shot": "s02",
+   "clause": "inhale on the stretch"
+  },
+  {
+   "shot": "s04",
+   "clause": "near silence"
+  }
+ ],
+ "beat_alignment": {
+  "cut_frames": [
+   75,
+   150,
+   240,
+   300,
+   345,
+   390
+  ],
+  "frames_from_nearest_beat": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "share_within_2_frames": 1.0
+ },
+ "master": {
+  "lufs": -14.0,
+  "ceiling_db": -1.5,
+  "delivered_tp_max_db": -1.0
+ },
+ "notes": []
+}

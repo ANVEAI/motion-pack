@@ -1,0 +1,147 @@
+{
+ "module": "storyboard",
+ "version": "0.1.0",
+ "schema": "anve-storyboard-manifest/1",
+ "doc": "A storyboard sheet (one panel per shot) and an animatic MP4 (the panels timed to the shot durations, with the sound intent as real sounds) drawn from shotlist.json, so the story is approved before the full render. Schematic panels are drawings, not the picture: they say so on the sheet.",
+ "entry": "storyboard/board.py",
+ "tests": "python3 -m pytest -q storyboard/tests",
+ "deps": "Pillow, numpy, soundfile (the pack's requirements.txt), ffmpeg, node (reads type/safezones.js). Optional real key frames: npx hyperframes@0.8.142 snapshot and Chrome.",
+ "id_convention": "storyboard/<check>",
+ "checks": {
+  "storyboard/lint": {
+   "doc": "the story-script linter runs first; a FAIL stops the drawing unless --allow-lint (the waiver is recorded in report.json)",
+   "source": "skills/story-script/scripts/lint_shotlist.py"
+  },
+  "storyboard/reading-speed": {
+   "doc": "words per second of each shot's on-screen line, and the hold it needs, against the shot's own duration",
+   "source": "lint_shotlist.py DEFAULTS (house defaults, overridable per file in shotlist.json lint{})"
+  },
+  "storyboard/safe-zone": {
+   "doc": "the text block of each panel, laid out at its real size in the design's font, against the platform safe rect of type/safezones.js",
+   "source": "type/safezones.js (working estimates, verify:true)"
+  },
+  "storyboard/label-hold": {
+   "doc": "an honesty label stays on screen at least frames.labels.min_on_screen_s over consecutive shots",
+   "source": "design.json frames.labels.min_on_screen_s, story-script SKILL.md (2 s)"
+  },
+  "storyboard/panels": {
+   "doc": "one panel per shot, each carrying the shot id, beat, time range, action, sound intent, transition and reason, and the honesty label",
+   "source": "this module"
+  },
+  "storyboard/animatic-duration": {
+   "doc": "the animatic has exactly round(sum of shot durations x fps) frames and its audio is that long to the sample",
+   "source": "this module"
+  },
+  "storyboard/animatic-loudness": {
+   "doc": "the delivered animatic MP4 decodes to -14 LUFS-I (+/- 0.5) and at most -1.0 dBTP",
+   "source": "SKILL.md hard rule 5, music/mixer.py"
+  }
+ },
+ "spec": {
+  "board": {
+   "canvas_px": {
+    "16:9": [
+     1920,
+     1080
+    ],
+    "9:16": [
+     1080,
+     1920
+    ],
+    "1:1": [
+     1080,
+     1080
+    ],
+    "4:5": [
+     1080,
+     1350
+    ]
+   },
+   "board_px": {
+    "16:9": [
+     960,
+     540
+    ],
+    "9:16": [
+     540,
+     960
+    ],
+    "1:1": [
+     720,
+     720
+    ],
+    "4:5": [
+     648,
+     810
+    ]
+   },
+   "sheet_card_px": {
+    "16:9": [
+     640,
+     3
+    ],
+    "9:16": [
+     360,
+     5
+    ],
+    "1:1": [
+     480,
+     4
+    ],
+    "4:5": [
+     432,
+     4
+    ]
+   },
+   "default_safe": {
+    "tall": "conservative",
+    "other": "wideTitle"
+   },
+   "default_sizes_px_at_1080": {
+    "headline": 96,
+    "end_line": 96,
+    "caption_9x16": 72,
+    "label_16x9": 28,
+    "label_9x16": 30
+   },
+   "line_height": 1.18,
+   "caption_gap_px": 24,
+   "hero_frac": 0.6,
+   "label_min_on_screen_s": 2.0
+  },
+  "animatic": {
+   "transition_frames": {
+    "fade": 0.3,
+    "push": 0.2
+   },
+   "transition_max_share_of_shot": 0.5,
+   "lufs": -14.0,
+   "lufs_tolerance": 0.5,
+   "ceiling_db": -1.5,
+   "delivered_tp_max_db": -1.0,
+   "default_bpm": 120,
+   "crf": 20,
+   "audio_bitrate": "256k"
+  },
+  "transition_render": {
+   "cut": "hard",
+   "smash": "hard",
+   "match": "hard",
+   "jcut": "hard",
+   "dissolve": "fade",
+   "dip": "fade",
+   "dipToBlack": "fade",
+   "blurCross": "fade",
+   "flash": "fade",
+   "lightLeak": "fade",
+   "filmBurn": "fade",
+   "morph": "fade",
+   "ink": "fade",
+   "whip": "push",
+   "push": "push",
+   "swipeUp": "push",
+   "lumaWipe": "push"
+  },
+  "doc_spec_keys": "every threshold is read from here or from the linter's DEFAULTS; nothing is hard-coded in the checks"
+ }
+}

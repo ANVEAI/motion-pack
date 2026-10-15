@@ -110,6 +110,9 @@ def counts():
     em = os.path.join(REPO, 'ears/manifest.json')
     if os.path.exists(em):
         c['ears_checks'] = len(json.load(open(em))['checks'])
+    sm = os.path.join(REPO, 'storyboard/manifest.json')
+    if os.path.exists(sm):
+        c['storyboard_checks'] = len(json.load(open(sm))['checks'])
     tdir = os.path.join(REPO, 'terminal')
     if os.path.exists(os.path.join(tdir, 'manifest.json')):
         c['terminal_recipes'] = len(json.load(open(os.path.join(tdir, 'manifest.json')))['recipes'])
@@ -148,6 +151,10 @@ def table(c):
     if 'ears_checks' in c:
         rows.append(('`ears/`', f"automated listening and critique of a delivered MP4 or WAV: {c['ears_checks']} checks (loudness, clipping, tone, speech, sync scored by edit mode "
                                 "(music, VO or continuous), structure with planned quiet judged as shape, repetition, stereo, reference comparison, optional mood), each with a fix and timestamps", '`ears/README.md`'))
+    if 'storyboard_checks' in c:
+        rows.append(('`storyboard/`', f"a storyboard sheet (PNG, HTML, PDF) and an animatic MP4 drawn from `shotlist.json` before any build: one panel per shot with the text at its real size and the safe zone, "
+                                      f"{c['storyboard_checks']} checks (the story-script linter, reading speed, safe zone, label hold, panel count, animatic duration to the frame and loudness), real key frames from a built composition, "
+                                      "the sound intent as real sounds mastered to the pack spec", '`storyboard/README.md`'))
     if os.path.isdir(os.path.join(REPO, 'cloud')):
         rows.append(('`cloud/`', "optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, "
                      "Gemini Live voiceover with a word-for-word check, a Gemini mood judge", '`cloud/README.md`'))

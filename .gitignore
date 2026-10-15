@@ -87,3 +87,11 @@ templates/demo-r6-pivot/out/*.mp4
 
 # scratch template copies (tests and measurements make templates/wx-*; a template must live two folders under the pack)
 templates/wx-*/
+
+# --- storyboard worked example: the board PNG, report.json and animatic.plan.json are committed; the rest is regenerated (storyboard/README.md) ---
+storyboard/examples/*/animatic.mp4
+storyboard/examples/*/animatic.wav
+storyboard/examples/*/storyboard.pdf
+storyboard/examples/*/storyboard.html
+storyboard/examples/*/panels/
+storyboard/examples/*/real/

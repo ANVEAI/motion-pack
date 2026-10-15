@@ -23,6 +23,7 @@ brief.md ─▶ story-script ─▶ script.md + shotlist.json ─▶ frame-desig
 
 - **Reads:** `brief.md`. If the user only sent a sentence, write `brief.md` first (template in `references/templates.md`), state your assumptions in it, and show them.
 - **Writes:** `script.md` (the human version: the four lines, beat sheet, scenes, hooks, review) and `shotlist.json` (one row per shot, the machine contract).
+- **Then, before any build:** `storyboard/board.py` turns `shotlist.json` into a storyboard sheet and an animatic to approve (below, workflow step 10).
 - **Next:** frame-design reads `shotlist.json` for the aspect, the hero of each frame, every on-screen line and every honesty label, and returns `design.json`. motion-pack turns `shotlist.json` + `design.json` into `plan.json` (field mapping below). social-video reuses the logline, the stake, the send line and the hook variants for titles and captions.
 
 ## When to use, and when not
@@ -67,7 +68,8 @@ Then write the **sound-off sentence**: "After one watch with the sound off, a vi
 7. **Hooks.** Write three variants that change only the first one to three seconds.
 8. **Honesty pass.** Every claim with a digit has a `source`; every illustration, demo figure and planned feature carries its label.
 9. **Review** with `references/rubric.md`. Fix the lowest score by subtraction, then lint again.
-10. **Hand off.** Tell the user which files to read and what frame-design should decide next.
+10. **Storyboard.** Draw the story before anyone builds it: `python3 storyboard/board.py shotlist.json --out storyboard-out` (add `--design design.json` once frame-design has run). It lints the shot list again, draws one panel per shot (scale, camera move, the text at its real size, the safe zone, sound intent, transition, honesty label), flags lines that read too fast and text outside the safe zone, and cuts an animatic with real sounds. Show the sheet and the animatic to whoever approves the story, fix what they or the warnings find in `shotlist.json`, and re-run. This is motion-pack's "storyboard approved" gate.
+11. **Hand off.** Tell the user which files to read and what frame-design should decide next.
 
 ## Formats at a glance
 
@@ -166,3 +168,4 @@ Score the draft with `references/rubric.md` (eleven criteria, 0-2 each). Ship at
 | `references/example.md` | two fictional worked examples (a 16 s character spot that maps onto motion-pack's `templates/character-spot`, and a 60 s short film) |
 | `assets/shotlist.example.json` | a complete, lint-clean shot list for the 16 s example |
 | `scripts/lint_shotlist.py` | structure, timing, reading-speed, hook, turn and honesty checks; thresholds are named house defaults |
+| `storyboard/board.py` (pack root) | the sheet and animatic made from `shotlist.json`; runs this linter first and reuses its thresholds |

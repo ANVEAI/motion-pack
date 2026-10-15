@@ -1,0 +1,36 @@
+{
+ "file": "storyboard/core.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "storyboard/tests/test_storyboard.py",
+  "-k",
+  "timeline or safe_rect or tall_frame or outside_the_safe"
+ ],
+ "timeout": 600,
+ "mutants": [
+  {
+   "name": "frames rounded per shot (drifts off the runtime)",
+   "find": "        b1 = int(round(cum * fps))",
+   "replace": "        b1 = b0 + int(round(dur * fps))"
+  },
+  {
+   "name": "left edge of the safe zone not checked",
+   "find": "    if rect['x0'] < r['x0'] - 0.5:",
+   "replace": "    if False:"
+  },
+  {
+   "name": "bottom edge of the safe zone not checked",
+   "find": "    if rect['y1'] > r['y1'] + 0.5:",
+   "replace": "    if False:"
+  },
+  {
+   "name": "safe zone scaled by 1 instead of H over the reference",
+   "find": "    s = H / (1920.0 if z['ref'] == 'tall' else 1080.0)",
+   "replace": "    s = 1.0"
+  }
+ ]
+}

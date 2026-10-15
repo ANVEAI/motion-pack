@@ -1,0 +1,51 @@
+{
+ "file": "storyboard/animatic.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "storyboard/tests/test_storyboard.py",
+  "-k",
+  "animatic or click_track or timecode or plan_is or sound_lines or sidecar or music_bed_plays"
+ ],
+ "timeout": 600,
+ "mutants": [
+  {
+   "name": "no timecode bar",
+   "find": "            d.rectangle((8, 8, 8 + w + 16, 8 + font.size * 1.7), fill=(20, 20, 20))",
+   "replace": "            pass"
+  },
+  {
+   "name": "no sound-intent rule ever matches",
+   "find": "        if any(re.search(r'(?<![a-z])' + re.escape(w), low) for w in r['words']):",
+   "replace": "        if False:"
+  },
+  {
+   "name": "clauses all land on the shot's first frames",
+   "find": "            frame = row['start_frame'] + (k * row['frames']) // max(1, len(cl))",
+   "replace": "            frame = row['start_frame'] + k"
+  },
+  {
+   "name": "one frame short",
+   "find": "'-c:v', 'libx264', '-preset', 'medium', '-crf', str(AN['crf']), '-pix_fmt', 'yuv420p', '-an', '-frames:v', str(ap['frames']),",
+   "replace": "'-c:v', 'libx264', '-preset', 'medium', '-crf', str(AN['crf']), '-pix_fmt', 'yuv420p', '-an', '-frames:v', str(ap['frames'] - 1),"
+  },
+  {
+   "name": "no cuts reported against the beat grid",
+   "find": "    cuts = [row['start_frame'] for row, t in zip(tl[1:], tr[1:])]",
+   "replace": "    cuts = []"
+  },
+  {
+   "name": "sidecar beat frames read at the wrong rate",
+   "find": "        beats = np.array(sc['beat_frames'], float) / sfps",
+   "replace": "        beats = np.array(sc['beat_frames'], float) / 1.0"
+  },
+  {
+   "name": "the bed is not looped to the length",
+   "find": "        mx.add_bed(y, 0, 0.0, True)",
+   "replace": "        mx.add_bed(y[:1000], 0, 0.0, False)"
+  }
+ ]
+}

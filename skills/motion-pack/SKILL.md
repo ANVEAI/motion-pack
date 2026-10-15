@@ -81,10 +81,11 @@ Every path below is relative to the pack root.
 
 1. **References and assets approved.** Real logo, UI, type, colours and audio are in hand; each reference has a study (`references/reference-intake.md`). A missing asset means stop and ask, never fake it.
 2. **Style guide and shot list approved.** Palette, type, shot lengths, transitions, camera and grain (frame-design), plus the shot list (story-script). Both before any code.
-3. **Stills per shot, critiqued.** One still per shot at final layout, read at 360 px.
-4. **960x540 animatic.** Timing, cuts and placeholder audio; check the hook and the cut rhythm here, while changes are cheap.
-5. **Full pass.** Polish, the mixed sound, then the critic loop (`references/critic.md`) until every score is 8 or more.
-6. **Formats, loop, poster, README.** 16:9 / 9:16 / 1:1 by re-layout, the loop check, a poster frame, and a README with the ids used and the measured loudness.
+3. **Storyboard approved.** `python3 storyboard/board.py shotlist.json --design design.json` draws the sheet (one panel per shot: scale, camera move, the text at its real size, safe zone, sound intent, transition and reason, honesty label) after running the story-script linter. The person who owns the story signs off the sheet and its animatic (`storyboard/README.md`) before any template is built. Warnings on the sheet (reading speed, text outside the safe zone, a label on screen under 2 s) are fixed in the shot list, not in the render.
+4. **Stills per shot, critiqued.** One still per shot at final layout, read at 360 px. With a built composition, `storyboard/board.py --plan out/plan.json` shows real key frames on the same sheet.
+5. **960x540 animatic.** Timing, cuts and placeholder audio; check the hook and the cut rhythm here, while changes are cheap. `storyboard/board.py` makes the first one from the shot list (the panels timed to the shot durations, the sound intent as real sounds, -14 LUFS, timecode burnt in); the later one is cut from the real stills.
+6. **Full pass.** Polish, the mixed sound, then the critic loop (`references/critic.md`) until every score is 8 or more.
+7. **Formats, loop, poster, README.** 16:9 / 9:16 / 1:1 by re-layout, the loop check, a poster frame, and a README with the ids used and the measured loudness.
 
 ## Banned defaults (each needs a written reason in `plan.json` to appear)
 
