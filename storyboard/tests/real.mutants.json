@@ -1,0 +1,31 @@
+{
+ "file": "storyboard/real.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "storyboard/tests/test_storyboard.py",
+  "-k",
+  "real"
+ ],
+ "timeout": 600,
+ "mutants": [
+  {
+   "name": "hero time not kept inside the shot",
+   "find": "        out.append(round(min(max(t, st), st + max(du - 1.0 / fps, 0.0)), 3))",
+   "replace": "        out.append(round(t, 3))"
+  },
+  {
+   "name": "frames may go to a cloud vision model",
+   "find": "'--no-end', '--describe', 'false', '-o', out_dir]",
+   "replace": "'--no-end', '-o', out_dir]"
+  },
+  {
+   "name": "plan shot ids are not used",
+   "find": "    if ps and all(s.get('id') in by_id for s in shots):",
+   "replace": "    if False:"
+  }
+ ]
+}

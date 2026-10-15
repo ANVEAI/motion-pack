@@ -409,6 +409,24 @@ def test_timecode_and_shot_id_are_burnt_into_the_picture(mini_build, tmp):
     assert bar.min() < 60 and bar.max() > 200                                           # dark bar, white text
 
 
+def test_a_music_bed_plays_through_the_whole_animatic(tmp):
+    bed = 'bed_tech_pulse_loop8'
+    man = {i['id']: i for i in load(os.path.join(PACK, 'music', 'manifest.json'))['items']}
+    if not os.path.exists(os.path.join(PACK, 'music', man['music.' + bed]['file'])):
+        subprocess.run([sys.executable, 'build_music.py', '--only', bed], cwd=os.path.join(PACK, 'music'), check=True, capture_output=True)
+    doc = mini_doc()
+    for s in doc['shots']:
+        s['sound'] = 'near silence'                                                    # no cue matches: the bed is all there is
+        s['transition'] = {'kind': 'cut', 'reason': None}
+    code, rep = board.build(put(tmp, 'sl.json', doc), None, out=os.path.join(tmp, 'o'), make_pdf=False, allow_lint=True, music='music/' + bed, log=lambda *a: None)
+    assert code == 0 and load(os.path.join(tmp, 'o', 'animatic.plan.json'))['cues'] == []
+    dec = animatic.decode_mp4(os.path.join(tmp, 'o', 'animatic.mp4'))
+    for a, b in ((0.3, 0.6), (1.2, 1.5), (2.0, 2.5)):
+        seg = dec[int(a * 48000):int(b * 48000)]
+        assert 20 * np.log10(np.sqrt(np.mean(seg ** 2)) + 1e-12) > -35, (a, b)       # a bed cut short, or never looped, leaves silence here
+    assert rep['animatic']['measured']['frames'] == 70
+
+
 def test_the_plan_is_the_same_bytes_twice(mini_build, tmp):
     d, rep = mini_build
     code, rep2 = board.build(os.path.join(d, 'sl.json'), None, out=os.path.join(tmp, 'o'), make_animatic=False, make_pdf=False, allow_lint=True, log=lambda *a: None)

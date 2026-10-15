@@ -1,0 +1,21 @@
+{
+ "file": "storyboard/manifest.json",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "storyboard/tests/test_storyboard.py",
+  "-k",
+  "loudness or exactly_the_shot_sum"
+ ],
+ "timeout": 600,
+ "mutants": [
+  {
+   "name": "target -11 LUFS instead of -14",
+   "find": "\"lufs\": -14.0,",
+   "replace": "\"lufs\": -11.0,"
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "file": "storyboard/board.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "storyboard/tests/test_storyboard.py",
+  "-k",
+  "one_panel or linter_gates or honesty_labels or panel_carries or cli_exit or kind_of_frame or real_key_frames"
+ ],
+ "timeout": 600,
+ "mutants": [
+  {
+   "name": "the lint gate never refuses",
+   "find": "    if lint['rc'] != 0 and not allow_lint:",
+   "replace": "    if False:"
+  },
+  {
+   "name": "the last shot gets no panel",
+   "find": "    for i, (s, row) in enumerate(zip(shots, tl)):",
+   "replace": "    for i, (s, row) in enumerate(list(zip(shots, tl))[:-1]):"
+  },
+  {
+   "name": "the honesty label is dropped from the panel record",
+   "find": "'honesty': s.get('honesty') or None,",
+   "replace": "'honesty': None,"
+  },
+  {
+   "name": "the lint waiver is not recorded",
+   "find": "'waived': bool(lint['rc'] != 0 and allow_lint)",
+   "replace": "'waived': False"
+  },
+  {
+   "name": "a real frame is reported as a schematic",
+   "find": "'source': 'composition' if reals[i] is not None else 'schematic'",
+   "replace": "'source': 'schematic'"
+  }
+ ]
+}

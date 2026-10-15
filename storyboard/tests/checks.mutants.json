@@ -1,0 +1,41 @@
+{
+ "file": "storyboard/checks.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "storyboard/tests/test_storyboard.py",
+  "-k",
+  "reading or hold or honesty_label or label_on_screen or outside_the_safe"
+ ],
+ "timeout": 600,
+ "mutants": [
+  {
+   "name": "hold-time rule off",
+   "find": "    if dur + 1e-9 < need:",
+   "replace": "    if False:"
+  },
+  {
+   "name": "words-per-second rule off",
+   "find": "    if wps > L['words_per_sec'] + 1e-9:",
+   "replace": "    if False:"
+  },
+  {
+   "name": "honesty label left out of the safe-zone check",
+   "find": "    for what, lay in (('text', text_layout), ('honesty label', honesty_layout)):",
+   "replace": "    for what, lay in (('text', text_layout),):"
+  },
+  {
+   "name": "short label runs never reported",
+   "find": "    short = [r for r in runs if r['dur'] + 1e-9 < min_s]",
+   "replace": "    short = []"
+  },
+  {
+   "name": "a label over consecutive shots is not one run",
+   "find": "        if h and cur and cur['label'] == h:",
+   "replace": "        if False:"
+  }
+ ]
+}

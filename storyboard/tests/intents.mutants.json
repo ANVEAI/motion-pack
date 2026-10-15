@@ -1,0 +1,26 @@
+{
+ "file": "storyboard/sound_intents.json",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "storyboard/tests/test_storyboard.py",
+  "-k",
+  "sound_intent_rule or sound_lines"
+ ],
+ "timeout": 600,
+ "mutants": [
+  {
+   "name": "a rule names a sound that does not exist",
+   "find": "\"id\": \"sfx/ceramic/clink\"",
+   "replace": "\"id\": \"sfx/ceramic/clonk\""
+  },
+  {
+   "name": "the clink rule points at another sound",
+   "find": "\"id\": \"sfx/ceramic/clink\"",
+   "replace": "\"id\": \"sfx/glass/clink\""
+  }
+ ]
+}
