@@ -8,6 +8,8 @@ A spec is JSON: { "file": "layers/backgrounds-r6.js", "test": ["node", "layers/t
 (paths relative to the repo root; "test" is run from the repo root). The tool runs the test on the untouched file (it must pass), then for each mutant writes the
 mutated file, runs the test (it must FAIL: the mutant is "killed" and the first FAIL line is printed), and always restores the file byte for byte (try / finally,
 checked against a hash at the end). A `find` that is missing or occurs more than once is an error: a mutation that does not apply proves nothing.
+A mutant may carry its own "test" (a command list that replaces the spec's for that mutant, so a slow suite is not run for a one-line change); that command is run on the
+untouched file first too, and must pass.
 A mutant that survives means a check is missing or too weak: exit 1. Stdlib only; never uses rm."""
 import hashlib, json, os, subprocess, sys, time
 
@@ -47,6 +49,15 @@ def main(argv):
         print('BASELINE FAILS: the test must pass on the untouched file first\n' + out[-1500:])
         return 2
     print('baseline passes (%s)' % ' '.join(spec['test']))
+    own = {}
+    for i, m in enumerate(spec['mutants']):
+        key = tuple(m['test']) if m.get('test') else None
+        if key and key not in own and (only is None or i == only):
+            code, out = run(list(key), timeout)
+            if code != 0:
+                print('BASELINE FAILS for the test of mutant %d "%s": it must pass on the untouched file first\n%s' % (i, m['name'], out[-1500:]))
+                return 2
+            own[key] = True
     survived, rows = [], []
     try:
         for i, m in enumerate(spec['mutants']):
@@ -60,7 +71,7 @@ def main(argv):
                 f.write(text.replace(m['find'], m['replace'], 1))
             os.utime(path, (st.st_atime, st.st_mtime + 3 * (i + 1)))   # a distinct mtime per mutant: python never reuses a stale .pyc
             t0 = time.time()
-            code, out = run(spec['test'], timeout)
+            code, out = run(m.get('test') or spec['test'], timeout)
             killed = code != 0
             rows.append((i, m['name'], killed, first_fail(out) if killed else ''))
             print('%s  #%d %-58s %s' % ('killed  ' if killed else 'SURVIVED', i, m['name'], ('<- ' + first_fail(out)) if killed else '(%.0fs)' % (time.time() - t0)))

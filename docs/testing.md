@@ -12,6 +12,7 @@ CI (`.github/workflows/ci.yml`) runs on a hosted x86-64 Linux runner with Python
 | generated manifests | layers / type / camera manifests equal what `make-manifests.mjs` writes | `tools/check_generated.py` |
 | python | cuts, sfx, music, tools, cloud (dry-run paths), the peak anchor under float noise, Blender recipes imported with stand-in `bpy` and compared with `blender/manifest.json` | `pytest` step |
 | listening | `ears` on synthetic signals | `ears/tests` |
+| looking | `eyes` on synthetic x264 clips (flash rates and area, red flash, banding with and without grain, safe zones, text size / time / contrast, pacing, bars, encode); every check is proved to fail when its code is broken | `eyes/tests`, `eyes/tests/*.mutants.json` |
 | transitions | timing maths, registry schema and shader uniforms (lint), every id and alias resolves to a back-end that can play it, every GL-only id has a DOM approximation | `core.test.mjs`, `tools/lint.mjs`, `tests/backends.test.mjs` |
 | camera | all 2D / 3D preset maths; baked and driven paths agree for any `t0` | `camera.test.mjs` |
 | type and gfx | every gfx id, UI kit, round-3 / 4+5 parts as SVG strings in node; type presets and captions on a fake timeline; def ids never collide between two items in one host | `type/tests/*.test.mjs` |

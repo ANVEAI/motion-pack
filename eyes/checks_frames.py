@@ -54,7 +54,7 @@ def frame0(ctx):
                             'raise the hero against its backdrop (frame-design: the hero is the brightest or highest-contrast thing at frame 0)',
                             'The first frame is flat and grey; nothing in it pulls the eye.', 'lowcontrast'))
     sc, mask = subject_contrast(c.Y[0])
-    if not issues:
+    if not any(i['kind'] in ('black', 'uniform') for i in issues):
         if sc < sp['subject_contrast_warn']:
             issues.append(issue('fail', [0.0, 0.0], 'no readable subject in frame 0: its strongest region has a %.2f:1 ratio against the rest (needs %.1f:1)' % (sc, sp['subject_contrast_pass']),
                                 'make one hero clearly lighter or darker than its backdrop at frame 0 (a scrim or a lighter plate), then re-run',

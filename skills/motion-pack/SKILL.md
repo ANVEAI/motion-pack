@@ -82,8 +82,8 @@ Every path below is relative to the pack root.
 1. **References and assets approved.** Real logo, UI, type, colours and audio are in hand; each reference has a study (`references/reference-intake.md`). A missing asset means stop and ask, never fake it.
 2. **Style guide and shot list approved.** Palette, type, shot lengths, transitions, camera and grain (frame-design), plus the shot list (story-script). Both before any code.
 3. **Stills per shot, critiqued.** One still per shot at final layout, read at 360 px.
-4. **960x540 animatic.** Timing, cuts and placeholder audio; check the hook and the cut rhythm here, while changes are cheap.
-5. **Full pass.** Polish, the mixed sound, then the critic loop (`references/critic.md`) until every score is 8 or more.
+4. **960x540 animatic.** Timing, cuts and placeholder audio; check the hook and the cut rhythm here, while changes are cheap. **Eyes:** `python3 eyes/look.py animatic.mp4 --plan out/plan.json --draft` has no fail on `eyes/frame0`, `eyes/frames`, `eyes/flashes` or `eyes/pacing` (`--draft` waives the resolution and bit-rate rules).
+5. **Full pass.** Polish, the mixed sound, then the critic loop (`references/critic.md`) until every score is 8 or more. **Eyes:** `eyes/look.py` on the delivered MP4 shows no fail and no category under 8 that you cannot explain.
 6. **Formats, loop, poster, README.** 16:9 / 9:16 / 1:1 by re-layout, the loop check, a poster frame, and a README with the ids used and the measured loudness.
 
 ## Banned defaults (each needs a written reason in `plan.json` to appear)
@@ -451,12 +451,13 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 - [ ] **Loudness:** the delivered MP4 decodes to −14 ± 0.5 LUFS-I and TP ≤ −1.0 dBTP, with the WAV master at ≤ −1.5 (`sheet.py` prints both).
 - [ ] **Sync:** hits land on frame F + 1, risers end one frame before the hit, whooshes peak on the cut, and the last 0.15 s is silent. The edit is scored by its mode (`plan.audio.mode`, `references/critic.md`): music-led cut pieces put ≥ 60% of cuts on an onset; VO-led films keep cuts out of words; continuous films put ≥ 60% of motion events on an onset.
 - [ ] **Ears:** `ears/listen.py` on the delivered MP4 shows no fail, and you listened once at phone size.
+- [ ] **Eyes:** `eyes/look.py` on the delivered MP4 (with `--plan out/plan.json`) shows no fail: frame 0 not black and moving by frame 6, no unplanned black or frozen run, at most 3 flashes a second, no banding, every text box inside the safe zone and over the size, time and contrast floors, no unplanned bars; and you looked once at a 360 px wide still.
 - [ ] **Legibility:**
   - Captions are at most 18 characters per line and at most 2 lines.
   - The active word is exactly the spoken word.
   - It reads at phone size (360 px wide).
 - [ ] **Honesty:** no fabricated numbers, reviews, logos or testimonials. Placeholders and concept renders are labelled.
-- [ ] **Flash safety:** no more than 3 full-frame flashes per second.
+- [ ] **Flash safety:** no more than 3 full-frame flashes per second (`eyes/flashes` measures it, WCAG 2.3.1).
 - [ ] **Determinism:**
   - Render twice with `--format png-sequence` and compare the frames. They should be identical, or above 60 dB where blurs add GPU noise.
   - Don't compare two MP4s: the encoder carries GPU capture noise (at most 2/255) to the next keyframe, so two default renders differ (about 44-50 dB) even though every page frame is the same; `--workers 1` is usually but not always byte-identical. The measured numbers are in the README section "What is and is not deterministic".
@@ -481,6 +482,22 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
   - repeated SFX and mono compatibility.
 - **What it cannot judge:** taste, mood without a local CLAP model, whether a sound fits the picture, or a voice's naturalness.
 - **It measures; it does not replace one human listen** at phone size and on headphones. Its sound score is a ceiling: listen, then lower it for what you hear.
+
+## Eyes: judge the picture you cannot see
+
+`python3 eyes/look.py out/<video>.mp4 --plan out/plan.json [--platform tiktok.organic] --md eyes.md` (`eyes/README.md`). `tools/critic_pack.sh` runs it on every review.
+
+- **When:** on the animatic (`--draft`), on every delivered render, and again after each picture fix.
+- **What it judges** (9 checks, each with a measured value, a pass / warn / fail and a fix with timestamps):
+  - frame 0: not black or flat, a readable subject, the first visible change by frame 6;
+  - black, empty and frozen runs the plan does not call a hold or a dip, a black tail, playback stalls;
+  - flashes: WCAG general and red flash, at most 3 a second;
+  - banding in smooth gradients after the encode, with the region and the grain or encode fix;
+  - safe zones: every box in `plan.texts` against the platform rectangle, or without boxes the persistent text-like edges inside the unsafe bands;
+  - text readability: size at 1080 and on a 360 px phone against the frame-design floors, time on screen (0.35 s + 0.28 s per word), and the WCAG contrast measured from the pixels behind it;
+  - pacing against the plan's format or `paceRule`, and the longest static hold; composition: one hero per key frame (a proxy), unplanned letterbox bars, aspect and resolution for the platform; the encode.
+- **Give it the plan.** Text checks need `plan.texts [{text, t, box, fontPx, role, fg}]` (the shot's `text` and `textDur` give timing only); a still the plan marks (`shots[].hold`, `plan.holds`, `audio.quiet` kind hold) or a dip (`plan.black`, a `dip` transition) is judged as shape, not a fault.
+- **What it cannot judge:** whether the picture is good, what the hero is, whether text says the right thing, taste, or whether motion has intent. Its score is a ceiling: look at the stills, then lower it for what you see.
 
 ## Gotchas (the full list is in `references/gotchas.md`)
 
@@ -511,5 +528,6 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 | Blender recipes | `blender/run.py`, `blender/README.md`, `blender/manifest.json` |
 | Gallery | `catalog/index.html` |
 | Automated listening and critique of the sound | `ears/listen.py`, `ears/README.md`, thresholds in `ears/manifest.json` |
+| Automated looking and critique of the picture | `eyes/look.py`, `eyes/README.md`, thresholds in `eyes/manifest.json` |
 | Outside assets | `scripts/fetch-external.sh`, `THIRD_PARTY.md` |
 | Research behind the defaults | `docs/research/` |

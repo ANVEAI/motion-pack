@@ -16,6 +16,7 @@ bash tools/critic_pack.sh out/film-9x16.mp4 reviews/r1 [templates/<your-video>]
 | `loop2x.mp4`, `seam.jpg` | the clip played twice, and last frame next to first. Does the wrap jump? (`loop_seam_psnr_db` in `critic.json`) |
 | `refstudy/timeline.png`, `refstudy/study.json` | loudness, onsets, cuts and the share of cuts within 2 frames of an onset |
 | `ears/ears.md` (+ `ears.json`) | the sound, check by check: loudness, clipping, tone, speech and ducking, sync (cue anchors on F + 1), structure, repetition, stereo. The top 3 things a listener would notice, with fixes and timestamps, and a 1-10 score per category (`ears/README.md`) |
+| `eyes/eyes.md` (+ `eyes.json`) | the picture, check by check: frame 0, black and frozen runs, flashes, banding, safe zones, text size / time / contrast, pacing, composition, encode. The top 3 things a viewer would notice, with fixes and timestamps, and a 1-10 score per category and per rubric row (`eyes/README.md`) |
 | `det/report.txt` | only with a composition directory: two `png-sequence` renders, frame hashes compared; the first differing frame's PSNR |
 | `critic.json`, `review.md` | the numbers in one place, and the rubric to fill in |
 
@@ -33,6 +34,19 @@ Determinism renders the composition twice, so it is slow; run it once per review
 | **Brand accuracy** | the real logo, palette, type and product UI; real numbers with a source; placeholders labelled | sheet, end card, `phone/` |
 
 Write the score and the evidence (file and timestamp) for every row of `review.md`. A score without evidence does not count.
+
+**The picture rows use eyes.** `eyes/look.py` measures what a ruler can, and `critic_pack.sh` writes its suggested scores into `critic.json` and `review.md`. A suggested score is a ceiling, not the score: look at the stills, then lower it for what you see (a hero that is the wrong thing, a cheap look, motion without intent).
+
+| rubric row | eyes score (`eyes.json` `scores`) | the checks behind it |
+|---|---|---|
+| **Hook in 2 s** | `critic_hook_2s` | `eyes/frame0`: not black or flat, the first change by frame 6, a subject at 3:1 |
+| **Phone readability** | `critic_phone_readability` (minimum of two) | `eyes/safezones` (boxes inside the platform rectangle) and `eyes/readability` (size at 1080 and on 360 px, time on screen, WCAG contrast from pixels) |
+| **Motion** | `critic_motion` (minimum of two) | `eyes/frames` (unplanned black or frozen runs, stalls) and `eyes/flashes` (WCAG 2.3.1). Whether the eases have intent is not measured: use `motion_strip.jpg` |
+| **Variety** | `critic_variety` (minimum of two) | `eyes/pacing` (cuts per minute, shot length, the longest static hold) and `eyes/composition` (one hero per key frame, unplanned bars) |
+| **Sound sync**, **Brand accuracy** | none | `ears` (sound); brand accuracy is looked at, not measured |
+| *no rubric row* | `banding`, `encode` | gates 5 and 6 (Files, Formats): fix them before delivery; they cap nothing in the table |
+
+Never score above eyes without fixing the measured issue first. Without `plan.texts` the text rows are only partly measured (timing from the shots' text, no sizes or contrast): say so in the evidence column.
 
 **Which sync rule applies** (round 4/5: cut sync did not predict reach; the two 73%-sync pieces were tier C, tier-A VO films sat at 40-59%, and 5 of the 7 continuous pieces were tier A or A−):
 
@@ -61,7 +75,14 @@ Write the score and the evidence (file and timestamp) for every row of `review.m
 
 | defect | fix |
 |---|---|
-| black or static frame 0 | start mid-motion; move the logo to the end |
+| black or static frame 0 (`eyes/frame0`) | start mid-motion on frames 1-6; move the logo to the end |
+| black or frozen frames mid-clip, a stall (`eyes/frames`) | find the shot that failed to load or render at that time; mark an intended hold in `plan.shots[].hold` or `plan.holds`, a dip with a `dip` transition or `plan.black` |
+| more than 3 flashes a second (`eyes/flashes`) | space the onsets at least 0.34 s apart, keep the flashing area under a quarter of the frame, or cut the luminance swing |
+| bands in a smooth gradient (`eyes/banding`) | grain over it (`layers/presets/stocks.js` `upload-safe`, `grain` 0.02 or more), or dither before the encode; encode at CRF 18 or lower |
+| text outside the safe zone (`eyes/safezones`) | move the box inside the rectangle it prints (`type/safezones.js captionBox`); keep faces and key text out of the bottom 35% of 9:16 |
+| text too small, too short or low contrast (`eyes/readability`) | raise it to the floor it prints, hold it 0.35 s + 0.28 s per word, or add a scrim; `skills/frame-design/scripts/contrast.py --pair` gives the nearest passing colour |
+| letterbox bars or the wrong aspect (`eyes/composition`) | re-lay out for the platform's shape; a bars look goes in `plan.layers` or `plan.eyes.letterbox` |
+| moov after mdat, 4:4:4, a long keyframe gap, blocks (`eyes/encode`) | re-mux with `-movflags +faststart`; encode H.264 High `yuv420p`, `-g` 2 s, CRF 18-23 |
 | a line unreadable at 360 px | fewer words, bigger type, hold at least 9 frames fully formed |
 | cuts off the music (mode `music`) | `cuts/cutgen.py snap --study reviews/rN/refstudy/study.json` with your cut list |
 | a cut inside a word (mode `vo`) | move it to the word boundary or the gap between lines; advance the diagram in the gap |

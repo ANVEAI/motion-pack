@@ -94,7 +94,12 @@ def detect_text_tracks(c):
                     break
             else:
                 tracks.append({'box': tuple(float(v) for v in b), 'first': i, 'last': i, 'n': 1})
-    return [{'box': tuple(v / k for v in tr['box']), 't': [round(tr['first'] * dt, 2), round((tr['last'] + 1) * dt, 2)]} for tr in tracks if tr['n'] >= sp['persist_samples']]
+    keep = []
+    for tr in sorted((t for t in tracks if t['n'] >= sp['persist_samples']), key=lambda t: (-t['n'], t['first'])):
+        if not any(iou(tr['box'], o['box']) >= sp['iou_min'] and tr['first'] <= o['last'] and o['first'] <= tr['last'] for o in keep):     # one block, however many variants of it tracked
+            keep.append(tr)
+    keep.sort(key=lambda t: (t['first'], t['box'][1], t['box'][0]))
+    return [{'box': tuple(v / k for v in tr['box']), 't': [round(tr['first'] * dt, 2), round((tr['last'] + 1) * dt, 2)]} for tr in keep]
 
 
 def safezones(ctx):

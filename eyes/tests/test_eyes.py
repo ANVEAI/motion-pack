@@ -88,12 +88,30 @@ def test_a_black_frame0_fails():
     assert c['measured']['mean_luma'] < 2
 
 
-def test_a_uniform_frame0_fails_and_a_flat_grey_one_warns():
+def test_a_uniform_frame0_fails_and_a_flat_low_contrast_one_is_called_out():
     c = run(vid('flat0', segments((10, lambda i: s.solid(W, H, (120, 120, 120))), (50, scene)), 60), 'frame0')
     assert c['status'] == 'fail' and 'near-uniform' in whats(c)
     ramp = np.linspace(100, 126, W)[None, :, None] * np.ones((H, 1, 3))
     c2 = run(vid('lowc0', segments((10, lambda i: ramp), (50, scene)), 60), 'frame0')
-    assert c2['status'] == 'warn' and 'low contrast' in whats(c2)
+    assert 'low contrast' in whats(c2) and c2['measured']['std_luma'] < 12 and c2['status'] == 'fail' and 'no readable subject' in whats(c2)   # a smooth ramp has no hero either
+
+
+def disc_on_grade(level):
+    yy, xx = np.mgrid[0:H, 0:W]
+
+    def f(i):
+        d = np.sqrt((xx - W * (0.5 + 0.1 * np.sin(0.2 * i))) ** 2 + (yy - H * 0.5) ** 2)
+        m = np.clip((70 - d) / 2, 0, 1)[..., None]
+        base = (90 + 25 * np.sin(yy / H * 3))[..., None] * np.ones((1, 1, 3))
+        return np.clip(base * (1 - m) + level * m + np.random.default_rng(i).normal(0, 1.5, (H, W, 3)), 0, 255)
+    return f
+
+
+def test_a_hero_that_barely_separates_from_its_backdrop_is_called_out():
+    weak = run(vid('subj105', disc_on_grade(105), 40), 'frame0')
+    assert weak['status'] == 'fail' and 'no readable subject' in whats(weak) and weak['measured']['subject_contrast'] < 1.5
+    soft = run(vid('subj200', disc_on_grade(200), 40), 'frame0')
+    assert soft['status'] == 'warn' and 'reads at' in whats(soft) and 1.5 <= soft['measured']['subject_contrast'] < 3.0, (soft['measured'], whats(soft))
 
 
 @pytest.mark.parametrize('lead,status', [(3, 'pass'), (10, 'warn'), (22, 'fail')])
@@ -108,6 +126,7 @@ def test_first_visible_change_by_frame_6_warns_by_half_a_second_and_fails_after(
 def test_a_still_opening_with_no_change_for_a_second_fails():
     c = run(vid('stillopen', still, 60), 'frame0')
     assert c['status'] == 'fail' and 'nothing visibly changes' in whats(c)
+    assert run(vid('stillopen', still, 60), 'frames', plan={'fps': 30})['measured']['frozen_runs'] == [], 'a freeze from frame 0 belongs to frame0, not to frames'
 
 
 # ------------------------------------------------------------------------------------------------ eyes/frames
@@ -118,6 +137,8 @@ def test_black_frames_mid_clip_fail_unless_the_plan_dips():
     plan = {'fps': 30, 'shots': [{'id': 'a', 'start': 0, 'dur': 1.1, 'tx': 'transitions/cut'}, {'id': 'b', 'start': 1.1, 'dur': 1.9, 'tx': 'transitions/dip-to-black'}]}
     c2 = run(p, 'frames', plan=plan)
     assert c2['status'] == 'pass' and c2['measured']['black_runs'][0]['planned'] and any('planned' in n for n in c2['notes'])
+    blip = run(vid('blip', segments((30, scene), (2, black), (58, lambda i: scene(i + 30))), 90), 'frames')
+    assert blip['status'] == 'pass' and not blip['measured']['black_runs'], 'a 2-frame black blip is under black_min_frames'
 
 
 def test_a_black_tail_warns_and_a_long_one_fails():
@@ -136,6 +157,8 @@ def test_frozen_picture_warns_from_half_a_second_fails_after_two_and_a_planned_h
     assert c2['status'] == 'pass' and c2['measured']['frozen_runs'][0]['planned']
     c3 = run(vid('frz2', segments((30, scene), (80, lambda i: scene(29)), (30, lambda i: scene(i + 30))), 140), 'frames')
     assert c3['status'] == 'fail'
+    short = run(vid('frz3', segments((30, scene), (10, lambda i: scene(29)), (50, lambda i: scene(i + 30))), 90), 'frames')
+    assert short['status'] == 'pass' and not short['measured']['frozen_runs'], 'a 0.3 s freeze is under frozen_warn_s'
 
 
 def test_a_still_end_card_without_a_plan_is_a_note_and_with_a_plan_it_is_judged():
@@ -158,7 +181,7 @@ def test_a_slow_small_motion_is_not_a_freeze():
 def test_an_empty_colour_field_mid_clip_is_flagged():
     grey = lambda i: s.solid(W, H, (110, 110, 110))
     c = run(vid('empty', segments((30, scene), (36, grey), (30, lambda i: scene(i + 30))), 96), 'frames')
-    assert c['status'] == 'fail' and 'empty colour field' in whats(c)
+    assert c['status'] == 'fail' and 'empty colour field' in whats(c) and len(c['issues']) == 1, whats(c)
 
 
 def test_a_timestamp_gap_is_a_stall():
@@ -240,10 +263,24 @@ def test_a_bright_gradient_steps_are_below_the_visible_threshold_and_a_flat_fiel
     assert run(vid('flatgrey', lambda i: s.solid(W, H, (60, 60, 60)), 30, crf=12), 'banding')['measured']['max_banded_share'] == 0.0
 
 
+def test_edges_and_single_steps_are_not_staircases():
+    def panels(i):
+        a = np.empty((H, W, 3), np.uint8)
+        a[:, :W // 3], a[:, W // 3:2 * W // 3], a[:, 2 * W // 3:] = 60, 120, 60            # big steps: edges, not contours
+        return a
+    assert run(vid('panels', panels, 20, crf=12), 'banding')['measured']['max_banded_share'] == 0.0
+
+    def onestep(i):
+        a = np.empty((H, W, 3), np.uint8)
+        a[:, :W // 2], a[:, W // 2:] = 60, 61                                              # one contrast-free step: not a staircase
+        return a
+    assert run(vid('onestep', onestep, 20, crf=12), 'banding')['measured']['max_banded_share'] == 0.0
+
+
 def test_one_banded_frame_in_twelve_is_a_warning_not_a_fail():
     p = vid('banded1', segments((20, scene), (4, lambda i: ramp(30, 60)(0)), (36, lambda i: scene(i + 20))), 60, crf=12)
     c = run(p, 'banding')
-    assert c['status'] in ('warn', 'pass') and c['status'] != 'fail', (c['measured']['max_banded_share'], c['measured']['samples'])
+    assert c['status'] == 'warn' and sum(1 for r in c['measured']['frames'] if r['banded_share'] >= 0.04) == 1, (c['measured']['max_banded_share'], c['measured']['samples'])
 
 
 # ------------------------------------------------------------------------------------------------ eyes/safezones
@@ -269,6 +306,10 @@ def test_plan_boxes_inside_the_safe_rect_pass_and_boxes_over_the_bands_fail():
     right = run(p, 'safezones', plan=plan_texts([x0 + 5, y0 + 5, W - 10, y0 + 60]))
     assert right['status'] == 'fail' and 'right by' in whats(right)
     assert 'x %d-%d, y %d-%d' % (round(x0), round(x1), round(y0), round(y1)) in bad['issues'][0]['fix']
+    lt = run(p, 'safezones', plan=plan_texts([x0 - 12, y0 - 25, x0 + 200, y0 + 30]))
+    assert lt['status'] == 'fail' and 'left by 12 px' in whats(lt) and 'top by 25 px' in whats(lt)
+    edge = run(p, 'safezones', plan=plan_texts([x0 - 0.4, y0, x1 + 0.4, y1]))                  # lintRect's half-pixel tolerance
+    assert edge['status'] == 'pass'
 
 
 def test_the_safe_rect_matches_safezones_js_and_the_platform_presets():
@@ -289,6 +330,16 @@ def test_text_in_the_bottom_band_is_found_without_a_plan_and_text_in_the_safe_ar
     ok = run(vid('txtsafe', with_text(scene, 'SALE 50% OFF', (110, 330), 36), 90), 'safezones')
     assert ok['status'] == 'pass' and ok['measured']['blocks'] and all(b['outside'] < 0.15 for b in ok['measured']['blocks'])
     assert run(vid('good', scene, 60), 'safezones')['measured']['blocks'] == []
+
+
+def test_text_half_over_the_edge_warns_and_text_seen_for_one_sample_is_not_reported():
+    c = run(vid('txtstrad', with_text(scene, 'SALE 50% OFF', (110, 592), 36), 90), 'safezones')
+    assert c['status'] == 'warn' and 'text-like block' in whats(c) and all(0.15 <= b['outside'] < 0.5 for b in c['measured']['blocks']), (c['measured']['blocks'], whats(c))
+
+    def blink(i):
+        f = scene(i)
+        return s.text_frame(f, 'SALE 50% OFF', (60, 800), 36)[0] if 14 <= i <= 16 else f
+    assert run(vid('txtblink', blink, 90), 'safezones')['measured']['blocks'] == []
 
 
 def test_text_in_the_right_band_of_a_9_16_frame_fails():
@@ -332,12 +383,33 @@ def test_text_on_screen_time_follows_0_35_plus_0_28_per_word():
     bx = box_of('Your desk handled', (30, 60), 40)
     p = vid('rd_big', text_scene('Your desk handled', (30, 60), 40, (255, 255, 255)), 90)
     short = run(p, 'readability', plan=plan_texts(bx, fontPx=40, text='Works with the tools you already use', t=[0, 1.0]))
-    assert short['status'] == 'fail' and 'need 2.31 s' in whats(short)
+    assert short['status'] == 'fail' and 'need 2.31 s' in whats(short) and 'has 7 words (at most 6)' in whats(short)
     near = run(p, 'readability', plan=plan_texts(bx, fontPx=40, text='Works with the tools you', t=[0, 1.6]))
     assert near['status'] == 'warn', whats(near)
     assert run(p, 'readability', plan=plan_texts(bx, fontPx=40, text='Your desk handled', t=[0, 1.5]))['status'] == 'pass'
-    lbl = run(p, 'readability', plan=plan_texts(bx, fontPx=40, text='Concept render', t=[0, 1.2], role='label', fontPx2=1))
+    lbl = run(p, 'readability', plan=plan_texts(bx, fontPx=40, text='Concept render', t=[0, 1.2], role='label'))
     assert lbl['status'] == 'fail' and 'labels need 2.0 s' in whats(lbl)
+    end = run(p, 'readability', plan=plan_texts(bx, fontPx=40, text='anvevoice.app', t=[0, 2.0], role='endcard'))
+    assert end['status'] == 'warn' and 'held 2.00 s (3-4.5 s)' in whats(end)
+
+
+def wcag(a, b):
+    """the WCAG 2.x ratio of two 0-255 grey levels, written out here so the test does not lean on core"""
+    lin = lambda v: (v / 255 / 12.92) if v / 255 <= 0.04045 else ((v / 255 + 0.055) / 1.055) ** 2.4
+    hi, lo = max(lin(a), lin(b)), min(lin(a), lin(b))
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def test_caption_size_caps_and_the_phone_floor():
+    text = 'Your desk handled'
+    p = vid('rd_big', text_scene(text, (30, 60), 40, (255, 255, 255)), 90)
+    cap = run(p, 'readability', plan=plan_texts(box_of(text, (30, 60), 40), fontPx=100, role='caption', t=[0, 3]))
+    assert 'captions run 64-80 px' in whats(cap) or 'is 200 px at 1080; 9:16 captions run 64-80 px' in whats(cap), whats(cap)
+    ok = run(p, 'readability', plan=plan_texts(box_of(text, (30, 60), 40), fontPx=40, role='caption', t=[0, 3]))
+    assert 'captions run' not in whats(ok) and ok['measured']['texts'][0]['size_at_1080'] == 80.0
+    wide = vid('rd_wide', lambda i: np.clip(s.moving_scene(640, 360)(i), 0, 255), 60, w=640, h=360)
+    tiny = run(wide, 'readability', plan={'fps': 30, 'size': [640, 360], 'texts': [{'text': 'tiny line', 't': [0, 2], 'box': [20, 20, 120, 40], 'fontPx': 14, 'role': 'read'}]})
+    assert tiny['status'] == 'fail' and 'renders 7.9 px high on a 360 px wide phone (floor 9 px)' in whats(tiny)
 
 
 def test_measured_contrast_matches_the_wcag_ratio_and_fails_on_a_light_backdrop():
@@ -345,12 +417,12 @@ def test_measured_contrast_matches_the_wcag_ratio_and_fails_on_a_light_backdrop(
     text = 'Your desk handled'
     p = vid('rd_dark', text_scene(text, (30, 60), 40, (255, 255, 255), bg), 90)
     bx = box_of(text, (30, 60), 40)
-    exp = float(core.ratio(core.rel_lum(np.array((255, 255, 255), np.uint8)), core.rel_lum(np.array(bg, np.uint8))))
+    exp = wcag(255, 20)
     c = run(p, 'readability', plan=plan_texts(bx, fontPx=40, fg='#FFFFFF'))
     got = c['measured']['texts'][0]['contrast_worst']
     assert c['status'] == 'pass' and got == pytest.approx(exp, rel=0.1), (got, exp)
     light = vid('rd_light', text_scene(text, (30, 60), 40, (255, 255, 255), (190, 190, 190)), 90)
-    exp2 = float(core.ratio(core.rel_lum(np.array((255, 255, 255), np.uint8)), core.rel_lum(np.array((190, 190, 190), np.uint8))))
+    exp2 = wcag(255, 190)
     c2 = run(light, 'readability', plan=plan_texts(bx, fontPx=40, fg='#FFFFFF'))
     got2 = c2['measured']['texts'][0]['contrast_worst']
     assert c2['status'] == 'fail' and got2 == pytest.approx(exp2, rel=0.1) and got2 < 3.0 and 'contrast.py' in c2['issues'][0]['fix'], (got2, exp2)
@@ -457,6 +529,11 @@ def test_a_16_9_clip_inside_a_9_16_frame_is_a_letterbox_failure_unless_the_plan_
     assert asked['status'] == 'pass' and any('asked for' in n for n in asked['notes'])
     asked2 = run(p, 'composition', plan={'fps': 30, 'layers': [{'kind': 'bars'}]})
     assert asked2['status'] == 'pass'
+
+
+def test_thin_bars_warn_and_thick_bars_fail():
+    c = run(vid('thinbars', boxed(W, 864), 60), 'composition')
+    assert c['status'] == 'warn' and 'black bars' in whats(c) and 0.02 <= c['measured']['bars']['top'] < 0.15 and c['measured']['bar_area'] < 0.15
 
 
 def test_a_pillarboxed_wide_frame_fails():
