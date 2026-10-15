@@ -36,7 +36,7 @@ const MUT = [
   { n: 'connectRows: the Thinking line starts too early', f: R, from: 'click[n - 1] + 0.75', to: 'click[0] + 0.75', expect: /Thinking line appears after the last click/ },
   { n: 'connectRows: no fit to the safe rect', f: R, from: 'S.h * 0.94 / maxH0', to: 'S.h * 9 / maxH0', expect: /panel stays inside the safe rect/ },
   { n: 'review: dock target not clamped to the icon count', f: R, from: 'p.target = clamp(Math.round(num(p.target, 3, 0, 1e4)), 0, p.icons.length - 1);', to: 'p.target = Math.round(num(p.target, 3, 0, p.icons.length - 1));', expect: /invalid target with a short or empty icon list/ },
-  { n: 'review: embedded line chart keeps its fixed ids', f: R, from: '(_, a, b) => a + id + b)', to: '(_, a, b) => a + b)', expect: /embedded line chart's clip and gradient/ },
+  { n: 'review: embedded line chart keeps its fixed ids (with renderInner\'s id namespacing off: nsIds alone would hide it)', f: R, from: '(_, a, b) => a + id + b)', to: '(_, a, b) => a + b)', also: [{ f: 'gfx/index.js', from: 'export function nsIds(svg) {\n  const ids = new Set();', to: 'export function nsIds(svg) {\n  return svg; const ids = new Set();' }], expect: /embedded line chart's clip and gradient/ },
   { n: 'review: blank method accepted silently', f: R, from: "p.method = str(p.method, '', 80).trim() || HOVER_D.method;", to: "p.method = str(p.method, '', 80);", expect: /blank or non-string method/ },
   { n: 'review: str() coerces objects to text', f: R, from: "typeof v === 'string' || (typeof v === 'number' && Number.isFinite(v))", to: 'v != null', expect: /non-string (source|text params)/ },
   { n: 'review: chart.text ignored', f: R, from: "text: hexOk(p.chart.text, PAPER), values: vv, labels", to: 'text: PAPER, values: vv, labels', expect: /follow chart\.text/ },
@@ -49,7 +49,7 @@ const MUT = [
   { n: 'diagram: beats are not sorted', f: R, from: 'prev = o; return o; }).sort((a, b) => a.at - b.at);', to: 'prev = o; return o; });', expect: /out of order render exactly as sorted/ },
   { n: 'diagram: the broken beat loses its connector gap', f: R, from: "broken: [1, 0.2, 1, 1]", to: "broken: [1, 0.2, 0, 1]", expect: /connectors break on the last problem beat/ },
   { n: 'diagram: boxes overflow the safe rect', f: R, from: 'A.w / (2 * ex + 0.3), A.h / (2 * ey + 0.3 + (ret ? 1.2 : 0)), p.maxUnit * s)', to: 'A.w / (2 * ex + 0.3) * 3, A.h / (2 * ey + 0.3 + (ret ? 1.2 : 0)) * 3, p.maxUnit * s * 3)', expect: /boxes stay inside the safe rect/ },
-  { n: 'diagram: split-box clip ids shared between instances', f: R, from: 'clipPath id="${id}L${k}"', to: 'clipPath id="dgL${k}"', expect: /clipPaths of two instances never share an id|share no SVG id/ },
+  { n: 'diagram: split-box clip ids shared between instances (with renderInner\'s id namespacing off: nsIds alone would hide it)', f: R, from: 'clipPath id="${id}L${k}"', to: 'clipPath id="dgL${k}"', also: [{ f: 'gfx/index.js', from: 'export function nsIds(svg) {\n  const ids = new Set();', to: 'export function nsIds(svg) {\n  return svg; const ids = new Set();' }], expect: /clipPaths of two instances never share an id|share no SVG id/ },
   { n: 'diagram: the marks are not reset on a new layout', f: R, from: "(b?.layout && b.layout !== prev.layout ? [] : prev.marks)", to: "prev.marks", expect: /recovers into tidy arrangements/ },
   { n: 'pill: a different monospace advance', f: R, from: 'ADV = 0.6,', to: 'ADV = 0.64,', expect: /grows by one monospace advance per character/ },
   { n: 'pill: the width snaps per character', f: R, from: 'const tf = clamp((u - p.typeAt) * p.cps, 0, n)', to: 'const tf = Math.floor(clamp((u - p.typeAt) * p.cps, 0, n))', expect: /width follows the typed fraction continuously/ },
@@ -57,6 +57,8 @@ const MUT = [
   { n: 'pill: the outline is always fully drawn', f: R, from: 'dk = clamp(seg(u, p.drawAt, p.drawAt + p.drawDur))', to: 'dk = 1', expect: /outline draws on/ },
   { n: 'pill: the caret never blinks', f: R, from: 'Math.floor((u - p.typeAt - p.text.length / p.cps) * 2) % 2 === 0', to: 'true', expect: /caret is solid while typing and blinks/ },
   { n: 'pill: key ticks not thinned', f: R, from: "(out.length < 2 || t - out.at(-1).t > 0.07)", to: "true", expect: /soft key ticks while typing/ },
+  { n: 'safe: a NaN in a text param becomes the number 0 (printed as the source "0")', f: 'gfx/safe.js', from: '(dv === undefined || (num(dv) && !Number.isFinite(dv)) ? 0 : dv)', to: '(num(dv) && Number.isFinite(dv) ? dv : 0)', expect: /NaN \/ Infinity source is sanitised/ },
+  { n: 'safe: a NaN source is left as NaN (not sanitised at all)', f: 'gfx/safe.js', from: "if (num(v)) return Number.isFinite(v) ? v :", to: "if (num(v)) return true ? v :", expect: /NaN \/ Infinity source is sanitised/ },
   { n: 'all: ids ignore the item index', f: R, from: "c.item ?? 0", to: "0", expect: /share no SVG id/ },
   { n: 'all: output depends on a random value (not a pure function of t)', f: R, from: "const s = [name, L.at,", to: "const s = [name, Math.random(), L.at,", expect: /identical SVG in forward and shuffled seek order|second node process/ },
   { n: 'all: guards removed (NaN passes through num())', f: R, from: 'return Number.isFinite(x) ? clamp(x, lo, hi) : d; };', to: 'return x; };', expect: /hostile param sets|hostile NESTED|finite numbers/ },
@@ -69,7 +71,10 @@ console.log('baseline: green (' + (base.out.match(/(\d+) passed/) || [])[1] + ' 
 const ONLY = process.env.MUT_ONLY ? new RegExp(process.env.MUT_ONLY) : null;   // MUT_ONLY='unbounded' re-runs just the mutations whose name matches
 for (const m of MUT.filter((q) => !ONLY || ONLY.test(q.n))) { const file = path.join(tmp, 'type', m.f), orig = fs.readFileSync(file, 'utf8'), n = orig.split(m.from).length - 1;
   if (n !== 1) { console.log(`STALE  ${m.n}: mutation text found ${n} times`); bad++; continue; }
-  fs.writeFileSync(file, orig.replace(m.from, () => m.to)); const r = run(); fs.writeFileSync(file, orig);
+  const extra = (m.also || []).map((q) => { const f2 = path.join(tmp, 'type', q.f), o2 = fs.readFileSync(f2, 'utf8'), c = o2.split(q.from).length - 1; return { f2, o2, c, q }; }), stale = extra.find((e) => e.c !== 1);
+  if (stale) { console.log(`STALE  ${m.n}: companion mutation text found ${stale.c} times`); bad++; continue; }
+  /* a part-level id bug can be hidden by renderInner's own id namespacing (nsIds): m.also switches that second layer off, so the check is proven against the part's own fault */
+  fs.writeFileSync(file, orig.replace(m.from, () => m.to)); for (const e of extra) fs.writeFileSync(e.f2, e.o2.replace(e.q.from, () => e.q.to)); const r = run(); fs.writeFileSync(file, orig); for (const e of extra) fs.writeFileSync(e.f2, e.o2);
   const fails = r.out.split('\n').filter((l) => /^FAIL/.test(l)), hit = fails.find((l) => m.expect.test(l)), crashed = r.code !== 0 && fails.length === 0;
   if (hit) console.log(`caught ${m.n}\n         -> ${hit.slice(5, 150)}`); else { bad++; console.log(`MISSED ${m.n}: ${r.timedOut ? 'timed out' : crashed ? 'test crashed: ' + (r.out.split('\n').find((l) => /Error/.test(l)) || '').slice(0, 100) : fails.length ? 'other checks failed: ' + fails[0].slice(0, 100) : 'every check stayed green'}`); } }
 console.log(`\n${MUT.length - bad}/${MUT.length} mutations caught by the intended check` + (bad ? `, ${bad} not` : '')); process.exit(bad ? 1 : 0);
