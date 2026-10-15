@@ -45,7 +45,8 @@
      "params": {
       "scale": 1.5,
       "chart": {
-       "label": "Illustrative weekly series"
+       "label": "Illustrative weekly series",
+       "text": "#0E0E14"
       }
      }
     }

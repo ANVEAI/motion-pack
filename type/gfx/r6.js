@@ -18,7 +18,7 @@
    Guards (every numeric param): NaN / non-numbers fall back to the default, out-of-range numbers clamp, lists are capped (rows 12, bars 48, beats 24, chapters 12, text 120 chars),
    so no param can hang a render or allocate an unbounded array. Colours are accepted only as #hex tokens (anything else falls back). SVG ids are unique per item
    (hash of the params + the item's start + its index in the host + the frame size), so two instances in one host never share a clipPath / gradient / filter id. */
-import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, f2, text, measure, esc, hashf, blurDef, blurAttr, life } from './core.js';
+import { E, clamp, lerp, seg, TAU, FONT, MONO, BRAND, PAPER, f2, text, measure, esc, hashf, blurDef, blurAttr, life } from './core.js';
 import { springTrack, spring, sstep } from '../ease.js';
 import { KIT, rr, TICKS, POPS } from './ui.js';
 import { mixHex } from './swap.js';
@@ -29,7 +29,7 @@ const RED = '#E5484D';
 
 /* ---------- guards + small shared helpers ---------- */
 export const num = (v, d, lo = -1e9, hi = 1e9) => { const x = v == null || v === '' || typeof v === 'boolean' ? NaN : +v; return Number.isFinite(x) ? clamp(x, lo, hi) : d; };
-export const str = (v, d = '', max = 120) => (v == null ? d : String(v).replace(/[\u0000-\u001f]/g, ' ').slice(0, max));
+export const str = (v, d = '', max = 120) => (typeof v === 'string' || (typeof v === 'number' && Number.isFinite(v)) ? String(v).replace(/[\u0000-\u001f]/g, ' ').slice(0, max) : d);   // objects, booleans, NaN, null fall back to the default: never '[object Object]' in frame
 export const list = (v, max) => (Array.isArray(v) ? v.slice(0, max) : []);
 const own = (o, k) => typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k);   // never o['__proto__'] / o['constructor']
 const hexOk = (v, d) => (typeof v === 'string' && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v) ? (v.length === 4 ? '#' + [...v.slice(1)].map((x) => x + x).join('') : v) : d);
@@ -56,7 +56,7 @@ const HOVER_D = { target: 'bar', draw: true, chart: {}, fmt: null, dec: 0, suffi
 export function hoverP(raw = {}) {
   const p = { ...HOVER_D, ...raw }; if (!['bar', 'line', 'table'].includes(p.target)) p.target = 'bar'; p.chart = p.chart && typeof p.chart === 'object' ? p.chart : {};
   p.dec = Math.round(num(p.dec, 0, 0, 6)); p.lift = num(p.lift, 12, 0, 80); p.scale = num(p.scale, 1, 0.3, 4); p.startAt = num(p.startAt, 1.3, 0, 60); p.travel = num(p.travel, 0.65, 0.05, 10); p.dwell = num(p.dwell, 0.5, 0, 10);
-  p.visit = list(p.visit, 24).map((v) => Math.round(num(v, 0, 0, 1e4))); p.source = str(p.source, '', 80); p.method = str(p.method, '', 80); p.fmt = p.fmt == null ? null : str(p.fmt, '', 4); p.suffix = p.suffix == null ? null : str(p.suffix, '', 8);
+  p.visit = list(p.visit, 24).map((v) => Math.round(num(v, 0, 0, 1e4))); p.source = str(p.source, '', 80); p.method = str(p.method, '', 80).trim() || HOVER_D.method; p.fmt = p.fmt == null ? null : str(p.fmt, '', 4); p.suffix = p.suffix == null ? null : str(p.suffix, '', 8);
   p.up = hexOk(p.up, GREEN); p.down = hexOk(p.down, RED); p.hot = p.hot == null ? null : hexOk(p.hot, null); p.theme = p.theme === 'dark' ? 'dark' : 'light'; p.draw = p.draw !== false; p.cursor = p.cursor !== false; p.path = p.path == null ? null : cleanPath(p.path); return p;
 }
 /* geometry of the hovered chart in output px: the SAME formulas as chart.bar / chart.line (social.js), and ui.dataTable's own bar rects (read from the part through the c.geo side channel) */
@@ -68,13 +68,13 @@ export function hoverGeo(p, c) {
     const labels = vals.map((_, i) => str(Array.isArray(ch.labels) ? ch.labels[i] : null, 'Slot ' + (i + 1), 40)), b = box4(ch.box, D.box), x = b[0] * c.W, y = b[1] * c.H, w = b[2] * c.W, h = b[3] * c.H, n = vals.length;
     const vv = vals.map((v) => Math.max(v, 1e-9)), mx = Math.max(...vv), bw = w / n * 0.62, bh = Math.max(0, h - 70 * s), unit = str(ch.unit, '', 8); sufx = p.suffix ?? unit;
     slots = vals.map((v, i) => ({ cx: x + (i + 0.5) * w / n, x0: x + (i + 0.5) * w / n - bw / 2, w: bw, top: y + h - bh * vv[i] / mx, base: y + h, value: v, label: labels[i], str: fv(v, p.fmt ?? '', p.dec, sufx) }));
-    box = [x, y, w, h]; child = { id: 'chart.bar', params: { ...ch, values: vv, labels, box: b, unit, source: p.source, highlight: ch.highlight } };
+    box = [x, y, w, h]; child = { id: 'chart.bar', params: { ...ch, text: hexOk(p.chart.text, PAPER), values: vv, labels, box: b, unit, source: p.source, highlight: ch.highlight } };
   } else if (p.target === 'line') {
     const D = { ...SOCIAL['chart.line'].d, ...HOVER_DATA.line }, ch = { ...D, ...p.chart }; let vals = list(ch.values, MAXN).map((v) => num(v, 0, 0, 1e12)); if (!vals.length) vals = D.values.slice(); while (vals.length < 2) vals.push(vals[0]);
     const labels = vals.map((_, i) => str(Array.isArray(ch.labels) ? ch.labels[i] : null, 'Slot ' + (i + 1), 40)), b = box4(ch.box, D.box), x = b[0] * c.W, y = b[1] * c.H, w = b[2] * c.W, h = b[3] * c.H, n = vals.length;
     const vv = vals.map((v) => Math.max(v, 1e-9)), mx = Math.max(...vv) * 1.1; sufx = p.suffix ?? '';
     slots = vals.map((v, i) => ({ cx: x + w * i / (n - 1), x0: x + w * i / (n - 1) - 4, w: 8, top: y + h - h * vv[i] / mx, base: y + h, value: v, label: labels[i], str: fv(v, p.fmt ?? '', p.dec, sufx) }));
-    box = [x, y, w, h]; child = { id: 'chart.line', params: { ...ch, values: vv, box: b, label: str(ch.label, '', 60), source: p.source } };
+    box = [x, y, w, h]; child = { id: 'chart.line', params: { ...ch, text: hexOk(p.chart.text, PAPER), values: vv, box: b, label: str(ch.label, '', 60), source: p.source } };
   } else {
     const g = PROOF['ui.dataTable'], D = g.d, ch = p.chart, rows = list(ch.rows ?? D.rows, 24).map((r) => ({ ...r, label: str(r?.label, '', 40), unit: str(r?.unit, '', 4), values: list(r?.values, 12).map((v) => num(v, 0, -1e12, 1e12)) }));
     const columns = list(ch.columns ?? D.columns, 13).map((q) => ({ ...q, label: str(q?.label, '', 24) })), q = { ...D, ...ch, rows: rows.length ? rows : D.rows, columns: columns.length >= 2 ? columns : D.columns, bars: { row: 0, ...(ch.bars && typeof ch.bars === 'object' ? ch.bars : {}) } };
@@ -109,7 +109,7 @@ const DOCK_D = { icons: DOCK_ICONS.map((ic, i) => ({ name: 'App ' + 'ABCDEF'[i],
   theme: 'dark', cursor: true, label: 'illustrative: placeholder icons and window', scale: 1 };
 export function dockP(raw = {}) {
   const p = { ...DOCK_D, ...raw }; p.icons = list(raw.icons ?? DOCK_D.icons, 12).map((q, i) => ({ name: str(q?.name, 'App ' + (i + 1), 24), icon: own(ICON, q?.icon) ? q.icon : DOCK_ICONS[i % 6], color: hexOk(q?.color, DOCK_PAL[i % 12]) }));
-  if (!p.icons.length) p.icons = DOCK_D.icons.slice(0, 1); p.target = Math.round(num(p.target, 3, 0, p.icons.length - 1)); p.clickAt = num(p.clickAt, 3.2, 0.3, 120); p.expandDur = num(p.expandDur, 0.6, 0.1, 5);
+  if (!p.icons.length) p.icons = DOCK_D.icons.slice(0, 1); p.target = clamp(Math.round(num(p.target, 3, 0, 1e4)), 0, p.icons.length - 1); p.clickAt = num(p.clickAt, 3.2, 0.3, 120); p.expandDur = num(p.expandDur, 0.6, 0.1, 5);
   p.size = num(p.size, 84, 24, 300); p.magnify = num(p.magnify, 1.85, 1, 3); p.radius = num(p.radius, 2.3, 0.8, 5); p.scale = num(p.scale, 1, 0.3, 4); p.window = box4(p.window, DOCK_D.window); p.path = p.path == null ? null : cleanPath(p.path);
   p.theme = p.theme === 'light' ? 'light' : 'dark'; p.cursor = p.cursor !== false; p.label = str(p.label, '', 80); return p;
 }
@@ -253,7 +253,7 @@ export const R6 = {
     svg(L, p0, c) { const p = hoverP(p0), s = c.s, k = sc(c) * p.scale, M = hoverGeo(p, c), S = c.safe, u = L.u, dark = p.theme === 'dark', id = rid('ht', L, p, c);
       if (noSrc(p.source)) return `<g${fadeIO(L) < 1 ? ` opacity="${f2(fadeIO(L))}"` : ''}>${refuse(c, S.x0, S.y0 + 40 * s, Math.min(S.w, 980 * k), 'chart.hoverTooltip: set `source` (where the numbers come from)')}</g>`;
       if (!M.slots.length) return ''; let o = '';
-      if (p.draw && M.child) { const cd = SOCIAL[M.child.id], holdEnd = L.total - 9 / 30, CL = life(L.t, L.at, Math.max(0.1, holdEnd - cd.inF / 30), cd.inF, cd.outF); CL.t = L.t; CL.at = L.at; o += cd.svg(CL, { ...cd.d, ...M.child.params }, c); }
+      if (p.draw && M.child) { const cd = SOCIAL[M.child.id], holdEnd = L.total - 9 / 30, CL = life(L.t, L.at, Math.max(0.1, holdEnd - cd.inF / 30), cd.inF, cd.outF); CL.t = L.t; CL.at = L.at; o += cd.svg(CL, { ...cd.d, ...M.child.params }, c).replace(/(id="|url\(#)(lc|lg)\b/g, (_, a, b) => a + id + b); }
       const keys = hoverPath(p, c, M), [fx, fy] = pathAt(keys, u), cx = fx * c.W, cy = fy * c.H, over = overAmt(M, cx, cy, s), slots = M.slots, n = slots.length, ii = nearest(slots, cx), hot = p.hot ?? hexOk(p.chart.accent, BRAND), pitch = n > 1 ? Math.abs(slots[1].cx - slots[0].cx) : slots[0].w * 2;
       if (M.kind !== 'line') slots.forEach((q) => { const prox = 1 - sstep(0.25 * pitch, 0.75 * pitch, Math.abs(cx - q.cx)), lift = p.lift * s * prox * over; if (lift > 0.05) o += rect(q.x0, q.top - lift, q.w, q.base - q.top + lift, 8 * s, hot, 'data-role="lift"'); });
       else { const xm = clamp(cx, slots[0].cx, slots[n - 1].cx); let ym = slots[0].top; for (let i = 1; i < n; i++) if (xm <= slots[i].cx + 1e-6) { ym = lerp(slots[i - 1].top, slots[i].top, seg(xm, slots[i - 1].cx, slots[i].cx)); break; } else ym = slots[i].top;

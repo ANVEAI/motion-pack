@@ -14,7 +14,7 @@ export const CONFIG = {
   bgs: { paper: '#F3F1EC', dark: '#0B1210', ink: '#0E0E14', night: '#07060B' },
   scenes: [   // beats (0.5 s each); items = gfx ids (mountGfx, { part, at (s, local), dur, params })
     { id: 'verbs', beats: 10, bg: 'night', items: [{ part: 'title.verbCard', params: { words: [{ big: 'Plan', rest: 'the whole week' }, { big: 'Ship', rest: 'it before lunch' }], chapterDur: 2.4 } }] },
-    { id: 'hover', beats: 11, bg: 'paper', items: [{ part: 'chart.hoverTooltip', params: { scale: 1.5, chart: { label: 'Illustrative weekly series' } } }] },
+    { id: 'hover', beats: 11, bg: 'paper', items: [{ part: 'chart.hoverTooltip', params: { scale: 1.5, chart: { label: 'Illustrative weekly series', text: '#0E0E14' } } }] },
     { id: 'dock', beats: 11, bg: 'ink', items: [{ part: 'ui.dockLaunch', params: { scale: 1.5 } }] },
     { id: 'connect', beats: 14, bg: 'ink', items: [{ part: 'ui.connectRows', params: { scale: 1.5 } }] },
     { id: 'degrade', beats: 18, bg: 'night', items: [{ part: 'layout.degradingDiagram', params: { beats: [
