@@ -1,5 +1,5 @@
 {
- "count": 301,
+ "count": 313,
  "categories": [
   "ambience",
   "camera",
@@ -1898,6 +1898,12 @@
    "seed_corr": 0.329
   },
   {
+   "id": "snd.ui.connect",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.096
+  },
+  {
    "id": "snd.ui.count_run",
    "ok": true,
    "notes": [
@@ -1912,6 +1918,18 @@
     "seed-invariant (pure tonal recipe)"
    ],
    "seed_corr": 1.0
+  },
+  {
+   "id": "snd.ui.drag_lift",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.982
+  },
+  {
+   "id": "snd.ui.drop_snap",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.844
   },
   {
    "id": "snd.ui.error",
@@ -1930,12 +1948,30 @@
    "seed_corr": 0.62
   },
   {
+   "id": "snd.ui.highlight_draw",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.303
+  },
+  {
    "id": "snd.ui.hologram_beam",
    "ok": true,
    "notes": [],
    "seed_corr": 0.36,
    "ffmpeg_I": -17.4,
    "dI": 0.02
+  },
+  {
+   "id": "snd.ui.hover_tick",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.729
+  },
+  {
+   "id": "snd.ui.key_chord",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.602
   },
   {
    "id": "snd.ui.listening_loop",
@@ -1973,6 +2009,12 @@
    "seed_corr": 1.0
   },
   {
+   "id": "snd.ui.palette_open",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.173
+  },
+  {
    "id": "snd.ui.pop",
    "ok": true,
    "notes": [
@@ -1987,6 +2029,12 @@
    "seed_corr": 0.981
   },
   {
+   "id": "snd.ui.price_reveal",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.091
+  },
+  {
    "id": "snd.ui.scan_sweep",
    "ok": true,
    "notes": [],
@@ -1999,10 +2047,22 @@
    "seed_corr": 0.019
   },
   {
+   "id": "snd.ui.stream_tick",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.497
+  },
+  {
    "id": "snd.ui.success",
    "ok": true,
    "notes": [],
    "seed_corr": 0.984
+  },
+  {
+   "id": "snd.ui.success_chime",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.986
   },
   {
    "id": "snd.ui.swipe_ding",
@@ -2015,6 +2075,12 @@
    "ok": true,
    "notes": [],
    "seed_corr": 0.974
+  },
+  {
+   "id": "snd.ui.toast_in",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.922
   },
   {
    "id": "snd.ui.toggle_off",
@@ -2043,6 +2109,12 @@
    "ok": true,
    "notes": [],
    "seed_corr": 0.048
+  },
+  {
+   "id": "snd.ui.zoom_in",
+   "ok": true,
+   "notes": [],
+   "seed_corr": 0.008
   },
   {
    "id": "snd.voice.chirp",

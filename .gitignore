@@ -95,3 +95,7 @@ storyboard/examples/*/storyboard.pdf
 storyboard/examples/*/storyboard.html
 storyboard/examples/*/panels/
 storyboard/examples/*/real/
+# xp-saas (2026-10-16): SaaS templates render their MP4s and 9:16 project assets locally
+templates/saas-*/out/*.mp4
+templates/saas-*/tall/assets/
+templates/saas-*/out/sheet-dev*.jpg

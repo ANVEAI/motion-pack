@@ -3,7 +3,7 @@
  "sample_rate": 48000,
  "bit_depth": 24,
  "peak_dbfs_target": -6.0,
- "count": 301,
+ "count": 313,
  "notes": "All sounds synthesised in code (numpy/scipy). Library level is peak -6 dBFS; real levels are set by the mixer (over-bed rules). anchor_sample = the sample that must land on (visual frame + 1) x SR/fps.",
  "sounds": [
   {
@@ -11779,6 +11779,54 @@
    "file": "library/ui/snd.ui.click.wav"
   },
   {
+   "id": "snd.ui.connect",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:crest",
+    "size:s",
+    "key:A",
+    "integrations"
+   ],
+   "tier": 3,
+   "desc": "connected: a soft click then two plucks a fifth apart (A5, E6), 0.32 s (an integration links, a connector reaches its tile)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.3615,
+   "samples": 17351,
+   "anchor_sample": 5384,
+   "anchor_ms": 112.17,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 632,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -18.81,
+   "lufs_m_max": -18.81,
+   "lufs_s_max": -27.57,
+   "centroid_hz": 1869,
+   "crest_db": 17.0,
+   "sub28_db": -26.8,
+   "sha": "922cf67249de35ac",
+   "phone_drop_db": 1.9,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.connect.wav"
+  },
+  {
    "id": "snd.ui.count_run",
    "category": "ui",
    "tags": [
@@ -11867,6 +11915,102 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.0,
    "file": "library/ui/snd.ui.count_tick.wav"
+  },
+  {
+   "id": "snd.ui.drag_lift",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:crest",
+    "size:xs",
+    "drag"
+   ],
+   "tier": 3,
+   "desc": "drag lift: a small upward blip (A5 to C#6 glide) over a soft plastic tick, the moment a card is picked up",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.1615,
+   "samples": 7751,
+   "anchor_sample": 243,
+   "anchor_ms": 5.06,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 612,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -19.35,
+   "lufs_m_max": -19.35,
+   "lufs_s_max": -28.1,
+   "centroid_hz": 949,
+   "crest_db": 12.3,
+   "sub28_db": -67.4,
+   "sha": "6b5b8c5fffcc3644",
+   "phone_drop_db": 1.9,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.drag_lift.wav"
+  },
+  {
+   "id": "snd.ui.drop_snap",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:no",
+    "saas",
+    "anchor:noise",
+    "size:xs",
+    "rr:4",
+    "drop"
+   ],
+   "tier": 3,
+   "desc": "drop snap: a magnetic snap into place (bright click, 150 Hz thunk, a short E6 ping), 0.15 s",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.1797,
+   "samples": 8628,
+   "anchor_sample": 96,
+   "anchor_ms": 2.0,
+   "anchor_kind": "peak",
+   "tonal": false,
+   "loop": false,
+   "seed": 614,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.96,
+   "lufs_integrated": -28.84,
+   "lufs_m_max": -28.84,
+   "lufs_s_max": -37.59,
+   "centroid_hz": 325,
+   "crest_db": 22.9,
+   "sub28_db": -30.7,
+   "sha": "b1074d710534dc68",
+   "phone_drop_db": 0.0,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.drop_snap.wav"
   },
   {
    "id": "snd.ui.error",
@@ -11960,6 +12104,54 @@
    "file": "library/ui/snd.ui.finger_snap.wav"
   },
   {
+   "id": "snd.ui.highlight_draw",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:start",
+    "size:s",
+    "callout"
+   ],
+   "tier": 3,
+   "desc": "highlight ring draws on: a quick soft marker stroke (filtered noise, 0.3 s) that ends on a tiny A6 glint",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.4207,
+   "samples": 20195,
+   "anchor_sample": 131,
+   "anchor_ms": 2.73,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 618,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.75,
+   "lufs_integrated": -12.99,
+   "lufs_m_max": -12.99,
+   "lufs_s_max": -21.74,
+   "centroid_hz": 4074,
+   "crest_db": 13.0,
+   "sub28_db": -74.1,
+   "sha": "06278e71fa50e0f2",
+   "phone_drop_db": 1.5,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "maskReveal"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.highlight_draw.wav"
+  },
+  {
    "id": "snd.ui.hologram_beam",
    "category": "ui",
    "tags": [
@@ -12009,6 +12201,102 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.0,
    "file": "library/ui/snd.ui.hologram_beam.wav"
+  },
+  {
+   "id": "snd.ui.hover_tick",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:crest",
+    "size:xs",
+    "rr:4",
+    "hover"
+   ],
+   "tier": 3,
+   "desc": "hover: a very soft high tick (3.6 kHz damped sine + air), 30 ms, for a cursor landing on a control",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.0351,
+   "samples": 1684,
+   "anchor_sample": 94,
+   "anchor_ms": 1.96,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 610,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.85,
+   "lufs_integrated": -26.73,
+   "lufs_m_max": -26.73,
+   "lufs_s_max": -35.49,
+   "centroid_hz": 3588,
+   "crest_db": 16.4,
+   "sub28_db": -96.6,
+   "sha": "bede3e3ae66a8549",
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [
+    "caption"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.hover_tick.wav"
+  },
+  {
+   "id": "snd.ui.key_chord",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:noise",
+    "size:xs",
+    "keyboard",
+    "shortcut"
+   ],
+   "tier": 3,
+   "desc": "keyboard chord: two keycaps a few ms apart (bright clack + low thock each) then a tiny A6 confirm, 0.22 s",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.1815,
+   "samples": 8711,
+   "anchor_sample": 107,
+   "anchor_ms": 2.23,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 626,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.98,
+   "lufs_integrated": -23.94,
+   "lufs_m_max": -23.94,
+   "lufs_s_max": -32.69,
+   "centroid_hz": 1309,
+   "crest_db": 18.1,
+   "sub28_db": -40.4,
+   "sha": "c7a37506be1c3788",
+   "phone_drop_db": 0.8,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.key_chord.wav"
   },
   {
    "id": "snd.ui.listening_loop",
@@ -12200,6 +12488,54 @@
    "file": "library/ui/snd.ui.notify.wav"
   },
   {
+   "id": "snd.ui.palette_open",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:crest",
+    "size:s",
+    "command"
+   ],
+   "tier": 3,
+   "desc": "command palette opens: a short upward air flick and a soft two-note E6 + B6 shimmer, 0.3 s",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.2931,
+   "samples": 14069,
+   "anchor_sample": 2690,
+   "anchor_ms": 56.04,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 620,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.93,
+   "lufs_integrated": -16.31,
+   "lufs_m_max": -16.31,
+   "lufs_s_max": -25.06,
+   "centroid_hz": 1657,
+   "crest_db": 13.5,
+   "sub28_db": -90.7,
+   "sha": "5f394d320d157726",
+   "phone_drop_db": 2.2,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.palette_open.wav"
+  },
+  {
    "id": "snd.ui.pop",
    "category": "ui",
    "tags": [
@@ -12293,6 +12629,57 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.0,
    "file": "library/ui/snd.ui.pop_down.wav"
+  },
+  {
+   "id": "snd.ui.price_reveal",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:crest",
+    "size:s",
+    "mood:warm",
+    "key:A",
+    "pricing"
+   ],
+   "tier": 3,
+   "desc": "price reveal: a quick rising pluck figure A5 C#6 E6 A6 with an air lift, 0.55 s (the featured plan lifts)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.4477,
+   "samples": 21492,
+   "anchor_sample": 4700,
+   "anchor_ms": 97.92,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 630,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.91,
+   "lufs_integrated": -17.83,
+   "lufs_m_max": -17.83,
+   "lufs_s_max": -26.58,
+   "centroid_hz": 2125,
+   "crest_db": 17.0,
+   "sub28_db": -28.1,
+   "sha": "77b6ffad8cfbeccf",
+   "phone_drop_db": 1.9,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [
+    "statReveal"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.price_reveal.wav"
   },
   {
    "id": "snd.ui.scan_sweep",
@@ -12390,6 +12777,53 @@
    "file": "library/ui/snd.ui.slide.wav"
   },
   {
+   "id": "snd.ui.stream_tick",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:crest",
+    "size:xs",
+    "rr:4",
+    "ai",
+    "streaming"
+   ],
+   "tier": 3,
+   "desc": "streaming answer: a soft dull tick with a faint E6 body, 35 ms, one per word group of an AI answer (keep it 12 dB or more under the bed)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.0447,
+   "samples": 2148,
+   "anchor_sample": 97,
+   "anchor_ms": 2.02,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 622,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.95,
+   "lufs_integrated": -28.21,
+   "lufs_m_max": -28.21,
+   "lufs_s_max": -36.96,
+   "centroid_hz": 1420,
+   "crest_db": 17.2,
+   "sub28_db": -55.3,
+   "sha": "3e29519868d68ba5",
+   "pairs_with": [],
+   "roles": [
+    "caption"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.stream_tick.wav"
+  },
+  {
    "id": "snd.ui.success",
    "category": "ui",
    "tags": [
@@ -12436,6 +12870,57 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.0,
    "file": "library/ui/snd.ui.success.wav"
+  },
+  {
+   "id": "snd.ui.success_chime",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:2",
+    "tonal:yes",
+    "saas",
+    "anchor:crest",
+    "size:m",
+    "mood:warm",
+    "key:A",
+    "result"
+   ],
+   "tier": 2,
+   "desc": "success chime: a bright FM bell pair E6 then A6 with a short shimmer tail, 0.9 s (the payoff of a UI action: applied, sent, done)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 1.0015,
+   "samples": 48071,
+   "anchor_sample": 4480,
+   "anchor_ms": 93.33,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 624,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.82,
+   "lufs_integrated": -14.66,
+   "lufs_m_max": -10.9,
+   "lufs_s_max": -19.3,
+   "centroid_hz": 1803,
+   "crest_db": 13.4,
+   "sub28_db": -77.8,
+   "sha": "37a0746e5a736c81",
+   "phone_drop_db": 2.3,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [
+    "statReveal"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.success_chime.wav"
   },
   {
    "id": "snd.ui.swipe_ding",
@@ -12524,6 +13009,55 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.0,
    "file": "library/ui/snd.ui.tick.wav"
+  },
+  {
+   "id": "snd.ui.toast_in",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:crest",
+    "size:s",
+    "rr:4",
+    "notification"
+   ],
+   "tier": 3,
+   "desc": "toast arrives: a soft bloop gliding A6 to E6 with a little air, 0.25 s (one per notification in a stack)",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.2614,
+   "samples": 12548,
+   "anchor_sample": 374,
+   "anchor_ms": 7.79,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 628,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -16.73,
+   "lufs_m_max": -16.73,
+   "lufs_s_max": -25.48,
+   "centroid_hz": 1620,
+   "crest_db": 13.8,
+   "sub28_db": -90.4,
+   "sha": "c935f59af75a4fea",
+   "phone_drop_db": 2.7,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.toast_in.wav"
   },
   {
    "id": "snd.ui.toggle_off",
@@ -12710,6 +13244,56 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.0,
    "file": "library/ui/snd.ui.typing_burst.wav"
+  },
+  {
+   "id": "snd.ui.zoom_in",
+   "category": "ui",
+   "tags": [
+    "family:ui",
+    "tier:3",
+    "tonal:yes",
+    "saas",
+    "anchor:end",
+    "size:s",
+    "mood:tech",
+    "zoom"
+   ],
+   "tier": 3,
+   "desc": "zoom to region: a soft rising air swell (600 Hz to 5 kHz band) with a faint E5 to E6 glide, 0.45 s; anchor = the landing at the end",
+   "use": [
+    "ad",
+    "launch",
+    "kinetic"
+   ],
+   "duration_s": 0.446,
+   "samples": 21407,
+   "anchor_sample": 19895,
+   "anchor_ms": 414.48,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 616,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.97,
+   "lufs_integrated": -18.12,
+   "lufs_m_max": -18.12,
+   "lufs_s_max": -26.02,
+   "centroid_hz": 2848,
+   "crest_db": 17.3,
+   "sub28_db": -50.0,
+   "sha": "bd60dcd584b49240",
+   "phone_drop_db": 1.4,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push",
+    "zoomThrough"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/ui/snd.ui.zoom_in.wav"
   },
   {
    "id": "snd.voice.chirp",
@@ -14523,19 +15107,30 @@
    "snd.ui.agent_working",
    "snd.ui.ai_think_pulse",
    "snd.ui.click",
+   "snd.ui.connect",
+   "snd.ui.drag_lift",
+   "snd.ui.drop_snap",
    "snd.ui.error",
    "snd.ui.finger_snap",
+   "snd.ui.highlight_draw",
    "snd.ui.hologram_beam",
+   "snd.ui.hover_tick",
+   "snd.ui.key_chord",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
+   "snd.ui.palette_open",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.price_reveal",
    "snd.ui.scan_sweep",
    "snd.ui.success",
+   "snd.ui.success_chime",
    "snd.ui.tick",
+   "snd.ui.toast_in",
    "snd.ui.toggle_off",
    "snd.ui.toggle_on",
+   "snd.ui.zoom_in",
    "snd.voice.chirp",
    "snd.voice.chirp_question",
    "snd.voice.gasp",
@@ -14607,6 +15202,7 @@
    "snd.stinger.reveal",
    "snd.tx.mask_reveal",
    "snd.ui.ai_reply",
+   "snd.ui.highlight_draw",
    "snd.ui.hologram_beam",
    "snd.ui.scan_sweep",
    "snd.whoosh.blade",
@@ -14641,8 +15237,12 @@
    "snd.paper.flip",
    "snd.tx.luma_wipe",
    "snd.tx.push",
+   "snd.ui.drop_snap",
+   "snd.ui.palette_open",
    "snd.ui.slide",
    "snd.ui.swipe_ding",
+   "snd.ui.toast_in",
+   "snd.ui.zoom_in",
    "snd.whoosh.swish_out",
    "snd.whoosh.swish_s",
    "snd.whoosh.swish_xs",
@@ -14745,6 +15345,7 @@
    "snd.riser.snare_roll_build",
    "snd.riser.string_tension",
    "snd.tx.zoom_through",
+   "snd.ui.zoom_in",
    "snd.whoosh.fire",
    "snd.whoosh.flyby",
    "snd.whoosh.scifi_pass",
@@ -14756,6 +15357,9 @@
  "by_tag": {
   "agent": [
    "snd.ui.agent_working"
+  ],
+  "ai": [
+   "snd.ui.stream_tick"
   ],
   "anchor:crest": [
    "snd.cartoon.boing",
@@ -14857,15 +15461,23 @@
    "snd.ui.ai_reply",
    "snd.ui.blip",
    "snd.ui.camera_ping",
+   "snd.ui.connect",
    "snd.ui.count_tick",
+   "snd.ui.drag_lift",
    "snd.ui.error",
+   "snd.ui.hover_tick",
    "snd.ui.mic_off",
    "snd.ui.notify",
+   "snd.ui.palette_open",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.price_reveal",
+   "snd.ui.stream_tick",
    "snd.ui.success",
+   "snd.ui.success_chime",
    "snd.ui.swipe_ding",
    "snd.ui.tick",
+   "snd.ui.toast_in",
    "snd.ui.toggle_off",
    "snd.ui.toggle_on"
   ],
@@ -14895,7 +15507,8 @@
    "snd.ui.ai_think_pulse",
    "snd.ui.hologram_beam",
    "snd.ui.mic_on",
-   "snd.ui.scan_sweep"
+   "snd.ui.scan_sweep",
+   "snd.ui.zoom_in"
   ],
   "anchor:loop": [
    "snd.amb.applause",
@@ -15004,7 +15617,9 @@
    "snd.tx.speed_ramp",
    "snd.ui.click",
    "snd.ui.count_run",
+   "snd.ui.drop_snap",
    "snd.ui.finger_snap",
+   "snd.ui.key_chord",
    "snd.ui.slide",
    "snd.ui.type_key",
    "snd.ui.typing_burst",
@@ -15068,7 +15683,8 @@
    "snd.tx.dip_to_black",
    "snd.tx.freeze_hit",
    "snd.tx.tape_down",
-   "snd.tx.tape_stop"
+   "snd.tx.tape_stop",
+   "snd.ui.highlight_draw"
   ],
   "archive": [
    "snd.amb.projector",
@@ -15109,6 +15725,9 @@
   "brass": [
    "snd.hit.braam"
   ],
+  "callout": [
+   "snd.ui.highlight_draw"
+  ],
   "cards": [
    "snd.paper.card_riffle",
    "snd.paper.card_shuffle_settle"
@@ -15126,6 +15745,9 @@
   "char:tiny": [
    "snd.voice.chirp",
    "snd.voice.chirp_question"
+  ],
+  "command": [
+   "snd.ui.palette_open"
   ],
   "contour:question": [
    "snd.voice.chirp_question",
@@ -15147,6 +15769,12 @@
   "downlifter": [
    "snd.lift.down",
    "snd.lift.down_long"
+  ],
+  "drag": [
+   "snd.ui.drag_lift"
+  ],
+  "drop": [
+   "snd.ui.drop_snap"
   ],
   "electric": [
    "snd.elec.arc",
@@ -15454,26 +16082,38 @@
    "snd.ui.blip",
    "snd.ui.camera_ping",
    "snd.ui.click",
+   "snd.ui.connect",
    "snd.ui.count_run",
    "snd.ui.count_tick",
+   "snd.ui.drag_lift",
+   "snd.ui.drop_snap",
    "snd.ui.error",
    "snd.ui.finger_snap",
+   "snd.ui.highlight_draw",
    "snd.ui.hologram_beam",
+   "snd.ui.hover_tick",
+   "snd.ui.key_chord",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
    "snd.ui.notify",
+   "snd.ui.palette_open",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.price_reveal",
    "snd.ui.scan_sweep",
    "snd.ui.slide",
+   "snd.ui.stream_tick",
    "snd.ui.success",
+   "snd.ui.success_chime",
    "snd.ui.swipe_ding",
    "snd.ui.tick",
+   "snd.ui.toast_in",
    "snd.ui.toggle_off",
    "snd.ui.toggle_on",
    "snd.ui.type_key",
-   "snd.ui.typing_burst"
+   "snd.ui.typing_burst",
+   "snd.ui.zoom_in"
   ],
   "family:voice": [
    "snd.voice.chirp",
@@ -15555,6 +16195,9 @@
   "hologram": [
    "snd.ui.hologram_beam"
   ],
+  "hover": [
+   "snd.ui.hover_tick"
+  ],
   "hum": [
    "snd.elec.crackle_loop"
   ],
@@ -15620,6 +16263,9 @@
   "instrument:thali": [
    "snd.indian.thali_clang"
   ],
+  "integrations": [
+   "snd.ui.connect"
+  ],
   "key:A": [
    "snd.amb.tanpura_drone",
    "snd.cartoon.surprise_sting",
@@ -15672,16 +16318,22 @@
    "snd.ui.ai_think_pulse",
    "snd.ui.blip",
    "snd.ui.camera_ping",
+   "snd.ui.connect",
    "snd.ui.hologram_beam",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
    "snd.ui.notify",
+   "snd.ui.price_reveal",
    "snd.ui.scan_sweep",
    "snd.ui.success",
+   "snd.ui.success_chime",
    "snd.ui.swipe_ding",
    "snd.ui.toggle_off",
    "snd.ui.toggle_on"
+  ],
+  "keyboard": [
+   "snd.ui.key_chord"
   ],
   "loop": [
    "snd.elec.crackle_loop",
@@ -15829,6 +16481,7 @@
    "snd.ui.agent_working",
    "snd.ui.hologram_beam",
    "snd.ui.scan_sweep",
+   "snd.ui.zoom_in",
    "snd.whoosh.scifi_pass"
   ],
   "mood:tense": [
@@ -15883,7 +16536,9 @@
    "snd.tx.mask_reveal",
    "snd.tx.match_link",
    "snd.ui.ai_reply",
+   "snd.ui.price_reveal",
    "snd.ui.success",
+   "snd.ui.success_chime",
    "snd.wood.tap"
   ],
   "neon": [
@@ -15891,11 +16546,17 @@
    "snd.elec.crackle_loop",
    "snd.elec.zap_off"
   ],
+  "notification": [
+   "snd.ui.toast_in"
+  ],
   "pixel": [
    "snd.tx.pixel_dissolve"
   ],
   "power_down": [
    "snd.elec.zap_off"
+  ],
+  "pricing": [
+   "snd.ui.price_reveal"
   ],
   "region:in": [
    "snd.amb.indian_street_horns",
@@ -15930,6 +16591,9 @@
    "snd.indian.tabla_tirakita",
    "snd.indian.tabla_tun",
    "snd.indian.thali_clang"
+  ],
+  "result": [
+   "snd.ui.success_chime"
   ],
   "reverse": [
    "snd.whoosh.reverse"
@@ -15983,10 +16647,31 @@
    "snd.indian.tabla_tirakita",
    "snd.indian.tabla_tun",
    "snd.paper.card_riffle",
-   "snd.paper.card_shuffle_settle"
+   "snd.paper.card_shuffle_settle",
+   "snd.ui.drop_snap",
+   "snd.ui.hover_tick",
+   "snd.ui.stream_tick",
+   "snd.ui.toast_in"
+  ],
+  "saas": [
+   "snd.ui.connect",
+   "snd.ui.drag_lift",
+   "snd.ui.drop_snap",
+   "snd.ui.highlight_draw",
+   "snd.ui.hover_tick",
+   "snd.ui.key_chord",
+   "snd.ui.palette_open",
+   "snd.ui.price_reveal",
+   "snd.ui.stream_tick",
+   "snd.ui.success_chime",
+   "snd.ui.toast_in",
+   "snd.ui.zoom_in"
   ],
   "scan": [
    "snd.ui.scan_sweep"
+  ],
+  "shortcut": [
+   "snd.ui.key_chord"
   ],
   "size:l": [
    "snd.cartoon.sad_brass",
@@ -16116,6 +16801,7 @@
    "snd.ui.hologram_beam",
    "snd.ui.listening_loop",
    "snd.ui.scan_sweep",
+   "snd.ui.success_chime",
    "snd.ui.typing_burst",
    "snd.voice.giggle",
    "snd.voice.grunt",
@@ -16183,7 +16869,13 @@
    "snd.tx.shutter_flash",
    "snd.tx.tape_stop",
    "snd.ui.ai_think_pulse",
+   "snd.ui.connect",
+   "snd.ui.highlight_draw",
+   "snd.ui.palette_open",
+   "snd.ui.price_reveal",
    "snd.ui.slide",
+   "snd.ui.toast_in",
+   "snd.ui.zoom_in",
    "snd.voice.gasp",
    "snd.voice.hmm",
    "snd.voice.huh",
@@ -16239,11 +16931,16 @@
    "snd.ui.camera_ping",
    "snd.ui.click",
    "snd.ui.count_tick",
+   "snd.ui.drag_lift",
+   "snd.ui.drop_snap",
    "snd.ui.finger_snap",
+   "snd.ui.hover_tick",
+   "snd.ui.key_chord",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.stream_tick",
    "snd.ui.tick",
    "snd.ui.type_key",
    "snd.voice.chirp",
@@ -16257,6 +16954,9 @@
   ],
   "soft": [
    "snd.hit.brand_field_slam"
+  ],
+  "streaming": [
+   "snd.ui.stream_tick"
   ],
   "sub": [
    "snd.drum.808",
@@ -16379,6 +17079,7 @@
    "snd.tx.tape_stop",
    "snd.tx.zoom_through",
    "snd.ui.ai_reply",
+   "snd.ui.success_chime",
    "snd.whoosh.fire",
    "snd.whoosh.flyby",
    "snd.whoosh.magic_swirl",
@@ -16550,26 +17251,37 @@
    "snd.ui.blip",
    "snd.ui.camera_ping",
    "snd.ui.click",
+   "snd.ui.connect",
    "snd.ui.count_run",
    "snd.ui.count_tick",
+   "snd.ui.drag_lift",
+   "snd.ui.drop_snap",
    "snd.ui.error",
    "snd.ui.finger_snap",
+   "snd.ui.highlight_draw",
    "snd.ui.hologram_beam",
+   "snd.ui.hover_tick",
+   "snd.ui.key_chord",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
    "snd.ui.notify",
+   "snd.ui.palette_open",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.price_reveal",
    "snd.ui.scan_sweep",
    "snd.ui.slide",
+   "snd.ui.stream_tick",
    "snd.ui.success",
    "snd.ui.swipe_ding",
    "snd.ui.tick",
+   "snd.ui.toast_in",
    "snd.ui.toggle_off",
    "snd.ui.toggle_on",
    "snd.ui.type_key",
    "snd.ui.typing_burst",
+   "snd.ui.zoom_in",
    "snd.voice.chirp",
    "snd.voice.chirp_question",
    "snd.voice.gasp",
@@ -16681,6 +17393,7 @@
    "snd.tx.shutter_flash",
    "snd.tx.speed_ramp",
    "snd.ui.click",
+   "snd.ui.drop_snap",
    "snd.ui.finger_snap",
    "snd.ui.slide",
    "snd.ui.type_key",
@@ -16849,22 +17562,33 @@
    "snd.ui.ai_think_pulse",
    "snd.ui.blip",
    "snd.ui.camera_ping",
+   "snd.ui.connect",
    "snd.ui.count_run",
    "snd.ui.count_tick",
+   "snd.ui.drag_lift",
    "snd.ui.error",
+   "snd.ui.highlight_draw",
    "snd.ui.hologram_beam",
+   "snd.ui.hover_tick",
+   "snd.ui.key_chord",
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on",
    "snd.ui.notify",
+   "snd.ui.palette_open",
    "snd.ui.pop",
    "snd.ui.pop_down",
+   "snd.ui.price_reveal",
    "snd.ui.scan_sweep",
+   "snd.ui.stream_tick",
    "snd.ui.success",
+   "snd.ui.success_chime",
    "snd.ui.swipe_ding",
    "snd.ui.tick",
+   "snd.ui.toast_in",
    "snd.ui.toggle_off",
    "snd.ui.toggle_on",
+   "snd.ui.zoom_in",
    "snd.whoosh.blade",
    "snd.whoosh.magic_swirl",
    "snd.whoosh.scifi_pass",
@@ -16943,7 +17667,8 @@
    "snd.elec.arc"
   ],
   "zoom": [
-   "snd.hit.punch"
+   "snd.hit.punch",
+   "snd.ui.zoom_in"
   ]
  }
 }
