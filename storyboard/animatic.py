@@ -36,6 +36,7 @@ def _music_modules():
     if r is not None and not os.path.abspath(getattr(r, '__file__', '') or '').startswith(os.path.join(core.PACK, 'sfx')):
         for k in [k for k in sys.modules if k == 'recipes' or k.startswith('recipes.')]:
             del sys.modules[k]
+        registry.SOUNDS.clear()                   # the recipes register their sounds again on import and the registry refuses a duplicate id
     import recipes
     for m in recipes.MODULES:
         importlib.import_module('recipes.' + m)
