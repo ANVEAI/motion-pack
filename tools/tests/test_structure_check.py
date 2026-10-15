@@ -23,7 +23,7 @@ def good_ad15():
     """a 15 s ad that follows ad-15: hook text on frame 0 with a punch, problem, a held reveal, proof, a 2.5 s end card"""
     shots, t = [], 0.0
     spec = [('hook', 1.25, 'Your desk, handled.'), ('hook', 1.25, ''), ('problem', 1.25, 'Five tabs.'), ('problem', 1.25, 'Five bills.'),
-            ('product', 2.2, 'Orbit'), ('product', 1.8, 'One box does the busywork.'), ('proof', 1.75, 'Works with your tools.'),
+            ('product', 2.2, 'Orbit'), ('product', 1.8, 'It does the busywork.'), ('proof', 1.75, 'Works with your tools.'),
             ('proof', 1.75, 'Your files stay put.'), ('cta', 2.5, 'Try it on your desk')]
     for i, (sec, d, text) in enumerate(spec):
         s = {'id': '%s%d' % (sec, i), 'sec': sec, 'start': round(t, 4), 'dur': d, 'text': text, 'textDur': d}
@@ -104,10 +104,15 @@ def test_evidence_doc_has_every_structure_section():
         assert anchor and ('{#%s}' % anchor in doc or '<a id="%s">' % anchor in doc), (pid, s['evidence'])
 
 
-def test_shipped_pattern_data_has_no_denylisted_names():
-    r = subprocess.run([sys.executable, os.path.join(REPO, 'tools', 'check_names.py')], cwd=REPO, capture_output=True, text=True)
-    hits = [ln for ln in r.stdout.splitlines() if ln.startswith('patterns/') or 'structure_check' in ln]
-    assert not hits, hits
+def test_shipped_pattern_data_links_only_platform_pages():
+    """vendor, studio and author sources are cited through docs/research (tools/check_names.py, a CI step, guards the names themselves);
+    the only URLs in patterns/*.json are the help pages of the platforms the pack targets"""
+    import re
+    allowed = ('support.google.com', 'business.google.com', 'ads.tiktok.com', 'www.facebook.com/business', 'www.linkedin.com/help', 'help.x.com')
+    for f in os.listdir(PAT_DIR):
+        if f.endswith('.json'):
+            for url in re.findall(r'https?://[^\s"]+', open(os.path.join(PAT_DIR, f), encoding='utf-8').read()):
+                assert any(url.split('://', 1)[1].startswith(a) for a in allowed), (f, url)
 
 
 # ---------------------------------------------------------------- scoring
@@ -133,7 +138,7 @@ def test_bad_plan_scores_low_and_names_each_fix():
     r = score(bad)
     assert r['score'] < 45, r['score']
     joined = ' '.join(r['fixes'])
-    for word in ('frame 0 opens on a logo', 'no hook text', 'first sound', 'no "problem" section', 'ASL', 'words/s', 'end card holds'):
+    for word in ('frame 0 opens on a logo', 'no hook text', 'first sound', 'no "problem" section', 'shots in', 'words/s', 'end card holds'):
         assert word in joined, (word, r['fixes'])
 
 
@@ -164,13 +169,13 @@ def test_quiet_open_satisfies_the_sound_rule():
 
 
 def test_continuous_film_is_paced_by_motion_events_not_shots():
-    p = {'template': 'x', 'fps': 30, 'seconds': 30, 'audio': {'mode': 'continuous', 'events': [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26]},
+    p = {'template': 'x', 'fps': 30, 'seconds': 30, 'audio': {'mode': 'continuous', 'events': [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28]},
          'shots': [{'id': 'claim', 'start': 0, 'dur': 30, 'move': 'cam2d.push2d'}], 'cues': [{'t': 0}]}
     r = sc.score(p, P, 'saas-feature-drop')
     assert r['continuous'] and r['detail']['pace']['mode'] == 'continuous' and r['parts']['pace'] == 1
     p['audio']['events'] = [0, 1]          # 29 s with nothing new
     r = sc.score(p, P, 'saas-feature-drop')
-    assert r['parts']['pace'] < 1 and any('nothing changes' in f for f in r['fixes'])
+    assert r['parts']['pace'] < 1 and any('no motion event' in f for f in r['fixes'])
 
 
 def test_explicit_structure_sections_win():
@@ -216,3 +221,53 @@ def test_every_genre_template_passes_or_is_reported_with_a_reason():
     genre = {d for d in os.listdir(os.path.join(REPO, 'templates')) if not d.startswith(('demo-', '_')) and os.path.isdir(os.path.join(REPO, 'templates', d))
              and os.path.exists(os.path.join(REPO, 'templates', d, 'config.mjs'))}
     assert genre <= set(P['template_map']), 'genre templates with no template_map entry: %s' % (genre - set(P['template_map']))
+
+
+def test_a_long_quiet_open_does_not_excuse_a_silent_start():
+    p = good_ad15()
+    p['cues'] = [{'id': 'sfx/ui/pop', 't': 3.0}]
+    p['audio'] = {'quiet': [{'t': [0, 3.0], 'kind': 'open', 'why': 'too long: a quiet open is at most 2 s'}]}
+    assert score(p)['parts']['hook'] < 1
+
+
+def test_characters_per_second_ceiling_bites_on_its_own():
+    p = good_ad15()
+    s = p['shots'][6]
+    s['text'] = 'Unbelievably extraordinary transformations'      # 3 words in 1.75 s is under 3 w/s, but 42 chars is 24 cps
+    r = score(p)
+    assert r['parts']['text'] < 1 and any('chars/s' in f and 'Unbelievably' in f for f in r['fixes'])
+
+
+def test_sections_out_of_order_are_penalised():
+    p = good_ad15()
+    for s in p['shots']:          # swap the problem and proof beats: proof first, problem late
+        s['sec'] = {'problem': 'proof', 'proof': 'problem'}.get(s['sec'], s['sec'])
+    r = score(p)
+    assert r['parts']['timing'] < score(good_ad15())['parts']['timing'] and any('reorder' in f for f in r['fixes'])
+
+
+def test_section_labels_from_shot_ids():
+    assert sc._label({'id': 'problem0'}) == 'problem'
+    assert sc._label({'id': 'chapter-b'}) == 'chapter'
+    assert sc._label({'id': 'hook_1'}) == 'hook'
+    assert sc._label({'id': 'h2h'}) == 'h2h'
+    assert sc._label({'id': 'x', 'sec': 'Proof'}) == 'proof'
+
+
+def test_text_floor_bites_on_its_own():
+    p = good_ad15()
+    p['shots'][6]['text'], p['shots'][6]['textDur'] = 'Go now', 0.7      # 2.9 w/s and 9 cps pass; 0.7 s is under the 0.83 s floor
+    r = score(p)
+    assert r['parts']['text'] < 1 and any('"Go now"' in f for f in r['fixes'])
+
+
+def test_order_penalty_inside_the_tolerance():
+    """founder-story lets problem (25-40%) and demo (35-82%) overlap; a demo that starts before the problem is out of order even when both are in tolerance"""
+    base = {'template': 'x', 'fps': 30, 'seconds': 100, 'cues': [{'t': 0}]}
+    order = [('hook', 0, 8), ('why', 8, 30), ('problem', 30, 36), ('demo', 36, 82), ('ask', 88, 100)]
+    swap = [('hook', 0, 8), ('why', 8, 30), ('demo', 30, 82), ('problem', 33, 38), ('ask', 88, 100)]
+    def plan(rows):
+        return dict(base, structure={'sections': [{'name': n, 't': [a, b]} for n, a, b in rows]},
+                    shots=[{'id': n, 'start': a, 'dur': b - a} for n, a, b in rows])
+    good, bad = sc.score(plan(order), P, 'founder-story'), sc.score(plan(swap), P, 'founder-story')
+    assert bad['parts']['timing'] < good['parts']['timing'] and any('reorder' in f for f in bad['fixes'])

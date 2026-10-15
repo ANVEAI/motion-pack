@@ -1,0 +1,2479 @@
+{
+ "schema": "motion-pack/patterns/structures@1",
+ "note": "Beat sheets per genre as percent of runtime, with target ASL (average shot length = runtime / shots), on-screen text ceilings, music intensity 0-1 (0 = no music, 1 = the loudest, densest moment of the piece) and the sound-design role of each section. Every number is a tunable default with an evidence grade; no platform publishes beat percentages. The sources, the hedging and the named examples are in docs/research/launch-video-patterns.md (the `evidence` anchor of each structure). Sections may overlap where sources disagree (a reveal inside the demo); `required: false` sections are scored only when present. tools/structure_check.py scores an out/plan.json against one of these.",
+ "grades": {
+  "platform": "published by the platform",
+  "study": "a measured study",
+  "practitioner": "editors, creators, agencies, vendors: belief from practice",
+  "inference": "our synthesis of the sources; a tunable house default"
+ },
+ "pass_score": 70,
+ "weights": {
+  "timing": 30,
+  "pace": 20,
+  "text": 15,
+  "hook": 20,
+  "cta": 15
+ },
+ "text": {
+  "cps_max": 17,
+  "cps_note": "Netflix timed text: 20 cps adult, 17 cps children; 17 is the default for a broad phone audience",
+  "floor": {
+   "min_s": 0.833,
+   "per_word_s": 0.3,
+   "one_word_frames": 9
+  },
+  "grade": "platform",
+  "evidence": "docs/research/launch-video-patterns.md#text"
+ },
+ "template_map": {
+  "ad": [
+   {
+    "seconds": [
+     0,
+     22
+    ],
+    "pattern": "ad-15",
+    "why": "ad at 15 s"
+   },
+   {
+    "seconds": [
+     22,
+     45
+    ],
+    "pattern": "ad-30",
+    "why": "ad at 30 s"
+   }
+  ],
+  "character-spot": [
+   {
+    "pattern": "character-spot",
+    "why": "the RECIPE Z beat sheet"
+   }
+  ],
+  "proof-film": [
+   {
+    "pattern": "proof-film",
+    "why": "launch-playbook L8"
+   }
+  ],
+  "multi-voice-doc": [
+   {
+    "pattern": "documentary-launch",
+    "why": "launch-playbook L9 (the template demo is a 29 s compression of the 105-180 s shape)"
+   }
+  ],
+  "beat-edit": [
+   {
+    "pattern": "beat-edit",
+    "why": "cuts/patterns.json build_accelerate + drop_doubletime"
+   }
+  ],
+  "film-scene": [
+   {
+    "pattern": null,
+    "why": "an 8 s scene (establishing, action, reaction, payoff) is one beat of a short film, not a whole film; score a full film with --pattern short-film"
+   }
+  ],
+  "talking-head": [
+   {
+    "pattern": null,
+    "why": "the demo is 6.5 s of placeholder talk with no sections (it proves autocut and captions); score a real edit with --pattern podcast-clip, vlog or tutorial"
+   }
+  ]
+ },
+ "structures": {
+  "ad-15": {
+   "label": "15 s in-feed or pre-roll ad: hook, problem, product, proof, CTA",
+   "length_s": [
+    10,
+    20
+   ],
+   "asl_s": [
+    0.8,
+    2.0
+   ],
+   "tolerance_pct": 8,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#ads",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.3,
+    "max_words": 7,
+    "brand_by_s": 5
+   },
+   "cta": {
+    "section": "cta",
+    "start_pct": [
+     80,
+     90
+    ],
+    "min_hold_s": 1.8
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "open",
+      "coldopen",
+      "intro"
+     ],
+     "start": 0,
+     "end": 17,
+     "asl_s": [
+      0.6,
+      1.6
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.7,
+     "sfx_role": "an impact on frame 0 (sfx/hit/*); a whoosh peaks on the first cut",
+     "required": true
+    },
+    {
+     "name": "problem",
+     "aliases": [
+      "setup",
+      "pain",
+      "escalation",
+      "before"
+     ],
+     "start": 17,
+     "end": 33,
+     "asl_s": [
+      0.8,
+      1.6
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.6,
+     "sfx_role": "a pop per card; a riser starts under the last problem shot",
+     "required": true
+    },
+    {
+     "name": "product",
+     "aliases": [
+      "reveal",
+      "solution",
+      "turn",
+      "demo"
+     ],
+     "start": 33,
+     "end": 60,
+     "asl_s": [
+      1.2,
+      3.5
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.9,
+     "sfx_role": "the riser ends one frame before the reveal; a cinema hit on the reveal",
+     "required": true
+    },
+    {
+     "name": "proof",
+     "aliases": [
+      "benefit",
+      "features",
+      "payoff"
+     ],
+     "start": 60,
+     "end": 83,
+     "asl_s": [
+      1.2,
+      2.5
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.7,
+     "sfx_role": "soft ticks per state change; one hit on a sourced number",
+     "required": true
+    },
+    {
+     "name": "cta",
+     "aliases": [
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup",
+      "message"
+     ],
+     "start": 83,
+     "end": 100,
+     "asl_s": [
+      1.8,
+      3.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.5,
+     "sfx_role": "a sonic logo on the end card; the last 0.15 s silent",
+     "required": true
+    }
+   ]
+  },
+  "ad-30": {
+   "label": "30 s ad: hook with the value inside 3 s, problem, product, proof, CTA",
+   "length_s": [
+    20,
+    45
+   ],
+   "asl_s": [
+    1.0,
+    2.2
+   ],
+   "tolerance_pct": 8,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#ads",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.3,
+    "max_words": 7,
+    "brand_by_s": 5
+   },
+   "cta": {
+    "section": "cta",
+    "start_pct": [
+     83,
+     92
+    ],
+    "min_hold_s": 2.0
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "open",
+      "coldopen",
+      "intro"
+     ],
+     "start": 0,
+     "end": 10,
+     "asl_s": [
+      0.6,
+      1.6
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.7,
+     "sfx_role": "an impact on frame 0; a whoosh peaks on the first cut",
+     "required": true
+    },
+    {
+     "name": "problem",
+     "aliases": [
+      "setup",
+      "pain",
+      "escalation",
+      "before"
+     ],
+     "start": 10,
+     "end": 30,
+     "asl_s": [
+      0.8,
+      2.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.6,
+     "sfx_role": "pops on cards; foley on the pain; a riser into the reveal",
+     "required": true
+    },
+    {
+     "name": "product",
+     "aliases": [
+      "reveal",
+      "solution",
+      "turn",
+      "demo"
+     ],
+     "start": 30,
+     "end": 55,
+     "asl_s": [
+      1.2,
+      3.5
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.9,
+     "sfx_role": "a hit on the reveal; one UI sound per action under the demo",
+     "required": true
+    },
+    {
+     "name": "proof",
+     "aliases": [
+      "benefit",
+      "features",
+      "payoff",
+      "usecases"
+     ],
+     "start": 55,
+     "end": 85,
+     "asl_s": [
+      1.2,
+      2.5
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.7,
+     "sfx_role": "ticks per state change; one soft hit on the sourced number",
+     "required": true
+    },
+    {
+     "name": "cta",
+     "aliases": [
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup",
+      "message"
+     ],
+     "start": 85,
+     "end": 100,
+     "asl_s": [
+      2.0,
+      4.5
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.5,
+     "sfx_role": "a sonic logo; decelerate before the ask (cuts/sections breath_out)",
+     "required": true
+    }
+   ]
+  },
+  "saas-launch": {
+   "label": "SaaS / AI product launch film (product UI film): promise, context, reveal, workflow demo, proof, end card",
+   "length_s": [
+    30,
+    120
+   ],
+   "asl_s": [
+    1.5,
+    4.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#saas-launch",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.3,
+    "max_words": 7,
+    "brand_by_s": 10
+   },
+   "cta": {
+    "section": "cta",
+    "start_pct": [
+     82,
+     94
+    ],
+    "min_hold_s": 3.0
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "open",
+      "promise",
+      "claim",
+      "outcome",
+      "intro"
+     ],
+     "start": 0,
+     "end": 10,
+     "asl_s": [
+      1.0,
+      2.5
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.6,
+     "sfx_role": "music already running or one hit on frame 0; UI clicks if the hook is the product working",
+     "required": true
+    },
+    {
+     "name": "context",
+     "aliases": [
+      "problem",
+      "pain",
+      "persona",
+      "setup"
+     ],
+     "start": 10,
+     "end": 25,
+     "asl_s": [
+      1.2,
+      3.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "a riser across the context that ends one frame before the name",
+     "required": false,
+     "note": "big-brand release films often skip it; challenger launches keep it"
+    },
+    {
+     "name": "reveal",
+     "aliases": [
+      "name",
+      "solution",
+      "introducing",
+      "product"
+     ],
+     "start": 15,
+     "end": 30,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.9,
+     "sfx_role": "a short silence (0.3-1 s) then an impact on the product name",
+     "required": true
+    },
+    {
+     "name": "demo",
+     "aliases": [
+      "workflow",
+      "features",
+      "feature",
+      "usecases",
+      "chapter",
+      "agent"
+     ],
+     "start": 25,
+     "end": 70,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.8,
+     "sfx_role": "one UI sound per action (typing, click, success); cuts on the beat",
+     "required": true
+    },
+    {
+     "name": "proof",
+     "aliases": [
+      "socialproof",
+      "numbers",
+      "result"
+     ],
+     "start": 65,
+     "end": 85,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.6,
+     "sfx_role": "energy pulls back; one soft hit on the sourced number",
+     "required": false
+    },
+    {
+     "name": "cta",
+     "aliases": [
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 85,
+     "end": 100,
+     "asl_s": [
+      2.5,
+      10.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.6,
+     "sfx_role": "a final hit on the end card, then a quiet hold or sonic logo",
+     "required": true
+    }
+   ]
+  },
+  "saas-feature-drop": {
+   "label": "Single-feature drop: intro, the feature working in real UI, use cases, outro",
+   "length_s": [
+    15,
+    75
+   ],
+   "asl_s": [
+    1.5,
+    5.0
+   ],
+   "change_every_s_max": 3.5,
+   "tolerance_pct": 10,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#feature-drop",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.3,
+    "max_words": 7,
+    "brand_by_s": 5
+   },
+   "cta": {
+    "section": "outro",
+    "start_pct": [
+     75,
+     92
+    ],
+    "min_hold_s": 2.0
+   },
+   "sections": [
+    {
+     "name": "intro",
+     "aliases": [
+      "hook",
+      "open",
+      "claim",
+      "promise"
+     ],
+     "start": 0,
+     "end": 15,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "the first UI action on frame 0-3 (a keystroke or click), or ambient air",
+     "required": true
+    },
+    {
+     "name": "demo",
+     "aliases": [
+      "feature",
+      "workflow",
+      "steps",
+      "builder",
+      "connect",
+      "dock",
+      "hover"
+     ],
+     "start": 15,
+     "end": 65,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.6,
+     "sfx_role": "one UI sound per action; soft whoosh on panel moves; no VO needed",
+     "required": true
+    },
+    {
+     "name": "usecases",
+     "aliases": [
+      "usecase",
+      "examples",
+      "variations",
+      "degrade"
+     ],
+     "start": 60,
+     "end": 85,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.7,
+     "sfx_role": "a tick per use-case card",
+     "required": false
+    },
+    {
+     "name": "outro",
+     "aliases": [
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup",
+      "cta"
+     ],
+     "start": 85,
+     "end": 100,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.4,
+     "sfx_role": "a soft hit on the lockup, then a quiet hold",
+     "required": true
+    }
+   ]
+  },
+  "explainer": {
+   "label": "Explainer: question, wrong model, the reframe, proof, so-what",
+   "length_s": [
+    30,
+    600
+   ],
+   "asl_s": [
+    2.5,
+    6.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#explainer",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.5,
+    "max_words": 7
+   },
+   "cta": {
+    "section": "sowhat",
+    "start_pct": [
+     82,
+     95
+    ],
+    "min_hold_s": 2.0
+   },
+   "sections": [
+    {
+     "name": "question",
+     "aliases": [
+      "hook",
+      "problem",
+      "open",
+      "promise"
+     ],
+     "start": 0,
+     "end": 10,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "one sound on the question line; a planned quiet open is fine",
+     "required": true
+    },
+    {
+     "name": "wrongmodel",
+     "aliases": [
+      "myth",
+      "setup",
+      "context",
+      "before"
+     ],
+     "start": 10,
+     "end": 30,
+     "asl_s": [
+      2.5,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.3,
+     "sfx_role": "diagram ticks; a low pulse under the confusion",
+     "required": true
+    },
+    {
+     "name": "reframe",
+     "aliases": [
+      "rightmodel",
+      "how",
+      "model",
+      "walkthrough",
+      "mechanism"
+     ],
+     "start": 30,
+     "end": 65,
+     "asl_s": [
+      3.0,
+      8.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "a soft hit on the reframe; ticks per diagram step, only in speech gaps",
+     "required": true
+    },
+    {
+     "name": "proof",
+     "aliases": [
+      "example",
+      "demo",
+      "evidence"
+     ],
+     "start": 65,
+     "end": 85,
+     "asl_s": [
+      2.5,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "one hit on the example landing",
+     "required": true
+    },
+    {
+     "name": "sowhat",
+     "aliases": [
+      "takeaway",
+      "cta",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 85,
+     "end": 100,
+     "asl_s": [
+      3.0,
+      9.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.3,
+     "sfx_role": "a quiet hold under the takeaway",
+     "required": true
+    }
+   ]
+  },
+  "hardware-reveal": {
+   "label": "Hardware reveal film (keynote insert or standalone): dark open, macro tease, hero reveal on a hit, transform, specs, the job, end card",
+   "length_s": [
+    30,
+    150
+   ],
+   "asl_s": [
+    1.5,
+    3.5
+   ],
+   "tolerance_pct": 10,
+   "grade": "inference",
+   "evidence": "docs/research/launch-video-patterns.md#hardware-reveal",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.3,
+    "max_words": 4
+   },
+   "cta": {
+    "section": "endcard",
+    "start_pct": [
+     86,
+     95
+    ],
+    "min_hold_s": 2.5
+   },
+   "sections": [
+    {
+     "name": "open",
+     "aliases": [
+      "dark",
+      "lightfromdark",
+      "hook",
+      "edge"
+     ],
+     "start": 0,
+     "end": 6,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 1.0,
+     "music": 0.3,
+     "sfx_role": "a sub swell or a single tone as the light finds the edge; never silence on frame 0",
+     "required": true
+    },
+    {
+     "name": "tease",
+     "aliases": [
+      "macro",
+      "details",
+      "material"
+     ],
+     "start": 6,
+     "end": 25,
+     "asl_s": [
+      1.2,
+      3.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.5,
+     "sfx_role": "a tick or soft hit on each new detail; a riser builds",
+     "required": true
+    },
+    {
+     "name": "reveal",
+     "aliases": [
+      "hero",
+      "product",
+      "unveil"
+     ],
+     "start": 25,
+     "end": 35,
+     "asl_s": [
+      2.0,
+      4.5
+     ],
+     "text_wps_max": 1.0,
+     "music": 1.0,
+     "sfx_role": "a silent beat, then the hit on the first full-product frame",
+     "required": true
+    },
+    {
+     "name": "transform",
+     "aliases": [
+      "exploded",
+      "internals",
+      "explode",
+      "colorways"
+     ],
+     "start": 35,
+     "end": 58,
+     "asl_s": [
+      1.5,
+      3.5
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.8,
+     "sfx_role": "mechanical foley on each part; whoosh on the explode",
+     "required": false
+    },
+    {
+     "name": "specs",
+     "aliases": [
+      "features",
+      "montage",
+      "callouts"
+     ],
+     "start": 55,
+     "end": 80,
+     "asl_s": [
+      2.0,
+      3.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.8,
+     "sfx_role": "one hit per spec card on the beat",
+     "required": false
+    },
+    {
+     "name": "job",
+     "aliases": [
+      "inuse",
+      "context",
+      "lifestyle",
+      "use"
+     ],
+     "start": 78,
+     "end": 90,
+     "asl_s": [
+      1.5,
+      3.5
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.7,
+     "sfx_role": "room tone and the product doing its job",
+     "required": true
+    },
+    {
+     "name": "endcard",
+     "aliases": [
+      "price",
+      "date",
+      "available",
+      "cta",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 90,
+     "end": 100,
+     "asl_s": [
+      2.0,
+      5.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.3,
+     "sfx_role": "the music falls to silence or a sonic logo under the name",
+     "required": true
+    }
+   ]
+  },
+  "teaser": {
+   "label": "Teaser: one striking image, a single-cue build, a hit, the title, a date",
+   "length_s": [
+    6,
+    60
+   ],
+   "asl_s": [
+    1.0,
+    3.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "inference",
+   "evidence": "docs/research/launch-video-patterns.md#teaser",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.3,
+    "max_words": 4
+   },
+   "cta": {
+    "section": "date",
+    "start_pct": [
+     80,
+     96
+    ],
+    "min_hold_s": 1.5
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "open",
+      "coldopen",
+      "image"
+     ],
+     "start": 0,
+     "end": 15,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.4,
+     "sfx_role": "one striking sound with the image",
+     "required": true
+    },
+    {
+     "name": "build",
+     "aliases": [
+      "tease",
+      "montage",
+      "fragments"
+     ],
+     "start": 15,
+     "end": 70,
+     "asl_s": [
+      0.8,
+      2.5
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.7,
+     "sfx_role": "one music cue; risers and drones; no plot",
+     "required": true
+    },
+    {
+     "name": "peak",
+     "aliases": [
+      "hit",
+      "drop",
+      "impact"
+     ],
+     "start": 70,
+     "end": 80,
+     "asl_s": [
+      0.4,
+      1.5
+     ],
+     "text_wps_max": 1.5,
+     "music": 1.0,
+     "sfx_role": "a hit or braam, then a cut to black",
+     "required": false
+    },
+    {
+     "name": "title",
+     "aliases": [
+      "logo",
+      "name",
+      "reveal"
+     ],
+     "start": 80,
+     "end": 92,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.6,
+     "sfx_role": "a stinger on the title",
+     "required": true
+    },
+    {
+     "name": "date",
+     "aliases": [
+      "cta",
+      "premiere",
+      "when",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 92,
+     "end": 100,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.3,
+     "sfx_role": "a quiet tail under the date",
+     "required": true
+    }
+   ]
+  },
+  "trailer": {
+   "label": "Trailer: cold open, act 1 setup, act 2 escalation, act 3 crescendo, silence, title, button, date",
+   "length_s": [
+    60,
+    180
+   ],
+   "asl_s": [
+    1.0,
+    2.5
+   ],
+   "tolerance_pct": 8,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#trailer",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.3,
+    "max_words": 7
+   },
+   "cta": {
+    "section": "date",
+    "start_pct": [
+     94,
+     99
+    ],
+    "min_hold_s": 2.0
+   },
+   "sections": [
+    {
+     "name": "coldopen",
+     "aliases": [
+      "hook",
+      "open"
+     ],
+     "start": 0,
+     "end": 10,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.2,
+     "sfx_role": "near-silent or a line of dialogue alone; one hit out of it",
+     "required": true
+    },
+    {
+     "name": "act1",
+     "aliases": [
+      "setup",
+      "world"
+     ],
+     "start": 10,
+     "end": 30,
+     "asl_s": [
+      2.0,
+      4.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.35,
+     "sfx_role": "sparse drone or ambient texture; a copy card on a soft whoosh",
+     "required": true
+    },
+    {
+     "name": "act2",
+     "aliases": [
+      "escalation",
+      "build",
+      "conflict"
+     ],
+     "start": 30,
+     "end": 65,
+     "asl_s": [
+      1.0,
+      2.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.65,
+     "sfx_role": "percussion enters; whooshes on cards; a pull-out or silence before the key line",
+     "required": true
+    },
+    {
+     "name": "act3",
+     "aliases": [
+      "climax",
+      "crescendo",
+      "montage"
+     ],
+     "start": 65,
+     "end": 88,
+     "asl_s": [
+      0.4,
+      1.2
+     ],
+     "text_wps_max": 1.5,
+     "music": 1.0,
+     "sfx_role": "riser to hit; braams and sub impacts on cuts to black; the fastest cutting",
+     "required": true
+    },
+    {
+     "name": "title",
+     "aliases": [
+      "titlecard",
+      "gap"
+     ],
+     "start": 88,
+     "end": 94,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 1.0,
+     "music": 0.1,
+     "sfx_role": "a planned gap (silence or a sub-only tail), then the title hit",
+     "required": true
+    },
+    {
+     "name": "button",
+     "aliases": [
+      "stinger",
+      "tag"
+     ],
+     "start": 94,
+     "end": 97,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.2,
+     "sfx_role": "one last line or sting after the title",
+     "required": false
+    },
+    {
+     "name": "date",
+     "aliases": [
+      "cta",
+      "release",
+      "datecard",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 97,
+     "end": 100,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.1,
+     "sfx_role": "a quiet tail or one low hit under the date card",
+     "required": true
+    }
+   ]
+  },
+  "title-sequence": {
+   "label": "Title sequence: a motif, a credit cascade paced to the music, the main title last",
+   "length_s": [
+    20,
+    180
+   ],
+   "asl_s": [
+    2.0,
+    5.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "inference",
+   "evidence": "docs/research/launch-video-patterns.md#title-sequence",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.3,
+    "max_words": 4
+   },
+   "cta": null,
+   "sections": [
+    {
+     "name": "motif",
+     "aliases": [
+      "open",
+      "hook"
+     ],
+     "start": 0,
+     "end": 15,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 1.0,
+     "music": 0.4,
+     "sfx_role": "one sound motif with the visual metaphor",
+     "required": true
+    },
+    {
+     "name": "credits",
+     "aliases": [
+      "cascade",
+      "cards",
+      "names",
+      "credit"
+     ],
+     "start": 15,
+     "end": 80,
+     "asl_s": [
+      2.0,
+      5.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.6,
+     "sfx_role": "one credit per musical bar; no hit on every card",
+     "required": true
+    },
+    {
+     "name": "build",
+     "aliases": [
+      "rise"
+     ],
+     "start": 80,
+     "end": 90,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.8,
+     "sfx_role": "the phrase builds to its resolution",
+     "required": false
+    },
+    {
+     "name": "maintitle",
+     "aliases": [
+      "title",
+      "main"
+     ],
+     "start": 90,
+     "end": 100,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 1.0,
+     "music": 0.7,
+     "sfx_role": "the main title lands on the final musical resolution",
+     "required": true
+    }
+   ]
+  },
+  "tutorial": {
+   "label": "Tutorial: the end result first, the promise, the steps, a recap, the end screen",
+   "length_s": [
+    45,
+    1800
+   ],
+   "asl_s": [
+    3.0,
+    10.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#tutorial",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.5,
+    "max_words": 7
+   },
+   "cta": {
+    "section": "endscreen",
+    "start_pct": [
+     90,
+     98
+    ],
+    "min_hold_s": 5.0
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "result",
+      "payoff",
+      "open",
+      "coldopen"
+     ],
+     "start": 0,
+     "end": 5,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "one sound on the result shot; then the voice leads",
+     "required": true
+    },
+    {
+     "name": "promise",
+     "aliases": [
+      "overview",
+      "intro",
+      "agenda"
+     ],
+     "start": 4,
+     "end": 10,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.3,
+     "sfx_role": "the bed ducks under the voice",
+     "required": false
+    },
+    {
+     "name": "steps",
+     "aliases": [
+      "step",
+      "chapter",
+      "build",
+      "walkthrough",
+      "body"
+     ],
+     "start": 8,
+     "end": 88,
+     "asl_s": [
+      3.0,
+      10.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.2,
+     "sfx_role": "a tick per step card; UI sounds under screen capture; the bed stays ducked",
+     "required": true
+    },
+    {
+     "name": "recap",
+     "aliases": [
+      "summary",
+      "review"
+     ],
+     "start": 85,
+     "end": 94,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.3,
+     "sfx_role": "a soft lift for the recap",
+     "required": false
+    },
+    {
+     "name": "endscreen",
+     "aliases": [
+      "cta",
+      "outro",
+      "next",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 94,
+     "end": 100,
+     "asl_s": [
+      5.0,
+      20.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.4,
+     "sfx_role": "the bed returns under the end screen",
+     "required": true
+    }
+   ]
+  },
+  "vlog": {
+   "label": "Vlog / personal story: cold open at the key moment, setup and want, the journey (but / therefore), the cost, the change, sign-off",
+   "length_s": [
+    60,
+    1800
+   ],
+   "asl_s": [
+    2.0,
+    5.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "inference",
+   "evidence": "docs/research/launch-video-patterns.md#vlog",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.5,
+    "max_words": 7
+   },
+   "cta": {
+    "section": "signoff",
+    "start_pct": [
+     90,
+     99
+    ],
+    "min_hold_s": 5.0
+   },
+   "sections": [
+    {
+     "name": "coldopen",
+     "aliases": [
+      "hook",
+      "open",
+      "teaser"
+     ],
+     "start": 0,
+     "end": 8,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "the moment's own sound first (a line, a door, a laugh)",
+     "required": true
+    },
+    {
+     "name": "setup",
+     "aliases": [
+      "intro",
+      "want",
+      "goal",
+      "need"
+     ],
+     "start": 8,
+     "end": 25,
+     "asl_s": [
+      2.0,
+      5.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "room tone; music only between talking beats",
+     "required": true
+    },
+    {
+     "name": "journey",
+     "aliases": [
+      "middle",
+      "story",
+      "obstacle",
+      "body",
+      "chapter",
+      "search"
+     ],
+     "start": 25,
+     "end": 60,
+     "asl_s": [
+      2.0,
+      5.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "a music change at each re-hook; foley on contacts",
+     "required": true
+    },
+    {
+     "name": "cost",
+     "aliases": [
+      "peak",
+      "climax",
+      "turn",
+      "take",
+      "payoff"
+     ],
+     "start": 60,
+     "end": 78,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.8,
+     "sfx_role": "silence before the turn (200-400 ms), then the bed returns",
+     "required": true
+    },
+    {
+     "name": "change",
+     "aliases": [
+      "resolution",
+      "reflection",
+      "return",
+      "after"
+     ],
+     "start": 78,
+     "end": 95,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "the score resolves under the face",
+     "required": true
+    },
+    {
+     "name": "signoff",
+     "aliases": [
+      "cta",
+      "outro",
+      "endscreen",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 95,
+     "end": 100,
+     "asl_s": [
+      3.0,
+      20.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.4,
+     "sfx_role": "a familiar sign-off sound under the end screen",
+     "required": true
+    }
+   ]
+  },
+  "podcast-clip": {
+   "label": "Podcast / interview clip: the sharpest line first, the context, the payoff, a button",
+   "length_s": [
+    20,
+    180
+   ],
+   "asl_s": [
+    2.0,
+    8.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#podcast-clip",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.3,
+    "max_words": 7
+   },
+   "cta": {
+    "section": "button",
+    "start_pct": [
+     80,
+     96
+    ],
+    "min_hold_s": 1.0
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "line",
+      "coldopen",
+      "open",
+      "provocation"
+     ],
+     "start": 0,
+     "end": 10,
+     "asl_s": [
+      1.5,
+      4.0
+     ],
+     "text_wps_max": 3.5,
+     "music": 0.0,
+     "sfx_role": "the voice alone; a soft sweetener on the first punch-in at most",
+     "required": true
+    },
+    {
+     "name": "context",
+     "aliases": [
+      "setup",
+      "question",
+      "host"
+     ],
+     "start": 10,
+     "end": 25,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.5,
+     "music": 0.15,
+     "sfx_role": "the restored host question; a low bed (if any) ducked under both voices",
+     "required": true
+    },
+    {
+     "name": "payoff",
+     "aliases": [
+      "answer",
+      "story",
+      "body",
+      "seg"
+     ],
+     "start": 25,
+     "end": 85,
+     "asl_s": [
+      2.0,
+      8.0
+     ],
+     "text_wps_max": 3.5,
+     "music": 0.15,
+     "sfx_role": "a sweetener on punch-ins (max one per 4 s); nothing over the words",
+     "required": true
+    },
+    {
+     "name": "button",
+     "aliases": [
+      "punchline",
+      "cta",
+      "end",
+      "outro"
+     ],
+     "start": 85,
+     "end": 100,
+     "asl_s": [
+      1.0,
+      4.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.2,
+     "sfx_role": "the punchline lands dry; a soft tag under \"full episode\"",
+     "required": true
+    }
+   ]
+  },
+  "founder-story": {
+   "label": "Founder launch: a person with a stake to camera, the why, the problem, the demo, one proof, the smallest ask",
+   "length_s": [
+    45,
+    180
+   ],
+   "asl_s": [
+    2.5,
+    6.0
+   ],
+   "tolerance_pct": 12,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#founder-story",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.5,
+    "max_words": 7,
+    "brand_by_s": 10
+   },
+   "cta": {
+    "section": "ask",
+    "start_pct": [
+     85,
+     96
+    ],
+    "min_hold_s": 2.5
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "open",
+      "coldopen",
+      "thesis",
+      "line"
+     ],
+     "start": 0,
+     "end": 8,
+     "asl_s": [
+      3.0,
+      12.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.0,
+     "sfx_role": "the voice alone, no music, few or no cuts",
+     "required": true
+    },
+    {
+     "name": "why",
+     "aliases": [
+      "origin",
+      "personal",
+      "stake",
+      "intro",
+      "founder",
+      "lead"
+     ],
+     "start": 8,
+     "end": 30,
+     "asl_s": [
+      3.0,
+      10.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.2,
+     "sfx_role": "music enters after the opening statement, low under the voice",
+     "required": true
+    },
+    {
+     "name": "problem",
+     "aliases": [
+      "pain",
+      "context"
+     ],
+     "start": 25,
+     "end": 40,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.3,
+     "sfx_role": "B-roll sound only where it compresses a sentence",
+     "required": false
+    },
+    {
+     "name": "demo",
+     "aliases": [
+      "product",
+      "reveal",
+      "chapter",
+      "workflow",
+      "usecases"
+     ],
+     "start": 35,
+     "end": 82,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "UI sounds under the real product; the bed rises under B-roll",
+     "required": true
+    },
+    {
+     "name": "proof",
+     "aliases": [
+      "traction",
+      "numbers",
+      "result"
+     ],
+     "start": 75,
+     "end": 90,
+     "asl_s": [
+      2.0,
+      5.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.5,
+     "sfx_role": "one soft hit on one sourced number",
+     "required": false
+    },
+    {
+     "name": "ask",
+     "aliases": [
+      "cta",
+      "vision",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 88,
+     "end": 100,
+     "asl_s": [
+      2.5,
+      8.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.4,
+     "sfx_role": "the bed resolves under the URL; a quiet hold",
+     "required": true
+    }
+   ]
+  },
+  "short-film": {
+   "label": "Short film: cold open image, world and want, one obstacle, the turn, consequence, resolution image, tag",
+   "length_s": [
+    45,
+    600
+   ],
+   "asl_s": [
+    3.0,
+    8.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#short-film",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.5,
+    "max_words": 7
+   },
+   "cta": null,
+   "sections": [
+    {
+     "name": "coldopen",
+     "aliases": [
+      "hook",
+      "open",
+      "image"
+     ],
+     "start": 0,
+     "end": 8,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.2,
+     "sfx_role": "room tone and one diegetic sound",
+     "required": true
+    },
+    {
+     "name": "want",
+     "aliases": [
+      "world",
+      "setup",
+      "establishing"
+     ],
+     "start": 8,
+     "end": 24,
+     "asl_s": [
+      3.0,
+      8.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.3,
+     "sfx_role": "room tone under every scene; the score waits",
+     "required": true
+    },
+    {
+     "name": "obstacle",
+     "aliases": [
+      "conflict",
+      "action",
+      "pressure"
+     ],
+     "start": 24,
+     "end": 50,
+     "asl_s": [
+      2.5,
+      6.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.4,
+     "sfx_role": "foley on every contact; tension in the room tone",
+     "required": true
+    },
+    {
+     "name": "turn",
+     "aliases": [
+      "twist",
+      "reveal"
+     ],
+     "start": 50,
+     "end": 60,
+     "asl_s": [
+      1.5,
+      5.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.7,
+     "sfx_role": "200-400 ms of silence before the turn; the score enters on emotion",
+     "required": true
+    },
+    {
+     "name": "consequence",
+     "aliases": [
+      "reaction",
+      "aftermath"
+     ],
+     "start": 60,
+     "end": 84,
+     "asl_s": [
+      3.0,
+      8.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.5,
+     "sfx_role": "the score carries the reaction",
+     "required": true
+    },
+    {
+     "name": "resolution",
+     "aliases": [
+      "payoff",
+      "image",
+      "ending"
+     ],
+     "start": 84,
+     "end": 94,
+     "asl_s": [
+      3.0,
+      8.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.4,
+     "sfx_role": "the score resolves on the image",
+     "required": true
+    },
+    {
+     "name": "tag",
+     "aliases": [
+      "credit",
+      "card",
+      "end",
+      "button"
+     ],
+     "start": 94,
+     "end": 100,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.2,
+     "sfx_role": "a quiet tail; at most 6 s",
+     "required": false
+    }
+   ]
+  },
+  "character-spot": {
+   "label": "Wordless character spot (one gag, one feature): hook, setup, escalation, twist, reaction hold, message",
+   "length_s": [
+    12,
+    32
+   ],
+   "asl_s": [
+    1.5,
+    3.0
+   ],
+   "tolerance_pct": 8,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#character-spot",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.3,
+    "max_words": 4
+   },
+   "cta": {
+    "section": "message",
+    "start_pct": [
+     75,
+     86
+    ],
+    "min_hold_s": 1.8
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "open"
+     ],
+     "start": 0,
+     "end": 13,
+     "asl_s": [
+      1.5,
+      3.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.4,
+     "sfx_role": "a cartoon sound on the premise; word-free babble",
+     "required": true
+    },
+    {
+     "name": "setup",
+     "aliases": [],
+     "start": 13,
+     "end": 33,
+     "asl_s": [
+      1.5,
+      3.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.4,
+     "sfx_role": "foley on each contact",
+     "required": true
+    },
+    {
+     "name": "escalation",
+     "aliases": [
+      "despair",
+      "build"
+     ],
+     "start": 33,
+     "end": 60,
+     "asl_s": [
+      1.5,
+      3.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.6,
+     "sfx_role": "escalating cartoon sounds; a freeze before the twist",
+     "required": true
+    },
+    {
+     "name": "twist",
+     "aliases": [
+      "turn"
+     ],
+     "start": 60,
+     "end": 73,
+     "asl_s": [
+      1.0,
+      2.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.8,
+     "sfx_role": "the twist on a smash with its sweetener",
+     "required": true
+    },
+    {
+     "name": "reaction",
+     "aliases": [
+      "hold"
+     ],
+     "start": 73,
+     "end": 80,
+     "asl_s": [
+      1.2,
+      2.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.5,
+     "sfx_role": "a 1.5 s reaction hold; one emotion sound",
+     "required": true
+    },
+    {
+     "name": "message",
+     "aliases": [
+      "line",
+      "cta",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "lockup"
+     ],
+     "start": 80,
+     "end": 100,
+     "asl_s": [
+      2.0,
+      4.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.5,
+     "sfx_role": "a stinger on the end line",
+     "required": true
+    }
+   ]
+  },
+  "documentary-launch": {
+   "label": "Multi-voice documentary launch: voices cold open, the lead, chapters (speaker, insert, B-roll), proof, availability, the lead closes, a quiet hold",
+   "length_s": [
+    25,
+    200
+   ],
+   "asl_s": [
+    0.8,
+    3.0
+   ],
+   "tolerance_pct": 10,
+   "grade": "inference",
+   "evidence": "docs/research/launch-video-patterns.md#documentary-launch",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.5,
+    "max_words": 7
+   },
+   "cta": {
+    "section": "end",
+    "start_pct": [
+     82,
+     92
+    ],
+    "min_hold_s": 2.5
+   },
+   "sections": [
+    {
+     "name": "voices",
+     "aliases": [
+      "face",
+      "coldopen",
+      "hook"
+     ],
+     "start": 0,
+     "end": 16,
+     "asl_s": [
+      0.5,
+      1.3
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.3,
+     "sfx_role": "the audio leads every cut; mid-sentence voices",
+     "required": true
+    },
+    {
+     "name": "lead",
+     "aliases": [
+      "leadlead",
+      "thesis"
+     ],
+     "start": 15,
+     "end": 27,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.3,
+     "sfx_role": "the bed ducked 12 dB under the lead",
+     "required": true
+    },
+    {
+     "name": "chapters",
+     "aliases": [
+      "chapter",
+      "insert",
+      "broll"
+     ],
+     "start": 26,
+     "end": 66,
+     "asl_s": [
+      0.5,
+      2.5
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "speaker changes in the breath between lines; one tick per insert",
+     "required": true
+    },
+    {
+     "name": "proof",
+     "aliases": [
+      "proofp",
+      "card"
+     ],
+     "start": 64,
+     "end": 74,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.5,
+     "sfx_role": "one soft hit on the proof card",
+     "required": true
+    },
+    {
+     "name": "availability",
+     "aliases": [
+      "offer"
+     ],
+     "start": 70,
+     "end": 84,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.5,
+     "sfx_role": "the bed rises for the offer",
+     "required": true
+    },
+    {
+     "name": "close",
+     "aliases": [
+      "closelead"
+     ],
+     "start": 82,
+     "end": 89,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "the lead closes over a ducked bed",
+     "required": true
+    },
+    {
+     "name": "end",
+     "aliases": [
+      "endcard",
+      "outro",
+      "lockup",
+      "hold"
+     ],
+     "start": 88,
+     "end": 100,
+     "asl_s": [
+      2.5,
+      6.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.3,
+     "sfx_role": "the bed holds 1.8 s, then a quiet hold at -30 dB",
+     "required": true
+    }
+   ]
+  },
+  "proof-film": {
+   "label": "Proof film: a claim, the name, the method, one builder, head-to-head, big numbers, three cards, the URL on a quiet hold",
+   "length_s": [
+    16,
+    90
+   ],
+   "asl_s": [
+    2.0,
+    6.0
+   ],
+   "change_every_s_max": 3.5,
+   "tolerance_pct": 10,
+   "grade": "inference",
+   "evidence": "docs/research/launch-video-patterns.md#proof-film",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.3,
+    "max_words": 6
+   },
+   "cta": {
+    "section": "end",
+    "start_pct": [
+     80,
+     92
+    ],
+    "min_hold_s": 3.0
+   },
+   "sections": [
+    {
+     "name": "claim",
+     "aliases": [
+      "hook"
+     ],
+     "start": 0,
+     "end": 12,
+     "asl_s": [
+      2.0,
+      5.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.3,
+     "sfx_role": "a planned quiet open; the sound enters on the accent word",
+     "required": true
+    },
+    {
+     "name": "name",
+     "aliases": [
+      "product"
+     ],
+     "start": 10,
+     "end": 21,
+     "asl_s": [
+      2.0,
+      5.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.4,
+     "sfx_role": "a tick on the name",
+     "required": true
+    },
+    {
+     "name": "setting",
+     "aliases": [
+      "method"
+     ],
+     "start": 19,
+     "end": 33,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "a tick per method line",
+     "required": true
+    },
+    {
+     "name": "builder",
+     "aliases": [
+      "chart",
+      "scatter",
+      "trace",
+      "table"
+     ],
+     "start": 31,
+     "end": 49,
+     "asl_s": [
+      3.0,
+      8.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "a tick per state change; no hit until the number",
+     "required": true
+    },
+    {
+     "name": "h2h",
+     "aliases": [
+      "headtohead"
+     ],
+     "start": 47,
+     "end": 61,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "a tick per row",
+     "required": true
+    },
+    {
+     "name": "numbers",
+     "aliases": [
+      "bignumbers"
+     ],
+     "start": 59,
+     "end": 73,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.6,
+     "sfx_role": "ONE soft hit on the number reveal",
+     "required": true
+    },
+    {
+     "name": "cards",
+     "aliases": [
+      "statcards"
+     ],
+     "start": 71,
+     "end": 86,
+     "asl_s": [
+      2.0,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.5,
+     "sfx_role": "a pop per stat card",
+     "required": true
+    },
+    {
+     "name": "end",
+     "aliases": [
+      "endcard",
+      "outro",
+      "lockup",
+      "url"
+     ],
+     "start": 84,
+     "end": 100,
+     "asl_s": [
+      3.0,
+      8.0
+     ],
+     "text_wps_max": 1.5,
+     "music": 0.2,
+     "sfx_role": "no stinger; a quiet hold under the URL",
+     "required": true
+    }
+   ]
+  },
+  "beat-edit": {
+   "label": "Music-led beat edit: intro, a build that accelerates, the drop at double time, the out",
+   "length_s": [
+    6,
+    90
+   ],
+   "asl_s": [
+    0.4,
+    1.6
+   ],
+   "tolerance_pct": 10,
+   "grade": "practitioner",
+   "evidence": "docs/research/launch-video-patterns.md#beat-edit",
+   "hook": {
+    "text_required": false,
+    "text_by_s": 0.3,
+    "max_words": 4
+   },
+   "cta": null,
+   "sections": [
+    {
+     "name": "intro",
+     "aliases": [
+      "hook",
+      "open"
+     ],
+     "start": 0,
+     "end": 17,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 1.0,
+     "music": 0.5,
+     "sfx_role": "the track itself; a flash sweetener on the section change",
+     "required": true
+    },
+    {
+     "name": "build",
+     "aliases": [
+      "buildup",
+      "verse"
+     ],
+     "start": 15,
+     "end": 52,
+     "asl_s": [
+      0.5,
+      2.0
+     ],
+     "text_wps_max": 1.0,
+     "music": 0.7,
+     "sfx_role": "the riser ends one frame before the drop",
+     "required": true
+    },
+    {
+     "name": "drop",
+     "aliases": [
+      "chorus",
+      "hook2"
+     ],
+     "start": 48,
+     "end": 85,
+     "asl_s": [
+      0.3,
+      1.0
+     ],
+     "text_wps_max": 1.0,
+     "music": 1.0,
+     "sfx_role": "hits on the grid only, never between beats",
+     "required": true
+    },
+    {
+     "name": "out",
+     "aliases": [
+      "outro",
+      "end"
+     ],
+     "start": 83,
+     "end": 100,
+     "asl_s": [
+      1.0,
+      3.0
+     ],
+     "text_wps_max": 1.0,
+     "music": 0.5,
+     "sfx_role": "breathe out; loop seam or end hit",
+     "required": true
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,241 @@
+{
+ "schema": "motion-pack/patterns/lengths@1",
+ "note": "Length limits and sweet spots per platform and per format. `max_s` / `min_s` are the platform's own limits where it publishes them; `aim_s` is a sweet spot: published only where `aim_grade` says platform, otherwise a practitioner range or the pack's house default. No platform publishes an ideal length for organic posts. Limits change: re-check the source before a hard-fail rule. Narrative and named examples: docs/research/launch-video-patterns.md#lengths.",
+ "grades": {
+  "platform": "the platform's own help or spec page",
+  "study": "a measured study or corpus",
+  "practitioner": "editors, creators, agencies, vendors; or press relaying a platform without a primary page",
+  "inference": "our synthesis",
+  "house": "the pack's tunable default"
+ },
+ "platforms": {
+  "youtube.shorts": {
+   "max_s": 180,
+   "aim_s": [
+    15,
+    35
+   ],
+   "aim_grade": "house",
+   "note": "square or vertical uploads up to 3 min are Shorts (from 15 Oct 2024); a Short over 60 s with an active copyright claim is blocked, which matters for a music bed you do not own",
+   "source": "https://support.google.com/youtube/answer/15424877",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "youtube.longform": {
+   "min_s": 25,
+   "aim_s": null,
+   "note": "no published ideal length; 25 s is the minimum for an end screen; key moments need >= 60 s and 100 views; chapters need >= 3 timestamps of >= 10 s",
+   "source": "https://support.google.com/youtube/answer/6388789",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "youtube.ad.skippable": {
+   "skip_after_s": 5,
+   "aim_s": [
+    15,
+    180
+   ],
+   "aim_grade": "platform",
+   "note": "no maximum; under 3 min recommended; billed as a view at 30 s (or the end if shorter) or on interaction",
+   "source": "https://support.google.com/google-ads/answer/2375464",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "youtube.ad.nonskippable": {
+   "min_s": 15,
+   "max_s": 60,
+   "note": "15-60 s depending on the subtype",
+   "source": "https://support.google.com/google-ads/answer/2375464",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "youtube.ad.bumper": {
+   "min_s": 5,
+   "max_s": 6,
+   "source": "https://support.google.com/google-ads/answer/2375464",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "youtube.ad.shorts": {
+   "aim_s": [
+    6,
+    60
+   ],
+   "aim_grade": "platform",
+   "note": "under 60 s recommended",
+   "source": "https://support.google.com/google-ads/answer/2375464",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "instagram.reels": {
+   "max_s": 180,
+   "aim_s": [
+    15,
+    35
+   ],
+   "aim_grade": "house",
+   "note": "3 min per press reports of the 20 Jan 2025 change; the help page did not render for us",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "instagram.reels.ad": {
+   "min_s": 0,
+   "max_s": 900,
+   "note": "9:16 at 1440 x 2560 recommended; safe zone: keep text out of the top 14%, bottom 35% and 6% each side",
+   "source": "https://www.facebook.com/business/ads-guide/update/video/instagram-reels",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "tiktok.organic": {
+   "aim_s": [
+    15,
+    35
+   ],
+   "aim_grade": "house",
+   "note": "TikTok publishes no ideal length; longer uploads were tested for some accounts; the in-app upload screen shows each account's limit",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "tiktok.ad.infeed": {
+   "max_s": 600,
+   "hook_window_s": 6,
+   "value_by_s": 3,
+   "note": "non-Spark in-feed ads up to 10 min; no recommended duration; the creative guide puts the hook in the first 6 s and the proposition in the first 3 s",
+   "source": "https://ads.tiktok.com/help/article/video-ads-specifications",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "x.free": {
+   "max_s": 140,
+   "aim_s": [
+    20,
+    45
+   ],
+   "aim_grade": "house",
+   "note": "2:20 for accounts without Premium (X's help page blocked our fetch; read from a search summary of it)",
+   "source": "https://help.x.com/en/using-x/premium-longer-videos",
+   "accessed": "2026-10-16",
+   "grade": "practitioner"
+  },
+  "x.premium": {
+   "max_s": 14400,
+   "note": "up to 4 h at 1080p on web and iOS (search summary of X's help page)",
+   "source": "https://help.x.com/en/using-x/premium-longer-videos",
+   "accessed": "2026-10-16",
+   "grade": "practitioner"
+  },
+  "linkedin.organic": {
+   "min_s": 3,
+   "max_s": 900,
+   "aim_s": [
+    30,
+    60
+   ],
+   "aim_grade": "house",
+   "note": "3 s on desktop, 2 s on mobile, up to 15 min (search summary of LinkedIn help)",
+   "source": "https://www.linkedin.com/help/linkedin/answer/a548372",
+   "accessed": "2026-10-16",
+   "grade": "practitioner"
+  },
+  "linkedin.ad": {
+   "min_s": 3,
+   "max_s": 1800,
+   "aim_s": [
+    15,
+    30
+   ],
+   "aim_grade": "platform",
+   "note": "15-30 s recommended so the ad qualifies for every feed placement; in-stream ads up to 90 s",
+   "source": "https://www.linkedin.com/help/linkedin/answer/85306",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  }
+ },
+ "formats": {
+  "trailer.theatrical": {
+   "aim_s": [
+    120,
+    150
+   ],
+   "mean_s": 122.8,
+   "note": "corpus mean of 6,926 trailers of 4,004 top-grossing films 1930-2025; the 150 s cap is a voluntary trade rule reported by the trade press",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "study",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "teaser": {
+   "aim_s": [
+    15,
+    60
+   ],
+   "note": "explainers and editors; exceptions run past 2 min",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "launch.social": {
+   "aim_s": [
+    30,
+    90
+   ],
+   "note": "launch-video studios recommend 30-60 s for social and 60-90 s for a site demo; a public gallery of launch videos posted on X read on 2026-10-16 had a median of 72 s (our count of 53 entries; runtime did not separate high-view from low-view entries)",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "founder.launch": {
+   "aim_s": [
+    60,
+    90
+   ],
+   "note": "practitioner guidance: founder on camera, no music for the first 12-20 s",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "podcast.clip": {
+   "aim_s": [
+    25,
+    60
+   ],
+   "note": "clip tools score windows of about 25-60 s",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "lesson.chunk": {
+   "max_s": 360,
+   "note": "median engagement capped at about 6 min whatever the length (6.9M sessions in four online courses, 2014); segment lessons under 6 min; tutorials are re-watched and skimmed, so chapter them",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "study",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "business.video": {
+   "note": "completion falls with length: one business-video host reports 66% completion under 1 min, 56% at 1-2 min and 50% at 2-10 min (2022 data); another reports engagement roughly flat from 1 to 5 min, then a drop",
+   "source": "docs/research/launch-video-patterns.md#lengths",
+   "accessed": "2026-10-16",
+   "grade": "platform",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "ad.cutdowns": {
+   "aim_s": [
+    6,
+    15,
+    30
+   ],
+   "note": "the house cut-down set for every ad: a 6 s bumper, 15 s and 30 s",
+   "source": "skills/motion-pack/references/platforms.md",
+   "grade": "house"
+  }
+ }
+}

@@ -14,7 +14,8 @@ WHAT IT SCORES (each 0..1, weighted into 0..100; weights live in patterns/struct
            Continuous films (no cuts: plan.audio.mode "continuous", or every shot a camera move): the mean gap between motion events
            (plan.audio.events) against `change_every_s_max` instead, because a one-camera film has no shots to average.
   text     every on-screen text (plan.texts, shots[].text + textDur, captions, story.captions, words) reads at or under the section's
-           words-per-second ceiling and the pattern's characters-per-second ceiling, and stays on screen at least `min_text_s`.
+           words-per-second ceiling and the characters-per-second ceiling (structures.json "text"), and stays on screen at least the floor:
+           max(min_s, per_word_s x words), or `one_word_frames` for a one-word slam. Captions that follow speech are left to ears and the caption rules.
   hook     frame 0 is not a logo, title card, black or dip shot; when the pattern needs hook text, text is up by `hook.text_by_s` with at most
            `hook.max_words` words; the first sound lands by frame 3 OR the plan marks a quiet open (plan.audio.quiet kind open, <= 2 s).
            Frame-0 MOTION (first visible change by frame 6) is measured from the MP4 by eyes/frame0, not here.
@@ -53,7 +54,9 @@ def _label(s):
         return s['beat'].lower()
     sid = str(s.get('id') or 'shot').lower()
     sid = re.sub(r'[-_][a-z0-9]{1,2}$', '', sid)      # chapter-b, face-p, hook_1
-    sid = re.sub(r'\d+[a-z]?$', '', sid)              # problem0, s2a
+    m = re.match(r'^([a-z][a-z_-]{2,}?)\d+[a-z]?$', sid)   # problem0, proof1 (never h2h: the stem must be >= 3 letters)
+    if m:
+        sid = m.group(1)
     return sid or 'shot'
 
 
@@ -127,6 +130,15 @@ def timeline(plan):
                 b = c.get('out_s') if c.get('out_s') is not None else T
                 if a is not None and str(c.get('text', '')).strip():
                     texts.append({'text': str(c['text']), 'a': float(a), 'b': float(b), 'src': 'story.captions', 'role': str(c.get('role') or 'read')})
+        for st in plan.get('stages') or []:
+            d = st.get('data') if isinstance(st.get('data'), dict) else {}
+            a = st.get('at', st.get('t0'))
+            b = st.get('until')
+            if a is None or b is None:
+                continue
+            for f in ('text', 'title', 'brand', 'line', 'url'):
+                if isinstance(d.get(f), str) and d[f].strip():
+                    texts.append({'text': d[f], 'a': float(a), 'b': float(b), 'src': 'stages[].data.' + f, 'role': 'read'})
         for w in plan.get('words') or []:
             if isinstance(w, dict) and w.get('text') and w.get('t') is not None:
                 texts.append({'text': str(w['text']), 'a': float(w['t']), 'b': float(w['t']) + float(w.get('dur') or 0.5), 'src': 'words[]', 'role': 'read'})
@@ -154,6 +166,17 @@ def timeline(plan):
         for c in story.get('sfx') or []:
             if c.get('visual_frame') is not None:
                 cues.append(c['visual_frame'] / fps)
+    # the bed, the voice and the plan's own audio segments are sound too, not only cues
+    if isinstance(plan.get('music'), str) and plan['music'] and float(plan.get('fadeInMs') or 0) <= 100:
+        cues.append(0.0)
+    tr = plan.get('transcript')
+    if isinstance(tr, list) and tr and isinstance(tr[0], dict) and tr[0].get('s') is not None:
+        cues.append(float(tr[0]['s']))
+    segs = plan.get('audio') if isinstance(plan.get('audio'), list) else []
+    if segs and isinstance(segs[0], dict) and segs[0].get('start') is not None:
+        st0 = [x.get('start') for x in segs if isinstance(x, dict) and x.get('start') is not None]
+        k = 1 / fps if _frames_or_seconds(st0 + [x.get('end') for x in segs if isinstance(x, dict)], T) else 1
+        cues.append(min(st0) * k)
     events = [float(e) for e in (audio.get('events') or [])]
     if continuous and not events:
         events = sorted({s['start'] for s in shots})
@@ -270,9 +293,9 @@ def check_pace(tl, pat, fixes):
         holds = [q for q in tl['quiet'] if isinstance(q, dict) and q.get('kind') == 'hold']
         long = [(ev[i], g) for i, g in enumerate(gaps) if g > cap and not any(q['t'][0] - 0.5 <= ev[i] + g / 2 <= q['t'][1] + 0.5 for q in holds)]
         mean = sum(gaps) / len(gaps)
-        sc = max(0.0, 1.0 - 0.25 * len(long))
+        sc = max(0.0, 1.0 - sum((g - cap) / cap for _, g in long))
         for t, g in long[:4]:
-            fixes.append('pace: nothing changes for %.1f s from %.1f s (continuous film; ceiling %.1f s). Add a motion event or mark a hold.' % (g, t, cap))
+            fixes.append('pace: no motion event for %.1f s from %.1f s (continuous film; ceiling %.1f s). Add one (a camera beat, a value landing) or mark the stretch as a hold.' % (g, t, cap))
         return sc, {'mode': 'continuous', 'mean_change_s': round(mean, 2), 'over_ceiling': len(long)}
     n = len(tl['shots'])
     if not n:
@@ -313,8 +336,10 @@ def _section_at(tl, pat, t):
 
 def check_text(tl, pat, fixes):
     texts = tl['texts']
-    cps_max = pat.get('text_cps_max', 17)
-    min_s = pat.get('min_text_s', 0.8)
+    tc = pat.get('_text', {})
+    cps_max = pat.get('text_cps_max', tc.get('cps_max', 17))
+    fl = tc.get('floor', {})
+    min_s, per_word, one_word_frames = fl.get('min_s', 0.833), fl.get('per_word_s', 0.3), fl.get('one_word_frames', 9)
     if not texts:
         return 1.0, {'texts': 0, 'note': 'no on-screen text in the plan'}
     bad, rows = 0, []
@@ -326,11 +351,12 @@ def check_text(tl, pat, fixes):
         if t['role'] in ('caption',):         # captions follow speech; their rate is the voice's, judged by ears / the caption rules
             continue
         wps, cps = w / d, len(t['text']) / d
-        ok = wps <= wps_max + 1e-6 and cps <= cps_max + 1e-6 and (d >= min_s or w <= 1)
+        floor = one_word_frames / tl['fps'] if w <= 1 else max(min_s, per_word * w)
+        ok = wps <= wps_max + 1e-6 and cps <= cps_max + 1e-6 and d >= floor - 1e-6
         rows.append({'text': t['text'][:40], 'at': round(t['a'], 2), 'dur': round(d, 2), 'wps': round(wps, 2), 'cps': round(cps, 1), 'wps_max': wps_max, 'ok': ok})
         if not ok:
             bad += 1
-            need = max(w / wps_max, len(t['text']) / cps_max, min_s)
+            need = max(w / wps_max, len(t['text']) / cps_max, floor)
             fixes.append('text: "%s" at %.1f s reads at %.1f words/s, %.0f chars/s for %.2f s (ceiling %.1f w/s, %d c/s): hold it %.1f s or cut it to %d words.'
                          % (t['text'][:40], t['a'], wps, cps, d, wps_max, cps_max, need, max(1, int(wps_max * d))))
     n = len(rows)
@@ -407,7 +433,7 @@ CHECKS = [('timing', check_timing), ('pace', check_pace), ('text', check_text), 
 
 
 def score(plan, P, pattern_id):
-    pat = P['structures'][pattern_id]
+    pat = dict(P['structures'][pattern_id], _text=P.get('text', {}))
     tl = timeline(plan)
     if tl['T'] <= 0:
         raise ValueError('plan has no runtime (seconds)')

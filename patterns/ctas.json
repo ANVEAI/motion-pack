@@ -1,0 +1,163 @@
+{
+ "schema": "motion-pack/patterns/ctas@1",
+ "note": "Where the call to action goes, how long it holds and how it is worded, per platform and per format. `start_pct` is percent of runtime. A CTA states one next step; urgency only if it is true; no invented offers. Narrative: docs/research/launch-video-patterns.md#ctas.",
+ "grades": {
+  "platform": "the platform's own help or spec page",
+  "study": "a measured study",
+  "practitioner": "editors, creators, agencies, vendors",
+  "inference": "our synthesis",
+  "house": "the pack's tunable default"
+ },
+ "ctas": {
+  "youtube.endscreen": {
+   "where": "last 5-20 s",
+   "min_video_s": 25,
+   "max_elements": 4,
+   "hold_s": [
+    5,
+    20
+   ],
+   "rule": "plan the last 20 s in the edit as low-information footage under the end screen elements; stagger the elements",
+   "source": "https://support.google.com/youtube/answer/6388789",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "ad.endcard": {
+   "where": "the last 2.0 s of a 15 s ad, the last 2.5 s of longer cuts",
+   "start_pct": [
+    80,
+    92
+   ],
+   "hold_s": [
+    1.8,
+    4.5
+   ],
+   "rule": "the end card holds >= 1.8 s after its motion settles; one verb; the brand cue already landed inside the action earlier",
+   "source": "skills/motion-pack/references/virality.md",
+   "grade": "house"
+  },
+  "ad.direction": {
+   "where": "the close",
+   "rule": "a clear, simple next step in writing, graphics, audio or a story scene (ABCD 'Direction')",
+   "source": "https://business.google.com/us/think/future-of-marketing/youtube-video-ad-creative/",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "tiktok.close": {
+   "where": "the close, after the body",
+   "rule": "end with a strong CTA; brand early but subtle so it does not weaken the hook",
+   "source": "https://ads.tiktok.com/help/article/creative-best-practices",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "meta.reels": {
+   "where": "never in the bottom 35%",
+   "rule": "keep burned-in CTA text inside the safe zone (top 14%, bottom 35%, 6% each side); the ad's own CTA button sits in the bottom band, so do not burn one in there",
+   "source": "https://www.facebook.com/business/ads-guide/update/video/instagram-reels",
+   "accessed": "2026-10-16",
+   "grade": "platform"
+  },
+  "soft.midroll": {
+   "where": "60-70% of the runtime",
+   "start_pct": [
+    60,
+    70
+   ],
+   "rule": "a soft CTA (a send line, a 'link below') before the end card, for viewers who leave before the end",
+   "source": "skills/motion-pack/references/virality.md",
+   "grade": "house"
+  },
+  "short.video": {
+   "where": "the end, for videos under 5 min",
+   "start_pct": [
+    85,
+    100
+   ],
+   "rule": "under 5 min the CTA goes at the end; over 5 min, at the beginning as well",
+   "source": "docs/research/launch-video-patterns.md#ctas",
+   "accessed": "2026-10-16",
+   "grade": "platform",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "launch.film": {
+   "where": "the end card, last 3-10 s",
+   "start_pct": [
+    85,
+    95
+   ],
+   "hold_s": [
+    3,
+    10
+   ],
+   "rule": "one CTA, not three; on a launch platform that bans vote requests, ask the viewer to try it, never to vote",
+   "source": "docs/research/launch-video-patterns.md#ctas",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "founder.ask": {
+   "where": "the last 8-12%",
+   "start_pct": [
+    88,
+    96
+   ],
+   "rule": "the smallest possible ask: one URL or one instruction",
+   "source": "docs/research/launch-video-patterns.md#ctas",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "trailer.datecard": {
+   "where": "after the title and the button, the last 2-4 s",
+   "start_pct": [
+    96,
+    99
+   ],
+   "hold_s": [
+    2,
+    4
+   ],
+   "rule": "a specific date on a trailer, a vague one (a season) on a teaser",
+   "source": "docs/research/launch-video-patterns.md#ctas",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "podcast.clip": {
+   "where": "after the punchline",
+   "start_pct": [
+    85,
+    98
+   ],
+   "rule": "a soft pointer to the full episode; never cut the punchline to fit the ask",
+   "source": "docs/research/launch-video-patterns.md#ctas",
+   "accessed": "2026-10-16",
+   "grade": "practitioner",
+   "note_source": "practitioner or study source named in the research doc"
+  },
+  "loop.short": {
+   "where": "a small tag, not a card",
+   "rule": "on a looping Short, replace the end card with a small tag at 0.8 opacity outside the bottom 35% so the seam stays clean",
+   "source": "skills/motion-pack/references/virality.md",
+   "grade": "house"
+  }
+ },
+ "wording": {
+  "rules": [
+   "One verb, one destination.",
+   "Say what happens next, in the viewer's words.",
+   "Urgency only if it is true.",
+   "No 'free', '100%' or 'guaranteed' unless literally true and approved.",
+   "Name an audience in the send line ('send this to ...'); never ask for a keyword comment."
+  ],
+  "examples": [
+   "Try it on your next draft.",
+   "Start a plan in one click.",
+   "See the full episode.",
+   "Book a slot this week.",
+   "Send this to whoever runs your launches."
+  ],
+  "grade": "house",
+  "source": "skills/social-video/SKILL.md"
+ }
+}
