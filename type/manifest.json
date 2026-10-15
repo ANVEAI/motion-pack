@@ -6717,6 +6717,572 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "ui.keyCombo",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/keyboard_mech_clack",
+    "offset_f": 5,
+    "gain_db": -4
+   },
+   "dur_s": 1.8,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "keys": [
+     "Ctrl",
+     "Shift",
+     "P"
+    ],
+    "label": "Open the command palette",
+    "pos": "bc",
+    "pressAt": 0.15,
+    "stagger": 0.16,
+    "releaseAt": 1.2,
+    "accent": "#4A18ED",
+    "size": 1
+   },
+   "tags": [
+    "tutorial",
+    "keyboard",
+    "shortcut",
+    "overlay",
+    "screen-recording"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.highlightBox",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 2,
+   "in_frames": 14,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.36,
+     0.38,
+     0.28,
+     0.16
+    ],
+    "pad": 0.006,
+    "radius": 0.012,
+    "color": "#FFD400",
+    "width": 6,
+    "label": "",
+    "labelPos": "top",
+    "fill": true,
+    "size": 1
+   },
+   "tags": [
+    "tutorial",
+    "highlight",
+    "box",
+    "callout",
+    "screen-recording"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.codeCallout",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_xs",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 4,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "title": "example.js · placeholder code",
+    "lines": [
+     "// example code: replace with yours",
+     "import { theme } from './theme';",
+     "",
+     "export function toggle(state) {",
+     "  const next = state === 'dark' ? 'light' : 'dark';",
+     "  theme.set(next);",
+     "  return next;",
+     "}"
+    ],
+    "highlight": [
+     {
+      "from": 4,
+      "to": 7,
+      "at": 0.6
+     },
+     {
+      "from": 5,
+      "to": 5,
+      "at": 1.8
+     }
+    ],
+    "box": [
+     0.1,
+     0.14,
+     0.8,
+     0.72
+    ],
+    "numbers": true,
+    "theme": "dark",
+    "accent": "#4A18ED",
+    "size": 1
+   },
+   "tags": [
+    "tutorial",
+    "code",
+    "line-highlight",
+    "developer",
+    "course"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.stepCounter",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_tick",
+    "offset_f": 1,
+    "gain_db": -5
+   },
+   "dur_s": 10,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "step": 1,
+    "total": 3,
+    "label": "Step",
+    "title": "",
+    "steps": [],
+    "pos": "tl",
+    "accent": "#4A18ED",
+    "size": 1
+   },
+   "tags": [
+    "tutorial",
+    "steps",
+    "progress",
+    "pill",
+    "course"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.cursorTrack",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/mouse_click",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 4,
+   "in_frames": 3,
+   "out_frames": 6,
+   "params": {
+    "track": [
+     [
+      0,
+      0.3,
+      0.6
+     ],
+     [
+      0.8,
+      0.52,
+      0.44,
+      1
+     ],
+     [
+      1.8,
+      0.66,
+      0.6
+     ],
+     [
+      2.4,
+      0.7,
+      0.62,
+      1
+     ]
+    ],
+    "color": "#FFFFFF",
+    "ripple": "#FFD400",
+    "scale": 1.6,
+    "size": 1
+   },
+   "tags": [
+    "tutorial",
+    "cursor",
+    "click",
+    "screen-recording",
+    "pointer"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.waveform",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/blip",
+    "offset_f": 0,
+    "gain_db": -10
+   },
+   "dur_s": 6,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "env": [],
+    "fps": 30,
+    "box": [
+     0.1,
+     0.44,
+     0.8,
+     0.12
+    ],
+    "bars": 48,
+    "window": 1.6,
+    "offset": 0,
+    "color": "#FFFFFF",
+    "accent": "#4A18ED",
+    "mirror": true
+   },
+   "tags": [
+    "podcast",
+    "waveform",
+    "audio",
+    "visualiser",
+    "clip"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.locationCard",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 2.6,
+   "in_frames": 16,
+   "out_frames": 10,
+   "params": {
+    "place": "Placeholder Street",
+    "date": "Day one",
+    "kicker": "",
+    "pos": "tl",
+    "accent": "#FF4F7B",
+    "size": 1
+   },
+   "tags": [
+    "vlog",
+    "location",
+    "date",
+    "travel",
+    "card"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.yearTimeline",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 4,
+   "in_frames": 12,
+   "out_frames": 10,
+   "params": {
+    "years": [
+     {
+      "y": "2019",
+      "label": "first idea"
+     },
+     {
+      "y": "2021",
+      "label": "first users"
+     },
+     {
+      "y": "2024",
+      "label": "today"
+     }
+    ],
+    "steps": [
+     0,
+     1.2,
+     2.4
+    ],
+    "note": "example years · placeholder data",
+    "box": null,
+    "accent": "#4A18ED",
+    "size": 1
+   },
+   "tags": [
+    "founder",
+    "timeline",
+    "years",
+    "story",
+    "personal-brand"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.pullQuote",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/paper/flip",
+    "offset_f": 3,
+    "gain_db": -4
+   },
+   "dur_s": 3.2,
+   "in_frames": 8,
+   "out_frames": 10,
+   "params": {
+    "quote": "Placeholder quote: the speaker’s own words go here",
+    "speaker": "Speaker name",
+    "ownWords": true,
+    "pos": "c",
+    "accent": "#4A18ED",
+    "bg": "",
+    "size": 1
+   },
+   "tags": [
+    "quote",
+    "pull-out",
+    "founder",
+    "interview",
+    "own-words"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.quizCard",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 4.2,
+   "in_frames": 10,
+   "out_frames": 10,
+   "params": {
+    "kicker": "Quick check",
+    "q": "Placeholder question: which option is right?",
+    "options": [
+     "Option A text",
+     "Option B text",
+     "Option C text"
+    ],
+    "answer": 1,
+    "revealAt": 2.4,
+    "pos": "c",
+    "accent": "#4A18ED",
+    "size": 1
+   },
+   "tags": [
+    "course",
+    "quiz",
+    "question",
+    "lesson",
+    "check"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.recapCard",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 15,
+    "gain_db": -4
+   },
+   "dur_s": 3.6,
+   "in_frames": 10,
+   "out_frames": 10,
+   "params": {
+    "title": "Recap",
+    "items": [
+     "First takeaway",
+     "Second takeaway",
+     "Third takeaway"
+    ],
+    "stagger": 0.4,
+    "pos": "c",
+    "accent": "#4A18ED",
+    "bg": "",
+    "size": 1
+   },
+   "tags": [
+    "course",
+    "recap",
+    "summary",
+    "checklist",
+    "lesson"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.hookCard",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/soft",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "dur_s": 2.6,
+   "in_frames": 1,
+   "out_frames": 9,
+   "params": {
+    "line": "Placeholder hook line",
+    "kicker": "",
+    "pos": "tc",
+    "accent": "#4A18ED",
+    "bg": "",
+    "size": 1
+   },
+   "tags": [
+    "hook",
+    "title",
+    "frame-0",
+    "podcast",
+    "shorts"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.endScreen",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_in_m",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 5,
+   "in_frames": 12,
+   "out_frames": 6,
+   "params": {
+    "title": "Watch next",
+    "slots": [
+     {
+      "label": "Next video",
+      "kind": "video"
+     },
+     {
+      "label": "Playlist",
+      "kind": "playlist"
+     }
+    ],
+    "slotNote": "slot: add the platform end-screen element here",
+    "subscribe": "Subscribe",
+    "handle": "@yourchannel",
+    "bg": "#0E0E14",
+    "accent": "#4A18ED",
+    "size": 1
+   },
+   "tags": [
+    "end-screen",
+    "next-video",
+    "subscribe",
+    "youtube",
+    "tutorial"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.stepCard",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/whoosh_in_m",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 0.8,
+   "in_frames": 10,
+   "out_frames": 10,
+   "params": {
+    "kicker": "Next step",
+    "title": "Placeholder step title",
+    "bg": "rgba(8,8,12,0.9)",
+    "accent": "#4A18ED",
+    "size": 1
+   },
+   "tags": [
+    "tutorial",
+    "chapter",
+    "step",
+    "card",
+    "course"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.resultReveal",
+   "file": "type/gfx/human.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/mask_reveal",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 2.4,
+   "in_frames": 1,
+   "out_frames": 10,
+   "params": {
+    "box": [
+     0.1,
+     0.1,
+     0.8,
+     0.8
+    ],
+    "sweep": 0.6,
+    "label": "Result",
+    "color": "#FFD400",
+    "size": 1
+   },
+   "tags": [
+    "tutorial",
+    "result",
+    "reveal",
+    "before-after",
+    "sweep"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "layout.splitScreen",
    "file": "type/gfx/layout.js",
    "kind": "layout",

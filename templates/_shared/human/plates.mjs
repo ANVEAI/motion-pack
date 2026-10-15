@@ -21,7 +21,8 @@ function chip(w, h, title, sub, { pos = 'tl', dark = true } = {}) {
     return R(w * 0.14, cy - ts * 1.2, w * 0.72, ts * 1.2 + ss * 1.7, ts * 0.4, 'rgba(10,10,14,0.78)') + T(title, w / 2, cy - ts * 0.12, { size: ts, weight: 800, fill: '#FFFFFF', anchor: 'middle', ls: 1 }) + T(sub, w / 2, cy + ss * 1.1, { size: ss, weight: 600, fill: 'rgba(255,255,255,0.8)', anchor: 'middle', font: MONO });
   }
   const S = Math.min(w, h) / 1080, ts = Math.max(30, 34 * S), ss = Math.max(22, 24 * S), cw = Math.max(title.length * ts * 0.66, sub.length * ss * 0.6) + 48 * S, ch = ts + ss + 44 * S;
-  const tall = h > w * 1.2, x = pos.includes('r') ? w - cw - (tall ? 0.11 * w : 36 * S) : (tall ? 0.065 * w : 36 * S), y = pos.startsWith('b') ? h - ch - (tall ? 0.36 * h : 36 * S) : (tall ? 0.145 * h : 36 * S);   /* a tall slot keeps its label inside the 9:16 safe zone */
+  const tall = h > w * 1.2, mL = Math.max(36 * S, tall ? 0.065 * w : 0.05 * w), mR = Math.max(36 * S, tall ? 0.112 * w : 0.05 * w), mT = tall ? 0.145 * h : Math.max(36 * S, 0.05 * h), mB = tall ? 0.36 * h : Math.max(36 * S, 0.05 * h);
+  const x = pos.includes('r') ? w - cw - mR : mL, y = pos.startsWith('b') ? h - ch - mB : mT;   /* margins = the frame's safe zone (9:16 conservative, 16:9 title-safe) when the slot fills the frame */
   return R(x, y, cw, ch, 14 * S, dark ? 'rgba(10,10,14,0.78)' : 'rgba(255,255,255,0.86)') + T(title, x + 24 * S, y + 18 * S + ts * 0.85, { size: ts, weight: 800, fill: dark ? '#FFFFFF' : '#111', ls: 1.5 * S }) +
     T(sub, x + 24 * S, y + 28 * S + ts + ss * 0.8, { size: ss, weight: 600, fill: dark ? 'rgba(255,255,255,0.78)' : 'rgba(0,0,0,0.65)', font: MONO });
 }
