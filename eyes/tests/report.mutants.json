@@ -8,7 +8,7 @@
   "-x",
   "eyes/tests",
   "-k",
-  "scores_count"
+  "scores_count or worst_three"
  ],
  "timeout": 900,
  "mutants": [
@@ -69,7 +69,7 @@
     "-x",
     "eyes/tests",
     "-k",
-    "scores_count"
+    "worst_three"
    ]
   }
  ]

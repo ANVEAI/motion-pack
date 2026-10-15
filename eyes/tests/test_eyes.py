@@ -675,6 +675,12 @@ def test_scores_count_one_problem_once_and_a_fail_caps_the_category_at_7():
     assert [t['check'] for t in top][:2] == ['eyes/safezones', 'eyes/readability']
 
 
+def test_the_top_three_are_the_worst_three_by_severity_and_weight():
+    mk = lambda cid, cat, sev, t: {'id': cid, 'category': cat, 'status': sev, 'notes': [], 'issues': [{'severity': sev, 'kind': 'k', 't': [t, t], 'what': 'x', 'fix': 'y', 'viewer': cid}]}
+    chk = [mk('eyes/encode', 'encode', 'warn', 1), mk('eyes/pacing', 'pacing', 'warn', 2), mk('eyes/readability', 'readability', 'warn', 3), mk('eyes/flashes', 'flashes', 'fail', 4)]
+    assert [t['check'] for t in report.top_issues(chk)] == ['eyes/flashes', 'eyes/readability', 'eyes/pacing']      # the heaviest category first; the encode warning is left out
+
+
 def test_the_same_clip_gives_the_same_report_twice_and_the_cli_writes_json_and_markdown(tmp_path):
     p = vid('good', scene, 60)
     a, b = analyze(p, draft=True), analyze(p, draft=True)

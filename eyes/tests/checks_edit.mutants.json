@@ -189,7 +189,7 @@
     "-x",
     "eyes/tests",
     "-k",
-    "thin_bars"
+    "letterbox"
    ]
   },
   {
