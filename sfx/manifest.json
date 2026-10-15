@@ -3,7 +3,7 @@
  "sample_rate": 48000,
  "bit_depth": 24,
  "peak_dbfs_target": -6.0,
- "count": 301,
+ "count": 316,
  "notes": "All sounds synthesised in code (numpy/scipy). Library level is peak -6 dBFS; real levels are set by the mixer (over-bed rules). anchor_sample = the sample that must land on (visual frame + 1) x SR/fps.",
  "sounds": [
   {
@@ -6727,6 +6727,800 @@
    "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
    "over_bed_db": 4.5,
    "file": "library/impact/snd.hit.thud.wav"
+  },
+  {
+   "id": "snd.hw.chime_metal",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:s",
+    "key:A",
+    "metal",
+    "precision",
+    "rr:4"
+   ],
+   "tier": 3,
+   "desc": "machined-metal chime: an aluminium-bar strike on A5 (880 Hz, free-bar partials 1 / 2.76 / 5.40 / 8.93) with a bright tick; about 1.4 s; for a spec landing, an edge glint, a callout value",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 1.2929,
+   "samples": 62057,
+   "anchor_sample": 100,
+   "anchor_ms": 2.08,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 902,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -21.68,
+   "lufs_m_max": -17.06,
+   "lufs_s_max": -25.77,
+   "centroid_hz": 895,
+   "crest_db": 19.3,
+   "sub28_db": -55.6,
+   "sha": "8e5902faa489b604",
+   "phone_drop_db": 1.8,
+   "phone_safe": true,
+   "pairs_with": [
+    "flash",
+    "hardCut",
+    "maskReveal"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.chime_metal.wav"
+  },
+  {
+   "id": "snd.hw.chime_reveal",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:2",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:m",
+    "key:A",
+    "metal",
+    "glass",
+    "title"
+   ],
+   "tier": 2,
+   "desc": "two-strike reveal chime: A5 then E6 80 ms later on aluminium-bar partials, a soft A6 air shimmer above, a short hall; about 2.5 s; anchor = the first strike (the product name or the device's first full frame)",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 2.9543,
+   "samples": 141805,
+   "anchor_sample": 168,
+   "anchor_ms": 3.5,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 903,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.98,
+   "lufs_integrated": -17.64,
+   "lufs_m_max": -12.65,
+   "lufs_s_max": -20.73,
+   "centroid_hz": 1075,
+   "crest_db": 17.9,
+   "sub28_db": -61.0,
+   "sha": "d2339fbecc29b891",
+   "phone_drop_db": 1.9,
+   "phone_safe": true,
+   "pairs_with": [
+    "flash",
+    "hardCut",
+    "maskReveal"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.chime_reveal.wav"
+  },
+  {
+   "id": "snd.hw.click_detent",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:xs",
+    "mechanical",
+    "detent",
+    "rr:4",
+    "tick"
+   ],
+   "tier": 3,
+   "desc": "small detent click: a 2.9 kHz tick on a 420 Hz body, 60 ms; one per step of a port tour, a rotary step, a spec row landing (rr:4: each repeat differs)",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 0.0316,
+   "samples": 1519,
+   "anchor_sample": 82,
+   "anchor_ms": 1.71,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 905,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -32.49,
+   "lufs_m_max": -32.49,
+   "lufs_s_max": -41.24,
+   "centroid_hz": 519,
+   "crest_db": 18.9,
+   "sub28_db": -54.3,
+   "sha": "e617ab449b7a96b1",
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.click_detent.wav"
+  },
+  {
+   "id": "snd.hw.click_latch",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:xs",
+    "mechanical",
+    "latch",
+    "seat"
+   ],
+   "tier": 3,
+   "desc": "two-stage latch: a light pre-click, then the seat (a damped 1.4 kHz metal tick over a 190 Hz chassis knock) 22 ms later; anchor = the seat; a lid closing, a part seating in the exploded view",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 0.1027,
+   "samples": 4930,
+   "anchor_sample": 1128,
+   "anchor_ms": 23.5,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 904,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.81,
+   "lufs_integrated": -27.98,
+   "lufs_m_max": -27.98,
+   "lufs_s_max": -36.73,
+   "centroid_hz": 617,
+   "crest_db": 19.2,
+   "sub28_db": -42.6,
+   "sha": "b15d41793d433f43",
+   "phone_drop_db": 0.7,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.click_latch.wav"
+  },
+  {
+   "id": "snd.hw.fan_spinup",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:start",
+    "size:l",
+    "fan",
+    "airflow",
+    "power-on"
+   ],
+   "tier": 3,
+   "desc": "fan spin-up: 7 blades from rest to 2400 rpm over 1.6 s (blade-pass tone rising 0 to 280 Hz with its harmonics), airflow noise rising with the speed, a faint bearing whine; settles to a steady whir and fades by 3.2 s; anchor = the start (the frame the device powers on)",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 3.1918,
+   "samples": 153205,
+   "anchor_sample": 145,
+   "anchor_ms": 3.02,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 907,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.96,
+   "lufs_integrated": -14.98,
+   "lufs_m_max": -12.7,
+   "lufs_s_max": -15.72,
+   "centroid_hz": 420,
+   "crest_db": 12.5,
+   "sub28_db": -24.3,
+   "sha": "852d37f37008969d",
+   "phone_drop_db": -0.2,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.fan_spinup.wav"
+  },
+  {
+   "id": "snd.hw.hum_loop",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:loop",
+    "size:m",
+    "key:A",
+    "loop",
+    "hum",
+    "electric",
+    "cold-open"
+   ],
+   "tier": 3,
+   "desc": "electric hum: a transformer buzz on A1 / A2 (55 / 110 Hz, odd-heavy harmonics, slow breathing), a very quiet coil whine on A7 (3520 Hz) and an air hiss; 4.0 s seamless loop for a dark cold open or a powered-on hold (sit it under the bed: overBedDb about -10)",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 4.0,
+   "samples": 192000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": true,
+   "loop": true,
+   "seed": 908,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.95,
+   "lufs_integrated": -12.85,
+   "lufs_m_max": -11.68,
+   "lufs_s_max": -12.63,
+   "centroid_hz": 103,
+   "crest_db": 6.9,
+   "sub28_db": -49.4,
+   "sha": "8daf0de8fb578baa",
+   "phone_drop_db": -3.4,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/hw/snd.hw.hum_loop.wav"
+  },
+  {
+   "id": "snd.hw.led_on",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:xs",
+    "led",
+    "ignite",
+    "blip"
+   ],
+   "tier": 3,
+   "desc": "LED band ignition: a capacitor-charge chirp (2 to 6 kHz in 40 ms) into a soft electronic blip on E6; 0.4 s; anchor = the blip",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 0.2704,
+   "samples": 12977,
+   "anchor_sample": 1872,
+   "anchor_ms": 39.0,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 911,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.96,
+   "lufs_integrated": -21.16,
+   "lufs_m_max": -21.16,
+   "lufs_s_max": -29.91,
+   "centroid_hz": 1349,
+   "crest_db": 17.5,
+   "sub28_db": -90.3,
+   "sha": "9d7aa6545b38f7b2",
+   "phone_drop_db": 2.4,
+   "phone_safe": true,
+   "pairs_with": [
+    "flash",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.led_on.wav"
+  },
+  {
+   "id": "snd.hw.light_sweep",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:no",
+    "mood:tech",
+    "anchor:peak",
+    "size:m",
+    "sweep",
+    "shimmer",
+    "air",
+    "glint"
+   ],
+   "tier": 3,
+   "desc": "light sweep across a material: an airy band-passed noise swell whose centre rises 1.8 to 7 kHz and peaks with a faint A6 shimmer where the light crosses the edge; about 1.6 s, peak at 0.9 s; anchor = the peak (the frame the glint is brightest)",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 1.6152,
+   "samples": 77529,
+   "anchor_sample": 46065,
+   "anchor_ms": 959.69,
+   "anchor_kind": "peak",
+   "tonal": false,
+   "loop": false,
+   "seed": 914,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.93,
+   "lufs_integrated": -15.4,
+   "lufs_m_max": -12.31,
+   "lufs_s_max": -20.13,
+   "centroid_hz": 4766,
+   "crest_db": 17.5,
+   "sub28_db": -78.5,
+   "sha": "197252807ecfe6d3",
+   "phone_drop_db": -0.2,
+   "phone_safe": true,
+   "pairs_with": [
+    "flash",
+    "lightLeak",
+    "maskReveal"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.light_sweep.wav"
+  },
+  {
+   "id": "snd.hw.parts_seat",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:s",
+    "explode",
+    "magnetic",
+    "seat",
+    "clunk"
+   ],
+   "tier": 3,
+   "desc": "reassembly seat: a dense magnetic clunk (a 160 Hz chassis body under a damped 980 Hz plate) with a soft tick; 0.45 s; anchor = the contact",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 0.1241,
+   "samples": 5956,
+   "anchor_sample": 101,
+   "anchor_ms": 2.1,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 913,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.94,
+   "lufs_integrated": -26.75,
+   "lufs_m_max": -26.75,
+   "lufs_s_max": -35.5,
+   "centroid_hz": 169,
+   "crest_db": 17.8,
+   "sub28_db": -37.0,
+   "sha": "ccfd5e7e2faf5147",
+   "phone_drop_db": -0.5,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.parts_seat.wav"
+  },
+  {
+   "id": "snd.hw.parts_separate",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:no",
+    "mood:tech",
+    "anchor:start",
+    "size:m",
+    "explode",
+    "magnetic",
+    "whoosh"
+   ],
+   "tier": 3,
+   "desc": "exploded-view separation: a magnetic release click on the anchor, then a soft metallic 'shhk' (band-passed noise with a 1.1 kHz plate ring) and a short low air push as the parts travel; about 0.9 s; anchor = the release (the first part leaves)",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 0.9487,
+   "samples": 45536,
+   "anchor_sample": 80,
+   "anchor_ms": 1.67,
+   "anchor_kind": "fixed",
+   "tonal": false,
+   "loop": false,
+   "seed": 912,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.84,
+   "lufs_integrated": -22.32,
+   "lufs_m_max": -18.51,
+   "lufs_s_max": -27.19,
+   "centroid_hz": 2815,
+   "crest_db": 21.1,
+   "sub28_db": -33.8,
+   "sha": "91fc925ad8ebf089",
+   "phone_drop_db": -0.5,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push",
+    "zoomThrough"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.parts_separate.wav"
+  },
+  {
+   "id": "snd.hw.port_insert",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:s",
+    "mechanical",
+    "connector",
+    "plug",
+    "rr:4"
+   ],
+   "tier": 3,
+   "desc": "a connector pushed home: 110 ms of friction slide (band-passed noise rising), then the click-in (metal tick + body) on the anchor; for the ports / IO tour",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 0.1711,
+   "samples": 8213,
+   "anchor_sample": 5402,
+   "anchor_ms": 112.54,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 906,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.95,
+   "lufs_integrated": -30.2,
+   "lufs_m_max": -30.2,
+   "lufs_s_max": -38.95,
+   "centroid_hz": 1118,
+   "crest_db": 24.0,
+   "sub28_db": -40.3,
+   "sha": "73a0044525b8b94b",
+   "phone_drop_db": 1.0,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.port_insert.wav"
+  },
+  {
+   "id": "snd.hw.power_off",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:start",
+    "size:m",
+    "key:A",
+    "tone",
+    "power-down"
+   ],
+   "tier": 3,
+   "desc": "clean power-down: the A major chord falls a fifth and darkens over 0.8 s, then a relay click; ends in digital zero by 1.2 s; anchor = the start (the frame the light starts to die); pair with the end of a powered-on hold",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 0.8354,
+   "samples": 40100,
+   "anchor_sample": 166,
+   "anchor_ms": 3.46,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 910,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -18.6,
+   "lufs_m_max": -14.67,
+   "lufs_s_max": -23.23,
+   "centroid_hz": 444,
+   "crest_db": 14.0,
+   "sub28_db": -75.7,
+   "sha": "58d3d7e1903acbf4",
+   "phone_drop_db": 1.1,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [
+    "powerOff"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.power_off.wav"
+  },
+  {
+   "id": "snd.hw.power_on",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:2",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:m",
+    "key:A",
+    "boot",
+    "tone",
+    "power-on"
+   ],
+   "tier": 2,
+   "desc": "power-on: a relay thunk, a 0.45 s rising sine sweep (A2 to A4) that blooms into an original A major chord (A4 C#5 E5, cosine-crest) with a soft shimmer; about 2.4 s; anchor = the chord crest (the frame the LED band reaches full)",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 2.3265,
+   "samples": 111671,
+   "anchor_sample": 21685,
+   "anchor_ms": 451.77,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 909,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.86,
+   "lufs_integrated": -20.77,
+   "lufs_m_max": -17.69,
+   "lufs_s_max": -25.89,
+   "centroid_hz": 499,
+   "crest_db": 21.2,
+   "sub28_db": -46.6,
+   "sha": "bc7f77ca959460b9",
+   "phone_drop_db": 0.0,
+   "phone_safe": true,
+   "pairs_with": [
+    "flash",
+    "hardCut"
+   ],
+   "roles": [
+    "powerOn"
+   ],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.power_on.wav"
+  },
+  {
+   "id": "snd.hw.sub_hit",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:1",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:l",
+    "sub",
+    "reveal"
+   ],
+   "tier": 1,
+   "desc": "deep reveal sub hit: a 52 to 34 Hz sine drop with a second harmonic (so a phone speaker still hears it), a felt 'whump' of low brown noise and a soft transient; about 2 s; anchor = the crest (put it on the reveal frame)",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 2.2013,
+   "samples": 105661,
+   "anchor_sample": 485,
+   "anchor_ms": 10.1,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 900,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -21.61,
+   "lufs_m_max": -15.21,
+   "lufs_s_max": -23.46,
+   "centroid_hz": 35,
+   "crest_db": 13.8,
+   "sub28_db": -30.7,
+   "sha": "6e7142a2e012b870",
+   "phone_drop_db": -7.6,
+   "phone_safe": false,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut",
+    "maskReveal"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.sub_hit.wav"
+  },
+  {
+   "id": "snd.hw.sub_pulse",
+   "category": "hw",
+   "tags": [
+    "family:hw",
+    "hardware",
+    "device",
+    "tier:3",
+    "tonal:yes",
+    "mood:tech",
+    "anchor:crest",
+    "size:s",
+    "sub",
+    "heartbeat",
+    "rr:4",
+    "cold-open"
+   ],
+   "tier": 3,
+   "desc": "dark cold-open heartbeat: one short sub pulse (A1 55 Hz with a 110 Hz edge) and a muffled knock; 0.6 s; repeat it on the beats of a dark open",
+   "use": [
+    "launch",
+    "ad",
+    "product"
+   ],
+   "duration_s": 0.3462,
+   "samples": 16617,
+   "anchor_sample": 158,
+   "anchor_ms": 3.29,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 901,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -22.63,
+   "lufs_m_max": -22.63,
+   "lufs_s_max": -31.38,
+   "centroid_hz": 56,
+   "crest_db": 15.5,
+   "sub28_db": -25.9,
+   "sha": "9954698b8eb3ac29",
+   "phone_drop_db": -5.7,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.0,
+   "file": "library/hw/snd.hw.sub_pulse.wav"
   },
   {
    "id": "snd.indian.bansuri_note",
@@ -14189,6 +14983,8 @@
    "snd.hit.metal_cinematic",
    "snd.hit.sub_drop",
    "snd.hit.taiko",
+   "snd.hw.power_off",
+   "snd.hw.sub_hit",
    "snd.indian.shankh_conch",
    "snd.lift.down",
    "snd.lift.down_long",
@@ -14272,6 +15068,12 @@
    "snd.hit.sub_drop",
    "snd.hit.taiko",
    "snd.hit.thud",
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.led_on",
+   "snd.hw.light_sweep",
+   "snd.hw.power_on",
+   "snd.hw.sub_hit",
    "snd.indian.ghanta_temple_bell",
    "snd.indian.manjira",
    "snd.indian.nagara_hit",
@@ -14455,6 +15257,20 @@
    "snd.hit.sub_drop",
    "snd.hit.taiko",
    "snd.hit.thud",
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.fan_spinup",
+   "snd.hw.hum_loop",
+   "snd.hw.led_on",
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate",
+   "snd.hw.port_insert",
+   "snd.hw.power_off",
+   "snd.hw.power_on",
+   "snd.hw.sub_hit",
+   "snd.hw.sub_pulse",
    "snd.indian.dhol_bhangra_hit",
    "snd.indian.dholak_dha",
    "snd.indian.dholak_ge",
@@ -14569,6 +15385,7 @@
   ],
   "lightLeak": [
    "snd.hit.cymbal_swell",
+   "snd.hw.light_sweep",
    "snd.indian.bansuri_note",
    "snd.indian.ghungroo",
    "snd.tx.film_burn",
@@ -14595,6 +15412,10 @@
    "snd.glass.tap",
    "snd.hit.glass_hit",
    "snd.hit.stab",
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.light_sweep",
+   "snd.hw.sub_hit",
    "snd.lift.inhale",
    "snd.liquid.fizz",
    "snd.liquid.pour",
@@ -14636,6 +15457,11 @@
    "snd.cloth.swish",
    "snd.device.card_flip",
    "snd.foley.door_open",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate",
+   "snd.hw.port_insert",
    "snd.paper.card_riffle",
    "snd.paper.card_shuffle_settle",
    "snd.paper.flip",
@@ -14736,6 +15562,7 @@
   ],
   "zoomThrough": [
    "snd.hit.cinema",
+   "snd.hw.parts_separate",
    "snd.riser.glitch_stutter",
    "snd.riser.noise_1bar",
    "snd.riser.noise_2bar",
@@ -14756,6 +15583,12 @@
  "by_tag": {
   "agent": [
    "snd.ui.agent_working"
+  ],
+  "air": [
+   "snd.hw.light_sweep"
+  ],
+  "airflow": [
+   "snd.hw.fan_spinup"
   ],
   "anchor:crest": [
    "snd.cartoon.boing",
@@ -14813,6 +15646,16 @@
    "snd.hit.sub_drop",
    "snd.hit.taiko",
    "snd.hit.thud",
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.led_on",
+   "snd.hw.parts_seat",
+   "snd.hw.port_insert",
+   "snd.hw.power_on",
+   "snd.hw.sub_hit",
+   "snd.hw.sub_pulse",
    "snd.indian.dhol_bhangra_hit",
    "snd.indian.dholak_dha",
    "snd.indian.dholak_ge",
@@ -14924,6 +15767,7 @@
    "snd.amb.vinyl_crackle",
    "snd.amb.wind",
    "snd.elec.crackle_loop",
+   "snd.hw.hum_loop",
    "snd.indian.shruti_drone",
    "snd.ui.agent_working",
    "snd.ui.listening_loop"
@@ -15027,6 +15871,9 @@
    "snd.wood.knock",
    "snd.wood.tap"
   ],
+  "anchor:peak": [
+   "snd.hw.light_sweep"
+  ],
   "anchor:scatter": [
    "snd.cartoon.bike_horn",
    "snd.cartoon.gulp",
@@ -15063,6 +15910,9 @@
   "anchor:start": [
    "snd.elec.zap_off",
    "snd.foley.typewriter",
+   "snd.hw.fan_spinup",
+   "snd.hw.parts_separate",
+   "snd.hw.power_off",
    "snd.lift.down",
    "snd.lift.down_long",
    "snd.tx.dip_to_black",
@@ -15094,6 +15944,12 @@
   ],
   "bitcrush": [
    "snd.tx.pixel_dissolve"
+  ],
+  "blip": [
+   "snd.hw.led_on"
+  ],
+  "boot": [
+   "snd.hw.power_on"
   ],
   "bpm:120": [
    "snd.riser.glitch_stutter",
@@ -15127,6 +15983,16 @@
    "snd.voice.chirp",
    "snd.voice.chirp_question"
   ],
+  "clunk": [
+   "snd.hw.parts_seat"
+  ],
+  "cold-open": [
+   "snd.hw.hum_loop",
+   "snd.hw.sub_pulse"
+  ],
+  "connector": [
+   "snd.hw.port_insert"
+  ],
   "contour:question": [
    "snd.voice.chirp_question",
    "snd.voice.hmm",
@@ -15144,6 +16010,26 @@
    "snd.ui.count_run",
    "snd.ui.count_tick"
   ],
+  "detent": [
+   "snd.hw.click_detent"
+  ],
+  "device": [
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.fan_spinup",
+   "snd.hw.hum_loop",
+   "snd.hw.led_on",
+   "snd.hw.light_sweep",
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate",
+   "snd.hw.port_insert",
+   "snd.hw.power_off",
+   "snd.hw.power_on",
+   "snd.hw.sub_hit",
+   "snd.hw.sub_pulse"
+  ],
   "downlifter": [
    "snd.lift.down",
    "snd.lift.down_long"
@@ -15151,7 +16037,12 @@
   "electric": [
    "snd.elec.arc",
    "snd.elec.crackle_loop",
-   "snd.elec.zap_off"
+   "snd.elec.zap_off",
+   "snd.hw.hum_loop"
+  ],
+  "explode": [
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate"
   ],
   "family:amb": [
    "snd.amb.applause",
@@ -15316,6 +16207,23 @@
    "snd.hit.stab",
    "snd.hit.sub_drop",
    "snd.hit.thud"
+  ],
+  "family:hw": [
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.fan_spinup",
+   "snd.hw.hum_loop",
+   "snd.hw.led_on",
+   "snd.hw.light_sweep",
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate",
+   "snd.hw.port_insert",
+   "snd.hw.power_off",
+   "snd.hw.power_on",
+   "snd.hw.sub_hit",
+   "snd.hw.sub_pulse"
   ],
   "family:impact": [
    "snd.hit.bass_drop_wobble",
@@ -15512,6 +16420,9 @@
    "snd.wood.knock",
    "snd.wood.tap"
   ],
+  "fan": [
+   "snd.hw.fan_spinup"
+  ],
   "film": [
    "snd.amb.projector"
   ],
@@ -15552,11 +16463,41 @@
    "snd.ui.typing_burst",
    "snd.wood.door_knock"
   ],
+  "glass": [
+   "snd.hw.chime_reveal"
+  ],
+  "glint": [
+   "snd.hw.light_sweep"
+  ],
+  "hardware": [
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.fan_spinup",
+   "snd.hw.hum_loop",
+   "snd.hw.led_on",
+   "snd.hw.light_sweep",
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate",
+   "snd.hw.port_insert",
+   "snd.hw.power_off",
+   "snd.hw.power_on",
+   "snd.hw.sub_hit",
+   "snd.hw.sub_pulse"
+  ],
+  "heartbeat": [
+   "snd.hw.sub_pulse"
+  ],
   "hologram": [
    "snd.ui.hologram_beam"
   ],
   "hum": [
-   "snd.elec.crackle_loop"
+   "snd.elec.crackle_loop",
+   "snd.hw.hum_loop"
+  ],
+  "ignite": [
+   "snd.hw.led_on"
   ],
   "impact": [
    "snd.glass.shatter"
@@ -15636,6 +16577,11 @@
    "snd.elec.zap_off",
    "snd.hit.bass_drop_wobble",
    "snd.hit.stab",
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.hum_loop",
+   "snd.hw.power_off",
+   "snd.hw.power_on",
    "snd.indian.bansuri_note",
    "snd.indian.harmonium_chord",
    "snd.indian.santoor_hit",
@@ -15683,8 +16629,15 @@
    "snd.ui.toggle_off",
    "snd.ui.toggle_on"
   ],
+  "latch": [
+   "snd.hw.click_latch"
+  ],
+  "led": [
+   "snd.hw.led_on"
+  ],
   "loop": [
    "snd.elec.crackle_loop",
+   "snd.hw.hum_loop",
    "snd.indian.shruti_drone",
    "snd.ui.agent_working",
    "snd.ui.listening_loop"
@@ -15692,11 +16645,22 @@
   "loopable": [
    "snd.riser.shepard"
   ],
+  "magnetic": [
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate"
+  ],
+  "mechanical": [
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.port_insert"
+  ],
   "meme": [
    "snd.hit.boom_meme"
   ],
   "metal": [
-   "snd.hit.slam"
+   "snd.hit.slam",
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal"
   ],
   "mood:calm": [
    "snd.amb.birds_morning",
@@ -15820,6 +16784,21 @@
    "snd.hit.low_thump",
    "snd.hit.punch",
    "snd.hit.stab",
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.fan_spinup",
+   "snd.hw.hum_loop",
+   "snd.hw.led_on",
+   "snd.hw.light_sweep",
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate",
+   "snd.hw.port_insert",
+   "snd.hw.power_off",
+   "snd.hw.power_on",
+   "snd.hw.sub_hit",
+   "snd.hw.sub_pulse",
    "snd.logo.hybrid",
    "snd.logo.pulse_pad",
    "snd.riser.glitch_stutter",
@@ -15894,8 +16873,21 @@
   "pixel": [
    "snd.tx.pixel_dissolve"
   ],
+  "plug": [
+   "snd.hw.port_insert"
+  ],
+  "power-down": [
+   "snd.hw.power_off"
+  ],
+  "power-on": [
+   "snd.hw.fan_spinup",
+   "snd.hw.power_on"
+  ],
   "power_down": [
    "snd.elec.zap_off"
+  ],
+  "precision": [
+   "snd.hw.chime_metal"
   ],
   "region:in": [
    "snd.amb.indian_street_horns",
@@ -15930,6 +16922,9 @@
    "snd.indian.tabla_tirakita",
    "snd.indian.tabla_tun",
    "snd.indian.thali_clang"
+  ],
+  "reveal": [
+   "snd.hw.sub_hit"
   ],
   "reverse": [
    "snd.whoosh.reverse"
@@ -15970,6 +16965,10 @@
    "snd.foley.tape_tear",
    "snd.foley.typewriter",
    "snd.foley.zipper",
+   "snd.hw.chime_metal",
+   "snd.hw.click_detent",
+   "snd.hw.port_insert",
+   "snd.hw.sub_pulse",
    "snd.indian.dholak_dha",
    "snd.indian.dholak_ge",
    "snd.indian.ghungroo",
@@ -15987,6 +16986,13 @@
   ],
   "scan": [
    "snd.ui.scan_sweep"
+  ],
+  "seat": [
+   "snd.hw.click_latch",
+   "snd.hw.parts_seat"
+  ],
+  "shimmer": [
+   "snd.hw.light_sweep"
   ],
   "size:l": [
    "snd.cartoon.sad_brass",
@@ -16006,6 +17012,8 @@
    "snd.hit.glass_hit",
    "snd.hit.sub_drop",
    "snd.hit.taiko",
+   "snd.hw.fan_spinup",
+   "snd.hw.sub_hit",
    "snd.indian.ghanta_temple_bell",
    "snd.indian.nagara_hit",
    "snd.indian.shankh_conch",
@@ -16076,6 +17084,12 @@
    "snd.hit.slam",
    "snd.hit.stab",
    "snd.hit.thud",
+   "snd.hw.chime_reveal",
+   "snd.hw.hum_loop",
+   "snd.hw.light_sweep",
+   "snd.hw.parts_separate",
+   "snd.hw.power_off",
+   "snd.hw.power_on",
    "snd.indian.bansuri_note",
    "snd.indian.dhol_bhangra_hit",
    "snd.indian.harmonium_chord",
@@ -16160,6 +17174,10 @@
    "snd.glass.crack",
    "snd.hit.low_thump",
    "snd.hit.soft",
+   "snd.hw.chime_metal",
+   "snd.hw.parts_seat",
+   "snd.hw.port_insert",
+   "snd.hw.sub_pulse",
    "snd.indian.dholak_dha",
    "snd.indian.dholak_ge",
    "snd.indian.ghungroo",
@@ -16226,6 +17244,9 @@
    "snd.foley.pen_click",
    "snd.glass.tap",
    "snd.hit.punch",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.led_on",
    "snd.indian.tabla_ka",
    "snd.indian.tabla_na",
    "snd.indian.tabla_te",
@@ -16267,6 +17288,8 @@
    "snd.hit.explosion_small",
    "snd.hit.low_thump",
    "snd.hit.sub_drop",
+   "snd.hw.sub_hit",
+   "snd.hw.sub_pulse",
    "snd.riser.heartbeat",
    "snd.tx.ink_bloom"
   ],
@@ -16282,8 +17305,14 @@
   "surface:wood": [
    "snd.foley.footstep_wood"
   ],
+  "sweep": [
+   "snd.hw.light_sweep"
+  ],
   "tape": [
    "snd.riser.tape_up"
+  ],
+  "tick": [
+   "snd.hw.click_detent"
   ],
   "tier:1": [
    "snd.glass.shatter",
@@ -16294,6 +17323,7 @@
    "snd.hit.metal_cinematic",
    "snd.hit.sub_drop",
    "snd.hit.taiko",
+   "snd.hw.sub_hit",
    "snd.logo.ascend_land",
    "snd.logo.drop_land",
    "snd.logo.fifth_lift",
@@ -16340,6 +17370,8 @@
    "snd.hit.slam",
    "snd.hit.stab",
    "snd.hit.thud",
+   "snd.hw.chime_reveal",
+   "snd.hw.power_on",
    "snd.indian.dhol_bhangra_hit",
    "snd.indian.ghanta_temple_bell",
    "snd.indian.nagara_hit",
@@ -16492,6 +17524,18 @@
    "snd.hit.low_thump",
    "snd.hit.punch",
    "snd.hit.soft",
+   "snd.hw.chime_metal",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.fan_spinup",
+   "snd.hw.hum_loop",
+   "snd.hw.led_on",
+   "snd.hw.light_sweep",
+   "snd.hw.parts_seat",
+   "snd.hw.parts_separate",
+   "snd.hw.port_insert",
+   "snd.hw.power_off",
+   "snd.hw.sub_pulse",
    "snd.indian.bansuri_note",
    "snd.indian.dholak_dha",
    "snd.indian.dholak_ge",
@@ -16592,6 +17636,9 @@
    "snd.wood.knock",
    "snd.wood.tap"
   ],
+  "title": [
+   "snd.hw.chime_reveal"
+  ],
   "tonal:no": [
    "snd.camera.shutter",
    "snd.cartoon.poof",
@@ -16647,6 +17694,8 @@
    "snd.hit.explosion_small",
    "snd.hit.rock",
    "snd.hit.soft",
+   "snd.hw.light_sweep",
+   "snd.hw.parts_separate",
    "snd.indian.ghungroo",
    "snd.lift.down",
    "snd.lift.down_long",
@@ -16777,6 +17826,19 @@
    "snd.hit.sub_drop",
    "snd.hit.taiko",
    "snd.hit.thud",
+   "snd.hw.chime_metal",
+   "snd.hw.chime_reveal",
+   "snd.hw.click_detent",
+   "snd.hw.click_latch",
+   "snd.hw.fan_spinup",
+   "snd.hw.hum_loop",
+   "snd.hw.led_on",
+   "snd.hw.parts_seat",
+   "snd.hw.port_insert",
+   "snd.hw.power_off",
+   "snd.hw.power_on",
+   "snd.hw.sub_hit",
+   "snd.hw.sub_pulse",
    "snd.indian.bansuri_note",
    "snd.indian.dhol_bhangra_hit",
    "snd.indian.dholak_dha",
@@ -16872,6 +17934,10 @@
    "snd.wood.knock",
    "snd.wood.tap"
   ],
+  "tone": [
+   "snd.hw.power_off",
+   "snd.hw.power_on"
+  ],
   "trailer": [
    "snd.hit.deep_impact"
   ],
@@ -16921,6 +17987,9 @@
    "snd.ui.listening_loop",
    "snd.ui.mic_off",
    "snd.ui.mic_on"
+  ],
+  "whoosh": [
+   "snd.hw.parts_separate"
   ],
   "wordless": [
    "snd.crowd.aww_synth",

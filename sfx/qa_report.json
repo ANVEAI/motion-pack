@@ -1,5 +1,5 @@
 {
- "count": 301,
+ "count": 316,
  "categories": [
   "ambience",
   "camera",
@@ -12,6 +12,7 @@
   "elec",
   "foley",
   "glass",
+  "hw",
   "impact",
   "indian",
   "liquid",
@@ -30,19 +31,10 @@
  ],
  "fails": [],
  "warns": [
-  "snd.amb.server_hum: two seeds correlate 0.79",
-  "snd.cartoon.poof: two seeds correlate 0.68",
-  "snd.cartoon.rimshot: two seeds correlate 0.66",
   "snd.foley.door_close: sub<28Hz energy -19.5 dB (limit -20)",
-  "snd.foley.door_close: two seeds correlate 0.75",
-  "snd.foley.footstep_concrete: two seeds correlate 0.64",
-  "snd.foley.footstep_gravel: two seeds correlate 0.61",
-  "snd.foley.zipper: two seeds correlate 0.78",
   "snd.hit.cymbal_swell: centroid 10593 outside 30-5000",
   "snd.tx.ink_bloom: sub<28Hz energy -17.5 dB (limit -18)",
-  "snd.tx.ink_bloom: two seeds correlate 0.79",
   "snd.tx.zoom_through: sub<28Hz energy -19.1 dB (limit -20)",
-  "snd.ui.finger_snap: two seeds correlate 0.62",
   "snd.whoosh.flyby: sub<28Hz energy -19.9 dB (limit -20)"
  ],
  "missing_transitions": [],
@@ -52,7 +44,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.04,
-   "seed_corr": 0.004,
    "ffmpeg_I": -26.2,
    "dI": 0.04
   },
@@ -61,7 +52,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.09,
-   "seed_corr": 0.007,
    "ffmpeg_I": -19.2,
    "dI": 0.02
   },
@@ -70,7 +60,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.4,
-   "seed_corr": 0.014,
    "ffmpeg_I": -18.0,
    "dI": 0.02
   },
@@ -79,7 +68,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.0,
-   "seed_corr": 0.229,
    "ffmpeg_I": -18.9,
    "dI": 0.02
   },
@@ -88,7 +76,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.15,
-   "seed_corr": 0.019,
    "ffmpeg_I": -18.2,
    "dI": 0.03
   },
@@ -97,7 +84,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.15,
-   "seed_corr": 0.01,
    "ffmpeg_I": -18.2,
    "dI": 0.03
   },
@@ -106,7 +92,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.0,
-   "seed_corr": 0.009,
    "ffmpeg_I": -29.6,
    "dI": 0.03
   },
@@ -115,7 +100,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.23,
-   "seed_corr": 0.03,
    "ffmpeg_I": -19.9,
    "dI": 0.04
   },
@@ -124,7 +108,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.07,
-   "seed_corr": 0.096,
    "ffmpeg_I": -22.6,
    "dI": 0.03
   },
@@ -133,7 +116,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.0,
-   "seed_corr": 0.011,
    "ffmpeg_I": -18.3,
    "dI": 0.02
   },
@@ -142,7 +124,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.27,
-   "seed_corr": 0.045,
    "ffmpeg_I": -18.7,
    "dI": 0.04
   },
@@ -151,7 +132,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.01,
-   "seed_corr": 0.449,
    "ffmpeg_I": -24.2,
    "dI": 0.01
   },
@@ -160,7 +140,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.27,
-   "seed_corr": 0.495,
    "ffmpeg_I": -15.2,
    "dI": 0.01
   },
@@ -169,7 +148,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.02,
-   "seed_corr": 0.003,
    "ffmpeg_I": -15.5,
    "dI": 0.01
   },
@@ -178,7 +156,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.25,
-   "seed_corr": 0.003,
    "ffmpeg_I": -16.4,
    "dI": 0.02
   },
@@ -187,18 +164,14 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.01,
-   "seed_corr": 0.097,
    "ffmpeg_I": -18.1,
    "dI": 0.01
   },
   {
    "id": "snd.amb.server_hum",
    "ok": true,
-   "notes": [
-    "warn two seeds correlate 0.79"
-   ],
+   "notes": [],
    "seam_ratio": 0.28,
-   "seed_corr": 0.787,
    "ffmpeg_I": -17.0,
    "dI": 0.05
   },
@@ -207,7 +180,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.3,
-   "seed_corr": 0.052,
    "ffmpeg_I": -15.5,
    "dI": 0.0
   },
@@ -216,7 +188,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.29,
-   "seed_corr": 0.005,
    "ffmpeg_I": -18.7,
    "dI": 0.02
   },
@@ -225,18 +196,14 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.1,
-   "seed_corr": 0.052,
    "ffmpeg_I": -17.2,
    "dI": 0.03
   },
   {
    "id": "snd.amb.tension_drone",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
+   "notes": [],
    "seam_ratio": 0.89,
-   "seed_corr": 1.0,
    "ffmpeg_I": -14.9,
    "dI": 0.05
   },
@@ -245,7 +212,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.0,
-   "seed_corr": 0.026,
    "ffmpeg_I": -24.6,
    "dI": 0.01
   },
@@ -254,7 +220,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.27,
-   "seed_corr": 0.002,
    "ffmpeg_I": -20.9,
    "dI": 0.03
   },
@@ -263,7 +228,6 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.0,
-   "seed_corr": 0.479,
    "ffmpeg_I": -41.8,
    "dI": 0.04
   },
@@ -272,269 +236,199 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.03,
-   "seed_corr": 0.299,
    "ffmpeg_I": -20.9,
    "dI": 0.04
   },
   {
    "id": "snd.camera.shutter",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.518
+   "notes": []
   },
   {
    "id": "snd.cartoon.bike_horn",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.995
+   "notes": []
   },
   {
    "id": "snd.cartoon.boing",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.boing_hi",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.bonk",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.941
+   "notes": []
   },
   {
    "id": "snd.cartoon.bonk_pitch",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.997
+   "notes": []
   },
   {
    "id": "snd.cartoon.cuckoo",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.gulp",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.poof",
    "ok": true,
-   "notes": [
-    "warn two seeds correlate 0.68"
-   ],
-   "seed_corr": 0.681
+   "notes": []
   },
   {
    "id": "snd.cartoon.pop_eye",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.raspberry",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.951
+   "notes": []
   },
   {
    "id": "snd.cartoon.record_scratch",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.022
+   "notes": []
   },
   {
    "id": "snd.cartoon.rimshot",
    "ok": true,
-   "notes": [
-    "warn two seeds correlate 0.66"
-   ],
-   "seed_corr": 0.657
+   "notes": []
   },
   {
    "id": "snd.cartoon.sad_brass",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -21.1,
    "dI": 0.03
   },
   {
    "id": "snd.cartoon.skid",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.972
+   "notes": []
   },
   {
    "id": "snd.cartoon.slide_whistle_down",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.975
+   "notes": []
   },
   {
    "id": "snd.cartoon.slide_whistle_up",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.967
+   "notes": []
   },
   {
    "id": "snd.cartoon.slip",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.989
+   "notes": []
   },
   {
    "id": "snd.cartoon.slip_long",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.976,
    "ffmpeg_I": -17.5,
    "dI": 0.04
   },
   {
    "id": "snd.cartoon.spring",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.076
+   "notes": []
   },
   {
    "id": "snd.cartoon.sproing",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.squeak",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.squeeze_toy",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.surprise_sting",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.764
+   "notes": []
   },
   {
    "id": "snd.cartoon.tada",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.252,
    "ffmpeg_I": -18.6,
    "dI": 0.02
   },
   {
    "id": "snd.cartoon.tiptoe",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.096
+   "notes": []
   },
   {
    "id": "snd.cartoon.walk_bounce",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.whistle",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.995
+   "notes": []
   },
   {
    "id": "snd.cartoon.xylo_down",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.xylo_up",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.cartoon.zip_run",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.869
+   "notes": []
   },
   {
    "id": "snd.cash.ka_ching",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.034
+   "notes": []
   },
   {
    "id": "snd.ceramic.clink",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.25
+   "notes": []
   },
   {
    "id": "snd.cloth.flap",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.992
+   "notes": []
   },
   {
    "id": "snd.cloth.footstep",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.9
+   "notes": []
   },
   {
    "id": "snd.cloth.swish",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.12
+   "notes": []
   },
   {
    "id": "snd.crowd.aww_synth",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.009,
    "ffmpeg_I": -19.6,
    "dI": 0.04
   },
@@ -542,7 +436,6 @@
    "id": "snd.crowd.boo_synth",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.01,
    "ffmpeg_I": -20.4,
    "dI": 0.03
   },
@@ -550,465 +443,357 @@
    "id": "snd.crowd.cheer_synth",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.041,
    "ffmpeg_I": -19.6,
    "dI": 0.03
   },
   {
    "id": "snd.device.achievement",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.985
+   "notes": []
   },
   {
    "id": "snd.device.card_flip",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.145
+   "notes": []
   },
   {
    "id": "snd.device.keyboard_mech_clack",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.143
+   "notes": []
   },
   {
    "id": "snd.device.keyboard_mech_soft",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.599
+   "notes": []
   },
   {
    "id": "snd.device.level_up",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.device.loading_tick",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.523
+   "notes": []
   },
   {
    "id": "snd.device.lock",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.468
+   "notes": []
   },
   {
    "id": "snd.device.message_received",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.device.message_sent",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.996
+   "notes": []
   },
   {
    "id": "snd.device.mouse_click",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.135
+   "notes": []
   },
   {
    "id": "snd.device.notify_ding",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.device.notify_soft",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.device.phone_buzz",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.849
+   "notes": []
   },
   {
    "id": "snd.device.phone_ring_synth",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -15.1,
    "dI": 0.04
   },
   {
    "id": "snd.device.progress_fill",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -15.5,
    "dI": 0.01
   },
   {
    "id": "snd.device.unlock",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.042
+   "notes": []
   },
   {
    "id": "snd.drum.808",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.drum.clap",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.012
+   "notes": []
   },
   {
    "id": "snd.drum.cowbell",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.drum.crash",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.046,
    "ffmpeg_I": -17.3,
    "dI": 0.01
   },
   {
    "id": "snd.drum.dhol_low",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.999
+   "notes": []
   },
   {
    "id": "snd.drum.dhol_rim",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.435
+   "notes": []
   },
   {
    "id": "snd.drum.hat_closed",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.045
+   "notes": []
   },
   {
    "id": "snd.drum.hat_open",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.042
+   "notes": []
   },
   {
    "id": "snd.drum.kick",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.drum.kick_punch",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.999
+   "notes": []
   },
   {
    "id": "snd.drum.kick_sub",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.drum.rim",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.986
+   "notes": []
   },
   {
    "id": "snd.drum.shaker",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.025
+   "notes": []
   },
   {
    "id": "snd.drum.snare",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.377
+   "notes": []
   },
   {
    "id": "snd.drum.snare_roll",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.474,
    "ffmpeg_I": -19.9,
    "dI": 0.02
   },
   {
    "id": "snd.drum.tom_hi",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.drum.tom_lo",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.elec.arc",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.239
+   "notes": []
   },
   {
    "id": "snd.elec.crackle_loop",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.0,
-   "seed_corr": 0.646,
    "ffmpeg_I": -18.5,
    "dI": 0.01
   },
   {
    "id": "snd.elec.zap_off",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.782
+   "notes": []
   },
   {
    "id": "snd.foley.book_thud",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.985
+   "notes": []
   },
   {
    "id": "snd.foley.chai_cup_clink",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.728
+   "notes": []
   },
   {
    "id": "snd.foley.chair_creak",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.042
+   "notes": []
   },
   {
    "id": "snd.foley.coin_drop",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.137
+   "notes": []
   },
   {
    "id": "snd.foley.cup_set_down",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.313
+   "notes": []
   },
   {
    "id": "snd.foley.door_close",
    "ok": true,
    "notes": [
-    "warn sub<28Hz energy -19.5 dB (limit -20)",
-    "warn two seeds correlate 0.75"
-   ],
-   "seed_corr": 0.746
+    "warn sub<28Hz energy -19.5 dB (limit -20)"
+   ]
   },
   {
    "id": "snd.foley.door_open",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.039
+   "notes": []
   },
   {
    "id": "snd.foley.drawer",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.185
+   "notes": []
   },
   {
    "id": "snd.foley.footstep_carpet",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.936
+   "notes": []
   },
   {
    "id": "snd.foley.footstep_concrete",
    "ok": true,
-   "notes": [
-    "warn two seeds correlate 0.64"
-   ],
-   "seed_corr": 0.636
+   "notes": []
   },
   {
    "id": "snd.foley.footstep_gravel",
    "ok": true,
-   "notes": [
-    "warn two seeds correlate 0.61"
-   ],
-   "seed_corr": 0.608
+   "notes": []
   },
   {
    "id": "snd.foley.footstep_wood",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.849
+   "notes": []
   },
   {
    "id": "snd.foley.keys_jingle",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.006
+   "notes": []
   },
   {
    "id": "snd.foley.laptop_close",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.973
+   "notes": []
   },
   {
    "id": "snd.foley.paper_tear",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.026
+   "notes": []
   },
   {
    "id": "snd.foley.pen_click",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.211
+   "notes": []
   },
   {
    "id": "snd.foley.scissors",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.092
+   "notes": []
   },
   {
    "id": "snd.foley.stamp",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.98
+   "notes": []
   },
   {
    "id": "snd.foley.tape_tear",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.009
+   "notes": []
   },
   {
    "id": "snd.foley.typewriter",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.146,
    "ffmpeg_I": -21.0,
    "dI": 0.05
   },
   {
    "id": "snd.foley.zipper",
    "ok": true,
-   "notes": [
-    "warn two seeds correlate 0.78"
-   ],
-   "seed_corr": 0.781
+   "notes": []
   },
   {
    "id": "snd.glass.clink",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.362
+   "notes": []
   },
   {
    "id": "snd.glass.crack",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.438
+   "notes": []
   },
   {
    "id": "snd.glass.shatter",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.194
+   "notes": []
   },
   {
    "id": "snd.glass.tap",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.01
+   "notes": []
   },
   {
    "id": "snd.hit.bass_drop_wobble",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -17.5,
    "dI": 0.0
   },
   {
    "id": "snd.hit.boom_meme",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.hit.braam",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.599,
    "ffmpeg_I": -22.6,
    "dI": 0.04
   },
   {
    "id": "snd.hit.brand_field_slam",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.97
+   "notes": []
   },
   {
    "id": "snd.hit.cinema",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.857,
    "ffmpeg_I": -22.8,
    "dI": 0.05
   },
@@ -1018,7 +803,6 @@
    "notes": [
     "warn centroid 10593 outside 30-5000"
    ],
-   "seed_corr": 0.013,
    "ffmpeg_I": -16.9,
    "dI": 0.03
   },
@@ -1026,7 +810,6 @@
    "id": "snd.hit.deep_impact",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.922,
    "ffmpeg_I": -24.1,
    "dI": 0.03
   },
@@ -1034,7 +817,6 @@
    "id": "snd.hit.explosion_small",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.859,
    "ffmpeg_I": -22.7,
    "dI": 0.05
   },
@@ -1042,141 +824,201 @@
    "id": "snd.hit.glass_hit",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.175,
    "ffmpeg_I": -23.2,
    "dI": 0.04
   },
   {
    "id": "snd.hit.low_thump",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.hit.metal_cinematic",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.13,
    "ffmpeg_I": -23.4,
    "dI": 0.04
   },
   {
    "id": "snd.hit.punch",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.995
+   "notes": []
   },
   {
    "id": "snd.hit.rock",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.328
+   "notes": []
   },
   {
    "id": "snd.hit.slam",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.874
+   "notes": []
   },
   {
    "id": "snd.hit.soft",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.885
+   "notes": []
   },
   {
    "id": "snd.hit.stab",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.438
+   "notes": []
   },
   {
    "id": "snd.hit.sub_drop",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.999
+   "notes": []
   },
   {
    "id": "snd.hit.taiko",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.948,
    "ffmpeg_I": -20.3,
    "dI": 0.01
   },
   {
    "id": "snd.hit.thud",
    "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.chime_metal",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.chime_reveal",
+   "ok": true,
    "notes": [],
-   "seed_corr": 0.973
+   "ffmpeg_I": -17.6,
+   "dI": 0.04
+  },
+  {
+   "id": "snd.hw.click_detent",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.click_latch",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.fan_spinup",
+   "ok": true,
+   "notes": [],
+   "ffmpeg_I": -15.0,
+   "dI": 0.02
+  },
+  {
+   "id": "snd.hw.hum_loop",
+   "ok": true,
+   "notes": [],
+   "seam_ratio": 0.06,
+   "ffmpeg_I": -12.9,
+   "dI": 0.05
+  },
+  {
+   "id": "snd.hw.led_on",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.light_sweep",
+   "ok": true,
+   "notes": [],
+   "ffmpeg_I": -15.4,
+   "dI": 0.0
+  },
+  {
+   "id": "snd.hw.parts_seat",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.parts_separate",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.port_insert",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.power_off",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "id": "snd.hw.power_on",
+   "ok": true,
+   "notes": [],
+   "ffmpeg_I": -20.8,
+   "dI": 0.03
+  },
+  {
+   "id": "snd.hw.sub_hit",
+   "ok": true,
+   "notes": [],
+   "ffmpeg_I": -21.6,
+   "dI": 0.01
+  },
+  {
+   "id": "snd.hw.sub_pulse",
+   "ok": true,
+   "notes": []
   },
   {
    "id": "snd.indian.bansuri_note",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.937,
    "ffmpeg_I": -6.8,
    "dI": 0.03
   },
   {
    "id": "snd.indian.dhol_bhangra_hit",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.899
+   "notes": []
   },
   {
    "id": "snd.indian.dholak_dha",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.361
+   "notes": []
   },
   {
    "id": "snd.indian.dholak_ge",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.indian.ghanta_temple_bell",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.408,
    "ffmpeg_I": -18.2,
    "dI": 0.04
   },
   {
    "id": "snd.indian.ghungroo",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.025
+   "notes": []
   },
   {
    "id": "snd.indian.harmonium_chord",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.312,
    "ffmpeg_I": -14.5,
    "dI": 0.02
   },
   {
    "id": "snd.indian.manjira",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.198
+   "notes": []
   },
   {
    "id": "snd.indian.nagara_hit",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.993,
    "ffmpeg_I": -22.7,
    "dI": 0.04
   },
@@ -1184,7 +1026,6 @@
    "id": "snd.indian.santoor_hit",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.619,
    "ffmpeg_I": -20.6,
    "dI": 0.03
   },
@@ -1192,22 +1033,19 @@
    "id": "snd.indian.shankh_conch",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.918,
    "ffmpeg_I": -12.6,
    "dI": 0.05
   },
   {
    "id": "snd.indian.shehnai_note",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.866
+   "notes": []
   },
   {
    "id": "snd.indian.shruti_drone",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.18,
-   "seed_corr": 0.301,
    "ffmpeg_I": -14.5,
    "dI": 0.05
   },
@@ -1215,7 +1053,6 @@
    "id": "snd.indian.sitar_jhala",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.189,
    "ffmpeg_I": -16.1,
    "dI": 0.04
   },
@@ -1223,7 +1060,6 @@
    "id": "snd.indian.sitar_meend",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.101,
    "ffmpeg_I": -20.6,
    "dI": 0.01
   },
@@ -1231,287 +1067,223 @@
    "id": "snd.indian.sitar_pluck",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.071,
    "ffmpeg_I": -23.7,
    "dI": 0.04
   },
   {
    "id": "snd.indian.tabla_dha",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.047
+   "notes": []
   },
   {
    "id": "snd.indian.tabla_dhin",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.726
+   "notes": []
   },
   {
    "id": "snd.indian.tabla_ge_open",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.indian.tabla_ka",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.921
+   "notes": []
   },
   {
    "id": "snd.indian.tabla_na",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.083
+   "notes": []
   },
   {
    "id": "snd.indian.tabla_te",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.602
+   "notes": []
   },
   {
    "id": "snd.indian.tabla_tin",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.907
+   "notes": []
   },
   {
    "id": "snd.indian.tabla_tirakita",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.402
+   "notes": []
   },
   {
    "id": "snd.indian.tabla_tun",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.598
+   "notes": []
   },
   {
    "id": "snd.indian.thali_clang",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.263
+   "notes": []
   },
   {
    "id": "snd.lift.down",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.507
+   "notes": []
   },
   {
    "id": "snd.lift.down_long",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.499,
    "ffmpeg_I": -17.2,
    "dI": 0.02
   },
   {
    "id": "snd.lift.inhale",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.01
+   "notes": []
   },
   {
    "id": "snd.liquid.bubble",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.liquid.bubbles_run",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.015
+   "notes": []
   },
   {
    "id": "snd.liquid.drip",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.739
+   "notes": []
   },
   {
    "id": "snd.liquid.fizz",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.005
+   "notes": []
   },
   {
    "id": "snd.liquid.glug",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.liquid.pour",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.022,
    "ffmpeg_I": -20.8,
    "dI": 0.01
   },
   {
    "id": "snd.liquid.splash",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.026
+   "notes": []
   },
   {
    "id": "snd.logo.ascend_land",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -16.4,
    "dI": 0.02
   },
   {
    "id": "snd.logo.drop_land",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -17.8,
    "dI": 0.05
   },
   {
    "id": "snd.logo.fifth_lift",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -17.8,
    "dI": 0.01
   },
   {
    "id": "snd.logo.hybrid",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -16.5,
    "dI": 0.03
   },
   {
    "id": "snd.logo.pulse_pad",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -17.7,
    "dI": 0.03
   },
   {
    "id": "snd.logo.question",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -17.7,
    "dI": 0.01
   },
   {
    "id": "snd.logo.two_note",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -17.0,
    "dI": 0.01
   },
   {
    "id": "snd.metal.clang",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.208
+   "notes": []
   },
   {
    "id": "snd.metal.ping",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.metal.scrape",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.359
+   "notes": []
   },
   {
    "id": "snd.paper.card_riffle",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.014
+   "notes": []
   },
   {
    "id": "snd.paper.card_shuffle_settle",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.278
+   "notes": []
   },
   {
    "id": "snd.paper.crumple",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.002
+   "notes": []
   },
   {
    "id": "snd.paper.flip",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.169
+   "notes": []
   },
   {
    "id": "snd.paper.rustle",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.012
+   "notes": []
   },
   {
    "id": "snd.plastic.click",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.327
+   "notes": []
   },
   {
    "id": "snd.plastic.switch",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.231
+   "notes": []
   },
   {
    "id": "snd.riser.glitch_stutter",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.225,
    "ffmpeg_I": -16.5,
    "dI": 0.05
   },
   {
    "id": "snd.riser.heartbeat",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -23.0,
    "dI": 0.05
   },
@@ -1519,7 +1291,6 @@
    "id": "snd.riser.noise_1bar",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.025,
    "ffmpeg_I": -18.6,
    "dI": 0.05
   },
@@ -1527,7 +1298,6 @@
    "id": "snd.riser.noise_2bar",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.007,
    "ffmpeg_I": -17.0,
    "dI": 0.03
   },
@@ -1535,7 +1305,6 @@
    "id": "snd.riser.noise_4bar",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.019,
    "ffmpeg_I": -17.6,
    "dI": 0.0
   },
@@ -1543,7 +1312,6 @@
    "id": "snd.riser.pitch_noise",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.006,
    "ffmpeg_I": -17.7,
    "dI": 0.05
   },
@@ -1551,27 +1319,20 @@
    "id": "snd.riser.reverse_cymbal",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.066,
    "ffmpeg_I": -16.8,
    "dI": 0.04
   },
   {
    "id": "snd.riser.shepard",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -11.0,
    "dI": 0.01
   },
   {
    "id": "snd.riser.siren",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -10.5,
    "dI": 0.03
   },
@@ -1579,7 +1340,6 @@
    "id": "snd.riser.snare_roll_build",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.534,
    "ffmpeg_I": -20.2,
    "dI": 0.02
   },
@@ -1587,7 +1347,6 @@
    "id": "snd.riser.string_tension",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.064,
    "ffmpeg_I": -20.1,
    "dI": 0.02
   },
@@ -1595,29 +1354,23 @@
    "id": "snd.riser.supersaw_2bar",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.156,
    "ffmpeg_I": -17.8,
    "dI": 0.01
   },
   {
    "id": "snd.riser.tape_up",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.sizzle.grain",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.012
+   "notes": []
   },
   {
    "id": "snd.sparkle.letter_assemble",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.041,
    "ffmpeg_I": -16.7,
    "dI": 0.01
   },
@@ -1625,41 +1378,30 @@
    "id": "snd.sparkle.shimmer",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.135,
    "ffmpeg_I": -16.8,
    "dI": 0.01
   },
   {
    "id": "snd.stinger.alert",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.997
+   "notes": []
   },
   {
    "id": "snd.stinger.bump",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.stinger.cut_to_black",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.948,
    "ffmpeg_I": -22.0,
    "dI": 0.03
   },
   {
    "id": "snd.stinger.question",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0,
+   "notes": [],
    "ffmpeg_I": -14.5,
    "dI": 0.03
   },
@@ -1667,7 +1409,6 @@
    "id": "snd.stinger.reveal",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.013,
    "ffmpeg_I": -19.9,
    "dI": 0.01
   },
@@ -1675,572 +1416,434 @@
    "id": "snd.stinger.win",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.042,
    "ffmpeg_I": -16.4,
    "dI": 0.01
   },
   {
    "id": "snd.tx.blur_cross",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.016
+   "notes": []
   },
   {
    "id": "snd.tx.cut_tick",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.066
+   "notes": []
   },
   {
    "id": "snd.tx.dip_to_black",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.856
+   "notes": []
   },
   {
    "id": "snd.tx.dissolve_pad",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.tx.film_burn",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.037
+   "notes": []
   },
   {
    "id": "snd.tx.flash_swell",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.148
+   "notes": []
   },
   {
    "id": "snd.tx.freeze_hit",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.tx.glitch_stutter",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.247
+   "notes": []
   },
   {
    "id": "snd.tx.ink_bloom",
    "ok": true,
    "notes": [
-    "warn sub<28Hz energy -17.5 dB (limit -18)",
-    "warn two seeds correlate 0.79"
-   ],
-   "seed_corr": 0.786
+    "warn sub<28Hz energy -17.5 dB (limit -18)"
+   ]
   },
   {
    "id": "snd.tx.iris_close",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.999
+   "notes": []
   },
   {
    "id": "snd.tx.iris_open",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.999
+   "notes": []
   },
   {
    "id": "snd.tx.light_leak",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.393
+   "notes": []
   },
   {
    "id": "snd.tx.luma_wipe",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.022
+   "notes": []
   },
   {
    "id": "snd.tx.mask_reveal",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.015
+   "notes": []
   },
   {
    "id": "snd.tx.match_link",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.tx.morph_warble",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.tx.pixel_dissolve",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.034
+   "notes": []
   },
   {
    "id": "snd.tx.push",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.049
+   "notes": []
   },
   {
    "id": "snd.tx.scale_punch",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.978
+   "notes": []
   },
   {
    "id": "snd.tx.shutter_flash",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.242
+   "notes": []
   },
   {
    "id": "snd.tx.smash_cut",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.949
+   "notes": []
   },
   {
    "id": "snd.tx.speed_ramp",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.295
+   "notes": []
   },
   {
    "id": "snd.tx.tape_down",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.tx.tape_stop",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.tx.zoom_through",
    "ok": true,
    "notes": [
     "warn sub<28Hz energy -19.1 dB (limit -20)"
-   ],
-   "seed_corr": 0.061
+   ]
   },
   {
    "id": "snd.ui.agent_working",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.01,
-   "seed_corr": 0.994,
    "ffmpeg_I": -17.3,
    "dI": 0.01
   },
   {
    "id": "snd.ui.ai_reply",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.ai_think_pulse",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.blip",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.camera_ping",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.click",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.329
+   "notes": []
   },
   {
    "id": "snd.ui.count_run",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.count_tick",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.error",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.finger_snap",
    "ok": true,
-   "notes": [
-    "warn two seeds correlate 0.62"
-   ],
-   "seed_corr": 0.62
+   "notes": []
   },
   {
    "id": "snd.ui.hologram_beam",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.36,
    "ffmpeg_I": -17.4,
    "dI": 0.02
   },
   {
    "id": "snd.ui.listening_loop",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
+   "notes": [],
    "seam_ratio": 1.0,
-   "seed_corr": 1.0,
    "ffmpeg_I": -13.5,
    "dI": 0.01
   },
   {
    "id": "snd.ui.mic_off",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.mic_on",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.notify",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.pop",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.995
+   "notes": []
   },
   {
    "id": "snd.ui.pop_down",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.981
+   "notes": []
   },
   {
    "id": "snd.ui.scan_sweep",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.054
+   "notes": []
   },
   {
    "id": "snd.ui.slide",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.019
+   "notes": []
   },
   {
    "id": "snd.ui.success",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.984
+   "notes": []
   },
   {
    "id": "snd.ui.swipe_ding",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.001
+   "notes": []
   },
   {
    "id": "snd.ui.tick",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.974
+   "notes": []
   },
   {
    "id": "snd.ui.toggle_off",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.toggle_on",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.ui.type_key",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.32
+   "notes": []
   },
   {
    "id": "snd.ui.typing_burst",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.048
+   "notes": []
   },
   {
    "id": "snd.voice.chirp",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.037
+   "notes": []
   },
   {
    "id": "snd.voice.chirp_question",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.997
+   "notes": []
   },
   {
    "id": "snd.voice.gasp",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.03
+   "notes": []
   },
   {
    "id": "snd.voice.giggle",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.977
+   "notes": []
   },
   {
    "id": "snd.voice.grunt",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.057
+   "notes": []
   },
   {
    "id": "snd.voice.hmm",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 1.0
+   "notes": []
   },
   {
    "id": "snd.voice.huh",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.997
+   "notes": []
   },
   {
    "id": "snd.voice.mumble",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.019
+   "notes": []
   },
   {
    "id": "snd.voice.mumble_child",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.002
+   "notes": []
   },
   {
    "id": "snd.voice.oh",
    "ok": true,
-   "notes": [
-    "seed-invariant (pure tonal recipe)"
-   ],
-   "seed_corr": 0.998
+   "notes": []
   },
   {
    "id": "snd.voice.sigh",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.084
+   "notes": []
   },
   {
    "id": "snd.voice.wow",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.981
+   "notes": []
   },
   {
    "id": "snd.whoosh.blade",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.11
+   "notes": []
   },
   {
    "id": "snd.whoosh.fire",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.012
+   "notes": []
   },
   {
    "id": "snd.whoosh.flyby",
    "ok": true,
    "notes": [
     "warn sub<28Hz energy -19.9 dB (limit -20)"
-   ],
-   "seed_corr": 0.022
+   ]
   },
   {
    "id": "snd.whoosh.magic_swirl",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.286
+   "notes": []
   },
   {
    "id": "snd.whoosh.reverse",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.006
+   "notes": []
   },
   {
    "id": "snd.whoosh.scifi_pass",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.834
+   "notes": []
   },
   {
    "id": "snd.whoosh.swish_out",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.006
+   "notes": []
   },
   {
    "id": "snd.whoosh.swish_s",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.0
+   "notes": []
   },
   {
    "id": "snd.whoosh.swish_xs",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.011
+   "notes": []
   },
   {
    "id": "snd.whoosh.whip_pan",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.004
+   "notes": []
   },
   {
    "id": "snd.whoosh.whoosh_in_m",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.03
+   "notes": []
   },
   {
    "id": "snd.whoosh.whoosh_l",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.028
+   "notes": []
   },
   {
    "id": "snd.whoosh.whoosh_m",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.006
+   "notes": []
   },
   {
    "id": "snd.whoosh.whoosh_xl",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.102,
    "ffmpeg_I": -18.6,
    "dI": 0.01
   },
   {
    "id": "snd.whoosh.zip",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.007
+   "notes": []
   },
   {
    "id": "snd.wood.creak",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.001
+   "notes": []
   },
   {
    "id": "snd.wood.door_knock",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.115
+   "notes": []
   },
   {
    "id": "snd.wood.knock",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.653
+   "notes": []
   },
   {
    "id": "snd.wood.tap",
    "ok": true,
-   "notes": [],
-   "seed_corr": 0.873
+   "notes": []
   }
  ]
 }

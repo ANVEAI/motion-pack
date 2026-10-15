@@ -83,6 +83,21 @@ BUNDLES = {
                       "notes": "one arc per outline strike (the id is rr:4: a repeated cue gets a different strike); the buzz is tuned to A2 (110 Hz), so it sits under A-major beds; levels over the bed: arc +3.5 dB (manifest over_bed_db), zap-off about +2, the crackle loop about 10 dB under the bed, ended on the zap-off frame"},
 }
 
+# 2026-10-16 xp-hardware: the device keynote / hardware launch palette (recipes/hardware.py). Appended, not inlined, so parallel lanes merge cleanly.
+BUNDLES["hardware_launch"] = {
+    "desc": "AI-hardware / device launch film: a dark cold open on a sub heartbeat and an electric hum, an airy shimmer on the light sweep, ONE deep sub hit on the reveal, "
+            "a metal chime on the name, a magnetic release and seat for the exploded view, a detent click per spec or port, a connector click-in on the IO tour, "
+            "a fan spin-up and a power-on tone when it boots, logo last",
+    "bed": ["cinematic_drone", "suspense_pulse", "tech_pulse"], "bpm": [100, 124], "lufs": -14,
+    "roles": {"dark_pulse": "snd.hw.sub_pulse", "hum": "snd.hw.hum_loop", "sweep": "snd.hw.light_sweep", "reveal_hit": "snd.hw.sub_hit", "name": "snd.hw.chime_reveal",
+              "glint": "snd.hw.chime_metal", "led": "snd.hw.led_on", "power_on": "snd.hw.power_on", "fan": "snd.hw.fan_spinup", "power_off": "snd.hw.power_off",
+              "explode": "snd.hw.parts_separate", "seat": "snd.hw.parts_seat", "latch": "snd.hw.click_latch", "spec": "snd.hw.click_detent", "port": "snd.hw.port_insert",
+              "number": "snd.ui.count_run", "build": "snd.riser.noise_2bar", "move": "snd.whoosh.swish_s", "date": "snd.hit.soft", "logo": "snd.logo.hybrid"},
+    "notes": "the fitted dark-to-reveal score is music/reveal.py (the drop lands on the reveal frame; templates/hardware-reveal builds it per cut); one reveal hit per film, "
+             "the sub pulse only in the dark open (round-robin seeds), the hum about 10 dB under the bed and stopped with until_frame on the reveal; a detent per spec row, "
+             "never a chime per row (one chime on the name, one on the hero spec); the price / date card gets a soft hit, not a stinger",
+}
+
 
 def validate():
     sf = json.load(open(os.path.join(HERE, "manifest.json")))
