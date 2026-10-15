@@ -10,22 +10,14 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { clamp, mulberry32, seg, E } from '../kit/util.js';
 import { MAT, canvasTex, rrShape } from './mat.js';
+import { dieLayout } from './hwdata.js';
 
 const metal = (ctx, m, k = 0.9) => { if (ctx.metalEnv) { m.envMap = ctx.metalEnv; m.envMapIntensity = k; } return m; };
 const copper = (ctx) => metal(ctx, new THREE.MeshPhysicalMaterial({ color: '#b87a45', roughness: 0.3, metalness: 1 }), 0.9);
 const gold = (ctx) => metal(ctx, new THREE.MeshPhysicalMaterial({ color: '#d4a64a', roughness: 0.25, metalness: 1 }), 0.9);
 
 /* ---------- the die: a pure block layout (fractions of the die, 0..1) + a canvas drawing of it ---------- */
-export function dieLayout(o = {}) {
-  const cores = Math.max(1, Math.min(32, Math.round(o.cores ?? 8))), cols = Math.min(cores, 4), rows = Math.ceil(cores / cols), B = [];
-  const cw = 0.42 / cols, chh = 0.4 / rows;
-  for (let i = 0; i < cores; i++) B.push({ id: 'core' + i, kind: 'core', x: 0.07 + (i % cols) * cw, y: 0.08 + Math.floor(i / cols) * chh, w: cw * 0.92, h: chh * 0.9 });
-  B.push({ id: 'matrix', kind: 'matrix', x: 0.53, y: 0.08, w: 0.4, h: 0.5 });               // the dense compute array (a generic "accelerator" block)
-  B.push({ id: 'cache', kind: 'cache', x: 0.07, y: 0.52, w: 0.42, h: 0.18 });
-  B.push({ id: 'media', kind: 'misc', x: 0.53, y: 0.62, w: 0.19, h: 0.3 }); B.push({ id: 'io', kind: 'misc', x: 0.74, y: 0.62, w: 0.19, h: 0.3 });
-  B.push({ id: 'mem', kind: 'mem', x: 0.07, y: 0.74, w: 0.42, h: 0.18 });
-  return B;
-}
+export { dieLayout };   // pure, in hwdata.js (node reads it too; type/gfx/hw.js dieBlocks is the same table, checked by templates/_hw/hw.test.mjs)
 export function dieTexture(o = {}, glowOnly = false) {
   const B = dieLayout(o), seed = o.seed ?? 5, n = o.res ?? 1024;
   return canvasTex(n, n, (g) => {

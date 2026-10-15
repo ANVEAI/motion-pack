@@ -11,7 +11,7 @@
    and the frame says "render · demo specs" the whole time; a price always prints its note (indicative / placeholder) and its source.
    Edit the CONFIG block only:  node make.mjs [--set aspect=9:16] [--set length=short|full|long|<seconds>] [--set media.model.src=/abs/device.glb] ...
    then  npx -y hyperframes@0.8.142 render . -o out/hardware-reveal.mp4 --crf 23   (9:16: cd tall && ... -o ../out/hardware-reveal-tall.mp4) */
-import { layoutBars, aspectOf, safePx, S1080, calloutItem, dimItem, glintItem, textBox, specClaims, frameT } from '../_hw/hwplan.mjs';
+import { layoutBars, aspectOf, safePx, S1080, calloutItem, dimItem, glintItem, textBox, specClaims, frameT, visibleWindow } from '../_hw/hwplan.mjs';
 import { director, SHOT_MOVES } from '../../objects/lib/hwshots.js';
 import { nodeLayout, PORT_KINDS } from '../../objects/lib/hwdata.js';
 import { explodeCues } from '../../objects/lib/explode.js';
@@ -115,7 +115,8 @@ export function buildPlan(C) {
   for (const it of [dW, dH]) if (it) { overlays.push(it); cue(C.sfx.dim, it.at, 'dimension line draws'); }
   /* ---- 6. ports / IO tour: label callouts as the camera trucks past; a cable clicks home ---- */
   const po = sec.ports; title('ports', T.ports, po.t0 + 0.3, po.dur - 0.6, C.type.line, kick());
-  (C.ports || []).slice(0, 4).forEach((pi, i) => { const p = L.ports[pi]; if (!p) return; const at = po.t0 + 0.5 + i * (po.dur - 1.2) / Math.max(1, C.ports.length); const it = calloutItem(D, A, { name: 'port' + pi, at, dur: po.t0 + po.dur - 0.25 - at, spec: { label: PORT_KINDS[p.kind].label, value: null }, off: A.tall ? [70, -140 - 40 * i] : [90, -120 - 30 * i], side: 'right', accent: acc, fps }); if (it) { overlays.push(it); cue(C.sfx.spec, it.at + 0.43, `port callout: ${PORT_KINDS[p.kind].label}`); } });
+  (C.ports || []).slice(0, 4).forEach((pi, i) => { const p = L.ports[pi]; if (!p) return; const win = visibleWindow(D, 'port' + pi, po.t0 + 0.4 + i * 0.3, po.t0 + po.dur - 0.3, fps, A.tall ? 0.14 : 0.1); if (!win || win[1] - win[0] < 1.2) return;   // only while the port is in view
+    const it = calloutItem(D, A, { name: 'port' + pi, at: win[0], dur: Math.max(0.8, win[1] - win[0] - 0.45), spec: { label: PORT_KINDS[p.kind].label, value: null }, off: A.tall ? [60, -130 - 40 * i] : [90, -120 - 30 * i], side: 'auto', accent: acc, fps }); if (it) { overlays.push(it); cue(C.sfx.spec, it.at + 0.43, `port callout: ${PORT_KINDS[p.kind].label}`); } });
   cue(C.sfx.port, po.t0 + po.dur * 0.6 - 0.0, 'the cable clicks home (insert ends at 60% of the shot)');
   /* ---- 7. inside: x-ray, the cooling lifts away, a push onto the chip; the lid lifts, the die lights ---- */
   const ins = sec.inside; title('inside', T.inside, ins.t0 + 0.3, ins.dur - 0.6, C.type.line, kick());

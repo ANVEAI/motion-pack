@@ -67,3 +67,12 @@ export function nodeLayout(o = {}) {
 export function anchorAt(L, name, offs = null) {
   const a = L.anchors[name]; if (!a) return null; const o = offs && offs[L.anchorPart[name]]; return o ? [a[0] + o.off[0], a[1] + o.off[1], a[2] + o.off[2]] : a.slice();
 }
+
+/* the generic die blocks (fractions of the die, 0..1): core tiles, a dense matrix block, cache, media, IO, memory interface. Decorative, not a floorplan. */
+export function dieLayout(o = {}) {
+  const cores = Math.max(1, Math.min(32, Math.round(o.cores ?? 8))), cols = Math.min(cores, 4), rows = Math.ceil(cores / cols), B = [];
+  const cw = 0.42 / cols, chh = 0.4 / rows;
+  for (let i = 0; i < cores; i++) B.push({ id: 'core' + i, kind: 'core', x: 0.07 + (i % cols) * cw, y: 0.08 + Math.floor(i / cols) * chh, w: cw * 0.92, h: chh * 0.9 });
+  B.push({ id: 'matrix', kind: 'matrix', x: 0.53, y: 0.08, w: 0.4, h: 0.5 }, { id: 'cache', kind: 'cache', x: 0.07, y: 0.52, w: 0.42, h: 0.18 }, { id: 'media', kind: 'misc', x: 0.53, y: 0.62, w: 0.19, h: 0.3 }, { id: 'io', kind: 'misc', x: 0.74, y: 0.62, w: 0.19, h: 0.3 }, { id: 'mem', kind: 'mem', x: 0.07, y: 0.74, w: 0.42, h: 0.18 });
+  return B;
+}

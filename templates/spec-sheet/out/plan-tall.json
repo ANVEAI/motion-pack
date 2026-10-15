@@ -1,0 +1,938 @@
+{
+ "template": "spec-sheet",
+ "fps": 30,
+ "seconds": 25,
+ "aspect": "9:16",
+ "size": [
+  1080,
+  1920
+ ],
+ "W": 1080,
+ "H": 1920,
+ "cut": 24,
+ "platform": "reels.organic",
+ "safe": {
+  "top": 0.14,
+  "bottom": 0.35,
+  "side": 0.06
+ },
+ "safeZone": "conservative",
+ "bpm": 120,
+ "framesPerBeat": 15,
+ "brand": {
+  "name": "Acme",
+  "accent": "#5CC8FF",
+  "ink": "#F4F6FA",
+  "paper": "#07080A",
+  "muted": "#9AA3B2",
+  "logo": null,
+  "url": "acme.example",
+  "cta": "Compare every spec",
+  "font": {
+   "display": "Manrope",
+   "text": "Manrope"
+  }
+ },
+ "product": {
+  "name": "Acme Node"
+ },
+ "label": "render · demo specs",
+ "accent": "#5CC8FF",
+ "paper": "#07080A",
+ "device": {
+  "material": "anodised",
+  "color": "#8e939b",
+  "band": {
+   "color": "#5cc8ff"
+  },
+  "top": {
+   "kind": "glass"
+  }
+ },
+ "media": {
+  "model": {
+   "src": null,
+   "size": null,
+   "axis": "w",
+   "yaw": 0,
+   "label": "your 3D model (GLB / glTF / OBJ)"
+  },
+  "photo": {
+   "src": null,
+   "depth": null,
+   "label": "your product photo (2.5D parallax)"
+  }
+ },
+ "sections": [
+  {
+   "id": "intro",
+   "bars": 2,
+   "f0": 0,
+   "t0": 0,
+   "dur": 4
+  },
+  {
+   "id": "table",
+   "bars": 6,
+   "f0": 120,
+   "t0": 4,
+   "dur": 12
+  },
+  {
+   "id": "hero",
+   "bars": 2,
+   "f0": 480,
+   "t0": 16,
+   "dur": 4
+  },
+  {
+   "id": "end",
+   "bars": 2,
+   "f0": 600,
+   "t0": 20,
+   "dur": 4
+  }
+ ],
+ "shots3d": [
+  {
+   "id": "intro",
+   "kind": "spin",
+   "t0": 0,
+   "dur": 4,
+   "p": {
+    "cam": {}
+   }
+  },
+  {
+   "id": "table",
+   "kind": "card",
+   "t0": 4,
+   "dur": 12,
+   "p": {}
+  },
+  {
+   "id": "hero",
+   "kind": "explode",
+   "t0": 16,
+   "dur": 4,
+   "p": {
+    "at": 0.25,
+    "stagger": 0.07,
+    "backTail": 0.9
+   }
+  },
+  {
+   "id": "end",
+   "kind": "end",
+   "t0": 20,
+   "dur": 5,
+   "p": {}
+  }
+ ],
+ "shots": [
+  {
+   "id": "intro",
+   "kind": "plate",
+   "start": 0,
+   "dur": 4,
+   "mediaStart": 0,
+   "move": "cam3d.hold",
+   "shot3d": "spin"
+  },
+  {
+   "id": "table",
+   "kind": "plate",
+   "start": 4,
+   "dur": 12,
+   "mediaStart": 4,
+   "move": "cam3d.pushSlow",
+   "shot3d": "card",
+   "hold": true
+  },
+  {
+   "id": "hero",
+   "kind": "plate",
+   "start": 16,
+   "dur": 4,
+   "mediaStart": 16,
+   "move": "cam3d.crane",
+   "shot3d": "explode",
+   "tx": "transitions/push",
+   "txReason": "STORY: from the table to the thing it describes"
+  },
+  {
+   "id": "end",
+   "kind": "plate",
+   "start": 20,
+   "dur": 5,
+   "mediaStart": 20,
+   "move": "cam3d.pushSlow",
+   "shot3d": "end",
+   "hold": true
+  }
+ ],
+ "overlays": [
+  {
+   "id": "ui.dataTable",
+   "at": 4.1,
+   "dur": 11.6,
+   "params": {
+    "box": [
+     0.06018518518518518,
+     0.15052083333333333,
+     0.8287037037037037,
+     0.31613541666666667
+    ],
+    "scale": 1.05,
+    "finding": "More compute, less power, same desk.",
+    "columns": [
+     {
+      "label": "Spec"
+     },
+     {
+      "label": "Previous model"
+     },
+     {
+      "label": "Acme Node"
+     }
+    ],
+    "rows": [
+     {
+      "label": "AI compute",
+      "unit": "",
+      "dec": 0,
+      "values": [
+       40,
+       120
+      ]
+     },
+     {
+      "label": "Memory (GB)",
+      "unit": "",
+      "dec": 0,
+      "values": [
+       64,
+       128
+      ]
+     },
+     {
+      "label": "Power draw (W)",
+      "unit": "",
+      "dec": 0,
+      "values": [
+       320,
+       240
+      ]
+     },
+     {
+      "label": "Weight (kg)",
+      "unit": "",
+      "dec": 1,
+      "values": [
+       3.4,
+       2.1
+      ]
+     }
+    ],
+    "highlight": {
+     "col": 2
+    },
+    "source": "placeholder data",
+    "theme": "dark",
+    "accent": "#5CC8FF",
+    "headerAt": 0.25,
+    "rowsAt": 0.6,
+    "stagger": 0.5,
+    "countDur": 0.9,
+    "hlAt": 3
+   }
+  },
+  {
+   "id": "hw.specCallout",
+   "at": 17.57,
+   "dur": 1.48,
+   "params": {
+    "track": [
+     [
+      17.5667,
+      0.6444,
+      0.43114
+     ],
+     [
+      17.6,
+      0.64437,
+      0.43168
+     ],
+     [
+      17.6333,
+      0.64432,
+      0.43225
+     ],
+     [
+      17.6667,
+      0.64427,
+      0.43284
+     ],
+     [
+      17.7,
+      0.64422,
+      0.43342
+     ],
+     [
+      17.7333,
+      0.64418,
+      0.434
+     ],
+     [
+      17.7667,
+      0.64415,
+      0.43453
+     ],
+     [
+      17.8,
+      0.64414,
+      0.43503
+     ],
+     [
+      17.8333,
+      0.64415,
+      0.43547
+     ],
+     [
+      17.8667,
+      0.64419,
+      0.43585
+     ],
+     [
+      17.9,
+      0.64421,
+      0.43626
+     ],
+     [
+      17.9333,
+      0.64424,
+      0.43663
+     ],
+     [
+      17.9667,
+      0.64428,
+      0.43697
+     ],
+     [
+      18,
+      0.64434,
+      0.43726
+     ],
+     [
+      18.0333,
+      0.64441,
+      0.43752
+     ],
+     [
+      18.0667,
+      0.64449,
+      0.43774
+     ],
+     [
+      18.1,
+      0.64458,
+      0.43794
+     ],
+     [
+      18.1333,
+      0.64468,
+      0.43812
+     ],
+     [
+      18.1667,
+      0.64478,
+      0.43827
+     ],
+     [
+      18.2,
+      0.64488,
+      0.43841
+     ],
+     [
+      18.2333,
+      0.64499,
+      0.43853
+     ],
+     [
+      18.2667,
+      0.64511,
+      0.43864
+     ],
+     [
+      18.3,
+      0.64522,
+      0.43873
+     ],
+     [
+      18.3333,
+      0.64533,
+      0.43882
+     ],
+     [
+      18.3667,
+      0.64545,
+      0.43889
+     ],
+     [
+      18.4,
+      0.64556,
+      0.43896
+     ],
+     [
+      18.4333,
+      0.64567,
+      0.43902
+     ],
+     [
+      18.4667,
+      0.64579,
+      0.43908
+     ],
+     [
+      18.5,
+      0.6459,
+      0.43913
+     ],
+     [
+      18.5333,
+      0.64601,
+      0.43918
+     ],
+     [
+      18.5667,
+      0.64611,
+      0.43922
+     ],
+     [
+      18.6,
+      0.64622,
+      0.43926
+     ],
+     [
+      18.6333,
+      0.64632,
+      0.4393
+     ],
+     [
+      18.6667,
+      0.64642,
+      0.43933
+     ],
+     [
+      18.7,
+      0.64652,
+      0.43937
+     ],
+     [
+      18.7333,
+      0.6466,
+      0.43944
+     ],
+     [
+      18.7667,
+      0.64668,
+      0.43949
+     ],
+     [
+      18.8,
+      0.64677,
+      0.43952
+     ],
+     [
+      18.8333,
+      0.64686,
+      0.43953
+     ],
+     [
+      18.8667,
+      0.64696,
+      0.43953
+     ],
+     [
+      18.9,
+      0.64706,
+      0.43951
+     ],
+     [
+      18.9333,
+      0.64717,
+      0.43948
+     ],
+     [
+      18.9667,
+      0.64728,
+      0.43943
+     ],
+     [
+      19,
+      0.6474,
+      0.43937
+     ],
+     [
+      19.0333,
+      0.64753,
+      0.43929
+     ],
+     [
+      19.0667,
+      0.64766,
+      0.43919
+     ],
+     [
+      19.1,
+      0.64779,
+      0.43908
+     ],
+     [
+      19.1333,
+      0.64789,
+      0.43902
+     ],
+     [
+      19.1667,
+      0.648,
+      0.43896
+     ],
+     [
+      19.2,
+      0.6481,
+      0.43889
+     ],
+     [
+      19.2333,
+      0.64819,
+      0.43884
+     ],
+     [
+      19.2667,
+      0.64828,
+      0.43878
+     ],
+     [
+      19.3,
+      0.64836,
+      0.43875
+     ],
+     [
+      19.3333,
+      0.64835,
+      0.43911
+     ],
+     [
+      19.3667,
+      0.64819,
+      0.44034
+     ],
+     [
+      19.4,
+      0.6478,
+      0.44271
+     ],
+     [
+      19.4333,
+      0.6471,
+      0.44654
+     ],
+     [
+      19.4667,
+      0.64601,
+      0.45224
+     ],
+     [
+      19.5,
+      0.64446,
+      0.46032
+     ]
+    ],
+    "off": [
+     -110,
+     -200
+    ],
+    "side": "auto",
+    "label": "AI compute",
+    "value": 120,
+    "unit": "TOPS",
+    "dec": 0,
+    "prefix": "",
+    "source": "placeholder data",
+    "accent": "#5CC8FF",
+    "size": 1.15,
+    "draw": 0.45,
+    "count": 1
+   }
+  }
+ ],
+ "titles": [
+  {
+   "id": "title",
+   "text": "Acme Node",
+   "at": 0.3,
+   "dur": 3.5,
+   "type": "type/charRise",
+   "x": 540,
+   "y": 389,
+   "size": 112,
+   "anchor": "middle",
+   "color": "#F4F6FA",
+   "weight": 800
+  },
+  {
+   "id": "sub",
+   "text": "Specifications",
+   "at": 0.9,
+   "dur": 2.9,
+   "type": "type/blurIn",
+   "x": 540,
+   "y": 465,
+   "size": 44,
+   "anchor": "middle",
+   "color": "#9AA3B2",
+   "weight": 600
+  },
+  {
+   "id": "hero",
+   "text": "AI compute",
+   "at": 16.2,
+   "dur": 3.6,
+   "type": "type/blurIn",
+   "x": 65,
+   "y": 339,
+   "size": 44,
+   "anchor": "start",
+   "color": "#9AA3B2",
+   "weight": 700
+  },
+  {
+   "id": "end",
+   "text": "Acme Node",
+   "at": 20.15,
+   "dur": 4.7,
+   "type": "type/maskRise",
+   "x": 540,
+   "y": 621.44,
+   "size": 104,
+   "anchor": "middle",
+   "color": "#F4F6FA",
+   "weight": 800
+  },
+  {
+   "id": "url",
+   "text": "acme.example",
+   "at": 20.5,
+   "dur": 4.4,
+   "type": "type/blurIn",
+   "x": 540,
+   "y": 711.44,
+   "size": 38,
+   "anchor": "middle",
+   "color": "#5CC8FF",
+   "weight": 700
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/hw/led_on",
+   "t": 0.0667,
+   "why": "the band lights on the first frame"
+  },
+  {
+   "id": "sfx/hw/click_detent",
+   "t": 4.7,
+   "why": "table row 1 lands"
+  },
+  {
+   "id": "sfx/hw/click_detent",
+   "t": 5.2,
+   "why": "table row 2 lands"
+  },
+  {
+   "id": "sfx/hw/click_detent",
+   "t": 5.7,
+   "why": "table row 3 lands"
+  },
+  {
+   "id": "sfx/hw/click_detent",
+   "t": 6.2,
+   "why": "table row 4 lands"
+  },
+  {
+   "id": "sfx/hw/sub_hit",
+   "t": 16,
+   "why": "the hero spec: one sub hit on the drop"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 16,
+   "why": "transition push"
+  },
+  {
+   "id": "sfx/hw/chime_metal",
+   "t": 18,
+   "why": "hero callout lands"
+  },
+  {
+   "id": "sfx/logo/hybrid",
+   "t": 20.1667,
+   "why": "sonic logo on the end card"
+  }
+ ],
+ "texts": [
+  {
+   "id": "title",
+   "text": "Acme Node",
+   "t": [
+    0.3,
+    3.8
+   ],
+   "box": [
+    258,
+    297,
+    822,
+    416
+   ],
+   "fontPx": 112,
+   "role": "headline",
+   "fg": "#F4F6FA"
+  },
+  {
+   "id": "sub",
+   "text": "Specifications",
+   "t": [
+    0.9,
+    3.8
+   ],
+   "box": [
+    368,
+    429,
+    712,
+    476
+   ],
+   "fontPx": 44,
+   "role": "read",
+   "fg": "#9AA3B2"
+  },
+  {
+   "id": "hero",
+   "text": "AI compute",
+   "t": [
+    16.2,
+    19.8
+   ],
+   "box": [
+    65,
+    303,
+    311,
+    350
+   ],
+   "fontPx": 44,
+   "role": "read",
+   "fg": "#9AA3B2"
+  },
+  {
+   "id": "end",
+   "text": "Acme Node",
+   "t": [
+    20.15,
+    24.85
+   ],
+   "box": [
+    278,
+    536,
+    802,
+    646
+   ],
+   "fontPx": 104,
+   "role": "endcard",
+   "fg": "#F4F6FA"
+  },
+  {
+   "id": "url",
+   "text": "acme.example",
+   "t": [
+    20.5,
+    24.9
+   ],
+   "box": [
+    412,
+    680,
+    668,
+    721
+   ],
+   "fontPx": 38,
+   "role": "endcard",
+   "fg": "#5CC8FF"
+  }
+ ],
+ "claims": [
+  {
+   "text": "AI compute (Previous model): 40",
+   "source": "placeholder data"
+  },
+  {
+   "text": "AI compute (Acme Node): 120",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Memory (GB) (Previous model): 64",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Memory (GB) (Acme Node): 128",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Power draw (W) (Previous model): 320",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Power draw (W) (Acme Node): 240",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Weight (kg) (Previous model): 3.4",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Weight (kg) (Acme Node): 2.1",
+   "source": "placeholder data"
+  },
+  {
+   "text": "AI compute: 120 TOPS",
+   "source": "placeholder data"
+  }
+ ],
+ "musicFile": "score-tall.wav",
+ "music": null,
+ "score": {
+  "sections": [
+   {
+    "name": "intro",
+    "bars": 2,
+    "energy": 0.45
+   },
+   {
+    "name": "table",
+    "bars": 6,
+    "energy": [
+     0.55,
+     0.65
+    ]
+   },
+   {
+    "name": "hero",
+    "bars": 2,
+    "energy": 1
+   },
+   {
+    "name": "tail",
+    "bars": 2,
+    "energy": 0.3
+   }
+  ],
+  "bpm": 120,
+  "seed": 7,
+  "tail": 1
+ },
+ "musicGainDb": -1.5,
+ "ceilingDb": -2.5,
+ "fadeInMs": 30,
+ "layers": [
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "upload-safe"
+   }
+  }
+ ],
+ "audio": {
+  "mode": "music",
+  "quiet": []
+ },
+ "paceRule": {
+  "aslMax": 8,
+  "longMax": 13
+ },
+ "plate": {
+  "name": "spec-sheet-tall",
+  "aspect": "tall",
+  "seconds": 25,
+  "fps": 30,
+  "paper": "#07080A",
+  "accent": "#5CC8FF",
+  "device": {
+   "material": "anodised",
+   "color": "#8e939b",
+   "band": {
+    "color": "#5cc8ff"
+   },
+   "top": {
+    "kind": "glass"
+   }
+  },
+  "shots3d": [
+   {
+    "id": "intro",
+    "kind": "spin",
+    "t0": 0,
+    "dur": 4,
+    "p": {
+     "cam": {}
+    }
+   },
+   {
+    "id": "table",
+    "kind": "card",
+    "t0": 4,
+    "dur": 12,
+    "p": {}
+   },
+   {
+    "id": "hero",
+    "kind": "explode",
+    "t0": 16,
+    "dur": 4,
+    "p": {
+     "at": 0.25,
+     "stagger": 0.07,
+     "backTail": 0.9
+    }
+   },
+   {
+    "id": "end",
+    "kind": "end",
+    "t0": 20,
+    "dur": 5,
+    "p": {}
+   }
+  ],
+  "media": {
+   "model": {
+    "src": null,
+    "size": null,
+    "axis": "w",
+    "yaw": 0,
+    "label": "your 3D model (GLB / glTF / OBJ)"
+   },
+   "photo": {
+    "src": null,
+    "depth": null,
+    "label": "your product photo (2.5D parallax)"
+   }
+  }
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 4,
+   "asl": 6.25,
+   "longest": 4,
+   "pass": true
+  }
+ }
+}

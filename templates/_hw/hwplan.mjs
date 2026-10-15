@@ -38,6 +38,14 @@ export function calloutItem(D, A, { name = null, point = null, at, dur, spec = {
   return { id: 'hw.specCallout', at: +at.toFixed(4), dur: +dur.toFixed(4), params: { track, off: o, side, label: spec.label ?? '', value: spec.value ?? null, unit: spec.unit ?? '', dec: spec.dec ?? 0, prefix: spec.prefix ?? '',
     source: spec.source ?? '', accent, size: size * (A.tall ? 1.0 : 1.0), draw: 0.45, count: 1.0 } };
 }
+/* the longest run of frames in [t0, t1] where a device anchor sits inside the frame with a margin (x in [m, 1 - m], y in [m, 1 - m]): [a, b] seconds or null.
+   A callout on a part the camera moves past (the ports tour) starts when the part is in view and leaves before the part does. */
+export function visibleWindow(D, name, t0, t1, fps = 30, m = 0.12, point = null) {
+  let best = null, cur = null;
+  for (let f = Math.round(t0 * fps); f <= Math.round(t1 * fps); f++) { const t = f / fps, q = point ? D.pxPoint(point, t) : D.px(name, t), inside = q && q[0] >= m && q[0] <= 1 - m && q[1] >= m && q[1] <= 1 - m;
+    if (inside) { cur = cur ? [cur[0], t] : [t, t]; if (!best || cur[1] - cur[0] > best[1] - best[0]) best = cur.slice(); } else cur = null; }
+  return best;
+}
 /* label-only callouts (no value): hw.specCallout prints the label without a number line (value null) */
 export function dimItem(D, A, { a, b, at, dur, value, unit = 'mm', dec = 0, source, off = 60, accent, fps = 30 }) {
   const ta = D.track(null, at, at + dur + 0.35, fps, a), tb = D.track(null, at, at + dur + 0.35, fps, b);

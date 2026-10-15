@@ -77,8 +77,8 @@ export function director(plan) {
     px(name, t) { const S = api.stateAt(t); if (!S) return null; const a = anchorAt(L, name, S.explode); if (!a) return null; const w = poseApply(S.pose, a), q = project(api.cameraAt(t), w, W, H); return q[2] > 0 ? [q[0] / W, q[1] / H] : null; },
     /* a device-local point (or a world point with world: true) -> frame fractions */
     pxPoint(pt, t, world = false) { const S = api.stateAt(t); const w = world ? pt : poseApply(S.pose, pt), q = project(api.cameraAt(t), w, W, H); return q[2] > 0 ? [q[0] / W, q[1] / H] : null; },
-    /* a per-frame track [[t, x, y], ...] (composition seconds) of an anchor over [t0, t1], for hw.specCallout / hw.dimensionLine / hw.edgeGlint */
-    track(name, t0, t1, fps = 30, local = null) { const out = []; for (let f = Math.round(t0 * fps); f <= Math.round(t1 * fps); f++) { const t = f / fps, q = local ? api.pxPoint(local, t) : api.px(name, t); if (q) out.push([+t.toFixed(4), +q[0].toFixed(5), +q[1].toFixed(5)]); } return out; },
+    /* a per-frame track [[t, x, y], ...] (composition seconds) of an anchor over [t0, t1] (cut short at the end of t0's shot: the next shot has another camera), for hw.specCallout / hw.dimensionLine / hw.edgeGlint */
+    track(name, t0, t1, fps = 30, local = null) { const out = [], sid = shotAt(t0)?.id; for (let f = Math.round(t0 * fps); f <= Math.round(t1 * fps); f++) { const t = f / fps; if (shotAt(t)?.id !== sid) break; const q = local ? api.pxPoint(local, t) : api.px(name, t); if (q) out.push([+t.toFixed(4), +q[0].toFixed(5), +q[1].toFixed(5)]); } return out; },
   };
   return api;
 }
