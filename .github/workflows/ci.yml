@@ -75,7 +75,7 @@ jobs:
         run: node layers/tests/r45.test.mjs
       - name: round-6 layer (auroraRibbon on a recording context: rise, loop seam, grain, guards, seek order; node, no browser)
         run: node layers/tests/r6.test.mjs
-      - name: round-6 story shape mutation proof (every check in cuts/test_story6.py fails when the code under test is broken; the layer's 26 mutants run locally, see tools/mutation_check.py)
+      - name: round-6 story shape mutation proof (every check in cuts/test_story6.py fails when the code under test is broken; the layer's 30 mutants run locally, see tools/mutation_check.py)
         run: python3 tools/mutation_check.py cuts/test_story6.mutants.json && python3 tools/mutation_check.py cuts/test_story6.cutgen.mutants.json
       - name: problem-pivot demo template (plan from cuts/story6.py: gap, pivot frame, bass = the ribbon's cue, hold, committed plan current, same bytes in two processes; node + python, no browser)
         run: node templates/demo-r6-pivot/pivot.test.mjs
