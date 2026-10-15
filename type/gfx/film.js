@@ -28,7 +28,7 @@ const num = (v, d, lo = -1e6, hi = 1e6) => { const x = typeof v === 'number' ? v
 const str = (v, d = '', max = 160) => (typeof v === 'string' || (typeof v === 'number' && Number.isFinite(v)) ? String(v).replace(/[\u0000-\u001f]/g, ' ').slice(0, max) : d);
 const hex = (v, d) => (typeof v === 'string' && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v) ? v : d);
 const list = (v, max) => (Array.isArray(v) ? v.slice(0, max) : []);
-const POS = (c, pos, w, h) => { const S = c.safe; if (Array.isArray(pos)) return [num(pos[0], 0.5, -1, 2) * c.W - w / 2, num(pos[1], 0.5, -1, 2) * c.H - h / 2];
+const POS = (c, pos, w, h, padY = 0) => { const S0 = c.safe, py = num(padY, 0, 0, c.H / 3), S = { x0: S0.x0, x1: S0.x1, y0: Math.max(S0.y0, py), y1: Math.min(S0.y1, c.H - py) }; if (Array.isArray(pos)) return [num(pos[0], 0.5, -1, 2) * c.W - w / 2, num(pos[1], 0.5, -1, 2) * c.H - h / 2];
   const x = pos.includes('l') ? S.x0 : pos.includes('r') ? S.x1 - w : (S.x0 + S.x1 - w) / 2, y = pos.startsWith('t') ? S.y0 : pos.startsWith('b') ? S.y1 - h : (S.y0 + S.y1 - h) / 2; return [x, y]; };
 const fade = (L) => E.soft(L.in) * (1 - E.exit(L.out));
 /* fit a single line: the largest size <= want (px) whose measured width (plus tracking in em) fits maxW */
@@ -153,9 +153,9 @@ const CARDS = {
       return `<defs><linearGradient id="s" gradientUnits="userSpaceOnUse" x1="${f2(sx - fs * 2)}" y1="0" x2="${f2(sx + fs * 2)}" y2="0"><stop offset="0" stop-color="${col}"/><stop offset="0.5" stop-color="#FFFFFF"/><stop offset="1" stop-color="${col}"/></linearGradient></defs><g opacity="${f2(k)}">` +
         (p.mark !== false ? aperture(c.W / 2, my, r, op, -op * 0.9, hex(p.accent, '#9FD3FF'), Math.max(1.5, fs * 0.035)) : '') +
         tx(nm, c.W / 2 + ls * 0.5, cy + fs * 0.62, fs, { weight: 300, fill: 'url(#s)', ls }) + (str(p.line) ? tx(str(p.line).toUpperCase(), c.W / 2, cy + fs * 1.55, Math.max(16, fs * 0.3), { weight: 600, fill: col, ls: fs * 0.18, op: seg(L.u, 0.7, 1.2) }) : '') + '</g>'; } },
-  'card.scene': { tags: ['card', 'scene', 'slug', 'short-film', 'screenplay'], dur: 2.6, inF: 2, outF: 10, d: { slug: 'INT. RELAY STATION - NIGHT', title: '', cps: 28, pos: 'bl', color: '#F2F2F2', size: 40 },
+  'card.scene': { tags: ['card', 'scene', 'slug', 'short-film', 'screenplay'], dur: 2.6, inF: 2, outF: 10, d: { slug: 'INT. RELAY STATION - NIGHT', title: '', cps: 28, pos: 'bl', color: '#F2F2F2', size: 40, padY: 0 },
     svg(L, p, c) { const s = sc(c), k = 1 - E.exit(L.out), sl = str(p.slug, 'INT. ROOM - NIGHT', 80).toUpperCase(), n = Math.min(sl.length, Math.floor(Math.max(0, L.u) * num(p.cps, 28, 1, 400))), fs = fit(sl, num(p.size, 40, 8, 160) * s, (c.safe.x1 - c.safe.x0) * 0.9, { weight: 600, font: MONO, ls: 0.06 });
-      const w = measure(sl, fs, { weight: 600, font: MONO }) + fs * 0.06 * sl.length, ti = str(p.title), h = fs * (ti ? 2.6 : 1.2), [x, y] = POS(c, typeof p.pos === 'string' ? p.pos : Array.isArray(p.pos) ? p.pos : 'bl', w, h), cur = Math.floor(L.u * 2.5) % 2 === 0 && n < sl.length + 4;
+      const w = measure(sl, fs, { weight: 600, font: MONO }) + fs * 0.06 * sl.length, ti = str(p.title), h = fs * (ti ? 2.6 : 1.2), [x, y] = POS(c, typeof p.pos === 'string' ? p.pos : Array.isArray(p.pos) ? p.pos : 'bl', w, h, p.padY), cur = Math.floor(L.u * 2.5) % 2 === 0 && n < sl.length + 4;
       const shown = sl.slice(0, n), cw = measure(shown, fs, { weight: 600, font: MONO }) + fs * 0.06 * shown.length;
       return `<g opacity="${f2(k)}">${tx(shown, x, y + fs, fs, { weight: 600, font: MONO, fill: hex(p.color, '#F2F2F2'), anchor: 'start', ls: fs * 0.06 })}` +
         (cur ? `<rect x="${f2(x + cw + fs * 0.1)}" y="${f2(y + fs * 0.12)}" width="${f2(fs * 0.55)}" height="${f2(fs * 1.0)}" fill="${hex(p.color, '#F2F2F2')}" opacity="0.85"/>` : '') +
@@ -178,10 +178,10 @@ const TEXTS = {
         tx(str(p.kicker, '').toUpperCase(), c.W / 2, cy - fs * 0.9, Math.max(18, fs * 0.24), { weight: 600, fill: hex(p.color, '#F4EFE6'), ls: fs * 0.12 }) +
         `<rect x="${f2(c.W / 2 - rw / 2)}" y="${f2(cy - fs * 0.62)}" width="${f2(rw)}" height="${f2(Math.max(1, fs * 0.02))}" fill="${hex(p.rule, '#C9A46A')}"/>` +
         tx(ti, c.W / 2, cy + fs * 0.42 + (1 - E.enter(L.in)) * 18 * s, fs, { weight: 400, font: SERIF, fill: hex(p.color, '#F4EFE6') }) + '</g>'; } },
-  'title.namesOver': { tags: ['title', 'opening-titles', 'names', 'credits', 'title-sequence'], dur: 2.4, inF: 12, outF: 10, d: { role: 'a film by', name: 'PLACEHOLDER NAME', style: 'drift', pos: 'c', color: '#F2F2F2', accent: '#FF9A3C', size: 84, seed: 3 },
+  'title.namesOver': { tags: ['title', 'opening-titles', 'names', 'credits', 'title-sequence'], dur: 2.4, inF: 12, outF: 10, d: { role: 'a film by', name: 'PLACEHOLDER NAME', style: 'drift', pos: 'c', color: '#F2F2F2', accent: '#FF9A3C', size: 84, seed: 3, padY: 0 },   // padY: keep the name this far from the top and bottom edges (the letterbox bars + a margin)
     svg(L, p, c) { const s = sc(c), nm = str(p.name, 'PLACEHOLDER NAME', 60).toUpperCase(), rl = str(p.role, '', 60), st = ['drift', 'type', 'slam', 'split', 'flicker', 'glow'].includes(p.style) ? p.style : 'drift', col = hex(p.color, '#F2F2F2');
       const font = st === 'type' ? MONO : FONT, wt = st === 'type' ? 600 : st === 'drift' ? 300 : 800, lsE = st === 'drift' ? 0.22 : st === 'type' ? 0.04 : 0.03, fs = fit(nm, num(p.size, 84, 8, 300) * s, (c.safe.x1 - c.safe.x0) * 0.8, { weight: wt, font, ls: lsE });
-      const w = measure(nm, fs, { weight: wt, font }) + lsE * fs * nm.length, h = fs * 1.7, pos = typeof p.pos === 'string' ? p.pos : Array.isArray(p.pos) ? p.pos : 'c', [x0, y0] = POS(c, pos, w, h);
+      const w = measure(nm, fs, { weight: wt, font }) + lsE * fs * nm.length, h = fs * 1.7, pos = typeof p.pos === 'string' ? p.pos : Array.isArray(p.pos) ? p.pos : 'c', [x0, y0] = POS(c, pos, w, h, p.padY);
       const anchor = pos.includes && pos.includes('l') ? 'start' : pos.includes && pos.includes('r') ? 'end' : 'middle', ax = anchor === 'start' ? x0 : anchor === 'end' ? x0 + w : x0 + w / 2, k = fade(L), yN = y0 + h - fs * 0.2, yR = yN - fs * 1.05;
       const R = rl ? tx(rl.toUpperCase(), ax, yR, Math.max(16, fs * 0.28), { weight: 600, fill: col, anchor, ls: fs * 0.1, op: k * 0.85 }) : '';
       if (st === 'type') { const n = Math.min(nm.length, Math.floor(Math.max(0, L.u - 0.1) * 24)); return R + tx(nm.slice(0, n), ax, yN, fs, { weight: wt, font, fill: col, anchor: anchor === 'middle' ? 'start' : anchor, ls: lsE * fs, op: 1 - E.exit(L.out), extra: anchor === 'middle' ? `dx="${f2(-w / 2)}"` : '' }); }

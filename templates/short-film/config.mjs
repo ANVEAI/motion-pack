@@ -67,8 +67,8 @@ export function buildPlan(C) {
       shots.push({ id: `${sc.id}_${k}`, sec: sc.id, start: sec(a), dur: sec(b - a), ...slot(sh.slot), ...tx });
       for (const x of sh.sfx || []) cues.push({ id: x.id, t: sec(a + F(x.at)), why: `${sc.id} shot ${k} action` }); f = b; });
     sceneSpans.push({ id: sc.id, start: sec(s0), dur: sec(f - s0), sound: sc.sound });
-    if (sc.slug) { const at = sec(s0 + F(C.slugDelay)); gfx.push({ id: 'card.scene', at, dur: 2.4, params: { slug: sc.slug, pos: tall ? 'tl' : 'bl', size: 40 } });
-      texts.push({ text: sc.slug, t: [r6(at + sc.slug.length / 28), r6(at + 2.4)], box: textBox(sc.slug, { W, H, fontPx: 40 * s, x: tall ? 65 : 96, anchor: 'start', y: tall ? 269 + 40 * s : H - barPx - 54 - 10 * s, weight: 600, mono: true }), fontPx: Math.round(40 * s), role: 'label', fg: '#F2F2F2' });
+    if (sc.slug) { const at = sec(s0 + F(C.slugDelay)); gfx.push({ id: 'card.scene', at, dur: 2.4, params: { slug: sc.slug, pos: tall ? 'tl' : 'bl', size: 40, padY: barPx ? barPx + Math.round(36 * s) : 0 } });
+      texts.push({ text: sc.slug, t: [r6(at + sc.slug.length / 28), r6(at + 2.4)], box: textBox(sc.slug, { W, H, fontPx: 40 * s, x: tall ? 65 : 96, anchor: 'start', y: tall ? 269 + 40 * s : H - barPx - 36 * s - 4, weight: 600, mono: true }), fontPx: Math.round(40 * s), role: 'label', fg: '#F2F2F2' });
       cues.push({ id: C.sfx.slug, t: at, why: 'the slug types on' }); }
   });
   /* the opening title over the first shot */

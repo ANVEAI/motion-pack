@@ -57,17 +57,17 @@ export function buildPlan(C) {
   for (let k = 0; k < bounds.length - 1; k++) { const f0 = bounds[k], f1 = bounds[k + 1], tx = k > 0 ? { tx: C.transitions.texture[0], txReason: C.transitions.texture[1], txKind: 'dissolve', txDur: 1.0 } : {};
     shots.push({ id: 'tex' + k, sec: k === bounds.length - 2 ? 'title' : 'names', start: sec(f0, fps), dur: sec(f1 - f0, fps), ...slot(texAt(k)), ...tx, ...(k === bounds.length - 2 ? { hold: true } : {}) }); }
   const pick = (i) => C.positions[i % C.positions.length], role = (p) => (tall ? (p === 'c' ? 'c' : p.startsWith('t') ? 'tc' : 'bc') : p);
-  names.forEach(([r, n, after], i) => { const at = sec(lead + i * per, fps), dur = sec(per - 12, fps), pos = role(pick(i)), size = tall ? 74 : 84;
-    gfx.push({ id: 'title.namesOver', at, dur, params: { role: r, name: n + (after ? '' : ''), style, pos, accent: C.brand.accent, size } });
-    if (after) gfx.push({ id: 'title.namesOver', at: +(at + 0.5).toFixed(4), dur: +(dur - 0.5).toFixed(4), params: { role: '', name: after.toUpperCase(), style: 'drift', pos: pos === 'c' ? [0.5, 0.62] : pos, size: 34 } });
-    const fs = Math.min(size * s, (W * 0.8) / Math.max(4, n.length * 0.6)), y = pos.startsWith('t') ? (tall ? 269 : 54 + barPx) + fs * 1.6 : pos.startsWith('b') ? (tall ? 1248 : H - 54 - barPx) - fs * 0.2 : H / 2 + fs * 0.4;
+  names.forEach(([r, n, after], i) => { const at = sec(lead + i * per, fps), dur = sec(per - 22, fps), pos = role(pick(i)), size = tall ? 74 : 84;
+    gfx.push({ id: 'title.namesOver', at, dur, params: { role: r, name: n, style, pos, accent: C.brand.accent, size, padY: barPx ? barPx + Math.round(64 * s) : 0 } });
+    if (after) gfx.push({ id: 'title.namesOver', at: +(at + 0.5).toFixed(4), dur: +(dur - 0.5).toFixed(4), params: { role: '', name: after.toUpperCase(), style: 'drift', pos: pos === 'c' ? [0.5, 0.62] : pos, size: 34, padY: barPx ? barPx + Math.round(14 * s) : 0 } });
+    const fs = Math.min(size * s, (W * 0.8) / Math.max(4, n.length * 0.6)), pad = barPx ? barPx + 64 * s : 54, y = pos.startsWith('t') ? (tall ? 269 : pad) + fs * 1.55 : pos.startsWith('b') ? (tall ? 1248 : H - pad) - fs * 0.2 : H / 2 + fs * 0.4;
     texts.push({ text: n, t: [at, +(at + dur).toFixed(4)], box: textBox(n, { W, H, fontPx: fs, y, weight: 800 }), fontPx: Math.round(fs), role: 'headline', fg: '#F2F2F2' });
     cues.push({ id: style === 'type' ? C.sfx.type : C.sfx.name, t: at, why: 'a name lands on the bar' }); });
   const tStyle = C.film.titleStyle || G.title, ta = sec(titleAt, fps);
   gfx.push({ id: tStyle, at: ta, dur: sec(titleF - 15, fps), params: { text: C.film.title, size: tall ? 140 : 180 } });
   texts.push({ text: C.film.title, t: [ta, sec(endAt - 15, fps)], box: textBox(C.film.title, { W, H, fontPx: Math.min((tall ? 140 : 180) * s, W * 0.85 / (C.film.title.length * 0.62)), y: H / 2 + 50 * s }), fontPx: Math.round(Math.min((tall ? 140 : 180) * s, W * 0.85 / (C.film.title.length * 0.62))), role: 'headline', fg: '#F2F2F2' });
   cues.push({ id: C.sfx.title, t: ta, why: 'the main title hit' });
-  const ea = sec(endAt, fps); gfx.push({ id: 'title.namesOver', at: ea, dur: sec(endF + 12, fps), params: { role: C.text.directedBy[0], name: C.text.directedBy[1], style, pos: 'c', accent: C.brand.accent, size: tall ? 74 : 84 } });
+  const ea = sec(endAt, fps); gfx.push({ id: 'title.namesOver', at: ea, dur: sec(endF + 12, fps), params: { role: C.text.directedBy[0], name: C.text.directedBy[1], style, pos: 'c', accent: C.brand.accent, size: tall ? 74 : 84, padY: barPx } });
   cues.push({ id: C.sfx.last, t: ea, why: 'the last card' }); holds.push({ t: [sec(endAt + endF, fps), T], why: 'the picture holds before the film starts' });
   const layers = { grain: C.layers.grain ?? G.grain, dust: C.layers.dust ?? G.dust, vignette: C.layers.vignette ?? G.vignette };
   return { template: 'title-sequence', fps, seconds: T, W, H, aspect: asp, platform: C.platform || (tall ? 'reels.organic' : 'x.video'), genre: C.genre in FILM_GENRES ? C.genre : 'thriller', bars: barPx, letterbox: lb || null,

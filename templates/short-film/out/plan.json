@@ -167,7 +167,8 @@
    "params": {
     "slug": "INT. RELAY STATION - NIGHT",
     "pos": "bl",
-    "size": 40
+    "size": 40,
+    "padY": 96
    }
   },
   {
@@ -187,7 +188,8 @@
    "params": {
     "slug": "EXT. CLIFF - NIGHT",
     "pos": "bl",
-    "size": 40
+    "size": 40,
+    "padY": 96
    }
   },
   {
@@ -197,7 +199,8 @@
    "params": {
     "slug": "INT. RELAY STATION - LATER",
     "pos": "bl",
-    "size": 40
+    "size": 40,
+    "padY": 96
    }
   },
   {
@@ -341,9 +344,9 @@
    ],
    "box": [
     96,
-    922,
+    946,
     720,
-    966
+    990
    ],
    "fontPx": 40,
    "role": "label",
@@ -373,9 +376,9 @@
    ],
    "box": [
     96,
-    922,
+    946,
     528,
-    966
+    990
    ],
    "fontPx": 40,
    "role": "label",
@@ -389,9 +392,9 @@
    ],
    "box": [
     96,
-    922,
+    946,
     720,
-    966
+    990
    ],
    "fontPx": 40,
    "role": "label",

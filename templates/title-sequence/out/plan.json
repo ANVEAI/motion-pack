@@ -90,143 +90,154 @@
   {
    "id": "title.namesOver",
    "at": 1.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "",
     "name": "ORBIT PICTURES",
     "style": "split",
     "pos": "bl",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 1.7,
-   "dur": 2.1,
+   "dur": 1.7667,
    "params": {
     "role": "",
     "name": "PRESENTS",
     "style": "drift",
     "pos": "bl",
-    "size": 34
+    "size": 34,
+    "padY": 152
    }
   },
   {
    "id": "title.namesOver",
    "at": 4.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "a film by",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "tr",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 7.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "starring",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "c",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 10.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "br",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 13.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "tl",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 16.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "music by",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "c",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 19.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "edited by",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "bl",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 22.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "director of photography",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "tr",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 25.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "production design",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "c",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
    "id": "title.namesOver",
    "at": 28.2,
-   "dur": 2.6,
+   "dur": 2.266667,
    "params": {
     "role": "written by",
     "name": "PLACEHOLDER NAME",
     "style": "split",
     "pos": "br",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 202
    }
   },
   {
@@ -248,7 +259,8 @@
     "style": "split",
     "pos": "c",
     "accent": "#FF9A3C",
-    "size": 84
+    "size": 84,
+    "padY": 138
    }
   }
  ],
@@ -322,13 +334,13 @@
    "text": "ORBIT PICTURES",
    "t": [
     1.2,
-    3.8
+    3.4667
    ],
    "box": [
     607,
-    800,
+    790,
     1313,
-    892
+    882
    ],
    "fontPx": 84,
    "role": "headline",
@@ -338,13 +350,13 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     4.2,
-    6.8
+    6.4667
    ],
    "box": [
     557,
-    255,
+    261,
     1363,
-    347
+    353
    ],
    "fontPx": 84,
    "role": "headline",
@@ -354,7 +366,7 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     7.2,
-    9.8
+    9.4667
    ],
    "box": [
     557,
@@ -370,13 +382,13 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     10.2,
-    12.8
+    12.4667
    ],
    "box": [
     557,
-    800,
+    790,
     1363,
-    892
+    882
    ],
    "fontPx": 84,
    "role": "headline",
@@ -386,13 +398,13 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     13.2,
-    15.8
+    15.4667
    ],
    "box": [
     557,
-    255,
+    261,
     1363,
-    347
+    353
    ],
    "fontPx": 84,
    "role": "headline",
@@ -402,7 +414,7 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     16.2,
-    18.8
+    18.4667
    ],
    "box": [
     557,
@@ -418,13 +430,13 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     19.2,
-    21.8
+    21.4667
    ],
    "box": [
     557,
-    800,
+    790,
     1363,
-    892
+    882
    ],
    "fontPx": 84,
    "role": "headline",
@@ -434,13 +446,13 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     22.2,
-    24.8
+    24.4667
    ],
    "box": [
     557,
-    255,
+    261,
     1363,
-    347
+    353
    ],
    "fontPx": 84,
    "role": "headline",
@@ -450,7 +462,7 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     25.2,
-    27.8
+    27.4667
    ],
    "box": [
     557,
@@ -466,13 +478,13 @@
    "text": "PLACEHOLDER NAME",
    "t": [
     28.2,
-    30.8
+    30.4667
    ],
    "box": [
     557,
-    800,
+    790,
     1363,
-    892
+    882
    ],
    "fontPx": 84,
    "role": "headline",
