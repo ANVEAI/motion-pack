@@ -1,0 +1,10 @@
+file:///Users/adarshkant/Developer/mp-xp-human/templates/_shared/human/core.mjs:23
+export function aspectOf(C) { const a = ASPECTS[C.aspect]; if (!a) throw new Error(`aspect "${C.aspect}" is not one of ${Object.keys(ASPECTS).join(', ')}`); return { id: C.aspect, ...a }; }
+                                                                         ^
+
+Error: aspect "16:9:. tutorial:9:16:tall vlog-personal:9:16:. vlog-personal:16:9:wide podcast-clip:9:16:. podcast-clip:16:9:wide founder-story:16:9:. founder-story:9:16:tall course-lesson:16:9:. course-lesson:9:16" is not one of 16:9, 9:16, 1:1, 4:5
+    at aspectOf (file:///Users/adarshkant/Developer/mp-xp-human/templates/_shared/human/core.mjs:23:74)
+    at buildPlan (file:///Users/adarshkant/Developer/mp-xp-human/templates/tutorial/config.mjs:74:30)
+    at file:///Users/adarshkant/Developer/mp-xp-human/templates/_shared/cues.mjs:14:14
+
+Node.js v22.23.2
