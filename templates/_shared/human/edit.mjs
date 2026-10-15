@@ -42,8 +42,8 @@ export function speakerTurns(words, { gap = 0.9 } = {}) {
   return out.map((t) => ({ ...t, s: r3(t.s), e: r3(t.e) }));
 }
 /* picture follows the voice with a lag (L-cut: the new voice is heard over the old face for lagMs) and every shot holds at least minShot s */
-export function activeCuts(turns, { lagMs = 220, minShot = 1.4 } = {}) {
-  const cuts = []; for (const tr of turns) { const t = r3(tr.s + lagMs / 1000), last = cuts.at(-1);
+export function activeCuts(turns, { lagMs = 220, minShot = 1.4, minTurn = 0.8 } = {}) {   /* a turn shorter than minTurn (an "mm-hm", a laugh) never takes the picture */
+  const cuts = []; for (const tr of turns) { const t = r3(tr.s + lagMs / 1000), last = cuts.at(-1); if (cuts.length && tr.e - tr.s < minTurn) continue;
     if (last && last.speaker === tr.speaker) continue; if (last && t - last.t < minShot) { if (cuts.length > 1 && cuts.at(-2).speaker === tr.speaker) { cuts.pop(); } else continue; }
     cuts.push({ t: cuts.length ? t : 0, speaker: tr.speaker }); }
   return cuts;
@@ -76,9 +76,9 @@ export const CAPTION_PICKS = {
   minimal: { base: 'clean', size: 46, why: 'small clean line for 16:9 tutorials over busy screens' },
 };
 export const BANDS = { lower: 'bottom of the safe zone', mid: 'just under the middle (a 9:16 talking head: clear of the chin and of the bottom UI)', upper: 'top of the safe zone' };
-export function pickCaption(name, { aspect = '16:9', brand = {}, band = 'lower', maxWords = 3, box = null } = {}) {
+export function pickCaption(name, { aspect = '16:9', brand = {}, band = 'lower', maxWords = 3, box = null, style = {} } = {}) {
   const pk = CAPTION_PICKS[name]; if (!pk) throw new Error(`caption style "${name}" is not one of ${Object.keys(CAPTION_PICKS).join(', ')}`);
-  const A = ASPECTS[aspect], st = { ...CAPTION_STYLES[pk.base] }; if (pk.size) st.size = pk.size; if (pk.accent === 'brand' && brand.accent) st.accent = brand.accent; else if (brand.captionAccent) st.accent = brand.captionAccent;
+  const A = ASPECTS[aspect], st = { ...CAPTION_STYLES[pk.base] }; if (pk.size) st.size = pk.size; if (pk.accent === 'brand' && brand.accent) st.accent = brand.accent; else if (brand.captionAccent) st.accent = brand.captionAccent; Object.assign(st, style);   /* per-template overrides (emphScale, color, ...) */
   const S = Math.min(A.W, A.H) / 1080, fontPx = st.size * S, sb = safeBox(aspect), h = 2 * 1.18 * fontPx, gap = 24 * S;
   const y1 = band === 'upper' ? sb.y0 + h + gap : band === 'mid' ? Math.min(sb.y1 - gap, A.H * 0.62) : sb.y1 - gap;
   const b = box || { x0: sb.x0, x1: sb.x1, y0: +(y1 - h).toFixed(1), y1: +y1.toFixed(1), w: +(sb.x1 - sb.x0).toFixed(1), h: +h.toFixed(1) };

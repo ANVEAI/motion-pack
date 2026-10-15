@@ -66,7 +66,7 @@ export const GFX_SFX = {
   /* lane human (2026-10-16): human.js; gfxCues gives one cue per action */
   'ui.keyCombo': ['sfx/device/keyboard_mech_clack', 5, -4], 'callout.highlightBox': ['sfx/ui/slide', 0, -4], 'ui.codeCallout': ['sfx/whoosh/swish_xs', 0, -4], 'ui.stepCounter': ['sfx/ui/count_tick', 1, -5], 'ui.cursorTrack': ['sfx/device/mouse_click', 0, -4],
   'ui.waveform': ['sfx/ui/blip', 0, -10], 'title.locationCard': ['sfx/whoosh/swish_s', 0, -3], 'title.yearTimeline': ['sfx/ui/slide', 0, -4], 'caption.pullQuote': ['sfx/paper/flip', 3, -4], 'ui.quizCard': ['sfx/ui/pop', 1, -3],
-  'title.recapCard': ['sfx/ui/pop', 15, -4], 'title.hookCard': ['sfx/hit/soft', 0, -2], 'title.endScreen': ['sfx/whoosh/whoosh_in_m', 0, -3], 'callout.resultReveal': ['sfx/tx/mask_reveal', 0, -3] };
+  'title.recapCard': ['sfx/ui/pop', 15, -4], 'title.hookCard': ['sfx/hit/soft', 0, -2], 'title.endScreen': ['sfx/whoosh/whoosh_in_m', 0, -3], 'callout.resultReveal': ['sfx/tx/mask_reveal', 0, -3], 'title.stepCard': ['sfx/whoosh/whoosh_in_m', 0, -3] };
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 /* def ids are document-wide: every <svg> of every host in a page shares one id namespace, and url(#id) resolves to the FIRST match. Parts used to name their defs by hand ('lc' / 'lg' in chart.line, 'neon', 'odo',
    'dsScrim') or by a hash of a few params (uidOf: no `at`, most params missing), so two items in one host (two chart.line items; two ui.stateMorph with the same text at different times) shared a def and the second

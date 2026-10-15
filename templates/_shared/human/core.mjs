@@ -7,7 +7,7 @@
      normWords, subsToWords             word lists from whisper JSON or from SRT / VTT (cue time spread over the words by length when the file has no word times; est: true)
      FILLERS, markFillers               the filler-word marker: flags hard fillers (um, uh) and soft ones (you know, I mean); nothing is cut unless the user says so
      autocutKeep                        silence autocut that KEEPS BREATHS (extends plan.mjs autocut): a detected breath in a gap is kept whole, otherwise 120 ms of air;
-                                        cut fillers on request; a punchline keeps a 450 ms beat hold before the cut
+                                        cut fillers on request; a punchline keeps a 450 ms beat hold before the cut; a word with hold: s keeps s seconds after it (a quiz pause)
      segments, remapWords               keep ranges -> frame-exact segments on the output timeline, and the words moved onto it
      atOf                               an event time from seconds or { word, nth, offset } (output time)
      quoteCheck                         the speaker's-own-words gate: a pull quote must be a verbatim run of the transcript */
@@ -39,7 +39,7 @@ const hasParent = (C, p) => { const ks = p.split('.'); const par = ks.length > 1
 export function normWords(x) {
   const arr = Array.isArray(x) ? x : (x && (x.words || x.segments?.flatMap((s) => s.words || []))) || [], out = [];
   for (const q of arr) { const w = String(q.w ?? q.word ?? q.text ?? '').trim(), s = Number(q.s ?? q.start), e = Number(q.e ?? q.end); if (!w || !Number.isFinite(s) || !Number.isFinite(e)) continue;
-    const o = { w, s: +s.toFixed(3), e: +Math.max(e, s + 0.04).toFixed(3) }; if (q.emph) o.emph = true; if (q.speaker != null) o.speaker = String(q.speaker); if (q.filler) o.filler = q.filler; if (q.cut) o.cut = true; if (q.est) o.est = true; out.push(o); }
+    const o = { w, s: +s.toFixed(3), e: +Math.max(e, s + 0.04).toFixed(3) }; if (q.emph) o.emph = true; if (q.speaker != null) o.speaker = String(q.speaker); if (q.filler) o.filler = q.filler; if (q.cut) o.cut = true; if (q.est) o.est = true; if (+q.hold > 0) o.hold = +q.hold; out.push(o); }
   return out.sort((a, b) => a.s - b.s || a.e - b.e);
 }
 const ts = (h) => { const m = /^(?:(\d+):)?(\d{1,2}):(\d{2})[.,](\d{1,3})$/.exec(h.trim()); if (!m) return NaN; return (+(m[1] || 0)) * 3600 + +m[2] * 60 + +m[3] + +m[4].padEnd(3, '0') / 1000; };
@@ -93,10 +93,11 @@ export function autocutKeep(words, { silenceMin = 0.5, padBefore = 0.06, padAfte
   const B = (breaths || []).map((b) => (Array.isArray(b) ? [+b[0], +b[1]] : [+b.s, +b.e])).filter(([x, y]) => Number.isFinite(x) && Number.isFinite(y) && y > x);
   const keep = []; let a = Math.max(0, W[0].s - Math.max(padBefore, breath)), b = W[0].e + padAfter;
   for (let i = 1; i < W.length; i++) {
-    const p = W[i - 1], w = W[i], gap = w.s - p.e, skipped = all.some((x) => x.s >= p.e - 1e-6 && x.e <= w.s + 1e-6 && !W.includes(x));
+    const p = W[i - 1], w = W[i], gap = w.s - p.e, sk = all.filter((x) => x.s >= p.e - 1e-6 && x.e <= w.s + 1e-6 && !W.includes(x)), skipped = sk.length > 0;
     if (gap > silenceMin || skipped) {
-      const hold = beatHold && sentenceEnd(p) && p.emph ? beatHold : 0, endA = Math.min(w.s, p.e + Math.max(padAfter, hold));
-      const br = B.find(([x, y]) => x < w.s && y > p.e && x >= p.e - 0.02), startB = br ? Math.max(endA, Math.min(w.s - padBefore, Math.max(br[0] - 0.02, w.s - maxBreath))) : Math.max(endA, w.s - Math.max(padBefore, breath));
+      const hold = Math.max(beatHold && sentenceEnd(p) && p.emph ? beatHold : 0, +p.hold || 0), endA = Math.min(w.s, p.e + Math.max(padAfter, hold), skipped ? Math.max(p.e + 0.01, sk[0].s - 0.01) : Infinity);
+      const br = B.find(([x, y]) => x < w.s && y > p.e && x >= p.e - 0.02); let startB = br ? Math.max(endA, Math.min(w.s - padBefore, Math.max(br[0] - 0.02, w.s - maxBreath))) : Math.max(endA, w.s - Math.max(padBefore, breath));
+      if (skipped) startB = Math.max(startB, Math.min(w.s - 0.01, sk.at(-1).e + 0.01));   /* never keep the cut filler's own sound */
       if (startB - endA > 1 / 30) { keep.push([a, endA]); cuts.push({ from: +endA.toFixed(3), to: +startB.toFixed(3), why: skipped ? 'filler cut' : `silence ${gap.toFixed(2)} s`, breath: br ? 'detected, kept' : `${Math.round(Math.max(padBefore, breath) * 1000)} ms air kept` }); a = startB; }
     }
     b = w.e + padAfter;

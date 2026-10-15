@@ -4745,7 +4745,8 @@
      "slot": "webcam",
      "name": "Presenter",
      "tint": "#2E3B4E",
-     "seed": 3
+     "seed": 3,
+     "chipPos": "bl"
     }
    }
   ],
@@ -4843,9 +4844,9 @@
   ],
   "gfxTop": [
    {
-    "id": "title.chapterCard",
+    "id": "title.stepCard",
     "at": 3.6333333333333333,
-    "dur": 0.6,
+    "dur": 0.8,
     "params": {
      "kicker": "Step 1",
      "title": "Open the settings file",
@@ -4853,9 +4854,9 @@
     }
    },
    {
-    "id": "title.chapterCard",
+    "id": "title.stepCard",
     "at": 7.2,
-    "dur": 0.6,
+    "dur": 0.8,
     "params": {
      "kicker": "Step 2",
      "title": "Add the toggle",
@@ -4863,9 +4864,9 @@
     }
    },
    {
-    "id": "title.chapterCard",
+    "id": "title.stepCard",
     "at": 17.8,
-    "dur": 0.6,
+    "dur": 0.8,
     "params": {
      "kicker": "Step 3",
      "title": "Run it",
@@ -10519,9 +10520,15 @@
    "overVoDb": -16
   },
   {
-   "id": "sfx/stinger/reveal",
-   "t": 3.6667,
-   "why": "title.chapterCard: title.chapterCard default",
+   "id": "sfx/whoosh/whoosh_in_m",
+   "t": 3.6333,
+   "why": "title.stepCard: step card in",
+   "overVoDb": -10
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 3.9333,
+   "why": "title.stepCard: step title",
    "overVoDb": -10
   },
   {
@@ -10537,15 +10544,21 @@
    "overVoDb": -16
   },
   {
+   "id": "sfx/whoosh/whoosh_in_m",
+   "t": 7.2,
+   "why": "title.stepCard: step card in",
+   "overVoDb": -10
+  },
+  {
    "id": "sfx/ui/count_tick",
    "t": 7.2003,
    "why": "ui.stepCounter: step 2",
    "overVoDb": -16
   },
   {
-   "id": "sfx/stinger/reveal",
-   "t": 7.2333,
-   "why": "title.chapterCard: title.chapterCard default",
+   "id": "sfx/ui/pop",
+   "t": 7.5,
+   "why": "title.stepCard: step title",
    "overVoDb": -10
   },
   {
@@ -10585,15 +10598,21 @@
    "overVoDb": -16
   },
   {
+   "id": "sfx/whoosh/whoosh_in_m",
+   "t": 17.8,
+   "why": "title.stepCard: step card in",
+   "overVoDb": -10
+  },
+  {
    "id": "sfx/ui/count_tick",
    "t": 17.8003,
    "why": "ui.stepCounter: step 3",
    "overVoDb": -16
   },
   {
-   "id": "sfx/stinger/reveal",
-   "t": 17.8333,
-   "why": "title.chapterCard: title.chapterCard default",
+   "id": "sfx/ui/pop",
+   "t": 18.1,
+   "why": "title.stepCard: step title",
    "overVoDb": -10
   },
   {

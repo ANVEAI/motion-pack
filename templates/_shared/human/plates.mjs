@@ -17,17 +17,17 @@ const svg = (w, h, inner) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0
 /* a label chip that reads at phone size: >= 30 px at 1080 on the shorter side */
 function chip(w, h, title, sub, { pos = 'tl', dark = true } = {}) {
   if (Math.min(w, h) < 560) {   /* a small slot (a PiP): one centred two-line label near the bottom, sized to the slot so it is never clipped */
-    const ts = Math.max(18, w * 0.075), ss = Math.max(13, w * 0.05), cy = h * 0.8;
+    const ts = Math.max(12, Math.min(w * 0.075, (w * 0.66) / (Math.max(6, title.length) * 0.66))), ss = Math.max(11, Math.min(w * 0.05, (w * 0.66) / (Math.max(6, sub.length) * 0.6))), cy = h * 0.8;
     return R(w * 0.14, cy - ts * 1.2, w * 0.72, ts * 1.2 + ss * 1.7, ts * 0.4, 'rgba(10,10,14,0.78)') + T(title, w / 2, cy - ts * 0.12, { size: ts, weight: 800, fill: '#FFFFFF', anchor: 'middle', ls: 1 }) + T(sub, w / 2, cy + ss * 1.1, { size: ss, weight: 600, fill: 'rgba(255,255,255,0.8)', anchor: 'middle', font: MONO });
   }
   const S = Math.min(w, h) / 1080, ts = Math.max(30, 34 * S), ss = Math.max(22, 24 * S), cw = Math.max(title.length * ts * 0.66, sub.length * ss * 0.6) + 48 * S, ch = ts + ss + 44 * S;
-  const x = pos.includes('r') ? w - cw - 36 * S : 36 * S, y = pos.startsWith('b') ? h - ch - 36 * S : 36 * S;
+  const tall = h > w * 1.2, x = pos.includes('r') ? w - cw - (tall ? 0.11 * w : 36 * S) : (tall ? 0.065 * w : 36 * S), y = pos.startsWith('b') ? h - ch - (tall ? 0.36 * h : 36 * S) : (tall ? 0.145 * h : 36 * S);   /* a tall slot keeps its label inside the 9:16 safe zone */
   return R(x, y, cw, ch, 14 * S, dark ? 'rgba(10,10,14,0.78)' : 'rgba(255,255,255,0.86)') + T(title, x + 24 * S, y + 18 * S + ts * 0.85, { size: ts, weight: 800, fill: dark ? '#FFFFFF' : '#111', ls: 1.5 * S }) +
     T(sub, x + 24 * S, y + 28 * S + ts + ss * 0.8, { size: ss, weight: 600, fill: dark ? 'rgba(255,255,255,0.78)' : 'rgba(0,0,0,0.65)', font: MONO });
 }
 
 /* speaker placeholder: w x h slot, level 0..1 (from the word timings), tint, name; t drives a slow light drift and a breath-like sway so frame 0 is already moving */
-export function speakerPlate(t, { w = 1920, h = 1080, level = 0, tint = '#2B3A4A', name = '', slot = 'speaker', seed = 1, active = 1, label = 'SPEAKER PLACEHOLDER' } = {}) {
+export function speakerPlate(t, { w = 1920, h = 1080, level = 0, tint = '#2B3A4A', name = '', slot = 'speaker', seed = 1, active = 1, label = 'SPEAKER PLACEHOLDER', chipPos = 'tl' } = {}) {
   const S = Math.min(w, h) / 1080, cx = w * 0.5, base = h * 1.02, hr = Math.min(w * 0.17, h * 0.2), sway = Math.sin(t * 0.9 + seed) * 0.8, bob = Math.sin(t * 1.3 + seed * 2) * 3 * S;
   let g = `<defs><radialGradient id="sg${seed}" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="${tint}" stop-opacity="1"/><stop offset="1" stop-color="#0B0D12"/></radialGradient></defs>` + `<rect width="${w}" height="${h}" fill="url(#sg${seed})"/>`;
   for (let i = 0; i < 7; i++) { const x = ((hash(seed, i) + t * 0.012 * (0.5 + hash(seed, i + 9))) % 1) * w, y = hash(seed, i + 20) * h * 0.7, r = (60 + hash(seed, i + 40) * 140) * S; g += `<circle cx="${f2(x)}" cy="${f2(y)}" r="${f2(r)}" fill="#FFFFFF" opacity="${f2(0.035 + 0.03 * hash(seed, i + 60))}"/>`; }
@@ -35,7 +35,7 @@ export function speakerPlate(t, { w = 1920, h = 1080, level = 0, tint = '#2B3A4A
   g += `<g transform="rotate(${f2(sway)} ${f2(cx)} ${f2(base)})" opacity="${f2(0.55 + 0.45 * active)}"><path d="${body}" fill="#5A6472"/><rect x="${f2(cx - hr * 0.38)}" y="${f2(hy + hr * 0.7)}" width="${f2(hr * 0.76)}" height="${f2(hr * 0.75)}" fill="#5A6472"/>`;
   g += `<ellipse cx="${f2(cx)}" cy="${f2(hy)}" rx="${f2(hr * 0.86)}" ry="${f2(hr)}" fill="#6B7584"/>`;
   g += `<circle cx="${f2(cx)}" cy="${f2(hy)}" r="${f2(ring)}" fill="none" stroke="#FFFFFF" stroke-width="${f2(5 * S)}" opacity="${f2(0.1 + 0.6 * level)}"/></g>`;
-  return svg(w, h, g + chip(w, h, label, Math.min(w, h) < 560 ? 'placeholder' : `set media.${slot}.src${name ? ' · ' + name : ''}`));
+  return svg(w, h, g + chip(w, h, label, Math.min(w, h) < 560 ? 'placeholder' : `set media.${slot}.src${name ? ' · ' + name : ''}`, { pos: chipPos }));
 }
 
 /* ---------- fake desktop recording (1920 x 1080 screen space) ---------- */

@@ -1,0 +1,27 @@
+1
+00:00:00,300 --> 00:00:03,200
+Welcome back. Today: where your files really live.
+
+2
+00:00:04,000 --> 00:00:07,800
+On your laptop, a file lives in one place. You can see it, and you can lose it.
+
+3
+00:00:08,600 --> 00:00:12,600
+In the cloud, the same file lives on someone else's computer, copied for safety.
+
+4
+00:00:13,300 --> 00:00:16,400
+So the difference: one copy you control, or many copies you rent.
+
+5
+00:00:17,000 --> 00:00:19,600
+Quick check. Which one keeps the file only on your desk?
+
+6
+00:00:22,200 --> 00:00:23,600
+Right: your laptop.
+
+7
+00:00:24,300 --> 00:00:27,600
+Recap: local is one place, the cloud is many, and you choose the trade.

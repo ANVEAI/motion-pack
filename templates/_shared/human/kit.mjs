@@ -34,3 +34,20 @@ export function lintHuman(plan) {
 }
 export const tagOf = (aspect, def) => (aspect === def ? '' : '-' + { '16:9': 'wide', '9:16': 'tall', '1:1': 'square', '4:5': 'portrait' }[aspect]);
 export const projOf = (aspect, def) => (aspect === def ? '.' : { '16:9': 'wide', '9:16': 'tall', '1:1': 'square', '4:5': 'portrait' }[aspect]);
+
+/* ---------- the talking-head track shared by vlog, founder story, podcast and course ----------
+   source words -> fillers marked (cut only when CONFIG says so) -> breath-keeping autocut -> frame-exact segments -> output-time words */
+import { markFillers, autocutKeep, segments, remapWords, FILLERS } from './core.mjs';
+export function talkTrack(words, { fps = 30, autocut = {}, fillers = {}, breaths = [] } = {}) {
+  const list = fillers.list || FILLERS, mk = markFillers(words, list, { cut: fillers.cut || 'none' });
+  const ac = autocut.on === false ? { keep: [[Math.max(0, (words[0]?.s ?? 0) - 0.12), (words.at(-1)?.e ?? 1) + 0.3]], cuts: [], kept: mk.words.filter((w) => !w.cut) }
+    : autocutKeep(mk.words, { ...autocut, breaths });
+  const segs = segments(ac.keep, fps), out = remapWords(segs, ac.kept);
+  return { segs, words: out, fillers: mk.found, cuts: ac.cuts, seconds: segs.length ? +(segs.at(-1).f1 / fps).toFixed(4) : 0, srcWords: mk.words };
+}
+/* one slot per segment of the same source (each a HyperFrames <video> with its own media start, or the same placeholder plate), sharing one framing plan */
+export function talkSlots(segs, { id = 'talk', src = null, srcStart = 0, rect, cam = null, ph = {}, z = 1, kind = 'speaker', window = null, extra = {} } = {}) {
+  const out = []; for (const g of segs) { let a = g.start, b = +(g.start + g.dur).toFixed(4); if (window) { a = Math.max(a, window[0]); b = Math.min(b, window[1]); if (b - a < 1e-3) continue; }
+    out.push({ id: `${id}-${g.id}`, kind, src, mediaStart: +(srcStart + g.src_in + (a - g.start)).toFixed(4), start: +a.toFixed(4), end: +b.toFixed(4), rect, cam, z, ph, ...extra }); }
+  return out;
+}

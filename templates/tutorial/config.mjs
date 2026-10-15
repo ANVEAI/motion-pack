@@ -83,7 +83,7 @@ export function buildPlan(C0) {
   if (cur.estimated) warnings.push('cursor track ESTIMATED from click times (tools/human/human.mjs cursor); record the real track with your screen recorder when you can');
   const zscale = C.zoom.scale[C.aspect] ?? C.zoom.scale['16:9'], keys = zoomKeys(clicks, { ...C.zoom, scale: zscale });
   /* chapter cards, code callout, end screen: windows the PiP hides under */
-  const chap = C.text.chapters.map((c) => ({ ...c, t: at(c.at) })), cardDur = 0.6, cardSpan = cardDur + (18 + 12) / 30;
+  const chap = C.text.chapters.map((c) => ({ ...c, t: at(c.at) })), cardDur = 0.8, cardSpan = cardDur + (10 + 10) / 30;
   const code0 = at(C.code.at), code1 = at(C.code.until), hides = [...chap.map((c) => [c.t, c.t + cardSpan]), [code0, code1 + 0.3], [endAt, T]];
   /* slots */
   const slots = [], scr = { id: 'screen', kind: 'screen', src: C.media.screen.src, mediaStart: C.media.screen.start || 0, start: 0, end: endAt, rect: L.screen, inner: [SW, SH], fit: L.fit,
@@ -91,11 +91,11 @@ export function buildPlan(C0) {
     phLabel: ['PLACEHOLDER RECORDING', 'fictional app · set media.screen.src'], phLabelPos: L.labelPos, ph: { chip: false, label: 'PLACEHOLDER RECORDING', slot: 'screen', accent: C.brand.accent, base: C.screenEvents.base, events: C.screenEvents.events.map((e) => ({ ...e, t: at(e.at) })).sort((a, b) => a.t - b.t) } };
   slots.push(scr);
   const camSpeak = words.map((w) => [w.os, w.oe]);
-  if (L.webcam) slots.push({ id: 'webcam', kind: 'speaker', src: C.media.webcam.src, mediaStart: C.media.webcam.start || 0, start: 0, end: endAt, rect: L.webcam, z: 2, ph: { label: 'WEBCAM PLACEHOLDER', slot: 'webcam', name: C.media.webcam.name, tint: '#2E3B4E', seed: 3 } });
+  if (L.webcam) slots.push({ id: 'webcam', kind: 'speaker', src: C.media.webcam.src, mediaStart: C.media.webcam.start || 0, start: 0, end: endAt, rect: L.webcam, z: 2, ph: { label: 'WEBCAM PLACEHOLDER', slot: 'webcam', name: C.media.webcam.name, tint: '#2E3B4E', seed: 3, chipPos: 'bl' } });
   else { const sb = safeBox(C.aspect), s = C.pip.size; slots.push({ id: 'webcam', kind: 'speaker', src: C.media.webcam.src, mediaStart: C.media.webcam.start || 0, start: 0, end: endAt,
     rect: [C.pip.corner.includes('l') ? sb.x0 : A.W - 96 - s, C.pip.corner.startsWith('t') ? sb.y0 : A.H - 54 - s - 40, s, s], circle: C.pip.shape === 'circle', radius: C.pip.shape === 'rounded' ? 28 : 0, z: 5, shadow: true,
     border: { width: 6, color: '#FFFFFF' }, origin: [0.5, 0.5], vis: { kind: 'pip', corner: C.pip.corner, autoHide: C.pip.autoHide, hide: C.pip.hideOnCards ? hides : [], keys, track },
-    ph: { label: 'WEBCAM', slot: 'webcam', name: C.media.webcam.name, tint: '#2E3B4E', seed: 3 } }); }
+    ph: { label: 'WEBCAM PLACEHOLDER', slot: 'webcam', name: C.media.webcam.name, tint: '#2E3B4E', seed: 3 } }); }
   /* screen-space gfx: they zoom with the recording */
   const sgfx = [];
   if (C.cursor.draw === true || (C.cursor.draw === 'auto' && ph)) sgfx.push({ id: 'ui.cursorTrack', at: 0, dur: endAt, params: { track, color: '#FFFFFF', ripple: '#FFD400', scale: 1.5 } });
@@ -109,7 +109,7 @@ export function buildPlan(C0) {
   for (const k of C.shortcuts) gfx.push({ id: 'ui.keyCombo', at: at(k.at), dur: 1.3, params: { keys: k.keys, label: k.label, pos: L.keyPos, accent: C.brand.accent, releaseAt: 0.9 } });
   const codeLines = [...C.screenEvents.base.lines]; for (const e of C.screenEvents.events) if (e.kind === 'type') { while (codeLines.length < e.line) codeLines.push(''); codeLines[e.line - 1] = e.text; }
   gfx.push({ id: 'ui.codeCallout', at: code0, dur: r3(code1 - code0), params: { title: C.code.title, lines: codeLines, box: L.code, accent: C.brand.accent, highlight: C.code.highlight.map((h) => ({ from: h.from, to: h.to, at: r3(at(h.at) - code0) })) } });
-  const top = chap.map((c) => ({ id: 'title.chapterCard', at: c.t, dur: cardDur, params: { kicker: c.kicker, title: c.title, accent: C.brand.accent } }));
+  const top = chap.map((c) => ({ id: 'title.stepCard', at: c.t, dur: cardDur, params: { kicker: c.kicker, title: c.title, accent: C.brand.accent } }));
   top.push({ id: 'title.endScreen', at: endAt, dur: r3(T - endAt - 0.2), params: { title: C.text.endTitle, slots: C.text.endSlots, subscribe: 'Subscribe', handle: C.text.handle, accent: C.brand.accent, bg: '#0E0E14' } });
   /* captions */
   const pick = pickCaption(C.captions.style[C.aspect] || 'doc', { aspect: C.aspect, brand: C.brand, box: L.capBox ? L.capBox(safeBox(C.aspect)) : null }), cap = captionTrack(words, pick);

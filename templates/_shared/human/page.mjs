@@ -15,7 +15,7 @@ const IMG = /\.(png|jpe?g|webp|gif|avif)$/i;
 
 export function stageHuman(PROJ, scene, { layers = true } = {}) {
   const st = stage(PROJ, { media: [], layers });
-  for (const f of fs.readdirSync(HERE).filter((f) => /\.mjs$/.test(f) && f !== 'page.mjs')) link(path.join(HERE, f), path.join(PROJ, 'assets', 'mp', 'templates', '_shared', 'human', f));
+  for (const f of ['core.mjs', 'screen.mjs', 'edit.mjs', 'plates.mjs']) link(path.join(HERE, f), path.join(PROJ, 'assets', 'mp', 'templates', '_shared', 'human', f));
   link(path.join(HERE, '..', 'plan.mjs'), path.join(PROJ, 'assets', 'mp', 'templates', '_shared', 'plan.mjs'));
   for (const s of scene.slots) if (s.src) { const p = path.resolve(s.src); if (!fs.existsSync(p)) { console.error(`media not found for slot ${s.id}: ${p}\n  (set it with --set media.<slot>.src=/abs/file, or null for the labelled placeholder)`); process.exit(2); }
     const name = `${s.id}${path.extname(p).toLowerCase() || '.mp4'}`; link(p, path.join(PROJ, 'assets', 'media', name)); s.url = 'assets/media/' + name; s.isImage = IMG.test(p); }
@@ -43,7 +43,7 @@ export function pageHTML(scene, { title = 'motion-pack human template', layers =
     else if (s.url) media = `<video id="v-${s.id}" class="clip" src="${s.url}" muted playsinline data-start="${f(s.start)}" data-duration="${f(s.end - s.start)}" data-media-start="${f(s.mediaStart || 0)}" data-track-index="${1 + i}" style="object-fit:${s.fit === 'contain' ? 'contain' : 'cover'}"></video>`;
     else media = `<div class="ph" id="ph-${s.id}"></div>`;
     const fs = Math.max(22, Math.round(Math.min(W, H) * 0.028)), L = !s.src && s.phLabel ? `<div class="phl" style="font-size:${fs}px;${(s.phLabelPos || 'tr').includes('r') ? 'right' : 'left'}:${Math.round(fs * 0.9)}px;${(s.phLabelPos || 'tr').startsWith('b') ? 'bottom' : 'top'}:${Math.round(fs * 0.9)}px">${esc(s.phLabel[0])}<small>${esc(s.phLabel[1] || '')}</small></div>` : '';
-    body += `\n<div class="slot" id="s-${s.id}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:${r};z-index:${s.z ?? i + 1};${deco}"><div class="inner" id="i-${s.id}" style="width:${iw}px;height:${ih}px">${media}<div class="sg" id="sg-${s.id}"></div></div>${L}</div>`;
+    body += `\n<div class="slot" id="s-${s.id}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:${r};z-index:${s.z ?? i + 1};${deco}"><div class="inner" id="i-${s.id}" style="width:${iw}px;height:${ih}px">${media}<div class="sg" id="sg-${s.id}"></div></div>${L}${s.vis && s.vis.kind === 'active' ? `<div class="ring" id="r-${s.id}" style="position:absolute;inset:0;border:${s.vis.ring}px solid ${s.vis.color};opacity:0;pointer-events:none;z-index:4"></div>` : ''}</div>`;
   });
   const PLAN = { W, H, F, T, slots: scene.slots.map(({ src, ...s }) => s), speaking: scene.speaking || {}, screenGfx: scene.screenGfx || {} };
   return `${head({ W, H, title, bg: scene.bg || '#0B0D12', css })}
@@ -69,14 +69,14 @@ const GFX = ${JSON.stringify(scene.gfx || [])}, GFX2 = ${JSON.stringify(scene.gf
 const gfx = mountGfx(document.getElementById('g'), GFX, { W: P.W, H: P.H, platform: ${JSON.stringify(scene.platform || null)} }), gfx2 = mountGfx(document.getElementById('g2'), GFX2, { W: P.W, H: P.H, platform: ${JSON.stringify(scene.platform || null)} });
 const sgs = Object.fromEntries(Object.entries(P.screenGfx).map(([id, items]) => { const s = P.slots.find((x) => x.id === id), [iw, ih] = s.inner || [s.rect[2], s.rect[3]]; return [id, mountGfx(document.getElementById('sg-' + id), items, { W: iw, H: ih })]; }));
 ${scene.captions ? `const CAP = ${JSON.stringify(scene.captions)}; const cm = mountCaptions(document.getElementById('cap'), CAP.chunks, CAP.style, { W: P.W, H: P.H, box: CAP.box }); driveCaptions(cm, CAP.chunks);` : ''}
-const el = Object.fromEntries(P.slots.map((s) => [s.id, { w: document.getElementById('s-' + s.id), i: document.getElementById('i-' + s.id), ph: document.getElementById('ph-' + s.id) }]));
+const el = Object.fromEntries(P.slots.map((s) => [s.id, { w: document.getElementById('s-' + s.id), i: document.getElementById('i-' + s.id), ph: document.getElementById('ph-' + s.id), r: document.getElementById('r-' + s.id) }]));
 const PLATES = { speaker: speakerPlate, screen: desktopPlate, photo: photoPlate, broll: brollPlate, slide: slidePlate, video: brollPlate };
 function draw(t) {
   for (const s of P.slots) {
     const E = el[s.id], on = t >= s.start - 1e-6 && t < s.end - 1e-6; E.w.style.display = on ? 'block' : 'none'; if (!on) continue;
     const [x, y, w, h] = s.rect, [iw, ih] = s.inner || [w, h], lt = t - s.start; let op = 1, sc = 1;
     if (s.vis && s.vis.kind === 'pip') { const v = pipState(s.vis, t, { keys: s.vis.keys || [], track: s.vis.track || [] }); op = v.opacity; sc = v.scale; }
-    if (s.vis && s.vis.kind === 'active') { const k = emphasisAt(s.vis.cuts, s.vis.speaker, t); op = s.vis.dim + (1 - s.vis.dim) * k; sc = 1 + (s.vis.grow || 0) * k; E.w.style.boxShadow = k > 0.02 ? '0 0 0 ' + (s.vis.ring * k).toFixed(2) + 'px ' + s.vis.color : 'none'; }
+    if (s.vis && s.vis.kind === 'active') { const k = emphasisAt(s.vis.cuts, s.vis.speaker, t); op = s.vis.dim + (1 - s.vis.dim) * k; sc = 1 + (s.vis.grow || 0) * k; if (E.r) E.r.style.opacity = k.toFixed(4); }
     if (s.vis && s.vis.kind === 'fade') { const a = s.vis.in || 0.2, b = s.vis.out || 0.2; op = Math.min(1, lt / a, (s.end - t) / b); }
     E.w.style.opacity = Math.max(0, op).toFixed(4); E.w.style.transform = sc !== 1 ? 'scale(' + sc.toFixed(4) + ')' : 'none'; E.w.style.transformOrigin = (s.origin || [0.5, 0.5]).map((v) => (v * 100).toFixed(1) + '%').join(' ');
     if (s.wipe) { const k = Math.min(1, Math.max(0, (t - s.wipe.t0) / (s.wipe.t1 - s.wipe.t0))), e = k < 0.5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; E.w.style.clipPath = 'inset(0 ' + ((1 - e) * 100).toFixed(2) + '% 0 0)'; }

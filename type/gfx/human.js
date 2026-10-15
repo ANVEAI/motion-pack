@@ -16,6 +16,7 @@
      title.recapCard      recap bullets that tick in turn
      title.hookCard       a title hook that is visible and moving on frame 0 (podcast clip)
      title.endScreen      end screen with labelled NEXT-VIDEO SLOTS (the platform's own end-screen elements go there) + a subscribe pill
+     title.stepCard       a step / chapter card sized from the shorter frame side (wraps; reads on 9:16)
      callout.resultReveal a "result" tab and a sweep line across a region (the page swaps the before / after picture on the same times)
    Honesty: no default here prints a number that could read as a finding; ordinals the part computes itself (step n of total, code line numbers) are
    mechanics (type/tests/honesty-defaults.test.mjs ALLOW); the year timeline's default years print 'example years · placeholder data'. */
@@ -257,6 +258,17 @@ function resultReveal(L, p, c) {
   return g + '</g>';
 }
 
+/* ---------- title.stepCard: a chapter / step card sized from the shorter side (reads on 9:16 as on 16:9) ---------- */
+function stepCard(L, p, c) {
+  const S = SZ(c, p), ts = 92 * S, ks = 34 * S, maxW = Math.min(c.W * 0.86, (c.safe.x1 - c.safe.x0) - 40 * S), lines = wrapWords(str(p.title), ts, 800, maxW).slice(0, 3), lh = ts * 1.08;
+  const k = E.enter(L.in) * (1 - E.exit(L.out)), rise = (1 - E.hero(L.in)) * 40 * S, cx = c.W / 2, cy = (c.safe.y0 + c.safe.y1) / 2, h = ks + 30 * S + lines.length * lh, y0 = cy - h / 2;
+  let g = `<rect width="${c.W}" height="${c.H}" fill="${p.bg}" opacity="${op(k)}"/><g opacity="${op(k)}" transform="translate(0 ${f2(rise)})">`;
+  g += text(str(p.kicker).toUpperCase(), cx, y0 + ks * 0.8, { size: ks, weight: 700, fill: p.accent === BRAND ? '#9D8BFF' : p.accent, anchor: 'middle', font: MONO, ls: 4 * S });
+  lines.forEach((l, i) => { g += text(l.join(' '), cx, y0 + ks + 30 * S + (i + 1) * lh - ts * 0.18, { size: ts, weight: 800, fill: PAPER, anchor: 'middle' }); });
+  const uw = Math.min(maxW, 220 * S) * E.enter(seg(L.u, 0.15, 0.6)); g += rr(cx - uw / 2, y0 + h + 30 * S, uw, 8 * S, 4 * S, p.accent);
+  return g + '</g>';
+}
+
 export const HUMAN = {
   'ui.keyCombo': { file: 'type/gfx/human.js', tags: ['tutorial', 'keyboard', 'shortcut', 'overlay', 'screen-recording'], dur: 1.8, inF: 6, outF: 8, d: { keys: ['Ctrl', 'Shift', 'P'], label: 'Open the command palette', pos: 'bc', pressAt: 0.15, stagger: 0.16, releaseAt: 1.2, accent: BRAND, size: 1 }, svg: keyCombo },
   'callout.highlightBox': { file: 'type/gfx/human.js', tags: ['tutorial', 'highlight', 'box', 'callout', 'screen-recording'], dur: 2, inF: 14, outF: 8, d: { box: [0.36, 0.38, 0.28, 0.16], pad: 0.006, radius: 0.012, color: '#FFD400', width: 6, label: '', labelPos: 'top', fill: true, size: 1 }, svg: highlightBox },
@@ -274,6 +286,7 @@ export const HUMAN = {
   'title.hookCard': { file: 'type/gfx/human.js', tags: ['hook', 'title', 'frame-0', 'podcast', 'shorts'], dur: 2.6, inF: 1, outF: 9, d: { line: 'Placeholder hook line', kicker: '', pos: 'tc', accent: BRAND, bg: '', size: 1 }, svg: hookCard },
   'title.endScreen': { file: 'type/gfx/human.js', tags: ['end-screen', 'next-video', 'subscribe', 'youtube', 'tutorial'], dur: 5, inF: 12, outF: 6,
     d: { title: 'Watch next', slots: [{ label: 'Next video', kind: 'video' }, { label: 'Playlist', kind: 'playlist' }], slotNote: 'slot: add the platform end-screen element here', subscribe: 'Subscribe', handle: '@yourchannel', bg: '#0E0E14', accent: BRAND, size: 1 }, svg: endScreen },
+  'title.stepCard': { file: 'type/gfx/human.js', tags: ['tutorial', 'chapter', 'step', 'card', 'course'], dur: 0.8, inF: 10, outF: 10, d: { kicker: 'Next step', title: 'Placeholder step title', bg: 'rgba(8,8,12,0.9)', accent: BRAND, size: 1 }, svg: stepCard },
   'callout.resultReveal': { file: 'type/gfx/human.js', tags: ['tutorial', 'result', 'reveal', 'before-after', 'sweep'], dur: 2.4, inF: 1, outF: 10, d: { box: [0.1, 0.1, 0.8, 0.8], sweep: 0.6, label: 'Result', color: '#FFD400', size: 1 }, svg: resultReveal },
 };
 /* one cue per action (absolute times added by gfxCues): [{ t (local s), id, why }] */
@@ -290,6 +303,7 @@ export const HUMAN_CUES = {
   'title.recapCard': (p) => list(p.items, 8).map((_, i) => ({ t: +(0.5 + i * Math.max(0.05, +p.stagger || 0.4)).toFixed(4), id: 'sfx/ui/pop', why: 'recap item ' + (i + 1) })),
   'title.hookCard': () => [{ t: 0, id: 'sfx/hit/soft', why: 'hook card on frame 0' }],
   'title.endScreen': () => [{ t: 0, id: 'sfx/whoosh/whoosh_in_m', why: 'end screen' }],
+  'title.stepCard': () => [{ t: 0, id: 'sfx/whoosh/whoosh_in_m', why: 'step card in' }, { t: 0.3, id: 'sfx/ui/pop', why: 'step title' }],
   'callout.resultReveal': (p) => [{ t: 0, id: 'sfx/tx/mask_reveal', why: 'result sweep' }, { t: +Math.max(0.1, +p.sweep || 0.6).toFixed(4), id: 'sfx/sparkle/shimmer', why: 'result tab' }],
 };
 export const HUMAN_IDS = Object.keys(HUMAN);
