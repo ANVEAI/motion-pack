@@ -463,3 +463,26 @@ def sting_button(seed):
     y += svf(white(n, seed), expo(5000.0, 1500.0, t / 0.6), 3.0, "bp") * env_ad(t, 0.001, 0.25) * 0.5
     y += boom(seed + 1, 100.0, 34.0, 0.15, 0.35, 2.6, 0.6, "room", 0.0)[:n, 0] * 0.8
     return dsp.reverb(_st(y, seed, 0.5), "hall", 0.25, seed)
+
+
+@_t("snd.trailer.radio_static_loop", ["anchor:loop", "radio", "static", "noise", "loop"],
+    "radio static, 4.0 s seamless loop: band-limited hiss (300 Hz - 3.4 kHz, circular), wrapped crackles, a heterodyne whistle that drifts (whole cycles) and a slow fade-in-fade-out of the carrier", 1380,
+    tier=3, kind="fixed", loop=True, tonal=False, pairs=("cut", "glitch"))
+def radio_static_loop(seed):
+    L = sec(4.0)
+    t = t_of(L)
+    nz = np.stack([white(L, seed), white(L, seed + 1)], 1)
+    X = np.fft.rfft(nz, axis=0)
+    f = np.fft.rfftfreq(L, 1.0 / SR)
+    band = 1.0 / np.sqrt(1 + (300.0 / np.maximum(f, 1)) ** 4) / np.sqrt(1 + (f / 3400.0) ** 4)
+    hiss = np.fft.irfft(X * band[:, None], L, axis=0)
+    hiss /= np.std(hiss) + 1e-9
+    fade = 0.55 + 0.45 * np.sin(dsp.TWO_PI * t / 4.0) ** 2
+    y = hiss * (0.35 * fade)[:, None]
+    r = rng(seed)
+    for k in range(70):
+        m = int(r.integers(ms(0.3), ms(3)))
+        c = svf(white(m, seed + 10 + k), r.uniform(1500, 3200), 1.2, "bp") * np.exp(-np.arange(m) / (m * 0.3)) * r.uniform(0.6, 2.2)
+        add_wrap(y[:, k % 2], c, int(r.integers(0, L)))
+    wh = np.sin(dsp.TWO_PI * (1250.0 * t + 40.0 * 4.0 / dsp.TWO_PI * np.sin(dsp.TWO_PI * t / 4.0))) * (0.05 + 0.05 * np.sin(dsp.TWO_PI * 2 * t / 4.0) ** 2)
+    return y + wh[:, None]
