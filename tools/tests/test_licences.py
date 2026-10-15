@@ -58,27 +58,29 @@ def test_readme_does_not_send_users_to_a_stale_release_as_the_default():
     """audit H4 / D5 / C9: the Release WAV zips lag main (288 / 64 vs 301 / 65 when found); the README must say the build scripts are the version-matched path"""
     r = read('README.md')
     assert 'download the WAV masters from the latest Release' not in r
-    assert re.search(r'Release zips lag', r) and 'python3 sfx/build_library.py' in r and 'python3 music/build_music.py' in r
+    assert re.search(r"Release's zips match its own tag, not `main`", r) and 'python3 sfx/build_library.py' in r and 'python3 music/build_music.py' in r
     i = r.index('# 1. Build the sound library')
     assert 'supported path' in r[i:i + 200]
 
 
 def test_release_lag_statement_cannot_go_stale():
-    """verifier: a hand-written "main has 301 and 65" goes stale as sounds are added. The README states only the Release's fixed counts and points at the
-    generated table; the Release counts must stay below the manifests (else "lags" is false), and no file that mentions the Release may hand-write main's counts"""
+    """verifier: a hand-written "main has 301 and 65" goes stale as sounds are added. The README states only each Release's fixed counts and points at the
+    generated table; a Release's counts can never exceed the manifests (main only grows), and every pointer at a Release must say it matches its own tag only"""
     import json
     r = read('README.md')
-    m = re.search(r'holds (\d+) sound effects and (\d+) music pieces', r)
-    assert m, 'README "Heavy media" must state the Release counts'
+    found = re.findall(r'Release (v\d+\.\d+\.\d+) \(tag[^)]*\) holds (\d+) sound effects and (\d+) music pieces', r)
+    assert found, 'README "Heavy media" must state each Release\'s counts'
     sfx = len(json.loads(read('sfx/manifest.json'))['sounds'])
     music = len(json.loads(read('music/manifest.json'))['items'])
-    assert (int(m.group(1)), int(m.group(2))) != (sfx, music) and int(m.group(1)) <= sfx and int(m.group(2)) <= music, 'the Release no longer lags main: fix README "Heavy media"'
+    for ver, a, b in found:
+        assert int(a) <= sfx and int(b) <= music, f'README says Release {ver} holds more than main: fix README "Heavy media"'
     for p in ('README.md', '.gitignore', 'tools/make_previews.py', 'sfx/README.md', 'music/README.md', 'LICENSE-MEDIA'):
         t = read(p)
         assert not re.search(r'`?main`? has \d+', t), f'{p}: hand-written count for main; point at the generated table instead'
         for hit in re.finditer(r'(?i)(?:download[^.\n]{0,40}GitHub Release|from the (?:latest )?Release)', t):
             ctx = t[max(0, hit.start() - 300):hit.end() + 300]
-            assert re.search(r'(?i)lags? main|v0\.1\.0', ctx), f'{p}: points at the Release without saying it lags main: {hit.group()!r}'
+            assert re.search(r'(?i)own tag|tag only|lags? main|v0\.1\.0', ctx), f'{p}: points at the Release without saying it matches its own tag only: {hit.group()!r}'
+
 
 
 def test_every_committed_lab_image_has_a_provenance_row_and_only_permissive_credited_sets():
