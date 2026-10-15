@@ -59,5 +59,10 @@ if (!bad && !ONLY) {
   const [f0, mf] = tm(() => renderSVG('ui.failoverRoute', 1.4, { params: { rate: 0 } })), [f1] = tm(() => renderSVG('ui.failoverRoute', 1.4, { params: { rate: GFX_LIM['ui.failoverRoute'].rate[0] } }));
   R.check(`ui.failoverRoute rate 0 (3 GB string) draws the minimum-rate frame in ${mf.toFixed(0)} ms`, mf < 1500 && f0 === f1 && f0.length > 500);
   R.check('a NaN count draws the default count; a count of 1e9 draws the maximum', renderSVG('fx.emotion.heartBurst', 0.6, { params: { count: NaN } }) === renderSVG('fx.emotion.heartBurst', 0.6, {}) && renderSVG('fx.emotion.heartBurst', 0.6, { params: { count: 1e9 } }) === renderSVG('fx.emotion.heartBurst', 0.6, { params: { count: GFX_LIM['fx.emotion.heartBurst'].count[1] } }));
+  /* a NaN / Infinity in a TEXT param takes the default text (safe.js fix): it used to become the number 0, which a part printed as its "source" ("0") */
+  const { saneParams } = await import(path.join(ROOT, 'type/gfx/safe.js'));
+  const sp = saneParams({ source: NaN, label: Infinity, n: NaN, t: [NaN], o: { k: -Infinity }, free: NaN }, { source: 'illustrative data', label: 'Slot', n: 5, t: ['a'], o: { k: 'x' }, fmt: null });
+  R.check('saneParams: a NaN / Infinity takes the default of its own type at the same path (a default text stays text, a number stays a number), 0 only when there is no default', sp.source === 'illustrative data' && sp.label === 'Slot' && sp.n === 5 && sp.t[0] === 'a' && sp.o.k === 'x' && sp.free === 0, JSON.stringify(sp));
+  R.check('chart.hoverTooltip with source NaN draws the default (labelled) frame, not a source of "0"', renderSVG('chart.hoverTooltip', 3.4, { params: { source: NaN } }) === renderSVG('chart.hoverTooltip', 3.4, {}) && !/source: 0/.test(renderSVG('chart.hoverTooltip', 3.4, { params: { source: NaN } })));
 }
 process.exit(R.done() && R.failed ? 1 : 0);
