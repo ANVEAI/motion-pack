@@ -7,12 +7,13 @@ D="$(cd "$1" && pwd)"; PAGE="$2"; A="${3:-wide}"; CRF="${4:-20}"; SH="$(cd "$(di
 # prerequisites first (puppeteer-core + Chrome): a missing one used to be swallowed by the log filter below and surface later as an ffmpeg 'No such file'
 if [ "$AUDIO_ONLY" != 1 ]; then node "$SH/../../tools/chrome.mjs" --check >/dev/null || exit 1; fi
 df -h . | tail -1
-node "$SH/cues.mjs" "$D"
+# MP_PROJECT=/abs/project.json: the shared project file (templates/_shared/project.mjs); the plan and the page read the same resolved CONFIG (out/config.resolved.json)
+if [ -n "$MP_PROJECT" ]; then node "$SH/cues.mjs" "$D" --project "$MP_PROJECT"; Q="aspect=$A&config=out/config.resolved.json"; else node "$SH/cues.mjs" "$D"; Q="aspect=$A"; fi
 SEC=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$D/out/plan.json','utf8')).seconds)")
 N=$(basename "$D")
 if [ "$AUDIO_ONLY" = 1 ] && [ -f "$D/out/$N-$A.mp4" ]; then ffmpeg -v error -y -i "$D/out/$N-$A.mp4" -map 0:v -c copy "$D/out/$N-$A-picture.mp4"; echo "AUDIO_ONLY: reusing the picture"   # sound-only change: keep the picture
 else LOG="$D/out/render-$A.log"   # the full renderer log (gitignored); the console shows the key lines, and the whole tail when the render fails
-  if node "$SH/../../tools/render.mjs" "$D/$PAGE" "$D/out/$N-$A-picture.mp4" "$SEC" 30 --query "aspect=$A" --crf "$CRF" --min-free-gib 10 > "$LOG" 2>&1; then grep -Ei "gpu|encoded|console|error|warn" "$LOG" | head -5 || true
+  if node "$SH/../../tools/render.mjs" "$D/$PAGE" "$D/out/$N-$A-picture.mp4" "$SEC" 30 --query "$Q" --crf "$CRF" --min-free-gib 10 > "$LOG" 2>&1; then grep -Ei "gpu|encoded|console|error|warn" "$LOG" | head -5 || true
   else echo "render failed (tools/render.mjs exit $?); last lines of $LOG:" >&2; tail -20 "$LOG" >&2; exit 1; fi; fi
 python3 "$SH/audio.py" "$D/out/plan.json" "$D/out/$N-mix.wav"
 ffmpeg -v error -y -i "$D/out/$N-$A-picture.mp4" -i "$D/out/$N-mix.wav" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest "$D/out/$N-$A.mp4"

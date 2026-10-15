@@ -21,6 +21,17 @@ export const CONFIG = {
 };
 /* ============================================================================== */
 
+/* the shared project file (templates/_shared/project.schema.json) -> this CONFIG (`mp list beat-edit`). The aspect picks a platform preset (its size and safe zone);
+   a music id also sets bpm from music/manifest.json, so the cuts stay on the new bed's beats; a clip's len is probed from the file (ffprobe) */
+const clipSlot = (i) => ({ to: [`clips.${i}.src`, `clips.${i}.len`], fn: (src, ctx) => [src, src == null ? undefined : ctx.seconds(src)] });
+export const PROJECT_MAP = {
+  'music': { to: ['music', 'bpm'], fn: (id, ctx) => { if (id == null) return [null, undefined]; const m = ctx.music(id); if (!m) throw new Error(`unknown music id ${id} (music/manifest.json)`); return [id, m.bpm]; } },
+  'text.words': { to: 'words.list', split: true },
+  'media.clip0.src': clipSlot(0), 'media.clip1.src': clipSlot(1), 'media.clip2.src': clipSlot(2), 'media.clip3.src': clipSlot(3), 'media.clip4.src': clipSlot(4),
+  'aspect': { to: 'platform', values: { '16:9': 'x.video', '9:16': 'reels.organic', '1:1': 'linkedin.video' } }, 'platform': 'platform',
+};
+export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'native' }, '1:1': { how: 'native' }, '4:5': { how: 'manual', note: 'plan.mjs SIZES has no 4:5 shape yet (and eyes copies that table): add one to both first' } };
+
 export function buildPlan(C) {
   const totalBeats = C.sections.reduce((a, s) => a + s.beats, 0), G0 = beatGrid(C.bpm, C.fps, 1e3, C.offset), spb = G0.beatSec;
   const seconds = +(totalBeats * spb).toFixed(6), G = { ...G0, beats: G0.beats.slice(0, totalBeats) };

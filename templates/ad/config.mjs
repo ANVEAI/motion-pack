@@ -2,7 +2,7 @@
    Edit the CONFIG block only; `node make.mjs [--set length=30]` writes index.html + the SFX mix; then `hyperframes render`.
    DEMO CONTENT: "Orbit" is a FICTIONAL placeholder brand, and every line is placeholder copy. Proof lines carry no numbers on purpose:
    any claim with a digit must carry `source` or lint.proof fails the build (node make.mjs exits 2; `--allow-lint` waives it and the plan records the waiver). */
-import { sequence, PLATFORMS, SIZES } from '../_shared/plan.mjs';
+import { sequence, PLATFORMS } from '../_shared/plan.mjs';
 
 /* ============================== CONFIG (edit me) ============================== */
 export const CONFIG = {
@@ -44,7 +44,8 @@ export const PROJECT_MAP = {
 };
 /* aspects: 16:9 is the master; the others are the generic card re-layout (_shared/relayout.mjs: type refit into the aspect's safe rect, plates re-framed by object-position) */
 export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'relayout' }, '1:1': { how: 'relayout' }, '4:5': { how: 'relayout' } };
-const ASPECT_PLATFORM = { '16:9': 'yt.ad.15', '9:16': 'meta.ad.9x16', '1:1': 'linkedin.video', '4:5': 'meta.feed.4x5' }, SHAPE = { '16:9': 'wide', '9:16': 'tall', '1:1': 'square', '4:5': 'portrait' };
+const ASPECT_PLATFORM = { '16:9': 'yt.ad.15', '9:16': 'meta.ad.9x16', '1:1': 'linkedin.video', '4:5': 'linkedin.video' }, SHAPE = { '16:9': 'wide', '9:16': 'tall', '1:1': 'square', '4:5': 'square' };   // 4:5 has no preset of its own: it takes linkedin.video's safe fractions (eyes: linkedin.video takes 1:1, 4:5, 16:9)
+const SIZE = { '16:9': [1920, 1080], '9:16': [1080, 1920], '1:1': [1080, 1080], '4:5': [1080, 1350] };
 
 const BUDGET = { 15: { hook: 2.5, problem: 2.5, product: 4.0, proof: 3.5, cta: 2.5 }, 30: { hook: 3, problem: 5, product: 8, proof: 9, cta: 5 } };
 export function buildPlan(C) {
@@ -74,5 +75,5 @@ export function buildPlan(C) {
   const end = shots.find((s) => s.id === 'cta'); cues.push({ id: C.sfx.sting, t: end.start + 4 / C.fps, gainDb: -3, why: 'sonic sting' });
   if (C.sfx.bed) cues.push({ id: C.sfx.bed, t: 0, gainDb: -22, why: 'air bed (loop)', loopTo: seconds });
   const brandAt = shots.find((s) => s.kind === 'reveal').start;
-  return { template: 'ad', fps: C.fps, seconds, platform, safe: P.safe, ...(aspect !== '16:9' ? { aspect, size: SIZES[SHAPE[aspect]] } : {}), brandCueAt: brandAt, brandCueOk: brandAt <= P.brandCueBy, shots, cues: cues.sort((a, b) => a.t - b.t), claims: proof, music: C.music, paceRule: { aslMax: 2.5, longMax: 4.5 } };
+  return { template: 'ad', fps: C.fps, seconds, platform, safe: P.safe, ...(aspect !== '16:9' ? { aspect, size: SIZE[aspect] } : {}), brandCueAt: brandAt, brandCueOk: brandAt <= P.brandCueBy, shots, cues: cues.sort((a, b) => a.t - b.t), claims: proof, music: C.music, paceRule: { aslMax: 2.5, longMax: 4.5 } };
 }

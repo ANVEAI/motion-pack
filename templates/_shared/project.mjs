@@ -10,7 +10,7 @@
      { to, values, fn, list, split, required, note }
        to        a path or a list of paths (CONFIG paths; numeric parts index arrays: 'broll.0.src')
        values    a lookup table for the value ({ '16:9': 'wide', '9:16': 'tall' }); a value not in it is an error that names the allowed ones
-       fn        (value, ctx) => value, or => [one value per `to` path]; ctx = { project, template, aspect, music(id) -> music/manifest.json item, warn(msg) }
+       fn        (value, ctx) => value, or => [one value per `to` path]; ctx = { project, template, aspect, defaults (the template's CONFIG), music(id) -> music/manifest.json item, seconds(file), warn(msg) }
        list      wrap a single string in a list;  split: split a string on spaces into a list
        required  the template cannot render without it: an error when the project does not give it AND the CONFIG default at `to` is null / ''
    The longest map key that is a prefix of a project field wins: 'media.hook.src' is used before 'media.hook'. A project field no key covers is IGNORED by this template
@@ -19,7 +19,7 @@
 
    Errors are clear and stop the build (exit 2): unknown key (with a suggestion), wrong type, a missing file, a missing required slot, a digit in on-screen copy with no sourced claim,
    a claim with a digit and a blank or generic source (the same rule as lint.proof), an aspect the template does not support. */
-import fs from 'node:fs'; import path from 'node:path'; import { pathToFileURL, fileURLToPath } from 'node:url';
+import fs from 'node:fs'; import path from 'node:path'; import { pathToFileURL, fileURLToPath } from 'node:url'; import { execFileSync } from 'node:child_process';
 import { sourceOk } from './plan.mjs';
 
 export const SH = path.dirname(fileURLToPath(import.meta.url)), PACK = path.resolve(SH, '..', '..');
@@ -33,7 +33,7 @@ const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 export const stripComments = (v) => Array.isArray(v) ? v.map(stripComments) : isObj(v) ? Object.fromEntries(Object.entries(v).filter(([k]) => !k.startsWith('//')).map(([k, x]) => [k, stripComments(x)])) : v;
 function lev(a, b) { const m = a.length, n = b.length, d = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]); for (let j = 1; j <= n; j++) d[0][j] = j;
   for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[m][n]; }
-export function suggest(word, candidates, max = 2) { let best = null, bd = Infinity; for (const c of candidates) { const d = lev(String(word).toLowerCase(), String(c).toLowerCase()); if (d < bd) { bd = d; best = c; } } return bd <= Math.max(max, Math.floor(String(word).length / 4)) ? best : null; }
+export function suggest(word, candidates, max = 2) { let best = null, bd = Infinity; for (const c of candidates) { const d = lev(String(word).toLowerCase(), String(c).toLowerCase()); if (d < bd) { bd = d; best = c; } } const n = String(word).length; return bd <= (n <= 4 ? 1 : Math.max(max, Math.floor(n / 4))) ? best : null; }   // short words: one edit at most (3:2 is not 1:1)
 const typeOf = (v) => v === null ? 'null' : Array.isArray(v) ? 'array' : Number.isInteger(v) ? 'integer' : typeof v;
 const typeOk = (v, t) => [].concat(t).some((x) => x === typeOf(v) || (x === 'number' && typeof v === 'number' && Number.isFinite(v)));
 const show = (v) => { const s = JSON.stringify(v); return s && s.length > 60 ? s.slice(0, 57) + '...' : s; };
@@ -152,6 +152,8 @@ export function normEntry(e) { if (typeof e === 'string' || Array.isArray(e)) e 
 const normKey = (k) => k.replace(/^brand\.font(\.|$)/, 'brand.fonts$1');   // CONFIG says brand.font, the project file says brand.fonts: both spellings work in a map
 const MANIFEST = () => { try { return JSON.parse(fs.readFileSync(path.join(PACK, 'music', 'manifest.json'), 'utf8')).items; } catch { return []; } };
 const DERIVED = new Set(['aspect', 'platform']);
+/* the duration of a media file in seconds (ffprobe), for a map fn that needs it (beat-edit's clip len) */
+export function mediaSeconds(file) { try { return +(+execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file], { encoding: 'utf8' }).trim()).toFixed(3); } catch (e) { throw new Error(`cannot read the duration of ${file} (ffprobe: ${e.message.split('\n')[0]})`); } }
 /* a project field that is one or two edits away from a mapped key in the same group (text.hedline vs text.headline; media.hok.src vs media.hook.src) */
 export function nearMiss(p, keys) {
   const cand = keys.filter((k) => k.split('.')[0] === p.split('.')[0]);
@@ -170,7 +172,7 @@ export function applyProject(CONFIG, MAP = {}, project = {}, opts = {}) {
   const C = structuredClone(CONFIG), errors = [], warnings = [], applied = [], ignored = [], tpl = opts.template || 'template';
   const map = Object.fromEntries(Object.entries(MAP || {}).map(([k, e]) => [normKey(k), normEntry(e)]));
   const keys = Object.keys(map).sort((a, b) => b.length - a.length), find = (p) => keys.find((k) => p === k || p.startsWith(k + '.'));
-  const ctx = { project, template: tpl, aspect: opts.aspect || null, music: (id) => MANIFEST().find((i) => i.id === 'music.' + String(id).replace(/^music\//, '')) || null, warn: (m) => warnings.push(m) };
+  const ctx = { project, template: tpl, aspect: opts.aspect || null, defaults: CONFIG, seconds: mediaSeconds, music: (id) => MANIFEST().find((i) => i.id === 'music.' + String(id).replace(/^music\//, '')) || null, warn: (m) => warnings.push(m) };
   // which aspects the template can build
   if (opts.aspect) { const A = opts.ASPECTS; if (A && !A[opts.aspect]) errors.push(`aspect ${opts.aspect}: ${tpl} does not support it (supported: ${Object.keys(A).join(', ')})`);
     else if (A && A[opts.aspect].how === 'manual') errors.push(`aspect ${opts.aspect}: ${tpl} needs a MANUAL re-layout for it (${A[opts.aspect].note || 'no automatic layout'}); build ${Object.entries(A).filter(([, v]) => v.how !== 'manual').map(([k]) => k).join(' / ')} instead`); }
@@ -203,8 +205,8 @@ export function applyProject(CONFIG, MAP = {}, project = {}, opts = {}) {
   // required slots: the template cannot render without them
   for (const [k, e] of Object.entries(map)) if (e.required) {
     const given = fields.some(([p, v]) => (p === k || p.startsWith(k + '.')) && v != null), dflt = e.to.map((t) => getPath(C, t));
-    if (!given && dflt.every((d) => d == null || d === '')) errors.push(`${k}: ${tpl} needs it (required slot${e.note ? ': ' + e.note : ''}); set it in the project file`);
-    else if (fields.some(([p, v]) => (p === k || p === k + '.src') && v == null)) errors.push(`${k}: ${tpl} needs a real file here (required slot, no placeholder${e.note ? ': ' + e.note : ''})`);
+    if (fields.some(([p, v]) => (p === k || p === k + '.src') && v == null)) errors.push(`${k}: ${tpl} needs a real file here (required slot, no placeholder${e.note ? ': ' + e.note : ''})`);
+    else if (!given && dflt.every((d) => d == null || d === '')) errors.push(`${k}: ${tpl} needs it (required slot${e.note ? ': ' + e.note : ''}); set it in the project file`);
   }
   // raw overrides for this template
   for (const [cp, v] of Object.entries((project.overrides || {})[tpl] || {})) { if (cp.startsWith('//')) continue; const err = setPath(C, cp, structuredClone(v));
@@ -272,10 +274,9 @@ export async function loadConfig(dir, argv = process.argv.slice(2), { quiet = fa
       fs.mkdirSync(path.join(dir, 'out'), { recursive: true });
       fs.writeFileSync(path.join(dir, 'out', 'config.resolved.json'), JSON.stringify(C, null, 1));
       fs.writeFileSync(path.join(dir, 'out', 'project.report.json'), JSON.stringify(report, null, 1));
-      // printed once per build: make.mjs and the cues.mjs it spawns both resolve the project
-      if (!quiet && args.project && !process.env.MP_PROJECT_REPORTED) console.error(`${who}: ${report.applied.length} field${report.applied.length === 1 ? '' : 's'} applied from ${path.basename(report.project)}${report.aspect ? ' at ' + report.aspect : ''}${report.ignored.length ? `; not used by ${report.template}: ${report.ignored.join(', ')}` : ''}${report.warnings.length ? '\n  warn: ' + report.warnings.join('\n  warn: ') : ''}`);
+      // printed once per build, by cues.mjs (every make.mjs runs it): make.mjs resolves the same project silently
+      if (!quiet && args.project && who === 'cues.mjs') console.error(`${who}: ${report.applied.length} field${report.applied.length === 1 ? '' : 's'} applied from ${path.basename(report.project)}${report.aspect ? ' at ' + report.aspect : ''}${report.ignored.length ? `; not used by ${report.template}: ${report.ignored.join(', ')}` : ''}${report.warnings.length ? '\n  warn: ' + report.warnings.join('\n  warn: ') : ''}`);
     }
-    if (args.project) process.env.MP_PROJECT_REPORTED = '1';
     return C;
   } catch (e) {
     if (!(e instanceof ProjectError)) throw e;

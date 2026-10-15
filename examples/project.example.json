@@ -1,0 +1,64 @@
+{
+  "$schema": "../templates/_shared/project.schema.json",
+  "//": "ONE file drives a whole video. Edit the values, keep the keys. Any key that starts with // is a comment. Fields: `mp list`; schema: templates/_shared/project.schema.json.",
+  "//how": "mp new ad,proof-film ~/Movies/fernwick --project examples/project.example.json   then   cd ~/Movies/fernwick && mp render && mp check",
+  "//honesty": "Fernwick is a FICTIONAL demo brand made for this example. The footage is the pack's own render plates; the product slot is a labelled placeholder; every proof-film number is a labelled placeholder (ILLUSTRATIVE in frame).",
+
+  "version": 1,
+  "//template": "the templates this project builds (`mp build` / `mp render` do every one; --template ad picks one). Same brand, same copy, each template uses the fields it knows.",
+  "template": ["ad", "proof-film"],
+
+  "brand": {
+    "//": "colours came from `mp brand examples/project-assets/fernwick-mark.svg`: accent from the mark, ink and paper tinted toward it, all three contrast-checked (WCAG).",
+    "name": "Fernwick",
+    "accent": "#0F766E",
+    "ink": "#181F1E",
+    "paper": "#F2F6F5",
+    "logo": "project-assets/fernwick-mark.svg",
+    "url": "fernwick.example",
+    "cta": "Try the demo"
+  },
+
+  "text": {
+    "//": "ALL on-screen copy. *word* = the accent word. Keep a read line to about 6 words; a digit needs a claim with a source (see claims).",
+    "headline": "Every note, *found*.",
+    "problem": ["Notes everywhere.", "Answers *nowhere*."],
+    "product": "One search for *everything* you wrote.",
+    "intro": "Introducing",
+    "promise": "A fictional product. Every number in this film is a placeholder.",
+    "end": "Replace every placeholder before you publish."
+  },
+
+  "media": {
+    "//": "named footage slots. src is a path relative to this file; null renders a labelled placeholder ('placeholder: <label>' in frame), never a fake shot.",
+    "hook": { "src": "../templates/_shared/media/plate-devices.mp4", "start": 2.2, "label": "your product in use" },
+    "problem": { "src": "../templates/_shared/media/plate-film.mp4", "start": 0.4, "label": "the problem, filmed" },
+    "product": { "src": null, "label": "Fernwick on a laptop" }
+  },
+
+  "//voice": "optional: a words.json from whisper or an .srt, plus your recording. proof-film times its camera moves into the gaps of the voice.",
+  "voice": { "words": null, "audio": null },
+
+  "//music": "a pack bed id (music/manifest.json). A template whose cuts follow the beat (proof-film, beat-edit) takes the bed's BPM from the manifest by itself.",
+  "music": "music/bed_tech_pulse_loop8",
+
+  "//aspects": "each aspect is a RE-LAYOUT, never a crop. ad: 16:9 master + generic re-layout for 9:16 / 1:1 / 4:5. proof-film: 16:9 + its own 9:16 layout. `mp list` shows every template's.",
+  "aspects": ["16:9", "9:16"],
+  "//platforms": "for each aspect the first preset of that shape sets the safe zone and the brand-cue deadline",
+  "platforms": ["x.video", "reels.organic"],
+
+  "claims": [
+    { "//": "claims without a key are the ad's proof lines. A digit in a claim needs a source that says where the number comes from (not 'internal benchmark').",
+      "text": "Searches the notes you already keep." },
+    { "text": "Your notes stay on your laptop." }
+  ],
+
+  "overrides": {
+    "//": "raw CONFIG values per template, for what the shared fields do not cover. An unknown CONFIG path is an error, with a suggestion.",
+    "proof-film": {
+      "//": "a proof film wants a light bed (20-36% bass share): keep its own bed and tempo here instead of the ad's",
+      "music": "music/bed_playful_bounce_loop8",
+      "bpm": 120
+    }
+  }
+}

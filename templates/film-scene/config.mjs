@@ -22,6 +22,10 @@ export const CONFIG = {
 };
 /* ============================================================================== */
 
+/* the shared project file -> this CONFIG (`mp list film-scene`). A wordless scene: no brand or copy slots; change beats, layout or events through overrides['film-scene'] */
+export const PROJECT_MAP = {};
+export const ASPECTS = { '16:9': { how: 'native', tag: 'wide' }, '9:16': { how: 'native', tag: 'tall' }, '1:1': { how: 'manual', note: 'beats carry wide and tall camera distances only' }, '4:5': { how: 'manual', note: 'beats carry wide and tall camera distances only' } };
+
 export function buildPlan(C) {
   const { shots, seconds } = sequence(C.beats.map((b) => ({ ...b, txReason: b.tx ? 'STORY: beat change (hard cut)' : undefined })), C.fps);
   const E = C.events, cues = [

@@ -61,6 +61,20 @@ export const CONFIG = {
 };
 /* ============================================================================== */
 
+/* the shared project file -> this CONFIG (`mp list proof-film`). Numbers stay in the CONFIG number fields (each needs source AND method); a project sets them through overrides['proof-film'].
+   A music id also sets bpm from music/manifest.json (stages start on the bed's beats) */
+export const PROJECT_MAP = {
+  // the brand name also renames the hero in the builder and the head-to-head column, and every finding / method line that named the demo brand
+  'brand.name': { to: ['brand.name', 'builder.scatter.hero.label', 'builder.table.columns.2.label', 'h2h.columns.2.label', 'builder.table.finding', 'h2h.finding', 'numbers.items.1.method'],
+    fn: (v, ctx) => { const D = ctx.defaults, was = D.brand.name, re = (s) => s.split(was).join(v); return [v, v, v, v, re(D.builder.table.finding), re(D.h2h.finding), re(D.numbers.items[1].method)]; } },
+  'brand.accent': 'brand.accent', 'brand.ink': 'brand.ink', 'brand.paper': 'brand.paper', 'brand.muted': 'brand.muted', 'brand.url': 'brand.url',
+  'text.headline': 'claim', 'text.intro': 'name.intro', 'text.promise': 'name.promise', 'text.end': 'end.line',
+  'voice.words': 'vo.words', 'voice.audio': 'vo.audio',
+  'music': { to: ['music', 'bpm'], fn: (id, ctx) => { const m = id && ctx.music(id); if (!m) throw new Error(`proof-film needs a pack bed: ${id} is not in music/manifest.json`); return [id, m.bpm]; } },
+  'aspect': { to: 'format', values: { '16:9': 'wide', '9:16': 'tall' } },
+};
+export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'native', note: 'own FORMAT constants (a re-layout); ui.branchTrace is landscape-only' }, '1:1': { how: 'manual', note: 'FORMAT has wide and tall only' }, '4:5': { how: 'manual', note: 'FORMAT has wide and tall only' } };
+
 const FORMAT = {   // box = [x, y, w, h] as fractions of the safe rect (pulled in by the camera push: panels.mjs safeInset); the callout offset is for the scatter's starred point
   wide: { W: 1920, H: 1080, platform: 'x.video', zone: 'wideTitle', pitch: [1920, 0], box: { scatter: [0, 0, 1, 1], trace: [0, 0, 1, 1], table: [0, 0, 1, 0.76] }, tableScale: 1.4, calloutOffset: [-200, 110] },
   tall: { W: 1080, H: 1920, platform: 'reels.organic', zone: 'conservative', pitch: [0, 1920], box: { scatter: [0, 0, 1, 1], trace: [0, 0, 1, 1], table: [0, 0, 1, 0.72] }, tableScale: 1.12, calloutOffset: [-380, -60] },   // 'conservative' 9:16 union: x 65-960, y 269-1248
