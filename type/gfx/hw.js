@@ -43,7 +43,8 @@ const CALLOUT_D = { anchor: [0.56, 0.52], track: null, off: [150, -120], run: nu
 function calloutGeo(p, c, t) {
   const s = sc(c) * num(p.size, 1, 0.3, 4), [ax, ay] = pointAt(p.track ?? p.anchor, t, CALLOUT_D.anchor), x0 = ax * c.W, y0 = ay * c.H;
   const vSize = 66 * s, lSize = 28 * s, uSize = 34 * s, val = str(p.prefix, '', 6) + fmtNum(p.value, p.dec), lw = Math.max(measure(str(p.label, '', 40), lSize, { weight: 700 }), measure(val, vSize, { weight: 800 }) + measure(' ' + str(p.unit, '', 10), uSize, { weight: 700 }));
-  let dx = num(p.off?.[0], 150, -900, 900) * s, dy = num(p.off?.[1], -120, -900, 900) * s; const run = (p.run == null ? lw + 24 * s : num(p.run, 200, 20, 1600) * s);
+  const lab = !(p.value != null && p.value !== '' && Number.isFinite(+p.value)) ? measure(str(p.label, '', 40), 38 * s, { weight: 700 }) : null;
+  let dx = num(p.off?.[0], 150, -900, 900) * s, dy = num(p.off?.[1], -120, -900, 900) * s; const run = (p.run == null ? (lab ?? lw) + 24 * s : num(p.run, 200, 20, 1600) * s);
   const S = c.safe, right = p.side === 'left' ? false : p.side === 'right' ? true : !(x0 + Math.abs(dx) + run > S.x1 && x0 - Math.abs(dx) - run > S.x0);
   dx = right ? Math.abs(dx) : -Math.abs(dx);
   const ex = x0 + dx, ey = clamp(y0 + dy, S.y0 + vSize + lSize + 10 * s, S.y1 - 40 * s), rx = ex + (right ? run : -run);
@@ -60,7 +61,10 @@ const CALLOUT = { tags: ['hardware', 'spec', 'callout', 'leader', 'count-up', 'n
     let out = `<g opacity="${f2(o)}">`;
     if (p.dot !== false) out += `<circle cx="${f2(x0)}" cy="${f2(y0)}" r="${f2(15 * s * dotK)}" fill="none" stroke="${acc}" stroke-width="${f2(2.5 * s)}" opacity="${f2(0.6 * dotK)}"/><circle cx="${f2(x0)}" cy="${f2(y0)}" r="${f2(5.5 * s * dotK)}" fill="${acc}"/>`;
     out += `<polyline points="${f2(x0)},${f2(y0)} ${f2(mx)},${f2(my)}${k1 >= 1 ? ` ${f2(hx)},${f2(ey)}` : ''}" fill="none" stroke="${acc}" stroke-width="${f2(2.6 * s)}" stroke-linecap="round" stroke-linejoin="round"/>`;
-    if (tk > 0) {
+    const hasV = p.value != null && p.value !== '' && Number.isFinite(+p.value);
+    if (tk > 0 && !hasV) {   // a label-only callout (a port name, a part name): one line, no number, so no source line
+      out += `<g opacity="${f2(tk)}">` + text(str(p.label, '', 40), lx, ey - 14 * s + ty, { size: 38 * s * num(p.size, 1, 0.3, 4), weight: 700, fill: ink, anchor: anc }) + '</g>';
+    } else if (tk > 0) {
       const ux = lx + (right ? 1 : -1) * 0, vy = ey - 14 * s + ty;
       out += `<g opacity="${f2(tk)}">` + text(str(p.label, '', 40).toUpperCase(), lx, vy - g.vSize - 6 * s, { size: g.lSize, weight: 700, fill: mut, anchor: anc, ls: 2.2 * s });
       const unit = str(p.unit, '', 10), vw = measure(vStr, g.vSize, { weight: 800 }), uw = unit ? measure(' ' + unit, g.uSize, { weight: 700 }) : 0;

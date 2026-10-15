@@ -95,3 +95,12 @@ storyboard/examples/*/storyboard.pdf
 storyboard/examples/*/storyboard.html
 storyboard/examples/*/panels/
 storyboard/examples/*/real/
+# --- xp-hardware templates (hardware-reveal, hardware-teaser, spec-sheet): plates, renders, your media links, score caches ---
+templates/hardware-*/out/*.mp4
+templates/hardware-*/out/*.sig
+templates/hardware-*/out/media-*
+templates/hardware-*/tall/assets/
+templates/spec-sheet/out/*.mp4
+templates/spec-sheet/out/*.sig
+templates/spec-sheet/out/media-*
+templates/spec-sheet/tall/assets/
