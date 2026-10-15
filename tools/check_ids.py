@@ -7,7 +7,7 @@ Scans .js .mjs .py .json .html .sh (and, with --docs, .md; not renders, not node
   cam2d.<move>  cam3d.<move>   cuts/<group>/<name>   cuts/retime/<preset>   templates/<name>
 and resolves them against the module registries (sfx/mpaudio registry, music/manifest.json, transitions/catalog.json + aliases, type/presets.js PRESET_IDS + the ids of type/gfx/index.js GFX_IDS,
 layers/manifest.json, objects/index.js, camera/manifest.json, cuts/patterns.json + cuts/retime.json, templates/*/, blender/manifest.json). In code a reference is a quoted string; in Markdown it is any id inside a `code span` or a
-code fence. A bare layers/, objects/, cuts/, templates/ or transitions/ name that is a real folder or file in the pack (a path such as `layers/tests`) also resolves; names with an extension are paths and are not
+code fence. A bare layers/, objects/, cuts/, templates/, transitions/ or blender/ name that is a real folder or file in the pack (a path such as `layers/tests` or `blender/tests`) also resolves; names with an extension are paths and are not
 checked. Placeholders (`<name>`, `*`, `...`) are skipped. NOT covered: the part ids of type/gfx (`ui.promptBar`, `counter.statCard`, `layout.cornerPin`, ...), which are looked up at run time by the
 gfx registry (an unknown id is a run-time error there) and carry style names (`sticker.bell`, `caption.karaoke`) a text scan cannot tell from ids. Prints unresolved ids with file:line."""
 import os, re, sys, json, importlib, subprocess, collections
@@ -61,7 +61,7 @@ def ok(kind, v):
     n = v.split('/', 1)[-1]   # the name after the folder: transitions/whip -> whip
     if kind == 'tx': return n in TXOK or isdir('transitions', n)
     if kind == 'type': return n in TYPE or isdir('type', n)
-    if kind == 'blender': return v in BLENDER
+    if kind == 'blender': return v in BLENDER or isdir('blender', n)   # a recipe id, or a real folder of blender/ (`blender/tests` is a path, not a recipe id), as for layers/ objects/ cuts/ templates/
     if kind in ('layers', 'objects') and n.rsplit('.', 1)[-1] in FILE_EXT and '.' in n: return True   # a path (layers/README.md, objects/index.js), not an id
     if kind == 'layers': return n in LAYERS or exists('layers', n)
     if kind == 'objects': return n in OBJECTS or exists('objects', n)

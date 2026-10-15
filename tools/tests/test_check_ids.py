@@ -19,7 +19,7 @@ BAD = {   # family -> a plausible but wrong id
     "layers": "layers/nope", "objects": "objects/does-not-exist",
     "layers (dotted)": "layers/overlay.nope", "objects (camelCase)": "objects/doesNotExist", "objects (capital)": "objects/Laptop", "cuts (group)": "cuts/nope/x", "cuts (name)": "cuts/story/nope", "cuts (retime)": "cuts/retime/nope",
     "cam3d": "cam3d.noSuchMove", "cam2d": "cam2d.noSuchMove", "templates": "templates/nope"}
-GOOD = ["transitions/whip", "sfx/hit/punch", "music/bed_tech_pulse_loop8", "type/scaleSlam", "blender/turntable", "layers/vignette", "layers/grain", "layers/overlay.grain", "layers/README.md", "objects/laptop", "objects/index.js", "cuts/story/interruptOpen",
+GOOD = ["transitions/whip", "sfx/hit/punch", "music/bed_tech_pulse_loop8", "type/scaleSlam", "blender/turntable", "blender/tests", "layers/vignette", "layers/grain", "layers/overlay.grain", "layers/README.md", "objects/laptop", "objects/index.js", "cuts/story/interruptOpen",
         "cuts/sections/build_accelerate", "cuts/retime/heroRamp", "cuts/interrupts", "cam3d.pushIn", "cam2d.push2d", "cam2d.dutchRoll.presets", "templates/ad"]
 
 

@@ -4,15 +4,15 @@
    Local to this demo (pure functions of t, drawn on hf-seek): the problem diagram (boxes with faces that get worse each beat), the typing caret, the command pill's outline.
    Every caption leaves by a blur-through (a tween of its container); the story's in / out frames are the only timing source. Nothing here is hand-timed.
      node make.mjs   then   npx -y hyperframes@0.8.142 render . -o out/demo-r6-pivot.mp4 --crf 23 */
-import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, head, write } from '../_shared/compose.mjs';
-const DIR = path.dirname(new URL(import.meta.url).pathname), SH = path.join(DIR, '..', '_shared');
-execFileSync('node', [path.join(SH, 'cues.mjs'), DIR, ...process.argv.slice(2)], { stdio: 'inherit' });
+import fs from 'node:fs'; import path from 'node:path';
+import { stage, runPlan, head, write, mix } from '../_shared/compose.mjs';
+const DIR = path.dirname(new URL(import.meta.url).pathname);
+runPlan(DIR);   // plan + lint gates: exits 2 on lint.proof / lint.tx (--allow-lint waives)
 const plan = JSON.parse(fs.readFileSync(path.join(DIR, 'out', 'plan.json'), 'utf8'));
 const { CONFIG: C } = await import('./config.mjs');
 const st = stage(DIR, { layers: true });
 fs.mkdirSync(path.join(DIR, 'assets', 'media'), { recursive: true });
-execFileSync('python3', [path.join(SH, 'audio.py'), path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
+mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'));   // audio.py: a failure ends the build with its own message, no stack trace
 const [W, H] = plan.size, F = plan.fps, T = plan.seconds, L = C.look;
 const data = { story: plan.story, ribbon: plan.ribbon, look: L, note: C.placeholderNote, fps: F, T, W, H };
 const css = `
