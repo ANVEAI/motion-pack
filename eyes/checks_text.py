@@ -191,7 +191,7 @@ def readability(ctx):
                'needed_s': round(need, 2), 'source': t['src']}
         tt = [round(t['t'][0], 2), round(t['t'][1], 2)]
         if words and dur < need - 1e-6:
-            sev = 'warn' if dur >= 0.8 * need else 'fail'
+            sev = 'warn' if (dur >= 0.8 * need or t['role'] == 'caption') else 'fail'                  # captions follow the voice: the viewer hears the words too
             issues.append(issue(sev, tt, 'text "%s" (%s) is on screen %.2f s; %d words need %.2f s (0.35 s + 0.28 s per word)' % (t['text'][:30], t['id'], dur, words, need),
                                 'hold it %.2f s, or cut it to %d words' % (need, max(1, int((dur - sp['hold_base_s']) / sp['hold_per_word_s']))), 'The words vanish before you can finish reading them.', 'time:' + t['id']))
         if t['role'] == 'label' and dur < sp['label_min_s']:

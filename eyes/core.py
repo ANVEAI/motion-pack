@@ -228,7 +228,7 @@ class Clip:
     def _decode(self):
         aw, ah = self.aw, self.ah
         vf = 'scale=%d:%d:flags=area' % (aw, ah)
-        ys, mean_y, std_y, mean_l, diff, up, dn, red = [], [], [], [], [], [], [], []
+        ys, mean_y, std_y, mean_l, diff, diff_hi, up, dn, red = [], [], [], [], [], [], [], [], []
         prev_l = None
         prev_red = None
         for rgb in iter_frames(self.path, aw, ah, 'rgb24', vf):
@@ -244,9 +244,11 @@ class Clip:
             rmask = (lin[..., 0] >= fs['red_ratio'] * np.maximum(sat, 1e-9)) & ((rgb[..., 0].astype(np.int16) - rgb[..., 1] - rgb[..., 2]) >= fs['red_gamma_min'] * 255)
             ra = float(rmask.mean())
             if prev_l is None:
-                diff.append(0.0); up.append(0.0); dn.append(0.0); red.append(0.0)
+                diff.append(0.0); diff_hi.append(0.0); up.append(0.0); dn.append(0.0); red.append(0.0)
             else:
-                diff.append(float(np.abs(y - prev_y).mean()))
+                ad = np.abs(y - prev_y)
+                diff.append(float(ad.mean()))
+                diff_hi.append(float((ad >= SPEC['frames']['frozen_hi_delta']).mean()))
                 d = lum - prev_l
                 big = (np.abs(d) >= fs['luminance_delta']) & (np.minimum(lum, prev_l) < fs['darker_max'])
                 up.append(float((big & (d > 0)).mean()))
@@ -257,6 +259,7 @@ class Clip:
         self.n = len(ys)
         self.mean_y, self.std_y, self.mean_l = np.array(mean_y), np.array(std_y), np.array(mean_l)
         self.diff = np.array(diff)                                            # mean |Y_i - Y_(i-1)| in 0-255 levels
+        self.diff_hi = np.array(diff_hi)                                      # share of pixels that moved by frozen_hi_delta levels or more
         self.area_up, self.area_dn, self.d_red = np.array(up), np.array(dn), np.array(red)
 
     def idx(self, t):
@@ -307,8 +310,11 @@ def safe_rect(platform, W, H):
         return z['left'] * sc, z['top'] * sc, W - z['right'] * sc, H - z['bottom'] * sc, 'type/safezones.js %s' % platform
     pr = P['presets'].get(platform)
     if pr:
-        if aspect_name(W, H) == '9:16':
+        asp = aspect_name(W, H)
+        if asp == '9:16':
             return safe_rect('conservative', W, H)[:4] + ('platforms.md 9:16 conservative rectangle (%s)' % platform,)
+        if asp not in pr['aspects']:                                           # the platform does not take this shape: the composition check says so; the rect is the shape's default
+            return safe_rect(default_platform(W, H), W, H)[:4] + ('default for %s (%s does not take it)' % (asp, platform),)
         f = pr['safe_frac']
         return f['side'] * W, f['top'] * H, W - f['side'] * W, H - f['bottom'] * H, 'templates/_shared/plan.mjs %s' % platform
     return safe_rect(default_platform(W, H), W, H)

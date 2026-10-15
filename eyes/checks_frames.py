@@ -98,7 +98,7 @@ def frames(ctx):
     issues, notes = [], []
     black = (c.mean_y <= sp['black_mean_y']) & (c.std_y <= sp['black_std_y'])
     empty = (c.std_y <= sp['empty_std_y']) & ~black
-    still = np.concatenate([[False], c.diff[1:] <= sp['frozen_diff']])
+    still = np.concatenate([[False], (c.diff[1:] <= sp['frozen_diff']) & (c.diff_hi[1:] <= sp['frozen_hi_frac'])])
     rows = {'black': [], 'empty': [], 'frozen': [], 'stalls': []}
     for i0, i1 in idx_runs(black):
         t0, t1 = _t(c, i0), _t(c, i1)
@@ -230,7 +230,8 @@ def flashes(ctx):
 # ------------------------------------------------------------------------------------------------ banding
 def staircase(Y, plateau_px, step_max, min_steps):
     """the share of an (H, W) uint8 luma frame in banding staircases along its rows, and the mask: runs of identical values at least plateau_px wide, with a
-    1..step_max level step to the next such run, in a row that has at least min_steps of them"""
+    1..step_max level step to the next such run that a viewer can see (Weber contrast of the step in linear light, over its level plus a viewing flare, at least
+    weber_min: one code value is 1.1% at luma 215 and 4.8% at luma 50), in a row that has at least min_steps of them"""
     H, W = Y.shape
     Yi = Y.astype(np.int16)
     start = np.ones((H, W), bool)
@@ -241,7 +242,9 @@ def staircase(Y, plateau_px, step_max, min_steps):
     val = Yi.ravel()[st]
     row = st // W
     dv = np.abs(val[1:] - val[:-1])
-    ok = (row[1:] == row[:-1]) & (dv >= 1) & (dv <= step_max) & (ln[:-1] >= plateau_px) & (ln[1:] >= plateau_px)
+    lo, hi = np.minimum(val[1:], val[:-1]).clip(0, 255), np.maximum(val[1:], val[:-1]).clip(0, 255)
+    weber = (core.LIN[hi] - core.LIN[lo]) / (core.LIN[lo] + SPEC['banding']['flare'])
+    ok = (row[1:] == row[:-1]) & (dv >= 1) & (dv <= step_max) & (ln[:-1] >= plateau_px) & (ln[1:] >= plateau_px) & (weber >= SPEC['banding']['weber_min'])
     cnt = np.bincount(row[:-1][ok], minlength=H)
     ok &= cnt[row[:-1]] >= min_steps
     sel = np.zeros(len(st), bool)
@@ -294,7 +297,7 @@ def banding(ctx):
     worst = max(rows, key=lambda r: r['banded_share']) if rows else None
     bad = [r for r in rows if r['banded_share'] >= sp['warn_frac']]
     if bad:
-        fail = any(r['banded_share'] >= sp['fail_frac'] for r in bad)
+        fail = sum(1 for r in rows if r['banded_share'] >= sp['fail_frac']) >= max(1, sp['fail_samples_frac'] * len(rows))
         ts = ', '.join('%.2f s (%.0f%%)' % (r['t'], 100 * r['banded_share']) for r in bad[:5])
         issues.append(issue('fail' if fail else 'warn', [bad[0]['t'], bad[-1]['t']],
                             'banding on %d of %d sampled frames: %s of the frame sits in one-step luma staircases (worst %.0f%% at %.2f s, region %s)' % (
