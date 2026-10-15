@@ -1,0 +1,226 @@
+{
+ "file": "eyes/core.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "eyes/tests",
+  "-k",
+  "hard_cuts or busy_motion or safe_rect_matches or scaled_to_the_delivered or frozen_picture or black_frames_mid or timestamp_gap or red_mask or breathing or 10_percent"
+ ],
+ "timeout": 900,
+ "mutants": [
+  {
+   "name": "core: cuts need no minimum step",
+   "find": "        if d[i] >= sc['min_diff'] and d[i] >= sc['k'] * max(med, sc['floor']):\n",
+   "replace": "        if d[i] >= 0.9 and d[i] >= sc['k'] * max(med, sc['floor']):\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "hard_cuts"
+   ]
+  },
+  {
+   "name": "core: busy motion counts as cuts",
+   "find": "        if d[i] >= sc['min_diff'] and d[i] >= sc['k'] * max(med, sc['floor']):\n",
+   "replace": "        if d[i] >= sc['min_diff']:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "busy_motion"
+   ]
+  },
+  {
+   "name": "core: cuts closer than 0.15 s both count",
+   "find": "            if out and clip.t[i] - clip.t[out[-1]] < sc['min_gap_s']:\n",
+   "replace": "            if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "busy_motion"
+   ]
+  },
+  {
+   "name": "core: the safe rect ignores the wide reference",
+   "find": "        sc = H / (1920.0 if z['ref'] == 'tall' else 1080.0)\n",
+   "replace": "        sc = H / 1920.0\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "safe_rect_matches"
+   ]
+  },
+  {
+   "name": "core: a shape the platform does not take keeps its fractions",
+   "find": "        if asp not in pr['aspects']:",
+   "replace": "        if False:",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "safe_rect_matches"
+   ]
+  },
+  {
+   "name": "core: a 9:16 preset does not use the conservative rect",
+   "find": "        if asp == '9:16':\n            return safe_rect('conservative'",
+   "replace": "        if False:\n            return safe_rect('conservative'",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "safe_rect_matches"
+   ]
+  },
+  {
+   "name": "core: a plan at another size is not scaled",
+   "find": "    return W / float(pw) if pw else 1.0\n",
+   "replace": "    return 1.0\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "scaled_to_the_delivered"
+   ]
+  },
+  {
+   "name": "core: a shot hold is not a planned hold",
+   "find": "        if s.get('hold') and s.get('start') is not None and s.get('dur'):\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "frozen_picture"
+   ]
+  },
+  {
+   "name": "core: a dip transition is not a planned dark",
+   "find": "        if 'dip' in tx.lower() and s.get('start') is not None:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "black_frames_mid"
+   ]
+  },
+  {
+   "name": "core: packets are not put in presentation order",
+   "find": "    return sorted(out)\n",
+   "replace": "    return out\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "timestamp_gap"
+   ]
+  },
+  {
+   "name": "core: the red mask ignores the real step",
+   "find": "((rgb[..., 0].astype(np.int16) - rgb[..., 1] - rgb[..., 2]) >= fs['red_gamma_min'] * 255)",
+   "replace": "((rgb[..., 0].astype(np.int16) - rgb[..., 1] - rgb[..., 2]) >= -100000)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "red_mask"
+   ]
+  },
+  {
+   "name": "core: the red mask ignores saturation",
+   "find": "(lin[..., 0] >= fs['red_ratio'] * np.maximum(sat, 1e-9))",
+   "replace": "(lin[..., 0] >= 0.0 * np.maximum(sat, 1e-9))",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "red_mask"
+   ]
+  },
+  {
+   "name": "core: a bright flicker is a flash",
+   "find": "& (np.minimum(lum, prev_l) < fs['darker_max'])",
+   "replace": "& (np.minimum(lum, prev_l) < 99.0)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "red_mask"
+   ]
+  },
+  {
+   "name": "core: a 1% luminance step is a flash",
+   "find": "big = (np.abs(d) >= fs['luminance_delta'])",
+   "replace": "big = (np.abs(d) >= 0.001)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "10_percent"
+   ]
+  }
+ ]
+}

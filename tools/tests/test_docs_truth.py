@@ -70,6 +70,16 @@ def test_the_ears_command_pastes_and_uses_flags_that_exist():
     assert all(f in helptext for f in flags), [f for f in flags if f not in helptext]
 
 
+def test_the_eyes_command_pastes_and_uses_flags_that_exist():
+    block = next(lines for _, lines in fenced_shell_blocks(read("eyes/README.md")) if any("eyes/look.py" in l for l in lines))
+    argv = shlex.split(re.sub(r"\\\n", " ", "\n".join(block)).replace("\\\n", " "), comments=True)
+    assert argv[:2] == ["python3", "eyes/look.py"] and " " not in argv, argv
+    helptext = subprocess.run([sys.executable, os.path.join(REPO, "eyes", "look.py"), "--help"], capture_output=True, text=True).stdout
+    flags = [a for a in argv if a.startswith("--")]
+    assert {"--plan", "--platform", "--json", "--md"} <= set(flags), flags
+    assert all(f in helptext for f in flags), [f for f in flags if f not in helptext]
+
+
 def test_render3d_commands_are_the_repo_root_form_and_name_real_files():
     seen = 0
     for f in MD + ["skills/motion-pack/SKILL.md"]:

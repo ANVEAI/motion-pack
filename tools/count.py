@@ -110,6 +110,9 @@ def counts():
     em = os.path.join(REPO, 'ears/manifest.json')
     if os.path.exists(em):
         c['ears_checks'] = len(json.load(open(em))['checks'])
+    ym = os.path.join(REPO, 'eyes/manifest.json')
+    if os.path.exists(ym):
+        c['eyes_checks'] = len(json.load(open(ym))['checks'])
     tdir = os.path.join(REPO, 'terminal')
     if os.path.exists(os.path.join(tdir, 'manifest.json')):
         c['terminal_recipes'] = len(json.load(open(os.path.join(tdir, 'manifest.json')))['recipes'])
@@ -148,6 +151,9 @@ def table(c):
     if 'ears_checks' in c:
         rows.append(('`ears/`', f"automated listening and critique of a delivered MP4 or WAV: {c['ears_checks']} checks (loudness, clipping, tone, speech, sync scored by edit mode "
                                 "(music, VO or continuous), structure with planned quiet judged as shape, repetition, stereo, reference comparison, optional mood), each with a fix and timestamps", '`ears/README.md`'))
+    if 'eyes_checks' in c:
+        rows.append(('`eyes/`', f"automated looking and critique of a delivered MP4's picture, the visual twin of ears: {c['eyes_checks']} checks (frame 0, black and frozen frames, WCAG flashes, banding, "
+                                "safe zones, text size / time / contrast, pacing, composition, encode), each with a fix and timestamps", '`eyes/README.md`'))
     if os.path.isdir(os.path.join(REPO, 'cloud')):
         rows.append(('`cloud/`', "optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, "
                      "Gemini Live voiceover with a word-for-word check, a Gemini mood judge", '`cloud/README.md`'))

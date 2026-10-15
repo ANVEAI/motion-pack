@@ -1,0 +1,436 @@
+{
+ "file": "eyes/checks_edit.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "eyes/tests",
+  "-k",
+  "pacing or letterbox or pillarbox or thin_bars or aspect_and_resolution or four_equal or yuv444 or keyframe_interval or starved or hard_cuts or shot_length or does_not_change"
+ ],
+ "timeout": 900,
+ "mutants": [
+  {
+   "name": "pacing: a static hold is never reported",
+   "find": "        if d <= sp['static_warn_s']:\n",
+   "replace": "        if d <= 1000:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "does_not_change_for_over"
+   ]
+  },
+  {
+   "name": "pacing: a long static hold only warns",
+   "find": "            issues.append(issue('fail' if d > sp['static_fail_s'] else 'warn', [round(t0, 2), round(t1, 2)],\n",
+   "replace": "            issues.append(issue('warn', [round(t0, 2), round(t1, 2)],\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "does_not_change_for_over"
+   ]
+  },
+  {
+   "name": "pacing: planned holds are not exempt",
+   "find": "        if core.overlap(t0, t1, holds) >= 0.8 * d:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "does_not_change_for_over"
+   ]
+  },
+  {
+   "name": "pacing: format shot length not judged",
+   "find": "            if not lo - 1e-9 <= mean_asl <= hi + 1e-9:\n",
+   "replace": "            if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "shot_length_is_judged"
+   ]
+  },
+  {
+   "name": "pacing: plan paceRule average not judged",
+   "find": "        if mean_asl > am:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "shot_length_is_judged"
+   ]
+  },
+  {
+   "name": "pacing: plan paceRule longest shot not judged",
+   "find": "            if y - x > lm and core.overlap(x, y, holds) < 0.8 * (y - x) and not (y >= c.dur - 0.05 and not plan):\n",
+   "replace": "            if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "shot_length_is_judged"
+   ]
+  },
+  {
+   "name": "pacing: the template does not name a format",
+   "find": "        return plan.get('format') if plan.get('format') in _pace_table() else SPEC['pacing']['template_format'].get(plan.get('template'))\n",
+   "replace": "        return None\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "shot_length_is_judged"
+   ]
+  },
+  {
+   "name": "composition: letterbox rows not found",
+   "find": "    rows = dark(Y.mean(axis=2), Y.std(axis=2)).mean(axis=0) >= sp['bar_persist']\n",
+   "replace": "    rows = dark(Y.mean(axis=2), Y.std(axis=2)).mean(axis=0) >= 2\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "letterbox"
+   ]
+  },
+  {
+   "name": "composition: pillarbox columns not found",
+   "find": "    cols = dark(Y.mean(axis=1), Y.std(axis=1)).mean(axis=0) >= sp['bar_persist']\n",
+   "replace": "    cols = dark(Y.mean(axis=1), Y.std(axis=1)).mean(axis=0) >= 2\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "pillarboxed"
+   ]
+  },
+  {
+   "name": "composition: plan.eyes.letterbox ignored",
+   "find": "    ask = bool((plan or {}).get('eyes', {}).get('letterbox')) or any(",
+   "replace": "    ask = False or any(",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "letterbox"
+   ]
+  },
+  {
+   "name": "composition: plan layers bars ignored",
+   "find": "for k in ('letterbox', 'bars'))",
+   "replace": "for k in ('letterbox',))",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "letterbox"
+   ]
+  },
+  {
+   "name": "composition: thick bars only warn",
+   "find": "            issues.append(issue('fail' if total >= sp['bar_fail_frac'] else 'warn', None,",
+   "replace": "            issues.append(issue('warn', None,",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "thin_bars"
+   ]
+  },
+  {
+   "name": "composition: thin bars fail",
+   "find": "            issues.append(issue('fail' if total >= sp['bar_fail_frac'] else 'warn', None,",
+   "replace": "            issues.append(issue('fail', None,",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "thin_bars"
+   ]
+  },
+  {
+   "name": "composition: wrong aspect not reported",
+   "find": "    if asp not in allowed:\n",
+   "replace": "    if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "aspect_and_resolution"
+   ]
+  },
+  {
+   "name": "composition: low resolution not reported",
+   "find": "    if short < sp['short_side_warn']:\n",
+   "replace": "    if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "aspect_and_resolution"
+   ]
+  },
+  {
+   "name": "composition: 720 to 1079 px not reported",
+   "find": "    elif short < sp['short_side_pass']:\n",
+   "replace": "    elif False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "aspect_and_resolution"
+   ]
+  },
+  {
+   "name": "composition: competing heroes not counted",
+   "find": "        rivals = [x for x in bl[1:] if x[0] >= sp['hero_mass_ratio'] * top]\n",
+   "replace": "        rivals = [x for x in bl[1:] if x[0] >= 5 * top]\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "four_equal"
+   ]
+  },
+  {
+   "name": "composition: competing heroes never warn",
+   "find": "    if frac >= sp['competing_warn_frac'] and comp:\n",
+   "replace": "    if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "four_equal"
+   ]
+  },
+  {
+   "name": "encode: pixel format not checked",
+   "find": "    if info['pix_fmt'] != sp['pix_fmt']:\n",
+   "replace": "    if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "yuv444"
+   ]
+  },
+  {
+   "name": "encode: faststart not checked",
+   "find": "    if fs is False:\n",
+   "replace": "    if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "yuv444"
+   ]
+  },
+  {
+   "name": "encode: moov order read backwards",
+   "find": "                    return seen.index(b'moov') < seen.index(b'mdat')\n",
+   "replace": "                    return seen.index(b'moov') > seen.index(b'mdat')\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "yuv444"
+   ]
+  },
+  {
+   "name": "encode: colour tags not checked",
+   "find": "    if (info['height'] or 0) >= sp['colour_tag_min_height'] and",
+   "replace": "    if False and",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "yuv444"
+   ]
+  },
+  {
+   "name": "encode: keyframe gap not checked",
+   "find": "        if gop > sp['gop_warn_s']:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "keyframe_interval"
+   ]
+  },
+  {
+   "name": "encode: a very long keyframe gap only warns",
+   "find": "'fail' if gop > sp['gop_fail_s'] else 'warn', None, 'the longest keyframe",
+   "replace": "'warn', None, 'the longest keyframe",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "keyframe_interval"
+   ]
+  },
+  {
+   "name": "encode: bits per pixel not checked",
+   "find": "        if bpp < sp['bpp_warn']:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "starved"
+   ]
+  },
+  {
+   "name": "encode: blockiness not reported",
+   "find": "    if blk >= sp['block_warn']:\n",
+   "replace": "    if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "starved"
+   ]
+  },
+  {
+   "name": "encode: blockiness never fails",
+   "find": "issue('fail' if blk >= sp['block_fail'] else 'warn', None,",
+   "replace": "issue('warn', None,",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "starved"
+   ]
+  },
+  {
+   "name": "encode: the block grid is not found",
+   "find": "        for g in sp['grid']:\n",
+   "replace": "        for g in (1000,):\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "starved"
+   ]
+  }
+ ]
+}

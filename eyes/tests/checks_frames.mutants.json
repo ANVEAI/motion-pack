@@ -1,0 +1,556 @@
+{
+ "file": "eyes/checks_frames.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "eyes/tests",
+  "-k",
+  "frame0 or frames or black or frozen or stall or empty or flash or fade or hz or red_mask or banded or banding or posterised or gradient or staircases or hero_that or first_visible or still_opening or end_card or small_motion"
+ ],
+ "timeout": 900,
+ "mutants": [
+  {
+   "name": "frame0: black test off",
+   "find": "    if mean <= sp['black_mean_y'] and std <= sp['black_std_y']:\n",
+   "replace": "    if mean <= sp['black_mean_y'] and std <= -1:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "a_black_frame0"
+   ]
+  },
+  {
+   "name": "frame0: uniform test off",
+   "find": "    elif std <= sp['uniform_std_y']:\n",
+   "replace": "    elif std <= -1:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "uniform_frame0"
+   ]
+  },
+  {
+   "name": "frame0: low-contrast warning off",
+   "find": "    elif std <= sp['low_contrast_std_y']:\n",
+   "replace": "    elif std <= -1:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "uniform_frame0"
+   ]
+  },
+  {
+   "name": "frame0: no-subject fail off",
+   "find": "        if sc < sp['subject_contrast_warn']:\n",
+   "replace": "        if sc < -1:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "hero_that_barely"
+   ]
+  },
+  {
+   "name": "frame0: soft-subject warn off",
+   "find": "        elif sc < sp['subject_contrast_pass']:\n",
+   "replace": "        elif sc < -1:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "hero_that_barely"
+   ]
+  },
+  {
+   "name": "frame0: subject skipped on a flat frame",
+   "find": "    if not any(i['kind'] in ('black', 'uniform') for i in issues):\n",
+   "replace": "    if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "hero_that_barely"
+   ]
+  },
+  {
+   "name": "frame0: still opening not caught",
+   "find": "    if first is None:\n",
+   "replace": "    if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "still_opening"
+   ]
+  },
+  {
+   "name": "frame0: late first change not caught",
+   "find": "    elif first > sp['first_change_frame_max']:\n",
+   "replace": "    elif first > 1000:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "first_visible_change"
+   ]
+  },
+  {
+   "name": "frame0: late first change is only a warning",
+   "find": "        sev = 'warn' if first_s <= sp['first_change_s_max'] else 'fail'\n",
+   "replace": "        sev = 'warn'\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "first_visible_change"
+   ]
+  },
+  {
+   "name": "frames: a 2-frame black blip counts",
+   "find": "        if i0 == 0 or i1 - i0 < sp['black_min_frames']:\n",
+   "replace": "        if i0 == 0:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "black_frames_mid"
+   ]
+  },
+  {
+   "name": "frames: planned dip not honoured",
+   "find": "        planned = core.inside(t0, t1, blacks, 0.15)\n",
+   "replace": "        planned = False\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "black_frames_mid"
+   ]
+  },
+  {
+   "name": "frames: black tail always fails",
+   "find": "            sev = 'fail' if t1 - t0 >= 1.0 else ('warn' if t1 - t0 >= sp['black_tail_warn_s'] else None)\n",
+   "replace": "            sev = 'fail'\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "black_tail"
+   ]
+  },
+  {
+   "name": "frames: short black tail ignored",
+   "find": "('warn' if t1 - t0 >= sp['black_tail_warn_s'] else None)",
+   "replace": "('warn' if t1 - t0 >= 99 else None)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "black_tail"
+   ]
+  },
+  {
+   "name": "frames: empty field never fails",
+   "find": "            issues.append(issue('fail' if t1 - t0 >= sp['empty_fail_s'] else 'warn', [round(t0, 2), round(t1, 2)],\n",
+   "replace": "            issues.append(issue('warn', [round(t0, 2), round(t1, 2)],\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "empty_colour"
+   ]
+  },
+  {
+   "name": "frames: short freezes count",
+   "find": "        if a == 0 or dur < sp['frozen_warn_s']:\n",
+   "replace": "        if a == 0:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "frozen_picture"
+   ]
+  },
+  {
+   "name": "frames: a freeze from frame 0 counts",
+   "find": "        if a == 0 or dur < sp['frozen_warn_s']:\n",
+   "replace": "        if dur < sp['frozen_warn_s']:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "still_opening"
+   ]
+  },
+  {
+   "name": "frames: black and empty reported twice as frozen",
+   "find": "        if (black | empty)[a:i1].mean() > 0.8:\n",
+   "replace": "        if (black | empty)[a:i1].mean() > 2:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "empty_colour"
+   ]
+  },
+  {
+   "name": "frames: planned hold not honoured",
+   "find": "        planned = core.inside(t0, t1, holds)\n        tail_hold = (not plan)",
+   "replace": "        planned = False\n        tail_hold = (not plan)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "frozen_picture"
+   ]
+  },
+  {
+   "name": "frames: end-card hold never read",
+   "find": "        tail_hold = (not plan) and i1 >= c.n and dur <= sp['endcard_hold_max_s']\n",
+   "replace": "        tail_hold = False\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "end_card"
+   ]
+  },
+  {
+   "name": "frames: end-card read even with a plan",
+   "find": "tail_hold = (not plan) and",
+   "replace": "tail_hold = True and",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "end_card"
+   ]
+  },
+  {
+   "name": "frames: a long freeze only warns",
+   "find": "            issues.append(issue('fail' if dur >= sp['frozen_fail_s'] else 'warn', [round(t0, 2), round(t1, 2)],\n",
+   "replace": "            issues.append(issue('warn', [round(t0, 2), round(t1, 2)],\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "frozen_picture"
+   ]
+  },
+  {
+   "name": "frames: small motion counts as a freeze",
+   "find": "    still = np.concatenate([[False], (c.diff[1:] <= sp['frozen_diff']) & (c.diff_hi[1:] <= sp['frozen_hi_frac'])])\n",
+   "replace": "    still = np.concatenate([[False], c.diff[1:] <= sp['frozen_diff']])\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "small_motion"
+   ]
+  },
+  {
+   "name": "frames: stalls not found",
+   "find": "        for i in np.where((gaps > sp['stall_gap_frames'] * exp) & (gaps >= sp['stall_min_s']))[0]:\n",
+   "replace": "        for i in np.where((gaps > 1e9) & (gaps >= sp['stall_min_s']))[0]:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "timestamp_gap"
+   ]
+  },
+  {
+   "name": "flashes: limit of 4 per second",
+   "find": "        if best > sp['max_per_s']:\n",
+   "replace": "        if best > 4:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "4_hz"
+   ]
+  },
+  {
+   "name": "flashes: no area rule",
+   "find": "        if a[i] + b[i] >= area_min:\n",
+   "replace": "        if a[i] + b[i] >= 0.0:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "flash_must_cover"
+   ]
+  },
+  {
+   "name": "flashes: a ramp counts every frame",
+   "find": "            if not ev or ev[-1][1] != s:\n",
+   "replace": "            if True:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "breathing"
+   ]
+  },
+  {
+   "name": "flashes: transitions counted as flashes",
+   "find": "        fl = n // 2\n",
+   "replace": "        fl = n\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "2_hz_and_a_3_hz"
+   ]
+  },
+  {
+   "name": "flashes: a 3 s window",
+   "find": "        n = sum(1 for x in times[a:] if x < times[a] + window - 1e-9)\n",
+   "replace": "        n = sum(1 for x in times[a:] if x < times[a] + 3 * window - 1e-9)\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "2_hz_and_a_3_hz"
+   ]
+  },
+  {
+   "name": "flashes: red flash not counted",
+   "find": "    red = _events(np.maximum(c.d_red, 0), np.maximum(-c.d_red, 0), sp['red_area_min'])\n",
+   "replace": "    red = []\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "red_flash"
+   ]
+  },
+  {
+   "name": "banding: bright steps count",
+   "find": "(weber >= SPEC['banding']['weber_min'])",
+   "replace": "(weber >= 0)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "bright_gradient"
+   ]
+  },
+  {
+   "name": "banding: any run length counts (grain is not a fix)",
+   "find": "& (ln[:-1] >= plateau_px) & (ln[1:] >= plateau_px)",
+   "replace": "& (ln[:-1] >= 1) & (ln[1:] >= 1)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "posterised"
+   ]
+  },
+  {
+   "name": "banding: a single step counts",
+   "find": "    ok &= cnt[row[:-1]] >= min_steps\n",
+   "replace": "    ok &= cnt[row[:-1]] >= 0\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "edges_and_single"
+   ]
+  },
+  {
+   "name": "banding: big steps count",
+   "find": "(dv <= step_max)",
+   "replace": "(dv <= 255)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "edges_and_single"
+   ]
+  },
+  {
+   "name": "banding: never warns",
+   "find": "    bad = [r for r in rows if r['banded_share'] >= sp['warn_frac']]\n",
+   "replace": "    bad = [r for r in rows if r['banded_share'] >= 1.1]\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "posterised"
+   ]
+  },
+  {
+   "name": "banding: one frame in twelve fails",
+   "find": "        fail = sum(1 for r in rows if r['banded_share'] >= sp['fail_frac']) >= max(1, sp['fail_samples_frac'] * len(rows))\n",
+   "replace": "        fail = True\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "one_banded_frame"
+   ]
+  },
+  {
+   "name": "banding: columns not read",
+   "find": "    mask = m1 | m2.T\n",
+   "replace": "    mask = m1\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "vertical_posterised"
+   ]
+  }
+ ]
+}

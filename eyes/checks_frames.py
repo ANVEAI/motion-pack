@@ -201,7 +201,7 @@ def flashes(ctx):
     red = _events(np.maximum(c.d_red, 0), np.maximum(-c.d_red, 0), sp['red_area_min'])
     issues, notes = [], []
     out = {}
-    for name, ev, label in (('general', gen, 'general flash'), ('red', red, 'red flash')):
+    for name, ev, label in (('general', gen, 'general flashes'), ('red', red, 'red flashes')):
         best, at, wins = _per_second(ev, c.t, sp['window_s'])
         out[name] = {'max_per_s': best, 'at_s': None if at is None else round(at, 2), 'transitions': len(ev)}
         if best > sp['max_per_s']:
@@ -213,13 +213,13 @@ def flashes(ctx):
                 else:
                     rs.append([a, b])
             rs = [[round(a, 2), round(b, 2)] for a, b in rs]
-            issues.append(issue('fail', rs[0], '%d %ss in one second at %s (WCAG 2.3.1 allows %d)' % (best, label, fmt_ranges(rs), sp['max_per_s']),
+            issues.append(issue('fail', rs[0], '%d %s in one second at %s (WCAG 2.3.1 allows %d)' % (best, label, fmt_ranges(rs), sp['max_per_s']),
                                 ('space the flash onsets at least %.2f s apart (at most %d a second), keep the flashing area under a quarter of the frame, or cut the luminance '
                                  'swing under 10%%' % (1.0 / sp['max_per_s'], sp['max_per_s'])) if name == 'general' else
                                 ('swap the saturated red for a darker or less saturated red, or keep the red area under a quarter of the frame and at most %d changes a second' % sp['max_per_s']),
                                 'A strobing flash that can be uncomfortable or unsafe for photosensitive viewers.', name))
         elif best == sp['max_per_s']:
-            notes.append('%d %ss in one second at %.2f s: at the limit, no margin' % (best, label, at))
+            notes.append('%d %s in one second at %.2f s: at the limit, no margin' % (best, label, at))
     peak = float(max(c.area_up.max(), c.area_dn.max())) if c.n else 0.0
     out['peak_changed_area'] = round(peak, 3)
     out['fps'] = round(c.fps, 3)

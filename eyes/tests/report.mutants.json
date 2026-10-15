@@ -1,0 +1,76 @@
+{
+ "file": "eyes/report.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "eyes/tests",
+  "-k",
+  "scores_count"
+ ],
+ "timeout": 900,
+ "mutants": [
+  {
+   "name": "report: warnings cost nothing",
+   "find": "        s = 10 - sp['fail_cost'] * fails - sp['warn_cost'] * warns\n",
+   "replace": "        s = 10 - sp['fail_cost'] * fails - 0 * warns\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "scores_count"
+   ]
+  },
+  {
+   "name": "report: a repeated problem counts every time",
+   "find": "                key = (c['id'], i.get('kind') or k)\n",
+   "replace": "                key = (c['id'], k)\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "scores_count"
+   ]
+  },
+  {
+   "name": "report: the critic row is the best category, not the worst",
+   "find": "        out['critic_' + row] = min(have) if have else None\n",
+   "replace": "        out['critic_' + row] = max(have) if have else None\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "scores_count"
+   ]
+  },
+  {
+   "name": "report: the least important issue comes first",
+   "find": "    flat.sort(key=lambda r: (-r[0], r[1], r[2]))\n",
+   "replace": "    flat.sort(key=lambda r: (r[0], r[1], r[2]))\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "scores_count"
+   ]
+  }
+ ]
+}

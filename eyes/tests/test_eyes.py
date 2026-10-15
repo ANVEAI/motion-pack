@@ -172,9 +172,9 @@ def test_a_still_end_card_without_a_plan_is_a_note_and_with_a_plan_it_is_judged(
 def test_a_slow_small_motion_is_not_a_freeze():
     def small(i):
         f = scene(0).copy()
-        f[400:420, 100 + 2 * i:130 + 2 * i] = 255
+        f[400:412, 100 + 2 * i:112 + 2 * i] = 255                              # a 12 px square: the mean moves by 0.05 level, a few pixels move by a lot
         return f
-    c = run(vid('smallmove', small, 60), 'frames')
+    c = run(vid('smallmove', segments((15, scene), (60, small)), 75), 'frames')
     assert c['status'] == 'pass' and not c['measured']['frozen_runs']
 
 
@@ -205,7 +205,7 @@ def flash(hz, area=1.0, on=(255, 255, 255), off=(0, 0, 0)):
 
 def test_a_4_hz_flash_fails_and_a_2_hz_and_a_3_hz_one_pass():
     f4 = run(vid('f4', flash(4), 90), 'flashes')
-    assert f4['status'] == 'fail' and f4['measured']['general']['max_per_s'] == 4 and 'general flash' in whats(f4)
+    assert f4['status'] == 'fail' and f4['measured']['general']['max_per_s'] == 4 and '4 general flashes in one second' in whats(f4)
     assert 0.0 <= f4['issues'][0]['t'][0] < 1.0
     for hz in (2, 3):
         c = run(vid('f%d' % hz, flash(hz), 90), 'flashes')
@@ -231,8 +231,22 @@ def test_a_red_flash_fails_at_4_hz_even_when_the_luminance_does_not_change_and_p
     lum = core.LIN[200] * 0.2126
     g = int(np.argmax(core.LIN >= lum))
     f4 = run(vid('red4', flash(4, 1.0, (200, 0, 0), (g, g, g)), 90), 'flashes')
-    assert f4['status'] == 'fail' and f4['measured']['general']['max_per_s'] == 0 and f4['measured']['red']['max_per_s'] == 4 and 'red flash' in whats(f4)
+    assert f4['status'] == 'fail' and f4['measured']['general']['max_per_s'] == 0 and f4['measured']['red']['max_per_s'] == 4 and '4 red flashes in one second' in whats(f4)
     assert run(vid('red2', flash(2, 1.0, (200, 0, 0), (g, g, g)), 90), 'flashes')['status'] == 'pass'
+
+
+def test_a_4_hz_flicker_under_a_10_percent_luminance_swing_is_not_a_flash():
+    c = run(vid('swing6', flash(4, 1.0, (120, 120, 120), (100, 100, 100)), 90), 'flashes')    # 0.188 against 0.127 relative luminance
+    assert c['status'] == 'pass' and c['measured']['general']['max_per_s'] == 0 and c['measured']['peak_changed_area'] == 0.0
+
+
+def test_the_red_mask_needs_a_saturated_red_and_a_real_step_and_a_bright_flicker_needs_a_dark_side():
+    dark = run(vid('redfaint', flash(4, 1.0, (12, 0, 0), (0, 0, 0)), 90), 'flashes')
+    assert dark['status'] == 'pass' and dark['measured']['red']['max_per_s'] == 0                          # R - G - B under 16 / 255: not a red transition
+    orange = run(vid('orange4', flash(4, 1.0, (255, 150, 80), (0, 0, 0)), 90), 'flashes')
+    assert orange['measured']['red']['max_per_s'] == 0 and orange['measured']['general']['max_per_s'] == 4  # R / (R + G + B) in linear light under 0.8: not saturated
+    bright = run(vid('bright4', flash(4, 1.0, (255, 255, 255), (240, 240, 240)), 90), 'flashes')
+    assert bright['status'] == 'pass' and bright['measured']['general']['max_per_s'] == 0                  # the darker side is over 0.80 relative luminance: not a flash
 
 
 # ------------------------------------------------------------------------------------------------ eyes/banding
@@ -258,6 +272,13 @@ def test_a_posterised_gradient_fails_and_the_same_gradient_with_grain_passes():
     assert ok['status'] == 'pass' and ok['measured']['max_banded_share'] < 0.01
 
 
+def test_a_vertical_posterised_gradient_fails_too():
+    yy = np.linspace(0, 1, H)[:, None] * np.ones((1, W))
+    v = np.stack([np.floor(30 + 60 * yy)] * 3, -1)
+    c = run(vid('postv', lambda i: v, 30, crf=12), 'banding')
+    assert c['status'] == 'fail' and c['measured']['max_banded_share'] > 0.8
+
+
 def test_a_bright_gradient_steps_are_below_the_visible_threshold_and_a_flat_field_is_not_banding():
     assert run(vid('postbright', ramp(200, 230), 30, crf=12), 'banding')['measured']['max_banded_share'] == 0.0
     assert run(vid('flatgrey', lambda i: s.solid(W, H, (60, 60, 60)), 30, crf=12), 'banding')['measured']['max_banded_share'] == 0.0
@@ -272,7 +293,7 @@ def test_edges_and_single_steps_are_not_staircases():
 
     def onestep(i):
         a = np.empty((H, W, 3), np.uint8)
-        a[:, :W // 2], a[:, W // 2:] = 60, 61                                              # one contrast-free step: not a staircase
+        a[:, :W // 2], a[:, W // 2:] = 60, 62                                              # one contour: not a staircase
         return a
     assert run(vid('onestep', onestep, 20, crf=12), 'banding')['measured']['max_banded_share'] == 0.0
 
@@ -332,13 +353,23 @@ def test_text_in_the_bottom_band_is_found_without_a_plan_and_text_in_the_safe_ar
     assert run(vid('good', scene, 60), 'safezones')['measured']['blocks'] == []
 
 
+def test_bright_low_contrast_text_and_a_non_text_blob_in_the_band_are_not_reported():
+    grey = lambda i: s.text_frame(s.solid(W, H, (175, 175, 175)), 'SALE 50% OFF', (60, 800), 36, (255, 255, 255))[0]
+    assert run(vid('txtfaint', grey, 90), 'safezones')['measured']['blocks'] == []                    # an 80 level step, a 2.2:1 ratio
+    yy, xx = np.mgrid[0:H, 0:W]
+    patch = (yy > 780) & (yy < 860) & (xx > 100) & (xx < 180)
+    stripes = (patch & (((xx // 8) % 2) == 0))[..., None]
+    square = lambda i: np.where(patch[..., None], np.where(stripes, 255, 20), scene(i)).astype(np.uint8)
+    assert run(vid('blob', square, 90), 'safezones')['measured']['blocks'] == []                      # a striped square: edges, density and contrast of text, the shape of an icon
+
+
 def test_text_half_over_the_edge_warns_and_text_seen_for_one_sample_is_not_reported():
     c = run(vid('txtstrad', with_text(scene, 'SALE 50% OFF', (110, 592), 36), 90), 'safezones')
     assert c['status'] == 'warn' and 'text-like block' in whats(c) and all(0.15 <= b['outside'] < 0.5 for b in c['measured']['blocks']), (c['measured']['blocks'], whats(c))
 
     def blink(i):
         f = scene(i)
-        return s.text_frame(f, 'SALE 50% OFF', (60, 800), 36)[0] if 14 <= i <= 16 else f
+        return s.text_frame(f, 'SALE 50% OFF', (60, 800), 36)[0] if 18 <= i <= 26 else f           # on screen over exactly one of the 2 fps samples (ffmpeg's fps filter takes frames 7, 22, 37, ...)
     assert run(vid('txtblink', blink, 90), 'safezones')['measured']['blocks'] == []
 
 
@@ -431,6 +462,17 @@ def test_measured_contrast_matches_the_wcag_ratio_and_fails_on_a_light_backdrop(
     assert c3['status'] == 'warn' and 3.0 <= c3['measured']['texts'][0]['contrast_worst'] < 4.5
 
 
+def test_contrast_is_taken_against_the_lightest_background_the_text_crosses():
+    text = 'Your desk handled'
+
+    def split(i):
+        bg = np.empty((H, W, 3), np.uint8)
+        bg[:], bg[:, W // 2:] = 20, 200                                                            # the text crosses a dark and a light half
+        return s.text_frame(bg, text, (30, 60), 40, (255, 255, 255))[0]
+    c = run(vid('rd_split', split, 60), 'readability', plan=plan_texts(box_of(text, (30, 60), 40), fontPx=40))
+    assert c['status'] == 'fail' and c['measured']['texts'][0]['contrast_worst'] == pytest.approx(wcag(255, 200), rel=0.1), c['measured']['texts']
+
+
 def test_without_a_text_colour_the_contrast_is_estimated_and_never_fails_alone():
     text = 'Your desk handled'
     p = vid('rd_light', text_scene(text, (30, 60), 40, (255, 255, 255), (190, 190, 190)), 90)
@@ -483,6 +525,14 @@ def test_hard_cuts_are_found_at_the_frame_they_happen_and_counted_per_minute():
     assert c['measured']['cut_times_s'] == [0.5, 1.0, 1.5, 2.0, 2.5]
     assert c['measured']['cuts_per_min'] == 100.0 and c['measured']['shots'] == 6 and c['measured']['shot_median_s'] == 0.5
     assert run(vid('good', scene, 60), 'pacing')['measured']['cuts'] == 0
+
+
+def test_constant_busy_motion_and_a_one_frame_flash_are_not_extra_cuts():
+    noise = vid('noise', lambda i: np.stack([np.where(np.random.default_rng(i).random((H, W)) > 0.5, 230, 20).astype(np.uint8)] * 3, -1), 60)
+    assert run(noise, 'pacing')['measured']['cuts'] == 0                                                # a big difference every frame is not a cut
+    white = lambda i: s.solid(W, H, (255, 255, 255))
+    p = vid('flashcut', segments((30, scene), (1, white), (59, other)), 90)
+    assert len(run(p, 'pacing')['measured']['cuts']) if False else run(p, 'pacing')['measured']['cuts'] == 1   # into and out of the flash within 0.15 s: one cut
 
 
 def test_a_picture_that_does_not_change_for_over_3_5_s_warns_and_a_planned_hold_is_a_note():
