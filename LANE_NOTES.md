@@ -97,6 +97,13 @@ The goal of this lane is to make the whole pack editable by anyone, including no
 - **The regression:** add the template id to `GENRE` in `tools/tests/project.test.mjs`. It then gets the identical-plan regression and the "every map entry lands" check.
 - **three.js templates:** copy the 2-line `?config=` hook from `templates/character-spot/scene.html`.
 
+## Lane 5 (research) `patterns/structures.json` template_map
+
+This lane adds NO new template, so it needs no new `template_map` entry. The ad, character-spot and proof-film entries already exist on xp-research.
+- The other retrofitted genre templates (beat-edit, film-scene, multi-voice-doc, talking-head) keep their ids, so whatever xp-research maps for them still holds.
+- The project file changes no template id and no structure: `aspect` is a re-layout of the same beats.
+- At merge, `mp check` could also call `tools/structure_check.py` on each render's plan once that tool is on main. That is a two-line addition to `cmdCheck` in `tools/mp.mjs`; it is not done here because the tool is not on this branch.
+
 ## Proposed SKILL.md text (motion-pack skill): a new section after "Production gates"
 
 > ## Edit without code: one project file, the `mp` CLI

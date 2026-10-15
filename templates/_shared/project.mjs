@@ -188,7 +188,7 @@ export function applyProject(CONFIG, MAP = {}, project = {}, opts = {}) {
     if (!k) {
       if (DERIVED.has(p)) { if (!(p === 'aspect' && opts.ASPECTS && opts.ASPECTS[v0])) ignored.push(p); continue; }   // a 3D template takes the aspect as a render argument (ASPECTS), not a CONFIG field
       const near = nearMiss(p, keys); if (near) { errors.push(`${p}: ${tpl} has no such field (did you mean ${near}?)`); continue; }   // one or two letters off a mapped key: a typo, not another template's field
-      ignored.push(p); continue; }
+      if (!(Array.isArray(v0) && !v0.length)) ignored.push(p); continue; }   // an empty list (claims: []) is not worth a report
     const e = map[k], rest = p === k ? '' : p.slice(k.length + 1);
     let v = v0;
     if (e.split && typeof v === 'string') v = v.split(/\s+/).filter(Boolean);
