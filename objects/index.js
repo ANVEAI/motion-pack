@@ -18,8 +18,15 @@ import * as FLAT from './lib/flat.js';
 import * as MASCOT from './characters/mascot2d.js';
 import * as WORKER from './characters/worker.js';
 import * as POSES from './characters/poses.js';
+import * as HW from './lib/hardware.js';           // xp-hardware 2026-10-16: enclosure, vent grille, ports, cable, the assembled demo node
+import * as HWB from './lib/hwboard.js';          // PCB, chip + die, heatsink, fan, GPU-like card
+import * as HWX from './lib/xray.js';            // x-ray / wireframe-to-solid
+import * as HWS from './lib/studio-hw.js';       // dark studio + rim / top / sweep rig
+import * as HWM from './lib/hwmedia.js';         // your own GLB / OBJ, or a photo as a 2.5D plate
+import * as HWD from './lib/hwdata.js';          // the device layout as pure data (anchors for callouts)
+import * as HWE from './lib/explode.js';         // the exploded-view choreographer (pure)
 
-export const O = { ...SET, ...BOX, ...CHROME, ...PAPER, ...READ, ...METER, ...PANELS, ...DEV, ...MATS, ...DOME, ...LOGO, ...FLAT, ...MASCOT, ...WORKER, ...POSES };
+export const O = { ...SET, ...BOX, ...CHROME, ...PAPER, ...READ, ...METER, ...PANELS, ...DEV, ...MATS, ...DOME, ...LOGO, ...FLAT, ...MASCOT, ...WORKER, ...POSES, ...HW, ...HWB, ...HWX, ...HWS, ...HWM, ...HWD, ...HWE };
 
 const r = (build, tags, state, doc) => ({ build, tags, state, doc });
 export const REGISTRY = {
@@ -53,6 +60,21 @@ export const REGISTRY = {
   'objects/mascot2d': r((ctx, p, o) => FLAT.makeMascotPlane(ctx, p, o), ['character', 'mascot', '2d', 'flat', 'narrator', 'squash-stretch', 'original', 'new'], 'mascotSVG(t, spec) | drawMascot2d(g, t, spec) | plane update(t)', 'NEW flat 2D mascot rig: bean body + sprout, eyes, mouth, blinks, hops with squash and stretch; poses idle point read cheer dive wave think; SVG, canvas or a three.js plane'),
   'objects/logo-extrude': r((ctx, p, o) => LOGO.makeLogoExtrude(ctx, p, o), ['logo', 'mark', 'extrude', 'bevel', 'chrome', 'glass', 'iridescent', 'satin', 'brand', 'new'], 'update(t), set({yaw, tilt, slice, scale})', 'NEW three.js extrude of an SVG mark (own mark only; placeholder orbit mark) with bevel, presets chrome glass iridescent satin, optional sliced-offset beat, spin'),
   'objects/worker': r((ctx, p, o) => WORKER.makeWorker(ctx, p, o.spec || o, o.zoneX, o.rimLight), ['character', 'mascot', 'pantomime', 'original'], 'update(t) from spec {keys, path, blinks}', 'periwinkle ceramic worker: rig, hops, follow-through, blinks'),
+  /* xp-hardware (2026-10-16): generic hardware props for device launch films; no brand marks, generic port names */
+  'objects/enclosure': r((ctx, p, o) => HW.makeEnclosure(ctx, p, o), ['hardware', 'device', 'enclosure', 'chamfer', 'led', 'anodised', 'glass', 'new'], 'setBand(level, hex, sweep), pose(p, yaw, s); parts {shell, top, base}', 'NEW configurable device enclosure: dimensions, chamfer, footprint radius, anodised / matte black / smoked glass, glass or grille top, LED light band, side vents, generic back ports, feet'),
+  'objects/vent-grille': r((ctx, p, o) => HW.makeVentGrille(ctx, p, o), ['hardware', 'vent', 'grille', 'slots', 'hex', 'new'], 'static', 'NEW instanced vent field: slots or hex holes, optional plate'),
+  'objects/ports': r((ctx, p, o) => HW.makePorts(ctx, p, o), ['hardware', 'ports', 'io', 'connector', 'new'], 'static; centres for callouts', 'NEW generic port cut-outs (power, network, display out, data, wide data, audio): recess + metal surround'),
+  'objects/cable': r((ctx, p, o) => HW.makeCable(ctx, p, o), ['hardware', 'cable', 'plug', 'connector', 'new'], 'set({insert})', 'NEW cable on a sagging curve with a plug that pushes home'),
+  'objects/hw-node': r((ctx, p, o) => HW.makeNode(ctx, p, o), ['hardware', 'device', 'product', 'explode', 'hero', 'new'], 'set({band, bandSweep, explode, die, dieGlow, fanSpin, cardGlow, accent})', 'NEW the assembled generic demo device: enclosure + board + chip + heatsink + fan + card, every part its own explode group'),
+  'objects/pcb': r((ctx, p, o) => HWB.makePCB(ctx, p, o), ['hardware', 'pcb', 'board', 'chips', 'new'], 'static; .chip.set({open, glow})', 'NEW circuit board: seeded traces, a chip with a die, memory, chokes, MLCC field, gold fingers'),
+  'objects/chip-die': r((ctx, p, o) => HWB.makeChip(ctx, p, o), ['hardware', 'chip', 'die', 'silicon', 'reveal', 'new'], 'set({open, glow, accent})', 'NEW chip package whose lid lifts and whose die blocks light one by one (generic, decorative die pattern)'),
+  'objects/heatsink': r((ctx, p, o) => HWB.makeHeatsink(ctx, p, o), ['hardware', 'heatsink', 'fins', 'copper', 'new'], 'static', 'NEW instanced fin stack on a copper base with heat pipes'),
+  'objects/fan': r((ctx, p, o) => HWB.makeFan(ctx, p, o), ['hardware', 'fan', 'spin', 'new'], 'set({spin})', 'NEW framed axial fan, swept blades'),
+  'objects/gpu-card': r((ctx, p, o) => HWB.makeGPUCard(ctx, p, o), ['hardware', 'gpu', 'card', 'accelerator', 'fans', 'new'], 'set({spin, glow, accent})', 'NEW GPU-like accelerator card: board, faceted shroud, fans, backplate, accent strip, bracket (generic, no vendor look)'),
+  'objects/xray': r((ctx, p, o) => HWX.makeXray(ctx, o.root || p, o), ['hardware', 'xray', 'wireframe', 'transition', 'scan', 'new'], 'set(k) 0 wire .. 1 solid', 'NEW x-ray / wireframe-to-solid sweep for any object (edges + clipping plane + glowing scan band)'),
+  'objects/hw-studio': r((ctx, _p, o) => ({ studio: HWS.makeDarkStudio(ctx, o), rig: HWS.makeHwRig(ctx, o) }), ['hardware', 'studio', 'light', 'rim', 'sweep', 'dark', 'new'], 'rig.update(n, slot, {rim, top, key, edge, sweep})', 'NEW dark product studio + rim / top / sweep rig (edge-light silhouette, travelling strip)'),
+  'objects/model': r((ctx, p, o) => HWM.loadModel(ctx, p, o.url, o), ['hardware', 'model', 'glb', 'gltf', 'obj', 'your-product', 'new'], 'async; applyExplode(offs), pose(p, yaw, s)', 'NEW load YOUR model (GLB / glTF / OBJ): centred, stood on the floor, sized; top-level children become explode parts'),
+  'objects/photo-25d': r((ctx, p, o) => HWM.makePhotoParallax(ctx, p, o), ['hardware', 'photo', 'parallax', '2.5d', 'your-product', 'new'], 'async; pose(p, yaw)', 'NEW one product photo as a displaced 2.5D plate (your depth map, or alpha + a soft bulge); keep orbits small'),
 };
 export function create(ctx, parent, id, params = {}) { const e = REGISTRY[id]; if (!e) throw new Error('objects: unknown id ' + id + ' (have ' + Object.keys(REGISTRY).join(', ') + ')'); return e.build(ctx, parent, params); }
 export const ids = (tag) => Object.keys(REGISTRY).filter((k) => !tag || REGISTRY[k].tags.includes(tag));
