@@ -4,7 +4,7 @@
    arrives on the last section with its own hit, "directed by" closes it, and the picture holds a beat before the film would start.
    Edit the CONFIG block only. `node make.mjs [--set length=45] [--set aspect=9:16] [--set genre=noir]`, then the render command it prints.
    DEMO: every name is a labelled placeholder ("PLACEHOLDER NAME"), the film "THE LAST SIGNAL" is fictional, the textures are procedural placeholder plates, labelled. */
-import { FRAME, textBox, slotOf } from '../_shared/film/plan-film.mjs';
+import { FRAME, fpbOf, textBox, slotOf } from '../_shared/film/plan-film.mjs';
 import { FILM_GENRES } from '../../layers/presets/film-looks.js';
 
 /* ============================== CONFIG (edit me) ============================== */
@@ -44,7 +44,7 @@ const BPM = { 'music/bed_suspense_pulse_loop8': 100, 'music/bed_ambient_pad_loop
 const sec = (f, fps) => +(f / fps).toFixed(6);
 export function buildPlan(C) {
   const asp = FRAME[C.aspect] ? C.aspect : '16:9', [W, H] = FRAME[asp], tall = H > W, fps = C.fps, G = FILM_GENRES[C.genre] || FILM_GENRES.thriller, s = Math.min(W, H) / 1080;
-  const music = C.music || C.beds[C.genre] || C.beds.thriller, bpm = BPM[music] || 100, fpb = Math.max(4, Math.round(fps * 60 / bpm)), bar = 4 * fpb;
+  const music = C.music || C.beds[C.genre] || C.beds.thriller, bpm = BPM[music] || 100, fpb = fpbOf(bpm, fps), bar = 4 * fpb;
   const T0 = Math.max(30, Math.min(60, +C.length || 40)), total = Math.round(T0 * fps / fpb) * fpb, style = C.style || C.styles[C.genre] || 'drift';
   const per = Math.max(fpb * 2, Math.round(C.secondsPerName * fps / fpb) * fpb), titleF = Math.max(bar, Math.round(4.5 * fps / fpb) * fpb), endF = Math.max(bar, Math.round(3.5 * fps / fpb) * fpb), lead = 2 * fpb;   // the title about 4.5 s, "directed by" about 3.5 s + the hold
   const fit = Math.max(1, Math.floor((total - lead - titleF - endF) / per)), names = C.text.names.slice(0, fit), shots = [], gfx = [], cues = [], texts = [], holds = [];

@@ -13,7 +13,8 @@ export const SCORES = {   // music/presets.py TRAILERS trailer_<style> (bpm, gap
   horror: { bpm: 80, gap: 4, cresc: 0, ring: 4, button: 8, tail: 12, final: 6 },
   drama: { bpm: 84, gap: 4, cresc: 1, ring: 4, button: 8, tail: 12, final: 6 },
 };
-export const fpbOf = (bpm, fps) => Math.max(4, Math.round(fps * 60 / bpm));   // music/grid.py snap_bpm: one beat = a whole number of frames
+const roundEven = (x) => { const r = Math.round(x); return Math.abs(x % 1) === 0.5 && r % 2 ? r - 1 : r; };   // Python's round(): halves go to the even integer (22.5 -> 22)
+export const fpbOf = (bpm, fps) => Math.max(4, roundEven(fps * 60 / bpm));   // music/grid.py snap_bpm: one beat = a whole number of frames
 export function scoreMarkers(style, fps, actBars, buttonBeats, tailBeats) {
   const p = SCORES[style]; if (!p) throw new Error('unknown score style ' + style + ' (' + Object.keys(SCORES).join(', ') + ')');
   const a = actBars.map((x) => Math.max(1, Math.round(x))), bb = buttonBeats ?? p.button, tb = Math.max(4, tailBeats ?? p.tail), fpb = fpbOf(p.bpm, fps);
@@ -25,18 +26,15 @@ export function scoreMarkers(style, fps, actBars, buttonBeats, tailBeats) {
 }
 const ACCEL = { act1: [[0, 8], [1, 6]], act2: [[0, 4], [1, 2]], act3: [[0, 2], [0.6, 1], [1, 0.5]] }, QUANTUM = 0.5;   // cuts/patterns.json trailer.accelerate3Act
 export function rate(act, u) { const k = ACCEL[act]; u = Math.min(1, Math.max(0, u)); for (let i = 1; i < k.length; i++) if (u <= k[i][0]) { const [u0, b0] = k[i - 1], [u1, b1] = k[i]; return b0 + (b1 - b0) * (u1 === u0 ? 0 : (u - u0) / (u1 - u0)); } return k[k.length - 1][1]; }
-export function montage(f0, f1, fpb, act) {
-  const q = Math.max(1, Math.round(fpb * QUANTUM)), cuts = [f0]; let f = f0;
-  for (;;) { const u = (f - f0) / Math.max(1, f1 - f0), ln = Math.max(q, Math.round(rate(act, u) * fpb / q) * q); if (f + ln > f1 - q + 1e-9) break; f += ln; cuts.push(f); }
-  const tl = Math.max(q, Math.round(rate(act, 1) * fpb / q) * q); if (cuts.length > 1 && f1 - cuts[cuts.length - 1] < 0.5 * tl) cuts.pop();
+/* the half-beat grid: k half-beats after the act start -> a whole frame (rounded half to even, as Python), so an even k is exactly a beat */
+export function montage(f0, f1, fpb, act, act0 = f0, act1 = f1) {
+  const hb = fpb * QUANTUM, cuts = [f0]; let k = roundEven((f0 - act0) / hb), last = f0;
+  for (;;) { const u = (last - act0) / Math.max(1, act1 - act0), n = Math.max(1, roundEven(rate(act, u) / QUANTUM)); k += n; const f = act0 + roundEven(k * hb); if (f > f1 - hb + 1e-9) break; cuts.push(f); last = f; }
+  const tail = Math.max(1, roundEven(rate(act, 1) / QUANTUM)) * hb; if (cuts.length > 1 && f1 - cuts[cuts.length - 1] < 0.5 * tail) cuts.pop();
   return cuts;
 }
 /* the same acceleration over a SPAN [a, b) inside an act [actF0, actF1) (the gaps between interstitial cards): the rate follows the act's clock, not the span's */
-export function montageIn(actF0, actF1, a, b, fpb, act) {
-  const q = Math.max(1, Math.round(fpb * QUANTUM)), cuts = [a]; let f = a;
-  for (;;) { const u = (f - actF0) / Math.max(1, actF1 - actF0), ln = Math.max(q, Math.round(rate(act, u) * fpb / q) * q); if (f + ln > b - q + 1e-9) break; f += ln; cuts.push(f); }
-  return cuts;
-}
+export const montageIn = (actF0, actF1, a, b, fpb, act) => montage(a, b, fpb, act, actF0, actF1);
 /* an estimated text box (no DOM): Manrope bold averages about 0.56 em per character (0.6 for mono); good enough for eyes' safe-zone and size checks */
 export function textBox(text, { W, H, fontPx, y, anchor = 'middle', x = null, weight = 700, mono = false, ls = 0 }) {
   const n = String(text || '').length, w = Math.min(W, n * fontPx * (mono ? 0.6 : weight >= 700 ? 0.6 : 0.52) + ls * fontPx * Math.max(0, n - 1)), cx = x ?? W / 2;

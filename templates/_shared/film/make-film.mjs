@@ -12,14 +12,14 @@ export function setArgs(C, argv) {
   return C;
 }
 export async function makeFilm(DIR, name, argv = process.argv.slice(2)) {
+  const noMix = argv.includes('--no-mix'); argv = argv.filter((a) => a !== '--no-mix');   // --no-mix: page only (layout checks), keep whatever mix is staged
   const { CONFIG } = await import(pathToFileURL(path.join(DIR, 'config.mjs')).href), C = setArgs(structuredClone(CONFIG), argv);
   const asp = String(C.aspect || '16:9'), cut = String(C.length ?? 'full'), isDefault = JSON.stringify(C) === JSON.stringify(CONFIG), tag = `${cut}-${asp.replace(':', 'x')}`;
   const planName = isDefault ? 'plan' : 'plan-' + tag, PROJ = path.join(DIR, 'projects', tag), PY = process.env.PYTHON || 'python3';
   runPlan(DIR, [...argv.filter((a) => a !== '--allow-lint'), ...(argv.includes('--allow-lint') ? ['--allow-lint'] : []), '--name', planName]);
   const planFile = path.join(DIR, 'out', planName + '.json'), plan = JSON.parse(fs.readFileSync(planFile, 'utf8'));
   fs.mkdirSync(PROJ, { recursive: true }); const st = stageFilm(PROJ, plan);
-  const r = spawnSync(PY, [path.join(SH, 'film', 'score.py'), planFile, path.join(PROJ, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' });
-  if (r.status !== 0) process.exit(r.status ?? 1);
+  if (!noMix) { const r = spawnSync(PY, [path.join(SH, 'film', 'score.py'), planFile, path.join(PROJ, 'assets', 'media', 'mix.wav')], { stdio: 'inherit' }); if (r.status !== 0) process.exit(r.status ?? 1); }
   fs.writeFileSync(path.join(PROJ, 'index.html'), filmPage(plan, { title: `motion-pack ${name}: ${plan.title || (C.film && C.film.title) || name} (${tag})` }));
   const mp4 = path.join('out', `${name}-${tag}.mp4`);
   console.log(`${PROJ}/index.html  ${plan.shots.length} shots, ${plan.gfx.length} type items, ${plan.cues.length} cues, ${plan.seconds} s, ${plan.W}x${plan.H}  todo: ${st.todo.join(' | ') || 'none'}`);

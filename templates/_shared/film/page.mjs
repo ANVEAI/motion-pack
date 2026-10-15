@@ -31,9 +31,9 @@ export function filmPage(plan, { title = 'motion-pack film' } = {}) {
 #fxLo, #fxHi { position: absolute; inset: 0; pointer-events: none; } #type { position: absolute; inset: 0; pointer-events: none; }
 #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
 .bar { position: absolute; left: 0; width: 100%; background: #000; height: ${bars}px; } #barT { top: 0; } #barB { bottom: 0; }
-.pill { position: absolute; font: 600 ${Math.round((tall ? 30 : 26) * Math.min(W, H) / 1080)}px "IBM Plex Mono", monospace; color: rgba(255,255,255,0.78); letter-spacing: 0.06em; white-space: nowrap; }
-#lab { ${bars >= 60 ? `left: 50%; transform: translateX(-50%); bottom: ${Math.round(bars / 2 - 16 * Math.min(W, H) / 1080)}px;` : tall ? `left: 65px; top: ${269 - 52}px;` : `left: 96px; bottom: 58px;`} }
-#slot { ${bars >= 60 ? `left: 96px; top: ${bars + 22}px;` : tall ? `left: 65px; top: 285px;` : `left: 96px; top: 64px;`} color: rgba(255,255,255,0.7); font-size: ${Math.round((tall ? 26 : 22) * Math.min(W, H) / 1080)}px; opacity: 0; }`;
+.pill { position: absolute; font: 600 ${Math.round((tall ? 30 : 28) * Math.min(W, H) / 1080)}px "IBM Plex Mono", monospace; color: rgba(255,255,255,0.78); letter-spacing: 0.06em; white-space: nowrap; }
+#lab { ${bars >= 60 ? `left: 50%; transform: translateX(-50%); bottom: ${Math.round(bars / 2 - 16 * Math.min(W, H) / 1080)}px;` : tall ? `left: 65px; top: 284px;` : `left: 96px; bottom: 58px;`} }
+#slot { ${bars >= 60 ? `left: 96px; top: ${bars + 22}px;` : tall ? `left: 65px; top: 330px;` : `left: 96px; top: 64px;`} color: rgba(255,255,255,0.72); font-size: ${Math.round((tall ? 30 : 28) * Math.min(W, H) / 1080)}px; opacity: 0; }`;
   const fontCss = `@font-face { font-family: "STIX Two Text"; src: url("assets/fonts/STIXTwoText.ttf") format("truetype"); font-style: normal; } @font-face { font-family: "STIX Two Text"; src: url("assets/fonts/STIXTwoText-Italic.ttf") format("truetype"); font-style: italic; }`;
   const LAY = plan.layers || {}, lo = [{ kind: 'vignette', params: { amount: LAY.vignette ?? 0.22 } }, ...(plan.flares || []).map((p) => ({ kind: 'anamorphicFlare', params: p }))];
   const hi = [...(plan.burns || []).map((p) => ({ kind: 'filmBurn', params: p })), ...(LAY.dust ? [{ kind: 'dust', params: { density: LAY.dust } }] : []), ...(LAY.grain && LAY.grain !== 'none' ? [{ kind: 'grain', params: { stock: LAY.grain } }] : [])];
@@ -81,7 +81,7 @@ function draw(t) {
   for (let k = 0; k < 2; k++) if (!used[k]) cv[k].style.opacity = '0';
   for (const s of PLAN.shots) if (s.kind === 'media' && !act.some(([i]) => PLAN.shots[i].id === s.id)) wraps[s.id].style.opacity = '0';
   let fl = 0; for (const c of PLAN.flashes) { const d = (t - c) * F; if (d > -2 && d < 4) fl = Math.max(fl, d <= 0 ? (d + 2) / 2 : 1 - d / 4); } flash.style.opacity = String(Math.min(0.85, fl));
-  const top = act.length ? PLAN.shots[act.reduce((m, x) => (x[1] >= m[1] ? x : m))[0]] : null, lab = PLAN.slots && top && top.kind === 'plate' && top.label ? 'PLACEHOLDER · ' + top.label : '';
+  const top = act.length ? PLAN.shots[(act.filter((x) => x[1] >= 0.5).pop() || act[act.length - 1])[0]] : null, lab = PLAN.slots && top && top.kind === 'plate' && top.label ? 'PLACEHOLDER · ' + top.label : '';
   if (lab !== lastSlot) { slot.textContent = lab; slot.style.opacity = lab ? '1' : '0'; lastSlot = lab; }
   fin.render(t); lo.render(t, { frame: Math.round(t * F) }); hi.render(t, { frame: Math.round(t * F) }); gfx.render(t);
 }

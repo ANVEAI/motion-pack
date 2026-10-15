@@ -18,7 +18,7 @@ function vn2(x, y, s) { const xi = Math.floor(x), yi = Math.floor(y), xf = x - x
 export function fbm(x, y, s) { let v = 0, a = 0.5, f = 1; for (let o = 0; o < 4; o++) { v += a * vn2(x * f, y * f, s + o * 101); a *= 0.5; f *= 2.03; } return v / 0.9375; }
 
 /* ------------------------------------------------------------------------------------------------------------------------------------ filmBurn */
-const BURN_D = { at: 1.0, dur: 0.9, peak: 0.92, from: 'left', origin: [0.15, 0.5], scale: 3.2, warp: 0.55, speed: 0.6, colors: ['#FFF4D6', '#FF9A2E', '#C2310C'], glow: 1, cells: 96, intensity: 1, seed: 11 };
+const BURN_D = { at: 1.0, dur: 0.9, peak: 0.78, from: 'left', origin: [0.15, 0.5], scale: 3.2, warp: 0.55, speed: 0.6, colors: ['#FFF4D6', '#FF9A2E', '#C2310C'], glow: 1, cells: 96, intensity: 1, seed: 11 };
 /* coverage 0..peak: rises on an ease-in to the peak exactly at `at`, then falls on an ease-out (the next shot is revealed through the retreating burn) */
 export function burnState(t, raw = {}) {
   const p = { ...BURN_D, ...raw }, h = Math.max(0.05, p.dur / 2), u = t - p.at;
@@ -39,7 +39,7 @@ function drawBurn(g, W, H, t, raw, seed) {
     const v = 0.55 * fbm(x * p.scale * A + wx * 2 + tw, y * p.scale + wy * 2, seed + 17) + 0.45 * burnBias(p, x, y, A), d = cover * 1.25 - v;   // d > 0: burnt; the front is where d crosses 0
     let r = 0, gg = 0, b = 0, a = 0;
     if (d > -band) { const q = clamp((d + band) / (band * 3.2)), front = Math.exp(-((d / band) ** 2) * 1.6) * p.glow;
-      const col = q < 0.5 ? C[2].map((v0, k) => lerp(v0, C[1][k], q * 2)) : C[1].map((v0, k) => lerp(v0, C[0][k], (q - 0.5) * 2)); a = clamp(q * 1.1 + front * 0.6) * p.intensity;
+      const col = q < 0.5 ? C[2].map((v0, k) => lerp(v0, C[1][k], q * 2)) : C[1].map((v0, k) => lerp(v0, C[0][k], (q - 0.5) * 2)); a = clamp(q * 0.85 + front * 0.6) * p.intensity;
       r = clamp(col[0] / 255 + front * 0.25) * 255; gg = clamp(col[1] / 255 + front * 0.2) * 255; b = clamp(col[2] / 255 + front * 0.1) * 255; }
     const o = (j * nx + i) * 4; img.data[o] = r * a; img.data[o + 1] = gg * a; img.data[o + 2] = b * a; img.data[o + 3] = 255;   // premultiplied onto black: screen blend
   }

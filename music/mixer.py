@@ -251,7 +251,7 @@ class Mix:
 
     def _window(self, c):
         """(start, length) in cue-local samples of the K-level window"""
-        if c["cat"] == "riser" and c["id"].startswith("snd.riser"):
+        if (c["cat"] == "riser" and c["id"].startswith("snd.riser")) or (c["id"].startswith("snd.trailer.") and "anchor:end" in c["tags"]):   # film lane: trailer risers / reverse swells / sucks end on the anchor
             ln = int(0.2 * SR)
             return max(0, c["anchor"] - ln), min(ln, c["anchor"] + 1)
         if c["loop"]:

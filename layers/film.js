@@ -53,7 +53,7 @@ export function inkSVG(id, { levels = 6, edge = 0.55, color = '#1A1428' } = {}, 
     `<feColorMatrix in="m" type="matrix" values="0 0 0 0 ${f4(cr)} 0 0 0 0 ${f4(cg)} 0 0 0 0 ${f4(cb)} ${f4(e)} 0 0 0 0" result="ink"/>` +
     `<feComposite in="ink" in2="p" operator="over"/></filter>`;
 }
-export const barsPx = (W, H, ratio) => (ratio && W / H < ratio - 1e-6 ? 0 : ratio ? Math.round((H - W / ratio) / 2) : 0);
+export const barsPx = (W, H, ratio) => (!ratio || W / H >= ratio - 1e-6 ? 0 : Math.round((H - W / ratio) / 2));
 export function filmDefs(genre, { id = 'mp-film', H = 1080, look = null } = {}) {
   const G = FILM_GENRES[genre]; if (!G) throw new Error('unknown film genre ' + genre + ' (layers/presets/film-looks.js FILM_GENRES)');
   const ids = [], parts = [], lk = look || G.look;

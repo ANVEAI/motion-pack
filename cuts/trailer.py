@@ -40,20 +40,27 @@ def rate(act, u, P=None):
     return float(knots[-1][1])
 
 
-def montage(f0, f1, fps, fpb, act, P=None):
-    """cut frames [f0, ..., < f1] for one act: shot lengths follow rate(), quantised to the pattern's quantum (half a beat by default), so every cut is on the grid"""
+def montage(f0, f1, fps, fpb, act, P=None, act0=None, act1=None):
+    """cut frames [f0, ..., < f1] for one act: shot lengths follow rate(), counted in whole half-beats, and every cut is placed on the half-beat grid of the act
+    (frame = act start + round(k x fpb / 2)), so a cut on an even k is exactly a beat even when half a beat is not a whole frame. act0 / act1: the act this span sits in
+    (the rate follows the act's clock); default = the span itself."""
     P = P or _pat()["accelerate3Act"]
-    q = max(1, int(round(fpb * P["quantum_beats"])))
-    cuts, f = [f0], f0
+    a0 = f0 if act0 is None else act0
+    a1 = f1 if act1 is None else act1
+    hb = fpb * P["quantum_beats"]                                   # frames per grid step (may be fractional: 7.5 at 120 BPM / 30 fps)
+    k = int(round((f0 - a0) / hb))
+    cuts, last = [f0], f0
     while True:
-        u = (f - f0) / max(1, f1 - f0)
-        ln = max(q, int(round(rate(act, u, P) * fpb / q)) * q)
-        if f + ln > f1 - q + 1e-9:
+        u = (last - a0) / max(1, a1 - a0)
+        n = max(1, int(round(rate(act, u, P) / P["quantum_beats"])))
+        k += n
+        f = a0 + int(round(k * hb))
+        if f > f1 - hb + 1e-9:
             break
-        f += ln
         cuts.append(f)
-    tail_len = max(q, int(round(rate(act, 1.0, P) * fpb / q)) * q)
-    if len(cuts) > 1 and f1 - cuts[-1] < 0.5 * tail_len:          # a stub at the end of the act joins the shot before it
+        last = f
+    tail = max(1, int(round(rate(act, 1.0, P) / P["quantum_beats"]))) * hb
+    if len(cuts) > 1 and f1 - cuts[-1] < 0.5 * tail:                # a stub at the end of the span joins the shot before it
         cuts.pop()
     return cuts
 

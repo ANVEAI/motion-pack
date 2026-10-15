@@ -7,7 +7,7 @@
    Edit the CONFIG block only. `node make.mjs [--set length=30] [--set aspect=9:16] [--set genre=scifi]`, then render (make.mjs prints the command).
    DEMO: "THE LAST SIGNAL" is a FICTIONAL film by the fictional "ORBIT PICTURES"; every shot is a labelled procedural placeholder plate, every name a placeholder, the quote is a
    labelled placeholder with a placeholder source, the date is a labelled placeholder. Put your footage in CONFIG.media.<slot>.src and your words in CONFIG.text. */
-import { FRAME, SCORES, scoreMarkers, montage, montageIn, textBox, subLines, slotOf, readS } from '../_shared/film/plan-film.mjs';
+import { FRAME, SCORES, fpbOf, scoreMarkers, montage, montageIn, textBox, subLines, slotOf, readS } from '../_shared/film/plan-film.mjs';
 import { FILM_GENRES } from '../../layers/presets/film-looks.js';
 
 /* ============================== CONFIG (edit me) ============================== */
@@ -69,10 +69,15 @@ export const PROJECT_MAP = { 'brand.name': 'brand.name', 'brand.accent': 'brand.
 const sec = (f, fps) => +(f / fps).toFixed(6);
 export function buildPlan(C) {
   const asp = FRAME[C.aspect] ? C.aspect : '16:9', [W, H] = FRAME[asp], tall = H > W, fps = C.fps, G = FILM_GENRES[C.genre] || FILM_GENRES.thriller, style = C.score.style || G.score;
-  const P = SCORES[style] ? SCORES[style] : SCORES.thriller, fpb = Math.max(4, Math.round(fps * 60 / P.bpm)), barS = 4 * fpb / fps, beatS = fpb / fps;
+  const P = SCORES[style] ? SCORES[style] : SCORES.thriller, fpb = fpbOf(P.bpm, fps), barS = 4 * fpb / fps, beatS = fpb / fps;
   const cut = C.cuts[String(C.length)] || C.cuts.full, bars = (x) => (x > 0 ? Math.max(1, Math.round(x / barS)) : 0);
   const B = { cold: Math.max(1, bars(cut.cold)), production: bars(cut.production), world: bars(cut.world), incite: bars(cut.incite), act2: bars(cut.act2), act3: Math.max(1, bars(cut.act3)) };
   if (B.incite + B.act2 === 0) B.act2 = 1;
+  if (typeof C.length === 'number') {   // a cut-down fits its length: trim whole bars (largest section first) while the cut runs over by more than a beat
+    const fixed = (P.gap + 4 * P.cresc + P.ring) * beatS + (cut.button > 0 ? Math.max(2, Math.round(cut.button / beatS)) : 0) * beatS + Math.max(4, Math.round(cut.tail / beatS)) * beatS;
+    for (let guard = 0; guard < 40; guard++) { const tot = fixed + (B.cold + B.production + B.world + B.incite + B.act2 + B.act3) * barS; if (tot <= C.length + beatS) break;
+      const k = ['act2', 'incite', 'world', 'production', 'act3', 'cold'].filter((x) => B[x] > (x === 'cold' || x === 'act3' ? 1 : 0)).sort((a, b) => B[b] - B[a])[0]; if (!k) break; B[k]--; if (B.incite + B.act2 === 0) { B[k]++; break; } }
+  }
   const actBars = [B.cold + B.production + B.world, B.incite + B.act2, B.act3], buttonBeats = cut.button > 0 ? Math.max(2, Math.round(cut.button / beatS)) : 0, tailBeats = Math.max(4, Math.round(cut.tail / beatS));
   const M = scoreMarkers(style, fps, actBars, buttonBeats, tailBeats), Fm = M.frames, bar = 4 * fpb, T = sec(Fm.end, fps);
   const shots = [], gfx = [], cues = [], texts = [], burns = [], flares = [], flashes = [], holds = [], s = Math.min(W, H) / 1080;
@@ -118,11 +123,16 @@ export function buildPlan(C) {
     for (let b = f0, k = 0; b < f1 && ci < cards.length; b += bar * cardEvery, k++) if ((k > 0 || act === 'act3') && b + F(cardBeats) <= f1) cardAt.set(b, cards[ci++]);
     const spans = [], cs = [...cardAt.keys()].sort((x, y) => x - y); let p0 = f0;
     for (const c of cs) { if (c > p0) spans.push([p0, c]); p0 = c + F(cardBeats); } if (p0 < f1) spans.push([p0, f1]);
-    const pts = [...cs, ...spans.flatMap(([x, y]) => montageIn(f0, f1, x, y, fpb, act))].sort((x, y) => x - y);
+    let pts = [...cs, ...spans.flatMap(([x, y]) => montageIn(f0, f1, x, y, fpb, act))].sort((x, y) => x - y);
+    if (act === 'act3') {   // the wall: every bar downbeat is a cut (the score's braam lands there); montage cuts closer than half a beat to one give way
+      const down = []; for (let d = f0; d < f1; d += bar) if (!cs.some((c) => d > c && d < c + F(cardBeats))) down.push(d);
+      const keep = new Set([...cs, ...down]), hb = Math.round(fpb / 2); pts = [...new Set([...pts, ...down])].sort((x, y) => x - y).filter((x) => keep.has(x) || ![...keep].some((k) => Math.abs(k - x) < hb)); }
     pts.forEach((a, i) => { const b = i + 1 < pts.length ? pts[i + 1] : f1, c = cardAt.get(a);
       if (c) { const sh = black(`${prefix}card${i}`, prefix, a, b);
         if (c.kind === 'makers') { gfx.push({ id: 'card.fromTheMakers', at: sh.start, dur: Math.max(0.5, sh.dur - 0.3), params: { kicker: c.kicker, work: c.work, placeholder: c.placeholder !== false } }); texts.push({ text: c.work, t: [sh.start + 0.3, +(sh.start + sh.dur).toFixed(4)], box: textBox(c.work, { W, H, fontPx: 96 * s, y: H / 2 + 34 * s }), fontPx: Math.round(96 * s), role: 'headline', fg: '#EDEFF2' }); }
         else if (c.kind === 'quote') { gfx.push({ id: 'card.quote', at: sh.start, dur: Math.max(0.5, sh.dur - 0.3), params: { quote: c.quote, source: c.source } }); cues.push({ id: C.sfx.quote, t: sh.start, why: 'quote card slam' }); }
+        else if (act === 'act3') { const st = C.film.titleStyle || G.title, fz = tall ? 120 : 150; gfx.push({ id: st, at: sh.start, dur: Math.max(0.4, +(sh.dur - 0.25).toFixed(4)), params: { text: c.text, size: fz, sweepAt: 0.05, sweepDur: 0.6 } });
+          texts.push({ text: c.text, t: [sh.start, +(sh.start + sh.dur).toFixed(4)], box: textBox(c.text, { W, H, fontPx: Math.min(fz * s, W * 0.85 / (c.text.length * 0.62)), y: H / 2 + 40 * s }), fontPx: Math.round(Math.min(fz * s, W * 0.85 / (c.text.length * 0.62))), role: 'headline', fg: '#F2F4F7' }); }   // act 3 escalates: the cards take the title's weight
         else card(c.text, sh.start, Math.max(0.4, +(sh.dur - 0.1).toFixed(4)), tall ? 110 : 130);
         if (c.kind !== 'quote') cues.push({ id: C.sfx.card, t: sh.start, why: 'interstitial card' }); }
       else { const sh = shot(`${prefix}${i}`, prefix, a, b, next()); if (act === 'act2' && i % 2 === 1) cues.push({ id: C.sfx.pass, t: sh.start, why: 'pass-by on the cut' }); } });

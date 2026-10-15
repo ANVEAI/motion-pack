@@ -35,7 +35,7 @@ const fade = (L) => E.soft(L.in) * (1 - E.exit(L.out));
 function fit(s, want, maxW, { weight = 800, font = FONT, ls = 0 } = {}) { const w1 = measure(s, 100, { weight, font }) / 100 + ls * Math.max(0, s.length - 1); return Math.max(8, Math.min(want, maxW / Math.max(0.05, w1))); }
 const tx = (s, x, y, size, { weight = 800, fill = PAPER, anchor = 'middle', font = FONT, ls = 0, op = 1, extra = '' } = {}) =>
   `<text x="${f2(x)}" y="${f2(y)}" font-family="${esc(font)}" font-size="${f2(size)}" font-weight="${weight}" fill="${fill}" text-anchor="${anchor}" letter-spacing="${f2(ls)}"${op < 1 ? ` opacity="${f2(Math.max(0, op))}"` : ''} ${extra}>${esc(s)}</text>`;
-const label = (c, s, txt, y = null) => tx(txt, c.W / 2, y ?? c.safe.y1 - 8 * s, Math.max(20, 22 * s), { weight: 600, font: MONO, fill: 'rgba(255,255,255,0.62)', ls: 2 * s });
+const label = (c, s, txt, y = null) => tx(txt, c.W / 2, y ?? c.safe.y1 - 8 * s, Math.max(24, (c.tall ? 30 : 28) * s), { weight: 600, font: MONO, fill: 'rgba(255,255,255,0.7)', ls: 1.5 * s });   // honesty labels: 28 px on 16:9, 30 px on 9:16 (frame-design)
 const refuse = (c, s, msg) => { const w = 760 * s, h = 150 * s, x = c.W / 2 - w / 2, y = c.H / 2 - h / 2;
   return `<rect x="${f2(x)}" y="${f2(y)}" width="${f2(w)}" height="${f2(h)}" rx="${f2(16 * s)}" fill="#FFFFFF" stroke="${RED}" stroke-width="${f2(3 * s)}"/>` +
     tx('needs a source', c.W / 2, y + 62 * s, 40 * s, { fill: RED }) + tx(msg, c.W / 2, y + 108 * s, 24 * s, { weight: 600, fill: '#16151B' }); };
@@ -96,7 +96,7 @@ const TITLES = {
 const BILL_D = { lines: [[['', 'ORBIT PICTURES'], ['presents', ''], ['a', 'PLACEHOLDER'], ['production', '']], [['', 'LEAD ONE'], ['', 'LEAD TWO'], ['', 'LEAD THREE'], ['', 'LEAD FOUR']],
   [['', '"THE LAST SIGNAL"'], ['music by', 'COMPOSER NAME'], ['edited by', 'EDITOR NAME']], [['director of photography', 'DP NAME'], ['production designer', 'DESIGNER NAME']],
   [['written by', 'WRITER NAME'], ['produced by', 'PRODUCER NAME'], ['directed by', 'DIRECTOR NAME']]],
-  width: 0.62, y: 0.62, color: '#DADDE2', squeeze: 0.56, big: 52, small: 0.42, font: null, note: 'placeholder credits · fictional names' };
+  width: 0.62, y: 0.62, color: '#DADDE2', squeeze: 0.56, big: 58, small: 0.42, font: null, note: 'placeholder credits · fictional names' };
 function billLine(row, x, y, w, big, small, squeeze, col, font) {
   const toks = row.flatMap(([r, n]) => [r ? [r.toUpperCase(), big * small, 400] : null, n ? [n.toUpperCase(), big, 600] : null].filter(Boolean));
   const nat = toks.reduce((a, [s, sz, wt]) => a + measure(s + ' ', sz, { weight: wt, font }), 0), tl = Math.min(w, nat * squeeze * 1.0001) > 0 ? w : nat;
@@ -108,7 +108,7 @@ const CREDITS = {
       const rows = list(p.lines, 12).map((r) => list(r, 8).map((q) => [str(Array.isArray(q) ? q[0] : '', '', 40), str(Array.isArray(q) ? q[1] : '', '', 60)])), big = num(p.big, 52, 8, 200) * s, sm = num(p.small, 0.42, 0.2, 1);
       const font = str(p.font) || FONT, col = hex(p.color, '#DADDE2'), lh = big * 1.08, y0 = c.H * num(p.y, 0.62, 0, 1) - (rows.length * lh) / 2 + big * 0.8;
       return `<g opacity="${f2(k)}">${rows.map((r, i) => billLine(r, x, y0 + i * lh, ww, big, sm, num(p.squeeze, 0.56, 0.2, 1), col, font)).join('')}` +
-        (str(p.note) ? tx(str(p.note), c.W / 2, y0 + rows.length * lh + big * 0.4, Math.max(18, 20 * s), { weight: 600, font: MONO, fill: 'rgba(255,255,255,0.6)', ls: 2 * s }) : '') + '</g>'; } },
+        (str(p.note) ? label(c, s, str(p.note), y0 + rows.length * lh + big * 0.6) : '') + '</g>'; } },
   'credits.roll': { tags: ['credits', 'roll', 'end-credits', 'film', 'short-film'], dur: 8, inF: 6, outF: 12, d: { items: [{ head: 'CAST' }, ['The operator', 'PLACEHOLDER NAME'], ['The voice', 'PLACEHOLDER NAME'], { head: 'CREW' }, ['Written and directed by', 'PLACEHOLDER NAME'], ['Music', 'motion-pack (synthesised)'], ['Picture', 'motion-pack placeholder plates'], { head: '' }, ['A fictional film', 'placeholder credits']],
       speed: 70, size: 34, color: '#E8E8EC', head: '#9AA3AE', gap: 1.9, startY: 1.0, edge: 0.12 },
     svg(L, p, c) { const s = sc(c), sz = num(p.size, 34, 8, 120) * s, lh = sz * num(p.gap, 1.9, 1, 4), y0 = c.H * num(p.startY, 1.0, -2, 3) - num(p.speed, 70, 0, 2000) * s * Math.max(0, L.u), k = fade(L), it = list(p.items, 200), cx = c.W / 2, g = sz * 0.6;
