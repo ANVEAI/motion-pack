@@ -9,14 +9,14 @@
                                                                                    keep ranges + output segments: silences over --silence go, a breath stays
                                                                                    (breaths.json from tools/human/breaths.py is kept whole, else 120 ms of air)
    node tools/human/human.mjs punchins words.json [--ladder 1,1.12,1,1.2] [--min-gap 4]   the alternating framing per jump cut and the punch-ins on emphasis words
-   node tools/human/human.mjs broll words.json [--keywords coffee,station] [--coverage 0.45] [--no-auto]   B-roll slots to fill (label + src: null), leading each word by 150 ms
+   node tools/human/human.mjs broll words.json [--keywords coffee,station] [--coverage 0.45] [--first-at 2] [--tail-free 1.5] [--no-auto]   B-roll slots to fill (label + src: null), leading each word by 150 ms
    node tools/human/human.mjs cursor clicks.json [--fps 30] [--end 30] [--out track.json]   estimate a cursor track from click times ([{ t, x, y }] screen fractions)
    node tools/human/human.mjs captions [--pick karaoke] [--aspect 9:16]            the caption style picker: list the looks, or show one with its box and lint
    (autocut / punchins / broll read words.json in SOURCE time; punchins and broll run on the autocut timeline, as the templates do) */
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath, pathToFileURL } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..'), H = (f) => import(pathToFileURL(path.join(ROOT, 'templates', '_shared', 'human', f)).href);
 const core = await H('core.mjs'), edit = await H('edit.mjs'), screen = await H('screen.mjs');
-const [cmd, file, ...rest] = process.argv.slice(2), opt = (k, d) => { const i = rest.indexOf('--' + k); return i < 0 ? d : rest[i + 1]; }, flag = (k) => rest.includes('--' + k);
+const [cmd, ...args] = process.argv.slice(2), file = args[0] && !args[0].startsWith('--') ? args[0] : null, rest = file ? args.slice(1) : args, opt = (k, d) => { const i = rest.indexOf('--' + k); return i < 0 ? d : rest[i + 1]; }, flag = (k) => rest.includes('--' + k);
 const out = (o) => { const p = opt('out'); const s = JSON.stringify(o, null, 1); if (p) { fs.writeFileSync(p, s + '\n'); console.log(p); } else console.log(s); };
 const readWords = (f) => { if (!f || !fs.existsSync(f)) { console.error(`human.mjs ${cmd}: no such file ${f}`); process.exit(2); } const t = fs.readFileSync(f, 'utf8'); return /\.(srt|vtt)$/i.test(f) ? core.normWords(core.subsToWords(t)) : core.normWords(JSON.parse(t)); };
 const fps = +(opt('fps', 30));
@@ -28,7 +28,7 @@ else if (cmd === 'autocut') { const br = opt('breaths') ? JSON.parse(fs.readFile
   const segs = core.segments(r.keep, fps); out({ keep: r.keep, cuts: r.cuts, segments: segs, seconds: segs.length ? +(segs.at(-1).f1 / fps).toFixed(4) : 0 }); }
 else if (cmd === 'punchins') { const { segs, words } = cutTimeline(readWords(file)); out(edit.punchPlan(segs, words, { ladder: String(opt('ladder', '1,1.12,1,1.2')).split(',').map(Number), minGap: +opt('min-gap', 4) })); }
 else if (cmd === 'broll') { const { segs, words } = cutTimeline(readWords(file)); const kw = opt('keywords') ? opt('keywords').split(',').map((w) => ({ word: w.trim() })) : [];
-  out(edit.brollSlots(words, { keywords: kw, coverage: +opt('coverage', 0.45), auto: !flag('no-auto'), seconds: segs.length ? segs.at(-1).f1 / fps : 0 })); }
+  out(edit.brollSlots(words, { keywords: kw, coverage: +opt('coverage', 0.45), auto: !flag('no-auto'), firstAt: +opt('first-at', 2.0), tailFree: +opt('tail-free', 1.5), seconds: segs.length ? segs.at(-1).f1 / fps : 0 })); }
 else if (cmd === 'cursor') { const c = JSON.parse(fs.readFileSync(file, 'utf8')); out(screen.cursorFromClicks(c.clicks || c, { fps, end: opt('end') ? +opt('end') : null })); }
 else if (cmd === 'captions') { if (!opt('pick')) out(Object.fromEntries(Object.entries(edit.CAPTION_PICKS).map(([k, v]) => [k, v.why]))); else out(edit.pickCaption(opt('pick'), { aspect: opt('aspect', '9:16'), band: opt('band', 'lower') })); }
 else { console.error('usage: node tools/human/human.mjs words|fillers|autocut|punchins|broll|cursor|captions <file> [options]  (see the header of this file)'); process.exit(cmd ? 2 : 0); }

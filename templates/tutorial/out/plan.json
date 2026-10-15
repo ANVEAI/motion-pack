@@ -9355,7 +9355,7 @@
      ]
     },
     "ph": {
-     "label": "WEBCAM",
+     "label": "WEBCAM PLACEHOLDER",
      "slot": "webcam",
      "name": "Presenter",
      "tint": "#2E3B4E",
