@@ -32,7 +32,7 @@
   "media": {
     "//": "named footage slots. src is a path relative to this file; null renders a labelled placeholder ('placeholder: <label>' in frame), never a fake shot.",
     "hook": { "src": "../templates/_shared/media/plate-devices.mp4", "start": 2.2, "label": "your product in use" },
-    "problem": { "src": "../templates/_shared/media/plate-film.mp4", "start": 0.4, "label": "the problem, filmed" },
+    "problem": { "src": "../templates/_shared/media/plate-cast.mp4", "start": 0.4, "label": "the problem, filmed" },
     "product": { "src": null, "label": "Fernwick on a laptop" }
   },
 

@@ -226,10 +226,11 @@ export function applySets(C, sets, { MAP = {}, project = {}, template, ASPECTS }
   for (const s of sets) {
     const i = s.indexOf('='); if (i < 1) { errors.push(`--set ${s}: write --set key=value`); continue; }
     const k = s.slice(0, i), v = coerce(s.slice(i + 1));
-    const parent = k.split('.').slice(0, -1).join('.'), inList = /\.\d+(\.|$)/.test(parent + '.') || Array.isArray(getPath(C, parent));   // an optional field of a list item (proof.0.source) may be added; anything else must exist
-    if (hasPath(C, k) || (parent && hasPath(C, parent) && inList)) { setPath(C, k, v, { create: true }); applied.push({ from: '--set ' + k, to: k, value: v }); continue; }
+    const parent = k.split('.').slice(0, -1).join('.'), leaf = k.split('.').at(-1), inList = /\.\d+(\.|$)/.test(parent + '.') || Array.isArray(getPath(C, parent));
+    const optional = parent && hasPath(C, parent) && typeof getPath(C, parent) === 'object' && (inList || configPaths(C).some((p) => p.split('.').at(-1) === leaf));   // an optional field the CONFIG uses elsewhere (proof.0.source, builder.scatter.hero.source) may be added; a name it never uses is a typo
+    if (hasPath(C, k) || optional) { setPath(C, k, v, { create: true }); applied.push({ from: '--set ' + k, to: k, value: v }); continue; }
     if (MAP && MAP[k]) { try { const r = applyProject(C, { [k]: MAP[k] }, k === 'aspect' ? {} : { [k]: v }, { template, aspect: k === 'aspect' ? v : null, ASPECTS }); Object.assign(C, r.config); applied.push(...r.applied); } catch (e) { errors.push(...e.problems); } continue; }
-    const s2 = suggest(k, configPaths(C)); errors.push(`--set ${k}: not a CONFIG field of ${template || 'this template'}${s2 ? ` (did you mean ${s2}?)` : ''}`);
+    const s2 = suggest(k, configPaths(C)); errors.push(`cannot --set ${s}: ${k} is not a CONFIG field of ${template || 'this template'}${s2 ? ` (did you mean ${s2}?)` : ''}`);
   }
   if (errors.length) throw new ProjectError(errors);
   return { config: C, applied };

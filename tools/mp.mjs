@@ -4,7 +4,8 @@
      mp new <template>[,<template>] <dir> [--project p.json]   a project folder OUTSIDE the pack: project.json + build/ (a copy-on-write copy of the template; the rest of the pack linked)
      mp set <key> <value> [--dir D]                   edit project.json: brand.accent '#4a18ed', text.headline 'Your desk, *handled*.', aspects 16:9,9:16, config.ad.length 30
      mp build [--aspect A] [--template T] [--dir D]   plan + page (+ the mix) for each template of the project
-     mp render [--aspect all|A,B] [--template T] [--dir D]   build and render every aspect -> renders/<template>-<WxH>.mp4 (+ plan + contact sheet + loudness)
+     mp render [--aspect all|A,B] [--template T] [--workers N] [--dir D]   build and render every aspect -> renders/<template>-<WxH>.mp4 (+ plan + sheet + loudness)
+                                                      MP_RENDER_PREFIX="<lock script>" runs every render, eyes and ears pass through a shared lock
      mp check [--dir D]                               ids (check_ids), honesty (project + plan lint + banned demo words + name denylist), eyes, ears, contact sheet per render
      mp brand <logo.svg|png> [--dir D] [--write]      palette candidates from your logo, contrast-checked (frame-design contrast.py), a suggested accent / ink / paper
      mp doctor                                        node, python + venv, ffmpeg, Chrome on the GPU, puppeteer-core, sound libraries, disk
@@ -21,6 +22,9 @@ const die = (msg, code = 2) => { console.error('mp: ' + msg); process.exit(code)
 const run = (cmd, args, o = {}) => spawnSync(cmd, args, { stdio: o.capture ? 'pipe' : 'inherit', encoding: 'utf8', env: ENV, ...o });
 const flag = (argv, k, d = null) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
 const real = (p) => fs.realpathSync(p);
+/* heavy jobs (renders, eyes, ears) can go through a shared machine lock: MP_RENDER_PREFIX="/path/render-lock.sh" (split on spaces) replaces caffeinate; --workers N is passed to HyperFrames */
+const PREFIX = process.env.MP_RENDER_PREFIX ? process.env.MP_RENDER_PREFIX.split(/\s+/).filter(Boolean) : process.platform === 'darwin' ? ['caffeinate', '-dimsu'] : [];
+const heavy = (cmd, args, o = {}) => (PREFIX.length ? run(PREFIX[0], [...PREFIX.slice(1), cmd, ...args], o) : run(cmd, args, o));
 
 /* ---------- templates ---------- */
 const isTemplate = (d) => fs.existsSync(path.join(TPL, d, 'config.mjs')) && !d.startsWith('demo-') && !d.startsWith('_');
@@ -92,7 +96,7 @@ function cmdSet(argv) {
   let target = k;
   if (k.startsWith('config.')) { const [, t, ...rest] = k.split('.'); if (!t || !rest.length) die('config.<template>.<CONFIG path>, e.g. config.ad.length'); target = `overrides.${t}.${rest.join('.')}`;
     raw.overrides ??= {}; raw.overrides[t] ??= {}; raw.overrides[t][rest.join('.')] = v; }
-  else { const ks = k.split('.'); let o = raw; for (const q of ks.slice(0, -1)) { o[q] ??= {}; o = o[q]; } if (v === null && ks[0] === 'media' && ks.length === 2) v = { src: null }; o[ks.at(-1)] = v; }
+  else { const ks = k.split('.'); let o = raw; for (const q of ks.slice(0, -1)) { o[q] ??= {}; o = o[q]; } if (v === null && ks[0] === 'media' && ks.length === 2) v = { ...(typeof o[ks.at(-1)] === 'object' && o[ks.at(-1)] ? o[ks.at(-1)] : {}), src: null }; o[ks.at(-1)] = v; }   // a media slot set to null keeps its label: a labelled placeholder
   const text = JSON.stringify(raw, null, 2) + '\n';
   try { P.parseProject(text, file); const pr = P.stripComments(JSON.parse(text)); const errs = P.honesty(pr); if (errs.length) throw new P.ProjectError(errs, file); }
   catch (e) { if (e instanceof P.ProjectError) die(`${target} not set:\n  - ${e.problems.join('\n  - ')}`); throw e; }
@@ -103,9 +107,10 @@ function cmdSet(argv) {
 function targets(argv, dir) { const t = flag(argv, '--template'), meta = readMeta(dir), proj = JSON.parse(fs.readFileSync(projectFile(dir), 'utf8'));
   const ids = t && t !== 'all' ? t.split(',') : [].concat(proj.template || meta.templates); for (const id of ids) if (!fs.existsSync(path.join(dir, 'build', 'templates', id))) scaffoldBuild(dir, [id]); return ids; }
 function newest(dir, re, since) { let best = null; for (const f of fs.readdirSync(dir, { recursive: true })) { if (!re.test(f) || /assets\//.test(f)) continue; const p = path.join(dir, f), m = fs.statSync(p).mtimeMs; if (m >= since && (!best || m > best.m)) best = { p, m }; } return best && best.p; }
+let STRICT = false;   // --strict on build / render: a project field the template does not use is an error
 async function build(dir, id, aspect) {
   const T = path.join(dir, 'build', 'templates', id), t = await info(T), proj = projectFile(dir), t0 = Date.now() - 1000;
-  const args = ['--project', proj, ...(aspect ? ['--aspect', aspect] : [])];
+  const args = ['--project', proj, ...(aspect ? ['--aspect', aspect] : []), ...(STRICT ? ['--strict'] : [])];
   const r = t.engine === 'hyperframes' ? run('node', [path.join(T, 'make.mjs'), ...args], { cwd: T }) : run('node', [path.join(T, '..', '_shared', 'cues.mjs'), T, ...args], { cwd: T });
   if (r.status !== 0) return { ok: false, status: r.status };
   const plan = newest(path.join(T, 'out'), /^plan[^/]*\.json$/, t0) || path.join(T, 'out', 'plan.json'), page = t.engine === 'hyperframes' ? newest(T, /(^|\/)index\.html$/, t0) : path.join(T, 'scene.html');
@@ -133,20 +138,19 @@ async function cmdRender(argv) {
       const free = freeGiB(); if (free < MIN_FREE_GIB) die(`${free.toFixed(1)} GiB free, under ${MIN_FREE_GIB}: stopping before a render`, 1);
       const out = path.join(R, `${id}-${TAG(a)}.mp4`); let ok;
       if (t.engine === 'hyperframes') { const b = await build(dir, id, a); if (!b.ok) { bad = 1; continue; }
-        const cmd = [...(process.platform === 'darwin' ? ['caffeinate', '-dimsu'] : []), 'npx', '-y', HF, 'render', b.project, '-o', out, '--crf', crf];
-        ok = run(cmd[0], cmd.slice(1), { cwd: b.project }).status === 0; if (ok) fs.copyFileSync(b.plan, out.replace(/\.mp4$/, '.plan.json')); }
+        const w = flag(argv, '--workers'); ok = heavy('npx', ['-y', HF, 'render', b.project, '-o', out, '--crf', crf, ...(w ? ['--workers', w] : [])], { cwd: b.project }).status === 0; if (ok) fs.copyFileSync(b.plan, out.replace(/\.mp4$/, '.plan.json')); }
       else if (t.engine === 'three') { const T = path.join(dir, 'build', 'templates', id), tag = (t.aspects[a] && t.aspects[a].tag) || 'wide';
-        ok = run('bash', [path.join(T, '..', '_shared', 'render3d.sh'), T, 'scene.html', tag, crf], { env: { ...ENV, MP_PROJECT: projectFile(dir) } }).status === 0;
+        ok = heavy('bash', [path.join(T, '..', '_shared', 'render3d.sh'), T, 'scene.html', tag, crf], { env: { ...ENV, MP_PROJECT: projectFile(dir) } }).status === 0;
         if (ok) { fs.renameSync(path.join(T, 'out', `${id}-${tag}.mp4`), out); fs.copyFileSync(path.join(T, 'out', 'plan.json'), out.replace(/\.mp4$/, '.plan.json')); } }
       else { console.log(`${id}: no renderer (no make.mjs or scene.html)`); continue; }
-      if (!ok) { bad = 1; console.log(`${id} ${a}: render FAILED`); continue; }
+      if (!ok) { console.log(`${id} ${a}: render FAILED or refused (a lock refuses under 10 GiB free): stopping here, no retry; re-run mp render when the machine is free`); process.exit(1); }
       sheet(out); }
   }
   process.exit(bad);
 }
-function sheet(mp4) {
+function sheet(mp4) {   // stills late in each shot (the type has settled), from the delivered file
   const plan = JSON.parse(fs.readFileSync(mp4.replace(/\.mp4$/, '.plan.json'), 'utf8')), T = plan.seconds || 10;
-  const ts = (plan.shots || []).length ? plan.shots.slice(0, 16).map((s) => Math.min(T - 0.05, s.start + Math.min(0.6, s.dur * 0.6))) : [0.3, T * 0.25, T * 0.5, T * 0.75, T - 0.3];
+  const ts = (plan.shots || []).length ? plan.shots.slice(0, 16).map((s) => Math.min(T - 0.05, s.start + Math.max(0.1, Math.min(s.dur - 0.12, s.dur * 0.8)))) : [0.3, T * 0.25, T * 0.5, T * 0.75, T - 0.3];
   const r = run(PY, [path.join(PACK, 'templates', '_shared', 'sheet.py'), mp4, mp4.replace(/\.mp4$/, '.sheet.jpg'), ts.map((x) => x.toFixed(2)).join(',')], { capture: true });
   const m = /LUFS-I (-?[\d.]+) TP (-?[\d.]+)/.exec(r.stdout || ''); console.log(`${path.basename(mp4)}: sheet ${path.basename(mp4).replace(/\.mp4$/, '.sheet.jpg')}${m ? `, ${m[1]} LUFS-I, ${m[2]} dBTP decoded` : ''}`); return m ? { lufs: +m[1], tp: +m[2] } : null;
 }
@@ -157,7 +161,8 @@ async function cmdCheck(argv) {
   const dir = findDir(argv), file = projectFile(dir), lines = [], fail = (s) => { lines.push('FAIL ' + s); }, ok = (s) => lines.push('ok   ' + s), warn = (s) => lines.push('warn ' + s);
   let project; try { ({ project } = P.loadProject(file)); ok('project.json validates (schema, files, digits have sourced claims)'); } catch (e) { if (!(e instanceof P.ProjectError)) throw e; fail('project.json:\n       ' + e.problems.join('\n       ')); }
   if (project) { const copy = JSON.stringify([project.text, project.brand, project.claims]).toLowerCase(), hit = BANNED.filter((w) => copy.includes(w)); hit.length ? fail(`banned demo words in the copy: ${hit.join(', ')} (say placeholder, demo data, render or example)`) : ok('no banned demo words');
-    const nm = run(PY, [path.join(PACK, 'tools', 'check_names.py'), '--root', dir], { capture: true }); nm.status === 0 ? ok('no studied account or brand name (tools/check_names.py)') : fail('tools/check_names.py: ' + (nm.stdout + nm.stderr).trim().split('\n').slice(-3).join(' | ')); }
+    const nd = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-names-')); fs.copyFileSync(file, path.join(nd, 'project.json'));   // the user's copy only (build/ is the pack's own files)
+    const nm = run(PY, [path.join(PACK, 'tools', 'check_names.py'), '--root', nd, '--denylist', path.join(PACK, 'tools', 'name_denylist.txt')], { capture: true }); fs.rmSync(nd, { recursive: true, force: true }); nm.status === 0 ? ok('no studied account or brand name (tools/check_names.py)') : fail('tools/check_names.py: ' + (nm.stdout + nm.stderr).trim().split('\n').slice(-3).join(' | ')); }
   for (const id of targets(argv, dir)) {
     const T = path.join(dir, 'build', 'templates', id), t = await info(T);
     if (project) { try { const r = P.applyProject(t.mod.CONFIG, t.mod.PROJECT_MAP, project, { template: id, ASPECTS: t.aspects }); ok(`${id}: ${r.applied.length} fields applied${r.ignored.length ? `; not used: ${r.ignored.join(', ')}` : ''}`); for (const w of r.warnings) warn(`${id}: ${w}`); } catch (e) { fail(`${id}: ${e.problems.join(' | ')}`); } }
@@ -168,7 +173,7 @@ async function cmdCheck(argv) {
       if (fs.existsSync(planF)) { const L = JSON.parse(fs.readFileSync(planF, 'utf8')).lint || {}; const n = (L.claimsWithoutSource || []).length + (L.unmotivatedTransitions || []).length; n ? fail(`${f}: plan lint ${n} problem(s)${L.allowed ? ' (waived with --allow-lint)' : ''}`) : ok(`${f}: plan lint (claims have sources, transitions have reasons)`); }
       const m = sheet(mp4); if (m) (Math.abs(m.lufs + 14) <= 0.5 && m.tp <= -1.0 ? ok : fail)(`${f}: ${m.lufs} LUFS-I (target -14 +/- 0.5), ${m.tp} dBTP (<= -1.0)`);
       for (const [tool, script] of [['eyes', 'eyes/look.py'], ['ears', 'ears/listen.py']]) {
-        const r = run(PY, [path.join(PACK, script), mp4, ...(fs.existsSync(planF) ? ['--plan', planF] : []), '--json', `${base}.${tool}.json`, '--md', `${base}.${tool}.md`, '--quiet'], { capture: true });
+        const r = heavy(PY, [path.join(PACK, script), mp4, ...(fs.existsSync(planF) ? ['--plan', planF] : []), '--json', `${base}.${tool}.json`, '--md', `${base}.${tool}.md`, '--quiet'], { capture: true });
         let j = null; try { j = JSON.parse(fs.readFileSync(`${base}.${tool}.json`, 'utf8')); } catch { /* no report */ }
         const checks = j ? (j.checks || j.results || []) : [], fails = checks.filter((c) => c.status === 'fail' || c.verdict === 'fail'), score = j && (j.score ?? (j.summary && j.summary.score));
         (r.status === 0 && j && !fails.length ? ok : fail)(`${f}: ${tool} ${j ? `${fails.length} fail${score != null ? ', score ' + JSON.stringify(score) : ''}` : 'no report (exit ' + r.status + ')'}${fails.length ? ' -> ' + fails.map((c) => c.id || c.name).join(', ') : ''} (${path.basename(base)}.${tool}.md)`); }
@@ -216,4 +221,5 @@ async function cmdDoctor() {
 const [cmd, ...rest] = process.argv.slice(2);
 const CMDS = { list: cmdList, new: cmdNew, set: cmdSet, build: cmdBuild, render: cmdRender, check: cmdCheck, brand: cmdBrand, doctor: cmdDoctor };
 if (!CMDS[cmd]) { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1, 11).join('\n').replace(/^\/\* /, '   ')); process.exit(cmd && !['help', '--help', '-h'].includes(cmd) ? 2 : 0); }
+STRICT = rest.includes('--strict');
 try { await CMDS[cmd](rest); } catch (e) { if (e instanceof P.ProjectError) die(e.message); throw e; }

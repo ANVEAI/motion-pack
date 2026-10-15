@@ -6,7 +6,7 @@
 How it works (deterministic, standard library + Pillow):
   * SVG: every #hex and rgb() colour in fill / stroke / stop-color / style, weighted by how often it appears (a colour the logo uses once is a detail, not the brand).
   * PNG / JPG / WebP: opaque pixels only (alpha >= 128), downscaled to 160 px, median-cut to 8 colours, weighted by pixel share.
-  * accent = the most chromatic candidate (CIELAB chroma x sqrt(share)) with L* between 20 and 85; ink = the darkest near-neutral (L* < 25), else #111111;
+  * accent = the most chromatic candidate (CIELAB chroma x sqrt(share)) with L* between 20 and 85 (else the most chromatic at any L*, moved below); ink = the darkest near-neutral (L* < 25), else #111111;
     paper = the lightest (L* > 92), else #F5F2EA. A logo with no chromatic colour keeps the pack accent and says so.
   * then measured with frame-design's contrast.py (WCAG 2.x): ink on paper >= 4.5 (text), accent on paper >= 3 (large text and marks: the templates set
     accent words at >= 56 px bold), white on accent >= 3 (the CTA pill, large bold text). A failing accent is moved in L* to the nearest passing one (same hue),
@@ -73,10 +73,10 @@ def analyse(path, C):
     for hx, share in cands:
         L, a, b = C.rgb_to_lab(C.parse_hex(hx))
         rows.append({'hex': hx, 'share': round(share, 3), 'L': round(L, 1), 'chroma': round(math.hypot(a, b), 1)})
-    chroma = [r for r in rows if r['chroma'] >= 20 and 20 <= r['L'] <= 85]
+    chroma = [r for r in rows if r['chroma'] >= 20 and 20 <= r['L'] <= 85] or [r for r in rows if r['chroma'] >= 20]   # a pale or very dark brand colour still sets the hue; the fix below moves its L*
     accent_src = max(chroma, key=lambda r: (r['chroma'] * math.sqrt(r['share']), r['hex'])) if chroma else None
     darks = [r for r in rows if r['L'] < 25 and r['chroma'] < 25]
-    lights = [r for r in rows if r['L'] > 92]
+    lights = [r for r in rows if r['L'] > 92 and r['chroma'] < 12]   # paper is a near-neutral: a pale brand colour is an accent, not a background
     notes = []
     if accent_src is None:
         notes.append('the logo has no chromatic colour (chroma >= 20): the pack accent %s is kept; pick your own with mp set brand.accent' % PACK_ACCENT)
