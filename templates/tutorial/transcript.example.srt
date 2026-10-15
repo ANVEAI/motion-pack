@@ -1,0 +1,31 @@
+1
+00:00:00,300 --> 00:00:02,300
+Dark mode, in three steps.
+
+2
+00:00:02,450 --> 00:00:03,600
+Let me show you.
+
+3
+00:00:04,300 --> 00:00:06,900
+First, open the settings file in the sidebar.
+
+4
+00:00:08,000 --> 00:00:10,600
+Next, add the toggle. Type these four lines,
+
+5
+00:00:10,800 --> 00:00:12,900
+then save with control S.
+
+6
+00:00:13,700 --> 00:00:17,300
+Look at line five: it flips the theme and remembers it.
+
+7
+00:00:19,200 --> 00:00:22,600
+Finally, press run, and click the new toggle.
+
+8
+00:00:23,300 --> 00:00:25,500
+And that is dark mode. Done.

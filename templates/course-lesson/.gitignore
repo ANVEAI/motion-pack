@@ -1,0 +1,9 @@
+# build products of this template (lane human): the MP4s, staged assets per aspect folder, the level envelope, the critics' reports
+out/*.mp4
+out/env*.json
+out/ears*.md
+out/eyes*.md
+out/smoke*/
+*/assets/
+out/work-*/
+out/.*hf-transaction*/

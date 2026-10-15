@@ -1,0 +1,24 @@
+# motion-pack filler list (edit me): one filler per line; a line "hard:" or "soft:" switches the class.
+# hard fillers are almost never meaning ("um"); soft ones sometimes are ("like" in "I like it"), so they are marked for review, never cut by --cut hard.
+# Used by: node tools/human/human.mjs fillers words.json --list tools/human/fillers.txt [--cut hard]
+hard:
+um
+umm
+uh
+uhh
+uhm
+erm
+er
+ah
+hmm
+mm
+mhm
+soft:
+you know
+i mean
+kind of
+sort of
+like
+basically
+actually
+so yeah

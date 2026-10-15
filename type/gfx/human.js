@@ -73,7 +73,7 @@ function codeTokens(line, base, kw, strc, com) {
 function codeCallout(L, p, c) {
   const S = SZ(c, p), [x, y, w, h] = BOX(c, p.box, [0.1, 0.14, 0.8, 0.72]), lines = list(p.lines, 60).map(str), dark = p.theme !== 'light';
   const bg = dark ? '#16161D' : '#FBFAF7', base = dark ? '#E7E5E0' : '#1B1A22', kw = dark ? '#B9A6FF' : '#4A18ED', strc = dark ? '#8FE3B0' : '#0F7A45', com = dark ? '#8C8A93' : '#8C8A93', gutter = dark ? '#5E5C66' : '#A9A59C';
-  const head = 64 * S, fs = Math.max(10 * S, Math.min(34 * S, (h - head - 40 * S) / Math.max(8, lines.length) / 1.5)), lh = fs * 1.5, k = E.enter(L.in) * (1 - E.exit(L.out));
+  const head = 64 * S, maxLen = Math.max(20, ...lines.map((l) => l.length)), fsW = (w - (p.numbers === false ? 54 : 116) * S) / (maxLen * 0.6), fs = Math.max(10 * S, Math.min(34 * S, fsW, (h - head - 40 * S) / Math.max(8, lines.length) / 1.5)), lh = fs * 1.5, k = E.enter(L.in) * (1 - E.exit(L.out));
   const hl = list(p.highlight, 24).map((r) => ({ from: Math.max(1, Math.round(+r.from || 1)), to: Math.max(1, Math.round(+(r.to ?? r.from) || 1)), at: +r.at || 0 }));
   const act = hl.filter((r) => L.u >= r.at), cur = act.length ? act[act.length - 1] : null, ka = cur ? E.enter(seg(L.u, cur.at, cur.at + 0.3)) : 0;
   let g = `<g opacity="${op(k)}" transform="translate(0 ${f2((1 - E.enter(L.in)) * 24 * S)})">` + rr(x, y, w, h, 22 * S, bg, `stroke="${dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)'}" stroke-width="${f2(2 * S)}"`);
