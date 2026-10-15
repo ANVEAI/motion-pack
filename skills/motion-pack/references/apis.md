@@ -204,6 +204,18 @@ python3 ears/listen.py out/film.mp4 --plan out/plan.json [--mode music|vo|contin
 - **refstudy** writes `study.json` fields `motion` (visual events for continuous pieces, `motion.sync` with `share_on_onset` and its chance level: `chance_share`, `lift`, `z_vs_chance`, `reading`), `quiet` (`open_vs_body_db`, `tail_2s_vs_body_db`, `end_shape`) and `evidence` (`tier` A / A- / B / B' / R / C / D, `boosted`, `claim_driven`, reasons). Thresholds: `tools/refstudy_tiers.json`. Python: `refstudy.motion_events(path, cut_times)`, `motion_sync(motion, onsets, speech, fps_video)`, `video_fps(path)`, `motion` subcommand (`refstudy.py motion <local mp4> <study dir> --write`), `quiet_shape(curve)`, `grade(meta, rules, override)`.
 - **ears plan fields** (all optional, in `out/plan.json`): `audio.mode` (`music` default | `vo` | `continuous`), `audio.quiet` `[{t: [a, b], kind: open|dip|gap|hold, why}]` (planned quiet is shape: open <= 2 s, dip / gap <= 4 s, hold <= 9 s; unplanned near-silence of 2 s or more warns as dead air), `audio.events` (motion-event seconds, for `continuous`), `audio.role` (bass-share range note). `ears.listen.analyze(x, fps, plan=..., mode=..., quiet=..., events=..., words=..., role=...)`.
 
+## Storyboard and animatic (`storyboard/`)
+
+```bash
+python3 storyboard/board.py shotlist.json [--design design.json] [--plan out/plan.json] [--music music/<bed> | --bpm 96] [--out storyboard-out] [--safe <zone>] [--real auto|always|never] [--allow-lint] [--no-animatic] [--no-pdf]
+```
+
+- **Out:** `storyboard.png` / `.html` / `.pdf` (one card per shot), `panels/<id>.png`, `animatic.mp4` (+ `.wav`), `animatic.plan.json` (pure function of the inputs), `report.json` (lint and waiver, per-panel checks, measurements of the delivered MP4). Exit 0 drawn, 1 refused by the story-script linter, 2 unreadable input.
+- **Checks per panel:** reading speed (<= 3.5 words/s and the hold the words need, the linter's own limits), text and honesty label against the `type/safezones.js` safe rect (laid out at the design's real font and px size), an honesty label on screen >= 2 s in a row.
+- **Frames:** schematic (subject block by scale, camera arrow from the `camera` field) or, with `--plan` and a built composition, real key frames from `hyperframes snapshot` at each shot's hero time (`--describe false` always).
+- **Animatic:** `round(sum of shot durations x fps)` frames exactly; hard cuts, fade or push for dissolve-like and whip-like transitions over the first frames of the incoming shot; sounds from the plan's cues or the shots' `sound` lines through `storyboard/sound_intents.json`; bed from `--music` / `plan.music` or a click track; `music/mixer.py` master, the MP4 decoded and measured (-14 LUFS-I, <= -1.0 dBTP).
+- **Python:** `from storyboard.board import build` -> `(exit_code, report)`; `storyboard.core.safe_rect(platform, W, H)`, `.timeline(shots, fps)`; `storyboard.animatic.intent_cues(shots, tl, total)`.
+
 ## Checks
 
 ```bash
@@ -212,6 +224,7 @@ python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.p
 python3 tools/check_ids.py
 python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests blender/tests
 python3 -m pytest -q ears/tests
+python3 -m pytest -q storyboard/tests
 python3 tools/check_generated.py --ignore-field sha sfx/manifest.json   # right after sfx/build_library.py (music/manifest.json byte for byte)
 node tools/tests/fuzz-params.test.mjs; node tools/tests/xproc-hash.test.mjs; node type/tests/ids.test.mjs; node tools/tests/template-plans.test.mjs
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs
