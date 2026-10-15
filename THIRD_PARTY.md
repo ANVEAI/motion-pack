@@ -1,7 +1,8 @@
 # Third-party software, fonts and sources
 
-motion-pack vendors no third-party library, media or icon set. Its own code is MIT (`LICENSE`), its own generated media is
-CC0 (`LICENSE-MEDIA`). This file lists everything else the pack touches, and how.
+motion-pack vendors no third-party library, icon set or audio, and ships no third-party icon or emoji FILE. Three OFL font families are bundled (section 1),
+and the lab contact sheets contain renders of third-party artwork (section 1b). Its own code is MIT (`LICENSE`), its own generated media is CC0
+(`LICENSE-MEDIA`), and neither covers what sections 1 and 1b list. This file lists everything else the pack touches, and how.
 
 ## 1. Bundled in the repository
 
@@ -10,6 +11,27 @@ CC0 (`LICENSE-MEDIA`). This file lists everything else the pack touches, and how
 | Manrope 4.505 (variable) | `objects/kit/fonts/`, `templates/_shared/fonts/` | SIL OFL 1.1 | Copyright 2019 The Manrope Project Authors. Licence text: `OFL-Manrope.txt` next to the font. Unmodified. |
 | IBM Plex Mono 2.3 (Medium, SemiBold) | same folders | SIL OFL 1.1 | Copyright 2017 IBM Corp., Reserved Font Name "Plex". Licence text: `OFL-IBMPlexMono.txt`. Unmodified. |
 | STIX Two Text 2.13 (Regular + Italic, variable) | `templates/_shared/fonts/` | SIL OFL 1.1 | Copyright 2001-2021 The STIX Fonts Project Authors (https://github.com/stipub/stixfonts). Licence text: `OFL-STIXTwo.txt`. Unmodified. Used by `type.paramReadout` for its math-style italic. |
+
+## 1b. Third-party artwork visible in committed images (not CC0)
+
+The lab measured icon and emoji pipelines on real sets, and its contact sheets show the results. The sets stay out of git (section 4); their renders are in
+these images, so the upstream copyright and permission notices are kept in `licenses/` and the images are carved out of the CC0 grant.
+
+| artwork | licence | where it appears | notice |
+|---|---|---|---|
+| Lucide icons (sun, wifi, sliders-horizontal, list-checks, server, calculator, indian-rupee) | ISC; Feather-derived icons MIT (Cole Bemis) | `lab/c-vector/sheets/c3-drawon-before-after.jpg`, `c3-g4-hf-drawon.jpg`, `c3-fidelity-worst.jpg` | `licenses/lucide-ISC-and-feather-MIT.txt` |
+| Phosphor icons (paperclip) | MIT, Copyright (c) 2023 Phosphor Icons | `lab/c-vector/sheets/c3-fidelity-worst.jpg` | `licenses/phosphor-MIT.txt` |
+| Microsoft Fluent Emoji (disguised face, face with monocle, the 3D notebook) | MIT, Copyright (c) Microsoft Corporation | `lab/c-vector/sheets/c3-fidelity-worst.jpg`, `lab/d-output/sheets/` (cover, thumbnail and CSS sheets) | `licenses/fluent-emoji-MIT.txt` |
+| cbirds bird, hawk and sprite drawings (and its in-code arrow and plane shapes) | MIT, Copyright (c) 2025 clainstone@icloud.com | every sheet in `lab/e-terminal/sheets/` | `licenses/cbirds-MIT.txt` |
+
+All four are permissive, so they stay. One sheet was removed instead: `lab/c-vector/sheets/c2-probe-linear-fresh.jpg` showed frames of a vendor's Rive
+sample file whose licence is not stated, so it is no longer in the repository (the measurements stay in `lab/c-vector/RESULTS.md` section 5).
+`lab/provenance.json` lists every committed lab image and the sets above that it shows, and `tools/tests/test_licences.py` fails if an image has no row
+there, if a set has no notice here and in `licenses/`, or if its licence is not permissive. The rule for new images: a render that shows third-party artwork goes under `lab/` (or
+`docs/research/`), its set is listed here with its notice in `licenses/`, and it is never described as CC0. Apple Color Emoji, CC BY-SA sets (OpenMoji) and
+anything without a stated licence are refused outright: do not render them into a committed image. The lab sheets are measurement evidence; the
+pack's own parts that appear in them (the type, covers and 3D scene) stay CC0 as parts, but a sheet that mixes them is licensed as a whole by its most
+restrictive input.
 
 ## 2. Loaded at use time (never vendored)
 
@@ -38,7 +60,7 @@ CC0 (`LICENSE-MEDIA`). This file lists everything else the pack touches, and how
 | ITU-R BS.1770-4, EBU R128 | K-weighting coefficients and gating in `sfx/mpaudio/meter.py` | standards documents |
 | Walter Murch, edit-grammar and platform research | the rules, thresholds and checklists cited in `docs/research/` | cited sources; every claim carries a source and a confidence tag |
 
-## 4. Optional sets fetched by `scripts/fetch-external.sh` (never committed)
+## 4. Optional sets fetched by `scripts/fetch-external.sh` (never committed as files; their renders appear in the lab sheets, section 1b)
 
 The script downloads each set from its original source at a pinned version into `external/` (gitignored), verifies every file
 against `scripts/external.lock`, and writes an `ORIGIN.txt`. Imported audio is tagged `source:ext` and `licence:<id>` and stays

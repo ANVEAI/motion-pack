@@ -7,5 +7,7 @@ These fonts are redistributed unmodified under the SIL Open Font License 1.1. Ea
 | `Manrope-Variable.ttf` | Manrope 4.505 | Copyright 2019 The Manrope Project Authors (https://github.com/googlefonts/manrope) | OFL-1.1, `OFL-Manrope.txt` |
 | `IBMPlexMono-Medium.ttf`, `IBMPlexMono-SemiBold.ttf` | IBM Plex Mono 2.3 | Copyright 2017 IBM Corp., Reserved Font Name "Plex" | OFL-1.1, `OFL-IBMPlexMono.txt` |
 
+The kit folder holds Manrope and IBM Plex Mono only; `templates/_shared/fonts/` also holds STIX Two Text 2.13 (Copyright 2001-2021 The STIX Fonts Project Authors, https://github.com/stipub/stixfonts, `OFL-STIXTwo.txt`). `THIRD_PARTY.md` section 1 lists all three families.
+
 The licence texts are the upstream `OFL.txt` files from the Google Fonts repository (`ofl/manrope`, `ofl/ibmplexmono`).
 Documents and videos you make with these fonts are not bound by the OFL.

@@ -69,7 +69,7 @@ def generate(prompt, out, negative="", seed=None, takes=1):
     return paths
 
 
-def main():
+def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("prompt")
     ap.add_argument("--out", required=True)
@@ -77,7 +77,7 @@ def main():
     ap.add_argument("--seed", type=int)
     ap.add_argument("--takes", type=int, default=1)
     ap.add_argument("--dry-run", action="store_true", help="print the request and cost, call nothing")
-    a = ap.parse_args()
+    a = ap.parse_args(argv)
     n = a.takes
     print("Lyria: %d take(s), about US$%.2f" % (n, n * USD_PER_TAKE), file=sys.stderr)
     if a.dry_run:

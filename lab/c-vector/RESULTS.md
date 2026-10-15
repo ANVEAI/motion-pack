@@ -105,7 +105,7 @@ How the adapter works (read from the 0.8.142 runtime): it reads `window.__hfLott
 
 ## 5. C2: Rive
 
-Sample asset: `https://cdn.rive.app/animations/vehicles.riv`, 58,792 bytes, sha256 `46bb250cde0b0223a15faddac33d08fa00d4b6acebc2e4e827391ae0113768a3`, stored in `rive/dl-vehicles/` (outside the pack, test only, licence not stated, not redistributed). Contents: artboard Truck 1920x1080 (animations idle, curves, bounce; state machine `bumpy` with trigger `bump`) and Jeep 1000x1000 (8 animations; state machine `weather`, bool `Raining`).
+Sample asset: `https://cdn.rive.app/animations/vehicles.riv`, 58,792 bytes, sha256 `46bb250cde0b0223a15faddac33d08fa00d4b6acebc2e4e827391ae0113768a3`, stored in `rive/dl-vehicles/` (outside the pack, test only, licence not stated, not redistributed). Because its licence is not stated, no render of it is committed either: the probe contact sheet `sheets/c2-probe-linear-fresh.jpg` was removed from the repository (audit H3); the numbers below stand on their own. Contents: artboard Truck 1920x1080 (animations idle, curves, bounce; state machine `bumpy` with trigger `bump`) and Jeep 1000x1000 (8 animations; state machine `weather`, bool `Raining`).
 
 Can Rive seek deterministically? **Yes for linear animations, only conditionally for state machines.** (`rive/probe/*`)
 

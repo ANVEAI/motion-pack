@@ -7,7 +7,7 @@ Media that the pack itself generates and whose provenance is entirely ours, made
 Anveshana Futurecorp Pvt Ltd (ANVE):
 
   * synthesised sound effects and music (sfx/ and music/ WAV masters and MP3 previews,
-    the WAV masters in the GitHub Release, demo mixes and stems)
+    the WAV masters in a GitHub Release, demo mixes and stems)
   * rendered previews: transition demos and stills, contact sheets, template demo
     videos and sheets, demo plates (templates/_shared/media), layer, type, camera
     and object demo images
@@ -22,10 +22,18 @@ neighbouring rights to these works. The full legal code follows below.
 What this file does NOT cover
 -----------------------------
   * Source code, shaders and skills: MIT, see LICENSE.
-  * Fonts (Manrope, IBM Plex Mono): SIL Open Font License 1.1; the licence text
-    sits next to each font file (objects/kit/fonts, templates/_shared/fonts).
+  * Fonts (Manrope, IBM Plex Mono, STIX Two Text; bundled, unmodified): SIL Open
+    Font License 1.1; the licence text sits next to each font file
+    (objects/kit/fonts, templates/_shared/fonts); see THIRD_PARTY.md section 1.
   * Third-party assets fetched by scripts/fetch-external.sh: they keep their own
-    licences (see THIRD_PARTY.md) and are never committed to this repository.
+    licences (see THIRD_PARTY.md) and are never committed to this repository as files.
+  * The lab contact sheets (lab/*/sheets/*): they are renders of those fetched icon
+    and emoji sets (Lucide ISC / Feather MIT, Phosphor MIT, Microsoft Fluent Emoji
+    MIT), of cbirds output (MIT, lab/e-terminal) and of other test inputs
+    (lab/provenance.json says which image shows which). They stay under the upstream licences, whose
+    notices are in licenses/ and listed in THIRD_PARTY.md section 1b. The
+    "rendered previews" and "contact sheets" in the list above mean the pack's own
+    renders, not these.
   * Trademarks: the ANVE name and logo, and any third-party name or mark that
     appears in a render, are not licensed by this file or by LICENSE. See
     TRADEMARKS.md.

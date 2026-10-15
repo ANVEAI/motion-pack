@@ -53,7 +53,7 @@ Verified = built and rendered in our tests. Idea = not built.
 
 ## Rules for using it in the pack
 - **Palette and type**: paper `#f5f2ea`, ink `#111111`, violet `#4a18ed`, amber `#ffa64d`, mint `#34d399`; Manrope (600 and 800) and IBM Plex Mono via `font_paths`. A missing font silently becomes a serif, so look at stills. Keep palette and fonts in one brand module that every scene imports.
-- **No voice from `self.say()`**: it sends the script to fal.ai (ElevenLabs v3) with `FAL_KEY` and caches audio next to the scene. Our scripts stay local; mix voice and music in HyperFrames as separate `<audio id>` lanes.
+- **No voice from `self.say()`**: it sends the script to a hosted text-to-speech model through fal.ai with `FAL_KEY` and caches audio next to the scene. Our scripts stay local; mix voice and music in HyperFrames as separate `<audio id>` lanes.
 - **Hand-off to HyperFrames** (verified): plate as a muted `<video>` sibling under the type overlay; render with `--video-frame-format png` (PSNR 49.5 dB versus 45.3 dB for auto); `data-no-timeline` on a static root; plate and composition share size and fps.
 - **Transparent plates**: VP9-alpha WebM and ProRes 4444 both worked in HyperFrames. Engine pixels are premultiplied, so the alpha encode has to account for that.
 - **Timebase**: 30 fps primary; 60 only for fast motion; tall shorts render with `-r 1080x1920` but layouts must be restacked by hand.

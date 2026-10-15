@@ -116,7 +116,8 @@ Every module has a README with its API, measured numbers and honest limits. Modu
 git clone https://github.com/ANVEAI/motion-pack && cd motion-pack
 pip install -r requirements.txt
 
-# 1. Build the sound library (or download the WAV masters from the latest Release)
+# 1. Build the sound library. This is the supported path: it always matches the checkout.
+#    (The GitHub Release WAV zips are a convenience copy of v0.1.0 only and lag main, see "Heavy media".)
 python3 sfx/build_library.py         # every synthesised sound → sfx/library/ (under a minute)
 python3 music/build_music.py         # beds, stingers, sonic logos → music/library/ (1–2 minutes)
 
@@ -186,7 +187,7 @@ Along the way we reported an easing bug upstream: [heygen-com/hyperframes#5538](
 
 ## Heavy media: regenerate or download
 
-The git tree carries code, manifests and small previews. Full-size media is either rebuilt bit for bit by the pack's scripts or attached to each GitHub Release:
+The git tree carries code, manifests and small previews. Full-size media is rebuilt bit for bit by the pack's scripts (the version-matched route), or attached to a GitHub Release as a convenience copy of that release's tag only:
 
 | media | regenerate | Release asset |
 |---|---|---|
@@ -195,11 +196,11 @@ The git tree carries code, manifests and small previews. Full-size media is eith
 | Full-size renders and contact sheets | the module's sheet script | `motion-pack-renders-fullres-<version>.zip` |
 | Demo mixes and stems | `music/demo/demo_mix.py`, `sfx/demo/demo_sfx_reel.py` | `motion-pack-demo-audio-<version>.zip` |
 
-Each Release lists `SHA256SUMS`. The MP3 previews in git are for listening only: MP3 adds encoder delay, so anchors and mixing use the WAV masters.
+**The Release zips lag `main`.** The only Release (v0.1.0, tag `bc3b569`, 13 Oct 2026) holds 288 sound effects and 64 music pieces, and that never changes; the current counts on `main` are the `sfx/` and `music/` rows of the module table above, which `tools/count.py` generates, so they stay current (every sound added since v0.1.0 is missing from the zips; among them are those used by `templates/demo-r3-fx`, `cuts/patterns.json`, the `saas_launch`, `archive_open` and `neon_power_on` bundles and the trailer recipe). A library unzipped from that Release is missing them, and a mix through `music/mixer.py` that cites one stops with a missing-file error (the bed-less, sound-effects-only path synthesises sounds live and is not affected). Unless you are on the v0.1.0 tag, run `python3 sfx/build_library.py` and `python3 music/build_music.py`: those are version-matched and rebuild bit for bit. Each Release lists `SHA256SUMS`. The MP3 previews in git are for listening only: MP3 adds encoder delay, so anchors and mixing use the WAV masters.
 
 ## Optional third-party sets
 
-Nothing third-party is vendored. `scripts/fetch-external.sh` downloads pinned, permissively licensed sets from their original sources and checks every file against `scripts/external.lock`:
+No third-party icon, audio or library is vendored (three OFL font families are bundled, see Licences, and the lab sheets show renders of the icon sets below). `scripts/fetch-external.sh` downloads pinned, permissively licensed sets from their original sources and checks every file against `scripts/external.lock`:
 - Lucide and Phosphor icons;
 - Fluent Emoji;
 - Kenney and OwlishMedia CC0 audio.
@@ -211,9 +212,11 @@ Audio enters the sound catalogue only through `sfx/tools/check_origin.py` and `c
 | check | command |
 |---|---|
 | Ids resolve across modules | `python3 tools/check_ids.py` |
-| Python (cuts, sfx, music) | `python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py sfx/tests music/tests` |
+| Python (cuts, sfx, music, tools, cloud) | `python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests` |
 | Transitions core + lint | `node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs` |
 | Camera maths | `node camera/tests/camera.test.mjs` |
+| Every part's defaults carry a placeholder label | `node type/tests/honesty-defaults.test.mjs` |
+| No studied account or brand name outside `docs/research` | `python3 tools/check_names.py` |
 | Physics player | `node physics/tests/test-player.mjs` |
 | Any page is seek-safe | `node skills/motion-stack/scripts/seekcheck.mjs page.html` |
 | Browser tests on a real GPU | `bash layers/tests/run-all.sh` |
@@ -224,8 +227,8 @@ CI runs the checks that need no GPU on every push.
 ## Licences
 
 - **Code, shaders and skills:** MIT, see [LICENSE](LICENSE). Copyright (c) 2026 Anveshana Futurecorp Pvt Ltd (ANVE).
-- **Media the pack generates** (synthesised SFX and music, renders and previews, images, LUT `.cube` files): CC0 1.0, see [LICENSE-MEDIA](LICENSE-MEDIA). Use them in anything, with no credit line.
-- **Fonts** (Manrope, IBM Plex Mono): SIL Open Font License 1.1, with the licence text next to each font.
+- **Media the pack generates** (synthesised SFX and music, renders and previews, images, LUT `.cube` files): CC0 1.0, see [LICENSE-MEDIA](LICENSE-MEDIA). Use them in anything, with no credit line. **Exception:** the lab contact sheets (`lab/*/sheets/`) show renders of third-party icon and emoji sets (Lucide, Phosphor, Fluent Emoji; all MIT or ISC) and keep their licences, with the notices in [`licenses/`](licenses/README.md).
+- **Fonts** (bundled, unmodified, not MIT and not CC0): Manrope 4.505, IBM Plex Mono 2.3 and STIX Two Text 2.13, all SIL Open Font License 1.1, with the licence text next to each font (`objects/kit/fonts/`, `templates/_shared/fonts/`); sources and copyright lines in [THIRD_PARTY.md](THIRD_PARTY.md) section 1.
 - **Trademarks:** the ANVE name and logo are not covered by either licence, see [TRADEMARKS.md](TRADEMARKS.md).
 - **Third-party:** runtime libraries and the optional fetched sets keep their own licences, see [THIRD_PARTY.md](THIRD_PARTY.md).
 

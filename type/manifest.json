@@ -583,7 +583,7 @@
     "size": 180,
     "color": "#FFFFFF",
     "accent": "#4A18ED",
-    "source": ""
+    "source": "placeholder data"
    },
    "tags": [
     "counter",
@@ -614,7 +614,8 @@
     "size": 200,
     "color": "#FFFFFF",
     "bg": "rgba(0,0,0,0.55)",
-    "stagger": 4
+    "stagger": 4,
+    "source": "placeholder data"
    },
    "tags": [
     "counter",
@@ -639,14 +640,14 @@
    "in_frames": 24,
    "out_frames": 9,
    "params": {
-    "to": 487,
-    "suffix": " ms",
-    "label": "P50 voice latency",
-    "delta": "-38%",
+    "to": 1234,
+    "suffix": "",
+    "label": "Your metric",
+    "delta": "+12%",
     "good": true,
     "pos": "c",
     "accent": "#4A18ED",
-    "source": "internal benchmark"
+    "source": "placeholder data"
    },
    "tags": [
     "counter",
@@ -678,7 +679,8 @@
     "radius": 150,
     "accent": "#4A18ED",
     "track": "rgba(255,255,255,0.18)",
-    "color": "#FFFFFF"
+    "color": "#FFFFFF",
+    "source": "placeholder data"
    },
    "tags": [
     "counter",
@@ -708,7 +710,8 @@
     "label": "launch price",
     "pos": "c",
     "accent": "#FFC83D",
-    "color": "#FFFFFF"
+    "color": "#FFFFFF",
+    "source": "placeholder data"
    },
    "tags": [
     "price",
@@ -1659,7 +1662,7 @@
    "params": {
     "app": "Orbit",
     "title": "Meeting notes ready",
-    "body": "Summary, decisions and 4 action items",
+    "body": "Summary, decisions and action items",
     "time": "now",
     "accent": "#4A18ED"
    },
@@ -1722,7 +1725,7 @@
      },
      {
       "from": "me",
-      "text": "Done. 4 action items.",
+      "text": "Done. Action items are ready.",
       "at": 1.2
      },
      {
@@ -1859,8 +1862,8 @@
    "in_frames": 4,
    "out_frames": 4,
    "params": {
-    "top": "Me: it will take 5 minutes",
-    "bottom": "The 5 minutes:",
+    "top": "Me: it will take a minute",
+    "bottom": "The minute:",
     "size": 1
    },
    "tags": [
@@ -2245,6 +2248,7 @@
     "from": "Kanpur",
     "to": "Delhi",
     "km": 440,
+    "source": "placeholder data",
     "land": "#20222B",
     "block": "#2C2F3A",
     "water": "#173049",
@@ -2955,7 +2959,7 @@
      0.76,
      0.4
     ],
-    "title": "Script · line 2",
+    "title": "Script · voice line",
     "words": "Your table for four is booked for Friday at eight.",
     "target": 7,
     "replacement": "Saturday",
@@ -3161,7 +3165,7 @@
     "button": "Download",
     "doneLabel": "Open",
     "cursor": true,
-    "source": null,
+    "source": "placeholder data",
     "theme": "light",
     "accent": "#4A18ED",
     "scale": 1
@@ -3382,6 +3386,7 @@
     "cursor": true,
     "theme": "light",
     "accent": "#4A18ED",
+    "source": "illustrative data",
     "scale": 1
    },
    "tags": [
@@ -3435,6 +3440,7 @@
     "url": "acme.example",
     "theme": "light",
     "accent": "#4A18ED",
+    "source": "illustrative data",
     "scale": 1
    },
    "tags": [
@@ -5206,7 +5212,7 @@
     "gap": 0.32,
     "pulse": 0.08,
     "blur": 8,
-    "source": null
+    "source": "placeholder data"
    },
    "tags": [
     "counter",

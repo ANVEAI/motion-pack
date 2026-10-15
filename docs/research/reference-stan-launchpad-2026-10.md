@@ -34,7 +34,7 @@ Studied 14 Oct 2026 from stills taken at 2 fps.
 ## Not to copy
 
 - **The loudness:** −9.2 LUFS integrated with +1.1 dBFS peak on the delivered file, which means clipping. The pack masters at −14 LUFS / ≤ −1 dBTP.
-- **The 1.5 s of black at the open:** it wastes the first impression on feeds.
+- **The 1.5 s of black at the open:** in our view this spends the first impression on a feed (a craft opinion; this piece's reception is unproven, so it is not evidence of an effect).
 - **Its archival footage and patent drawings:** check their licences for your own use. Public-domain patent drawings exist; stock footage needs a licence.
 
 ## Pack coverage

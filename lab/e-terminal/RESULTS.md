@@ -173,6 +173,7 @@ The README's "`--seed` is the same flock on every system" holds for the random n
 - **Plates made with `--shape bird` (the default)** contain cbirds' own bird drawing (`matrix.png`, compiled in), and so do signs and hawks.
   - A rendered frame is program output, not a copy of the Software, so MIT's notice condition is not obviously triggered.
   - To keep the art 100% ours, use `--shape arrow|plane|dot` (triangles and dots drawn in code) or `--sprite <our.png>`.
+- **The sheets in `sheets/` show cbirds output**, so they are not CC0: the MIT notice travels with them in `licenses/cbirds-MIT.txt` (`THIRD_PARTY.md` section 1b, `lab/provenance.json`).
 
 ## Recommended combination (exact versions)
 

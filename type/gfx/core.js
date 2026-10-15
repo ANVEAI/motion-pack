@@ -17,6 +17,11 @@ export const text = (str, x, y, { size = 48, weight = 700, fill = PAPER, anchor 
   `<text x="${f2(x)}" y="${f2(y)}" font-family="${esc(font)}" font-size="${f2(size)}" font-weight="${weight}" fill="${fill}" text-anchor="${anchor}" letter-spacing="${f2(ls)}"${op < 1 ? ` opacity="${f2(op)}"` : ''} ${extra}>${esc(str)}</text>`;
 /* approximate advance width (Manrope-ish metrics) so boxes can size to text without DOM measurement; 0.56 em average for bold sans */
 export const textW = (str, size, k = 0.56) => String(str ?? '').length * size * k;
+/* honesty of defaults (2026-10-15, type/tests/honesty-defaults.test.mjs): a part whose default content shows a number, price or quote has a `source` param that
+   DEFAULTS to 'placeholder data' and prints it, so a default frame can never be read as a finding. srcOf is the caller's source, or the label when it is missing or
+   blank (digits never print unlabelled; naming a real source is how you remove the label). The chart.* parts follow the same idiom. */
+export const PLACEHOLDER = 'placeholder data';
+export const srcOf = (p, fallback = PLACEHOLDER) => String(p.source ?? '').trim() || fallback;
 /* clip-reveal helper: a rect clipPath id for left-to-right wipes */
 export const clipRect = (id, x, y, w, h) => `<clipPath id="${id}"><rect x="${f2(x)}" y="${f2(y)}" width="${f2(Math.max(0, w))}" height="${f2(Math.max(0, h))}"/></clipPath>`;
 /* stroke draw-on for a path of known length */

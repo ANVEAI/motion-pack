@@ -9,7 +9,7 @@ call Google Cloud models **on your own project, billed to you**. Nothing in the 
 | `gemini_voice.py` | `gemini-live-2.5-flash-native-audio` | voiceover lines, 48 kHz dual-mono WAV, optional Whisper word-for-word check | under a cent per line |
 | `gemini_mood.py` | `gemini-2.5-flash` | a JSON judgement of a track: mood words, energy, valence, genre, fit to a brief | a fraction of a cent per 30 s |
 
-Prices and model ids change. Check Google's pricing page before a large batch; the tools print an estimate first.
+Prices and model ids change. Check Google's pricing page before a large batch. **Every tool prints an estimate to stderr before it calls anything, and takes `--dry-run`** (print the request, call nothing; no project or credentials needed): Lyria prints its measured per-take figure; `gemini_voice.py` and `gemini_mood.py` print an **upper bound** (US$0.01 per line, US$0.01 per started 30 s) taken from the "under a cent" and "a fraction of a cent" measurements above, not a quote from Google.
 
 ## Setup
 
@@ -20,7 +20,7 @@ export MP_GCP_PROJECT=<your-project-id>          # Vertex AI API enabled, billin
 export MP_GCP_LOCATION=us-central1               # optional, this is the default
 ```
 
-Never commit a project id, key or token. The tools read the environment only; `cloud/tests` fails if a project id appears in the code.
+Never commit a project id, key or token. The tools read the environment only. `cloud/tests` fails if a project-id-shaped string is assigned to a project- or gcp-named variable, passed, defaulted or put in an endpoint, or if any literal has the generated `<words>-<4+ digits>` id form, in any `.py` under `cloud/` (any depth, `cloud/tests` excepted), or if a key, token, private-key or billing-account shape appears in any tracked file; `tools/check_names.py` also refuses the maintainers' own project names (hashes only). It cannot recognise a hand-picked id with no digit suffix assigned to a neutral name, so the rule stays "environment only".
 Check that Vertex AI is on without spending anything: a `countTokens` call returns 200, or 403 `SERVICE_DISABLED` when the API is off.
 
 ## The pipeline
