@@ -53,7 +53,8 @@ export const isSoftwareGL = (gpu) => /SwiftShader|llvmpipe|software|Basic Render
 
 /* `node tools/chrome.mjs --check`: exit 0 when puppeteer-core and Chrome are both found (prints where), else exit 1 with the reason and the one-line fix.
    templates/_shared/render3d.sh runs it before anything else, so a missing prerequisite is the first and only message, not an ffmpeg error later. */
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url) && process.argv.includes('--check')) {
+const real = (p) => { try { return fs.realpathSync(p); } catch { return path.resolve(p); } };   /* realpath both sides: through a symlinked folder (macOS /var -> /private/var) the plain paths differ and --check silently did nothing */
+if (process.argv[1] && real(process.argv[1]) === real(fileURLToPath(import.meta.url)) && process.argv.includes('--check')) {
   const miss = [];
   try { findPuppeteer(); } catch (e) { miss.push(e.message); }
   try { console.log('chrome: ' + findChrome()); } catch (e) { miss.push(e.message); }
