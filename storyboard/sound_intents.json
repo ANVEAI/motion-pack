@@ -1,0 +1,345 @@
+{
+ "doc": "Sound-intent words in a shot's `sound` line -> a pack sound id (storyboard/animatic.py). The first rule whose words occur in a clause wins. A clause no rule matches is listed in the animatic plan as intent only (no sound is invented). Every id is a real sfx id (tools/check_ids.py and storyboard/tests check it).",
+ "rules": [
+  {
+   "words": [
+    "typing burst",
+    "typing",
+    "keystroke",
+    "keyboard",
+    "keys clatter"
+   ],
+   "id": "sfx/ui/typing_burst"
+  },
+  {
+   "words": [
+    "tape-stop",
+    "tape stop",
+    "power down",
+    "powers down"
+   ],
+   "id": "sfx/tx/tape_stop"
+  },
+  {
+   "words": [
+    "sad brass",
+    "sad trombone",
+    "womp"
+   ],
+   "id": "sfx/cartoon/sad_brass"
+  },
+  {
+   "words": [
+    "record scratch",
+    "needle scratch"
+   ],
+   "id": "sfx/cartoon/record_scratch"
+  },
+  {
+   "words": [
+    "ceramic",
+    "mug",
+    "cup clink",
+    "clink"
+   ],
+   "id": "sfx/ceramic/clink"
+  },
+  {
+   "words": [
+    "glass shatter",
+    "shatters",
+    "smash glass"
+   ],
+   "id": "sfx/glass/shatter"
+  },
+  {
+   "words": [
+    "splash",
+    "flood"
+   ],
+   "id": "sfx/liquid/splash"
+  },
+  {
+   "words": [
+    "pour",
+    "spill",
+    "glug"
+   ],
+   "id": "sfx/liquid/pour"
+  },
+  {
+   "words": [
+    "drip",
+    "drop of"
+   ],
+   "id": "sfx/liquid/drip"
+  },
+  {
+   "words": [
+    "gasp"
+   ],
+   "id": "sfx/voice/gasp"
+  },
+  {
+   "words": [
+    "giggle",
+    "laugh",
+    "chuckle"
+   ],
+   "id": "sfx/voice/giggle"
+  },
+  {
+   "words": [
+    "sigh"
+   ],
+   "id": "sfx/voice/sigh"
+  },
+  {
+   "words": [
+    "wow"
+   ],
+   "id": "sfx/voice/wow"
+  },
+  {
+   "words": [
+    "hum",
+    "hmm",
+    "mumble"
+   ],
+   "id": "sfx/voice/hmm"
+  },
+  {
+   "words": [
+    "inhale",
+    "breath in"
+   ],
+   "id": "sfx/lift/inhale"
+  },
+  {
+   "words": [
+    "win sting",
+    "win stinger",
+    "bright win",
+    "success sting",
+    "tada",
+    "ta-da"
+   ],
+   "id": "sfx/stinger/win"
+  },
+  {
+   "words": [
+    "two-note",
+    "two note",
+    "sonic sting",
+    "sonic logo",
+    "logo sting"
+   ],
+   "id": "sfx/logo/two_note"
+  },
+  {
+   "words": [
+    "reveal sting",
+    "reveal"
+   ],
+   "id": "sfx/stinger/reveal"
+  },
+  {
+   "words": [
+    "question sting"
+   ],
+   "id": "sfx/stinger/question"
+  },
+  {
+   "words": [
+    "riser",
+    "build-up",
+    "builds"
+   ],
+   "id": "sfx/riser/noise_1bar"
+  },
+  {
+   "words": [
+    "heartbeat"
+   ],
+   "id": "sfx/riser/heartbeat"
+  },
+  {
+   "words": [
+    "whoosh",
+    "swish",
+    "whip"
+   ],
+   "id": "sfx/whoosh/whoosh_m"
+  },
+  {
+   "words": [
+    "click",
+    "tap on"
+   ],
+   "id": "sfx/ui/click"
+  },
+  {
+   "words": [
+    "notification",
+    "ding",
+    "ping"
+   ],
+   "id": "sfx/device/notify_soft"
+  },
+  {
+   "words": [
+    "pop"
+   ],
+   "id": "sfx/ui/pop"
+  },
+  {
+   "words": [
+    "door knock",
+    "knock"
+   ],
+   "id": "sfx/wood/knock"
+  },
+  {
+   "words": [
+    "door close",
+    "door slam"
+   ],
+   "id": "sfx/foley/door_close"
+  },
+  {
+   "words": [
+    "footstep",
+    "footsteps",
+    "walks"
+   ],
+   "id": "sfx/foley/footstep_wood"
+  },
+  {
+   "words": [
+    "paper",
+    "page turn",
+    "rustle"
+   ],
+   "id": "sfx/paper/rustle"
+  },
+  {
+   "words": [
+    "stamp"
+   ],
+   "id": "sfx/foley/stamp"
+  },
+  {
+   "words": [
+    "pen click"
+   ],
+   "id": "sfx/foley/pen_click"
+  },
+  {
+   "words": [
+    "laptop close",
+    "lid close"
+   ],
+   "id": "sfx/foley/laptop_close"
+  },
+  {
+   "words": [
+    "cheer",
+    "applause",
+    "clap"
+   ],
+   "id": "sfx/crowd/cheer_synth"
+  },
+  {
+   "words": [
+    "thud",
+    "thump",
+    "impact",
+    "slam"
+   ],
+   "id": "sfx/hit/thud"
+  },
+  {
+   "words": [
+    "boom",
+    "drop"
+   ],
+   "id": "sfx/hit/low_thump"
+  },
+  {
+   "words": [
+    "punch"
+   ],
+   "id": "sfx/hit/punch"
+  },
+  {
+   "words": [
+    "boing",
+    "bounce"
+   ],
+   "id": "sfx/cartoon/boing"
+  },
+  {
+   "words": [
+    "poof"
+   ],
+   "id": "sfx/cartoon/poof"
+  },
+  {
+   "words": [
+    "room tone",
+    "air bed"
+   ],
+   "id": "sfx/amb/room_tone"
+  },
+  {
+   "words": [
+    "rain"
+   ],
+   "id": "sfx/amb/rain_light"
+  },
+  {
+   "words": [
+    "office"
+   ],
+   "id": "sfx/amb/office"
+  },
+  {
+   "words": [
+    "street",
+    "city"
+   ],
+   "id": "sfx/amb/city"
+  },
+  {
+   "words": [
+    "shutter",
+    "camera click"
+   ],
+   "id": "sfx/camera/shutter"
+  },
+  {
+   "words": [
+    "cash",
+    "ka-ching",
+    "payment"
+   ],
+   "id": "sfx/cash/ka_ching"
+  },
+  {
+   "words": [
+    "error",
+    "buzz",
+    "denied"
+   ],
+   "id": "sfx/ui/error"
+  },
+  {
+   "words": [
+    "success",
+    "done chime",
+    "checkmark"
+   ],
+   "id": "sfx/ui/success"
+  }
+ ]
+}
