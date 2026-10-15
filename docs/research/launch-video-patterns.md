@@ -455,4 +455,4 @@ No measured study of CTA timing in short-form video was found.
   - [Simon Willison](https://simonwillison.net/2024/Sep/15/how-to-succeed-in-mrbeast-production/) · [Gigazine](https://gigazine.net/gsc_news/en/20240917-mrbeast-youtube-production) · [Net Influencer](https://www.netinfluencer.com/mrbeast-productions-leaked-internal-document-rosanna-pansino/) · [In Depth Cine](https://indepthcine.com/videos/casey-neistat) · [The Hustle](https://thehustle.co/storytelling-secrets-netted-matt-stone-trey-parker-600-million)
   - [Engadget](https://www.engadget.com/google-admits-that-a-gemini-ai-demo-video-was-staged-055718855.html) · [OpusClip](https://www.opus.pro/blog/podcast-to-shorts-api) · [Clevercast (BBC mirror)](https://clevercast.com/bbc-subtitling-guidelines)
 
-The full research notes behind this file (six passes, every finding with its grade) were kept out of the repository. This file carries every number the pack uses.
+The working notes from the six passes are not in the repository; every number the pack uses is in this file with its source and grade.

@@ -17,7 +17,7 @@
  },
  "text": {
   "cps_max": 17,
-  "cps_note": "Netflix timed text: 20 cps adult, 17 cps children; 17 is the default for a broad phone audience",
+  "cps_note": "a streaming service subtitle standard: 20 cps for adult programmes, 17 for children; 17 is the default for a broad phone audience (sources: the research doc)",
   "floor": {
    "min_s": 0.833,
    "per_word_s": 0.3,
@@ -207,7 +207,15 @@
      "sfx_role": "a sonic logo on the end card; the last 0.15 s silent",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "6": [
+     "hook",
+     "product",
+     "cta"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "ad-30": {
    "label": "30 s ad: hook with the value inside 3 s, problem, product, proof, CTA",
@@ -334,7 +342,20 @@
      "sfx_role": "a sonic logo; decelerate before the ask (cuts/sections breath_out)",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "15": [
+     "hook",
+     "product",
+     "proof",
+     "cta"
+    ],
+    "6": [
+     "product",
+     "cta"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "saas-launch": {
    "label": "SaaS / AI product launch film (product UI film): promise, context, reveal, workflow demo, proof, end card",
@@ -483,7 +504,31 @@
      "sfx_role": "a final hit on the end card, then a quiet hold or sonic logo",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "45": [
+     "hook",
+     "reveal",
+     "demo",
+     "cta"
+    ],
+    "30": [
+     "hook",
+     "reveal",
+     "demo",
+     "cta"
+    ],
+    "15": [
+     "hook",
+     "reveal",
+     "cta"
+    ],
+    "6": [
+     "reveal",
+     "cta"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "saas-feature-drop": {
    "label": "Single-feature drop: intro, the feature working in real UI, use cases, outro",
@@ -596,7 +641,19 @@
      "sfx_role": "a soft hit on the lockup, then a quiet hold",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "15": [
+     "intro",
+     "demo",
+     "outro"
+    ],
+    "6": [
+     "demo",
+     "outro"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "explainer": {
    "label": "Explainer: question, wrong model, the reframe, proof, so-what",
@@ -724,7 +781,21 @@
      "sfx_role": "a quiet hold under the takeaway",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "60": [
+     "question",
+     "reframe",
+     "proof",
+     "sowhat"
+    ],
+    "30": [
+     "question",
+     "reframe",
+     "sowhat"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "hardware-reveal": {
    "label": "Hardware reveal film (keynote insert or standalone): dark open, macro tease, hero reveal on a hit, transform, specs, the job, end card",
@@ -889,7 +960,26 @@
      "sfx_role": "the music falls to silence or a sonic logo under the name",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "30": [
+     "open",
+     "tease",
+     "reveal",
+     "job",
+     "endcard"
+    ],
+    "15": [
+     "open",
+     "reveal",
+     "endcard"
+    ],
+    "6": [
+     "reveal",
+     "endcard"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "teaser": {
    "label": "Teaser: one striking image, a single-cue build, a hit, the title, a date",
@@ -1171,7 +1261,28 @@
      "sfx_role": "a quiet tail or one low hit under the date card",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "60": [
+     "coldopen",
+     "act2",
+     "act3",
+     "title",
+     "date"
+    ],
+    "30": [
+     "coldopen",
+     "act3",
+     "title",
+     "date"
+    ],
+    "15": [
+     "act3",
+     "title",
+     "date"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "title-sequence": {
    "label": "Title sequence: a motif, a credit cascade paced to the music, the main title last",
@@ -1643,7 +1754,15 @@
      "sfx_role": "the punchline lands dry; a soft tag under \"full episode\"",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "30": [
+     "hook",
+     "payoff",
+     "button"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "founder-story": {
    "label": "Founder launch: a person with a stake to camera, the why, the problem, the demo, one proof, the smallest ask",
@@ -1791,7 +1910,19 @@
      "sfx_role": "the bed resolves under the URL; a quiet hold",
      "required": true
     }
-   ]
+   ],
+   "cutdowns": {
+    "30": [
+     "hook",
+     "demo",
+     "ask"
+    ],
+    "15": [
+     "hook",
+     "ask"
+    ]
+   },
+   "cutdowns_note": "sections to keep, in order, when the film is cut to N seconds; the kept sections are re-timed to their share of the pattern. Practitioners ask for 30, 15 and 6 s cut-downs of a launch film and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference"
   },
   "short-film": {
    "label": "Short film: cold open image, world and want, one obstacle, the turn, consequence, resolution image, tag",

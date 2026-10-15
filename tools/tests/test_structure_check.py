@@ -271,3 +271,14 @@ def test_order_penalty_inside_the_tolerance():
                     shots=[{'id': n, 'start': a, 'dur': b - a} for n, a, b in rows])
     good, bad = sc.score(plan(order), P, 'founder-story'), sc.score(plan(swap), P, 'founder-story')
     assert bad['parts']['timing'] < good['parts']['timing'] and any('reorder' in f for f in bad['fixes'])
+
+
+def test_cutdowns_name_real_sections_in_pattern_order():
+    for pid, s in P['structures'].items():
+        names = [x['name'] for x in s['sections']]
+        for secs, keep in (s.get('cutdowns') or {}).items():
+            assert float(secs) < s['length_s'][1], (pid, secs)
+            assert all(k in names for k in keep), (pid, secs, keep)
+            assert [names.index(k) for k in keep] == sorted(names.index(k) for k in keep), (pid, secs, 'out of order')
+            req = {x['name'] for x in s['sections'] if x['name'] == (s.get('cta') or {}).get('section')}
+            assert req <= set(keep), (pid, secs, 'a cut-down keeps the CTA section')
