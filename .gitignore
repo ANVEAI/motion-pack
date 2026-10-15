@@ -1,4 +1,4 @@
-# --- generated heavy media: regenerate with sfx/build_library.py and music/build_music.py (version-matched). The GitHub Release zips are a v0.1.0-only copy that lags main ---
+# --- generated heavy media: regenerate with sfx/build_library.py and music/build_music.py (version-matched). The GitHub Release zips match the release they are attached to (v0.2.0 matches its tag) ---
 sfx/library/
 sfx/library_ext/
 music/library/

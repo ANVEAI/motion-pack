@@ -27,13 +27,17 @@ async function runSlice(keys) {
   const mine = jobs.map((j, i) => [j, i]).filter(([j]) => keys.includes(j.kind + ':' + j.id)), sub = mine.map(([j]) => j); let from = 0;
   while (from < sub.length) {
     await new Promise((resolve) => {
-      const w = fork(path.join(here, 'fuzz-worker.mjs'), [], { execArgv: [`--max-old-space-size=${MEM_MB}`], serialization: 'advanced', stdio: ['ignore', 'ignore', 'ignore', 'ipc'] }); let cur = -1, started = 0, settled = false;
+      const w = fork(path.join(here, 'fuzz-worker.mjs'), [], { execArgv: [`--max-old-space-size=${MEM_MB}`], serialization: 'advanced', stdio: ['ignore', 'ignore', 'pipe', 'ipc'] }); let cur = -1, started = 0, settled = false, err = '';
+      w.stderr.on('data', (d) => { err = (err + d).slice(-600); });   /* the tail goes into the verdict when a worker dies */
       const end = (res, finished) => { if (settled) return; settled = true; clearInterval(tm); if (cur >= 0 && res) results[mine[cur][1]] = res; try { w.kill('SIGKILL'); } catch {} from = finished ? sub.length : cur >= 0 && res ? cur + 1 : sub.length; resolve(); };
       const tm = setInterval(() => { if (cur >= 0 && performance.now() - started > LIMIT_MS) { if (!retried.has(mine[cur][1])) { retried.add(mine[cur][1]); const k = cur; settled = true; clearInterval(tm); try { w.kill('SIGKILL'); } catch {} from = k; resolve(); } else end({ hang: true, ms: LIMIT_MS }); } }, 50);   /* a real hang repeats in a fresh process; a stall on a busy machine does not */
-      w.on('message', (m) => { if (m.start != null) { cur = m.start; started = performance.now(); } else if (m.done != null) { results[mine[m.done][1]] = m; cur = -1; } else if (m.finished) end(null, true); });
+      w.on('message', (m) => { if (m.ready) w.send({ jobs: sub, from, budget: CALL_CAP }); else if (m.start != null) { cur = m.start; started = performance.now(); } else if (m.done != null) { results[mine[m.done][1]] = m; cur = -1; } else if (m.finished) end(null, true); });
       w.on('error', (e) => end({ crash: String(e && e.message).slice(0, 120) }));
-      w.on('exit', (code, sig) => setTimeout(() => end(cur >= 0 ? { oom: code === 134 || sig === 'SIGABRT', crash: `child exited ${sig || code}` } : null), 250));   /* 'exit' can overtake the child's last IPC messages */
-      w.send({ jobs: sub, from, budget: CALL_CAP });
+      w.on('exit', (code, sig) => setTimeout(() => {
+        const tail = err.trim().split('\n').slice(-3).join(' | ').slice(0, 300);
+        if (cur < 0 && !settled) for (let k = from; k < sub.length; k++) results[mine[k][1]] ??= { crash: `worker exited ${sig || code} outside a job${tail ? ': ' + tail : ''}` };   /* a start-up death names its reason instead of 'no result' */
+        end(cur >= 0 ? { oom: code === 134 || sig === 'SIGABRT', crash: `child exited ${sig || code}${tail ? ': ' + tail : ''}` } : null);
+      }, 250));   /* 'exit' can overtake the child's last IPC messages */
     });
   }
 }

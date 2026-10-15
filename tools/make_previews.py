@@ -7,8 +7,8 @@
     python3 tools/make_previews.py --check            # exit 1 if a WAV master or PNG render has no up-to-date preview
 
 What is committed: the previews (MP3, JPEG). What is not: WAV masters (sfx/library, music/library: regenerate them with
-sfx/build_library.py and music/build_music.py, the version-matched path; the GitHub Release zips are a v0.1.0-only copy that
-lags main, see README "Heavy media") and full-size PNG renders
+sfx/build_library.py and music/build_music.py, the version-matched path; each GitHub Release's zips match its own tag only, not later
+commits, see README "Heavy media") and full-size PNG renders
 (gitignored once converted). The catalog (catalog/build.py) prefers the preview when the original is absent.
 
 Audio previews are for listening only: MP3 adds encoder delay and padding, so timing-critical work (anchors, beat grids,
