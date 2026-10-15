@@ -1,0 +1,436 @@
+{
+ "file": "eyes/checks_text.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "eyes/tests",
+  "-k",
+  "safezones or plan_boxes or text_in or text_half or bright_low or on_screen or text_size or caption_size or measured_contrast or lightest or without_a_text or hook_text or shot_text or scaled_to_the_delivered or flickering"
+ ],
+ "timeout": 900,
+ "mutants": [
+  {
+   "name": "safezones: left side not checked",
+   "find": "    if box[0] < rect[0] - tol: out.append(('left', rect[0] - box[0]))",
+   "replace": "    if box[0] < rect[0] - 1e6: out.append(('left', rect[0] - box[0]))",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "plan_boxes"
+   ]
+  },
+  {
+   "name": "safezones: right side not checked",
+   "find": "    if box[2] > rect[2] + tol: out.append(('right', box[2] - rect[2]))",
+   "replace": "    if box[2] > rect[2] + 1e6: out.append(('right', box[2] - rect[2]))",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "plan_boxes"
+   ]
+  },
+  {
+   "name": "safezones: top not checked",
+   "find": "    if box[1] < rect[1] - tol: out.append(('top', rect[1] - box[1]))",
+   "replace": "    if box[1] < rect[1] - 1e6: out.append(('top', rect[1] - box[1]))",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "plan_boxes"
+   ]
+  },
+  {
+   "name": "safezones: bottom not checked",
+   "find": "    if box[3] > rect[3] + tol: out.append(('bottom', box[3] - rect[3]))",
+   "replace": "    if box[3] > rect[3] + 1e6: out.append(('bottom', box[3] - rect[3]))",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "plan_boxes"
+   ]
+  },
+  {
+   "name": "safezones: no half-pixel tolerance",
+   "find": "            v = lint_rect(t['box'], rect, sp['lint_tolerance_px'])\n",
+   "replace": "            v = lint_rect(t['box'], rect, 0.0)\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "plan_boxes"
+   ]
+  },
+  {
+   "name": "safezones: outside share inverted",
+   "find": "    return 1.0 - iw * ih / a\n",
+   "replace": "    return iw * ih / a\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "bottom_band_is_found"
+   ]
+  },
+  {
+   "name": "safezones: a straddling block fails",
+   "find": "                sev = 'fail' if of >= sp['fail_outside_frac'] else 'warn'\n",
+   "replace": "                sev = 'fail'\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "half_over_the_edge"
+   ]
+  },
+  {
+   "name": "safezones: blocks in the safe area warn",
+   "find": "            if of >= sp['warn_outside_frac']:\n",
+   "replace": "            if of >= 0.0:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "bottom_band_is_found"
+   ]
+  },
+  {
+   "name": "safezones: a block seen once is reported",
+   "find": "    for tr in sorted((t for t in tracks if t['n'] >= sp['persist_samples']), key=lambda t: (-t['n'], t['first'])):\n",
+   "replace": "    for tr in sorted((t for t in tracks if t['n'] >= 1), key=lambda t: (-t['n'], t['first'])):\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "half_over_the_edge"
+   ]
+  },
+  {
+   "name": "safezones: no edge is strong enough",
+   "find": "    E[:, 1:] |= np.abs(Yi[:, 1:] - Yi[:, :-1]) >= sp['edge_delta']\n    E[1:, :] |= np.abs(Yi[1:, :] - Yi[:-1, :]) >= sp['edge_delta']\n",
+   "replace": "    E[:, 1:] |= np.abs(Yi[:, 1:] - Yi[:, :-1]) >= 100000\n    E[1:, :] |= np.abs(Yi[1:, :] - Yi[:-1, :]) >= 100000\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "bottom_band_is_found"
+   ]
+  },
+  {
+   "name": "safezones: low-contrast blocks reported",
+   "find": "        if ratio(p95, p5) < sp['contrast_min']:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "low_contrast_text"
+   ]
+  },
+  {
+   "name": "safezones: square blobs are text",
+   "find": "        if not (sp['height_px_1080'][0] <= h <= sp['height_px_1080'][1]) or w < sp['min_width_px_1080'] or w < sp['min_aspect'] * h:\n",
+   "replace": "        if not (sp['height_px_1080'][0] <= h <= sp['height_px_1080'][1]) or w < sp['min_width_px_1080']:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "low_contrast_text"
+   ]
+  },
+  {
+   "name": "readability: no per-word hold",
+   "find": "        need = max(sp['hold_min_s'], sp['hold_base_s'] + sp['hold_per_word_s'] * words)\n",
+   "replace": "        need = max(sp['hold_min_s'], sp['hold_base_s'] + 0 * words)\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "on_screen_time"
+   ]
+  },
+  {
+   "name": "readability: 95% of the hold is a warning",
+   "find": "            sev = 'warn' if (dur >= 0.8 * need or t['role'] == 'caption') else 'fail'",
+   "replace": "            sev = 'warn' if (dur >= 0.95 * need or t['role'] == 'caption') else 'fail'",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "on_screen_time"
+   ]
+  },
+  {
+   "name": "readability: captions fail on reading time",
+   "find": "(dur >= 0.8 * need or t['role'] == 'caption')",
+   "replace": "(dur >= 0.8 * need)",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "shot_text_and_captions"
+   ]
+  },
+  {
+   "name": "readability: label time not checked",
+   "find": "        if t['role'] == 'label' and dur < sp['label_min_s']:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "on_screen_time"
+   ]
+  },
+  {
+   "name": "readability: end-card hold not checked",
+   "find": "        if t['role'] == 'endcard' and dur < sp['endcard_hold_s'][0]:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "on_screen_time"
+   ]
+  },
+  {
+   "name": "readability: read-line length not checked",
+   "find": "        if t['role'] == 'read' and words > sp['read_max_words']:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "on_screen_time"
+   ]
+  },
+  {
+   "name": "readability: size floor not checked",
+   "find": "            if f1080 < floor - 0.5:\n",
+   "replace": "            if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "text_size"
+   ]
+  },
+  {
+   "name": "readability: caption cap not checked",
+   "find": "            if t['role'] == 'caption' and tall and f1080 > sp['caption_max_px_tall']:\n",
+   "replace": "            if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "caption_size"
+   ]
+  },
+  {
+   "name": "readability: phone floor not checked",
+   "find": "            if phone < sp['phone_min_px']:\n",
+   "replace": "            if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "caption_size"
+   ]
+  },
+  {
+   "name": "readability: contrast never reported",
+   "find": "        if worst[0] < sp['contrast_pass']:\n",
+   "replace": "        if worst[0] < 0:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "measured_contrast"
+   ]
+  },
+  {
+   "name": "readability: low contrast never fails",
+   "find": "            sev = 'fail' if worst[0] < sp['contrast_fail'] else 'warn'\n",
+   "replace": "            sev = 'warn'\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "measured_contrast"
+   ]
+  },
+  {
+   "name": "readability: an estimated colour can fail",
+   "find": "            if est and sev == 'fail':\n                sev = 'warn'\n",
+   "replace": "            if False:\n                sev = 'warn'\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "without_a_text_colour"
+   ]
+  },
+  {
+   "name": "readability: only the darkest backdrop counts",
+   "find": "    return float(min(ratio(fl, p5), ratio(fl, p95))), fl,",
+   "replace": "    return float(ratio(fl, p5)), fl,",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "lightest_background"
+   ]
+  },
+  {
+   "name": "readability: the anti-aliased rim counts as backdrop",
+   "find": "    bgm = ~ndimage.binary_dilation(fgm, iterations=2)",
+   "replace": "    bgm = ~fgm",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "measured_contrast"
+   ]
+  },
+  {
+   "name": "readability: hook text may be late",
+   "find": "        if first['t'][0] > by + 1.0 / c.fps:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "hook_text"
+   ]
+  },
+  {
+   "name": "readability: hook text may be long",
+   "find": "        if first['t'][0] <= 1.0 and hw > sp['hook_max_words']:\n",
+   "replace": "        if False:\n",
+   "test": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "eyes/tests",
+    "-k",
+    "hook_text"
+   ]
+  }
+ ]
+}

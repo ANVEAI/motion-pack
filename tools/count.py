@@ -113,6 +113,9 @@ def counts():
     sm = os.path.join(REPO, 'storyboard/manifest.json')
     if os.path.exists(sm):
         c['storyboard_checks'] = len(json.load(open(sm))['checks'])
+    ym = os.path.join(REPO, 'eyes/manifest.json')
+    if os.path.exists(ym):
+        c['eyes_checks'] = len(json.load(open(ym))['checks'])
     tdir = os.path.join(REPO, 'terminal')
     if os.path.exists(os.path.join(tdir, 'manifest.json')):
         c['terminal_recipes'] = len(json.load(open(os.path.join(tdir, 'manifest.json')))['recipes'])
@@ -155,6 +158,9 @@ def table(c):
         rows.append(('`storyboard/`', f"a storyboard sheet (PNG, HTML, PDF) and an animatic MP4 drawn from `shotlist.json` before any build: one panel per shot with the text at its real size and the safe zone, "
                                       f"{c['storyboard_checks']} checks (the story-script linter, reading speed, safe zone, label hold, panel count, animatic duration to the frame and loudness), real key frames from a built composition, "
                                       "the sound intent as real sounds mastered to the pack spec", '`storyboard/README.md`'))
+    if 'eyes_checks' in c:
+        rows.append(('`eyes/`', f"automated looking and critique of a delivered MP4's picture, the visual twin of ears: {c['eyes_checks']} checks (frame 0, black and frozen frames, WCAG flashes, banding, "
+                                "safe zones, text size / time / contrast, pacing, composition, encode), each with a fix and timestamps", '`eyes/README.md`'))
     if os.path.isdir(os.path.join(REPO, 'cloud')):
         rows.append(('`cloud/`', "optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, "
                      "Gemini Live voiceover with a word-for-word check, a Gemini mood judge", '`cloud/README.md`'))
