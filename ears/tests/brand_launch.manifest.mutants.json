@@ -1,0 +1,31 @@
+{
+ "file": "ears/manifest.json",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "ears/tests",
+  "-k",
+  "brand_launch"
+ ],
+ "timeout": 300,
+ "mutants": [
+  {
+   "name": "range widened to 0.40-0.60",
+   "find": "\"brand_launch\": [0.50, 0.60],",
+   "replace": "\"brand_launch\": [0.40, 0.60],"
+  },
+  {
+   "name": "role removed",
+   "find": "\"brand_launch\": [0.50, 0.60],",
+   "replace": ""
+  },
+  {
+   "name": "source label dropped",
+   "find": "\"sources\": {\"brand_launch\": \"round 6 references, craft only\"},",
+   "replace": ""
+  }
+ ]
+}

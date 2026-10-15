@@ -1,0 +1,31 @@
+{
+ "file": "ears/checks_shape.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "ears/tests",
+  "-k",
+  "brand_launch"
+ ],
+ "timeout": 300,
+ "mutants": [
+  {
+   "name": "data keys treated as roles",
+   "find": "    if not isinstance(rng, list):\n        return None\n",
+   "replace": "    if not rng:\n        return None\n"
+  },
+  {
+   "name": "every role says round 4/5",
+   "find": "src = (SPEC['bass_share_by_role'].get('sources') or {}).get(role, 'round 4/5 references')",
+   "replace": "src = 'round 4/5 references'"
+  },
+  {
+   "name": "inside/above swapped",
+   "find": "('above' if low > rng[1] else 'inside')",
+   "replace": "('inside' if low > rng[1] else 'above')"
+  }
+ ]
+}

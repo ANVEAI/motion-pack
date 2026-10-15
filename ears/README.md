@@ -33,7 +33,7 @@ python3 ears/listen.py out/film-9x16.mp4 \
 ```
 
 Other flags:
-- `--mode auto|music|vo|continuous` sets what the edit is scored on (below); `--events study.json` gives the motion events for `continuous` (a refstudy `study.json`, or a JSON list of seconds, `{t}` or `{frame}`); `--role proof|explainer|hype|trailer|vo_doc` names the bed's role for the bass-share note.
+- `--mode auto|music|vo|continuous` sets what the edit is scored on (below); `--events study.json` gives the motion events for `continuous` (a refstudy `study.json`, or a JSON list of seconds, `{t}` or `{frame}`); `--role proof|explainer|hype|trailer|vo_doc|brand_launch` names the bed's role for the bass-share note.
 - `--cuts cuts.json` takes a cut list instead of the plan's shots: seconds, cutgen output, a `cutgen snap` result or a refstudy `study.json`.
 - `--loop` judges the loop seam.
 - `--target-lufs -16` sets another integrated target (`hero.web`).
@@ -58,7 +58,7 @@ Other flags:
 | `audio.mode` | `music` (the default: music-led, cut-driven; >= 60% of cuts within 2 frames of an onset), `vo` (VO-led: cuts under the voice, none inside a word; cut sync is information only; needs word timings from a talking-head `words.json` or a Whisper JSON with word timestamps), `continuous` (few or no cuts: >= 60% of the motion events within 2 frames of an onset; events from `audio.events`, `--events`, or measured from the video by `tools/refstudy.py`) |
 | `audio.quiet` | planned quiet regions `[{t: [a, b], kind, why}]`, `kind` open (<= 2 s: the sound enters 1-2 s after a moving frame 0), dip or gap (<= 4 s: a mid-film reset or a trailer valley), hold (<= 9 s: the end card on near-silence). Judged as shape: no dead-air or first-audible-sound warning, left out of the loudness range, reported with its `why`. A planned region over its maximum (plus half a second) still warns. A bare `[a, b]` pair is accepted and its kind inferred |
 | `audio.events` | the picture's motion events in seconds, `{t}` or `{frame}` (for `continuous`) |
-| `audio.role` | `proof`, `explainer`, `hype`, `trailer` or `vo_doc`: the bed's bass share (< 150 Hz) is reported against the round 4/5 range for that role (20-36, 20-36, 50-61, 50-61 and 15-34%); information, not a verdict |
+| `audio.role` | `proof`, `explainer`, `hype`, `trailer`, `vo_doc` or `brand_launch`: the bed's bass share (< 150 Hz) is reported against the studied range for that role (20-36, 20-36, 50-61, 50-61, 15-34 and, from two round 6 brand-launch films, 50-60%); information, not a verdict |
 
 Backward compatible: with none of these fields, mode is `music`, no quiet is planned, and every earlier verdict is unchanged. `audio.mode` and `audio.role` are not case-sensitive (`"VO"` is `vo`); an unknown mode still raises.
 
@@ -81,6 +81,8 @@ A `.wav`, `.flac` or `.aif` input is judged as a master (true peak ≤ −1.5 dB
 | `ears/repetition` | onsets clustered by spectral shape and level; clusters on the music's 16th-note grid count as music; repeated plan cue ids | the same non-musical sound more than 3 times in 10 s warns; a plan id more than 6 times in 10 s warns (the mixer round-robins takes, so fewer is a note) |
 | `ears/stereo` | L/R correlation overall and per half second, loudness lost when summed to mono, side vs mid width | anti-phase stretches and mono loss > 1.5 dB warn, > 3 dB fails |
 | `ears/compare` | with `--ref`: our loudness curve, band shares (< 150 Hz / mid / > 4 kHz, as refstudy measures them), tempo, brightness, cuts on onsets, quiet open and quiet tail against the references; with `--role`, the bass share against that role's range | information only: "inside / above / below the reference range" per measure |
+
+**Brand-launch beds are bass-led by design (round 6).** `--role brand_launch` (or `plan.audio.role`) reports the bed's bass share against 50-60% (two reference films at 55 and 58%: a thin base). On `templates/demo-r6-pivot` (59% bass) `ears/tone` read sub +7.9 and low +7.0 dB over the mid band and still passed, and `ears/compare` said "inside the range". Read a `boomy` note on such a bed as information when the share is inside the range and no voice sits on it; with a voice, the proof / explainer range (20-36%) is the one to compare against. The planned gap (kind `gap`) and hold (kind `hold`) of a problem-pivot film are read as shape: `ears/structure` found them at 9.0-10.0 s (42 dB under the programme) and 27.5-29.5 s (56 dB under), both marked planned, and the ending as a quiet hold.
 
 **Cue anchors use the exact take.**
 - `ears` renders the take `music/mixer.py` placed for each cue, including the round-robin seed of a repeated id.

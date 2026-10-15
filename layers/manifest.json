@@ -2315,6 +2315,55 @@
    "test": "layers/tests/r3.test.mjs"
   },
   {
+   "id": "background.auroraRibbon",
+   "file": "layers/backgrounds-r6.js",
+   "kind": "background",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "aurora",
+    "ribbon",
+    "glow",
+    "gradient",
+    "background",
+    "solution",
+    "pivot",
+    "launch",
+    "dark",
+    "rise"
+   ],
+   "params": {
+    "colors": [
+     "#7A3CFF",
+     "#2F6BFF",
+     "#FF4FA8"
+    ],
+    "bg": "#030206",
+    "riseAt": 0.4,
+    "rise": 1.4,
+    "lead": 0.1,
+    "height": 0.24,
+    "crest": 0.1,
+    "waves": 3,
+    "spread": 0.1,
+    "core": 0.7,
+    "halo": 0.45,
+    "speed": 0.035,
+    "kick": 0.3,
+    "kickDur": 0.35,
+    "loop": 0,
+    "fps": 30,
+    "grain": 0.4,
+    "grainFps": 24,
+    "res": 96,
+    "intensity": 1,
+    "seed": 6
+   },
+   "doc": "colors = 2-5 hex (default violet, blue, pink: placeholders), bg = the black field (null = transparent); riseAt / rise = when the ribbon starts to rise from below the frame and how long (s), lead = how long before riseAt the pivot sound lands (cuesR6); height = rest height of the centre line (fraction of H), crest / waves = the drift amplitude (fraction of H) and its number of sine terms; spread = sigma of the wide glow (fraction of H), core = strength of the bright core, halo = the glow along the bottom edge; speed = Hz of the slowest drift; kick / kickDur = the brightness flash at riseAt; loop = seconds for an exact repeat (0 = free; a loop is already risen); grain / grainFps = seeded specks (0 = off) re-seeded grainFps times a second; res = columns of the frame (8-1024); intensity; seed",
+   "demo": "layers/demo/out/r6-sheet.png",
+   "test": "layers/tests/r6.test.mjs"
+  },
+  {
    "id": "look.gradeIn",
    "file": "layers/stylize.js",
    "kind": "look-filter",

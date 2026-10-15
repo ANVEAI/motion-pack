@@ -204,6 +204,7 @@ TPL = {'ad': ('Ad 15/30 s: hook, problem, product, proof, CTA', 'out/ad-15.mp4',
        'demo-r3-type': ('Round-3 type + layout parts demo 17.5 s (brand-system tour)', 'out/demo-r3-type.mp4', 'out/sheet.jpg'),
        'demo-r45-type': ('Round-4/5 type + layers parts demo 20 s (many things -> one place)', 'out/demo-r45-type.mp4', 'out/sheet.jpg'),   # MP4 not committed: rebuild it
        'demo-r6-type': ('Round-6 type parts demo 36 s (hover tooltip, dock launch, verb cards, connect rows, degrading diagram, command pill)', 'out/demo-r6-type.mp4', 'out/sheet.jpg'),   # MP4 not committed: rebuild it
+       'demo-r6-pivot': ('Round-6 problem-pivot film 30 s square, no cuts (typed sentence, problem ladder, audio gap, pivot, value ladder, command CTA, quiet hold; placeholder brand)', 'out/demo-r6-pivot.mp4', 'out/sheet.jpg'),   # MP4 not committed: rebuild it
        'multi-voice-doc': ('Multi-voice documentary launch film (your interview clips + words.json; labelled placeholder demo 29 s)', 'out/multi-voice-doc.mp4', 'out/sheet.jpg'),   # MP4 not committed: rebuild it
        'proof-film': ('Proof film 36-60 s, 16:9 + 9:16 re-layout (claim, method card, one builder, head-to-head, numbers, stat cards; every number needs a source and a method; labelled placeholder demo)', 'out/proof-film.mp4', 'out/sheet.jpg')}   # MP4 not committed: rebuild it
 IDRX = re.compile(r"['\"`]((?:transitions|sfx|music|type)/[A-Za-z0-9_./-]+)['\"`]")

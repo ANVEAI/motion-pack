@@ -17,6 +17,7 @@ Numbers here are tunable defaults drawn from those films, not laws. RECIPE L in 
 | **L7** | Metaphor manifesto | 20–30 s | A brand, programme or cohort with no single product shot. An archival metaphor in three lines, then real people, then the title | Stan "Launchpad" 22 s: craft reference only, reception unproven; see `docs/research/reference-stan-launchpad-2026-10.md` |
 | **L8** | Proof film | 16–80 s, usually 0–4 cuts | You have a measured result (a benchmark, a cost, a caught failure) and a builder audience. One chart or diagram that builds carries the argument | Round 4/5: tier A on reach and saves (a benchmark scatter at 8.5× followers and 1.23% saves; a diagram explainer at 3.3× and 1.0%; a data-table post at 1.31% saves). The best-saved shape of the batch. `docs/research/reference-round45-2026-10.md` |
 | **L9** | Multi-voice documentary | 1:45–3:00 | A team, a customer base or a launch with real people who can speak to it | Round 4/5: three tier-A pieces at 107–185 s (a frontier-model launch, a finance workspace, a wearable). Long works when it is people talking |
+| **L10** | Problem-pivot typographic film | 25–35 s, 1:1, zero cuts | A product with one sharp problem it removes and a builder audience; no footage, no voice. A typed sentence, a problem that gets worse, a planned silence, then the colour and the product arrive together | Round 6: one tier-B (boosted-looking, an inference; nothing shows reach was paid for) and one tier-C reference: craft only, reception unproven. See `docs/research/reference-round6-2026-10.md` |
 
 **Pair them.** A long film converts believers; a short one travels:
 - Rabbit: a 25:30 keynote plus a 57 s spot.
@@ -84,6 +85,23 @@ Its two strongest forms (round 4/5, both tier A):
 - **15–20 s:** title cards: tiny line, then wide bold name, then light date.
 - **Last 2 s:** the logo.
 - **Colour:** one accent colour across duotone archive, type and wardrobe.
+
+### L10 problem-pivot typographic film (~30 s, square, zero cuts)
+
+One continuous black page. Generate it, do not hand-time it: `cutgen.py problem-pivot` returns every frame; `templates/demo-r6-pivot` is a working example.
+
+| t (30 s) | beat | notes |
+|---|---|---|
+| 0–2 | a sentence typed with a cursor, then its one-word answer in the accent colour (blurred in) | the first sound is the typing; the picture moves from frame 0 |
+| 2–9.5 | a three-beat problem ladder, 2–2.5 s a beat | a two-word caption under a small diagram that gets WORSE each beat; captions swap by a blur-through; no colour yet |
+| 8.5–10.4 | the audio gap, 1.5–2 s: the bed thins to a hum, then true silence (at least 1 s) | starts inside the last problem beat; mark it `plan.audio.quiet` kind `gap`; no riser, no cue inside it |
+| 10.4 | the pivot: the bass hit and the bed are back ON one frame, the colour (a rising ribbon) and the brand line follow within about 0.1 s | the sound leads the picture; a light lead word sits on the silence just before |
+| 10.4–15.5 | the brand line holds over the ribbon | the name bold, the product word in the accent colour (the generator gives the brand beat the slack up to 5 s) |
+| 15.5–24.5 | a three-beat value ladder, about 3 s a beat | each beat a short line, the accent phrase in colour |
+| 24.5–27.2 | the ask: a command typed in an outlined pill, then the address in its place | the typed command is the CTA; no spoken CTA |
+| 27.2–30 | a quiet hold on the address | near-silence (kind `hold`, at least 2 s), the colour fades, no stinger |
+
+Rules that came with it: colour appears only at the pivot; one accent colour; sync by motion events (`ears --mode continuous`); the bed's bass share is **50–60%** (`plan.audio.role: "brand_launch"`); the gap and the hold are shape, so they are planned, not patched; a placeholder brand carries an in-frame label until the real one is supplied. The numbers (2–2.5 s, 1.5–2 s, 2 s) are starting values from two references, not findings: tune them against your own cut.
 
 ### L8 proof film (~40 s; 16–80 s)
 
@@ -178,6 +196,8 @@ Its two strongest forms (round 4/5, both tier A):
 | Late drop on the turn line | `cuts/story/lateDrop` (`cutgen.py late-drop`): `sfx/ui/agent_working` + `sfx/ui/tick` before, `sfx/hit/sub_drop` on the drop; bed enters on the drop downbeat |
 | Silence, then the final sting | `cuts/story/preStingSilence` (`cutgen.py pre-sting`): bed out, `sfx/amb/room_tone` at most, `sfx/stinger/cut_to_black` |
 | Quiet-hold ending | bed fades under the URL card; `sfx/amb/room_tone` at most; `plan.audio.quiet` kind `hold` (3–9 s) |
+| Problem -> pivot -> value -> ask (L10) | `cuts/story/problemPivot` (`cutgen.py problem-pivot`), layers `background.auroraRibbon` (its `cuesR6` bass lands before the rise), `type/typewriter` + `type/blurIn` + `type.accentSwap`; demo `templates/demo-r6-pivot` |
+| Planned audio gap into the reveal | `plan.bedAutomation` (hum, then -60 dB), no cue inside, the bass hit on the frame the bed returns; `plan.audio.quiet` kind `gap` (<= 4 s) |
 | Trailer valley then crescendo | `music/bed_trailer_arc`: act 1 drone, act 2 ostinato, act 3 wall, a planned gap, crescendo, hit, quiet hold; marker frames in its sidecar. Mark the gap in `plan.audio.quiet` (kind `gap`) |
 | Proof film (L8) | `chart.scatterFrontier`, `ui.dataTable`, `ui.branchTrace`, `cuts.story.diagramWalkthrough` (round 4/5); `counter.statCard`, `chart.bar` |
 | Multi-voice documentary (L9) | `templates/multi-voice-doc`, `cuts.story.voicesColdOpen` (round 4/5); `templates/talking-head`, `lowerThird.accentRule` |
@@ -196,7 +216,7 @@ Its two strongest forms (round 4/5, both tier A):
 - VO-led founder films in the wave sat at about −18 to −25 LUFS; music-led films were louder (Argon about −15).
 - The pack master stays at −14 LUFS / ≤ −1 dBTP decoded. Within it, keep dialogue clear: duck the bed at least 9 dB under voice.
 - **Late drop and pre-sting silence** (round 3, `references/success-patterns.md` section 8): the quiet opening and the quiet ending are part of the master, not exceptions to it. Measure loudness on the whole file; the drop and the sting should feel louder because the sections around them are sparse, never because they clip.
-- **Bed bass share by role** (round 4/5, the energy share under 150 Hz as `tools/refstudy.py` measures it): **proof and explainer beds 20–36%** (numbers and VO sit on top), **hype and trailer beds 50–61%**, **VO documentaries 15–34%**. Round 3's 52–87% was the hype case, not a default. `ears/listen.py --role <role>` reports where your bed sits.
+- **Bed bass share by role** (round 4/5, the energy share under 150 Hz as `tools/refstudy.py` measures it): **proof and explainer beds 20–36%** (numbers and VO sit on top), **hype and trailer beds 50–61%**, **brand-launch beds 50–60%** (round 6, two films: a thin base), **VO documentaries 15–34%**. Round 3's 52–87% was the hype case, not a default. `ears/listen.py --role <role>` reports where your bed sits.
 
 ## 6. Measure what matters
 

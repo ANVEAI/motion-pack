@@ -1,0 +1,728 @@
+{
+ "template": "demo-r6-pivot",
+ "fps": 30,
+ "seconds": 30,
+ "music": "music/bed_tech_pulse_loop8",
+ "size": [
+  1080,
+  1080
+ ],
+ "bpm": 120,
+ "cues": [
+  {
+   "id": "sfx/ui/typing_burst",
+   "t": 0,
+   "gainDb": -6,
+   "why": "sentence"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 1.933333,
+   "gainDb": -4,
+   "why": "accent"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 3.433333,
+   "gainDb": -4,
+   "why": "problem1"
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 5.7,
+   "gainDb": -4,
+   "why": "problem2"
+  },
+  {
+   "id": "sfx/ui/error",
+   "t": 7.966667,
+   "gainDb": -6,
+   "why": "problem3"
+  },
+  {
+   "id": "sfx/hit/sub_drop",
+   "t": 10.366667,
+   "gainDb": 0,
+   "why": "brand: the bass returns on the pivot frame; the colour follows 3 frames later"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 15.466667,
+   "gainDb": -4,
+   "why": "value1"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 18.466667,
+   "gainDb": -4,
+   "why": "value2"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 21.466667,
+   "gainDb": -4,
+   "why": "value3"
+  },
+  {
+   "id": "sfx/ui/typing_burst",
+   "t": 24.466667,
+   "gainDb": -6,
+   "why": "command"
+  },
+  {
+   "id": "sfx/ui/success",
+   "t": 25.733333,
+   "gainDb": -6,
+   "why": "url"
+  }
+ ],
+ "bedAutomation": [
+  {
+   "frame": 0,
+   "gain_db": -9
+  },
+  {
+   "frame": 257,
+   "gain_db": -9
+  },
+  {
+   "frame": 266,
+   "gain_db": -24
+  },
+  {
+   "frame": 274,
+   "gain_db": -24
+  },
+  {
+   "frame": 278,
+   "gain_db": -60
+  },
+  {
+   "frame": 310,
+   "gain_db": -60
+  },
+  {
+   "frame": 311,
+   "gain_db": 0
+  },
+  {
+   "frame": 817,
+   "gain_db": 0
+  },
+  {
+   "frame": 829,
+   "gain_db": -60
+  },
+  {
+   "frame": 900,
+   "gain_db": -60
+  }
+ ],
+ "ceilingDb": -3,
+ "audio": {
+  "mode": "continuous",
+  "role": "brand_launch",
+  "quiet": [
+   {
+    "t": [
+     8.5667,
+     10.3667
+    ],
+    "kind": "gap",
+    "why": "the bed thins to a hum, then true silence, just before the brand line (planned: problemPivot)"
+   },
+   {
+    "t": [
+     27.2333,
+     30
+    ],
+    "kind": "hold",
+    "why": "end card on near-silence: no stinger, the address holds (planned: problemPivot)"
+   }
+  ],
+  "events": [
+   0,
+   1.9333,
+   3.4333,
+   5.7,
+   7.9667,
+   10.3667,
+   15.4667,
+   18.4667,
+   21.4667,
+   24.4667,
+   25.7333
+  ]
+ },
+ "ribbon": {
+  "riseAt": 10.466667,
+  "lead": 0.1,
+  "rise": 1.4,
+  "grain": 0.4,
+  "height": 0.24
+ },
+ "story": {
+  "pattern": "problemPivot",
+  "fps": 30,
+  "frames": 900,
+  "seconds": 30,
+  "sections": [
+   {
+    "role": "sentence",
+    "start": 0,
+    "end": 58,
+    "text": "Launch day breaks the same thing:"
+   },
+   {
+    "role": "accent",
+    "start": 58,
+    "end": 103,
+    "text": "Handoffs."
+   },
+   {
+    "role": "problem",
+    "start": 103,
+    "end": 307,
+    "beats": [
+     {
+      "start": 103,
+      "end": 171,
+      "text": "Plans get lost",
+      "worse": 0
+     },
+     {
+      "start": 171,
+      "end": 239,
+      "text": "Notes drift apart",
+      "worse": 1
+     },
+     {
+      "start": 239,
+      "end": 307,
+      "text": "Dates slip",
+      "worse": 2
+     }
+    ]
+   },
+   {
+    "role": "gap",
+    "start": 257,
+    "end": 311,
+    "hum_end": 278,
+    "silence_s": 1.0667,
+    "audio": "bed -24 dB (a hum) then -60 dB (silence)"
+   },
+   {
+    "role": "pivot",
+    "start": 311,
+    "visual": 314,
+    "end": 464,
+    "text": "Brand A Notes"
+   },
+   {
+    "role": "value",
+    "start": 464,
+    "end": 734,
+    "beats": [
+     {
+      "start": 464,
+      "end": 554,
+      "text": "Your plan stays in one place"
+     },
+     {
+      "start": 554,
+      "end": 644,
+      "text": "Your plan stays yours"
+     },
+     {
+      "start": 644,
+      "end": 734,
+      "text": "Your plan stays open anywhere"
+     }
+    ]
+   },
+   {
+    "role": "cta",
+    "start": 734,
+    "end": 817,
+    "command": "//start a plan",
+    "type_end": 757,
+    "url": "brand-a.example/start",
+    "url_start": 772
+   },
+   {
+    "role": "hold",
+    "start": 817,
+    "end": 900,
+    "audio": "near-silence; the last frames hold"
+   }
+  ],
+  "captions": [
+   {
+    "id": "sentence",
+    "role": "sentence",
+    "text": "Launch day breaks the same thing:",
+    "in": 0,
+    "out": 98,
+    "kind": "typewriter",
+    "type_end": 55,
+    "preset": "type/typewriter",
+    "swap_out_frames": 9,
+    "in_s": 0,
+    "out_s": 3.2667
+   },
+   {
+    "id": "accent",
+    "role": "accent",
+    "text": "Handoffs.",
+    "in": 58,
+    "out": 98,
+    "kind": "blurIn",
+    "preset": "type/blurIn",
+    "note": "the one-word punchline in the accent colour",
+    "swap_out_frames": 9,
+    "in_s": 1.9333,
+    "out_s": 3.2667
+   },
+   {
+    "id": "problem1",
+    "role": "problem",
+    "text": "Plans get lost",
+    "in": 103,
+    "out": 166,
+    "beat": 1,
+    "worse": 0,
+    "note": "the diagram gets worse each beat (0 = calm, 2 = broken)",
+    "swap_out_frames": 9,
+    "in_s": 3.4333,
+    "out_s": 5.5333
+   },
+   {
+    "id": "problem2",
+    "role": "problem",
+    "text": "Notes drift apart",
+    "in": 171,
+    "out": 234,
+    "beat": 2,
+    "worse": 1,
+    "note": "the diagram gets worse each beat (0 = calm, 2 = broken)",
+    "swap_out_frames": 9,
+    "in_s": 5.7,
+    "out_s": 7.8
+   },
+   {
+    "id": "problem3",
+    "role": "problem",
+    "text": "Dates slip",
+    "in": 239,
+    "out": 307,
+    "beat": 3,
+    "worse": 2,
+    "note": "the diagram gets worse each beat (0 = calm, 2 = broken)",
+    "swap_out_frames": 9,
+    "in_s": 7.9667,
+    "out_s": 10.2333
+   },
+   {
+    "id": "lead",
+    "role": "lead",
+    "text": "Introducing",
+    "in": 308,
+    "out": 459,
+    "kind": "blurIn",
+    "note": "the light lead word, on the silence; it stays over the brand line",
+    "swap_out_frames": 9,
+    "in_s": 10.2667,
+    "out_s": 15.3
+   },
+   {
+    "id": "brand",
+    "role": "brand",
+    "text": "Brand A Notes",
+    "in": 314,
+    "out": 459,
+    "kind": "blurIn",
+    "note": "the brand line: the colour arrives with it",
+    "swap_out_frames": 9,
+    "in_s": 10.4667,
+    "out_s": 15.3
+   },
+   {
+    "id": "value1",
+    "role": "value",
+    "text": "Your plan stays in one place",
+    "in": 464,
+    "out": 549,
+    "beat": 1,
+    "swap_out_frames": 9,
+    "in_s": 15.4667,
+    "out_s": 18.3
+   },
+   {
+    "id": "value2",
+    "role": "value",
+    "text": "Your plan stays yours",
+    "in": 554,
+    "out": 639,
+    "beat": 2,
+    "swap_out_frames": 9,
+    "in_s": 18.4667,
+    "out_s": 21.3
+   },
+   {
+    "id": "value3",
+    "role": "value",
+    "text": "Your plan stays open anywhere",
+    "in": 644,
+    "out": 734,
+    "beat": 3,
+    "swap_out_frames": 9,
+    "in_s": 21.4667,
+    "out_s": 24.4667
+   },
+   {
+    "id": "command",
+    "role": "command",
+    "text": "//start a plan",
+    "in": 734,
+    "out": null,
+    "kind": "typewriter",
+    "type_end": 757,
+    "preset": "type/typewriter",
+    "note": "the typed command pill",
+    "swap_out_frames": 9,
+    "in_s": 24.4667,
+    "out_s": null
+   },
+   {
+    "id": "url",
+    "role": "url",
+    "text": "brand-a.example/start",
+    "in": 772,
+    "out": null,
+    "kind": "blurIn",
+    "note": "the address; the path word may take the accent colour",
+    "swap_out_frames": 9,
+    "in_s": 25.7333,
+    "out_s": null
+   }
+  ],
+  "typed": {
+   "sentence_s": 1.8333,
+   "command_s": 0.7667
+  },
+  "gap": {
+   "start": 257,
+   "end": 311,
+   "seconds": 1.8,
+   "hum_end": 278,
+   "silence_frames": 32,
+   "silence_s": 1.0667,
+   "plan_quiet": {
+    "t": [
+     8.5667,
+     10.3667
+    ],
+    "kind": "gap",
+    "why": "the bed thins to a hum, then true silence, just before the brand line (planned: problemPivot)"
+   }
+  },
+  "pivot": {
+   "frame": 311,
+   "visual_frame": 314,
+   "lead_frames": 3,
+   "lead_ms": 100,
+   "ribbon_rise_s": 10.4667,
+   "sound": "sfx/hit/sub_drop",
+   "lead_word_frame": 308
+  },
+  "hold": {
+   "start": 817,
+   "end": 900,
+   "seconds": 2.7667,
+   "plan_quiet": {
+    "t": [
+     27.2333,
+     30
+    ],
+    "kind": "hold",
+    "why": "end card on near-silence: no stinger, the address holds (planned: problemPivot)"
+   }
+  },
+  "audio": {
+   "mode": "continuous",
+   "role": "brand_launch",
+   "quiet": [
+    {
+     "t": [
+      8.5667,
+      10.3667
+     ],
+     "kind": "gap",
+     "why": "the bed thins to a hum, then true silence, just before the brand line (planned: problemPivot)"
+    },
+    {
+     "t": [
+      27.2333,
+      30
+     ],
+     "kind": "hold",
+     "why": "end card on near-silence: no stinger, the address holds (planned: problemPivot)"
+    }
+   ],
+   "events": [
+    0,
+    1.9333,
+    3.4333,
+    5.7,
+    7.9667,
+    10.3667,
+    15.4667,
+    18.4667,
+    21.4667,
+    24.4667,
+    25.7333
+   ]
+  },
+  "bed_automation": [
+   {
+    "frame": 0,
+    "gain_db": -9
+   },
+   {
+    "frame": 257,
+    "gain_db": -9
+   },
+   {
+    "frame": 266,
+    "gain_db": -24
+   },
+   {
+    "frame": 274,
+    "gain_db": -24
+   },
+   {
+    "frame": 278,
+    "gain_db": -60
+   },
+   {
+    "frame": 310,
+    "gain_db": -60
+   },
+   {
+    "frame": 311,
+    "gain_db": 0
+   },
+   {
+    "frame": 817,
+    "gain_db": 0
+   },
+   {
+    "frame": 829,
+    "gain_db": -60
+   },
+   {
+    "frame": 900,
+    "gain_db": -60
+   }
+  ],
+  "sfx": [
+   {
+    "sfx": "sfx/ui/typing_burst",
+    "visual_frame": 0,
+    "anchor_frame": 1,
+    "gain_db": -6,
+    "cap": "sentence"
+   },
+   {
+    "sfx": "sfx/ui/pop",
+    "visual_frame": 58,
+    "anchor_frame": 59,
+    "gain_db": -4,
+    "cap": "accent"
+   },
+   {
+    "sfx": "sfx/ui/tick",
+    "visual_frame": 103,
+    "anchor_frame": 104,
+    "gain_db": -4,
+    "cap": "problem1",
+    "worse": 0
+   },
+   {
+    "sfx": "sfx/ui/tick",
+    "visual_frame": 171,
+    "anchor_frame": 172,
+    "gain_db": -4,
+    "cap": "problem2",
+    "worse": 1
+   },
+   {
+    "sfx": "sfx/ui/error",
+    "visual_frame": 239,
+    "anchor_frame": 240,
+    "gain_db": -6,
+    "cap": "problem3",
+    "worse": 2
+   },
+   {
+    "sfx": "sfx/hit/sub_drop",
+    "visual_frame": 311,
+    "anchor_frame": 312,
+    "gain_db": 0,
+    "cap": "brand",
+    "why": "the bass returns on the pivot frame; the colour follows 3 frames later"
+   },
+   {
+    "sfx": "sfx/ui/pop",
+    "visual_frame": 464,
+    "anchor_frame": 465,
+    "gain_db": -4,
+    "cap": "value1"
+   },
+   {
+    "sfx": "sfx/ui/pop",
+    "visual_frame": 554,
+    "anchor_frame": 555,
+    "gain_db": -4,
+    "cap": "value2"
+   },
+   {
+    "sfx": "sfx/ui/pop",
+    "visual_frame": 644,
+    "anchor_frame": 645,
+    "gain_db": -4,
+    "cap": "value3"
+   },
+   {
+    "sfx": "sfx/ui/typing_burst",
+    "visual_frame": 734,
+    "anchor_frame": 735,
+    "gain_db": -6,
+    "cap": "command"
+   },
+   {
+    "sfx": "sfx/ui/success",
+    "visual_frame": 772,
+    "anchor_frame": 773,
+    "gain_db": -6,
+    "cap": "url"
+   }
+  ],
+  "motion_events": [
+   0,
+   58,
+   103,
+   171,
+   239,
+   311,
+   464,
+   554,
+   644,
+   734,
+   772
+  ],
+  "duration_slack_frames": 0,
+  "warnings": [],
+  "checks": [
+   {
+    "check": "gap 1.5-2 s",
+    "ok": true,
+    "detail": "1.800 s"
+   },
+   {
+    "check": "gap has >= 1 s of true silence (ears reads a quiet run of 1 s)",
+    "ok": true,
+    "detail": "1.067 s"
+   },
+   {
+    "check": "bed is silent the frame before the pivot",
+    "ok": true,
+    "detail": "-60.0 dB"
+   },
+   {
+    "check": "bass returns on the pivot frame: the bed is back at 0 dB ON it",
+    "ok": true,
+    "detail": "0.0 dB"
+   },
+   {
+    "check": "one bass hit, its visual frame is the pivot frame, its anchor is +1",
+    "ok": true,
+    "detail": "[311]"
+   },
+   {
+    "check": "colour and brand line follow the sound by lead_frames (never before it)",
+    "ok": true,
+    "detail": "3 frames"
+   },
+   {
+    "check": "end hold >= 2 s",
+    "ok": true,
+    "detail": "2.767 s"
+   },
+   {
+    "check": "the film ends with the hold (hold end = last frame)",
+    "ok": true,
+    "detail": "900 vs 900"
+   },
+   {
+    "check": "three problem beats of 2-2.5 s",
+    "ok": true,
+    "detail": "[2.267, 2.267, 2.267]"
+   },
+   {
+    "check": "three value beats",
+    "ok": true,
+    "detail": "[3.0, 3.0, 3.0]"
+   },
+   {
+    "check": "the gap starts inside the last problem beat",
+    "ok": true,
+    "detail": "gap 257, beat 239-307"
+   },
+   {
+    "check": "no sound cue inside the gap (before the pivot) or the hold",
+    "ok": true,
+    "detail": "[]"
+   },
+   {
+    "check": "plan.audio.quiet = the gap (kind gap) then the hold (kind hold), in seconds, matching the frames",
+    "ok": true,
+    "detail": "[{\"t\": [8.5667, 10.3667], \"kind\": \"gap\", \"why\": \"the bed thins to a hum, then true silence, just before the brand line (planned: problemPivot)\"}, {\"t\": [27.2333, 30.0], \"kind\": \"hold\", \"why\": \"end card on near-silence: no stinger, the address holds (planned: problemPivot)\"}]"
+   },
+   {
+    "check": "mode continuous, role brand_launch",
+    "ok": true,
+    "detail": "continuous/brand_launch"
+   },
+   {
+    "check": "every sound is on a motion event: cue anchors are visual + 1, events sorted and unique",
+    "ok": true,
+    "detail": "11 events"
+   },
+   {
+    "check": "every frame is a whole number inside the film",
+    "ok": true,
+    "detail": "43 frames checked"
+   },
+   {
+    "check": "every caption goes out after it comes in",
+    "ok": true,
+    "detail": "10 captions"
+   },
+   {
+    "check": "zero cuts: one continuous film (no cut list)",
+    "ok": true,
+    "detail": ""
+   }
+  ]
+ },
+ "shots": [],
+ "claims": [],
+ "paceRule": {},
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": null
+ }
+}

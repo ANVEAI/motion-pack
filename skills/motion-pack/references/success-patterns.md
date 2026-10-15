@@ -212,3 +212,25 @@ Per-piece studies, source links and tiers: `docs/research/reference-round45-2026
 **Ranked, proven to craft-only:** (1) proof film; (2) query ladder; (3) fidelity ladder with a dropout; (4) multi-voice documentary; (5) bundle construction in 10 s; (6) rapid-command demo (claim-driven); (7) prompt slam; (8) in-scene transcript bubbles; (9) craft-only: flanking words, sentence across cuts, style ladder, electric numerals, the trailer arc (R).
 
 **For ANVE:** a proof film with **measured** numbers only (no box benchmarks exist yet: measure first, never borrow AnveVoice's); a query ladder over the box's own data ending on "runs on your box · no cloud"; in-scene transcript bubbles and a rapid-command demo recorded for real; the trust gate stopping a wrong action as the failure-caught climax; quiet holds on end cards. A multi-voice documentary waits for real pilot customers. Avoid boosted-reach envy, clipping, unsourced price comparisons and deadline offers as the hook.
+
+## 10. Round 6 (2 references, 14 Oct 2026)
+
+Per-piece studies, source links and tiers: `docs/research/reference-round6-2026-10.md`. Graded with `tools/refstudy.py grade`.
+
+**Evidence tiers for this batch:** **C 1** (below follower reach, saves under the 1.3% line: a craft reference), **B 1** (boosted-looking: an inference from the like rate, 0.015%, and a reach of 191x the followers; nothing shows that any reach was paid for). Neither is proof that its shape works; the numbers below are starting values from one film each.
+
+**Shapes (new):**
+
+| shape | what | evidence |
+|---|---|---|
+| **P. Problem-pivot film** | a sentence typed with an accent-word punchline → a three-beat problem ladder (2–2.5 s a beat, a diagram worse each beat) → a **1.5–2 s audio gap** (a hum, then true silence) → the pivot, where colour, bass and the brand line arrive together → a value ladder → a typed command pill, then the address → a quiet hold of at least 2 s; 0 cuts, 30 s, square | tier B, craft only. Launch archetype **L10**; pack `cuts/story/problemPivot` |
+| **Q. Verb-chapter feature tour** | one giant word on a dark ground that settles into a line, repeated for each chapter, over a UI that a cursor drives; a quiet first 8 s, then the bed | tier C, craft only (parts: not built here) |
+
+**Sound, measured (both films):** -12.8 and -11.0 LUFS integrated (one peaks at +0.6 dBFS: it clips); **bass 55% and 58%**, well above the 20–36% of proof films, so `brand_launch` is a role with its own 50–60% range (`ears --role brand_launch`; a thin base); the quiet open (-20.8 dB for about 8 s) and the quiet-hold ending (-73.7 dB) are both present again; a **mid-film gap of about 2 s ending exactly on the reveal** is the one new sound shape (`plan.audio.quiet` kind `gap`).
+
+**Continuous films are now 8 of 31** (the new one has zero cuts): score them by motion events on onsets, not by cuts on onsets.
+
+**Motion vocabulary (craft only):** a diagram that degrades across a three-beat ladder; captions that swap by a blur-through; colour introduced only at the pivot, as a rising glow along the bottom edge; an accent word as the punchline of a typed sentence; a terminal-style outlined pill as the CTA; a hover tooltip on a chart; a connect button that turns into a confirmed state.
+
+**Do not copy:** the clipped master, the wording, the mascot or the look of either film. The pack's demo uses a placeholder brand and original words.
+

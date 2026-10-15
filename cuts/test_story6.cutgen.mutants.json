@@ -1,0 +1,24 @@
+{
+ "file": "cuts/cutgen.py",
+ "test": [
+  "python3",
+  "-m",
+  "pytest",
+  "-q",
+  "-x",
+  "cuts/test_story6.py"
+ ],
+ "timeout": 300,
+ "mutants": [
+  {
+   "name": "problem-pivot not routed to story6",
+   "find": "    elif a.cmd in s6:\n",
+   "replace": "    elif False:\n"
+  },
+  {
+   "name": "parser not registered",
+   "find": "    s6 = story6.add_parsers(sub)\n",
+   "replace": "    s6 = {\"problem-pivot\"}\n"
+  }
+ ]
+}

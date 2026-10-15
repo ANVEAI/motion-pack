@@ -1,0 +1,257 @@
+{
+ "name": "layers round 6",
+ "total": 50,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "auroraRibbon is merged into BG (same object as BG_R6), reachable through overlay.js ALL_KINDS, with tags, doc and order, and the other backgrounds are still there",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "layers/manifest.json lists background.auroraRibbon with file layers/backgrounds-r6.js, tags, params, doc and this test (node make-manifests.mjs rewrites it)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cuesR6: the pivot cue resolves in sfx/manifest.json (sfx/hit/sub_drop), has a time >= 0 and a reason",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "defaults draw at 2 s (8388 canvas calls, finite numbers, additive blend set and restored)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon: 23 param variants all change the draw and stay finite",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "kick / kickDur are read right after riseAt and have no effect once the flash has decayed (the same frame 3 s later with and without kick)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon 16:9: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon 9:16: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon 1:1: identical draw calls in forward and shuffled order (70 seeks over [-0.5, 8.6] s, finite)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "pure function of t across processes: six frames (three sizes, loop, seed, transparent bg) hash to the same value here and in two fresh node processes (e2e27f99206b)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no state between draws: A, B, A, B in turn give the same A and the same B",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "before riseAt (t = riseAt - 1 frame, and t < 0): no gradient, no additive blend, the same calls whatever the colours, height and halo are; at riseAt (k = 0) it is still the bare field; 0.3 s later the ribbon is there",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "bare field with grain 0 = one background fill and nothing else (a transparent field = nothing)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRise: 0 up to riseAt, 1 from riseAt + rise, monotonic non-decreasing in between, never outside [0, 1]",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "property test (300 random parameter sets): at k = 0 the whole glow of every strand (3.2 sigma, strand offset included) is below the frame bottom (worst margin 13.0 px, 0 = touching); at k = 1 the centre line stays within crest * H of the rest height",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "closed form: with crest 0 the centre line is exactly H - height * H at every x and t; at k = 0 it is below the frame bottom, halfway through the rise it is between",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "drift is slow: the centre line moves at most 0.91 px per frame at 1080p (mean 0.37) with the defaults (limit 1.2)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "colour weights stay in [0.22, 1], move with t, and differ between strands (the colour mix travels along the ribbon)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "pivot flash: 0 before riseAt, kick at riseAt, decaying monotonically to 0 by riseAt + kickDur, 0 after; a loop has none",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "the flash is drawn: the brightest gradient stop at riseAt + 0.05 s is higher with kick 0.5 than with kick 0 (0.173 vs 0.140)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 2: frame t and t + 2 s are identical (7 times, centre lines within 1e-6 px, grain included); a third of a loop later it is a different frame; the ribbon is already up at t = 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 4: frame t and t + 4 s are identical (7 times, centre lines within 1e-6 px, grain included); a third of a loop later it is a different frame; the ribbon is already up at t = 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 5: frame t and t + 5 s are identical (7 times, centre lines within 1e-6 px, grain included); a third of a loop later it is a different frame; the ribbon is already up at t = 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 6: frame t and t + 6 s are identical (7 times, centre lines within 1e-6 px, grain included); a third of a loop later it is a different frame; the ribbon is already up at t = 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 7: frame t and t + 7 s are identical (7 times, centre lines within 1e-6 px, grain included); a third of a loop later it is a different frame; the ribbon is already up at t = 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 7.3: frame t and t + 7.3 s are identical (7 times, centre lines within 1e-6 px, grain included); a third of a loop later it is a different frame; the ribbon is already up at t = 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 10: frame t and t + 10 s are identical (7 times, centre lines within 1e-6 px, grain included); a third of a loop later it is a different frame; the ribbon is already up at t = 0",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "without loop: frame t and t + 6 s differ (the drift keeps going)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "grain index: counts up at grainFps (24 per s at 30 fps: 4 new specks sets per 5 frames), wraps with the loop, and never goes negative",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "grain: 0 draws no specks, more grain draws more specks (0 / 592 / 1481), the count is capped (12000 specks at 8K, cap 12000), the same index gives the same specks, the next frame different ones, another seed different ones",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "grainFps 10 at 30 fps: the specks change every third frame (frames 0-2 share them, frame 3 has new ones)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "unique per item: the draw emits no ids (no url(#...), clipPath, filter), and two layers of the same kind on one page (different colours and seed, rendered in turn) draw exactly what each would alone",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: 19 numeric parameters x 8 hostile values (0, negative, +-1e9, 1e15, +-Infinity, 0.5) never throw, never hang (< 4 s each), stay finite, and draw at most 83556 canvas calls (cap 130000: res <= 1024 columns, <= 5 strands, <= 12000 specks)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: NaN, a string, null, undefined or an object for any of the 19 numeric parameters throws an error that names auroraRibbon and the parameter",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: a colour that is not #RGB / #RRGGBB, fewer than 2 colours, or colors that is not an array throws a clear error; #RGB shorthand is accepted; more than 5 colours use the first 5",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: t that is NaN or infinite throws; a zero, negative or NaN frame size throws; t = 1e9 and t = -1e9 draw finite numbers",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraParams clamps: res 1e9 -> 1024, waves 99 -> 5, grain 5 -> 1, height 9 -> 0.9; the defaults come back unchanged; colours become RGB triples",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cuesR6: the sound lands `lead` s BEFORE riseAt (10.8 - 0.1, 10.8 - 0.4), is never before 0, and is absent for a loop",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cuesR6 of an unknown kind throws",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon: before riseAt: mounted via mountStack (auroraRibbon), bit-identical at t 0.5 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon: rising: mounted via mountStack (auroraRibbon), bit-identical at t 1.1 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon: risen: mounted via mountStack (auroraRibbon), bit-identical at t 3 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon: later in the drift: mounted via mountStack (auroraRibbon), bit-identical at t 12 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon: two colours: mounted via mountStack (auroraRibbon), bit-identical at t 3 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon: loop 6: mounted via mountStack (auroraRibbon), bit-identical at t 2 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "pixels, risen (grain off): bottom third mean luma 58.6, middle 9.0, top 2.5: the ribbon is bottom-anchored (bottom > 4 x top, top < 8); before riseAt all three thirds are the flat field (2.5 / 2.5 / 2.5)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon: pixels identical when the same 6 times are rendered again in shuffled order",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon loop 6: real pixels at t and t + 6 s are identical (5 times)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "auroraRibbon at 1080p (3 strands, 96 columns, grain; includes the 1 px read-back): 139.7 ms per frame (budget 400 ms)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no console errors",
+   "pass": true,
+   "detail": "[]"
+  }
+ ]
+}

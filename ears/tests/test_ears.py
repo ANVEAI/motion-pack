@@ -426,6 +426,18 @@ def test_bass_share_by_role_and_reference_quiet_shape():
     assert 'quiet tail' in d and 'references end quiet hold 1' in d and 'proof bed' in d
 
 
+def test_brand_launch_role_range_and_source():
+    from ears.checks_shape import _role_line
+    assert core.SPEC['bass_share_by_role']['brand_launch'] == [0.50, 0.60]
+    assert 'inside the range' in _role_line('brand_launch', 0.55) and 'round 6' in _role_line('brand_launch', 0.55)
+    assert 'below the range' in _role_line('brand_launch', 0.30) and 'above the range' in _role_line('brand_launch', 0.75)
+    assert 'round 4/5' in _role_line('proof', 0.25)                                # the older roles keep their source
+    assert _role_line('note', 0.5) is None and _role_line('sources', 0.5) is None and _role_line('nope', 0.5) is None   # data keys are not roles
+    y = s.mix_like(10, 4)
+    c = check(analyze(s.st(y), plan={'audio': {'role': 'Brand_Launch'}}), 'compare')
+    assert c['measured']['role'] == 'brand_launch' and 'for a brand_launch bed' in ' '.join(c['notes'])
+
+
 @pytest.mark.skipif(shutil.which(core.FFMPEG) is None, reason='ffmpeg not on PATH')
 def test_cli_continuous_mode_measures_motion_events_from_the_video(tmp_path):
     clip = str(tmp_path / 'c.mp4')

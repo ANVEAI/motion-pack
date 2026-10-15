@@ -31,7 +31,7 @@ jobs:
       - name: build the sound library (WAV masters are not in git; regenerated bit for bit)
         run: python3 sfx/build_library.py
       - name: python tests (cuts, sfx, music, refstudy smoke test)
-        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py sfx/tests music/tests tools/tests cloud/tests
+        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py sfx/tests music/tests tools/tests cloud/tests
       - name: ears tests (automated listening, synthetic signals)
         run: python3 -m pytest -q ears/tests
       - name: transitions core tests
@@ -52,6 +52,16 @@ jobs:
         run: node type/tests/r6.test.mjs
       - name: round-4/5 layers (Canvas2D on a recording context, node, no browser)
         run: node layers/tests/r45.test.mjs
+      - name: round-6 layer (auroraRibbon on a recording context: rise, loop seam, grain, guards, seek order; node, no browser)
+        run: node layers/tests/r6.test.mjs
+      - name: round-6 story shape mutation proof (every check in cuts/test_story6.py fails when the code under test is broken; the layer's 26 mutants run locally, see tools/mutation_check.py)
+        run: python3 tools/mutation_check.py cuts/test_story6.mutants.json && python3 tools/mutation_check.py cuts/test_story6.cutgen.mutants.json
+      - name: problem-pivot demo template (plan from cuts/story6.py: gap, pivot frame, bass = the ribbon's cue, hold, committed plan current, same bytes in two processes; node + python, no browser)
+        run: node templates/demo-r6-pivot/pivot.test.mjs
+      - name: problem-pivot demo mutation proof (each check fails when config.mjs is broken)
+        run: python3 tools/mutation_check.py templates/demo-r6-pivot/pivot.mutants.json
+      - name: ears brand_launch role mutation proof
+        run: python3 tools/mutation_check.py ears/tests/brand_launch.manifest.mutants.json && python3 tools/mutation_check.py ears/tests/brand_launch.checks.mutants.json
       - name: proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)
         run: node templates/proof-film/proof-film.test.mjs
       - name: physics table player (the baked table is committed; no npm install)
