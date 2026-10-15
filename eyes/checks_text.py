@@ -114,7 +114,7 @@ def safezones(ctx):
                 issues.append(issue('fail', [round(t['t'][0], 2), round(t['t'][1], 2)], 'text "%s" (%s) leaves the %s safe area %s: %s' % (
                     t['text'][:30], t['id'], ctx['platform'], tuple(round(u) for u in rect), sides),
                     'move the box inside x %d-%d, y %d-%d (type/safezones.js captionBox, or re-lay out the shot: faces and key text stay out of the bottom 35%% of a 9:16 frame)' % tuple(round(u) for u in rect),
-                    'Part of the text is hidden behind the app interface (title, buttons, captions) or cut off.', 'safe:' + t['id']))
+                    'Part of the text is hidden behind the app interface (title, buttons, captions) or cut off.', 'safe'))
     else:
         for tr in detect_text_tracks(c):
             of = outside_frac(tr['box'], rect)
@@ -125,7 +125,7 @@ def safezones(ctx):
                 issues.append(issue(sev, tr['t'], 'a text-like block at %s sits %.0f%% outside the %s safe area %s (%s)' % (
                     tuple(round(u) for u in tr['box']), 100 * of, ctx['platform'], tuple(round(u) for u in rect), ', '.join('%s %.0f px' % a for a in v)),
                     'move that text or graphic inside the safe rectangle; if it is in-scene text that cannot move, keep it out of the platform UI bands or reframe the shot',
-                    'Words or a graphic sit where the app draws its own buttons and captions, so they get covered or look cropped.', 'safe:%d' % round(tr['box'][1])))
+                    'Words or a graphic sit where the app draws its own buttons and captions, so they get covered or look cropped.', 'safe'))
         notes.append('no text boxes in the plan: judged by text-like edges that persist for %d samples (a heuristic; it cannot read). Give plan.texts [{text, t, box, fontPx}] for an exact check' % sp['persist_samples'])
     m = {'mode': mode, 'platform': ctx['platform'], 'safe_rect': [round(u, 1) for u in rect], 'safe_rect_source': src, 'blocks': rows}
     return result(cid, 'safezones', m, 'every text box inside the %s safe rectangle (%s)' % (ctx['platform'], src), issues, notes)
@@ -193,14 +193,14 @@ def readability(ctx):
         if words and dur < need - 1e-6:
             sev = 'warn' if (dur >= 0.8 * need or t['role'] == 'caption') else 'fail'                  # captions follow the voice: the viewer hears the words too
             issues.append(issue(sev, tt, 'text "%s" (%s) is on screen %.2f s; %d words need %.2f s (0.35 s + 0.28 s per word)' % (t['text'][:30], t['id'], dur, words, need),
-                                'hold it %.2f s, or cut it to %d words' % (need, max(1, int((dur - sp['hold_base_s']) / sp['hold_per_word_s']))), 'The words vanish before you can finish reading them.', 'time:' + t['id']))
+                                'hold it %.2f s, or cut it to %d words' % (need, max(1, int((dur - sp['hold_base_s']) / sp['hold_per_word_s']))), 'The words vanish before you can finish reading them.', 'time'))
         if t['role'] == 'label' and dur < sp['label_min_s']:
             issues.append(issue('fail', tt, 'honesty label "%s" is on screen %.2f s; labels need %.1f s' % (t['text'][:30], dur, sp['label_min_s']),
-                                'hold the label for at least %.1f s' % sp['label_min_s'], 'The disclosure flashes by unread.', 'label:' + t['id']))
+                                'hold the label for at least %.1f s' % sp['label_min_s'], 'The disclosure flashes by unread.', 'label'))
         if t['role'] == 'endcard' and dur < sp['endcard_hold_s'][0]:
-            issues.append(issue('warn', tt, 'end-card text "%s" is held %.2f s (3-4.5 s)' % (t['text'][:30], dur), 'hold the end card %.1f-%.1f s' % tuple(sp['endcard_hold_s']), 'The end card is gone before you can read the address.', 'endcard:' + t['id']))
+            issues.append(issue('warn', tt, 'end-card text "%s" is held %.2f s (3-4.5 s)' % (t['text'][:30], dur), 'hold the end card %.1f-%.1f s' % tuple(sp['endcard_hold_s']), 'The end card is gone before you can read the address.', 'endcard'))
         if t['role'] == 'read' and words > sp['read_max_words']:
-            issues.append(issue('warn', tt, 'read line "%s" has %d words (at most %d)' % (t['text'][:30], words, sp['read_max_words']), 'cut it to %d words or split it over two shots' % sp['read_max_words'], 'Too many words to take in at a glance.', 'words:' + t['id']))
+            issues.append(issue('warn', tt, 'read line "%s" has %d words (at most %d)' % (t['text'][:30], words, sp['read_max_words']), 'cut it to %d words or split it over two shots' % sp['read_max_words'], 'Too many words to take in at a glance.', 'words'))
         fpx, est = t['font_px'], False
         if fpx is None and t['box']:
             lines = int(t['lines'] or 1)
@@ -213,13 +213,13 @@ def readability(ctx):
             if f1080 < floor - 0.5:
                 issues.append(issue('fail' if not est else 'warn', tt, '%s "%s" (%s) is %.0f px at 1080%s; the %s floor is %d px' % (
                     t['role'], t['text'][:30], t['id'], f1080, ' (estimated from its box)' if est else '', aspect, floor),
-                    'raise it to %d px or more at the 1080 reference (shorter side), or cut words so a bigger size fits' % floor, 'The text is too small to read on a phone.', 'size:' + t['id']))
+                    'raise it to %d px or more at the 1080 reference (shorter side), or cut words so a bigger size fits' % floor, 'The text is too small to read on a phone.', 'size'))
             if t['role'] == 'caption' and tall and f1080 > sp['caption_max_px_tall']:
                 issues.append(issue('warn', tt, 'caption "%s" is %.0f px at 1080; 9:16 captions run 64-%d px' % (t['text'][:30], f1080, sp['caption_max_px_tall']),
-                                'bring it down to 64-80 px', 'The caption is so large it crowds the picture.', 'size:' + t['id']))
+                                'bring it down to 64-80 px', 'The caption is so large it crowds the picture.', 'size'))
             if phone < sp['phone_min_px']:
                 issues.append(issue('fail' if not est else 'warn', tt, 'text "%s" renders %.1f px high on a %d px wide phone (floor %.0f px)' % (t['text'][:30], phone, sp['phone_width_px'], sp['phone_min_px']),
-                                    'make it larger or re-lay out so it is not shrunk by the aspect (type sizes come from the shorter frame side)', 'On a phone the text is a smear.', 'phone:' + t['id']))
+                                    'make it larger or re-lay out so it is not shrunk by the aspect (type sizes come from the shorter frame side)', 'On a phone the text is a smear.', 'phone'))
             elif phone < sp['phone_target_px']:
                 notes.append('text %s renders %.1f px on a 360 px wide phone (under %.0f px: check a 360 px still)' % (t['id'], phone, sp['phone_target_px']))
         if t['box']:
@@ -257,7 +257,7 @@ def readability(ctx):
             issues.append(issue(sev, [round(t['t'][0], 2), round(t['t'][1], 2)], 'text "%s" (%s) has %.2f:1 contrast against what is behind it at %.2f s (%s; needs %.1f:1, hard floor %.1f:1)' % (
                 t['text'][:30], t['id'], worst[0], worst[1], 'the text colour was estimated from the pixels' if est else 'from the plan colour %s' % fgh, sp['contrast_pass'], sp['contrast_fail']),
                 'put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair "%s" "#bg"' % (t['fg'] or '#fg'),
-                'The text blends into the picture behind it and is hard to read.', 'contrast:' + t['id']))
+                'The text blends into the picture behind it and is hard to read.', 'contrast'))
     hook = None
     first = min(texts, key=lambda x: x['t'][0])
     by = SPEC['platforms']['presets'].get(ctx['platform'], {}).get('hook_text_by_s')

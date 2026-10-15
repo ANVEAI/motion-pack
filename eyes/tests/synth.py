@@ -10,12 +10,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FONT = os.path.join(os.path.dirname(os.path.dirname(HERE)), 'templates', '_shared', 'fonts', 'IBMPlexMono-SemiBold.ttf')
 
 
-def make_video(path, frame_fn, n, w=540, h=960, fps=30, crf=14, extra_out=None, pix='yuv420p', x264=None, vf=None, tag=True):
-    """encode frame_fn(i) -> (h, w, 3) uint8 for i in range(n) with libx264 (CRF crf, faststart, bt709 tags unless tag=False). extra_out: more output args"""
+def make_video(path, frame_fn, n, w=540, h=960, fps=30, crf=14, extra_out=None, pix='yuv420p', x264=None, vf=None, tag=True, faststart=True):
+    """encode frame_fn(i) -> (h, w, 3) uint8 for i in range(n) with libx264 (CRF crf or none, faststart unless faststart=False, bt709 tags unless tag=False). extra_out: more output args"""
     cmd = [FFMPEG, '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', '%dx%d' % (w, h), '-r', str(fps), '-i', '-']
     if vf:
         cmd += ['-vf', vf]
-    cmd += ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', str(crf), '-pix_fmt', pix, '-movflags', '+faststart']
+    cmd += ['-c:v', 'libx264', '-preset', 'veryfast'] + (['-crf', str(crf)] if crf is not None else []) + ['-pix_fmt', pix] + (['-movflags', '+faststart'] if faststart else [])
     if tag:
         cmd += ['-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709']
     if x264:

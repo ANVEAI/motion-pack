@@ -27,9 +27,9 @@ sys.path.insert(0, os.path.dirname(HERE))
 from eyes import core, checks_frames, checks_text, checks_edit, report  # noqa: E402
 
 
-def analyze(path, plan=None, platform=None, fmt=None, draft=False, fps=None, name=None):
+def analyze(path, plan=None, platform=None, fmt=None, draft=False, fps=None, name=None, only=None):
     """path: a video file. plan: a plan.json dict (texts, shots, holds, paceRule, platform); platform: a plan.mjs preset or type/safezones.js id ('auto' / None: the plan's, else by aspect);
-    fmt: a cuts/patterns.json pace format; draft: an animatic (the resolution and bit-rate rules are waived). -> report dict"""
+    fmt: a cuts/patterns.json pace format; draft: an animatic (the resolution and bit-rate rules are waived); only: a list of check names to run (tests). -> report dict"""
     info = core.probe(path)
     clip = core.Clip(path, info)
     if fps:
@@ -37,8 +37,10 @@ def analyze(path, plan=None, platform=None, fmt=None, draft=False, fps=None, nam
     pf = core.resolve_platform(platform, plan, clip.W, clip.H)
     ctx = {'clip': clip, 'info': info, 'plan': plan, 'platform': pf, 'draft': draft, 'format': checks_edit.plan_format(plan, fmt),
            'cuts': core.detect_cuts(clip), 'texts': core.plan_texts(plan, clip.W, clip.H)}
-    checks = [checks_frames.frame0(ctx), checks_frames.frames(ctx), checks_frames.flashes(ctx), checks_frames.banding(ctx), checks_text.safezones(ctx),
-              checks_text.readability(ctx), checks_edit.pacing(ctx), checks_edit.composition(ctx), checks_edit.encode(ctx)]
+    run = [('frame0', checks_frames.frame0), ('frames', checks_frames.frames), ('flashes', checks_frames.flashes), ('banding', checks_frames.banding),
+           ('safezones', checks_text.safezones), ('readability', checks_text.readability), ('pacing', checks_edit.pacing), ('composition', checks_edit.composition),
+           ('encode', checks_edit.encode)]
+    checks = [fn(ctx) for name_, fn in run if only is None or name_ in only]
     rep = {'input': name or os.path.basename(path), 'duration_s': round(clip.dur, 3), 'width': clip.W, 'height': clip.H, 'fps': round(clip.fps, 3), 'platform': pf,
            'plan': bool(plan), 'frames': clip.n, 'checks': checks}
     rep['scores'] = report.scores(checks)
