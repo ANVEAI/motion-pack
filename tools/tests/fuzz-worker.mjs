@@ -4,8 +4,10 @@
 import path from 'node:path'; import { fileURLToPath } from 'node:url';
 import { recorder } from './recorder.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..'), imp = (p) => import(path.join(ROOT, p));
+const order = new Promise((res) => process.once('message', res));   /* listen before the slow imports, then say ready: the parent sends the jobs only after 'ready' */
 const [{ renderSVG }, { Canvas2DLayer }, { BackgroundLayer }] = await Promise.all([imp('type/gfx/index.js'), imp('layers/canvas2d.js'), imp('layers/backgrounds.js')]);
-const { jobs, from = 0, budget } = await new Promise((res) => process.once('message', res)), parentPort = { postMessage: (m) => process.send(m) };
+process.send({ ready: true });
+const { jobs, from = 0, budget } = await order, parentPort = { postMessage: (m) => process.send(m) };
 for (let i = from; i < jobs.length; i++) {
   const j = jobs[i]; parentPort.postMessage({ start: i }); const t0 = performance.now(); let r;
   try {
