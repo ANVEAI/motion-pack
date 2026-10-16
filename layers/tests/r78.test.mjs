@@ -58,6 +58,9 @@ for (const [w, h, name] of [[W, H, '16:9'], [1080, 1920, '9:16'], [1080, 1080, '
 { const r = cloudRates({ drift: 108, scale: 1 }), r2 = cloudRates({ drift: -108 }); R.check('the drift is px per second at 1080: 108 px/s at scale 1 (three cells across the height) is 0.3 cells per second on the near layer and 0.55 x that on the far one; negative runs the other way', near(r.near, 0.3, 1e-9) && near(r.far, 0.165, 1e-9) && r2.near === -r.near && cloudS0({ scale: 1 }) === 3 && near(cloudS0({ scale: 2 }), 1.5, 1e-12)); }
 { const p = { drift: 54 }, a = cloudDensity(0.5, 0.5, 0, p), moved = cloudDensity(0.5, 0.5, 20, p); R.check('the clouds move: the density at one point changes over 20 s of drift, and lies in 0..1 over a grid', a !== moved && cloudGrid(2, p, 24, 14).every((q) => q.f >= 0 && q.f <= 1)); }
 
+{ const lit = (p) => cloudGrid(2, p, 40, 22).map((q) => q.lit), cov = (p) => cloudGrid(2, p, 40, 22).map((q) => q.cov), L = lit({ sun: [0.1, 0.2] }), Rr = lit({ sun: [0.9, 0.2] }), none = lit({ sun: false });
+  R.check('the light follows the sun: moving the sun from the left to the right or taking it away changes the shading of the clouds (not their coverage)', L.some((v, i) => Math.abs(v - Rr[i]) > 0.05) && L.some((v, i) => Math.abs(v - none[i]) > 0.05) && cov({ sun: [0.1, 0.2] }).every((v, i) => v === cov({ sun: [0.9, 0.2] })[i])); }
+
 /* 5. loop seams */
 for (const L of [2, 3, 5, 6, 7.3, 10]) { let ok = true, fld = true; const p = { loop: L, grain: 0.5 };
   for (const [pn, pp] of [['clouds', p], ['dunes', { ...D, ...p }]]) for (const t of [0, 0.4, 1.3, 2.9, 4.1, 1 / 30]) { if (recS(t, pp) !== recS(t + L, pp)) ok = false; }
