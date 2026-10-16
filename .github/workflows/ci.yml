@@ -103,6 +103,8 @@ jobs:
         run: node templates/proof-film/proof-film.test.mjs
       - name: "human kit (lane human: subtitles to words, fillers, breath-keeping autocut, cursor and zoom-follow, punch-ins, B-roll slots, active speaker, captions, placeholder labels, the five human templates at both aspects; node, no browser)"
         run: node templates/_shared/human/human.test.mjs
+      - name: "explainer templates (explainer-diagram, data-story, process-howto: graph layout determinism, honesty gates exit 2, footers on every chart frame, plans current, structure >= 70, voice anchors, labelled media; node, no browser)"
+        run: node templates/_explain/explain.test.mjs
       - name: "hardware templates (hardware-reveal, hardware-teaser, spec-sheet: plans pure, bar grid, drop on the reveal, tracks in frame, text in the safe rect, claims sourced, lint gate; explode, projection, die table; node, no browser)"
         run: node templates/_hw/hw.test.mjs
       - name: "film layers (filmBurn, anamorphicFlare, gate weave, flicker, halation / ink filters, genre looks and their generated cubes; node, no browser)"

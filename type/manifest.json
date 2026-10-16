@@ -8197,6 +8197,699 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "diagram.graph",
+   "file": "type/gfx/explain.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 10,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "spec": {
+     "nodes": [
+      {
+       "id": "ask",
+       "label": "A question",
+       "kind": "io"
+      },
+      {
+       "id": "find",
+       "label": "Find sources"
+      },
+      {
+       "id": "notes",
+       "label": "Notes",
+       "kind": "store"
+      },
+      {
+       "id": "check",
+       "label": "Check the facts",
+       "kind": "decision"
+      },
+      {
+       "id": "write",
+       "label": "Write the answer",
+       "kind": "io"
+      }
+     ],
+     "edges": [
+      {
+       "from": "ask",
+       "to": "find"
+      },
+      {
+       "from": "find",
+       "to": "check"
+      },
+      {
+       "from": "find",
+       "to": "notes"
+      },
+      {
+       "from": "notes",
+       "to": "check"
+      },
+      {
+       "from": "check",
+       "to": "write",
+       "label": "confirmed"
+      }
+     ]
+    },
+    "dir": "LR",
+    "box": [
+     0.06,
+     0.22,
+     0.88,
+     0.58
+    ],
+    "steps": [],
+    "focus": [],
+    "flow": [],
+    "cam": [],
+    "notes": [],
+    "zoom": null,
+    "reveal": 0.3,
+    "accent": "#4A18ED",
+    "ink": "#16151B",
+    "paper": "#FFFFFF",
+    "node": "#FFFFFF",
+    "line": "#8C8796",
+    "zoomFill": "#EFEAFD",
+    "dim": 0.22,
+    "size": 1
+   },
+   "tags": [
+    "diagram",
+    "how-it-works",
+    "explainer",
+    "flowchart",
+    "nodes",
+    "edges",
+    "camera",
+    "zoom"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "diagram.flow",
+   "file": "type/gfx/explain.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 1,
+   "out_frames": 9,
+   "params": {
+    "from": [
+     0.2,
+     0.5
+    ],
+    "to": [
+     0.8,
+     0.5
+    ],
+    "bend": 0.2,
+    "width": 5,
+    "draw": 0.6,
+    "rate": 0.6,
+    "dots": 2,
+    "label": "",
+    "color": "#4A18ED",
+    "line": "#8C8796",
+    "ink": "#16151B",
+    "size": 1
+   },
+   "tags": [
+    "diagram",
+    "flow",
+    "edge",
+    "arrow",
+    "process",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.scrolly",
+   "file": "type/gfx/explain.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/slide",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 8,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "steps": [
+     {
+      "at": 0.3,
+      "text": "Placeholder first beat of the story"
+     },
+     {
+      "at": 2.6,
+      "text": "Placeholder second beat, where the picture changes"
+     },
+     {
+      "at": 4.9,
+      "text": "Placeholder third beat: the turn"
+     }
+    ],
+    "box": [
+     0.06,
+     0.16,
+     0.34,
+     0.68
+    ],
+    "focus": 0.42,
+    "card": true,
+    "accent": "#4A18ED",
+    "ink": "#16151B",
+    "paper": "#FFFFFF",
+    "size": 1
+   },
+   "tags": [
+    "scrollytelling",
+    "scrolly",
+    "data-story",
+    "text",
+    "reveal",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.takeaway",
+   "file": "type/gfx/explain.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/soft",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "dur_s": 3.5,
+   "in_frames": 4,
+   "out_frames": 9,
+   "params": {
+    "kicker": "THE TAKEAWAY",
+    "line": "Placeholder takeaway line for the end",
+    "pos": "c",
+    "accent": "#4A18ED",
+    "ink": "#16151B",
+    "paper": "",
+    "size": 1
+   },
+   "tags": [
+    "takeaway",
+    "end-card",
+    "conclusion",
+    "explainer",
+    "data-story"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "process.steps",
+   "file": "type/gfx/explain.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_tick",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 6,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "steps": [
+     {
+      "title": "Gather",
+      "icon": "search"
+     },
+     {
+      "title": "Prepare",
+      "icon": "gear"
+     },
+     {
+      "title": "Wait",
+      "icon": "timer"
+     },
+     {
+      "title": "Serve",
+      "icon": "cup"
+     }
+    ],
+    "active": [],
+    "layout": "auto",
+    "box": [
+     0.08,
+     0.3,
+     0.84,
+     0.44
+    ],
+    "accent": "#4A18ED",
+    "ink": "#16151B",
+    "paper": "#FFFFFF",
+    "muted": "#B8B2A7",
+    "stagger": 0.08,
+    "size": 1
+   },
+   "tags": [
+    "process",
+    "steps",
+    "how-to",
+    "timeline",
+    "icons",
+    "numbered"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "process.beforeAfter",
+   "file": "type/gfx/explain.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/mask_reveal",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 4,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "before": {
+     "label": "Before",
+     "title": "Placeholder before state",
+     "lines": [
+      "Placeholder line one",
+      "Placeholder line two"
+     ]
+    },
+    "after": {
+     "label": "After",
+     "title": "Placeholder after state",
+     "lines": [
+      "Placeholder line one",
+      "Placeholder line two"
+     ]
+    },
+    "swap": 1.4,
+    "layout": "auto",
+    "box": [
+     0.08,
+     0.2,
+     0.84,
+     0.6
+    ],
+    "media": false,
+    "mediaH": 0.5,
+    "accent": "#4A18ED",
+    "ink": "#16151B",
+    "paper": "#FFFFFF",
+    "muted": "#D9D3C7",
+    "size": 1
+   },
+   "tags": [
+    "before-after",
+    "comparison",
+    "process",
+    "how-to",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "chart.story",
+   "file": "type/gfx/explain-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 6,
+   "in_frames": 9,
+   "out_frames": 9,
+   "params": {
+    "kind": "bar",
+    "title": "",
+    "subtitle": "",
+    "labels": [
+     "North",
+     "South",
+     "East",
+     "West",
+     "Central"
+    ],
+    "series": [
+     {
+      "name": "Demo series",
+      "values": [
+       42,
+       35,
+       28,
+       19,
+       12
+      ]
+     }
+    ],
+    "points": null,
+    "unit": "",
+    "yLabel": "",
+    "xLabel": "",
+    "xUnit": "",
+    "yMin": null,
+    "yMax": null,
+    "xMin": null,
+    "xMax": null,
+    "truncated": "",
+    "locale": "intl",
+    "dec": 0,
+    "highlight": -1,
+    "hl": [],
+    "compare": -1,
+    "show": [],
+    "box": [
+     0.1,
+     0.2,
+     0.8,
+     0.56
+    ],
+    "accent": "#4A18ED",
+    "ink": "#16151B",
+    "muted": "#C9C3B8",
+    "paper": "#FFFFFF",
+    "grow": 0.9,
+    "stagger": 0.09,
+    "valueLabels": true,
+    "legend": true,
+    "source": "placeholder data",
+    "method": "",
+    "demo": true,
+    "size": 1
+   },
+   "tags": [
+    "chart",
+    "data-story",
+    "bar",
+    "line",
+    "area",
+    "scatter",
+    "honest-axes",
+    "explainer",
+    "data-journalism"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.datum",
+   "file": "type/gfx/explain-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 2.6,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "chart": null,
+    "datum": [
+     0,
+     0
+    ],
+    "point": [
+     0.62,
+     0.4
+    ],
+    "label": "Placeholder note",
+    "sub": "",
+    "dx": 0.1,
+    "dy": -0.12,
+    "accent": "#4A18ED",
+    "ink": "#16151B",
+    "paper": "#FFFFFF",
+    "size": 1
+   },
+   "tags": [
+    "callout",
+    "annotation",
+    "leader",
+    "datum",
+    "chart",
+    "data-story"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "map.hexTile",
+   "file": "type/gfx/explain-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/sparkle/shimmer",
+    "offset_f": 3,
+    "gain_db": -4
+   },
+   "dur_s": 5,
+   "in_frames": 9,
+   "out_frames": 9,
+   "params": {
+    "tiles": [
+     {
+      "id": "zoneA",
+      "q": 0,
+      "r": 0,
+      "label": "Zone A",
+      "short": "A",
+      "value": 62
+     },
+     {
+      "id": "zoneB",
+      "q": 1,
+      "r": 0,
+      "label": "Zone B",
+      "short": "B",
+      "value": 48
+     },
+     {
+      "id": "zoneC",
+      "q": 2,
+      "r": 0,
+      "label": "Zone C",
+      "short": "C",
+      "value": 35
+     },
+     {
+      "id": "zoneD",
+      "q": -1,
+      "r": 1,
+      "label": "Zone D",
+      "short": "D",
+      "value": 71
+     },
+     {
+      "id": "zoneE",
+      "q": 0,
+      "r": 1,
+      "label": "Zone E",
+      "short": "E",
+      "value": 55
+     },
+     {
+      "id": "zoneF",
+      "q": 1,
+      "r": 1,
+      "label": "Zone F",
+      "short": "F",
+      "value": 40
+     },
+     {
+      "id": "zoneG",
+      "q": 2,
+      "r": 1,
+      "label": "Zone G",
+      "short": "G",
+      "value": 22
+     },
+     {
+      "id": "zoneH",
+      "q": -1,
+      "r": 2,
+      "label": "Zone H",
+      "short": "H",
+      "value": 66
+     },
+     {
+      "id": "zoneI",
+      "q": 0,
+      "r": 2,
+      "label": "Zone I",
+      "short": "I",
+      "value": 51
+     },
+     {
+      "id": "zoneJ",
+      "q": 1,
+      "r": 2,
+      "label": "Zone J",
+      "short": "J",
+      "value": 30
+     },
+     {
+      "id": "zoneK",
+      "q": 0,
+      "r": 3,
+      "label": "Zone K",
+      "short": "K",
+      "value": 44
+     },
+     {
+      "id": "zoneL",
+      "q": 1,
+      "r": 3,
+      "label": "Zone L",
+      "short": "L",
+      "value": null
+     }
+    ],
+    "title": "",
+    "unit": "",
+    "legendTitle": "",
+    "locale": "intl",
+    "dec": 0,
+    "bins": 5,
+    "ramp": [
+     "#E8E1F9",
+     "#3A12B8"
+    ],
+    "missing": "#E4E0D8",
+    "highlight": [],
+    "hlAt": 0,
+    "hls": [],
+    "box": [
+     0.2,
+     0.14,
+     0.6,
+     0.72
+    ],
+    "accent": "#E8590C",
+    "ink": "#16151B",
+    "paper": "#FFFFFF",
+    "stagger": 0.12,
+    "source": "placeholder data",
+    "method": "",
+    "demo": true,
+    "size": 1
+   },
+   "tags": [
+    "map",
+    "choropleth",
+    "hex-tile",
+    "data-story",
+    "region",
+    "explainer"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "counter.hero",
+   "file": "type/gfx/explain-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/count_run",
+    "offset_f": 1,
+    "gain_db": -2
+   },
+   "dur_s": 3.5,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "value": 12500000,
+    "from": 0,
+    "locale": "in",
+    "compact": "long",
+    "dec": 1,
+    "prefix": "",
+    "unit": "",
+    "label": "Placeholder context line",
+    "pos": "c",
+    "size": 220,
+    "count": 1.4,
+    "accent": "#4A18ED",
+    "ink": "#16151B",
+    "paper": "#FFFFFF",
+    "source": "placeholder data",
+    "method": "",
+    "demo": true
+   },
+   "tags": [
+    "counter",
+    "hero-number",
+    "stat",
+    "data-story",
+    "lakh",
+    "crore",
+    "locale"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "chart.sourceFooter",
+   "file": "type/gfx/explain-data.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/blip",
+    "offset_f": 0,
+    "gain_db": -12
+   },
+   "dur_s": 4,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "source": "placeholder data",
+    "method": "",
+    "demo": true,
+    "box": [
+     0.06,
+     0.9,
+     0.88,
+     0.05
+    ],
+    "ink": "#16151B",
+    "paper": "#FFFFFF",
+    "size": 1
+   },
+   "tags": [
+    "source",
+    "footer",
+    "honesty",
+    "data-story",
+    "chart"
+   ],
+   "demo": "type/demo/out/gfx-explain.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "ui.appWindow",
    "file": "type/gfx/ui-saas.js",
    "kind": "gfx",

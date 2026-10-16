@@ -1,0 +1,600 @@
+{
+ "template": "process-howto",
+ "aspect": "9:16",
+ "fps": 30,
+ "seconds": 43.2,
+ "size": [
+  1080,
+  1920
+ ],
+ "scene": {
+  "W": 1080,
+  "H": 1920,
+  "fps": 30,
+  "seconds": 43.2,
+  "bg": "#F4F1E8",
+  "platform": "conservative",
+  "slots": [
+   {
+    "id": "before",
+    "kind": "photo",
+    "src": null,
+    "mediaStart": 0,
+    "start": 29.35,
+    "end": 35.65,
+    "rect": [
+     109,
+     363,
+     808,
+     185
+    ],
+    "fit": "cover",
+    "z": 2,
+    "vis": {
+     "kind": "fade",
+     "in": 0.25,
+     "out": 0.25
+    },
+    "phLabel": [
+     "PLACEHOLDER PHOTO",
+     "before photo · set media.before.src"
+    ],
+    "phLabelPos": "tl",
+    "ph": {
+     "chip": false,
+     "label": "PLACEHOLDER PHOTO",
+     "what": "before photo",
+     "slot": "before",
+     "seed": 5,
+     "tint": "#B9AE9A"
+    }
+   },
+   {
+    "id": "after",
+    "kind": "photo",
+    "src": null,
+    "mediaStart": 0,
+    "start": 30.8,
+    "end": 35.65,
+    "rect": [
+     109,
+     901,
+     808,
+     185
+    ],
+    "fit": "cover",
+    "z": 2,
+    "vis": {
+     "kind": "fade",
+     "in": 0.25,
+     "out": 0.25
+    },
+    "phLabel": [
+     "PLACEHOLDER PHOTO",
+     "after photo · set media.after.src"
+    ],
+    "phLabelPos": "tl",
+    "ph": {
+     "chip": false,
+     "label": "PLACEHOLDER PHOTO",
+     "what": "after photo",
+     "slot": "after",
+     "seed": 9,
+     "tint": "#9FB59A"
+    }
+   }
+  ],
+  "gfx": [
+   {
+    "id": "process.steps",
+    "at": 0,
+    "dur": 28.7,
+    "params": {
+     "steps": [
+      {
+       "title": "Water the plant",
+       "icon": "drop"
+      },
+      {
+       "title": "Loosen the roots",
+       "icon": "leaf"
+      },
+      {
+       "title": "Add fresh soil",
+       "icon": "upload"
+      },
+      {
+       "title": "Settle and water",
+       "icon": "check"
+      }
+     ],
+     "active": [
+      [
+       4.4,
+       0
+      ],
+      [
+       10.2,
+       1
+      ],
+      [
+       16,
+       2
+      ],
+      [
+       21.8,
+       3
+      ],
+      [
+       27.6,
+       4
+      ]
+     ],
+     "layout": "column",
+     "box": [
+      0.0933,
+      0.2778,
+      0.7624,
+      0.2498
+     ],
+     "accent": "#2F6B3A",
+     "ink": "#16151B",
+     "size": 0.62,
+     "stagger": 0.5
+    }
+   },
+   {
+    "id": "process.beforeAfter",
+    "at": 29.2,
+    "dur": 6.2,
+    "params": {
+     "before": {
+      "label": "Before",
+      "title": "Roots circling the pot",
+      "lines": [
+       "Water runs straight through",
+       "Soil dries out fast"
+      ]
+     },
+     "after": {
+      "label": "After",
+      "title": "Room to grow",
+      "lines": [
+       "Fresh soil holds water",
+       "Roots spread outwards"
+      ]
+     },
+     "swap": 1.6,
+     "layout": "auto",
+     "box": [
+      0.0768,
+      0.1401,
+      0.7956,
+      0.5099
+     ],
+     "media": true,
+     "mediaH": 0.42,
+     "accent": "#2F6B3A",
+     "ink": "#16151B",
+     "size": 0.6
+    }
+   }
+  ],
+  "gfxTop": [
+   {
+    "id": "title.hookCard",
+    "at": 0,
+    "dur": 4,
+    "params": {
+     "line": "Repot a plant in four steps",
+     "kicker": "Orbit How-To",
+     "pos": "tc",
+     "accent": "#2F6B3A",
+     "size": 0.8
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 4.75,
+    "dur": 5.05,
+    "silent": true,
+    "params": {
+     "line": "Water a day before, so the roots slide out.",
+     "kicker": "Step 1",
+     "pos": "bc",
+     "accent": "#2F6B3A",
+     "size": 0.72,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 10.55,
+    "dur": 5.05,
+    "silent": true,
+    "params": {
+     "line": "Tease circling roots apart with your fingers.",
+     "kicker": "Step 2",
+     "pos": "bc",
+     "accent": "#2F6B3A",
+     "size": 0.72,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 16.35,
+    "dur": 5.05,
+    "silent": true,
+    "params": {
+     "line": "Set the plant at the same depth as before.",
+     "kicker": "Step 3",
+     "pos": "bc",
+     "accent": "#2F6B3A",
+     "size": 0.72,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 22.15,
+    "dur": 5.05,
+    "silent": true,
+    "params": {
+     "line": "Water slowly until it drains from the bottom.",
+     "kicker": "Step 4",
+     "pos": "bc",
+     "accent": "#2F6B3A",
+     "size": 0.72,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "ui.checklist",
+    "at": 35.6,
+    "dur": 7.2,
+    "params": {
+     "box": [
+      0.085,
+      0.1809,
+      0.779,
+      0.4181
+     ],
+     "title": "You need",
+     "steps": [
+      "A pot one size up",
+      "Fresh potting mix",
+      "A watering can",
+      "Old newspaper"
+     ],
+     "start": 0.5,
+     "step": 0.7,
+     "progress": true,
+     "theme": "light",
+     "accent": "#2F6B3A",
+     "card": true,
+     "scale": 1
+    }
+   }
+  ],
+  "captions": null,
+  "speaking": {}
+ },
+ "voice": null,
+ "cues": [
+  {
+   "id": "sfx/hit/soft",
+   "t": 0,
+   "why": "title.hookCard: hook card on frame 0",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 4.4,
+   "why": "process.steps: step 1",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 10.2,
+   "why": "process.steps: step 2",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 16,
+   "why": "process.steps: step 3",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/count_tick",
+   "t": 21.8,
+   "why": "process.steps: step 4",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/success",
+   "t": 27.6,
+   "why": "process.steps: all steps done",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 29.2,
+   "why": "process.beforeAfter: before card",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/tx/mask_reveal",
+   "t": 30.8,
+   "why": "process.beforeAfter: after wipes in",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 36.8,
+   "why": "ui.checklist: step 1 ticked",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/device/card_flip",
+   "t": 37.5,
+   "why": "ui.checklist: step 2 ticked",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/blip",
+   "t": 38.2,
+   "why": "ui.checklist: step 3 ticked",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 38.9,
+   "why": "ui.checklist: step 4 ticked",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/success",
+   "t": 38.95,
+   "why": "ui.checklist: all done",
+   "overBedDb": -6
+  }
+ ],
+ "shots": [
+  {
+   "id": "hook",
+   "sec": "hook",
+   "start": 0,
+   "dur": 4.4,
+   "move": "process camera"
+  },
+  {
+   "id": "steps",
+   "sec": "steps",
+   "start": 4.4,
+   "dur": 24.8,
+   "move": "process camera"
+  },
+  {
+   "id": "result",
+   "sec": "result",
+   "start": 29.2,
+   "dur": 6.4,
+   "move": "process camera"
+  },
+  {
+   "id": "checklist",
+   "sec": "checklist",
+   "start": 35.6,
+   "dur": 7.6,
+   "move": "process camera",
+   "hold": true
+  }
+ ],
+ "claims": [],
+ "structure": {
+  "pattern": "process-howto",
+  "sections": [
+   {
+    "name": "hook",
+    "t": [
+     0,
+     4.4
+    ]
+   },
+   {
+    "name": "steps",
+    "t": [
+     4.4,
+     29.2
+    ]
+   },
+   {
+    "name": "result",
+    "t": [
+     29.2,
+     35.6
+    ]
+   },
+   {
+    "name": "checklist",
+    "t": [
+     35.6,
+     43.2
+    ]
+   }
+  ]
+ },
+ "texts": [
+  {
+   "text": "Repot a plant in four steps",
+   "t": [
+    0,
+    4
+   ],
+   "role": "hook"
+  },
+  {
+   "text": "Water the plant",
+   "t": [
+    4.4,
+    10.2
+   ],
+   "role": "label"
+  },
+  {
+   "text": "Water a day before, so the roots slide out.",
+   "t": [
+    4.75,
+    10.1
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Loosen the roots",
+   "t": [
+    10.2,
+    16
+   ],
+   "role": "label"
+  },
+  {
+   "text": "Tease circling roots apart with your fingers.",
+   "t": [
+    10.55,
+    15.9
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Add fresh soil",
+   "t": [
+    16,
+    21.8
+   ],
+   "role": "label"
+  },
+  {
+   "text": "Set the plant at the same depth as before.",
+   "t": [
+    16.35,
+    21.7
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Settle and water",
+   "t": [
+    21.8,
+    27.6
+   ],
+   "role": "label"
+  },
+  {
+   "text": "Water slowly until it drains from the bottom.",
+   "t": [
+    22.15,
+    27.5
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Roots circling the pot. Water runs straight through. Soil dries out fast",
+   "t": [
+    29.2,
+    35.4
+   ],
+   "role": "card"
+  },
+  {
+   "text": "Room to grow. Fresh soil holds water. Roots spread outwards",
+   "t": [
+    30.8,
+    35.4
+   ],
+   "role": "card"
+  },
+  {
+   "text": "A pot one size up. Fresh potting mix. A watering can. Old newspaper",
+   "t": [
+    35.6,
+    43.2
+   ],
+   "role": "checklist"
+  }
+ ],
+ "transcript": [],
+ "music": "music/bed_acoustic_folk_pluck_loop8",
+ "musicGainDb": 0,
+ "duckDb": 12,
+ "ceilingDb": -2,
+ "audio": {
+  "mode": "continuous",
+  "role": "explainer",
+  "quiet": [
+   {
+    "t": [
+     39.6,
+     43.2
+    ],
+    "kind": "hold",
+    "why": "the ticked checklist holds as the end card"
+   }
+  ],
+  "events": [
+   0,
+   0.5,
+   1,
+   1.5,
+   4.4,
+   4.75,
+   7.3,
+   10.2,
+   10.55,
+   13.1,
+   16,
+   16.35,
+   18.9,
+   21.8,
+   22.15,
+   24.7,
+   27.6,
+   29.2,
+   29.65,
+   30.8,
+   31.5,
+   33.2,
+   35.6,
+   36.8,
+   37.5,
+   38.2,
+   38.9,
+   38.95
+  ]
+ },
+ "paceRule": {
+  "aslMax": 30,
+  "longMax": 40
+ },
+ "warnings": [],
+ "pattern": "process-howto",
+ "layers": [
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "upload-safe"
+   }
+  }
+ ],
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 4,
+   "asl": 10.8,
+   "longest": 24.8,
+   "pass": true
+  }
+ }
+}

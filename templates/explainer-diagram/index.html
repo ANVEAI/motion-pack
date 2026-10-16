@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack explainer-diagram</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #F5F2EA; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F5F2EA; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+#root { width: 1920px; height: 1080px; }
+.slot { position: absolute; overflow: hidden; display: none; }
+.slot .inner { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.slot .inner > video, .slot .inner > img, .slot .inner > .ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slot .inner > .ph svg { display: block; width: 100%; height: 100%; }
+.slot .sg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.slot .phl { position: absolute; z-index: 3; padding: 0.45em 0.8em 0.5em; border-radius: 0.5em; background: rgba(10,10,14,0.78); color: #fff; font-weight: 800; letter-spacing: 0.04em; line-height: 1.15; }
+.slot .phl small { display: block; font-family: 'IBM Plex Mono'; font-weight: 600; letter-spacing: 0; opacity: 0.8; font-size: 0.72em; }
+#fx { pointer-events: none; } #fx canvas { z-index: 50; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="76.8000">
+<div id="g" class="clip" data-start="0" data-duration="76.8000" data-track-index="40" style="z-index:30"></div>
+<div id="cap" class="clip" data-start="0" data-duration="76.8000" data-track-index="41" style="z-index:31"></div>
+<div id="g2" class="clip" data-start="0" data-duration="76.8000" data-track-index="42" style="z-index:32"></div>
+<div id="fx" class="clip" data-start="0" data-duration="76.8000" data-track-index="45"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="76.8000" data-track-index="49" data-volume="1"></audio>
+</div>
+<script type="module" src="assets/mp/adapters/type.mjs"></script>
+<script type="module" src="assets/mp/adapters/transitions.mjs"></script>
+<script type="module">
+import { mountGfx } from './assets/mp/type/gfx/index.js';
+import { mountCaptions, driveCaptions } from './assets/mp/type/dom.js';
+import { speakerPlate, desktopPlate, photoPlate, brollPlate, slidePlate, speakingLevel } from './assets/mp/templates/_shared/human/plates.mjs';
+import { zoomView, viewTransform, pipState } from './assets/mp/templates/_shared/human/screen.mjs';
+import { frameAt, emphasisAt } from './assets/mp/templates/_shared/human/edit.mjs';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"grain","params":{"stock":"upload-safe"}}], { width: 1920, height: 1080, fps: 30, seed: 7 }), { fps: 30 });
+const P = {"W":1920,"H":1080,"F":30,"T":76.8,"slots":[],"speaking":{},"screenGfx":{}};
+const GFX = [{"id":"diagram.graph","at":0,"dur":10.6,"params":{"spec":{"nodes":[{"id":"you","label":"Your letter","kind":"io","icon":"doc"},{"id":"door","label":"Their door","kind":"io","icon":"person"}],"edges":[{"from":"you","to":"door"}]},"dir":"LR","box":[0.07,0.25,0.86,0.56],"accent":"#4A18ED","ink":"#16151B","paper":"#FFFFFF","size":1,"reveal":0.3,"steps":[],"focus":[],"flow":[{"at":3,"edges":"all","until":10.4}],"cam":[],"notes":[{"at":5.2,"node":"door","text":"the next day?","dur":3.2}],"zoom":null}},{"id":"diagram.graph","at":10.6,"dur":11.4,"params":{"spec":{"nodes":[{"id":"Town_A","label":"Town A"},{"id":"Town_E","label":"Town E"},{"id":"Town_F","label":"Town F"},{"id":"Town_G","label":"Town G"},{"id":"Town_H","label":"Town H"},{"id":"Town_B","label":"Town B"},{"id":"Town_C","label":"Town C"},{"id":"Town_D","label":"Town D"}],"edges":[{"from":"Town_A","to":"Town_E"},{"from":"Town_A","to":"Town_F"},{"from":"Town_A","to":"Town_G"},{"from":"Town_A","to":"Town_H"},{"from":"Town_B","to":"Town_E"},{"from":"Town_B","to":"Town_F"},{"from":"Town_B","to":"Town_G"},{"from":"Town_B","to":"Town_H"},{"from":"Town_C","to":"Town_E"},{"from":"Town_C","to":"Town_F"},{"from":"Town_C","to":"Town_G"},{"from":"Town_C","to":"Town_H"},{"from":"Town_D","to":"Town_E"},{"from":"Town_D","to":"Town_F"},{"from":"Town_D","to":"Town_G"},{"from":"Town_D","to":"Town_H"}],"groups":[],"problems":[]},"dir":"LR","box":[0.07,0.25,0.86,0.56],"accent":"#4A18ED","ink":"#16151B","paper":"#FFFFFF","size":1,"reveal":0.25,"steps":[],"focus":[{"at":4,"ids":["Town_A"]},{"at":6.3,"ids":"all"}],"flow":[{"at":9,"edges":"all","until":11.4}],"cam":[],"notes":[],"zoom":null}},{"id":"diagram.graph","at":22,"dur":40.4,"params":{"spec":{"nodes":[{"id":"tA","label":"Town A","kind":"io","group":"collect"},{"id":"tB","label":"Town B","kind":"io","group":"collect"},{"id":"tC","label":"Town C","kind":"io","group":"collect"},{"id":"oL","label":"Collection office","group":"collect","icon":"upload"},{"id":"hub","label":"Sorting hub","kind":"decision"},{"id":"oR","label":"Delivery office","group":"deliver","icon":"download"},{"id":"tE","label":"Town E","kind":"io","group":"deliver"},{"id":"tF","label":"Town F","kind":"io","group":"deliver"},{"id":"tG","label":"Town G","kind":"io","group":"deliver"}],"edges":[{"from":"tA","to":"oL"},{"from":"tB","to":"oL"},{"from":"tC","to":"oL"},{"from":"oL","to":"hub"},{"from":"hub","to":"oR"},{"from":"oR","to":"tE"},{"from":"oR","to":"tF"},{"from":"oR","to":"tG"}],"groups":[{"id":"collect","label":"COLLECT"},{"id":"deliver","label":"DELIVER"}]},"dir":"LR","box":[0.07,0.25,0.86,0.56],"accent":"#4A18ED","ink":"#16151B","paper":"#FFFFFF","size":1,"reveal":0.3,"steps":[{"at":0.2,"show":["tA","tB","tC"]},{"at":2.8,"show":["oL"]},{"at":6,"show":["hub"]},{"at":9.4,"show":["oR"]},{"at":11.4,"show":["tE","tF","tG"]}],"focus":[{"at":21.4,"ids":["hub"]},{"at":24,"ids":"all"},{"at":35.9,"ids":["tA","oL","hub","oR","tF"]}],"flow":[{"at":16.6,"edges":"all","until":23.8},{"at":36,"edges":["tA>oL","oL>hub","hub>oR","oR>tF"],"until":40.4}],"cam":[{"at":0,"ids":["tA","tB","tC","oL"],"dur":0.05,"max":1.8},{"at":5.6,"ids":["oL","hub","oR"],"dur":0.9,"max":1.8},{"at":9,"ids":["oR","tE","tF","tG"],"dur":0.9,"max":1.8},{"at":14.4,"ids":"all","dur":1,"max":1.8}],"notes":[{"at":18.6,"node":"hub","text":"every letter passes here","dur":3.6},{"at":38.2,"node":"tF","text":"delivered","dur":2}],"zoom":{"node":"hub","at":24,"dur":1.1,"out":34.6,"spec":{"nodes":[{"id":"Read_the_address","label":"Read the address"},{"id":"Group_by_region","label":"Group by region"},{"id":"Load_the_truck","label":"Load the truck"},{"id":"Unclear?","label":"Unclear?","kind":"decision"},{"id":"Checked_by_hand","label":"Checked by hand"}],"edges":[{"from":"Read_the_address","to":"Group_by_region"},{"from":"Group_by_region","to":"Load_the_truck"},{"from":"Read_the_address","to":"Unclear?","label":"can't read it"},{"from":"Unclear?","to":"Checked_by_hand"},{"from":"Checked_by_hand","to":"Group_by_region"}],"groups":[],"problems":[]},"title":"Inside the sorting hub","dir":"LR","reveal":0.4,"notes":[{"at":29,"node":"Unclear?","text":"the rare case","dur":2.6},{"at":31.8,"node":"Checked_by_hand","text":"a person decides","dur":2.6}]}}}], GFX2 = [{"id":"title.hookCard","at":0,"dur":6.6,"params":{"line":"How does a letter cross a country?","kicker":"Orbit Explains","pos":"tc","accent":"#4A18ED","size":0.9}},{"id":"title.hookCard","at":7.4,"dur":3.4,"silent":true,"params":{"line":"The picture most of us carry: one straight trip.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":11.2,"dur":5.4,"silent":true,"params":{"line":"But every town would need a road to every other town.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":17,"dur":4.6,"silent":true,"params":{"line":"That is a lot of half-empty trucks.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":22.4,"dur":5,"silent":true,"params":{"line":"Instead, letters go to a collection office first.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":27.8,"dur":3.4,"silent":true,"params":{"line":"Every office sends its bag to one sorting hub.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":31.4,"dur":4.8,"silent":true,"params":{"line":"From the hub, a few trucks drive out to delivery offices.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":36.6,"dur":3.8,"silent":true,"params":{"line":"Many trips become a few full ones.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":40.6,"dur":5.2,"silent":true,"params":{"line":"Each letter makes three short hops, not one long one.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":47.6,"dur":4.4,"silent":true,"params":{"line":"Inside the hub: read, group, load.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":52.2,"dur":4.2,"silent":true,"params":{"line":"Hard-to-read addresses go to a person.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":58,"dur":4.2,"silent":true,"params":{"line":"Follow one letter from Town A to Town F.","pos":"bc","accent":"#4A18ED","size":0.62,"bg":"#FFFFFF"}},{"id":"title.recapCard","at":63,"dur":6.4,"params":{"title":"Recap","items":["Collect it locally","Sort it once, at a hub","Deliver it locally"],"pos":"c","accent":"#4A18ED","stagger":1.4,"size":1}},{"id":"title.takeaway","at":69.4,"dur":7.1,"params":{"kicker":"THE TAKEAWAY","line":"A hub turns many long trips into a few short ones.","accent":"#4A18ED","ink":"#16151B","size":1}}];
+const gfx = mountGfx(document.getElementById('g'), GFX, { W: P.W, H: P.H, platform: "wideTitle" }), gfx2 = mountGfx(document.getElementById('g2'), GFX2, { W: P.W, H: P.H, platform: "wideTitle" });
+const sgs = Object.fromEntries(Object.entries(P.screenGfx).map(([id, items]) => { const s = P.slots.find((x) => x.id === id), [iw, ih] = s.inner || [s.rect[2], s.rect[3]]; return [id, mountGfx(document.getElementById('sg-' + id), items, { W: iw, H: ih })]; }));
+
+const el = Object.fromEntries(P.slots.map((s) => [s.id, { w: document.getElementById('s-' + s.id), i: document.getElementById('i-' + s.id), ph: document.getElementById('ph-' + s.id), r: document.getElementById('r-' + s.id) }]));
+const PLATES = { speaker: speakerPlate, screen: desktopPlate, photo: photoPlate, broll: brollPlate, slide: slidePlate, video: brollPlate };
+function draw(t) {
+  for (const s of P.slots) {
+    const E = el[s.id], on = t >= s.start - 1e-6 && t < s.end - 1e-6; E.w.style.display = on ? 'block' : 'none'; if (!on) continue;
+    const [x, y, w, h] = s.rect, [iw, ih] = s.inner || [w, h], lt = t - s.start; let op = 1, sc = 1;
+    if (s.vis && s.vis.kind === 'pip') { const v = pipState(s.vis, t, { keys: s.vis.keys || [], track: s.vis.track || [] }); op = v.opacity; sc = v.scale; }
+    if (s.vis && s.vis.kind === 'active') { const k = emphasisAt(s.vis.cuts, s.vis.speaker, t); op = s.vis.dim + (1 - s.vis.dim) * k; sc = 1 + (s.vis.grow || 0) * k; if (E.r) E.r.style.opacity = k.toFixed(4); }
+    if (s.vis && s.vis.kind === 'fade') { const a = s.vis.in || 0.2, b = s.vis.out || 0.2; op = Math.min(1, lt / a, (s.end - t) / b); }
+    E.w.style.opacity = Math.max(0, op).toFixed(4); E.w.style.transform = sc !== 1 ? 'scale(' + sc.toFixed(4) + ')' : 'none'; E.w.style.transformOrigin = (s.origin || [0.5, 0.5]).map((v) => (v * 100).toFixed(1) + '%').join(' ');
+    if (s.wipe) { const k = Math.min(1, Math.max(0, (t - s.wipe.t0) / (s.wipe.t1 - s.wipe.t0))), e = k < 0.5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; E.w.style.clipPath = 'inset(0 ' + ((1 - e) * 100).toFixed(2) + '% 0 0)'; }
+    let tr = '';
+    const c = s.cam || {};
+    if (c.kind === 'zoom' || (!c.kind && s.inner)) { const v = c.kind === 'zoom' ? zoomView(c.keys, c.track, t, { follow: c.follow || 0.5 }) : { s: 1, cx: 0.5, cy: 0.5 }; const m = viewTransform(v, [iw, ih], [w, h], s.fit || 'contain'); tr = 'translate(' + m.tx + 'px,' + m.ty + 'px) scale(' + m.k + ')'; }
+    else if (c.kind === 'frame') { const k = frameAt(c.plan, t), [ax, ay] = c.anchor || [0.5, 0.4]; tr = 'translate(' + (ax * w * (1 - k)).toFixed(2) + 'px,' + (ay * h * (1 - k)).toFixed(2) + 'px) scale(' + k.toFixed(5) + ')'; }
+    else if (c.kind === 'ken') { const u = Math.min(1, Math.max(0, (t - (c.t0 ?? s.start)) / Math.max(0.01, (c.t1 ?? s.end) - (c.t0 ?? s.start)))), e = 0.5 - 0.5 * Math.cos(Math.PI * u), k = c.from[0] + (c.to[0] - c.from[0]) * e, fx = c.from[1] + (c.to[1] - c.from[1]) * e, fy = c.from[2] + (c.to[2] - c.from[2]) * e;
+      const bk = Math.max(w / iw, h / ih) * k, tx = Math.min(0, Math.max(w - iw * bk, w / 2 - fx * iw * bk)), ty = Math.min(0, Math.max(h - ih * bk, h / 2 - fy * ih * bk)); tr = 'translate(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px) scale(' + bk.toFixed(5) + ')'; }
+    E.i.style.transform = tr;
+    if (E.ph) { const fn = PLATES[s.kind] || brollPlate, ph = { w: iw, h: ih, ...(s.ph || {}) }; if (s.kind === 'speaker') ph.level = speakingLevel(P.speaking[s.id] || [], t); E.ph.innerHTML = fn(s.kind === 'slide' ? lt : t, ph); }
+    if (sgs[s.id]) sgs[s.id].render(t);
+  }
+  gfx.render(t); gfx2.render(t);
+}
+let last = window.__hfThreeTime || 0; window.addEventListener('hf-seek', (e) => draw((last = e.detail.time))); draw(last); window.__seek = (t) => draw((last = t));
+Promise.all(['600', '700', '800'].map((w) => document.fonts.load(w + ' 30px Manrope')).concat([document.fonts.load('600 20px "IBM Plex Mono"')])).then(() => { draw(last); window.__ready = true; });
+const tl = gsap.timeline({ paused: true }); tl.set({}, {}, 76.8000);
+window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

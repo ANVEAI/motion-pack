@@ -1,0 +1,12 @@
+# build products of this template (lane explainer): the MP4s, staged assets per aspect folder, the voice transcript, the critics' reports
+out/*.mp4
+out/transcript*.json
+out/env*.json
+out/ears*.md
+out/eyes*.md
+out/smoke*/
+assets/
+*/assets/
+out/work-*/
+out/.*hf-transaction*/
+out/make*.log
