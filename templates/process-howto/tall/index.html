@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>motion-pack process-howto (9:16)</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #F4F1E8; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F4F1E8; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+#root { width: 1080px; height: 1920px; }
+.slot { position: absolute; overflow: hidden; display: none; }
+.slot .inner { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.slot .inner > video, .slot .inner > img, .slot .inner > .ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slot .inner > .ph svg { display: block; width: 100%; height: 100%; }
+.slot .sg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.slot .phl { position: absolute; z-index: 3; padding: 0.45em 0.8em 0.5em; border-radius: 0.5em; background: rgba(10,10,14,0.78); color: #fff; font-weight: 800; letter-spacing: 0.04em; line-height: 1.15; }
+.slot .phl small { display: block; font-family: 'IBM Plex Mono'; font-weight: 600; letter-spacing: 0; opacity: 0.8; font-size: 0.72em; }
+#fx { pointer-events: none; } #fx canvas { z-index: 50; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="43.2000">
+<div class="slot" id="s-before" style="left:109px;top:363px;width:808px;height:185px;border-radius:0px;z-index:2;background:#0B0D12"><div class="inner" id="i-before" style="width:808px;height:185px"><div class="ph" id="ph-before"></div><div class="sg" id="sg-before"></div></div><div class="phl" style="font-size:32px;left:29px;top:29px">PLACEHOLDER PHOTO<small>before photo · set media.before.src</small></div></div>
+<div class="slot" id="s-after" style="left:109px;top:901px;width:808px;height:185px;border-radius:0px;z-index:2;background:#0B0D12"><div class="inner" id="i-after" style="width:808px;height:185px"><div class="ph" id="ph-after"></div><div class="sg" id="sg-after"></div></div><div class="phl" style="font-size:32px;left:29px;top:29px">PLACEHOLDER PHOTO<small>after photo · set media.after.src</small></div></div>
+<div id="g" class="clip" data-start="0" data-duration="43.2000" data-track-index="40" style="z-index:30"></div>
+<div id="cap" class="clip" data-start="0" data-duration="43.2000" data-track-index="41" style="z-index:31"></div>
+<div id="g2" class="clip" data-start="0" data-duration="43.2000" data-track-index="42" style="z-index:32"></div>
+<div id="fx" class="clip" data-start="0" data-duration="43.2000" data-track-index="45"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="43.2000" data-track-index="49" data-volume="1"></audio>
+</div>
+<script type="module" src="assets/mp/adapters/type.mjs"></script>
+<script type="module" src="assets/mp/adapters/transitions.mjs"></script>
+<script type="module">
+import { mountGfx } from './assets/mp/type/gfx/index.js';
+import { mountCaptions, driveCaptions } from './assets/mp/type/dom.js';
+import { speakerPlate, desktopPlate, photoPlate, brollPlate, slidePlate, speakingLevel } from './assets/mp/templates/_shared/human/plates.mjs';
+import { zoomView, viewTransform, pipState } from './assets/mp/templates/_shared/human/screen.mjs';
+import { frameAt, emphasisAt } from './assets/mp/templates/_shared/human/edit.mjs';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"grain","params":{"stock":"upload-safe"}}], { width: 1080, height: 1920, fps: 30, seed: 7 }), { fps: 30 });
+const P = {"W":1080,"H":1920,"F":30,"T":43.2,"slots":[{"id":"before","kind":"photo","mediaStart":0,"start":29.35,"end":35.65,"rect":[109,363,808,185],"fit":"cover","z":2,"vis":{"kind":"fade","in":0.25,"out":0.25},"phLabel":["PLACEHOLDER PHOTO","before photo · set media.before.src"],"phLabelPos":"tl","ph":{"chip":false,"label":"PLACEHOLDER PHOTO","what":"before photo","slot":"before","seed":5,"tint":"#B9AE9A"}},{"id":"after","kind":"photo","mediaStart":0,"start":30.8,"end":35.65,"rect":[109,901,808,185],"fit":"cover","z":2,"vis":{"kind":"fade","in":0.25,"out":0.25},"phLabel":["PLACEHOLDER PHOTO","after photo · set media.after.src"],"phLabelPos":"tl","ph":{"chip":false,"label":"PLACEHOLDER PHOTO","what":"after photo","slot":"after","seed":9,"tint":"#9FB59A"}}],"speaking":{},"screenGfx":{}};
+const GFX = [{"id":"process.steps","at":0,"dur":28.7,"params":{"steps":[{"title":"Water the plant","icon":"drop"},{"title":"Loosen the roots","icon":"leaf"},{"title":"Add fresh soil","icon":"upload"},{"title":"Settle and water","icon":"check"}],"active":[[4.4,0],[10.2,1],[16,2],[21.8,3],[27.6,4]],"layout":"column","box":[0.0933,0.2778,0.7624,0.2498],"accent":"#2F6B3A","ink":"#16151B","size":0.62,"stagger":0.5}},{"id":"process.beforeAfter","at":29.2,"dur":6.2,"params":{"before":{"label":"Before","title":"Roots circling the pot","lines":["Water runs straight through","Soil dries out fast"]},"after":{"label":"After","title":"Room to grow","lines":["Fresh soil holds water","Roots spread outwards"]},"swap":1.6,"layout":"auto","box":[0.0768,0.1401,0.7956,0.5099],"media":true,"mediaH":0.42,"accent":"#2F6B3A","ink":"#16151B","size":0.6}}], GFX2 = [{"id":"title.hookCard","at":0,"dur":4,"params":{"line":"Repot a plant in four steps","kicker":"Orbit How-To","pos":"tc","accent":"#2F6B3A","size":0.8}},{"id":"title.hookCard","at":4.75,"dur":5.05,"silent":true,"params":{"line":"Water a day before, so the roots slide out.","kicker":"Step 1","pos":"bc","accent":"#2F6B3A","size":0.72,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":10.55,"dur":5.05,"silent":true,"params":{"line":"Tease circling roots apart with your fingers.","kicker":"Step 2","pos":"bc","accent":"#2F6B3A","size":0.72,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":16.35,"dur":5.05,"silent":true,"params":{"line":"Set the plant at the same depth as before.","kicker":"Step 3","pos":"bc","accent":"#2F6B3A","size":0.72,"bg":"#FFFFFF"}},{"id":"title.hookCard","at":22.15,"dur":5.05,"silent":true,"params":{"line":"Water slowly until it drains from the bottom.","kicker":"Step 4","pos":"bc","accent":"#2F6B3A","size":0.72,"bg":"#FFFFFF"}},{"id":"ui.checklist","at":35.6,"dur":7.2,"params":{"box":[0.085,0.1809,0.779,0.4181],"title":"You need","steps":["A pot one size up","Fresh potting mix","A watering can","Old newspaper"],"start":0.5,"step":0.7,"progress":true,"theme":"light","accent":"#2F6B3A","card":true,"scale":1}}];
+const gfx = mountGfx(document.getElementById('g'), GFX, { W: P.W, H: P.H, platform: "conservative" }), gfx2 = mountGfx(document.getElementById('g2'), GFX2, { W: P.W, H: P.H, platform: "conservative" });
+const sgs = Object.fromEntries(Object.entries(P.screenGfx).map(([id, items]) => { const s = P.slots.find((x) => x.id === id), [iw, ih] = s.inner || [s.rect[2], s.rect[3]]; return [id, mountGfx(document.getElementById('sg-' + id), items, { W: iw, H: ih })]; }));
+
+const el = Object.fromEntries(P.slots.map((s) => [s.id, { w: document.getElementById('s-' + s.id), i: document.getElementById('i-' + s.id), ph: document.getElementById('ph-' + s.id), r: document.getElementById('r-' + s.id) }]));
+const PLATES = { speaker: speakerPlate, screen: desktopPlate, photo: photoPlate, broll: brollPlate, slide: slidePlate, video: brollPlate };
+function draw(t) {
+  for (const s of P.slots) {
+    const E = el[s.id], on = t >= s.start - 1e-6 && t < s.end - 1e-6; E.w.style.display = on ? 'block' : 'none'; if (!on) continue;
+    const [x, y, w, h] = s.rect, [iw, ih] = s.inner || [w, h], lt = t - s.start; let op = 1, sc = 1;
+    if (s.vis && s.vis.kind === 'pip') { const v = pipState(s.vis, t, { keys: s.vis.keys || [], track: s.vis.track || [] }); op = v.opacity; sc = v.scale; }
+    if (s.vis && s.vis.kind === 'active') { const k = emphasisAt(s.vis.cuts, s.vis.speaker, t); op = s.vis.dim + (1 - s.vis.dim) * k; sc = 1 + (s.vis.grow || 0) * k; if (E.r) E.r.style.opacity = k.toFixed(4); }
+    if (s.vis && s.vis.kind === 'fade') { const a = s.vis.in || 0.2, b = s.vis.out || 0.2; op = Math.min(1, lt / a, (s.end - t) / b); }
+    E.w.style.opacity = Math.max(0, op).toFixed(4); E.w.style.transform = sc !== 1 ? 'scale(' + sc.toFixed(4) + ')' : 'none'; E.w.style.transformOrigin = (s.origin || [0.5, 0.5]).map((v) => (v * 100).toFixed(1) + '%').join(' ');
+    if (s.wipe) { const k = Math.min(1, Math.max(0, (t - s.wipe.t0) / (s.wipe.t1 - s.wipe.t0))), e = k < 0.5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; E.w.style.clipPath = 'inset(0 ' + ((1 - e) * 100).toFixed(2) + '% 0 0)'; }
+    let tr = '';
+    const c = s.cam || {};
+    if (c.kind === 'zoom' || (!c.kind && s.inner)) { const v = c.kind === 'zoom' ? zoomView(c.keys, c.track, t, { follow: c.follow || 0.5 }) : { s: 1, cx: 0.5, cy: 0.5 }; const m = viewTransform(v, [iw, ih], [w, h], s.fit || 'contain'); tr = 'translate(' + m.tx + 'px,' + m.ty + 'px) scale(' + m.k + ')'; }
+    else if (c.kind === 'frame') { const k = frameAt(c.plan, t), [ax, ay] = c.anchor || [0.5, 0.4]; tr = 'translate(' + (ax * w * (1 - k)).toFixed(2) + 'px,' + (ay * h * (1 - k)).toFixed(2) + 'px) scale(' + k.toFixed(5) + ')'; }
+    else if (c.kind === 'ken') { const u = Math.min(1, Math.max(0, (t - (c.t0 ?? s.start)) / Math.max(0.01, (c.t1 ?? s.end) - (c.t0 ?? s.start)))), e = 0.5 - 0.5 * Math.cos(Math.PI * u), k = c.from[0] + (c.to[0] - c.from[0]) * e, fx = c.from[1] + (c.to[1] - c.from[1]) * e, fy = c.from[2] + (c.to[2] - c.from[2]) * e;
+      const bk = Math.max(w / iw, h / ih) * k, tx = Math.min(0, Math.max(w - iw * bk, w / 2 - fx * iw * bk)), ty = Math.min(0, Math.max(h - ih * bk, h / 2 - fy * ih * bk)); tr = 'translate(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px) scale(' + bk.toFixed(5) + ')'; }
+    E.i.style.transform = tr;
+    if (E.ph) { const fn = PLATES[s.kind] || brollPlate, ph = { w: iw, h: ih, ...(s.ph || {}) }; if (s.kind === 'speaker') ph.level = speakingLevel(P.speaking[s.id] || [], t); E.ph.innerHTML = fn(s.kind === 'slide' ? lt : t, ph); }
+    if (sgs[s.id]) sgs[s.id].render(t);
+  }
+  gfx.render(t); gfx2.render(t);
+}
+let last = window.__hfThreeTime || 0; window.addEventListener('hf-seek', (e) => draw((last = e.detail.time))); draw(last); window.__seek = (t) => draw((last = t));
+Promise.all(['600', '700', '800'].map((w) => document.fonts.load(w + ' 30px Manrope')).concat([document.fonts.load('600 20px "IBM Plex Mono"')])).then(() => { draw(last); window.__ready = true; });
+const tl = gsap.timeline({ paused: true }); tl.set({}, {}, 43.2000);
+window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl;
+</script>
+</body>
+</html>
