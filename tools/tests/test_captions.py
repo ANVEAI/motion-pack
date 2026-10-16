@@ -216,3 +216,34 @@ def test_burn_in_on_a_one_second_clip(tmp_path):
                            capture_output=True, check=True)
         return r.stdout[0]
     assert px(0.5) < 100 < px(0.95)                                               # the scrim is there while the event is up, gone after
+
+
+def test_a_fragment_too_short_to_stand_alone_shares_an_event_with_the_next_speaker():
+    """voices cold open (multi-voice-doc): 0.8 s fragments of different speakers. Alone, a fragment cannot stay up for min_dur before the next
+    voice; it joins the next speaker's line as a two-line dialogue event, one line per speaker, each with a dash, and passes the validator."""
+    o = core.options(fps=30)
+    W = lambda w, s, e, sp: {'w': w, 's': s, 'e': e, 'speaker': sp}
+    words = [W('I', 1.00, 1.19, 'b'), W('did', 1.25, 1.52, 'b'), W('not', 1.58, 1.85, 'b'), W('every', 1.90, 2.24, 'c'), W('single', 2.30, 2.69, 'c'),
+             W('me', 2.73, 2.96, 'd'), W('most', 3.02, 3.33, 'd'), W('was', 3.39, 3.66, 'd'), W('stopped', 3.73, 4.15, 'e'), W('hunting', 4.21, 4.64, 'e')]
+    evs = core.build_events(words, o)
+    assert all(e['end'] - e['start'] >= o['min_dur'] - 1e-6 for e in evs), [(e['start'], e['end'], e['lines']) for e in evs]
+    duo = [e for e in evs if e.get('speakers')]
+    assert duo and all(len(e['lines']) == 2 and all(x.startswith('- ') for x in e['lines']) and len(e['speakers']) == 2 for e in duo)
+    assert not [i for i in validate.validate(evs, o) if i['severity'] == 'fail' or i['rule'] == 'line_break']
+    one = core.build_events([dict(w, speaker='a') for w in words[:5]], o)        # one speaker: no dashes
+    assert not any(x.startswith('- ') for e in one for x in e['lines'])
+
+
+def test_sdh_drops_a_speaker_id_only_where_it_cannot_be_read():
+    """SDH labels every speaker turn; on a 0.8 s cold-open fragment the label alone breaks the cps ceiling, so it is dropped there (with a note)
+    and kept on every event long enough to read it."""
+    o = core.options(fps=30, sdh=True)
+    W = lambda w, s, e, sp: {'w': w, 's': s, 'e': e, 'speaker': sp}
+    words = [W('lived', 0.03, 0.38, 'Speaker One'), W('somewhere', 0.43, 0.93, 'Speaker One'),
+             W('We', 1.0, 1.2, 'Your Lead'), W('built', 1.25, 1.5, 'Your Lead'), W('Orbit', 1.55, 1.9, 'Your Lead'), W('so', 1.95, 2.1, 'Your Lead'),
+             W('notes', 2.15, 2.5, 'Your Lead'), W('find', 2.55, 2.8, 'Your Lead'), W('you.', 2.85, 3.3, 'Your Lead')]   # the next voice 70 ms later
+    evs = core.build(words, o)
+    short, long_ = evs[0], evs[-1]
+    assert not short['lines'][0].startswith('SPEAKER ONE:') and any('speaker ID dropped' in n for n in short['notes'])
+    assert ' '.join(long_['lines']).startswith('YOUR LEAD:')
+    assert not [i for i in validate.validate(evs, o) if i['severity'] == 'fail']

@@ -146,7 +146,8 @@ def _tokens(words, i, j, o, labels):
 
 def build_events(words, o, labels=None, max_words=18):
     """partition the words into events by a dynamic programme: an event fits max_lines x max_chars, lasts at most max_dur of speech, keeps one
-    speaker and no pause over split_gap_s; boundaries after a sentence end cost least and boundaries after a glue word cost most."""
+    speaker (or two, one line each with a dialogue dash: the broadcast way to caption a fragment too short to stand alone, as in a voices cold open)
+    and no pause over split_gap_s; boundaries after a sentence end cost least and boundaries after a glue word cost most."""
     n = len(words)
     if n == 0:
         return []
@@ -157,15 +158,28 @@ def build_events(words, o, labels=None, max_words=18):
             if best[i] == INF:
                 continue
             single = j - i == 1
+            two = None                                                     # a two-speaker event: one line per speaker, each with a dialogue dash
             if not single:
-                if any(words[k]['speaker'] != words[i]['speaker'] for k in range(i + 1, j)):
+                ch = [k for k in range(i + 1, j) if words[k]['speaker'] != words[k - 1]['speaker']]
+                if len(ch) > 1 or (ch and o['max_lines'] < 2):
                     continue
                 if words[j - 1]['e'] - words[i]['s'] > o['max_dur'] + 1e-9:
                     continue
                 if any(words[k + 1]['s'] - words[k]['e'] > o['split_gap_s'] for k in range(i, j - 1)):
                     continue
+                if ch:
+                    m = ch[0]
+                    g = o['gap_frames'] / o['fps']
+                    r1 = words[m]['s'] - words[i]['s'] - g
+                    r2 = (words[j]['s'] if j < n else words[j - 1]['e'] + o['max_dur']) - words[m]['s'] - g
+                    if r1 >= o['min_dur'] - 1e-9 and r2 >= o['min_dur'] - 1e-9:
+                        continue                                           # both turns can stand alone: never share an event
+                    l1, l2 = '- ' + ' '.join(_tokens(words, i, m, o, labels)), '- ' + ' '.join(_tokens(words, m, j, o, labels if labels and m in labels else None) if not (labels and m in labels) else [labels[m]] + [w['w'] for w in words[m:j]])
+                    if len(l1) > o['max_chars'] or len(l2) > o['max_chars']:
+                        continue
+                    two = [l1, l2]
             toks = _tokens(words, i, j, o, labels)
-            br = break_lines(toks, o['max_chars'], o['max_lines'])
+            br = (two, 2.0) if two else break_lines(toks, o['max_chars'], o['max_lines'])   # 2.0: a speaker change inside an event costs more than a clean line break
             if br is None:
                 if not single:
                     continue
@@ -199,8 +213,12 @@ def build_events(words, o, labels=None, max_words=18):
         j = back[j]
     evs = []
     for i, j, ln in reversed(cuts):
+        sp = []
+        for w in words[i:j]:
+            if not sp or sp[-1] != w['speaker']:
+                sp.append(w['speaker'])
         evs.append({'start': words[i]['s'], 'end': words[j - 1]['e'], 'lines': ln, 'kind': 'speech', 'speaker': words[i]['speaker'],
-                    'words': [dict(w) for w in words[i:j]], 'notes': []})
+                    **({'speakers': sp} if len(sp) > 1 else {}), 'words': [dict(w) for w in words[i:j]], 'notes': []})
     return retime(evs, o)
 
 
@@ -303,10 +321,36 @@ def speaker_labels(words, style='colon'):
     return out
 
 
+def _fit_labels(evs, words, labels, o):
+    """a speaker ID costs reading time: on a fragment too short to carry it (a voices cold open: 0.8 s per face) the label would push the event over the
+    cps ceiling. Drop the label from such an event (the speaker is on screen; a two-speaker event keeps its dialogue dashes) and note it, but only when
+    the event then reads within the limit; a label that fits is always kept."""
+    lab = set(labels.values())
+    for e in evs:
+        d = max(e['end'] - e['start'], 1e-3)
+        if sum(len(x) for x in e['lines']) / d <= o['cps'] + 1e-9:
+            continue
+        bare = []
+        for x in e['lines']:
+            dash = x.startswith('- ')
+            body = x[2:] if dash else x
+            for lb in sorted(lab, key=len, reverse=True):                 # a label is a prefix of the line it opens ('SPEAKER ONE: ...')
+                if body.startswith(lb + ' '):
+                    body = body[len(lb) + 1:]
+                    break
+            bare.append(('- ' if dash else '') + body)
+        if bare != e['lines'] and sum(len(x) for x in bare) / d <= o['cps'] + 1e-9:
+            e['lines'] = bare
+            e['notes'].append('speaker ID dropped: %.2f s on screen is too short to read it (the speaker is on screen)' % d)
+    return evs
+
+
 def build(words, o, plan=None):
     """the full pipeline for one track: speaker labels (SDH), segmentation, then [sound] and [music] tags"""
     labels = speaker_labels(words, o['speaker_style']) if o.get('sdh') else None
     evs = build_events(words, o, labels=labels)
+    if labels:
+        evs = _fit_labels(evs, words, labels, o)
     if o.get('sdh'):
         evs = add_sdh(evs, plan, o)
     return evs

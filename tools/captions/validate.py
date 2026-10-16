@@ -56,7 +56,8 @@ def validate(evs, o, duration=None, platform=None):
             out.append(_issue('fail', e, 'min_duration', 'on screen %.2f s (min %.2f s)' % (d, o['min_dur']), 'extend the end into the gap, or merge with a neighbour'))
         if d > o['max_dur'] + 0.5 * one:
             out.append(_issue('warn', e, 'max_duration', 'on screen %.2f s (max %.1f s)' % (d, o['max_dur']), 'split the event at a phrase boundary'))
-        if len(lines) == 2:
+        dialogue = len(lines) == 2 and all(x.startswith('- ') for x in lines)   # one line per speaker: the break IS the speaker change
+        if len(lines) == 2 and not dialogue:
             first = lines[0].split()
             if first and core.glue_end(first[-1]):
                 out.append(_issue('warn', e, 'line_break', 'line 1 ends on "%s", which binds to the next word' % first[-1], 'move the break before "%s"' % first[-1]))
