@@ -119,6 +119,8 @@ jobs:
         run: node templates/short-film/short-film.test.mjs
       - name: "SaaS kit parts (app window + zoom, cursor journey, callouts, command bar, AI answer, shortcut chip, pricing, integrations, before / after, toasts, dashboard, device mock; node, no browser)"
         run: node type/tests/saas.test.mjs
+      - name: "r78 type parts (glass panel, rim light, review layer, approval slider, sentence across shots: closed-form blur and sweep, constant rim width, clock digits, the flip frame, the fixed word slot, hostile params, seek order, two processes; node, no browser)"
+        run: node type/tests/r78.test.mjs
       - name: "SaaS templates (saas-launch, saas-feature-drop, saas-explainer: both aspects, every length, safe zones, honesty gate, media slots, VO breaths; node, no browser)"
         run: node templates/_shared/saas/saas-templates.test.mjs
       - name: "physics table player (the baked table is committed; no npm install)"
