@@ -595,7 +595,7 @@
    "type": "type/blurIn",
    "x": 960,
    "y": 280,
-   "size": 44,
+   "size": 48,
    "anchor": "middle",
    "color": "#9AA3B2",
    "weight": 600
@@ -608,7 +608,7 @@
    "type": "type/blurIn",
    "x": 96,
    "y": 134,
-   "size": 44,
+   "size": 48,
    "anchor": "start",
    "color": "#9AA3B2",
    "weight": 700
@@ -713,12 +713,12 @@
     3.8
    ],
    "box": [
-    788,
-    244,
-    1132,
-    291
+    772,
+    241,
+    1148,
+    292
    ],
-   "fontPx": 44,
+   "fontPx": 48,
    "role": "read",
    "fg": "#9AA3B2"
   },
@@ -731,11 +731,11 @@
    ],
    "box": [
     96,
-    98,
-    342,
-    145
+    95,
+    365,
+    146
    ],
-   "fontPx": 44,
+   "fontPx": 48,
    "role": "read",
    "fg": "#9AA3B2"
   },

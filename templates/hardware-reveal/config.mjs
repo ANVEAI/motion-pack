@@ -87,19 +87,19 @@ export function buildPlan(C) {
   const overlays = [], titles = [], cues = [], texts = [];
   const cue = (id, t, why, extra = {}) => { if (id) cues.push({ id, t: frameT(t, fps), why, ...extra }); };
   const title = (id, text, at, dur, preset, pos, role = 'read') => { titles.push({ id, text, at: +at.toFixed(4), dur: +dur.toFixed(4), type: preset, ...pos }); texts.push({ id, text, t: [+at.toFixed(3), +(at + dur).toFixed(3)], box: textBox(text, pos.x, pos.y, pos.size, pos.anchor || 'start'), fontPx: Math.round(pos.size), role, fg: pos.color || B.ink }); };
-  const kick = (sx) => ({ x: A.tall ? S.x0 + 8 * s : S.x0, y: A.tall ? S.y0 + 70 * s : S.y0 + 80 * s, size: 44 * s, anchor: 'start', color: B.muted, weight: 700 });
+  const kick = (sx) => ({ x: A.tall ? S.x0 + 8 * s : S.x0, y: A.tall ? S.y0 + 70 * s : S.y0 + 80 * s, size: (A.tall ? 56 : 48) * s, anchor: 'start', color: B.muted, weight: 700 });
   /* ---- 1. dark cold open: the silhouette is visible and moving on frame 0; the line arrives ~1 s in ---- */
   const dk = sec.dark; title('tease', T.tease, dk.t0 + 1.0, dk.dur - 1.3, C.type.tease, { x: W / 2, y: A.tall ? S.y0 + 0.62 * S.h : H * 0.82, size: (A.tall ? 60 : 56) * s, anchor: 'middle', color: B.ink, weight: 700 });
   cue(C.sfx.hum, 0, 'electric hum under the dark open (stops on the reveal)', { overBedDb: -12, untilT: sec.reveal.t0 });
   /* ---- 2. light sweep: the travelling strip; a glint rides the front top chamfer ---- */
-  const sw = sec.sweep; title('sweep', T.sweep, sw.t0 + 0.5, sw.dur - 0.8, C.type.line, { x: S.x0 + (A.tall ? 8 : 0) * s, y: A.tall ? S.y1 - 40 * s : S.y1 - 30 * s, size: 50 * s, anchor: 'start', color: B.ink });
+  const sw = sec.sweep; title('sweep', T.sweep, sw.t0 + 0.5, sw.dur - 0.8, C.type.line, { x: S.x0 + (A.tall ? 8 : 0) * s, y: A.tall ? S.y1 - 40 * s : S.y1 - 30 * s, size: (A.tall ? 56 : 50) * s, anchor: 'start', color: B.ink });
   const gl = glintItem(D, A, { a: [-w / 2 + 0.05, h + foot, d / 2], b: [w / 2 - 0.02, h + foot, d / 2], at: sw.t0 + 0.4, dur: sw.dur - 0.7, sweep: (sw.dur - 0.7) * 0.9 }); if (gl) overlays.push(gl);
   cue(C.sfx.sweep, sw.t0 + 0.4 + (sw.dur - 0.7) * 0.45, 'the glint at its brightest (the sweep sound peaks on its anchor)');
   /* ---- 3. THE REVEAL on the drop: the cut IS the light; the band ignites; the name ---- */
   const rv = sec.reveal; cue(C.sfx.reveal, rv.t0, 'REVEAL: one deep sub hit on the drop frame (tier 1)'); cue(C.sfx.led, rv.t0 + 0.1, 'the LED band ignites left to right');
   const nameY = A.tall ? S.y0 + 165 * s : S.y0 + 150 * s, nameS = (A.tall ? 120 : 132) * s;
   title('reveal', T.reveal, rv.t0 + 0.55, rv.dur - 0.8, C.type.title, { x: W / 2, y: nameY, size: nameS, anchor: 'middle', color: B.ink, weight: 800 }, 'headline');
-  title('revealSub', T.revealSub, rv.t0 + 1.4, rv.dur - 1.6, C.type.sub, { x: W / 2, y: nameY + 80 * s, size: 44 * s, anchor: 'middle', color: B.muted, weight: 600 });
+  title('revealSub', T.revealSub, rv.t0 + 1.4, rv.dur - 1.6, C.type.sub, { x: W / 2, y: nameY + 80 * s, size: (A.tall ? 56 : 48) * s, anchor: 'middle', color: B.muted, weight: 600 });
   cue(C.sfx.name, rv.t0 + 0.55, 'the name lands (one chime)');
   /* ---- 4. exploded view: callouts on the parts once they settle; release + seat sounds ---- */
   const ex = sec.explode, X = D.explodePlans.explode, out = ex.t0 + X.outEnd + 0.15, hold = Math.max(1.2, ex.t0 + X.backAt - out - 0.1);
@@ -135,7 +135,7 @@ export function buildPlan(C) {
   /* ---- 10. end card ---- */
   const en = sec.end, endY = A.tall ? S.y0 + 0.36 * S.h : H * 0.4;
   title('end', T.end, en.t0 + 0.15, en.dur + tail - 0.3, C.type.end, { x: W / 2, y: endY, size: (A.tall ? 104 : 112) * s, anchor: 'middle', color: B.ink, weight: 800 }, 'endcard');
-  title('endSub', T.endSub, en.t0 + 0.5, en.dur + tail - 0.6, C.type.sub, { x: W / 2, y: endY + 76 * s, size: 44 * s, anchor: 'middle', color: B.muted, weight: 600 }, 'endcard');
+  title('endSub', T.endSub, en.t0 + 0.5, en.dur + tail - 0.6, C.type.sub, { x: W / 2, y: endY + 76 * s, size: (A.tall ? 56 : 48) * s, anchor: 'middle', color: B.muted, weight: 600 }, 'endcard');
   title('url', B.url, en.t0 + 0.7, en.dur + tail - 0.8, C.type.sub, { x: W / 2, y: endY + 150 * s, size: 36 * s, anchor: 'middle', color: acc, weight: 700 }, 'endcard');
   cue(C.sfx.logo, en.t0 + 0.15, 'sonic logo on the end card');
   /* ---- shots (one plate clip per section: the transitions get two layers), the transition sweeteners ---- */

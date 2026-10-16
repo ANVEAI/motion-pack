@@ -44,6 +44,8 @@ for (const [name, spec] of Object.entries(T)) {
   ok(`${name}: CONFIG has the editable contract (brand, platform, fps, length, aspect, text, media)`, ['brand.name', 'brand.accent', 'brand.ink', 'brand.paper', 'brand.url', 'brand.font.display', 'fps', 'length', 'aspect', 'text', 'media.model', 'media.photo'].every((p) => get(M.CONFIG, p) !== undefined) && 'platform' in M.CONFIG && 'logo' in M.CONFIG.brand);
   const committed = path.join(TPL, name, 'out', 'plan.json');
   if (fs.existsSync(committed)) { const c = JSON.parse(fs.readFileSync(committed, 'utf8')); delete c.lint; ok(`${name}: the committed out/plan.json is current`, JSON.stringify(c) === JSON.stringify(W)); }
+  const committedT = path.join(TPL, name, 'out', 'plan-tall.json');
+  if (fs.existsSync(committedT)) { const c = JSON.parse(fs.readFileSync(committedT, 'utf8')); delete c.lint; ok(`${name}: the committed out/plan-tall.json is the current 9:16 build`, c.aspect === '9:16' && JSON.stringify(c) === JSON.stringify(Tl)); }
 }
 /* honesty: a spec without a source fails the lint gate (exit 2 from cues.mjs) */
 { const M = await import(path.join(TPL, 'hardware-reveal', 'config.mjs')), C = structuredClone(M.CONFIG); C.specs[0].source = ''; const P = M.buildPlan(C); ok('a spec with no source is caught by lint.proof', lintClaims(P.claims).length === 1);

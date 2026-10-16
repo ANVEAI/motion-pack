@@ -260,7 +260,10 @@ export async function resolve(dir, args = {}) {
     const r = applyProject(C, mod.PROJECT_MAP, project, { template, aspect, platform, ASPECTS: mod.ASPECTS, voiceOut: path.join(dir, 'out', 'voice.words.json') });
     C = r.config; Object.assign(report, { aspect, platform, applied: r.applied, ignored: r.ignored, warnings: [...report.warnings, ...r.warnings] });
     if (args.strict && r.ignored.length) throw new ProjectError(r.ignored.map((p) => `${p}: ${template} does not use it (--strict)`));
-  } else if (aspect) { const r = applyProject(C, mod.PROJECT_MAP, {}, { template, aspect, ASPECTS: mod.ASPECTS }); C = r.config; report.aspect = aspect; report.applied = r.applied; }
+  } else if (aspect) { const r = applyProject(C, mod.PROJECT_MAP, {}, { template, aspect, ASPECTS: mod.ASPECTS }); C = r.config; report.aspect = aspect; report.applied = r.applied;
+    /* a template whose map has no derived 'aspect' entry (it maps the project's `aspects` list onto CONFIG.aspect) used to ignore --aspect without a project and build its default
+       aspect under the asked-for name (cues.mjs --aspect 9:16 wrote a 16:9 plan-tall.json); set its own CONFIG.aspect, exactly as --set aspect= does */
+    if (!(mod.PROJECT_MAP && 'aspect' in mod.PROJECT_MAP) && typeof C.aspect === 'string' && C.aspect !== aspect) { C.aspect = aspect; report.applied.push('aspect'); } }
   if (args.sets.length) { const r = applySets(C, args.sets, { MAP: mod.PROJECT_MAP, template, ASPECTS: mod.ASPECTS }); C = r.config; report.applied.push(...r.applied); const a = args.sets.find((s) => s.startsWith('aspect=')); if (a) report.aspect = a.slice(7); }
   return { C, report, mod };
 }

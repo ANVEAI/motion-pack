@@ -53,7 +53,7 @@ export function buildPlan(C) {
   const it = sec.intro, tb = sec.table, he = sec.hero, en = sec.end;
   const nameY = A.tall ? S.y0 + 165 * s : S.y0 + 150 * s;
   title('title', T.title, it.t0 + 0.3, it.dur - 0.5, C.type.title, { x: W / 2, y: nameY, size: (A.tall ? 112 : 120) * s, anchor: 'middle', color: B.ink, weight: 800 }, 'headline');
-  title('sub', T.sub, it.t0 + 0.9, it.dur - 1.1, C.type.sub, { x: W / 2, y: nameY + 76 * s, size: 44 * s, anchor: 'middle', color: B.muted, weight: 600 });
+  title('sub', T.sub, it.t0 + 0.9, it.dur - 1.1, C.type.sub, { x: W / 2, y: nameY + 76 * s, size: (A.tall ? 56 : 48) * s, anchor: 'middle', color: B.muted, weight: 600 });
   cue(C.sfx.intro, it.t0 + 0.05, 'the band lights on the first frame');
   /* the table: ui.dataTable (dark), every row lands with a detent; its source prints under it */
   const tbl = C.table, rowsAt = 0.6, stagger = Math.min(0.5, (tb.dur - 3.2) / Math.max(1, tbl.rows.length));
@@ -64,7 +64,7 @@ export function buildPlan(C) {
   cue(C.sfx.hero, he.t0, 'the hero spec: one sub hit on the drop');
   const X = D.explodePlans.hero, at = he.t0 + Math.min(he.dur - 1.6, X.outEnd + 0.1), hc = calloutItem(D, A, { name: C.hero.part || 'card', at, dur: he.t0 + X.backAt - at - 0.05, spec: C.hero, off: A.tall ? [-110, -200] : [-200, -130], accent: acc, fps, size: 1.15 });
   if (hc) { overlays.push(hc); cue(C.sfx.chime, hc.at + 0.43, 'hero callout lands'); }
-  title('hero', T.hero, he.t0 + 0.2, he.dur - 0.4, C.type.sub, { x: S.x0, y: A.tall ? S.y0 + 70 * s : S.y0 + 80 * s, size: 44 * s, anchor: 'start', color: B.muted, weight: 700 });
+  title('hero', T.hero, he.t0 + 0.2, he.dur - 0.4, C.type.sub, { x: S.x0, y: A.tall ? S.y0 + 70 * s : S.y0 + 80 * s, size: (A.tall ? 56 : 48) * s, anchor: 'start', color: B.muted, weight: 700 });
   const endY = A.tall ? S.y0 + 0.36 * S.h : H * 0.4;
   title('end', T.end, en.t0 + 0.15, en.dur + tail - 0.3, C.type.end, { x: W / 2, y: endY, size: (A.tall ? 104 : 112) * s, anchor: 'middle', color: B.ink, weight: 800 }, 'endcard');
   title('url', B.url, en.t0 + 0.5, en.dur + tail - 0.6, C.type.sub, { x: W / 2, y: endY + 90 * s, size: 38 * s, anchor: 'middle', color: acc, weight: 700 }, 'endcard');

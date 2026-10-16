@@ -7965,7 +7965,7 @@
    "type": "type/blurIn",
    "x": 960,
    "y": 284,
-   "size": 44,
+   "size": 48,
    "anchor": "middle",
    "color": "#9AA3B2",
    "weight": 600
@@ -7978,7 +7978,7 @@
    "type": "type/maskRise",
    "x": 96,
    "y": 134,
-   "size": 44,
+   "size": 48,
    "anchor": "start",
    "color": "#9AA3B2",
    "weight": 700
@@ -7991,7 +7991,7 @@
    "type": "type/maskRise",
    "x": 96,
    "y": 134,
-   "size": 44,
+   "size": 48,
    "anchor": "start",
    "color": "#9AA3B2",
    "weight": 700
@@ -8004,7 +8004,7 @@
    "type": "type/maskRise",
    "x": 96,
    "y": 134,
-   "size": 44,
+   "size": 48,
    "anchor": "start",
    "color": "#9AA3B2",
    "weight": 700
@@ -8017,7 +8017,7 @@
    "type": "type/maskRise",
    "x": 96,
    "y": 134,
-   "size": 44,
+   "size": 48,
    "anchor": "start",
    "color": "#9AA3B2",
    "weight": 700
@@ -8043,7 +8043,7 @@
    "type": "type/blurIn",
    "x": 960,
    "y": 508,
-   "size": 44,
+   "size": 48,
    "anchor": "middle",
    "color": "#9AA3B2",
    "weight": 600
@@ -8266,12 +8266,12 @@
     17.8
    ],
    "box": [
-    677,
-    248,
-    1243,
-    295
+    651,
+    245,
+    1269,
+    296
    ],
-   "fontPx": 44,
+   "fontPx": 48,
    "role": "read",
    "fg": "#9AA3B2"
   },
@@ -8284,11 +8284,11 @@
    ],
    "box": [
     96,
-    98,
-    466,
-    145
+    95,
+    499,
+    146
    ],
-   "fontPx": 44,
+   "fontPx": 48,
    "role": "read",
    "fg": "#9AA3B2"
   },
@@ -8301,11 +8301,11 @@
    ],
    "box": [
     96,
-    98,
-    663,
-    145
+    95,
+    714,
+    146
    ],
-   "fontPx": 44,
+   "fontPx": 48,
    "role": "read",
    "fg": "#9AA3B2"
   },
@@ -8318,11 +8318,11 @@
    ],
    "box": [
     96,
-    98,
-    638,
-    145
+    95,
+    687,
+    146
    ],
-   "fontPx": 44,
+   "fontPx": 48,
    "role": "read",
    "fg": "#9AA3B2"
   },
@@ -8335,11 +8335,11 @@
    ],
    "box": [
     96,
-    98,
-    466,
-    145
+    95,
+    499,
+    146
    ],
-   "fontPx": 44,
+   "fontPx": 48,
    "role": "read",
    "fg": "#9AA3B2"
   },
@@ -8368,12 +8368,12 @@
     57.1
    ],
    "box": [
-    775,
-    472,
-    1145,
-    519
+    758,
+    469,
+    1162,
+    520
    ],
-   "fontPx": 44,
+   "fontPx": 48,
    "role": "endcard",
    "fg": "#9AA3B2"
   },

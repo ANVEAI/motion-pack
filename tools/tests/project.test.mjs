@@ -99,5 +99,8 @@ for (const id of GENRE) {
 }
 const tall = lint(pf.buildPlan((await P.resolve(path.join(ROOT, 'templates/proof-film'), { project: EMPTY, aspect: '9:16', sets: [] })).C));
 R.check('proof-film --aspect 9:16 builds exactly the committed out/plan-tall.json', tall === fs.readFileSync(path.join(ROOT, 'templates/proof-film/out/plan-tall.json'), 'utf8'));
+/* --aspect with no project on templates that map the project's `aspects` list onto CONFIG.aspect (no derived 'aspect' entry): it used to be ignored, so cues.mjs --aspect 9:16 wrote a 16:9 plan-tall.json */
+for (const id of ['saas-explainer', 'hardware-teaser', 'title-sequence']) { const r = await P.resolve(path.join(ROOT, 'templates', id), { project: null, aspect: '9:16', sets: [] });
+  R.check(`${id}: --aspect 9:16 without a project builds 9:16 (CONFIG.aspect set, like --set aspect=9:16)`, r.C.aspect === '9:16' && r.report.aspect === '9:16'); }
 fs.rmSync(TMP, { recursive: true, force: true });
 process.exit(R.done() && R.failed ? 1 : 0);
