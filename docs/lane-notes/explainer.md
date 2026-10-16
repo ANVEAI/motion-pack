@@ -129,7 +129,7 @@ I checked stills of every section at both aspects (SVG frames rasterised by Quic
      - `| an honest chart for a data story | chart.story (bar / line / area / scatter; show, hl, compare), callout.datum, counter.hero, map.hexTile, chart.sourceFooter, layout.scrolly | source + method required; zero baselines; numfmt.js for lakh / crore |`
      - `| a numbered how-to | process.steps, process.beforeAfter (media windows: baGeom), title.takeaway | icons from type/gfx/explain-icons.js |`
 7. **`skills/motion-pack/references/apis.md`**: under the type/gfx section, add `fmtNumber(v, { locale: 'in'|'intl'|'eu'|'si', dec, compact: 'short'|'long', unit })`, `fmtAxis(v, { ref, ticks })`, `parseGraph(dsl|json)`, `layoutGraph(spec, { dir, box })`, `chartGeom(params, ctx)` + `datumXY(G, [row, series])`, `baGeom(params, ctx)`, `diagramTimes(params)`.
-8. **`.gitignore`, or the repo's `info/exclude`**: `music/library` as a symlink is not matched by `music/library/` (that pattern matches directories only). This branch has an untracked `music/library` symlink to motion-pack-public, made to measure the mixes. It is not committed. The integration clone's exclude has `sfx/library` only; add `music/library` there too.
+8. **`.gitignore`, or the repo's `info/exclude`**: `music/library` as a symlink is not matched by `music/library/` (that pattern matches directories only). I symlinked `music/library` to motion-pack-public to measure the mixes, then removed the link again; recreate it before the pending renders. The integration clone's exclude has `sfx/library` only; add `music/library` there too.
 
 ## PENDING RENDERS (exact commands; run only when the lock allows, >= 10 GiB free)
 
