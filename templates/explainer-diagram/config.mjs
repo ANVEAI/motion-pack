@@ -33,7 +33,7 @@ export const CONFIG = {
       { id: 'tE', label: 'Town E', kind: 'io', group: 'deliver' }, { id: 'tF', label: 'Town F', kind: 'io', group: 'deliver' }, { id: 'tG', label: 'Town G', kind: 'io', group: 'deliver' }],
       edges: [{ from: 'tA', to: 'oL' }, { from: 'tB', to: 'oL' }, { from: 'tC', to: 'oL' }, { from: 'oL', to: 'hub' }, { from: 'hub', to: 'oR' }, { from: 'oR', to: 'tE' }, { from: 'oR', to: 'tF' }, { from: 'oR', to: 'tG' }],
       groups: [{ id: 'collect', label: 'COLLECT' }, { id: 'deliver', label: 'DELIVER' }] },
-    inside: 'Read the address -> Group by region -> Load the matching truck\nRead the address -> Unclear? : "can\'t read it"\nUnclear? -> Checked by hand -> Group by region\nnode Unclear? "Unclear?" kind=decision',
+    inside: 'Read the address -> Group by region -> Load the truck\nRead the address -> Unclear? : "can\'t read it"\nUnclear? -> Checked by hand -> Group by region\nnode Unclear? "Unclear?" kind=decision',
   },
   /* the beats: t = seconds (no voice) or word = a voice word (with voice.words). sec = the section it belongs to (question, wrongmodel, reframe, proof, sowhat). */
   beats: [
@@ -85,8 +85,8 @@ export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'relayout', t
 
 /* per-aspect constants (a re-layout: the diagram turns from left-to-right into top-to-bottom, captions move to the top band on 9:16) */
 const LAYOUT = {
-  '16:9': { dir: 'LR', diagram: [0.07, 0.24, 0.86, 0.5], hookPos: 'tc', capPos: 'bc', capSize: 0.62, hookSize: 0.9, nodeSize: 1, recapPos: 'c', takeawaySize: 1 },
-  '9:16': { dir: 'TB', diagram: [0.07, 0.3, 0.83, 0.34], hookPos: 'tc', capPos: 'tc', capSize: 0.72, hookSize: 0.82, nodeSize: 0.62, recapPos: 'c', takeawaySize: 0.62 },
+  '16:9': { dir: 'LR', diagram: [0.07, 0.25, 0.86, 0.56], camMax: 1.8, hookPos: 'tc', capPos: 'bc', capSize: 0.62, hookSize: 0.9, nodeSize: 1, recapPos: 'c', takeawaySize: 1 },
+  '9:16': { dir: 'TB', diagram: [0.05, 0.255, 0.9, 0.39], camMax: 1.35, hookPos: 'tc', capPos: 'tc', capSize: 0.72, hookSize: 0.82, nodeSize: 0.62, recapPos: 'c', takeawaySize: 0.62 },
 };
 export function buildPlan(C0) {
   const C = fixSets(C0), A = aspectOf(C), L = LAYOUT[C.aspect] || LAYOUT['16:9'], fps = C.fps, tag = tagOf(C.aspect, '16:9'), sb = safeBox(C.aspect), warnings = [];
@@ -103,7 +103,7 @@ export function buildPlan(C0) {
   for (const b of beats) {
     if (b.do === 'focus') { const [it, u] = loc(b); it.params.focus.push({ at: u, ids: b.ids }); events.push(b.at); }
     else if (b.do === 'flow') { const [it, u] = loc(b); it.params.flow.push({ at: u, edges: b.edges, until: b.until != null ? r3(b.until - it.at) : null }); }
-    else if (b.do === 'cam') { const [it, u] = loc(b); it.params.cam.push({ at: u, ids: b.ids, dur: b.dur ?? 0.9 }); events.push(b.at); }
+    else if (b.do === 'cam') { const [it, u] = loc(b); it.params.cam.push({ at: u, ids: b.ids, dur: b.dur ?? 0.9, max: b.max ?? L.camMax }); events.push(b.at); }
     else if (b.do === 'note') { const [it, u] = loc(b); it.params.notes.push({ at: u, node: b.node, text: b.text, dur: b.dur ?? 2.8 }); texts.push({ text: b.text, a: b.at, b: b.at + (b.dur ?? 2.8), role: 'label' }); events.push(b.at); }
     else if (b.do === 'zoom') { const [it, u] = loc(b), out = b.out != null ? at({ t: b.out, word: b.outWord }) : T, sub = spec(b.into), zat = b.at + (b.dur ?? 1.1);
       it.params.zoom = { node: b.node, at: u, dur: b.dur ?? 1.1, out: r3(out - it.at), spec: sub, title: b.title, dir: L.dir, reveal: 0.4, notes: (b.notes || []).map((q) => ({ at: r3(at(q) - it.at), node: q.node, text: q.text, dur: q.dur ?? 2.6 })) };

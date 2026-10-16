@@ -92,7 +92,7 @@ export function layoutGraph(spec0, { dir, box = [0, 0, 1920, 1080], nodeW = null
   /* geometry: main axis = layers, cross axis = order (dummies take a thinner slot) */
   const realN = rows.map((r) => r.filter((v) => V[v].node !== undefined).length), dumN = rows.map((r, i) => r.length - realN[i]);
   const along = D === 'LR' ? bw : bh, across = D === 'LR' ? bh : bw, step = along / L, units = Math.max(1, ...rows.map((r, i) => realN[i] + dumN[i] * 0.35)), cell = across / units;
-  const nw = nodeW ?? (D === 'LR' ? Math.min(step * 0.7, bw * 0.32) : Math.min(cell * 0.8, bw * 0.3)), nh = nodeH ?? (D === 'LR' ? Math.min(cell * 0.62, nw * 0.46, bh * 0.3) : Math.min(step * 0.56, nw * 0.5));
+  const nh = nodeH ?? (D === 'LR' ? Math.min(cell * 0.66, bh * 0.3, step * 0.4) : Math.min(step * 0.6, cell * 0.42)), nw = nodeW ?? (D === 'LR' ? Math.min(step * 0.7, bw * 0.32, Math.max(nh * 3.2, 120)) : Math.min(cell * 0.8, bw * 0.3));
   const r2 = (v) => Math.round(v * 100) / 100, out = {}, VP = new Array(V.length);
   rows.forEach((r, li) => { const span = (realN[li] + dumN[li] * 0.35) * cell; let c = (across - span) / 2;
     r.forEach((v, j) => { const wdt = (V[v].node !== undefined ? 1 : 0.35) * cell, mid = c + wdt / 2; c += wdt; const a = (li + pad) * step, cx = D === 'LR' ? bx + a : bx + mid, cy = D === 'LR' ? by + mid : by + a; VP[v] = [cx, cy];

@@ -45,10 +45,10 @@
      },
      "dir": "TB",
      "box": [
-      0.07,
-      0.3,
-      0.83,
-      0.34
+      0.05,
+      0.255,
+      0.9,
+      0.39
      ],
      "accent": "#4A18ED",
      "ink": "#16151B",
@@ -187,10 +187,10 @@
      },
      "dir": "TB",
      "box": [
-      0.07,
-      0.3,
-      0.83,
-      0.34
+      0.05,
+      0.255,
+      0.9,
+      0.39
      ],
      "accent": "#4A18ED",
      "ink": "#16151B",
@@ -330,10 +330,10 @@
      },
      "dir": "TB",
      "box": [
-      0.07,
-      0.3,
-      0.83,
-      0.34
+      0.05,
+      0.255,
+      0.9,
+      0.39
      ],
      "accent": "#4A18ED",
      "ink": "#16151B",
@@ -424,7 +424,8 @@
         "tC",
         "oL"
        ],
-       "dur": 0.05
+       "dur": 0.05,
+       "max": 1.35
       },
       {
        "at": 5.6,
@@ -433,7 +434,8 @@
         "hub",
         "oR"
        ],
-       "dur": 0.9
+       "dur": 0.9,
+       "max": 1.35
       },
       {
        "at": 9,
@@ -443,12 +445,14 @@
         "tF",
         "tG"
        ],
-       "dur": 0.9
+       "dur": 0.9,
+       "max": 1.35
       },
       {
        "at": 14.4,
        "ids": "all",
-       "dur": 1
+       "dur": 1,
+       "max": 1.35
       }
      ],
      "notes": [
@@ -481,8 +485,8 @@
          "label": "Group by region"
         },
         {
-         "id": "Load_the_matching_truck",
-         "label": "Load the matching truck"
+         "id": "Load_the_truck",
+         "label": "Load the truck"
         },
         {
          "id": "Unclear?",
@@ -501,7 +505,7 @@
         },
         {
          "from": "Group_by_region",
-         "to": "Load_the_matching_truck"
+         "to": "Load_the_truck"
         },
         {
          "from": "Read_the_address",

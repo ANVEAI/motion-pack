@@ -8,7 +8,7 @@
      process.steps      numbered steps with owned icons on a timeline: the progress line fills, done steps tick
      process.beforeAfter  two cards: before, then after wipes in beside (16:9) or under (9:16) it
    Times inside params are LOCAL to the item's `at` (the template converts voice-word times). Every list is capped (limits.js clamps the counts) so no value can hang a frame. */
-import { E, clamp, seg, lerp, f2, text, measure, inkOn, BRAND } from './core.js';
+import { E, clamp, seg, lerp, f2, text, measure, inkOn, esc, FONT, BRAND } from './core.js';
 import { mixHex } from './swap.js';
 import { layoutGraph, parseGraph, boundsOf, pathAt, edgeKey } from './graph.js';
 import { iconSVG } from './explain-icons.js';
@@ -49,15 +49,16 @@ export function appearTimes(lay, p) {
   return out;
 }
 const stateAt = (entries, u, fn) => { const es = list(entries).filter((e) => e && Number.isFinite(+e.at)).sort((a, b) => a.at - b.at); let cur = null, prev = null; for (const e of es) if (u >= e.at) { prev = cur; cur = e; } return { cur, prev, fn }; };
-function viewOf(lay, e, c) { if (!e || !e.ids || e.ids === 'all') return { cx: c.W / 2, cy: c.H / 2, k: 1 }; const [x, y, w, h] = boundsOf(lay, e.ids), pad = clamp(num(e.pad, 0.16), 0, 0.4);
-  return { cx: x + w / 2, cy: y + h / 2, k: clamp(Math.min((c.W * (1 - 2 * pad)) / Math.max(1, w), (c.H * (1 - 2 * pad)) / Math.max(1, h)), 0.5, num(e.max, 2.0)) }; }
+/* a view = the world point at the centre of the diagram box + a scale; the overview (ids 'all' or none) is the identity. A region view fits its nodes into the box, never zooms out past the overview */
+function viewOf(lay, e, c) { const [bx0, by0, bw, bh] = lay.box, home = { cx: bx0 + bw / 2, cy: by0 + bh / 2, k: 1 }; if (!e || !e.ids || e.ids === 'all') return home; const [x, y, w, h] = boundsOf(lay, e.ids), pad = clamp(num(e.pad, 0.08), 0, 0.4);
+  return { cx: x + w / 2, cy: y + h / 2, k: clamp(Math.min((bw * (1 - 2 * pad)) / Math.max(1, w), (bh * (1 - 2 * pad)) / Math.max(1, h)), 1, num(e.max, 1.8)) }; }
 const mixView = (a, b, k) => ({ cx: lerp(a.cx, b.cx, k), cy: lerp(a.cy, b.cy, k), k: Math.exp(lerp(Math.log(a.k), Math.log(b.k), k)) });
 export function camAt(lay, p, u, c) {
   const es = list(p.cam).filter((e) => e && Number.isFinite(+e.at)).sort((a, b) => a.at - b.at); let v = viewOf(lay, null, c);
   for (const e of es) { if (u < e.at) break; v = mixView(v, viewOf(lay, e, c), E.move(seg(u, e.at, e.at + num(e.dur, 0.9)))); }
   const z = p.zoom; let kz = 0;
   if (z && lay.nodes[z.node]) { const n = lay.nodes[z.node], dur = num(z.dur, 1.1), out = num(z.out, Infinity); kz = E.move(seg(u, num(z.at), num(z.at) + dur)) * (1 - E.move(seg(u, out, out + dur)));
-    if (kz > 0) v = mixView(v, { cx: n.cx, cy: n.cy, k: Math.max(c.W / Math.max(1, n.w), c.H / Math.max(1, n.h)) * 1.6 }, kz); }
+    if (kz > 0) { v = mixView(v, { cx: n.cx, cy: n.cy, k: Math.max(c.W / Math.max(1, n.w), c.H / Math.max(1, n.h)) * 1.6 }, kz); } }
   return { ...v, kz };
 }
 function nodeShape(n, kind, fill, stroke, sw) {
@@ -69,7 +70,7 @@ function nodeShape(n, kind, fill, stroke, sw) {
 }
 /* the diagram body (groups, edges, nodes, notes) of one layout at local time u; used for the main diagram and the zoomed sub-diagram */
 function drawGraph(lay, p, u, s, { appear, emph = () => 1, ring = () => 0, flowOn = () => 0, fillOf = () => p.node, labelOp = () => 1, notes = [] }) {
-  let g = ''; const nh = lay.nodeH || 80, fs = Math.min(nh * 0.27, 44 * s), sw = 2.5 * s;
+  let g = ''; const nh = lay.nodeH || 80, fs = Math.min(nh * (lay.dir === 'TB' ? 0.36 : 0.32), 44 * s), sw = 2.5 * s;
   for (const gr of Object.values(lay.groups)) { const t0 = Math.min(...gr.members.map((m) => appear[m])); if (!(u >= t0)) continue; const a = E.soft(seg(u, t0, t0 + 0.4)), e = Math.max(...gr.members.map(emph));
     g += `<g opacity="${f2(a * e)}"><rect x="${f2(gr.x)}" y="${f2(gr.y)}" width="${f2(gr.w)}" height="${f2(gr.h)}" rx="${f2(16 * s)}" fill="${p.accent}" fill-opacity="0.05" stroke="${p.accent}" stroke-opacity="0.45" stroke-width="${f2(2 * s)}" stroke-dasharray="${f2(10 * s)} ${f2(8 * s)}"/>` + text(gr.label || gr.id, gr.x + 16 * s, gr.y + fs * 1.05, { size: fs * 0.72, weight: 800, fill: p.accent, ls: 0.5 * s }) + '</g>'; }
   for (const e of lay.edges) { const t0 = Math.max(appear[e.from], appear[e.to]) + 0.12; if (!(u >= t0)) continue; const k = E.soft(seg(u, t0, t0 + 0.5)), em = Math.min(emph(e.from), emph(e.to)), col = mixHex(p.line, p.accent, Math.min(ring(e.from), ring(e.to)));
@@ -78,9 +79,9 @@ function drawGraph(lay, p, u, s, { appear, emph = () => 1, ring = () => 0, flowO
     if (e.label) { const lw = measure(e.label, fs * 0.66, { weight: 700 }) + 20 * s; g += `<g opacity="${f2(seg(k, 0.6, 1))}"><rect x="${f2(e.mid[0] - lw / 2)}" y="${f2(e.mid[1] - fs * 0.62)}" width="${f2(lw)}" height="${f2(fs * 1.1)}" rx="${f2(fs * 0.55)}" fill="${p.paper}" stroke="${col}" stroke-width="${f2(1.5 * s)}"/>` + text(e.label, e.mid[0], e.mid[1] + fs * 0.22, { size: fs * 0.66, weight: 700, fill: p.ink, anchor: 'middle' }) + '</g>'; }
     g += '</g>'; }
   for (const n of Object.values(lay.nodes)) { const t0 = appear[n.id]; if (!(u >= t0)) continue; const a = E.hero(seg(u, t0, t0 + 0.4)), sc = 0.86 + 0.14 * a, r = ring(n.id), fill = fillOf(n.id);
-    const ls = wrap(n.label, n.w * 0.84, fs, { max: 2 }), lh = fs * 1.15, ty = n.cy - ((ls.length - 1) * lh) / 2 + fs * 0.35, ink = inkOn(fill, p.ink, '#FFFFFF');
+    const ic = n.icon ? Math.min(nh * 0.42, n.w * 0.16) : 0, tx = n.cx + (ic ? ic * 0.55 : 0), ls = wrap(n.label, n.w * 0.84 - ic * 1.2, fs, { max: 2 }), lh = fs * 1.15, ty = n.cy - ((ls.length - 1) * lh) / 2 + fs * 0.35, ink = inkOn(fill, p.ink, '#FFFFFF');
     g += `<g opacity="${f2(a * emph(n.id))}" transform="translate(${f2(n.cx)} ${f2(n.cy)}) scale(${sc.toFixed(4)}) translate(${f2(-n.cx)} ${f2(-n.cy)})">` + nodeShape(n, n.kind, fill, mixHex(p.line, p.accent, r), sw + r * 2 * s)
-      + (n.icon ? iconSVG(n.icon, n.x + nh * 0.32, n.y + nh * 0.32, nh * 0.3, p.accent, 1, 2.2) : '') + `<g opacity="${f2(labelOp(n.id))}">` + lines(ls, n.cx, ty, fs, lh, { weight: 700, fill: ink, anchor: 'middle' }) + '</g></g>'; }
+      + (ic ? iconSVG(n.icon, n.x + Math.max(ic * 0.9, n.w * 0.12), n.cy, ic, p.accent, 1, 2.2) : '') + `<g opacity="${f2(labelOp(n.id))}">` + lines(ls, tx, ty, fs, lh, { weight: 700, fill: ink, anchor: 'middle' }) + '</g></g>'; }
   for (const q of notes) { const n = lay.nodes[q.node]; if (!n) continue; const a = num(q.at), b = a + num(q.dur, 2.4); if (u < a || u > b + 0.3) continue; const k = E.hero(seg(u, a, a + 0.3)) * (1 - seg(u, b, b + 0.3)), ns = fs * 0.78, w = measure(q.text, ns, { weight: 700 }) + 30 * s, x = n.cx - w / 2, y = n.y - ns * 2.1 - 6 * s * (1 - k);
     g += `<g opacity="${f2(k)}"><rect x="${f2(x)}" y="${f2(y)}" width="${f2(w)}" height="${f2(ns * 1.6)}" rx="${f2(ns * 0.8)}" fill="${p.accent}"/>` + text(q.text, n.cx, y + ns * 1.12, { size: ns, weight: 700, fill: inkOn(p.accent), anchor: 'middle' }) + '</g>'; }
   return g;
@@ -92,7 +93,7 @@ function graphSVG(L, p, c) {
   const flows = list(p.flow), flowOn = (e) => { let o = 0; for (const f of flows) { if (!(f.edges === 'all' || inIds(f.edges, e.id))) continue; const a = num(f.at), b = num(f.until, Infinity); o = Math.max(o, seg(u, a, a + 0.3) * (1 - seg(u, b, b + 0.3))); } return o; };
   const V = camAt(lay, p, u, c), z = p.zoom && lay.nodes[p.zoom.node] ? p.zoom : null, kz = V.kz;
   const fillOf = (id) => (z && id === z.node ? mixHex(p.node, p.zoomFill, seg(kz, 0.1, 0.7)) : p.node), labelOp = (id) => (z && id === z.node ? 1 - seg(kz, 0.2, 0.6) : 1);
-  const tf = `translate(${f2(c.W / 2)} ${f2(c.H / 2)}) scale(${V.k.toFixed(5)}) translate(${f2(-V.cx)} ${f2(-V.cy)})`;
+  const [bx0, by0, bw, bh] = lay.box, ax = lerp(bx0 + bw / 2, c.W / 2, kz), ay = lerp(by0 + bh / 2, c.H / 2, kz), tf = `translate(${f2(ax)} ${f2(ay)}) scale(${V.k.toFixed(5)}) translate(${f2(-V.cx)} ${f2(-V.cy)})`;
   let g = `<g transform="${tf}">${drawGraph(lay, p, u, s, { appear, emph, ring, flowOn, fillOf, labelOp, notes: list(p.notes) })}</g>`;
   if (z && kz > 0.75) { const zat = num(z.at) + num(z.dur, 1.1), out = num(z.out, Infinity), op = seg(u, zat - 0.15, zat + 0.35) * (1 - seg(u, out - 0.35, out));
     g += `<rect x="0" y="0" width="${c.W}" height="${c.H}" fill="${p.zoomFill}" opacity="${f2(seg(kz, 0.75, 0.98))}"/>`;
@@ -145,7 +146,9 @@ function takeawaySVG(L, p, c) {
   const x = S.x0 + (S.x1 - S.x0 - w) / 2, y0 = p.pos === 't' ? S.y0 + 40 * s : (S.y0 + S.y1) / 2 - hTot / 2, rule = E.hero(seg(u, 0, 0.5));
   let g = p.paper ? `<rect x="${f2(x - 50 * s)}" y="${f2(y0 - 60 * s)}" width="${f2(w + 100 * s)}" height="${f2(hTot + 120 * s)}" rx="${f2(22 * s)}" fill="${p.paper}"/>` : '';
   g += `<rect x="${f2(x)}" y="${f2(y0)}" width="${f2(120 * s * rule)}" height="${f2(8 * s)}" rx="${f2(4 * s)}" fill="${p.accent}"/>` + text(p.kicker, x, y0 + 52 * s, { size: 30 * s, weight: 800, fill: p.accent, ls: 2 * s, op: rule });
-  let wi = 0; ls.forEach((l, li) => { let xx = x; for (const word of l.split(' ')) { const k = E.hero(seg(u, 0.25 + wi * 0.07, 0.6 + wi * 0.07)); g += text(word, xx, y0 + 90 * s + (li + 0.8) * lh + 18 * s * (1 - k), { size: fs, weight: 800, fill: p.ink, op: k }); xx += measure(word + ' ', fs, { weight: 800 }); wi++; } });
+  /* one <text> per line, one <tspan> per word: the browser spaces the words (no estimated advances), each word fades in on its own time and its line rises once */
+  let wi = 0; ls.forEach((l, li) => { const ws = l.split(' '), k0 = E.hero(seg(u, 0.25 + wi * 0.07, 0.6 + wi * 0.07)), sp = ws.map((w, j) => `<tspan fill-opacity="${f2(E.hero(seg(u, 0.25 + (wi + j) * 0.07, 0.6 + (wi + j) * 0.07)))}">${esc(w)}${j < ws.length - 1 ? ' ' : ''}</tspan>`).join('');
+    g += `<text x="${f2(x)}" y="${f2(y0 + 90 * s + (li + 0.8) * lh + 18 * s * (1 - k0))}" font-family="${esc(FONT)}" font-size="${f2(fs)}" font-weight="800" fill="${p.ink}" xml:space="preserve">${sp}</text>`; wi += ws.length; });
   return `<g opacity="${f2(1 - L.out)}">${g}</g>`;
 }
 
