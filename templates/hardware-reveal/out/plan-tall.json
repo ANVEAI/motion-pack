@@ -7431,7 +7431,7 @@
    "dur": 7.2,
    "type": "type/charRise",
    "x": 540,
-   "y": 389,
+   "y": 434,
    "size": 120,
    "anchor": "middle",
    "color": "#F4F6FA",
@@ -7444,7 +7444,7 @@
    "dur": 6.4,
    "type": "type/blurIn",
    "x": 540,
-   "y": 469,
+   "y": 514,
    "size": 44,
    "anchor": "middle",
    "color": "#9AA3B2",
@@ -7730,9 +7730,9 @@
    ],
    "box": [
     238,
-    291,
+    336,
     842,
-    418
+    463
    ],
    "fontPx": 120,
    "role": "headline",
@@ -7747,9 +7747,9 @@
    ],
    "box": [
     257,
-    433,
+    478,
     823,
-    480
+    525
    ],
    "fontPx": 44,
    "role": "read",

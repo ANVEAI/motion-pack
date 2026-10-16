@@ -51,7 +51,7 @@ export function buildPlan(C) {
   const cue = (id, t, why, extra = {}) => { if (id) cues.push({ id, t: frameT(t, fps), why, ...extra }); };
   const title = (id, text, at, dur, preset, pos, role = 'read') => { titles.push({ id, text, at: +at.toFixed(4), dur: +dur.toFixed(4), type: preset, ...pos }); texts.push({ id, text, t: [+at.toFixed(3), +(at + dur).toFixed(3)], box: textBox(text, pos.x, pos.y, pos.size, pos.anchor || 'start'), fontPx: Math.round(pos.size), role, fg: pos.color || B.ink }); };
   const it = sec.intro, tb = sec.table, he = sec.hero, en = sec.end;
-  const nameY = A.tall ? S.y0 + 120 * s : S.y0 + 150 * s;
+  const nameY = A.tall ? S.y0 + 165 * s : S.y0 + 150 * s;
   title('title', T.title, it.t0 + 0.3, it.dur - 0.5, C.type.title, { x: W / 2, y: nameY, size: (A.tall ? 112 : 120) * s, anchor: 'middle', color: B.ink, weight: 800 }, 'headline');
   title('sub', T.sub, it.t0 + 0.9, it.dur - 1.1, C.type.sub, { x: W / 2, y: nameY + 76 * s, size: 44 * s, anchor: 'middle', color: B.muted, weight: 600 });
   cue(C.sfx.intro, it.t0 + 0.05, 'the band lights on the first frame');

@@ -104,3 +104,7 @@ templates/spec-sheet/out/*.mp4
 templates/spec-sheet/out/*.sig
 templates/spec-sheet/out/media-*
 templates/spec-sheet/tall/assets/
+templates/hardware-*/index.html
+templates/hardware-*/tall/index.html
+templates/spec-sheet/index.html
+templates/spec-sheet/tall/index.html

@@ -97,7 +97,7 @@ export function buildPlan(C) {
   cue(C.sfx.sweep, sw.t0 + 0.4 + (sw.dur - 0.7) * 0.45, 'the glint at its brightest (the sweep sound peaks on its anchor)');
   /* ---- 3. THE REVEAL on the drop: the cut IS the light; the band ignites; the name ---- */
   const rv = sec.reveal; cue(C.sfx.reveal, rv.t0, 'REVEAL: one deep sub hit on the drop frame (tier 1)'); cue(C.sfx.led, rv.t0 + 0.1, 'the LED band ignites left to right');
-  const nameY = A.tall ? S.y0 + 120 * s : S.y0 + 150 * s, nameS = (A.tall ? 120 : 132) * s;
+  const nameY = A.tall ? S.y0 + 165 * s : S.y0 + 150 * s, nameS = (A.tall ? 120 : 132) * s;
   title('reveal', T.reveal, rv.t0 + 0.55, rv.dur - 0.8, C.type.title, { x: W / 2, y: nameY, size: nameS, anchor: 'middle', color: B.ink, weight: 800 }, 'headline');
   title('revealSub', T.revealSub, rv.t0 + 1.4, rv.dur - 1.6, C.type.sub, { x: W / 2, y: nameY + 80 * s, size: 44 * s, anchor: 'middle', color: B.muted, weight: 600 });
   cue(C.sfx.name, rv.t0 + 0.55, 'the name lands (one chime)');
