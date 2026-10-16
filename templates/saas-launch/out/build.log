@@ -1,0 +1,4 @@
+/Users/adarshkant/Developer/mp-xp-saas/templates/saas-launch/out/plan.json 111 cues, 14 shots, 60s proof ok tx ok {"shots":14,"asl":4.29,"longest":4,"pass":true}
+/Users/adarshkant/Developer/mp-xp-saas/templates/saas-launch/assets/media/mix.wav via music mixer, bed music/bed_corporate_bright_loop8 LUFS-I -14.01 TP -2.5 cues 111
+/Users/adarshkant/Developer/mp-xp-saas/templates/saas-launch/index.html 14 scenes, 111 cues, 60 s, 16:9 todo: none
+render: (cd templates/saas-launch && npx -y hyperframes@0.8.142 render . -o out/saas-launch-60.mp4 --crf 23)

@@ -170,7 +170,8 @@ const commandBar = { tags: ['ui', 'command', 'palette', 'search', 'keyboard', 's
     const T = th(p), s = unit(c) * num(p.scale, 1), u = L.u, [x, y, w] = box4(p.box, c), tm = commandTimes(p), q = typed(p.query ?? '', u, tm.typeAt, Math.max(1, num(p.cps, 12))).toLowerCase();
     const all = list(p.items), shown = all.filter((it) => !q || String(it.label).toLowerCase().includes(q)), rowH = 64 * s, inH = 84 * s, n = Math.min(7, shown.length);
     const hk = springTrack(u, [[0, Math.min(7, all.length)], [tm.typeAt + 0.05, n]], 'ui'), H = inH + 16 * s + Math.max(0, hk) * rowH + 14 * s, k = spring(u, 'ui');
-    const closing = p.close ? E.exit(seg(u, tm.enterAt + 0.28, tm.enterAt + 0.5)) : 0, sc = lerp(0.96, 1, k) * (1 - 0.04 * closing), o = clamp(k * 1.6) * (1 - closing) * (1 - L.out);
+    const closing = p.close ? E.exit(seg(u, tm.enterAt + 0.28, tm.enterAt + 0.5)) : 0; if (closing >= 1) return '';   // closed: nothing left to draw
+    const sc = lerp(0.96, 1, k) * (1 - 0.04 * closing), o = clamp(k * 1.6) * (1 - closing) * (1 - L.out);
     const sel = clamp(Math.round(num(p.select, 0)), 0, Math.max(0, n - 1)), hl = springTrack(u, [[0, 0], [tm.selectAt, sel]], 'ui'), flash = u >= tm.enterAt ? 1 - seg(u, tm.enterAt, tm.enterAt + 0.3) : 0, id = 'cmd';
     const fsz = 30 * s, typing = u >= tm.typeAt && u < tm.typeEnd + 0.1, input = q ? text(typed(p.query ?? '', u, tm.typeAt, Math.max(1, num(p.cps, 12))), x + 76 * s, y + inH / 2 + 10 * s, { size: fsz, weight: 600, fill: T.ink }) : text(p.placeholder, x + 76 * s, y + inH / 2 + 10 * s, { size: fsz, weight: 500, fill: T.muted });
     const cx = x + 76 * s + (q ? measure(typed(p.query ?? '', u, tm.typeAt, Math.max(1, num(p.cps, 12))), fsz, { weight: 600 }) : 0) + 3 * s, caretOn = typing || Math.floor(u * 2) % 2 === 0;
