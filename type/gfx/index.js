@@ -18,7 +18,6 @@ import { SAAS, SAAS_CUES } from './ui-saas.js'; import { SAAS2, SAAS2_CUES } fro
 /* round 4+5 (ui-proof.js, ui-trace.js): the ui.* ones join the UI kit (uiCues); chart.*, caption.*, type.* and lowerThird.* ones get per-action cues through gfxCues */
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
 const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45), ...onlyUI(R6) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES), ...onlyUI(R6_CUES) }; import { DOC } from './doc.js';
-Object.assign(UI, onlyUI(SAAS), onlyUI(SAAS2)); Object.assign(UI_CUES, onlyUI(SAAS_CUES), onlyUI(SAAS2_CUES));   /* xp-saas: the ui.* SaaS parts join the UI kit (uiCues) */
 import { SWAP, SWAP_CUES } from './swap.js'; import { TYPE_R45, TYPE_R45_CUES } from './r45-type.js'; import { GLYPH_R45, GLYPH_R45_CUES, ELECTRIC_SOUND } from './r45-glyph.js'; import { BADGES, BADGE_CUES } from './badges.js'; import { BRAND_LAYOUTS, BRAND_CUES } from './brand.js';
 export { stepAt, mixHex } from './swap.js'; export { selectionZoom, selectionZoomCss } from './badges.js'; export { CIRCLE4, SPARK4, PLATES } from './brand.js';
 export { PARTNER_MARKS, MERGE_ICONS, lintPartnerMarks, inkFromMask, markFromImage, partnerLockupLayout, iconMergeFit, iconMergeState, flankBox, flankFitK, lintFlank, flankShots, flankState, srcAt, figurePlate } from './r45-type.js';
@@ -103,7 +102,7 @@ uiHooks.renderInner = renderInner;
 /* per-action sound cues for every gfx id that has them (the ui.* kit and the round-3 parts): [{ t (absolute s), id: 'sfx/<cat>/<name>', why }];
    ids without an action table fall back to their single sfxFor() default at `at` + offset. */
 const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES };
-Object.assign(ACTION_CUES, SAAS_CUES, SAAS2_CUES);   /* xp-saas: per-action cues for callout.highlightBox, callout.arrowLabel, device.mock (the ui.* ones go through uiCues) */
+Object.assign(ACTION_CUES, SAAS_CUES, SAAS2_CUES);   /* xp-saas: per-action cues for every SaaS part (gfxCues; they stay out of the round-1 UI kit table that ui.test.mjs pins) */
 export function gfxCues(id, { at = 0, params = {}, dur } = {}) {
   if (UI_CUES[id]) return uiCues(id, { at, params }); const g = GFX[id], f = ACTION_CUES[id];
   if (g && f) return f({ ...g.d, dur: dur ?? g.dur, ...params }).map((c) => ({ ...c, t: +(c.t + at).toFixed(4) }));

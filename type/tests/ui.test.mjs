@@ -36,7 +36,8 @@ check('springTrack works element-wise on arrays ([x, y] positions, RGB)', Math.a
 
 /* ---------- 2. UI kit ---------- */
 /* the round 4+5 ui.* parts (ui-proof.js, ui-trace.js, ui.promptBar.attach) are covered by tests/r45ui.test.mjs; the round-6 ones (ui.dockLaunch, ui.connectRows) by tests/r6.test.mjs */
-const R45UI = ['ui.branchTrace', 'ui.dataTable', 'ui.costTicker', 'ui.promptBar.attach', 'ui.dockLaunch', 'ui.connectRows'], UIIDS = Object.keys(GFX).filter((k) => k.startsWith('ui.') && !R45UI.includes(k));
+const SAASUI = Object.keys(GFX).filter((k) => /ui-saas2?\.js$/.test(GFX[k].file || ''));   // xp-saas parts: tested in type/tests/saas.test.mjs
+const R45UI = ['ui.branchTrace', 'ui.dataTable', 'ui.costTicker', 'ui.promptBar.attach', 'ui.dockLaunch', 'ui.connectRows', ...SAASUI], UIIDS = Object.keys(GFX).filter((k) => k.startsWith('ui.') && !R45UI.includes(k));
 const HERO = { 'ui.agentActivity': 1.75, 'ui.promptBar': 1.95, 'ui.checklist': 1.75, 'ui.nodeGraph': 2.9, 'ui.scanOverlay': 1.1, 'ui.isometricTilt': 1.4, 'ui.stateMorph': 6.1,
   'ui.liveTranscript': 4.9, 'ui.wordRegenerate': 3.1, 'ui.receiptCompare': 2.9, 'ui.failoverRoute': 2.75, 'ui.fileChip': 1.5, 'ui.pageFlythrough': 2.3, 'ui.tabPillNav': 2.1, 'ui.windowWall': 2.6, 'ui.optionPicker': 2.2 };
 check(`16 ui ids registered in GFX (${UIIDS.join(', ')})`, UIIDS.length === 16 && Object.keys(HERO).every((k) => UIIDS.includes(k)));
