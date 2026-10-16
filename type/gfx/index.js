@@ -14,7 +14,8 @@ import { EDITORIAL } from './editorial.js'; import { CALLOUTS } from './callouts
 import { KINETIC } from './kinetic.js'; import { COLLAGE } from './collage.js';
 import { life, ctxFor } from './core.js'; import { saneParams } from './safe.js'; import { GFX_LIM } from './limits.js'; import { UI as UI1, UI_CUES as UI1_CUES, hooks as uiHooks } from './ui.js'; import { UI2, UI2_CUES } from './ui-data.js'; import { UI3, UI3_CUES } from './ui-nav.js';
 import { PROOF, PROOF_CUES } from './ui-proof.js'; import { TRACE, TRACE_CUES } from './ui-trace.js'; import { R6, R6_CUES } from './r6.js';
-import { HW_GFX, HW_CUES } from './hw.js';   // xp-hardware 2026-10-16: hw.specCallout, hw.dimensionLine, hw.chipDie, hw.edgeGlint, hw.dateCard, hw.specCard
+import { HW_GFX, HW_CUES } from './hw.js';
+import { EXPLAIN, EXPLAIN_CUES } from './explain.js'; import { EXPLAIN_DATA, EXPLAIN_DATA_CUES } from './explain-data.js'; import { EXPLAIN_LIM } from './explain-lim.js'; Object.assign(GFX_LIM, EXPLAIN_LIM);   /* xp-explainer 2026-10-16: diagram.*, chart.story, map.hexTile, callout.datum, counter.hero, layout.scrolly, process.*, title.takeaway, chart.sourceFooter */   // xp-hardware 2026-10-16: hw.specCallout, hw.dimensionLine, hw.chipDie, hw.edgeGlint, hw.dateCard, hw.specCard
 /* round 4+5 (ui-proof.js, ui-trace.js): the ui.* ones join the UI kit (uiCues); chart.*, caption.*, type.* and lowerThird.* ones get per-action cues through gfxCues */
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
 const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45), ...onlyUI(R6) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES), ...onlyUI(R6_CUES) }; import { DOC } from './doc.js';
@@ -30,8 +31,9 @@ export { BOARD, BOARD_D, boardAt, drawBoard, mountBoard } from './board.js';
 export { PIN_LAYOUTS, homography, matrix3d, cornersAt, lintQuad, drawQuad, mountPin } from './cornerpin.js';
 export { LAYOUTS, layoutAt, applyLayout } from './layout.js'; export { prepareDrawOn, drawOnAt, trimAt, bindDrawOn, drawAttrs } from './drawon.js';
 export { STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource };
-export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN, ...HW_GFX };
+export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN, ...HW_GFX, ...EXPLAIN, ...EXPLAIN_DATA };
 export { fmtNum, pointAt as hwPointAt, dieBlocks } from './hw.js';
+export { fmtNumber, fmtAxis, groupDigits, compactParts, LOCALES } from './numfmt.js'; export { parseGraph, layoutGraph, edgeKey } from './graph.js'; export { chartGeom, datumXY, niceDomain, hexLayout, footerSVG } from './explain-data.js'; export { diagramTimes, camAt, scrollyGeom, stepActive, wrap as wrapText } from './explain.js'; export { ICONS, ICON_NAMES, iconSVG } from './explain-icons.js';
 export const GFX_IDS = Object.keys(GFX);
 /* default sound pairing per gfx id prefix (sfx/<category>/<name>, anchor = the item's at + 1 frame, gain over the bed). Longest prefix wins. */
 export const GFX_SFX = {
@@ -70,7 +72,10 @@ export const GFX_SFX = {
   'ui.waveform': ['sfx/ui/blip', 0, -10], 'title.locationCard': ['sfx/whoosh/swish_s', 0, -3], 'title.yearTimeline': ['sfx/ui/slide', 0, -4], 'caption.pullQuote': ['sfx/paper/flip', 3, -4], 'ui.quizCard': ['sfx/ui/pop', 1, -3],
   'title.recapCard': ['sfx/ui/pop', 15, -4], 'title.hookCard': ['sfx/hit/soft', 0, -2], 'title.endScreen': ['sfx/whoosh/whoosh_in_m', 0, -3], 'callout.resultReveal': ['sfx/tx/mask_reveal', 0, -3], 'title.stepCard': ['sfx/whoosh/whoosh_in_m', 0, -3],
   /* xp-hardware (2026-10-16): hw.js; gfxCues gives one cue per action */
-  hw: ['sfx/hw/click_detent', 1, -3], 'hw.dateCard': ['sfx/hit/soft', 4, -2], 'hw.edgeGlint': ['sfx/hw/light_sweep', 18, -4], 'hw.chipDie': ['sfx/hw/led_on', 10, -3] };
+  hw: ['sfx/hw/click_detent', 1, -3], 'hw.dateCard': ['sfx/hit/soft', 4, -2], 'hw.edgeGlint': ['sfx/hw/light_sweep', 18, -4], 'hw.chipDie': ['sfx/hw/led_on', 10, -3],
+  /* xp-explainer (2026-10-16): explain.js + explain-data.js; gfxCues gives one cue per action */
+  diagram: ['sfx/ui/pop', 1, -3], 'diagram.flow': ['sfx/whoosh/swish_s', 0, -4], 'chart.story': ['sfx/ui/count_run', 1, -3], 'chart.sourceFooter': ['sfx/ui/blip', 0, -12], 'callout.datum': ['sfx/ui/pop', 1, -3], 'map.hexTile': ['sfx/sparkle/shimmer', 3, -4],
+  'counter.hero': ['sfx/ui/count_run', 1, -2], 'layout.scrolly': ['sfx/ui/slide', 0, -4], 'title.takeaway': ['sfx/hit/soft', 0, -2], process: ['sfx/ui/count_tick', 1, -4], 'process.beforeAfter': ['sfx/tx/mask_reveal', 0, -3] };
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 /* def ids are document-wide: every <svg> of every host in a page shares one id namespace, and url(#id) resolves to the FIRST match. Parts used to name their defs by hand ('lc' / 'lg' in chart.line, 'neon', 'odo',
    'dsScrim') or by a hash of a few params (uidOf: no `at`, most params missing), so two items in one host (two chart.line items; two ui.stateMorph with the same text at different times) shared a def and the second
@@ -103,7 +108,7 @@ export function uiCues(id, { at = 0, params = {} } = {}) { const g = UI[id], f =
 uiHooks.renderInner = renderInner;
 /* per-action sound cues for every gfx id that has them (the ui.* kit and the round-3 parts): [{ t (absolute s), id: 'sfx/<cat>/<name>', why }];
    ids without an action table fall back to their single sfxFor() default at `at` + offset. */
-const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES, ...HUMAN_CUES, ...HW_CUES };
+const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES, ...HUMAN_CUES, ...HW_CUES, ...EXPLAIN_CUES, ...EXPLAIN_DATA_CUES };
 export function gfxCues(id, { at = 0, params = {}, dur } = {}) {
   if (UI_CUES[id]) return uiCues(id, { at, params }); const g = GFX[id], f = ACTION_CUES[id];
   if (g && f) return f({ ...g.d, dur: dur ?? g.dur, ...params }).map((c) => ({ ...c, t: +(c.t + at).toFixed(4) }));
