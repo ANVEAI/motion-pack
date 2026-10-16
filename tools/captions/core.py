@@ -10,6 +10,7 @@ An event: {start, end, lines: [str], kind: speech|sound|music, speaker, words, p
 import json
 import math
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -245,8 +246,9 @@ def sfx_desc(sid):
             _SFX = {}
     key = 'snd.' + '.'.join(sid.split('/')[1:]) if sid.startswith('sfx/') else sid
     d = _SFX.get(key, '')
-    head = d.split(':')[0].strip() if d else sid.split('/')[-1].replace('_', ' ')
-    return head.lower()
+    head = re.split(r'[:;,(]', d)[0].strip() if d else sid.split('/')[-1].replace('_', ' ')
+    words = head.lower().split()
+    return ' '.join(words[:4])                                            # a tag names the sound in a few words; the manifest desc says more
 
 
 def music_desc(mid):
