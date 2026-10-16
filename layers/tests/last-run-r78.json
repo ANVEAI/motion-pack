@@ -1,6 +1,6 @@
 {
  "name": "layers xp-r78",
- "total": 55,
+ "total": 56,
  "failed": 0,
  "rows": [
   {
@@ -90,6 +90,11 @@
   },
   {
    "label": "the clouds move: the density at one point changes over 20 s of drift, and lies in 0..1 over a grid",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "the light follows the sun: moving the sun from the left to the right or taking it away changes the shading of the clouds (not their coverage)",
    "pass": true,
    "detail": ""
   },
@@ -269,7 +274,7 @@
    "detail": ""
   },
   {
-   "label": "skyClouds (dunes + clouds) at 1080p (includes the 1 px read-back): 34.9 ms per frame (budget 400 ms)",
+   "label": "skyClouds (dunes + clouds) at 1080p (includes the 1 px read-back): 31.8 ms per frame (budget 400 ms)",
    "pass": true,
    "detail": ""
   },
