@@ -72,4 +72,17 @@ ok('die table: the 3D die and the 2D die part agree', JSON.stringify(dieLayout({
 ok('fmtNum: fixed grouping, no locale', fmtNum(1234567.891, 2) === '1,234,567.89' && fmtNum(-999, 0) === '-999' && fmtNum(NaN, 1) === '0.0');
 ok('pointAt: a composition-time track is linear between keys and held at the ends', JSON.stringify(hwPointAt([[1, 0.2, 0.3], [2, 0.4, 0.5]], 1.5)) === JSON.stringify([0.30000000000000004, 0.4]) && hwPointAt([[1, 0.2, 0.3]], 9)[0] === 0.2);
 { const L = nodeLayout({ w: 1.2, ports: ['power', 'net', 'nope'] }); ok('hwdata: unknown port kinds are dropped, dims follow the spec (1 unit = 250 mm)', L.ports.length === 2 && L.dims.w_mm === 300); }
+/* the shot director: every kind gives a finite camera and state; the moves do what their names say */
+{ const { director, SHOT_KINDS } = await import(path.join(PACK, 'objects/lib/hwshots.js'));
+  const shots3d = SHOT_KINDS.map((kind, i) => ({ id: 's' + i, kind, t0: i * 6, dur: 6, p: {} })), D = director({ aspect: 'wide', shots3d }), fin = (v) => Array.isArray(v) ? v.every(fin) : typeof v === 'object' && v ? Object.values(v).every(fin) : typeof v !== 'number' || Number.isFinite(v);
+  ok('director: every kind gives a finite camera and state at 5 times', SHOT_KINDS.every((k, i) => [0, 1.5, 3, 4.5, 5.9].every((u) => { const t = i * 6 + u, c = D.cameraAt(t), S = D.stateAt(t); return fin(c) && fin(S.pose) && fin(S.lights) && S.kind === k; })));
+  const at = (k, u) => D.stateAt(SHOT_KINDS.indexOf(k) * 6 + u);
+  ok('director: silhouette is edge light only (no top, no key)', at('silhouette', 3).lights.top === 0 && at('silhouette', 3).lights.key === 0 && at('silhouette', 3).lights.edge > 1);
+  ok('director: the sweep strip travels', at('sweep', 1).lights.sweep < at('sweep', 5).lights.sweep);
+  ok('director: the hero turns and its band ignites', at('hero', 5).pose.yaw > at('hero', 0.5).pose.yaw && at('hero', 0.02).bandSweep < 0.1 && at('hero', 1).bandSweep === 1);
+  ok('director: the explode lifts the device and opens the parts', at('explode', 3).pose.p[1] > 0.5 && at('explode', 3).explode.top.off[1] > 0.5 && at('explode', 0.05).explode.top.k === 0);
+  ok('director: the ports cable goes in, the scale props show', at('ports', 1).cable < at('ports', 5).cable && at('ports', 5).cable === 1 && at('scale', 2).show.laptop && at('ports', 2).show.cable);
+  ok('director: inside turns to x-ray, then lifts the cooling and lights the die', at('inside', 0.1).xray < 0.1 && at('inside', 3).xray === 1 && at('inside', 5.5).die === 1 && at('inside', 5.9).dieGlow > 0.8 && at('inside', 5).explode.heatsink.off[1] > 1);
+  ok('director: tall gets its own cameras', JSON.stringify(director({ aspect: 'tall', shots3d }).cameraAt(9)) !== JSON.stringify(D.cameraAt(9)));
+  ok('director: px() of the band on a hero frame lands in frame', (() => { const q = D.px('band', SHOT_KINDS.indexOf('hero') * 6 + 2); return q && q[0] > 0 && q[0] < 1 && q[1] > 0 && q[1] < 1; })()); }
 console.log(`\nhardware templates: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

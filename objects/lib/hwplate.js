@@ -36,9 +36,8 @@ export async function runHwPlate(P) {
       st.laptop = makeLaptop(ctx, G, { color: '#9da1a8' }); st.laptop.pose([1.55, 0, 0.12], -0.18); st.laptop.set({ open: 0.92, screen: 0.0 });
       st.mug = makeMug(ctx, G, {}); st.mug.group.position.set(-0.95, 0, 0.42);
       const p1 = L.ports[1] || L.ports[0];
-      st.cable = makeCable(ctx, G, { from: [-p1.x + 0.4, 0.0, -1.7], to: [-p1.x, p1.y + L.foot, -L.spec.d / 2 - 0.006], dir: [0, 0, 1], plug: p1.kind, color: '#1a1b1f' });
-      st.xray = makeXray(ctx, st.node.parts.shell, { color: P.accent || '#5cc8ff', ghost: 0.06 });
-      st.xrayTop = makeXray(ctx, st.node.parts.top, { color: P.accent || '#5cc8ff', ghost: 0.06 });
+      st.cable = makeCable(ctx, G, { from: [p1.x + 0.4, 0.0, -1.7], to: [p1.x, p1.y + L.foot, -L.spec.d / 2 - 0.006], dir: [0, 0, 1], plug: p1.kind, color: '#1a1b1f' });
+      st.xray = makeXray(ctx, [st.node.parts.shell, st.node.parts.top], { color: P.accent || '#5cc8ff', ghost: 0.06 });   // ONE plane over the shell and the top (they share a material)
       ctx.probes = { shell: st.node.probes.shell, band: st.node.probes.band };
     },
     update(ctx, t, n, slot) {
@@ -50,7 +49,7 @@ export async function runHwPlate(P) {
       if (st.photo) { st.photo.group.visible = usePhoto; st.photo.pose([0, S.pose.p[1], 0], 0); }
       st.node.pose(S.pose.p, S.pose.yaw);
       st.node.set({ band: S.band, bandSweep: S.bandSweep, explode: S.explode, die: S.die, dieGlow: S.dieGlow, fanSpin: S.fanSpin, accent: P.accent, cardGlow: S.kind === 'explode' || S.kind === 'inside' ? 0.8 : 0 });
-      const wire = S.xray ?? 0; st.xray.set(1 - wire); st.xrayTop.set(1 - wire);
+      const wire = S.xray ?? 0; st.xray.set(1 - wire);
       for (const k of ['desk', 'laptop', 'mug']) { const o = st[k].group || st[k]; o.visible = !!S.show[k]; }
       st.cable.group.visible = !!S.show.cable; if (S.show.cable) st.cable.set({ insert: S.cable });
     },

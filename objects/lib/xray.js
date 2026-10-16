@@ -1,5 +1,5 @@
 /* motion-pack/objects/lib/xray.js (xp-hardware, 2026-10-16): the X-RAY / WIREFRAME-TO-SOLID transition for any object (a procedural prop or a loaded GLB).
-     const X = makeXray(ctx, root, { axis: 'y', color: '#5cc8ff', angle: 24 });   X.set(k)   (k 0 = all wireframe, 1 = all solid; a pure function of k)
+     const X = makeXray(ctx, root | [roots], { axis: 'y', color: '#5cc8ff', angle: 24 });   X.set(k)   (k 0 = all wireframe, 1 = all solid; a pure function of k)
    How: every mesh under `root` gets an edge outline (EdgesGeometry, crease angle `angle` degrees) as an unlit line child; one world-space clipping plane sweeps
    along `axis` across the object's bounding box: below the plane the solid draws, above it the outline, and a thin glowing scan band rides the plane
    (MeshBasic + its bloom twin, the kit's emissive contract). Lines are not in ctx.ALL, so the kit's bloom pass draws them with their own colour: they glow.
@@ -14,7 +14,7 @@ export function makeXray(ctx, root, o = {}) {
   const solidPlane = new THREE.Plane(ax.clone().negate(), 0), wirePlane = new THREE.Plane(ax.clone(), 0);
   const lineM = new THREE.LineBasicMaterial({ color: ctx.emis(o.color, 1.0), transparent: true, opacity: 0.95, clippingPlanes: [wirePlane], depthWrite: false });
   const ghostM = new THREE.MeshBasicMaterial({ color: ctx.emis(o.color, 0.08), transparent: true, opacity: o.ghost, depthWrite: false, clippingPlanes: [wirePlane], side: THREE.DoubleSide });
-  const meshes = []; root.updateMatrixWorld(true); root.traverse((m) => { if ((m.isMesh || m.isInstancedMesh) && !m.userData.xraySkip) meshes.push(m); });
+  const roots = Array.isArray(root) ? root : [root], meshes = []; for (const r of roots) r.updateMatrixWorld(true); for (const r of roots) r.traverse((m) => { if ((m.isMesh || m.isInstancedMesh) && !m.userData.xraySkip) meshes.push(m); });
   const lines = [], ghosts = [], seen = new Map();
   for (const m of meshes) {
     const mats = Array.isArray(m.material) ? m.material : [m.material];
@@ -26,7 +26,7 @@ export function makeXray(ctx, root, o = {}) {
   }
   // the scan band: a thin emissive slab spanning the bounding box at the plane
   const bb = new THREE.Box3(), size = new THREE.Vector3(), ctr = new THREE.Vector3();
-  const measure = () => { root.updateMatrixWorld(true); bb.setFromObject(root, false); bb.getSize(size); bb.getCenter(ctr); return [bb.min.dot(ax), bb.max.dot(ax)]; };   // world box at the CURRENT pose (call set() after posing)
+  const measure = () => { bb.makeEmpty(); for (const r of roots) { r.updateMatrixWorld(true); bb.expandByObject(r, false); } bb.getSize(size); bb.getCenter(ctr); return [bb.min.dot(ax), bb.max.dot(ax)]; };   // world box at the CURRENT pose (call set() after posing)
   let [lo, hi] = measure();
   const bandM = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }), bandB = new THREE.MeshBasicMaterial({ color: 0x000000 });
   const band = ctx.add(ctx.scene, new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), bandM), { recv: false, bloom: bandB, name: 'xray.band' }); band.userData.xraySkip = true;

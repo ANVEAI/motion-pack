@@ -13,13 +13,18 @@ const HW = path.dirname(new URL(import.meta.url).pathname), PACK = path.resolve(
 const sha = (o) => crypto.createHash('sha256').update(typeof o === 'string' ? o : JSON.stringify(o)).digest('hex').slice(0, 16);
 function freeGiB() { try { const l = execFileSync('df', ['-k', PACK]).toString().trim().split('\n').pop().split(/\s+/); return Number(l[3]) / 1048576; } catch { return -1; } }
 
-export async function makeHw(DIR, { name } = {}) {
+/* the cues.mjs arguments of this build (the plan's name follows the aspect): a template's make.mjs runs runPlan(DIR, planArgs()) itself, FIRST, so the lint gate is visible in it */
+export function planArgs(argv = process.argv.slice(2)) {
+  let tall = false; for (let i = 0; i < argv.length; i++) if (argv[i] === '--set' && /^aspect=9:16$/.test(argv[i + 1] || '')) tall = true;
+  return [...argv.filter((a) => !['--plates', '--no-plate'].includes(a)), '--name', tall ? 'plan-tall' : 'plan'];
+}
+export async function makeHw(DIR, { name, planned = false } = {}) {
   const argv = process.argv.slice(2), OUT = path.join(DIR, 'out'), tmpl = name || path.basename(DIR); fs.mkdirSync(OUT, { recursive: true });
   const { CONFIG } = await import(path.join(DIR, 'config.mjs')); const C = structuredClone(CONFIG);
   for (let i = 0; i < argv.length; i++) if (argv[i] === '--set') { const [k, ...r] = argv[++i].split('='), v = r.join('='); let o = C; const ks = k.split('.'); try { for (const q of ks.slice(0, -1)) o = o[q]; o[ks.at(-1)] = v === 'null' ? null : v !== '' && !isNaN(+v) ? +v : v; } catch (e) { console.error(`make.mjs: cannot --set ${k}: not a field of CONFIG`); process.exit(2); } }
   const tall = C.aspect === '9:16', tag = tall ? '-tall' : '', planName = 'plan' + tag, PROJ = tall ? path.join(DIR, 'tall') : DIR; fs.mkdirSync(PROJ, { recursive: true });
   /* 1. the plan (the lint gates) */
-  runPlan(DIR, [...argv.filter((a) => !['--plates', '--no-plate'].includes(a)), '--name', planName]);
+  if (!planned) runPlan(DIR, planArgs(argv));
   const plan = JSON.parse(fs.readFileSync(path.join(OUT, planName + '.json'), 'utf8')), F = plan.fps, W = plan.W, H = plan.H, T = plan.seconds;
   /* 2. the plate */
   const key = plan.plate.aspect, plateJson = path.join(OUT, `plate-${key}.json`), plateMp4 = path.join(OUT, `plate-${key}.mp4`), plateSig = sha({ p: plan.plate, v: 3 });
