@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>motion-pack saas-feature-drop (9:16): Acme Flow</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #F5F4F0; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F5F4F0; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#root { width: 1080px; height: 1920px; } #stage { z-index: 0; overflow: hidden; } .scene { position: absolute; inset: 0; visibility: hidden; overflow: hidden; } .host { position: absolute; inset: 0; } .host svg { position: absolute; inset: 0; }
+.vw { position: absolute; overflow: hidden; display: none; } .vi { position: absolute; left: 0; top: 0; transform-origin: 0 0; } .vi video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+#fx { pointer-events: none; } #fx canvas { z-index: 5; }
+
+.af{position:relative;width:1440px;height:900px;background:#F6F5F2;font-family:Manrope,sans-serif;color:#14131A;overflow:hidden;display:flex;letter-spacing:-0.01em}
+.af *{box-sizing:border-box}
+.af-side{width:248px;background:#FFFFFF;border-right:1px solid #E6E3EA;padding:26px 18px;display:flex;flex-direction:column;gap:6px}
+.af-ws{display:flex;align-items:center;gap:12px;font-weight:800;font-size:19px;margin:0 6px 22px}
+.af-mk{width:34px;height:34px;border-radius:10px;background:#3B5BFD;color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
+.af-nav{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border-radius:10px;font-weight:600;font-size:17px;color:#55525E}
+.af-nav.on{background:#3B5BFD14;color:#3B5BFD;font-weight:700}
+.af-cnt{font-size:14px;font-weight:700;background:#EFEDF3;color:#55525E;border-radius:20px;padding:2px 9px}
+.af-nav.on .af-cnt{background:#3B5BFD;color:#fff}
+.af-main{flex:1;padding:28px 34px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.af-top{display:flex;align-items:center;justify-content:space-between}
+.af-h1{font-size:30px;font-weight:800;letter-spacing:-0.02em}
+.af-sub{font-size:16px;color:#77737F;font-weight:600;margin-top:4px}
+.af-btn{background:#3B5BFD;color:#fff;font-weight:700;font-size:17px;padding:12px 20px;border-radius:12px;display:flex;align-items:center;gap:8px}
+.af-btn.ghost{background:#FFFFFF;color:#14131A;border:1px solid #E1DEE6}
+.af-btn.hov{box-shadow:0 0 0 5px #3B5BFD33}
+.af-card{background:#FFFFFF;border:1px solid #E6E3EA;border-radius:16px}
+.af-row{display:flex;align-items:center;gap:16px;padding:15px 20px;border-bottom:1px solid #EFEDF2;font-size:17px;font-weight:600}
+.af-row:last-child{border-bottom:0}
+.af-av{width:36px;height:36px;border-radius:18px;display:grid;place-items:center;font-size:15px;font-weight:800;color:#fff;flex:none}
+.af-tag{font-size:14px;font-weight:700;padding:5px 11px;border-radius:20px;white-space:nowrap}
+.af-dim{color:#8A8693;font-weight:600}
+.af-grow{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.af-canvas{flex:1;border-radius:18px;background-color:#FBFAF8;background-image:radial-gradient(circle,#D9D5DE 1.3px,transparent 1.6px);background-size:26px 26px;border:1px solid #E6E3EA;position:relative;overflow:hidden}
+.af-node{position:absolute;width:330px;background:#fff;border:1.5px solid #E1DEE6;border-radius:16px;padding:10px 18px;box-shadow:0 6px 18px rgba(20,18,30,.07)}
+.af-node .k{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8A8693}
+.af-node .t{font-size:19px;font-weight:800;margin-top:4px}
+.af-node .d{font-size:15px;font-weight:600;color:#77737F;margin-top:2px}
+.af-node.hl{border-color:#3B5BFD;box-shadow:0 0 0 5px #3B5BFD22,0 10px 26px rgba(20,18,30,.12)}
+.af-node.run{border-color:#06A260}
+.af-ok{width:22px;height:22px;border-radius:11px;background:#06A260;display:inline-grid;place-items:center;color:#fff;font-size:13px;font-weight:900;vertical-align:-4px}
+.af-kpi{flex:1;padding:20px 22px}
+.af-kpi .v{font-size:38px;font-weight:800;letter-spacing:-0.03em;margin-top:8px}
+.af-m{width:390px;height:844px;background:#F6F5F2;font-family:Manrope,sans-serif;color:#14131A;overflow:hidden;padding:58px 18px 18px;display:flex;flex-direction:column;gap:12px;letter-spacing:-0.01em}
+.af-m *{box-sizing:border-box}
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="20">
+<div id="stage" class="clip" data-start="0" data-duration="20" data-track-index="0">
+<div class="scene" id="S0"><div class="host" id="h0"></div></div>
+<div class="scene" id="S1"><div class="host" id="h1"></div></div>
+<div class="scene" id="S2"><div class="host" id="h2"></div></div>
+<div class="scene" id="S3"><div class="host" id="h3"></div></div>
+<div class="scene" id="S4"><div class="host" id="h4"></div></div>
+<div class="scene" id="S5"><div class="host" id="h5"></div></div>
+</div>
+<div id="fx" class="clip" data-start="0" data-duration="20" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="20" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module">
+import { renderInner, appWindowGeo, deviceScreenGeo } from './assets/mp/type/gfx/index.js';
+import { ctxFor, measure } from './assets/mp/type/gfx/core.js';
+import { applyDom } from './assets/mp/transitions/lib/tx-dom.js';
+import { sceneSVG } from './assets/mp/saas/kit.mjs';
+import { screenHTML, stateAt } from './assets/mp/saas/screens.mjs';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"grain","params":{"stock":"upload-safe"}}], { width: 1080, height: 1920, fps: 30, seed: 7 }), { fps: 30 });
+const PLAN = {"scenes":[{"id":"hook","start":0,"end":2.5,"bg":"paper","grid":1,"heads":[{"text":"Route *all at once*.","at":0.15,"x":80,"y":320,"w":870,"size":104}],"kickers":[{"text":"New in Acme Flow","at":0.05,"x":80,"y":250,"size":30}],"items":[{"id":"ui.appWindow","key":"hookWin","at":0,"screen":{"name":"inbox","keys":[[0,{"select":8,"bulk":1,"calm":0}],[0.05,{"calm":1},1.3]]},"params":{"box":[0.03,0.4,0.94,0.46],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":24,"enter":"none","zoom":[{"t":0,"rect":[0.18,0.08,0.8,0.52]}],"kb":[1.02,1.07]},"dur":3.1}],"under":[],"why":"payoff-first hook: the new thing happening on frame 0"},{"id":"before","start":2.5,"end":6.5,"bg":"paper","grid":1,"heads":[{"text":"Before: one at a *time*.","at":2.55,"x":80,"y":290,"w":870,"size":80}],"kickers":[],"items":[{"id":"ui.appWindow","key":"bWin","at":2.5,"screen":{"name":"inbox","keys":[[0,{"calm":0}],[1,{"calm":0.1},0.15],[2.3000000000000003,{"calm":0.2},0.15],[3.6,{"calm":0.3},0.15]]},"params":{"box":[0.03,0.31,0.94,0.5],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":24,"enter":"none","zoom":[{"t":0,"rect":[0.18,0.08,0.8,0.52]}],"kb":[1,1.03]},"dur":4.6},{"id":"ui.cursorJourney","at":2.5,"params":{"path":[{"t":0.3,"x":0.6,"y":0.75},{"t":0.65,"x":0.85,"y":0.17900000000000002,"hover":[0.79,0.127,0.18,0.084]},{"t":0.9,"x":0.86,"y":0.169,"click":true},{"t":1.9500000000000002,"x":0.85,"y":0.263,"hover":[0.79,0.211,0.18,0.084]},{"t":2.2,"x":0.86,"y":0.253,"click":true},{"t":3.25,"x":0.85,"y":0.34700000000000003,"hover":[0.79,0.29500000000000004,0.18,0.084]},{"t":3.5,"x":0.86,"y":0.337,"click":true}],"size":1.15,"win":{"at":2.5,"dur":4.6,"params":{"box":[0.03,0.31,0.94,0.5],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":24,"enter":"none","zoom":[{"t":0,"rect":[0.18,0.08,0.8,0.52]}],"kb":[1,1.03]}}},"dur":4.6}],"under":[],"why":"the pain the feature removes, at its real slow rhythm"},{"id":"after","start":6.5,"end":11.5,"bg":"paper","grid":1,"heads":[{"text":"Now: select, then *route*.","at":6.55,"x":80,"y":290,"w":870,"size":80}],"kickers":[],"items":[{"id":"ui.appWindow","key":"aWin","at":6.5,"screen":{"name":"inbox","keys":[[0,{"select":0,"calm":0,"bulk":0}],[0.6,{"select":1},0.05],[1.5,{"select":8,"bulk":1},0.5],[2.75,{"calm":1},1]]},"params":{"box":[0.03,0.31,0.94,0.5],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":24,"enter":"none","zoom":[{"t":0,"rect":[0.18,0.08,0.8,0.52]}],"kb":[1,1.03]},"dur":5.6},{"id":"ui.cursorJourney","at":6.5,"params":{"path":[{"t":0.2,"x":0.5,"y":0.7},{"t":0.6,"x":0.219,"y":0.169,"click":true},{"t":1.5,"x":0.219,"y":0.7570000000000001,"click":true},{"t":2.4,"x":0.895,"y":0.078,"hover":[0.83,0.036,0.15,0.064]}],"size":1.15,"win":{"at":6.5,"dur":5.6,"params":{"box":[0.03,0.31,0.94,0.5],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":24,"enter":"none","zoom":[{"t":0,"rect":[0.18,0.08,0.8,0.52]}],"kb":[1,1.03]}}},"dur":5.6},{"id":"ui.shortcutChip","at":8.4,"dur":1.4,"params":{"keys":["⇧","⌘","R"],"label":"Route selected","pos":[0.5,0.74],"pressAt":0.55,"stagger":0.07,"size":1.05,"stack":false,"plate":true}},{"id":"ui.notifyStack","at":10.3,"params":{"pos":[0.08,0.33],"width":0.84,"max":1,"accent":"#3B5BFD","app":"Acme Flow","items":[{"at":0,"title":"Routed together","body":"Each request went to its team","icon":"branch"}]},"dur":1.8}],"under":[],"why":"the new way: select, one shortcut, everything at once"},{"id":"compare","start":11.5,"end":15,"bg":"paper","grid":1,"heads":[{"text":"Same inbox. *One move.*","at":11.55,"x":80,"y":290,"w":870,"size":80}],"kickers":[],"items":[{"id":"ui.beforeAfterSplit","at":11.55,"screens":{"before":{"name":"inbox","keys":[[0,{"calm":0.3}]]},"after":{"name":"inbox","keys":[[0,{"calm":1}]]}},"params":{"box":[0.04,0.31,0.92,0.48],"accent":"#3B5BFD","before":{"label":"Before"},"after":{"label":"Now"},"keys":[[0.2,1],[1,0.1],[1.8,0.5]],"screen":{"anchor":[0.62,0]}},"dur":4.05}],"under":[],"why":"the two ways on one screen"},{"id":"shortcut","start":15,"end":17,"bg":"soft","grid":0,"heads":[],"kickers":[],"items":[{"id":"ui.shortcutChip","at":15.05,"params":{"keys":["⇧","⌘","R"],"label":"Route selected","pos":[0.5,0.44],"pressAt":0.35,"stagger":0.12,"size":1.8,"stack":true,"accent":"#3B5BFD"},"dur":2.55}],"under":[],"why":"the one thing to remember: the keys"},{"id":"cta","start":17,"end":20,"bg":"paper","grid":0,"heads":[],"kickers":[],"items":[],"under":[],"card":{"at":17.05,"unit":1.2,"stack":true,"cy":576,"fine":"Acme Flow is fictional · placeholder UI · demo data","fineY":600},"why":"where it is live, held"}],"videos":[],"fps":30,"W":1080,"H":1920}, WINS = [{"i":3,"key":"push","id":"transitions/push","params":{},"startF":339,"endF":350,"cutF":345,"start":11.3,"end":11.666666666666666,"cut":11.5},{"i":4,"key":"scalePunch","id":"transitions/scale-punch","params":{},"startF":448,"endF":455,"cutF":450,"start":14.933333333333334,"end":15.166666666666666,"cut":15}], B = {"name":"Acme Flow","accent":"#3B5BFD","ink":"#14131A","paper":"#F5F4F0","logo":null,"url":"flow.example/changelog","cta":"Live today","font":{"display":"Manrope","text":"Manrope"}};
+const root = document.getElementById('root'), S = PLAN.scenes.map((_, i) => document.getElementById('S' + i)), HOST = PLAN.scenes.map((_, i) => document.getElementById('h' + i));
+const env = { W: 1080, H: 1920, B, renderInner, ctx: ctxFor(1080, 1920, "conservative", 1), screenHTML, stateAt, measure };
+const PROPS = ['transform', 'transformOrigin', 'filter', 'opacity', 'clipPath', 'webkitMaskImage', 'maskImage', 'borderRadius', 'boxShadow', 'zIndex', 'webkitMaskSize', 'maskSize', 'webkitMaskPosition', 'maskPosition', 'webkitMaskRepeat', 'maskRepeat', 'backfaceVisibility', 'mixBlendMode'];
+const reset = (el) => { for (const k of PROPS) el.style[k] = ''; };
+const clearOv = () => { const ov = root.querySelector(':scope > .mptx-ov'); if (!ov) return; const f = ov.querySelector('.mptx-fill'); if (f) { f.style.opacity = '0'; f.style.background = ''; f.style.mixBlendMode = ''; f.style.clipPath = ''; } const b = ov.querySelector('.mptx-bars'); if (b) b.innerHTML = '';
+  const sh = ov.querySelector(':scope > .mptx-share'); if (sh) sh.style.display = 'none'; for (const el of root.querySelectorAll('[data-mptx-hide]')) { el.style.visibility = el.dataset.mptxHide === '-' ? '' : el.dataset.mptxHide; el.removeAttribute('data-mptx-hide'); } };
+const sceneAt = (t) => { let k = 0; PLAN.scenes.forEach((s, i) => { if (t >= s.start - 1e-6) k = i; }); return k; };
+/* a screen recording sits in its window's content rect (or a device's screen), scaled and zoomed with the same pure maths as the SVG frame */
+function placeVideos(i, t) { PLAN.videos.filter((v) => v.scene === PLAN.scenes[i].id).forEach((v, j) => { const wrap = document.getElementById('vw' + i + '_' + j), inner = document.getElementById('vi' + i + '_' + j);
+  const it = [...PLAN.scenes[i].under, ...PLAN.scenes[i].items].find((x) => (x.key || x.id) === v.item); if (!it || t < it.at || t > it.at + it.dur + 0.4) { wrap.style.display = 'none'; return; }
+  const G = appWindowGeo(it.params, env.ctx, t - it.at, it.dur), [cx, cy, cw, ch] = G.content, [p0x, p0y] = G.toFrame(cx, cy), [p1x, p1y] = G.toFrame(cx + cw, cy + ch), M = G.M;
+  wrap.style.display = 'block'; wrap.style.left = p0x + 'px'; wrap.style.top = p0y + 'px'; wrap.style.width = (p1x - p0x) + 'px'; wrap.style.height = (p1y - p0y) + 'px'; wrap.style.opacity = String(Math.min(1, G.k * 1.8));
+  inner.style.width = M.sw + 'px'; inner.style.height = M.sh + 'px'; inner.style.transform = 'translate(' + ((M.X - cx) * G.sc) + 'px,' + ((M.Y - cy) * G.sc) + 'px) scale(' + (M.A * G.sc) + ')'; }); }
+const shown = PLAN.scenes.map(() => false);
+function frame(t) {
+  const f = Math.round(t * PLAN.fps), w = WINS.find((x) => f >= x.startF && f < x.endF), on = new Set(w ? [w.i - 1, w.i] : [sceneAt(t)]);
+  PLAN.scenes.forEach((sc, i) => { reset(S[i]);
+    if (!on.has(i)) { if (shown[i]) { HOST[i].innerHTML = ''; S[i].style.visibility = 'hidden'; shown[i] = false; } return; }
+    S[i].style.visibility = 'visible'; shown[i] = true; HOST[i].innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">' + sceneSVG(sc, t, env) + '</svg>'; placeVideos(i, t); });
+  clearOv(); if (w) applyDom(w.key, Math.min(1, Math.max(0, (t - w.start) / (w.end - w.start))), { a: S[w.i - 1], b: S[w.i], root, params: w.params, cut: (w.cut - w.start) / (w.end - w.start) });
+}
+const qt = new URLSearchParams(location.search).get('t'); let last = qt != null && Number.isFinite(+qt) ? +qt : window.__hfThreeTime || 0;   /* ?t=12.5 opens the page on that time (stills without a render) */ window.addEventListener('hf-seek', (e) => frame((last = e.detail.time))); frame(last); window.__seek = (t) => frame((last = t));
+Promise.all(['500', '600', '700', '800'].map((wt) => document.fonts.load(wt + ' 30px Manrope')).concat([document.fonts.load('600 20px "IBM Plex Mono"')])).then(() => { frame(last); window.__ready = true; });
+const tl = gsap.timeline({ paused: true }); tl.set({}, {}, 20);
+window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

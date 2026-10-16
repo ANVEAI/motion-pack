@@ -1,0 +1,3235 @@
+{
+ "template": "saas-launch",
+ "fps": 30,
+ "seconds": 60,
+ "aspect": "9:16",
+ "W": 1080,
+ "H": 1920,
+ "platform": "reels.organic",
+ "zone": "conservative",
+ "safe": {
+  "top": 0.14,
+  "bottom": 0.35,
+  "side": 0.06
+ },
+ "brand": {
+  "name": "Acme Flow",
+  "accent": "#3B5BFD",
+  "ink": "#14131A",
+  "paper": "#F5F4F0",
+  "logo": null,
+  "url": "flow.example",
+  "cta": "Start free",
+  "font": {
+   "display": "Manrope",
+   "text": "Manrope"
+  }
+ },
+ "length": 60,
+ "shots": [
+  {
+   "id": "hook",
+   "dur": 3,
+   "start": 0
+  },
+  {
+   "id": "copy",
+   "dur": 2,
+   "tx": "transitions/smash",
+   "txReason": "EMOTION: the pain, then its first symptom",
+   "start": 3
+  },
+  {
+   "id": "chase",
+   "dur": 2,
+   "start": 5
+  },
+  {
+   "id": "repeat",
+   "dur": 2,
+   "start": 7
+  },
+  {
+   "id": "reveal",
+   "dur": 4,
+   "tx": "transitions/whip",
+   "txReason": "ENERGY: the loop breaks into the reveal",
+   "hold": true,
+   "start": 9
+  },
+  {
+   "id": "tour",
+   "dur": 16,
+   "tx": "transitions/zoom-through",
+   "txReason": "REVEAL: through the name into the product",
+   "hold": true,
+   "start": 13
+  },
+  {
+   "id": "feat1",
+   "dur": 4,
+   "tx": "transitions/push",
+   "txReason": "STORY: the tour hands over to the features",
+   "start": 29
+  },
+  {
+   "id": "feat2",
+   "dur": 4,
+   "tx": "transitions/push",
+   "txReason": "STORY: the next feature",
+   "start": 33
+  },
+  {
+   "id": "feat3",
+   "dur": 4,
+   "tx": "transitions/push",
+   "txReason": "STORY: the next feature",
+   "start": 37
+  },
+  {
+   "id": "works",
+   "dur": 4,
+   "start": 41
+  },
+  {
+   "id": "payoff",
+   "dur": 4,
+   "tx": "transitions/blur-cross",
+   "txReason": "PLACE: back to the inbox of the hook",
+   "start": 45
+  },
+  {
+   "id": "proof",
+   "dur": 3.5,
+   "start": 49
+  },
+  {
+   "id": "pricing",
+   "dur": 3.5,
+   "tx": "transitions/push",
+   "txReason": "STORY: from proof to the offer",
+   "start": 52.5
+  },
+  {
+   "id": "end",
+   "dur": 4,
+   "hold": true,
+   "start": 56
+  }
+ ],
+ "scenes": [
+  {
+   "id": "hook",
+   "start": 0,
+   "end": 3,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Requests land *everywhere*.",
+     "at": 0.12,
+     "x": 80,
+     "y": 300,
+     "w": 870,
+     "size": 104
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "hookWin",
+     "at": 0,
+     "screen": {
+      "name": "inbox",
+      "keys": [
+       [
+        0,
+        {
+         "calm": 0,
+         "scroll": 0
+        }
+       ],
+       [
+        0.01,
+        {
+         "scroll": 2.4
+        },
+        3
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.04,
+       0.3,
+       0.92,
+       0.5
+      ],
+      "theme": "light",
+      "title": "Acme Flow",
+      "url": "flow.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 24,
+      "zoom": [
+       {
+        "t": 0,
+        "rect": [
+         0.17,
+         0.06,
+         0.55,
+         0.6
+        ]
+       }
+      ],
+      "enter": "none",
+      "kb": [
+       1,
+       1.05
+      ]
+     },
+     "dur": 3.6
+    },
+    {
+     "id": "ui.notifyStack",
+     "at": 0,
+     "mute": false,
+     "params": {
+      "pos": [
+       0.08,
+       0.33
+      ],
+      "width": 0.84,
+      "max": 3,
+      "accent": "#3B5BFD",
+      "app": "Inbox",
+      "items": [
+       {
+        "at": 0.05,
+        "title": "New request",
+        "body": "Refund for a double charge",
+        "icon": "mail"
+       },
+       {
+        "at": 0.6000000000000001,
+        "title": "New message",
+        "body": "Cannot log in after reset",
+        "icon": "search"
+       },
+       {
+        "at": 1.1500000000000001,
+        "title": "New form",
+        "body": "Export button does nothing",
+        "icon": "doc"
+       },
+       {
+        "at": 1.7000000000000002,
+        "title": "New request",
+        "body": "Invoice needs a new address",
+        "icon": "mail"
+       },
+       {
+        "at": 2.25,
+        "title": "New message",
+        "body": "Seats for the new team",
+        "icon": "user"
+       }
+      ]
+     },
+     "dur": 3.6
+    }
+   ],
+   "under": [],
+   "why": "problem-agitate hook: the pain is on frame 0 and moving"
+  },
+  {
+   "id": "copy",
+   "start": 3,
+   "end": 5,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Copy. *Paste.*",
+     "at": 3.05,
+     "x": 80,
+     "y": 300,
+     "w": 870,
+     "size": 104
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "copyA",
+     "at": 3,
+     "screen": {
+      "name": "inbox",
+      "keys": [
+       [
+        0,
+        {
+         "calm": 0,
+         "scroll": 1
+        }
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.03,
+       0.3,
+       0.8,
+       0.34
+      ],
+      "theme": "light",
+      "title": "Acme Flow",
+      "url": "flow.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 24,
+      "zoom": [
+       {
+        "t": 0,
+        "rect": [
+         0.17,
+         0.08,
+         0.5,
+         0.55
+        ]
+       }
+      ],
+      "enter": "none"
+     },
+     "dur": 2.6
+    },
+    {
+     "id": "ui.appWindow",
+     "key": "copyB",
+     "at": 3,
+     "screen": {
+      "name": "chat",
+      "keys": [
+       [
+        0,
+        {
+         "msgs": 1,
+         "pasted": 0
+        }
+       ],
+       [
+        1.3,
+        {
+         "pasted": 1
+        },
+        0.2
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.17,
+       0.46,
+       0.8,
+       0.34
+      ],
+      "theme": "light",
+      "title": "Team chat",
+      "url": "chat.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 24,
+      "zoom": [
+       {
+        "t": 0,
+        "rect": [
+         0.17,
+         0,
+         0.5,
+         0.55
+        ]
+       }
+      ],
+      "enter": "none"
+     },
+     "dur": 2.6
+    },
+    {
+     "id": "ui.cursorJourney",
+     "at": 3,
+     "params": {
+      "path": [
+       {
+        "t": 0.1,
+        "x": 0.3,
+        "y": 0.5
+       },
+       {
+        "t": 0.45,
+        "x": 0.3,
+        "y": 0.5,
+        "down": true,
+        "carry": "Refund for a double charge"
+       },
+       {
+        "t": 1.25,
+        "x": 0.6,
+        "y": 0.66,
+        "up": true,
+        "arc": 0.12
+       }
+      ]
+     },
+     "dur": 2.6
+    }
+   ],
+   "under": [],
+   "why": "problem 1: work copied by hand between tools"
+  },
+  {
+   "id": "chase",
+   "start": 5,
+   "end": 7,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Then *chase*.",
+     "at": 5.05,
+     "x": 80,
+     "y": 300,
+     "w": 870,
+     "size": 104
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "chaseWin",
+     "at": 5,
+     "screen": {
+      "name": "chat",
+      "keys": [
+       [
+        0,
+        {
+         "msgs": 1
+        }
+       ],
+       [
+        0.1,
+        {
+         "msgs": 5
+        },
+        1.2
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.04,
+       0.3,
+       0.92,
+       0.5
+      ],
+      "theme": "light",
+      "title": "Team chat",
+      "url": "chat.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 24,
+      "zoom": [
+       {
+        "t": 0,
+        "rect": [
+         0.17,
+         0,
+         0.55,
+         0.62
+        ]
+       }
+      ],
+      "enter": "none",
+      "kb": [
+       1.02,
+       1.08
+      ]
+     },
+     "dur": 2.6
+    },
+    {
+     "id": "callout.arrowLabel",
+     "at": 5.9,
+     "params": {
+      "from": [
+       0.62,
+       0.72
+      ],
+      "to": [
+       0.45,
+       0.6
+      ],
+      "label": "Still nobody owns it",
+      "accent": "#D9473F",
+      "size": 1.15
+     },
+     "dur": 1.7
+    }
+   ],
+   "under": [],
+   "why": "problem 2: nobody owns it, so people chase"
+  },
+  {
+   "id": "repeat",
+   "start": 7,
+   "end": 9,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Every. Single. *Day.*",
+     "at": 7.05,
+     "x": 80,
+     "y": 300,
+     "w": 870,
+     "size": 104
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "repeatWin",
+     "at": 7,
+     "screen": {
+      "name": "sheet",
+      "keys": [
+       [
+        0,
+        {
+         "rows": 3
+        }
+       ],
+       [
+        0.05,
+        {
+         "rows": 14
+        },
+        1.7
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.04,
+       0.3,
+       0.92,
+       0.5
+      ],
+      "theme": "light",
+      "title": "Tracker",
+      "url": "sheet.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 24,
+      "zoom": [
+       {
+        "t": 0,
+        "rect": [
+         0,
+         0,
+         0.6,
+         0.62
+        ]
+       }
+      ],
+      "enter": "none",
+      "kb": [
+       1,
+       1.06
+      ]
+     },
+     "dur": 2.6
+    },
+    {
+     "id": "ui.notifyStack",
+     "at": 7,
+     "params": {
+      "pos": [
+       0.08,
+       0.33
+      ],
+      "width": 0.84,
+      "max": 3,
+      "accent": "#8A8693",
+      "app": "Inbox",
+      "items": [
+       {
+        "at": 0.1,
+        "title": "New request",
+        "body": "Refund for a double charge",
+        "icon": "mail"
+       },
+       {
+        "at": 0.4,
+        "title": "New message",
+        "body": "Cannot log in after reset",
+        "icon": "search"
+       },
+       {
+        "at": 0.7,
+        "title": "New form",
+        "body": "Export button does nothing",
+        "icon": "doc"
+       },
+       {
+        "at": 0.9999999999999999,
+        "title": "New request",
+        "body": "Invoice needs a new address",
+        "icon": "mail"
+       },
+       {
+        "at": 1.3,
+        "title": "New message",
+        "body": "Seats for the new team",
+        "icon": "user"
+       },
+       {
+        "at": 1.6,
+        "title": "New request",
+        "body": "Refund for a double charge",
+        "icon": "mail"
+       }
+      ]
+     },
+     "dur": 2.6
+    }
+   ],
+   "under": [],
+   "why": "problem 3: the tracker grows, the toasts pile up: the loop that the reveal breaks"
+  },
+  {
+   "id": "reveal",
+   "start": 9,
+   "end": 13,
+   "bg": "paper",
+   "grid": 0,
+   "heads": [
+    {
+     "text": "Requests that route *themselves*.",
+     "at": 9.9,
+     "x": 100,
+     "y": 1098,
+     "w": 880,
+     "size": 64,
+     "align": "center",
+     "weight": 700
+    }
+   ],
+   "kickers": [],
+   "items": [],
+   "under": [],
+   "mark": {
+    "at": 9.1,
+    "cx": 540,
+    "cy": 768,
+    "size": 170,
+    "nameSize": 112,
+    "row": false
+   },
+   "why": "the product as the turn: name once, then the promise"
+  },
+  {
+   "id": "tour",
+   "start": 13,
+   "end": 29,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Start a flow.",
+     "at": 13.05,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76,
+     "out": 14.73,
+     "outS": 0.22
+    },
+    {
+     "text": "*Describe* it in a sentence.",
+     "at": 14.75,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76,
+     "out": 18.58,
+     "outS": 0.22
+    },
+    {
+     "text": "It *builds* the steps.",
+     "at": 18.6,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76,
+     "out": 21.38,
+     "outS": 0.22
+    },
+    {
+     "text": "Rules you can *read*.",
+     "at": 21.4,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76,
+     "out": 23.28,
+     "outS": 0.22
+    },
+    {
+     "text": "Drag to *adjust*.",
+     "at": 23.3,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76,
+     "out": 25.48,
+     "outS": 0.22
+    },
+    {
+     "text": "*Test* it before it ships.",
+     "at": 25.5,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "tourWin",
+     "at": 13,
+     "screen": {
+      "name": "flows",
+      "keys": [
+       [
+        0,
+        {
+         "_screen": "flows",
+         "hover": 0,
+         "press": 0
+        }
+       ],
+       [
+        1.15,
+        {
+         "hover": 1
+        }
+       ],
+       [
+        1.5,
+        {
+         "press": 1
+        }
+       ],
+       [
+        1.75,
+        {
+         "_screen": "builder",
+         "nodes": 0,
+         "swap": 0,
+         "run": 0,
+         "hl": -1
+        }
+       ],
+       [
+        5.5,
+        {
+         "nodes": 5
+        },
+        2.3
+       ],
+       [
+        8.7,
+        {
+         "hl": 2
+        }
+       ],
+       [
+        10.2,
+        {
+         "hl": -1
+        }
+       ],
+       [
+        11.102264881072985,
+        {
+         "swap": 1
+        },
+        0.4977351189270145,
+        "cam"
+       ],
+       [
+        12.6,
+        {
+         "hoverRun": 1
+        }
+       ],
+       [
+        13.05,
+        {
+         "run": 5,
+         "hoverRun": 0
+        },
+        1.2
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.03,
+       0.34,
+       0.94,
+       0.52
+      ],
+      "theme": "light",
+      "title": "Acme Flow",
+      "url": "flow.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 24,
+      "move": [
+       {
+        "t": 1.75,
+        "box": [
+         0.03,
+         0.62,
+         0.94,
+         0.3
+        ]
+       },
+       {
+        "t": 8.4,
+        "box": [
+         0.03,
+         0.34,
+         0.94,
+         0.52
+        ]
+       }
+      ],
+      "zoom": [
+       {
+        "t": 0.2,
+        "rect": [
+         0.52,
+         0,
+         0.48,
+         0.42
+        ]
+       },
+       {
+        "t": 1.85,
+        "rect": [
+         0.14,
+         0.06,
+         0.62,
+         0.86
+        ]
+       },
+       {
+        "t": 8.4,
+        "rect": [
+         0.16,
+         0.3,
+         0.42,
+         0.3
+        ]
+       },
+       {
+        "t": 10,
+        "rect": [
+         0.18,
+         0.32,
+         0.62,
+         0.48
+        ]
+       },
+       {
+        "t": 12.3,
+        "rect": [
+         0.52,
+         0,
+         0.48,
+         0.5
+        ]
+       },
+       {
+        "t": 13.4,
+        "rect": [
+         0.14,
+         0.06,
+         0.62,
+         0.86
+        ]
+       }
+      ],
+      "kb": [
+       1,
+       1
+      ]
+     },
+     "dur": 16.6
+    },
+    {
+     "id": "ui.aiAnswer",
+     "at": 14.9,
+     "dur": 6.75,
+     "params": {
+      "box": [
+       0.05,
+       0.27,
+       0.9,
+       0.34
+      ],
+      "prompt": "Send each new request to the team that owns it",
+      "answer": [
+       "Done. Here is your flow:",
+       "• Read each request as it lands",
+       "• Pick the owning team from its topic",
+       "• Post it to that team",
+       "• Tell the customer who has it"
+      ],
+      "typeAt": 0.4999999999999999,
+      "cps": 22,
+      "thinkS": 0.55,
+      "wps": 10,
+      "applyAt": 6.1,
+      "apply": "Apply flow",
+      "accent": "#3B5BFD",
+      "title": "Ask Acme Flow",
+      "avatar": "A",
+      "scale": 1.18
+     }
+    },
+    {
+     "id": "callout.uiHighlight",
+     "at": 21.7,
+     "dur": 1.5,
+     "params": {
+      "box": [
+       0.259,
+       0.393,
+       0.229,
+       0.111
+      ],
+      "label": "Rules in plain words",
+      "pad": 6,
+      "size": 1.25,
+      "win": {
+       "at": 13,
+       "dur": 16.6,
+       "params": {
+        "box": [
+         0.03,
+         0.34,
+         0.94,
+         0.52
+        ],
+        "theme": "light",
+        "title": "Acme Flow",
+        "url": "flow.example",
+        "accent": "#3B5BFD",
+        "label": "placeholder UI · demo data",
+        "labelSize": 24,
+        "move": [
+         {
+          "t": 1.75,
+          "box": [
+           0.03,
+           0.62,
+           0.94,
+           0.3
+          ]
+         },
+         {
+          "t": 8.4,
+          "box": [
+           0.03,
+           0.34,
+           0.94,
+           0.52
+          ]
+         }
+        ],
+        "zoom": [
+         {
+          "t": 0.2,
+          "rect": [
+           0.52,
+           0,
+           0.48,
+           0.42
+          ]
+         },
+         {
+          "t": 1.85,
+          "rect": [
+           0.14,
+           0.06,
+           0.62,
+           0.86
+          ]
+         },
+         {
+          "t": 8.4,
+          "rect": [
+           0.16,
+           0.3,
+           0.42,
+           0.3
+          ]
+         },
+         {
+          "t": 10,
+          "rect": [
+           0.18,
+           0.32,
+           0.62,
+           0.48
+          ]
+         },
+         {
+          "t": 12.3,
+          "rect": [
+           0.52,
+           0,
+           0.48,
+           0.5
+          ]
+         },
+         {
+          "t": 13.4,
+          "rect": [
+           0.14,
+           0.06,
+           0.62,
+           0.86
+          ]
+         }
+        ],
+        "kb": [
+         1,
+         1
+        ]
+       }
+      }
+     }
+    },
+    {
+     "id": "callout.arrowLabel",
+     "at": 22.7,
+     "dur": 0.8,
+     "params": {
+      "from": [
+       0.62,
+       0.92
+      ],
+      "to": [
+       0.599,
+       0.571
+      ],
+      "label": "Drag to reorder",
+      "size": 1.2,
+      "win": {
+       "at": 13,
+       "dur": 16.6,
+       "params": {
+        "box": [
+         0.03,
+         0.34,
+         0.94,
+         0.52
+        ],
+        "theme": "light",
+        "title": "Acme Flow",
+        "url": "flow.example",
+        "accent": "#3B5BFD",
+        "label": "placeholder UI · demo data",
+        "labelSize": 24,
+        "move": [
+         {
+          "t": 1.75,
+          "box": [
+           0.03,
+           0.62,
+           0.94,
+           0.3
+          ]
+         },
+         {
+          "t": 8.4,
+          "box": [
+           0.03,
+           0.34,
+           0.94,
+           0.52
+          ]
+         }
+        ],
+        "zoom": [
+         {
+          "t": 0.2,
+          "rect": [
+           0.52,
+           0,
+           0.48,
+           0.42
+          ]
+         },
+         {
+          "t": 1.85,
+          "rect": [
+           0.14,
+           0.06,
+           0.62,
+           0.86
+          ]
+         },
+         {
+          "t": 8.4,
+          "rect": [
+           0.16,
+           0.3,
+           0.42,
+           0.3
+          ]
+         },
+         {
+          "t": 10,
+          "rect": [
+           0.18,
+           0.32,
+           0.62,
+           0.48
+          ]
+         },
+         {
+          "t": 12.3,
+          "rect": [
+           0.52,
+           0,
+           0.48,
+           0.5
+          ]
+         },
+         {
+          "t": 13.4,
+          "rect": [
+           0.14,
+           0.06,
+           0.62,
+           0.86
+          ]
+         }
+        ],
+        "kb": [
+         1,
+         1
+        ]
+       }
+      }
+     }
+    },
+    {
+     "id": "ui.cursorJourney",
+     "at": 13,
+     "params": {
+      "path": [
+       {
+        "t": 0.3,
+        "x": 0.6,
+        "y": 0.7
+       },
+       {
+        "t": 1.15,
+        "x": 0.912,
+        "y": 0.078,
+        "hover": [
+         0.884,
+         0.036,
+         0.097,
+         0.064
+        ]
+       },
+       {
+        "t": 1.5,
+        "x": 0.932,
+        "y": 0.07300000000000001,
+        "click": true
+       },
+       {
+        "t": 2.6,
+        "x": 0.5,
+        "y": 0.55
+       },
+       {
+        "t": 10.549999999999999,
+        "x": 0.599,
+        "y": 0.571,
+        "hand": true
+       },
+       {
+        "t": 10.7,
+        "x": 0.599,
+        "y": 0.571,
+        "down": true,
+        "carry": "",
+        "hand": true
+       },
+       {
+        "t": 11.6,
+        "x": 0.301,
+        "y": 0.696,
+        "up": true,
+        "arc": 0,
+        "hand": true
+       },
+       {
+        "t": 12.6,
+        "x": 0.923,
+        "y": 0.078,
+        "hover": [
+         0.884,
+         0.035,
+         0.098,
+         0.066
+        ]
+       },
+       {
+        "t": 12.9,
+        "x": 0.933,
+        "y": 0.07300000000000001,
+        "click": true
+       },
+       {
+        "t": 15.7,
+        "x": 0.7,
+        "y": 0.5
+       }
+      ],
+      "size": 1.15,
+      "win": {
+       "at": 13,
+       "dur": 16.6,
+       "params": {
+        "box": [
+         0.03,
+         0.34,
+         0.94,
+         0.52
+        ],
+        "theme": "light",
+        "title": "Acme Flow",
+        "url": "flow.example",
+        "accent": "#3B5BFD",
+        "label": "placeholder UI · demo data",
+        "labelSize": 24,
+        "move": [
+         {
+          "t": 1.75,
+          "box": [
+           0.03,
+           0.62,
+           0.94,
+           0.3
+          ]
+         },
+         {
+          "t": 8.4,
+          "box": [
+           0.03,
+           0.34,
+           0.94,
+           0.52
+          ]
+         }
+        ],
+        "zoom": [
+         {
+          "t": 0.2,
+          "rect": [
+           0.52,
+           0,
+           0.48,
+           0.42
+          ]
+         },
+         {
+          "t": 1.85,
+          "rect": [
+           0.14,
+           0.06,
+           0.62,
+           0.86
+          ]
+         },
+         {
+          "t": 8.4,
+          "rect": [
+           0.16,
+           0.3,
+           0.42,
+           0.3
+          ]
+         },
+         {
+          "t": 10,
+          "rect": [
+           0.18,
+           0.32,
+           0.62,
+           0.48
+          ]
+         },
+         {
+          "t": 12.3,
+          "rect": [
+           0.52,
+           0,
+           0.48,
+           0.5
+          ]
+         },
+         {
+          "t": 13.4,
+          "rect": [
+           0.14,
+           0.06,
+           0.62,
+           0.86
+          ]
+         }
+        ],
+        "kb": [
+         1,
+         1
+        ]
+       }
+      }
+     },
+     "dur": 16.6
+    },
+    {
+     "id": "ui.notifyStack",
+     "at": 26.5,
+     "params": {
+      "pos": [
+       0.08,
+       0.38
+      ],
+      "width": 0.84,
+      "max": 3,
+      "accent": "#3B5BFD",
+      "app": "Acme Flow",
+      "items": [
+       {
+        "at": 0,
+        "title": "Request routed",
+        "body": "Refund → Billing",
+        "icon": "branch"
+       },
+       {
+        "at": 0.4,
+        "title": "Request routed",
+        "body": "Login issue → Access",
+        "icon": "branch"
+       },
+       {
+        "at": 0.8,
+        "title": "Customer told",
+        "body": "Billing has it",
+        "icon": "mail"
+       }
+      ]
+     },
+     "dur": 3.1
+    }
+   ],
+   "under": [],
+   "why": "the UI tour: a cursor journey (open, describe, build, read, adjust, test)"
+  },
+  {
+   "id": "feat1",
+   "start": 29,
+   "end": 33,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "One shortcut, *anywhere*.",
+     "at": 29.05,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "f1Win",
+     "at": 29,
+     "screen": {
+      "name": "inbox",
+      "keys": [
+       [
+        0,
+        {
+         "calm": 0.4,
+         "scroll": 0
+        }
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.03,
+       0.3,
+       0.94,
+       0.5
+      ],
+      "theme": "light",
+      "title": "Acme Flow",
+      "url": "flow.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 24,
+      "zoom": [
+       {
+        "t": 0,
+        "rect": [
+         0.17,
+         0.05,
+         0.6,
+         0.6
+        ]
+       }
+      ],
+      "enter": "none"
+     },
+     "dur": 4.6
+    },
+    {
+     "id": "ui.shortcutChip",
+     "at": 29.15,
+     "dur": 1.15,
+     "params": {
+      "keys": [
+       "⌘",
+       "K"
+      ],
+      "label": "Open the palette",
+      "pos": [
+       0.5,
+       0.52
+      ],
+      "pressAt": 0.35,
+      "size": 1.15,
+      "stack": true
+     }
+    },
+    {
+     "id": "ui.commandBar",
+     "at": 30.25,
+     "params": {
+      "box": [
+       0.06,
+       0.34,
+       0.88,
+       0.34
+      ],
+      "query": "route",
+      "items": [
+       {
+        "label": "Route new requests",
+        "icon": "branch",
+        "hint": "Flow"
+       },
+       {
+        "label": "Create a flow",
+        "icon": "bolt",
+        "hint": "New"
+       },
+       {
+        "label": "Search runs",
+        "icon": "search",
+        "hint": "Runs"
+       },
+       {
+        "label": "Invite a teammate",
+        "icon": "user",
+        "hint": "Team"
+       },
+       {
+        "label": "Route by topic",
+        "icon": "branch",
+        "hint": "Rule"
+       }
+      ],
+      "dim": 0.28,
+      "accent": "#3B5BFD",
+      "scale": 1.25,
+      "cps": 10,
+      "typeAt": 0.3
+     },
+     "dur": 3.35
+    }
+   ],
+   "under": [],
+   "why": "feature 1: the shortcut, then the palette it opens"
+  },
+  {
+   "id": "feat2",
+   "start": 33,
+   "end": 37,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Every run, on *record*.",
+     "at": 33.05,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "f2Win",
+     "at": 33,
+     "screen": {
+      "name": "runs",
+      "keys": [
+       [
+        0,
+        {
+         "rows": 0
+        }
+       ],
+       [
+        0.25,
+        {
+         "rows": 6
+        },
+        1.1
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.03,
+       0.3,
+       0.94,
+       0.5
+      ],
+      "theme": "light",
+      "title": "Acme Flow",
+      "url": "flow.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 24,
+      "enter": "none",
+      "kb": [
+       1,
+       1.04
+      ],
+      "zoom": [
+       {
+        "t": 0,
+        "rect": [
+         0.17,
+         0.2,
+         0.6,
+         0.6
+        ]
+       }
+      ]
+     },
+     "dur": 4.6
+    },
+    {
+     "id": "ui.cursorJourney",
+     "at": 33,
+     "params": {
+      "path": [
+       {
+        "t": 0.9,
+        "x": 0.7,
+        "y": 0.9
+       },
+       {
+        "t": 1.6,
+        "x": 0.55,
+        "y": 0.42,
+        "hover": [
+         0.18,
+         0.525,
+         0.79,
+         0.067
+        ]
+       }
+      ],
+      "win": {
+       "at": 33,
+       "dur": 4.6,
+       "params": {
+        "box": [
+         0.03,
+         0.3,
+         0.94,
+         0.5
+        ],
+        "theme": "light",
+        "title": "Acme Flow",
+        "url": "flow.example",
+        "accent": "#3B5BFD",
+        "label": "placeholder UI · demo data",
+        "labelSize": 24,
+        "enter": "none",
+        "kb": [
+         1,
+         1.04
+        ],
+        "zoom": [
+         {
+          "t": 0,
+          "rect": [
+           0.17,
+           0.2,
+           0.6,
+           0.6
+          ]
+         }
+        ]
+       }
+      }
+     },
+     "dur": 4.6
+    },
+    {
+     "id": "callout.uiHighlight",
+     "at": 34.75,
+     "params": {
+      "box": [
+       0.197,
+       0.416,
+       0.779,
+       0.067
+      ],
+      "label": "Who routed what, and why",
+      "pad": 4,
+      "size": 1.2,
+      "win": {
+       "at": 33,
+       "dur": 4.6,
+       "params": {
+        "box": [
+         0.03,
+         0.3,
+         0.94,
+         0.5
+        ],
+        "theme": "light",
+        "title": "Acme Flow",
+        "url": "flow.example",
+        "accent": "#3B5BFD",
+        "label": "placeholder UI · demo data",
+        "labelSize": 24,
+        "enter": "none",
+        "kb": [
+         1,
+         1.04
+        ],
+        "zoom": [
+         {
+          "t": 0,
+          "rect": [
+           0.17,
+           0.2,
+           0.6,
+           0.6
+          ]
+         }
+        ]
+       }
+      }
+     },
+     "dur": 2.85
+    }
+   ],
+   "under": [],
+   "why": "feature 2: every run on record"
+  },
+  {
+   "id": "feat3",
+   "start": 37,
+   "end": 41,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Your numbers, *live*.",
+     "at": 37.05,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.dashboardAssemble",
+     "at": 37.1,
+     "params": {
+      "box": [
+       0.06,
+       0.29,
+       0.88,
+       0.52
+      ],
+      "accent": "#3B5BFD",
+      "title": "Acme Flow · Overview",
+      "cols": 2,
+      "rows": 4,
+      "source": "placeholder data",
+      "scale": 1.1,
+      "cards": [
+       {
+        "kind": "kpi",
+        "label": "Requests routed",
+        "value": 1284,
+        "span": [
+         0,
+         0,
+         1,
+         1
+        ]
+       },
+       {
+        "kind": "kpi",
+        "label": "Open right now",
+        "value": 7,
+        "span": [
+         1,
+         0,
+         1,
+         1
+        ]
+       },
+       {
+        "kind": "line",
+        "label": "Routed per day",
+        "span": [
+         0,
+         1,
+         2,
+         1
+        ]
+       },
+       {
+        "kind": "bar",
+        "label": "By topic",
+        "span": [
+         0,
+         2,
+         1,
+         2
+        ]
+       },
+       {
+        "kind": "donut",
+        "label": "By team",
+        "value": 0.64,
+        "span": [
+         1,
+         2,
+         1,
+         2
+        ]
+       }
+      ]
+     },
+     "dur": 4.5
+    }
+   ],
+   "under": [],
+   "why": "feature 3: the numbers, live"
+  },
+  {
+   "id": "works",
+   "start": 41,
+   "end": 45,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Works with the tools you *already* use.",
+     "at": 41.05,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.integrationGrid",
+     "at": 41.1,
+     "params": {
+      "box": [
+       0.1,
+       0.3,
+       0.8,
+       0.4
+      ],
+      "hub": "A",
+      "accent": "#3B5BFD",
+      "glyphs": [
+       "mail",
+       "chat",
+       "calendar",
+       "db",
+       "doc",
+       "sheet",
+       "cloud",
+       "bell",
+       "code",
+       "card"
+      ],
+      "scale": 1.15
+     },
+     "dur": 4.5
+    }
+   ],
+   "under": [],
+   "why": "works with: generic categories, never real marks"
+  },
+  {
+   "id": "payoff",
+   "start": 45,
+   "end": 49,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Inbox, *handled*.",
+     "at": 45.05,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.beforeAfterSplit",
+     "at": 45.1,
+     "screens": {
+      "before": {
+       "name": "inbox",
+       "keys": [
+        [
+         0,
+         {
+          "calm": 0,
+          "scroll": 1
+         }
+        ]
+       ]
+      },
+      "after": {
+       "name": "inbox",
+       "keys": [
+        [
+         0,
+         {
+          "calm": 1,
+          "scroll": 0
+         }
+        ]
+       ]
+      }
+     },
+     "params": {
+      "box": [
+       0.04,
+       0.3,
+       0.92,
+       0.46
+      ],
+      "accent": "#3B5BFD",
+      "before": {
+       "label": "Before"
+      },
+      "after": {
+       "label": "With Acme Flow"
+      },
+      "keys": [
+       [
+        0.25,
+        1
+       ],
+       [
+        1.2,
+        0.08
+       ],
+       [
+        2.1,
+        0.5
+       ]
+      ],
+      "screen": {
+       "anchor": [
+        0.62,
+        0
+       ]
+      }
+     },
+     "dur": 4.5
+    }
+   ],
+   "under": [],
+   "why": "payoff: the hook inbox, handled"
+  },
+  {
+   "id": "proof",
+   "start": 49,
+   "end": 52.5,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Routed in the private *beta*.",
+     "at": 49.05,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "counter.countUp",
+     "at": 49.25,
+     "params": {
+      "from": 0,
+      "to": 12400,
+      "dec": 0,
+      "prefix": "",
+      "suffix": "",
+      "label": "requests routed",
+      "pos": "c",
+      "size": 118,
+      "color": "#14131A",
+      "accent": "#3B5BFD",
+      "source": "placeholder data: replace with your measured number"
+     },
+     "dur": 3.85
+    }
+   ],
+   "under": [],
+   "labels": [
+    {
+     "at": 49.9,
+     "text": "placeholder number · replace it with your measured one",
+     "x": 540,
+     "y": 1180,
+     "size": 32,
+     "anchor": "middle",
+     "color": "#B2382E"
+    }
+   ],
+   "why": "proof: one number with its source in frame"
+  },
+  {
+   "id": "pricing",
+   "start": 52.5,
+   "end": 56,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Free to *start*.",
+     "at": 52.55,
+     "x": 80,
+     "y": 290,
+     "w": 870,
+     "size": 76
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.pricingCards",
+     "at": 52.6,
+     "params": {
+      "box": [
+       0.06,
+       0.25,
+       0.88,
+       0.6
+      ],
+      "plans": [
+       {
+        "name": "Starter",
+        "price": "$0",
+        "per": "/ month",
+        "blurb": "For trying it out",
+        "features": [
+         "Up to three flows",
+         "Email support"
+        ],
+        "cta": "Start free"
+       },
+       {
+        "name": "Team",
+        "price": "$10",
+        "per": "/ seat / month",
+        "blurb": "For a whole team",
+        "features": [
+         "Unlimited flows",
+         "Shared inbox",
+         "Run history"
+        ],
+        "cta": "Start trial",
+        "featured": true
+       },
+       {
+        "name": "Business",
+        "price": "$24",
+        "per": "/ seat / month",
+        "blurb": "For many teams",
+        "features": [
+         "Everything in Team",
+         "Roles and audit log",
+         "Priority support"
+        ],
+        "cta": "Talk to us"
+       }
+      ],
+      "source": "placeholder data",
+      "accent": "#3B5BFD",
+      "badge": "Featured",
+      "start": 0.15,
+      "featuredAt": 0.9,
+      "scale": 1.12
+     },
+     "dur": 4
+    }
+   ],
+   "under": [],
+   "why": "availability: free to start, the plans"
+  },
+  {
+   "id": "end",
+   "start": 56,
+   "end": 60,
+   "bg": "paper",
+   "grid": 0,
+   "heads": [],
+   "kickers": [],
+   "items": [],
+   "under": [],
+   "card": {
+    "at": 56.05,
+    "unit": 1.25,
+    "stack": true,
+    "cy": 576,
+    "fine": "Acme Flow is fictional · placeholder UI · demo data",
+    "fineY": 592
+   },
+   "why": "end card: the one verb, the URL, held"
+  }
+ ],
+ "videos": [],
+ "cues": [
+  {
+   "t": 0,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "hook"
+  },
+  {
+   "t": 0,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "hook"
+  },
+  {
+   "t": 0.0667,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New request",
+   "scene": "hook"
+  },
+  {
+   "t": 0.1333,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "hook"
+  },
+  {
+   "t": 0.6,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New message",
+   "scene": "hook"
+  },
+  {
+   "t": 1.1667,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New form",
+   "scene": "hook"
+  },
+  {
+   "t": 1.7,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New request",
+   "scene": "hook"
+  },
+  {
+   "t": 2.2667,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New message",
+   "scene": "hook"
+  },
+  {
+   "id": "sfx/tx/smash_cut",
+   "t": 3,
+   "gainDb": -4,
+   "why": "tx transitions/smash"
+  },
+  {
+   "t": 3,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "copy"
+  },
+  {
+   "t": 3,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "copy"
+  },
+  {
+   "t": 3,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "copy"
+  },
+  {
+   "t": 3,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "copy"
+  },
+  {
+   "t": 3.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "copy"
+  },
+  {
+   "t": 3.4667,
+   "id": "sfx/ui/drag_lift",
+   "why": "drag starts",
+   "scene": "copy"
+  },
+  {
+   "t": 4.2667,
+   "id": "sfx/ui/drop_snap",
+   "why": "drop",
+   "scene": "copy"
+  },
+  {
+   "t": 5,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "chase"
+  },
+  {
+   "t": 5,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "chase"
+  },
+  {
+   "t": 5.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "chase"
+  },
+  {
+   "t": 5.9333,
+   "id": "sfx/ui/pop",
+   "why": "label pops",
+   "scene": "chase"
+  },
+  {
+   "t": 6.1,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "arrow draws",
+   "scene": "chase"
+  },
+  {
+   "t": 7,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "repeat"
+  },
+  {
+   "t": 7,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "repeat"
+  },
+  {
+   "t": 7.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "repeat"
+  },
+  {
+   "t": 7.1,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New request",
+   "scene": "repeat"
+  },
+  {
+   "t": 7.4,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New message",
+   "scene": "repeat"
+  },
+  {
+   "t": 7.7,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New form",
+   "scene": "repeat"
+  },
+  {
+   "t": 8,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New request",
+   "scene": "repeat"
+  },
+  {
+   "t": 8.3,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New message",
+   "scene": "repeat"
+  },
+  {
+   "t": 8.6,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New request",
+   "scene": "repeat"
+  },
+  {
+   "t": 9,
+   "id": "sfx/riser/noise_1bar",
+   "why": "riser ends on the reveal (its anchor is its end)"
+  },
+  {
+   "id": "sfx/whoosh/whip_pan",
+   "t": 9,
+   "gainDb": -4,
+   "why": "tx transitions/whip"
+  },
+  {
+   "t": 9.1,
+   "id": "sfx/hit/soft",
+   "why": "reveal hit on the mark",
+   "scene": "reveal"
+  },
+  {
+   "t": 9.2667,
+   "id": "sfx/sparkle/letter_assemble",
+   "why": "the name assembles",
+   "scene": "reveal"
+  },
+  {
+   "t": 9.9,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "reveal"
+  },
+  {
+   "id": "sfx/tx/zoom_through",
+   "t": 13,
+   "gainDb": -4,
+   "why": "tx transitions/zoom-through"
+  },
+  {
+   "t": 13,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "tour"
+  },
+  {
+   "t": 13.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "tour"
+  },
+  {
+   "t": 13.2,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "tour"
+  },
+  {
+   "t": 14.1667,
+   "id": "sfx/ui/hover_tick",
+   "why": "hover",
+   "scene": "tour"
+  },
+  {
+   "t": 14.5333,
+   "id": "sfx/device/mouse_click",
+   "why": "click",
+   "scene": "tour"
+  },
+  {
+   "t": 14.7667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "tour"
+  },
+  {
+   "t": 14.8667,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "tour"
+  },
+  {
+   "t": 15.4,
+   "id": "sfx/ui/typing_burst",
+   "why": "typing",
+   "scene": "tour"
+  },
+  {
+   "t": 16.3,
+   "id": "sfx/ui/typing_burst",
+   "why": "typing",
+   "scene": "tour"
+  },
+  {
+   "t": 17.2,
+   "id": "sfx/ui/typing_burst",
+   "why": "typing",
+   "scene": "tour"
+  },
+  {
+   "t": 17.8,
+   "id": "sfx/device/message_sent",
+   "why": "prompt sent",
+   "scene": "tour"
+  },
+  {
+   "t": 18.0333,
+   "id": "sfx/ui/ai_think_pulse",
+   "why": "thinking",
+   "scene": "tour"
+  },
+  {
+   "t": 18.3333,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "tour"
+  },
+  {
+   "t": 18.6,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "tour"
+  },
+  {
+   "t": 18.8,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "tour"
+  },
+  {
+   "t": 19.2333,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "tour"
+  },
+  {
+   "t": 19.7,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "tour"
+  },
+  {
+   "t": 20.1333,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "tour"
+  },
+  {
+   "t": 20.6,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "tour"
+  },
+  {
+   "t": 21,
+   "id": "sfx/device/mouse_click",
+   "why": "apply click",
+   "scene": "tour"
+  },
+  {
+   "t": 21.0333,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "tour"
+  },
+  {
+   "t": 21.1,
+   "id": "sfx/ui/success_chime",
+   "why": "applied",
+   "scene": "tour"
+  },
+  {
+   "t": 21.4,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "tour"
+  },
+  {
+   "t": 21.4,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "tour"
+  },
+  {
+   "t": 21.5,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "tour"
+  },
+  {
+   "t": 21.6333,
+   "id": "sfx/ui/ai_reply",
+   "why": "answer done",
+   "scene": "tour"
+  },
+  {
+   "t": 21.7333,
+   "id": "sfx/ui/highlight_draw",
+   "why": "ring draws on",
+   "scene": "tour"
+  },
+  {
+   "t": 22.7333,
+   "id": "sfx/ui/pop",
+   "why": "label pops",
+   "scene": "tour"
+  },
+  {
+   "t": 22.9,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "arrow draws",
+   "scene": "tour"
+  },
+  {
+   "t": 23,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "tour"
+  },
+  {
+   "t": 23.3,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "tour"
+  },
+  {
+   "t": 23.7,
+   "id": "sfx/ui/drag_lift",
+   "why": "drag starts",
+   "scene": "tour"
+  },
+  {
+   "t": 24.6,
+   "id": "sfx/ui/drop_snap",
+   "why": "drop",
+   "scene": "tour"
+  },
+  {
+   "t": 25.3,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "tour"
+  },
+  {
+   "t": 25.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "tour"
+  },
+  {
+   "t": 25.6,
+   "id": "sfx/ui/hover_tick",
+   "why": "hover",
+   "scene": "tour"
+  },
+  {
+   "t": 25.9333,
+   "id": "sfx/device/mouse_click",
+   "why": "click",
+   "scene": "tour"
+  },
+  {
+   "t": 26.4,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "tour"
+  },
+  {
+   "t": 26.5,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: Request routed",
+   "scene": "tour"
+  },
+  {
+   "t": 26.9,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: Request routed",
+   "scene": "tour"
+  },
+  {
+   "t": 27.3,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: Customer told",
+   "scene": "tour"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 29,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "t": 29,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "feat1"
+  },
+  {
+   "t": 29,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "feat1"
+  },
+  {
+   "t": 29.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "feat1"
+  },
+  {
+   "t": 29.5,
+   "id": "sfx/device/keyboard_mech_soft",
+   "why": "key 1 down",
+   "scene": "feat1"
+  },
+  {
+   "t": 29.6333,
+   "id": "sfx/device/keyboard_mech_soft",
+   "why": "key 2 down",
+   "scene": "feat1"
+  },
+  {
+   "t": 29.6667,
+   "id": "sfx/ui/key_chord",
+   "why": "the chord lands",
+   "scene": "feat1"
+  },
+  {
+   "t": 30.2667,
+   "id": "sfx/ui/palette_open",
+   "why": "palette opens",
+   "scene": "feat1"
+  },
+  {
+   "t": 30.5667,
+   "id": "sfx/device/keyboard_mech_soft",
+   "why": "keystroke",
+   "scene": "feat1"
+  },
+  {
+   "t": 30.8667,
+   "id": "sfx/device/keyboard_mech_soft",
+   "why": "keystroke",
+   "scene": "feat1"
+  },
+  {
+   "t": 31.9,
+   "id": "sfx/ui/click",
+   "why": "enter",
+   "scene": "feat1"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 33,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "t": 33,
+   "id": "sfx/ui/zoom_in",
+   "why": "zoom to region",
+   "scene": "feat2"
+  },
+  {
+   "t": 33,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "feat2"
+  },
+  {
+   "t": 33.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "feat2"
+  },
+  {
+   "t": 34.6,
+   "id": "sfx/ui/hover_tick",
+   "why": "hover",
+   "scene": "feat2"
+  },
+  {
+   "t": 34.7667,
+   "id": "sfx/ui/highlight_draw",
+   "why": "ring draws on",
+   "scene": "feat2"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 37,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "t": 37.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "feat3"
+  },
+  {
+   "t": 37.2667,
+   "id": "sfx/ui/drop_snap",
+   "why": "card 1 snaps in",
+   "scene": "feat3"
+  },
+  {
+   "t": 37.3333,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "card 2 snaps in",
+   "scene": "feat3"
+  },
+  {
+   "t": 37.4,
+   "id": "sfx/ui/drop_snap",
+   "why": "card 3 snaps in",
+   "scene": "feat3"
+  },
+  {
+   "t": 37.5,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "card 4 snaps in",
+   "scene": "feat3"
+  },
+  {
+   "t": 37.5667,
+   "id": "sfx/ui/drop_snap",
+   "why": "card 5 snaps in",
+   "scene": "feat3"
+  },
+  {
+   "t": 38.1,
+   "id": "sfx/ui/count_run",
+   "why": "numbers count up",
+   "scene": "feat3"
+  },
+  {
+   "t": 41.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "works"
+  },
+  {
+   "t": 41.1,
+   "id": "sfx/ui/pop",
+   "why": "hub lands",
+   "scene": "works"
+  },
+  {
+   "t": 41.3,
+   "id": "sfx/ui/tick",
+   "why": "tile 1",
+   "scene": "works"
+  },
+  {
+   "t": 41.4333,
+   "id": "sfx/ui/tick",
+   "why": "tile 3",
+   "scene": "works"
+  },
+  {
+   "t": 41.5667,
+   "id": "sfx/ui/tick",
+   "why": "tile 5",
+   "scene": "works"
+  },
+  {
+   "t": 41.7333,
+   "id": "sfx/ui/tick",
+   "why": "tile 7",
+   "scene": "works"
+  },
+  {
+   "t": 41.8667,
+   "id": "sfx/ui/connect",
+   "why": "connectors draw on",
+   "scene": "works"
+  },
+  {
+   "t": 41.8667,
+   "id": "sfx/ui/tick",
+   "why": "tile 9",
+   "scene": "works"
+  },
+  {
+   "id": "sfx/tx/blur_cross",
+   "t": 45,
+   "gainDb": -4,
+   "why": "tx transitions/blur-cross"
+  },
+  {
+   "t": 45.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "payoff"
+  },
+  {
+   "t": 45.3667,
+   "id": "sfx/whoosh/swish_s",
+   "why": "divider moves",
+   "scene": "payoff"
+  },
+  {
+   "t": 46.3,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "divider moves",
+   "scene": "payoff"
+  },
+  {
+   "t": 47.2,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "divider moves",
+   "scene": "payoff"
+  },
+  {
+   "t": 49.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "proof"
+  },
+  {
+   "t": 49.2667,
+   "id": "sfx/ui/count_run",
+   "why": "counter.countUp default",
+   "scene": "proof"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 52.5,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "t": 52.5667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -9,
+   "scene": "pricing"
+  },
+  {
+   "t": 52.7667,
+   "id": "sfx/ui/pop",
+   "why": "plan card 1",
+   "scene": "pricing"
+  },
+  {
+   "t": 52.9,
+   "id": "sfx/ui/pop",
+   "why": "plan card 2",
+   "scene": "pricing"
+  },
+  {
+   "t": 53.0333,
+   "id": "sfx/ui/pop",
+   "why": "plan card 3",
+   "scene": "pricing"
+  },
+  {
+   "t": 53.5,
+   "id": "sfx/ui/price_reveal",
+   "why": "featured plan lifts",
+   "scene": "pricing"
+  },
+  {
+   "t": 56,
+   "id": "sfx/hit/brand_field_slam",
+   "why": "one slam: the cut to the end card",
+   "scene": "end"
+  },
+  {
+   "t": 56.2,
+   "id": "sfx/logo/hybrid",
+   "why": "sonic logo on the name",
+   "scene": "end"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Requests routed in the private beta: 12,400",
+   "source": "placeholder data: replace with your measured number"
+  },
+  {
+   "text": "Starter plan: $0 / month",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Team plan: $10 / seat / month",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Business plan: $24 / seat / month",
+   "source": "placeholder data"
+  },
+  {
+   "text": "Dashboard and runs figures (1,284 routed and the others)",
+   "source": "placeholder data: the demo dashboard and the placeholder runs screen"
+  }
+ ],
+ "texts": [
+  {
+   "id": "hook.head0",
+   "text": "Requests land everywhere.",
+   "t": [
+    0.12,
+    3
+   ],
+   "box": [
+    80,
+    300,
+    800,
+    516
+   ],
+   "fontPx": 104,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "copy.head0",
+   "text": "Copy. Paste.",
+   "t": [
+    3.05,
+    5
+   ],
+   "box": [
+    80,
+    300,
+    745,
+    406
+   ],
+   "fontPx": 104,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "chase.head0",
+   "text": "Then chase.",
+   "t": [
+    5.05,
+    7
+   ],
+   "box": [
+    80,
+    300,
+    689,
+    406
+   ],
+   "fontPx": 104,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "repeat.head0",
+   "text": "Every. Single. Day.",
+   "t": [
+    7.05,
+    9
+   ],
+   "box": [
+    80,
+    300,
+    855,
+    516
+   ],
+   "fontPx": 104,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "reveal.head0",
+   "text": "Requests that route themselves.",
+   "t": [
+    9.9,
+    13
+   ],
+   "box": [
+    216,
+    1098,
+    864,
+    1231
+   ],
+   "fontPx": 64,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "tour.head0",
+   "text": "Start a flow.",
+   "t": [
+    13.05,
+    14.73
+   ],
+   "box": [
+    80,
+    290,
+    608,
+    368
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "tour.head1",
+   "text": "Describe it in a sentence.",
+   "t": [
+    14.75,
+    18.58
+   ],
+   "box": [
+    80,
+    290,
+    731,
+    448
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "tour.head2",
+   "text": "It builds the steps.",
+   "t": [
+    18.6,
+    21.38
+   ],
+   "box": [
+    80,
+    290,
+    892,
+    368
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "tour.head3",
+   "text": "Rules you can read.",
+   "t": [
+    21.4,
+    23.28
+   ],
+   "box": [
+    80,
+    290,
+    852,
+    368
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "tour.head4",
+   "text": "Drag to adjust.",
+   "t": [
+    23.3,
+    25.48
+   ],
+   "box": [
+    80,
+    290,
+    689,
+    368
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "tour.head5",
+   "text": "Test it before it ships.",
+   "t": [
+    25.5,
+    29
+   ],
+   "box": [
+    80,
+    290,
+    772,
+    448
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "feat1.head0",
+   "text": "One shortcut, anywhere.",
+   "t": [
+    29.05,
+    33
+   ],
+   "box": [
+    80,
+    290,
+    606,
+    448
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "feat2.head0",
+   "text": "Every run, on record.",
+   "t": [
+    33.05,
+    37
+   ],
+   "box": [
+    80,
+    290,
+    933,
+    368
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "feat3.head0",
+   "text": "Your numbers, live.",
+   "t": [
+    37.05,
+    41
+   ],
+   "box": [
+    80,
+    290,
+    850,
+    368
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "works.head0",
+   "text": "Works with the tools you already use.",
+   "t": [
+    41.05,
+    45
+   ],
+   "box": [
+    80,
+    290,
+    892,
+    448
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "payoff.head0",
+   "text": "Inbox, handled.",
+   "t": [
+    45.05,
+    49
+   ],
+   "box": [
+    80,
+    290,
+    686,
+    368
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "proof.head0",
+   "text": "Routed in the private beta.",
+   "t": [
+    49.05,
+    52.5
+   ],
+   "box": [
+    80,
+    290,
+    933,
+    448
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "pricing.head0",
+   "text": "Free to start.",
+   "t": [
+    52.55,
+    56
+   ],
+   "box": [
+    80,
+    290,
+    648,
+    368
+   ],
+   "fontPx": 76,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "end.cta",
+   "text": "Start free",
+   "t": [
+    56.5,
+    60
+   ],
+   "box": null,
+   "fontPx": 55,
+   "role": "endcard",
+   "fg": "#FFFFFF"
+  }
+ ],
+ "paceRule": {
+  "aslMax": 5.5,
+  "longMax": 18.5
+ },
+ "music": "music/bed_corporate_bright_loop8",
+ "musicGainDb": 0,
+ "ceilingDb": -2.5,
+ "fadeInMs": 30,
+ "layers": [
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "upload-safe"
+   }
+  }
+ ],
+ "bedAutomation": [
+  {
+   "frame": 0,
+   "gain_db": 0
+  },
+  {
+   "frame": 1746,
+   "gain_db": 0
+  },
+  {
+   "frame": 1782,
+   "gain_db": -40
+  }
+ ],
+ "audio": {
+  "mode": "music",
+  "quiet": [
+   {
+    "t": [
+     59.4,
+     60
+    ],
+    "kind": "hold",
+    "why": "end card on a quiet hold after the sonic logo"
+   }
+  ]
+ },
+ "brandCueAt": 9,
+ "honesty": "fictional product (Acme Flow); placeholder HTML screens labelled in frame; every figure is a claim with a placeholder source",
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 14,
+   "asl": 4.29,
+   "longest": 4,
+   "pass": true
+  }
+ }
+}

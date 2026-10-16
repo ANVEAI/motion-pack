@@ -214,6 +214,10 @@ TPL = {'ad': ('Ad 15/30 s: hook, problem, product, proof, CTA', 'out/ad-15.mp4',
        'podcast-clip': ('Podcast clip, 9:16 first + 16:9 (hook card on frame 0, active-speaker emphasis from speaker tags, speaker lower thirds, waveform, karaoke; your two angles, labelled placeholder demo)', 'out/podcast-clip.mp4', 'out/sheet.jpg'),   # MP4 not committed: rebuild it
        'founder-story': ('Founder / personal-brand story, 16:9 + 9:16 (photos with Ken Burns, year timeline, a verbatim pull quote gate, brand-field CTA; your footage, labelled placeholder demo)', 'out/founder-story.mp4', 'out/sheet.jpg'),   # MP4 not committed: rebuild it
        'course-lesson': ('Course lesson, 16:9 + 9:16 (presenter / slide + PiP / split sections, quiz card with a kept pause, recap, lesson progress bar; your recording, labelled placeholder demo)', 'out/course-lesson.mp4', 'out/sheet.jpg')}   # MP4 not committed: rebuild it
+TPL.update({   # xp-saas (2026-10-16): the SaaS genre templates (MP4s and sheets are rendered locally, not committed)
+    'saas-launch': ('SaaS launch film 45/60/75 s, 16:9 + 9:16 re-layout (pain on frame 0, problem beats, reveal, cursor-journey UI tour, feature trio, works with, before / after payoff, sourced proof, pricing, end card; placeholder Acme Flow screens)', 'out/saas-launch-60.mp4', 'out/sheet.jpg'),
+    'saas-feature-drop': ('SaaS feature drop / changelog 15/20/30 s, 16:9 + 9:16 (NEW kicker, before, after with a shortcut chip, before / after split, the shortcut, CTA)', 'out/saas-feature-drop-20.mp4', 'out/sheet.jpg'),
+    'saas-explainer': ('SaaS explainer 60/70/90 s, 16:9 + 9:16 (question, wrong model, reframe, three steps, result; captions on every line, optional VO through words.json)', 'out/saas-explainer-70.mp4', 'out/sheet.jpg')})
 IDRX = re.compile(r"['\"`]((?:transitions|sfx|music|type)/[A-Za-z0-9_./-]+)['\"`]")
 for k, (name, vid, sheet) in TPL.items():
     cfg = open(os.path.join(PACK, 'templates', k, 'config.mjs')).read()

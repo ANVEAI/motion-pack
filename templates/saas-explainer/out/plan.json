@@ -1,0 +1,1876 @@
+{
+ "template": "saas-explainer",
+ "fps": 30,
+ "seconds": 70,
+ "aspect": "16:9",
+ "W": 1920,
+ "H": 1080,
+ "platform": "x.video",
+ "zone": "wideTitle",
+ "safe": {
+  "top": 0.05,
+  "bottom": 0.08,
+  "side": 0.05
+ },
+ "brand": {
+  "name": "Acme Flow",
+  "accent": "#3B5BFD",
+  "ink": "#14131A",
+  "paper": "#F5F4F0",
+  "logo": null,
+  "url": "flow.example",
+  "cta": "Start free",
+  "font": {
+   "display": "Manrope",
+   "text": "Manrope"
+  }
+ },
+ "length": 70,
+ "shots": [
+  {
+   "id": "question",
+   "dur": 6,
+   "start": 0
+  },
+  {
+   "id": "wrong",
+   "dur": 8,
+   "start": 6
+  },
+  {
+   "id": "reframe",
+   "dur": 5.333333,
+   "tx": "transitions/blur-cross",
+   "txReason": "STORY: from the problem to the idea",
+   "hold": true,
+   "start": 14
+  },
+  {
+   "id": "step1",
+   "dur": 10.666667,
+   "tx": "transitions/push",
+   "txReason": "STORY: the first step",
+   "start": 19.333333
+  },
+  {
+   "id": "step2",
+   "dur": 12,
+   "tx": "transitions/push",
+   "txReason": "STORY: the next step",
+   "start": 30
+  },
+  {
+   "id": "step3",
+   "dur": 10.666667,
+   "tx": "transitions/push",
+   "txReason": "STORY: the next step",
+   "start": 42
+  },
+  {
+   "id": "result",
+   "dur": 10.666667,
+   "tx": "transitions/dissolve",
+   "txReason": "EMOTION: the calm after the routing",
+   "start": 52.666667
+  },
+  {
+   "id": "end",
+   "dur": 6.666667,
+   "hold": true,
+   "start": 63.333333
+  }
+ ],
+ "scenes": [
+  {
+   "id": "question",
+   "start": 0,
+   "end": 6,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Who owns this *request*?",
+     "at": 0.12,
+     "x": 110,
+     "y": 300,
+     "w": 700,
+     "size": 100
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "qWin",
+     "at": 0,
+     "screen": {
+      "name": "inbox",
+      "keys": [
+       [
+        0,
+        {
+         "calm": 0,
+         "scroll": 0
+        }
+       ],
+       [
+        0.01,
+        {
+         "scroll": 2
+        },
+        6
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.47,
+       0.12,
+       0.5,
+       0.7
+      ],
+      "theme": "light",
+      "title": "Acme Flow",
+      "url": "flow.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 22,
+      "enter": "none",
+      "kb": [
+       1,
+       1.05
+      ]
+     },
+     "dur": 6.6
+    },
+    {
+     "id": "ui.notifyStack",
+     "at": 0.1,
+     "params": {
+      "pos": [
+       0.64,
+       0.22
+      ],
+      "width": 0.32,
+      "max": 3,
+      "accent": "#3B5BFD",
+      "app": "Inbox",
+      "items": [
+       {
+        "at": 0.3,
+        "title": "New request",
+        "body": "Refund for a double charge",
+        "icon": "mail"
+       },
+       {
+        "at": 1,
+        "title": "New message",
+        "body": "Cannot log in after reset",
+        "icon": "search"
+       },
+       {
+        "at": 1.7,
+        "title": "New form",
+        "body": "Export button does nothing",
+        "icon": "doc"
+       }
+      ]
+     },
+     "dur": 6.5
+    }
+   ],
+   "under": [],
+   "why": "the pain as a question, on frame 0",
+   "caption": {
+    "size": 46,
+    "y": 1000,
+    "w": 1500,
+    "maxWords": 5,
+    "maxChars": 34,
+    "chunks": [
+     {
+      "text": "Every team gets requests from",
+      "start": 0.35,
+      "end": 2.5375
+     },
+     {
+      "text": "email,",
+      "start": 2.5375,
+      "end": 3.325
+     },
+     {
+      "text": "chat and forms.",
+      "start": 3.325,
+      "end": 4.8125
+     },
+     {
+      "text": "Most get forwarded by hand,",
+      "start": 6.35,
+      "end": 8.5375
+     }
+    ]
+   }
+  },
+  {
+   "id": "wrong",
+   "start": 6,
+   "end": 14,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Today: forward it and *hope*.",
+     "at": 6.08,
+     "x": 110,
+     "y": 300,
+     "w": 700,
+     "size": 100
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "wWin",
+     "at": 6,
+     "screen": {
+      "name": "chat",
+      "keys": [
+       [
+        0,
+        {
+         "msgs": 1
+        }
+       ],
+       [
+        0.2,
+        {
+         "msgs": 5
+        },
+        3
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.47,
+       0.12,
+       0.5,
+       0.7
+      ],
+      "theme": "light",
+      "title": "Team chat",
+      "url": "chat.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 22,
+      "enter": "none",
+      "kb": [
+       1.02,
+       1.07
+      ]
+     },
+     "dur": 8.6
+    },
+    {
+     "id": "callout.arrowLabel",
+     "at": 9.4,
+     "params": {
+      "from": [
+       0.33,
+       0.78
+      ],
+      "to": [
+       0.62,
+       0.66
+      ],
+      "label": "Still nobody owns it",
+      "accent": "#D9473F",
+      "size": 1
+     },
+     "dur": 5.2
+    }
+   ],
+   "under": [],
+   "why": "the wrong model: forwarding by hand",
+   "caption": {
+    "size": 46,
+    "y": 1000,
+    "w": 1500,
+    "maxWords": 5,
+    "maxChars": 34,
+    "chunks": [
+     {
+      "text": "Most get forwarded by hand,",
+      "start": 6.35,
+      "end": 8.5375
+     },
+     {
+      "text": "and some never find an",
+      "start": 8.5375,
+      "end": 10.725
+     },
+     {
+      "text": "owner.",
+      "start": 10.725,
+      "end": 11.5125
+     },
+     {
+      "text": "Acme Flow routes them for",
+      "start": 14.35,
+      "end": 16.5375
+     }
+    ]
+   }
+  },
+  {
+   "id": "reframe",
+   "start": 14,
+   "end": 19.3333,
+   "bg": "paper",
+   "grid": 0,
+   "heads": [
+    {
+     "text": "What if each request knew *where to go*?",
+     "at": 14.8,
+     "x": 210,
+     "y": 528.8,
+     "w": 1500,
+     "size": 64,
+     "align": "center",
+     "weight": 800
+    }
+   ],
+   "kickers": [],
+   "items": [],
+   "under": [],
+   "mark": {
+    "at": 14.1,
+    "cx": 960,
+    "cy": 388.8,
+    "size": 130,
+    "nameSize": 96,
+    "row": true
+   },
+   "why": "the reframe: the product, once",
+   "caption": {
+    "size": 46,
+    "y": 1000,
+    "w": 1500,
+    "maxWords": 5,
+    "maxChars": 34,
+    "chunks": [
+     {
+      "text": "Acme Flow routes them for",
+      "start": 14.35,
+      "end": 16.5375
+     },
+     {
+      "text": "you,",
+      "start": 16.5375,
+      "end": 17.325
+     },
+     {
+      "text": "in three steps.",
+      "start": 17.325,
+      "end": 18.8125
+     },
+     {
+      "text": "First,",
+      "start": 19.6833,
+      "end": 20.4708
+     }
+    ]
+   }
+  },
+  {
+   "id": "step1",
+   "start": 19.333333,
+   "end": 30,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "*Connect* where requests arrive.",
+     "at": 19.4533,
+     "x": 110,
+     "y": 112,
+     "w": 1700,
+     "size": 68
+    }
+   ],
+   "kickers": [
+    {
+     "text": "Step one",
+     "at": 19.3833,
+     "x": 110,
+     "y": 56,
+     "size": 26
+    }
+   ],
+   "items": [
+    {
+     "id": "ui.integrationGrid",
+     "at": 19.6333,
+     "params": {
+      "box": [
+       0.16,
+       0.24,
+       0.68,
+       0.54
+      ],
+      "hub": "A",
+      "accent": "#3B5BFD",
+      "glyphs": [
+       "mail",
+       "chat",
+       "doc",
+       "calendar",
+       "db",
+       "sheet",
+       "cloud",
+       "bell"
+      ],
+      "stagger": 0.12,
+      "connectAt": 0.8,
+      "scale": 1
+     },
+     "dur": 10.9667
+    }
+   ],
+   "under": [],
+   "why": "step 1: connect the sources (neutral glyphs)",
+   "caption": {
+    "size": 46,
+    "y": 1000,
+    "w": 1500,
+    "maxWords": 5,
+    "maxChars": 34,
+    "chunks": [
+     {
+      "text": "in three steps.",
+      "start": 17.325,
+      "end": 18.8125
+     },
+     {
+      "text": "First,",
+      "start": 19.6833,
+      "end": 20.4708
+     },
+     {
+      "text": "connect the places your requests",
+      "start": 20.4708,
+      "end": 22.6583
+     },
+     {
+      "text": "come from.",
+      "start": 22.6583,
+      "end": 23.7958
+     },
+     {
+      "text": "Then write the rule the",
+      "start": 30.35,
+      "end": 32.5375
+     }
+    ]
+   }
+  },
+  {
+   "id": "step2",
+   "start": 30,
+   "end": 42,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "*Describe* the rule in a sentence.",
+     "at": 30.12,
+     "x": 110,
+     "y": 112,
+     "w": 1700,
+     "size": 68
+    }
+   ],
+   "kickers": [
+    {
+     "text": "Step two",
+     "at": 30.05,
+     "x": 110,
+     "y": 56,
+     "size": 26
+    }
+   ],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "s2Win",
+     "at": 30,
+     "screen": {
+      "name": "builder",
+      "keys": [
+       [
+        0,
+        {
+         "nodes": 0
+        }
+       ],
+       [
+        3.8,
+        {
+         "nodes": 5
+        },
+        6.3
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.09,
+       0.22,
+       0.82,
+       0.64
+      ],
+      "theme": "light",
+      "title": "Acme Flow",
+      "url": "flow.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 22,
+      "enter": "none",
+      "move": [
+       {
+        "t": 0.15,
+        "box": [
+         0.04,
+         0.22,
+         0.6,
+         0.64
+        ]
+       },
+       {
+        "t": 10.700000000000001,
+        "box": [
+         0.09,
+         0.22,
+         0.82,
+         0.64
+        ]
+       }
+      ],
+      "zoom": []
+     },
+     "dur": 12.6
+    },
+    {
+     "id": "ui.aiAnswer",
+     "at": 30.3,
+     "dur": 10.5,
+     "params": {
+      "box": [
+       0.6,
+       0.22,
+       0.37,
+       0.62
+      ],
+      "prompt": "Send each new request to the team that owns it",
+      "answer": [
+       "Done. Here is your flow:",
+       "• Read each request as it lands",
+       "• Pick the owning team from its topic",
+       "• Post it to that team",
+       "• Tell the customer who has it"
+      ],
+      "typeAt": 0.6000000000000001,
+      "cps": 22,
+      "thinkS": 0.5,
+      "wps": 9,
+      "applyAt": 10.1,
+      "apply": "Apply flow",
+      "accent": "#3B5BFD",
+      "title": "Ask Acme Flow",
+      "avatar": "A",
+      "scale": 1.05
+     }
+    }
+   ],
+   "under": [],
+   "why": "step 2: describe the rule, the steps build",
+   "caption": {
+    "size": 46,
+    "y": 1000,
+    "w": 1500,
+    "maxWords": 5,
+    "maxChars": 34,
+    "chunks": [
+     {
+      "text": "Then write the rule the",
+      "start": 30.35,
+      "end": 32.5375
+     },
+     {
+      "text": "way you would say it,",
+      "start": 32.5375,
+      "end": 34.725
+     },
+     {
+      "text": "and the steps build themselves.",
+      "start": 34.725,
+      "end": 36.9125
+     },
+     {
+      "text": "Now each new request goes",
+      "start": 42.35,
+      "end": 44.5375
+     }
+    ]
+   }
+  },
+  {
+   "id": "step3",
+   "start": 42,
+   "end": 52.6667,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Requests *route themselves*.",
+     "at": 42.12,
+     "x": 110,
+     "y": 112,
+     "w": 1700,
+     "size": 68
+    }
+   ],
+   "kickers": [
+    {
+     "text": "Step three",
+     "at": 42.05,
+     "x": 110,
+     "y": 56,
+     "size": 26
+    }
+   ],
+   "items": [
+    {
+     "id": "ui.appWindow",
+     "key": "s3Win",
+     "at": 42,
+     "screen": {
+      "name": "builder",
+      "keys": [
+       [
+        0,
+        {
+         "nodes": 5,
+         "run": 0
+        }
+       ],
+       [
+        1.3,
+        {
+         "hoverRun": 1
+        }
+       ],
+       [
+        1.75,
+        {
+         "run": 5,
+         "hoverRun": 0
+        },
+        1.2
+       ]
+      ]
+     },
+     "params": {
+      "box": [
+       0.09,
+       0.22,
+       0.82,
+       0.64
+      ],
+      "theme": "light",
+      "title": "Acme Flow",
+      "url": "flow.example",
+      "accent": "#3B5BFD",
+      "label": "placeholder UI · demo data",
+      "labelSize": 22,
+      "enter": "none",
+      "zoom": []
+     },
+     "dur": 11.2667
+    },
+    {
+     "id": "ui.cursorJourney",
+     "at": 42,
+     "params": {
+      "path": [
+       {
+        "t": 0.3,
+        "x": 0.6,
+        "y": 0.6
+       },
+       {
+        "t": 1.3,
+        "x": 0.923,
+        "y": 0.078,
+        "hover": [
+         0.884,
+         0.035,
+         0.098,
+         0.066
+        ]
+       },
+       {
+        "t": 1.6,
+        "x": 0.933,
+        "y": 0.07300000000000001,
+        "click": true
+       },
+       {
+        "t": 3,
+        "x": 0.7,
+        "y": 0.5
+       }
+      ],
+      "size": 1,
+      "win": {
+       "at": 42,
+       "dur": 11.2667,
+       "params": {
+        "box": [
+         0.09,
+         0.22,
+         0.82,
+         0.64
+        ],
+        "theme": "light",
+        "title": "Acme Flow",
+        "url": "flow.example",
+        "accent": "#3B5BFD",
+        "label": "placeholder UI · demo data",
+        "labelSize": 22,
+        "enter": "none",
+        "zoom": []
+       }
+      }
+     },
+     "dur": 11.2667
+    },
+    {
+     "id": "ui.notifyStack",
+     "at": 44.6,
+     "params": {
+      "pos": [
+       0.64,
+       0.22
+      ],
+      "width": 0.32,
+      "max": 3,
+      "accent": "#3B5BFD",
+      "app": "Inbox",
+      "items": [
+       {
+        "at": 0,
+        "title": "Request routed",
+        "body": "Refund → Billing",
+        "icon": "branch"
+       },
+       {
+        "at": 0.6,
+        "title": "Request routed",
+        "body": "Login issue → Access",
+        "icon": "branch"
+       },
+       {
+        "at": 1.2,
+        "title": "Customer told",
+        "body": "Billing has it",
+        "icon": "mail"
+       }
+      ]
+     },
+     "dur": 8.6667
+    }
+   ],
+   "under": [],
+   "why": "step 3: it runs on its own",
+   "caption": {
+    "size": 46,
+    "y": 1000,
+    "w": 1500,
+    "maxWords": 5,
+    "maxChars": 34,
+    "chunks": [
+     {
+      "text": "Now each new request goes",
+      "start": 42.35,
+      "end": 44.5375
+     },
+     {
+      "text": "to the team that owns",
+      "start": 44.5375,
+      "end": 46.725
+     },
+     {
+      "text": "it,",
+      "start": 46.725,
+      "end": 47.5125
+     },
+     {
+      "text": "and the customer hears back.",
+      "start": 47.5125,
+      "end": 49.7
+     },
+     {
+      "text": "You see every run,",
+      "start": 53.0167,
+      "end": 54.8542
+     }
+    ]
+   }
+  },
+  {
+   "id": "result",
+   "start": 52.666667,
+   "end": 63.3333,
+   "bg": "paper",
+   "grid": 1,
+   "heads": [
+    {
+     "text": "Nothing waits *without an owner*.",
+     "at": 52.7867,
+     "x": 110,
+     "y": 62,
+     "w": 1700,
+     "size": 72
+    }
+   ],
+   "kickers": [],
+   "items": [
+    {
+     "id": "ui.dashboardAssemble",
+     "at": 52.9167,
+     "params": {
+      "box": [
+       0.08,
+       0.19,
+       0.84,
+       0.66
+      ],
+      "accent": "#3B5BFD",
+      "title": "Acme Flow · Overview",
+      "cols": 4,
+      "rows": 3,
+      "source": "placeholder data",
+      "scale": 1
+     },
+     "dur": 11.0166
+    }
+   ],
+   "under": [],
+   "why": "the result: what changes",
+   "caption": {
+    "size": 46,
+    "y": 1000,
+    "w": 1500,
+    "maxWords": 5,
+    "maxChars": 34,
+    "chunks": [
+     {
+      "text": "You see every run,",
+      "start": 53.0167,
+      "end": 54.8542
+     },
+     {
+      "text": "and nothing waits without an",
+      "start": 54.8542,
+      "end": 57.0417
+     },
+     {
+      "text": "owner.",
+      "start": 57.0417,
+      "end": 57.8292
+     }
+    ]
+   }
+  },
+  {
+   "id": "end",
+   "start": 63.333333,
+   "end": 70,
+   "bg": "paper",
+   "grid": 0,
+   "heads": [],
+   "kickers": [],
+   "items": [],
+   "under": [],
+   "card": {
+    "at": 63.3833,
+    "unit": 1,
+    "stack": false,
+    "cy": 388.8,
+    "fine": "Acme Flow is fictional · placeholder UI · demo data",
+    "fineY": 64
+   },
+   "why": "end card held",
+   "caption": {
+    "size": 46,
+    "y": 1000,
+    "w": 1500,
+    "maxWords": 5,
+    "maxChars": 34,
+    "chunks": []
+   }
+  }
+ ],
+ "videos": [],
+ "cues": [
+  {
+   "t": 0,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "question"
+  },
+  {
+   "t": 0.1333,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -10,
+   "scene": "question"
+  },
+  {
+   "t": 0.4,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New request",
+   "scene": "question"
+  },
+  {
+   "t": 1.1,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New message",
+   "scene": "question"
+  },
+  {
+   "t": 1.8,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: New form",
+   "scene": "question"
+  },
+  {
+   "t": 6,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "wrong"
+  },
+  {
+   "t": 6.0667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -10,
+   "scene": "wrong"
+  },
+  {
+   "t": 9.4333,
+   "id": "sfx/ui/pop",
+   "why": "label pops",
+   "scene": "wrong"
+  },
+  {
+   "t": 9.6,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "arrow draws",
+   "scene": "wrong"
+  },
+  {
+   "id": "sfx/tx/blur_cross",
+   "t": 14,
+   "gainDb": -4,
+   "why": "tx transitions/blur-cross"
+  },
+  {
+   "t": 14.1,
+   "id": "sfx/hit/soft",
+   "why": "the mark lands",
+   "scene": "reframe"
+  },
+  {
+   "t": 14.8,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -10,
+   "scene": "reframe"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 19.3333,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "t": 19.3667,
+   "id": "sfx/ui/pop",
+   "why": "step kicker",
+   "scene": "step1"
+  },
+  {
+   "t": 19.4667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -10,
+   "scene": "step1"
+  },
+  {
+   "t": 19.6333,
+   "id": "sfx/ui/pop",
+   "why": "hub lands",
+   "scene": "step1"
+  },
+  {
+   "t": 19.8333,
+   "id": "sfx/ui/tick",
+   "why": "tile 1",
+   "scene": "step1"
+  },
+  {
+   "t": 20.0667,
+   "id": "sfx/ui/tick",
+   "why": "tile 3",
+   "scene": "step1"
+  },
+  {
+   "t": 20.3,
+   "id": "sfx/ui/tick",
+   "why": "tile 5",
+   "scene": "step1"
+  },
+  {
+   "t": 20.5667,
+   "id": "sfx/ui/tick",
+   "why": "tile 7",
+   "scene": "step1"
+  },
+  {
+   "t": 20.6333,
+   "id": "sfx/ui/connect",
+   "why": "connectors draw on",
+   "scene": "step1"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 30,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "t": 30,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "step2"
+  },
+  {
+   "t": 30.0667,
+   "id": "sfx/ui/pop",
+   "why": "step kicker",
+   "scene": "step2"
+  },
+  {
+   "t": 30.1333,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -10,
+   "scene": "step2"
+  },
+  {
+   "t": 30.9,
+   "id": "sfx/ui/typing_burst",
+   "why": "typing",
+   "scene": "step2"
+  },
+  {
+   "t": 31.8,
+   "id": "sfx/ui/typing_burst",
+   "why": "typing",
+   "scene": "step2"
+  },
+  {
+   "t": 32.7,
+   "id": "sfx/ui/typing_burst",
+   "why": "typing",
+   "scene": "step2"
+  },
+  {
+   "t": 33.3,
+   "id": "sfx/device/message_sent",
+   "why": "prompt sent",
+   "scene": "step2"
+  },
+  {
+   "t": 33.5333,
+   "id": "sfx/ui/ai_think_pulse",
+   "why": "thinking",
+   "scene": "step2"
+  },
+  {
+   "t": 33.8,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 34.2333,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 34.7,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 35.1333,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 35.6,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 36.0333,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 36.5,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 36.9333,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 37.4,
+   "id": "sfx/ui/stream_tick",
+   "why": "answer streams",
+   "scene": "step2"
+  },
+  {
+   "t": 37.4667,
+   "id": "sfx/ui/ai_reply",
+   "why": "answer done",
+   "scene": "step2"
+  },
+  {
+   "t": 40.4,
+   "id": "sfx/device/mouse_click",
+   "why": "apply click",
+   "scene": "step2"
+  },
+  {
+   "t": 40.5,
+   "id": "sfx/ui/success_chime",
+   "why": "applied",
+   "scene": "step2"
+  },
+  {
+   "id": "sfx/tx/push",
+   "t": 42,
+   "gainDb": -4,
+   "why": "tx transitions/push"
+  },
+  {
+   "t": 42,
+   "id": "sfx/whoosh/swish_s",
+   "why": "window lands",
+   "scene": "step3"
+  },
+  {
+   "t": 42.0667,
+   "id": "sfx/ui/pop",
+   "why": "step kicker",
+   "scene": "step3"
+  },
+  {
+   "t": 42.1333,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -10,
+   "scene": "step3"
+  },
+  {
+   "t": 43.3,
+   "id": "sfx/ui/hover_tick",
+   "why": "hover",
+   "scene": "step3"
+  },
+  {
+   "t": 43.6333,
+   "id": "sfx/device/mouse_click",
+   "why": "click",
+   "scene": "step3"
+  },
+  {
+   "t": 44.6,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: Request routed",
+   "scene": "step3"
+  },
+  {
+   "t": 45.2,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: Request routed",
+   "scene": "step3"
+  },
+  {
+   "t": 45.8,
+   "id": "sfx/ui/toast_in",
+   "why": "toast: Customer told",
+   "scene": "step3"
+  },
+  {
+   "id": "sfx/tx/dissolve_pad",
+   "t": 52.6667,
+   "gainDb": -4,
+   "why": "tx transitions/dissolve"
+  },
+  {
+   "t": 52.8,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "headline rises",
+   "overBedDb": -10,
+   "scene": "result"
+  },
+  {
+   "t": 53.0667,
+   "id": "sfx/ui/drop_snap",
+   "why": "card 1 snaps in",
+   "scene": "result"
+  },
+  {
+   "t": 53.1333,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "card 2 snaps in",
+   "scene": "result"
+  },
+  {
+   "t": 53.2333,
+   "id": "sfx/ui/drop_snap",
+   "why": "card 3 snaps in",
+   "scene": "result"
+  },
+  {
+   "t": 53.3,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "card 4 snaps in",
+   "scene": "result"
+  },
+  {
+   "t": 53.4,
+   "id": "sfx/ui/drop_snap",
+   "why": "card 5 snaps in",
+   "scene": "result"
+  },
+  {
+   "t": 53.4667,
+   "id": "sfx/whoosh/swish_xs",
+   "why": "card 6 snaps in",
+   "scene": "result"
+  },
+  {
+   "t": 53.5333,
+   "id": "sfx/ui/drop_snap",
+   "why": "card 7 snaps in",
+   "scene": "result"
+  },
+  {
+   "t": 53.9333,
+   "id": "sfx/ui/count_run",
+   "why": "numbers count up",
+   "scene": "result"
+  },
+  {
+   "t": 63.5333,
+   "id": "sfx/logo/hybrid",
+   "why": "sonic logo on the name",
+   "scene": "end"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Dashboard figures (1,284 routed and the others)",
+   "source": "placeholder data: the demo dashboard of the fictional Acme Flow"
+  }
+ ],
+ "texts": [
+  {
+   "id": "question.head0",
+   "text": "Who owns this request?",
+   "t": [
+    0.12,
+    6
+   ],
+   "box": [
+    110,
+    300,
+    805,
+    508
+   ],
+   "fontPx": 100,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "wrong.head0",
+   "text": "Today: forward it and hope.",
+   "t": [
+    6.08,
+    14
+   ],
+   "box": [
+    110,
+    300,
+    643,
+    614
+   ],
+   "fontPx": 100,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "reframe.head0",
+   "text": "What if each request knew where to go?",
+   "t": [
+    14.8,
+    19.3333
+   ],
+   "box": [
+    309,
+    529,
+    1611,
+    594
+   ],
+   "fontPx": 64,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "step1.head0",
+   "text": "Connect where requests arrive.",
+   "t": [
+    19.4533,
+    30
+   ],
+   "box": [
+    110,
+    112,
+    1197,
+    181
+   ],
+   "fontPx": 68,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "step2.head0",
+   "text": "Describe the rule in a sentence.",
+   "t": [
+    30.12,
+    42
+   ],
+   "box": [
+    110,
+    112,
+    1273,
+    181
+   ],
+   "fontPx": 68,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "step3.head0",
+   "text": "Requests route themselves.",
+   "t": [
+    42.12,
+    52.6667
+   ],
+   "box": [
+    110,
+    112,
+    1051,
+    181
+   ],
+   "fontPx": 68,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "result.head0",
+   "text": "Nothing waits without an owner.",
+   "t": [
+    52.7867,
+    63.3333
+   ],
+   "box": [
+    110,
+    62,
+    1302,
+    135
+   ],
+   "fontPx": 72,
+   "role": "headline",
+   "fg": "#14131A"
+  },
+  {
+   "id": "end.cta",
+   "text": "Start free",
+   "t": [
+    63.8333,
+    70
+   ],
+   "box": null,
+   "fontPx": 44,
+   "role": "endcard",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "Every team gets requests from",
+   "t": [
+    0.35,
+    2.5375
+   ],
+   "box": [
+    566,
+    958,
+    1354,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "email,",
+   "t": [
+    2.5375,
+    3.325
+   ],
+   "box": [
+    862,
+    958,
+    1058,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "chat and forms.",
+   "t": [
+    3.325,
+    4.8125
+   ],
+   "box": [
+    746,
+    958,
+    1174,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "Most get forwarded by hand,",
+   "t": [
+    6.35,
+    8.5375
+   ],
+   "box": [
+    592,
+    958,
+    1328,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "and some never find an",
+   "t": [
+    8.5375,
+    10.725
+   ],
+   "box": [
+    656,
+    958,
+    1264,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "owner.",
+   "t": [
+    10.725,
+    11.5125
+   ],
+   "box": [
+    862,
+    958,
+    1058,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "Acme Flow routes them for",
+   "t": [
+    14.35,
+    16.5375
+   ],
+   "box": [
+    617,
+    958,
+    1303,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "you,",
+   "t": [
+    16.5375,
+    17.325
+   ],
+   "box": [
+    888,
+    958,
+    1032,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "in three steps.",
+   "t": [
+    17.325,
+    18.8125
+   ],
+   "box": [
+    746,
+    958,
+    1174,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "First,",
+   "t": [
+    19.6833,
+    20.4708
+   ],
+   "box": [
+    862,
+    958,
+    1058,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "connect the places your requests",
+   "t": [
+    20.4708,
+    22.6583
+   ],
+   "box": [
+    527,
+    958,
+    1393,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "come from.",
+   "t": [
+    22.6583,
+    23.7958
+   ],
+   "box": [
+    811,
+    958,
+    1110,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "Then write the rule the",
+   "t": [
+    30.35,
+    32.5375
+   ],
+   "box": [
+    643,
+    958,
+    1277,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "way you would say it,",
+   "t": [
+    32.5375,
+    34.725
+   ],
+   "box": [
+    669,
+    958,
+    1251,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "and the steps build themselves.",
+   "t": [
+    34.725,
+    36.9125
+   ],
+   "box": [
+    540,
+    958,
+    1380,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "Now each new request goes",
+   "t": [
+    42.35,
+    44.5375
+   ],
+   "box": [
+    617,
+    958,
+    1303,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "to the team that owns",
+   "t": [
+    44.5375,
+    46.725
+   ],
+   "box": [
+    669,
+    958,
+    1251,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "it,",
+   "t": [
+    46.725,
+    47.5125
+   ],
+   "box": [
+    901,
+    958,
+    1019,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "and the customer hears back.",
+   "t": [
+    47.5125,
+    49.7
+   ],
+   "box": [
+    579,
+    958,
+    1341,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "You see every run,",
+   "t": [
+    53.0167,
+    54.8542
+   ],
+   "box": [
+    707,
+    958,
+    1213,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "and nothing waits without an",
+   "t": [
+    54.8542,
+    57.0417
+   ],
+   "box": [
+    579,
+    958,
+    1341,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "id": "caption",
+   "text": "owner.",
+   "t": [
+    57.0417,
+    57.8292
+   ],
+   "box": [
+    862,
+    958,
+    1058,
+    1014
+   ],
+   "fontPx": 46,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  }
+ ],
+ "paceRule": {
+  "aslMax": 10,
+  "longMax": 16.5
+ },
+ "music": "music/bed_documentary_marimba_loop8",
+ "musicGainDb": 0,
+ "ceilingDb": -2.5,
+ "fadeInMs": 30,
+ "layers": [
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "upload-safe"
+   }
+  }
+ ],
+ "bedAutomation": [
+  {
+   "frame": 0,
+   "gain_db": 0
+  },
+  {
+   "frame": 1960,
+   "gain_db": 0
+  },
+  {
+   "frame": 1996,
+   "gain_db": -40
+  }
+ ],
+ "audio": {
+  "mode": "music",
+  "role": "explainer",
+  "quiet": [
+   {
+    "t": [
+     66.5333,
+     70
+    ],
+    "kind": "hold",
+    "why": "end card on a quiet hold"
+   }
+  ]
+ },
+ "honesty": "fictional product (Acme Flow); placeholder HTML screens labelled in frame",
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 8,
+   "asl": 8.75,
+   "longest": 12,
+   "pass": true
+  }
+ }
+}

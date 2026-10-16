@@ -8197,6 +8197,851 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "ui.appWindow",
+   "file": "type/gfx/ui-saas.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 6,
+   "in_frames": 12,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.12,
+     0.1,
+     0.76,
+     0.8
+    ],
+    "theme": "light",
+    "chrome": "browser",
+    "title": "Acme Flow",
+    "url": "flow.example",
+    "accent": "#4A18ED",
+    "screen": {
+     "src": null,
+     "html": null,
+     "w": 1440,
+     "h": 900,
+     "anchor": [
+      0.5,
+      0
+     ]
+    },
+    "zoom": [],
+    "move": [],
+    "kb": [
+     1,
+     1
+    ],
+    "radius": 16,
+    "enter": "rise",
+    "label": "placeholder UI · demo data",
+    "labelSize": 22,
+    "shadow": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "window",
+    "browser",
+    "app",
+    "screenshot",
+    "screen-recording",
+    "zoom",
+    "ken-burns",
+    "saas",
+    "product-demo"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.cursorJourney",
+   "file": "type/gfx/ui-saas.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/mouse_click",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 4.2,
+   "in_frames": 6,
+   "out_frames": 6,
+   "params": {
+    "path": [
+     {
+      "t": 0.1,
+      "x": 0.72,
+      "y": 0.78
+     },
+     {
+      "t": 0.9,
+      "x": 0.42,
+      "y": 0.44,
+      "click": true
+     },
+     {
+      "t": 1.8,
+      "x": 0.6,
+      "y": 0.56,
+      "hover": [
+       0.53,
+       0.52,
+       0.14,
+       0.08
+      ]
+     },
+     {
+      "t": 2.5,
+      "x": 0.6,
+      "y": 0.56,
+      "down": true,
+      "carry": "Step"
+     },
+     {
+      "t": 3.4,
+      "x": 0.34,
+      "y": 0.68,
+      "up": true
+     }
+    ],
+    "arc": 0.16,
+    "win": null,
+    "size": 1,
+    "color": "#111111",
+    "outline": "#FFFFFF",
+    "ring": "#4A18ED",
+    "hover": "rgba(74,24,237,0.10)",
+    "shadow": true,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "cursor",
+    "click",
+    "drag",
+    "hover",
+    "path",
+    "json",
+    "tour",
+    "saas",
+    "product-demo"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.uiHighlight",
+   "file": "type/gfx/ui-saas.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/highlight_draw",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 2.5,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.38,
+     0.4,
+     0.24,
+     0.12
+    ],
+    "win": null,
+    "color": "#4A18ED",
+    "width": 4,
+    "radius": 14,
+    "pad": 10,
+    "label": "Rules you can read",
+    "labelPos": "top",
+    "fill": 0.07,
+    "pulse": true,
+    "size": 1,
+    "scale": 1
+   },
+   "tags": [
+    "callout",
+    "highlight",
+    "box",
+    "focus",
+    "ui",
+    "label",
+    "saas",
+    "tutorial"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "callout.arrowLabel",
+   "file": "type/gfx/ui-saas.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 2.5,
+   "in_frames": 12,
+   "out_frames": 8,
+   "params": {
+    "from": [
+     0.72,
+     0.28
+    ],
+    "to": [
+     0.52,
+     0.46
+    ],
+    "win": null,
+    "label": "Drag to reorder",
+    "color": "#0E0E14",
+    "bg": "#FFFFFF",
+    "accent": "#4A18ED",
+    "bend": 0.22,
+    "width": 4,
+    "size": 1,
+    "scale": 1
+   },
+   "tags": [
+    "callout",
+    "arrow",
+    "label",
+    "point",
+    "ui",
+    "annotation",
+    "saas",
+    "tutorial"
+   ],
+   "demo": "type/demo/out/gfx-callouts.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.commandBar",
+   "file": "type/gfx/ui-saas.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/palette_open",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 3.6,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.27,
+     0.2,
+     0.46,
+     0.5
+    ],
+    "query": "route",
+    "placeholder": "Type a command…",
+    "typeAt": 0.45,
+    "cps": 12,
+    "select": 0,
+    "selectAt": null,
+    "enterAt": null,
+    "close": true,
+    "dim": 0.32,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "items": [
+     {
+      "label": "Route new requests",
+      "icon": "branch",
+      "hint": "Flow"
+     },
+     {
+      "label": "Create a flow",
+      "icon": "bolt",
+      "hint": "New"
+     },
+     {
+      "label": "Search runs",
+      "icon": "search",
+      "hint": "Runs"
+     },
+     {
+      "label": "Invite a teammate",
+      "icon": "user",
+      "hint": "Team"
+     },
+     {
+      "label": "Open settings",
+      "icon": "pen",
+      "hint": "App"
+     },
+     {
+      "label": "Route by topic",
+      "icon": "branch",
+      "hint": "Rule"
+     }
+    ],
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "command",
+    "palette",
+    "search",
+    "keyboard",
+    "shortcut",
+    "filter",
+    "saas",
+    "product-demo"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.aiAnswer",
+   "file": "type/gfx/ui-saas.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/stream_tick",
+    "offset_f": 1,
+    "gain_db": -4
+   },
+   "dur_s": 6,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.2,
+     0.14,
+     0.6,
+     0.72
+    ],
+    "prompt": "Send each new request to the right team",
+    "typeAt": 0.3,
+    "cps": 26,
+    "sendAt": null,
+    "thinkS": 0.8,
+    "wps": 9,
+    "title": "Ask Acme Flow",
+    "avatar": "A",
+    "theme": "light",
+    "accent": "#4A18ED",
+    "answer": [
+     "Done. Here is a flow in three steps:",
+     "• Read each new request as it lands",
+     "• Pick the team from its topic",
+     "• Post it to that team and reply"
+    ],
+    "apply": "Apply flow",
+    "applyAt": null,
+    "label": "demo answer · placeholder",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "ai",
+    "prompt",
+    "chat",
+    "answer",
+    "streaming",
+    "typing",
+    "assistant",
+    "saas",
+    "product-demo"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.shortcutChip",
+   "file": "type/gfx/ui-saas.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/key_chord",
+    "offset_f": 15,
+    "gain_db": -2
+   },
+   "dur_s": 2.6,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "keys": [
+     "⌘",
+     "K"
+    ],
+    "label": "Open anywhere",
+    "pos": [
+     0.5,
+     0.5
+    ],
+    "pressAt": 0.5,
+    "stagger": 0.12,
+    "hold": 0.55,
+    "size": 1,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "stack": false,
+    "plate": false,
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "keyboard",
+    "shortcut",
+    "keycap",
+    "chip",
+    "changelog",
+    "saas",
+    "tutorial"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.pricingCards",
+   "file": "type/gfx/ui-saas2.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/price_reveal",
+    "offset_f": 30,
+    "gain_db": -3
+   },
+   "dur_s": 4,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.1,
+     0.16,
+     0.8,
+     0.68
+    ],
+    "start": 0.2,
+    "stagger": 0.14,
+    "featuredAt": 1,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "badge": "Featured",
+    "source": "placeholder data",
+    "title": "",
+    "plans": [
+     {
+      "name": "Starter",
+      "price": "$0",
+      "per": "/ month",
+      "blurb": "For trying it out",
+      "features": [
+       "Up to 3 flows",
+       "Email support"
+      ],
+      "cta": "Start free"
+     },
+     {
+      "name": "Team",
+      "price": "$10",
+      "per": "/ seat / month",
+      "blurb": "For a whole team",
+      "features": [
+       "Unlimited flows",
+       "Shared inbox",
+       "Run history"
+      ],
+      "cta": "Start trial",
+      "featured": true
+     },
+     {
+      "name": "Business",
+      "price": "$24",
+      "per": "/ seat / month",
+      "blurb": "For many teams",
+      "features": [
+       "Everything in Team",
+       "Roles and audit log",
+       "Priority support"
+      ],
+      "cta": "Talk to us"
+     }
+    ],
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "pricing",
+    "plans",
+    "cards",
+    "availability",
+    "offer",
+    "saas",
+    "launch"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.integrationGrid",
+   "file": "type/gfx/ui-saas2.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/connect",
+    "offset_f": 16,
+    "gain_db": -3
+   },
+   "dur_s": 4,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.12,
+     0.12,
+     0.76,
+     0.76
+    ],
+    "layout": "ring",
+    "hub": "A",
+    "hubLabel": "Acme Flow",
+    "glyphs": [
+     "mail",
+     "chat",
+     "calendar",
+     "db",
+     "doc",
+     "sheet",
+     "cloud",
+     "bell",
+     "code",
+     "card"
+    ],
+    "labels": true,
+    "cols": 5,
+    "start": 0.2,
+    "stagger": 0.07,
+    "connectAt": 0.55,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "note": "placeholder marks · generic categories",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "integrations",
+    "works-with",
+    "hub",
+    "connectors",
+    "icons",
+    "placeholder",
+    "saas",
+    "launch"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.beforeAfterSplit",
+   "file": "type/gfx/ui-saas2.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 9,
+    "gain_db": -3
+   },
+   "dur_s": 3.6,
+   "in_frames": 10,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.08,
+     0.12,
+     0.84,
+     0.76
+    ],
+    "before": {
+     "src": null,
+     "html": null,
+     "label": "Before"
+    },
+    "after": {
+     "src": null,
+     "html": null,
+     "label": "After"
+    },
+    "screen": {
+     "w": 1440,
+     "h": 900,
+     "anchor": [
+      0.5,
+      0
+     ]
+    },
+    "keys": [
+     [
+      0.3,
+      1
+     ],
+     [
+      1.2,
+      0.1
+     ],
+     [
+      2,
+      0.5
+     ]
+    ],
+    "theme": "light",
+    "accent": "#4A18ED",
+    "radius": 18,
+    "label": "placeholder UI · demo data",
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "before-after",
+    "comparison",
+    "split",
+    "wipe",
+    "screens",
+    "saas",
+    "changelog"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.notifyStack",
+   "file": "type/gfx/ui-saas2.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/toast_in",
+    "offset_f": 6,
+    "gain_db": -3
+   },
+   "dur_s": 3.8,
+   "in_frames": 6,
+   "out_frames": 8,
+   "params": {
+    "pos": "tr",
+    "width": 0.3,
+    "max": 3,
+    "gap": 14,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "app": "Acme Flow",
+    "items": [
+     {
+      "at": 0.2,
+      "title": "Request routed",
+      "body": "Billing question → Billing team",
+      "icon": "branch"
+     },
+     {
+      "at": 0.8,
+      "title": "Request routed",
+      "body": "Bug report → Support",
+      "icon": "branch"
+     },
+     {
+      "at": 1.4,
+      "title": "Reply sent",
+      "body": "Customer told who has it",
+      "icon": "mail"
+     },
+     {
+      "at": 2,
+      "title": "All caught up",
+      "body": "Nothing waiting in the inbox",
+      "icon": "check"
+     }
+    ],
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "notification",
+    "toast",
+    "stack",
+    "alerts",
+    "activity",
+    "saas",
+    "product-demo"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.dashboardAssemble",
+   "file": "type/gfx/ui-saas2.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/drop_snap",
+    "offset_f": 5,
+    "gain_db": -3
+   },
+   "dur_s": 4.2,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "box": [
+     0.08,
+     0.12,
+     0.84,
+     0.76
+    ],
+    "cols": 4,
+    "rows": 3,
+    "start": 0.15,
+    "stagger": 0.08,
+    "fly": 0.55,
+    "drawAt": 1,
+    "seed": 3,
+    "theme": "light",
+    "accent": "#4A18ED",
+    "title": "Overview",
+    "source": "placeholder data",
+    "cards": [
+     {
+      "kind": "kpi",
+      "label": "Requests routed",
+      "value": 1284,
+      "span": [
+       0,
+       0,
+       1,
+       1
+      ]
+     },
+     {
+      "kind": "kpi",
+      "label": "Median first reply",
+      "value": 42,
+      "suffix": " min",
+      "span": [
+       1,
+       0,
+       1,
+       1
+      ]
+     },
+     {
+      "kind": "kpi",
+      "label": "Open right now",
+      "value": 7,
+      "span": [
+       2,
+       0,
+       1,
+       1
+      ]
+     },
+     {
+      "kind": "donut",
+      "label": "By team",
+      "value": 0.64,
+      "span": [
+       3,
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "kind": "line",
+      "label": "Routed per day",
+      "span": [
+       0,
+       1,
+       3,
+       1
+      ]
+     },
+     {
+      "kind": "bar",
+      "label": "By topic",
+      "span": [
+       0,
+       2,
+       2,
+       1
+      ]
+     },
+     {
+      "kind": "list",
+      "label": "Latest runs",
+      "span": [
+       2,
+       2,
+       2,
+       1
+      ]
+     }
+    ],
+    "scale": 1
+   },
+   "tags": [
+    "ui",
+    "dashboard",
+    "cards",
+    "assemble",
+    "kpi",
+    "charts",
+    "grid",
+    "saas",
+    "product-demo"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "device.mock",
+   "file": "type/gfx/ui-saas2.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 6,
+   "in_frames": 14,
+   "out_frames": 10,
+   "params": {
+    "kind": "laptop",
+    "box": null,
+    "screen": {
+     "src": null,
+     "html": null,
+     "w": 1440,
+     "h": 900,
+     "anchor": [
+      0.5,
+      0
+     ]
+    },
+    "zoom": [],
+    "kb": [
+     1,
+     1
+    ],
+    "theme": "light",
+    "accent": "#4A18ED",
+    "label": "placeholder UI · demo data",
+    "color": null,
+    "scale": 1
+   },
+   "tags": [
+    "device",
+    "laptop",
+    "phone",
+    "mockup",
+    "screen",
+    "screenshot",
+    "insert",
+    "saas",
+    "product-demo"
+   ],
+   "demo": "type/demo/out/gfx-social-device.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "layout.splitScreen",
    "file": "type/gfx/layout.js",
    "kind": "layout",

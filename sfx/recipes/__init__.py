@@ -7,7 +7,8 @@ MODULES = ["whoosh", "impacts", "risers", "ui", "materials", "liquid", "cartoon"
            "archive",                                                      # 2026-10-14 round 3: projector loop, typewriter line, hologram beam
            "elec",                                                         # 2026-10-14 gap sfx/elec/arc: arc zap, crackle loop, zap-off power-down
            "hardware",                                                     # 2026-10-16 xp-hardware: sub hits, metal chimes, clicks, fan spin-up, hum, power on/off, explode, light sweep
-           "trailer"]                                                      # 2026-10-16 film lane: braams, booms, risers, clocks, heart, beds, silence patterns
+           "trailer",                                                      # 2026-10-16 film lane: braams, booms, risers, clocks, heart, beds, silence patterns
+           "saas_ui"]                                                      # 2026-10-16 xp-saas: hover, drag, drop, zoom, highlight, palette, stream, chime, chord, toast, price, connect
 
 
 def load_all():

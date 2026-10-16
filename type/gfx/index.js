@@ -16,6 +16,7 @@ import { life, ctxFor } from './core.js'; import { saneParams } from './safe.js'
 import { PROOF, PROOF_CUES } from './ui-proof.js'; import { TRACE, TRACE_CUES } from './ui-trace.js'; import { R6, R6_CUES } from './r6.js';
 import { HW_GFX, HW_CUES } from './hw.js';   // xp-hardware 2026-10-16: hw.specCallout, hw.dimensionLine, hw.chipDie, hw.edgeGlint, hw.dateCard, hw.specCard
 import { FILM_GFX, FILM_SFX } from './film.js';   // film lane (2026-10-16): trailer titles, billing block, credits roll, cards, subtitles, chapters, opening names
+import { SAAS, SAAS_CUES } from './ui-saas.js'; import { SAAS2, SAAS2_CUES } from './ui-saas2.js';   /* xp-saas (2026-10-16): SaaS launch / product-demo kit */
 /* round 4+5 (ui-proof.js, ui-trace.js): the ui.* ones join the UI kit (uiCues); chart.*, caption.*, type.* and lowerThird.* ones get per-action cues through gfxCues */
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
 const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45), ...onlyUI(R6) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES), ...onlyUI(R6_CUES) }; import { DOC } from './doc.js';
@@ -33,6 +34,7 @@ export { LAYOUTS, layoutAt, applyLayout } from './layout.js'; export { prepareDr
 export { STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource };
 export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN, ...HW_GFX, ...FILM_GFX };
 export { fmtNum, pointAt as hwPointAt, dieBlocks } from './hw.js';
+Object.assign(GFX, SAAS, SAAS2);   /* xp-saas: ui-saas.js + ui-saas2.js (ui.*, callout.uiHighlight, callout.arrowLabel, device.mock) */
 export const GFX_IDS = Object.keys(GFX);
 /* default sound pairing per gfx id prefix (sfx/<category>/<name>, anchor = the item's at + 1 frame, gain over the bed). Longest prefix wins. */
 export const GFX_SFX = {
@@ -73,6 +75,11 @@ export const GFX_SFX = {
   /* xp-hardware (2026-10-16): hw.js; gfxCues gives one cue per action */
   hw: ['sfx/hw/click_detent', 1, -3], 'hw.dateCard': ['sfx/hit/soft', 4, -2], 'hw.edgeGlint': ['sfx/hw/light_sweep', 18, -4], 'hw.chipDie': ['sfx/hw/led_on', 10, -3] };
 Object.assign(GFX_SFX, FILM_SFX);   // film lane (2026-10-16): type/gfx/film.js defaults
+/* xp-saas (2026-10-16): defaults for the SaaS kit (gfxCues gives one cue per action from SAAS_CUES / SAAS2_CUES) */
+Object.assign(GFX_SFX, { 'ui.appWindow': ['sfx/whoosh/swish_s', 0, -3], 'ui.cursorJourney': ['sfx/device/mouse_click', 1, -3], 'callout.uiHighlight': ['sfx/ui/highlight_draw', 1, -4], 'callout.arrowLabel': ['sfx/ui/pop', 1, -3],
+  'ui.commandBar': ['sfx/ui/palette_open', 0, -3], 'ui.aiAnswer': ['sfx/ui/stream_tick', 1, -4], 'ui.shortcutChip': ['sfx/ui/key_chord', 15, -2], 'ui.pricingCards': ['sfx/ui/price_reveal', 30, -3], 'ui.integrationGrid': ['sfx/ui/connect', 16, -3],
+  'ui.beforeAfterSplit': ['sfx/whoosh/swish_s', 9, -3], 'ui.notifyStack': ['sfx/ui/toast_in', 6, -3], 'ui.dashboardAssemble': ['sfx/ui/drop_snap', 5, -3], 'device.mock': ['sfx/whoosh/swish_s', 0, -3] });
+export { appWindowGeo, screenMap, cursorAt, cursorLeg, spaceOf, commandTimes, answerTimes, labelPill, unit as saasUnit, WIN_D } from './ui-saas.js'; export { GLYPHS, pricingTimes, intTimes, dashTimes, deviceScreenGeo } from './ui-saas2.js';
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 /* def ids are document-wide: every <svg> of every host in a page shares one id namespace, and url(#id) resolves to the FIRST match. Parts used to name their defs by hand ('lc' / 'lg' in chart.line, 'neon', 'odo',
    'dsScrim') or by a hash of a few params (uidOf: no `at`, most params missing), so two items in one host (two chart.line items; two ui.stateMorph with the same text at different times) shared a def and the second
@@ -106,6 +113,7 @@ uiHooks.renderInner = renderInner;
 /* per-action sound cues for every gfx id that has them (the ui.* kit and the round-3 parts): [{ t (absolute s), id: 'sfx/<cat>/<name>', why }];
    ids without an action table fall back to their single sfxFor() default at `at` + offset. */
 const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES, ...HUMAN_CUES, ...HW_CUES };
+Object.assign(ACTION_CUES, SAAS_CUES, SAAS2_CUES);   /* xp-saas: per-action cues for every SaaS part (gfxCues; they stay out of the round-1 UI kit table that ui.test.mjs pins) */
 export function gfxCues(id, { at = 0, params = {}, dur } = {}) {
   if (UI_CUES[id]) return uiCues(id, { at, params }); const g = GFX[id], f = ACTION_CUES[id];
   if (g && f) return f({ ...g.d, dur: dur ?? g.dur, ...params }).map((c) => ({ ...c, t: +(c.t + at).toFixed(4) }));
