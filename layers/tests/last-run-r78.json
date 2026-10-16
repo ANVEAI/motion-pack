@@ -1,0 +1,287 @@
+{
+ "name": "layers xp-r78",
+ "total": 56,
+ "failed": 0,
+ "rows": [
+  {
+   "label": "skyClouds is merged into BG (same object as BG_R78), reachable through overlay.js ALL_KINDS, with tags, doc and order, and the other backgrounds are still there",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "layers/manifest.json lists background.skyClouds with file layers/backgrounds-r78.js, tags, params, doc and this test (node make-manifests.mjs rewrites it)",
+   "pass": true,
+   "detail": "{\"f\":\"layers/backgrounds-r78.js\",\"t\":\"layers/tests/r78.test.mjs\",\"d\":\"layers/demo/out/r78-sheet.png\"}"
+  },
+  {
+   "label": "defaults draw the clouds preset at 2 s (612 canvas calls, finite numbers, a sky gradient first)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "defaults draw the dunes preset at 2 s (6662 canvas calls, finite numbers, a sky gradient first, one clipped ridge per layer)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "skyClouds: 26 cloud-preset and 12 dunes-preset param variants all change the draw and stay finite",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "clouds 16:9: 60 times drawn forward and in shuffled order give identical draws, and twice in a row",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dunes 16:9: 60 times drawn forward and in shuffled order give identical draws, and twice in a row",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "clouds 9:16: 60 times drawn forward and in shuffled order give identical draws, and twice in a row",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dunes 9:16: 60 times drawn forward and in shuffled order give identical draws, and twice in a row",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "clouds 1:1: 60 times drawn forward and in shuffled order give identical draws, and twice in a row",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dunes 1:1: 60 times drawn forward and in shuffled order give identical draws, and twice in a row",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "the same fingerprint (7 draws + field values) in this process and in two fresh processes: a pure function of t, no module state",
+   "pass": true,
+   "detail": "44d7ff3973b3 44d7ff3973b3 44d7ff3973b3"
+  },
+  {
+   "label": "cover is monotone: mean coverage 0.01 < 0.09 < 0.27 < 0.61 < 0.94 for cover 0 .. 1; 0 is clear (< 0.02) and 1 is mostly covered (> 0.75)",
+   "pass": true,
+   "detail": "0.00954253978713299,0.08680613000683124,0.2704670013514401,0.6108841957425767,0.9382898987899823"
+  },
+  {
+   "label": "cover 0 draws no cloud (the sky and the sun only); cover > 0 draws them",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "cloudAt: the same point twice (with other points between) is the same, another seed is another field; cov and lit stay in 0..1",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "drift 0 freezes the clouds (the field at t = 1 and t = 81 is the same)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "the drift is px per second at 1080: 108 px/s at scale 1 (three cells across the height) is 0.3 cells per second on the near layer and 0.55 x that on the far one; negative runs the other way",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "the clouds move: the density at one point changes over 20 s of drift, and lies in 0..1 over a grid",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "the light follows the sun: moving the sun from the left to the right or taking it away changes the shading of the clouds (not their coverage)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 2: frame t and t + 2 s are identical for both presets (6 times, grain included), the density and the dune crests match to 1e-9 / 1e-6, and a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 3: frame t and t + 3 s are identical for both presets (6 times, grain included), the density and the dune crests match to 1e-9 / 1e-6, and a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 5: frame t and t + 5 s are identical for both presets (6 times, grain included), the density and the dune crests match to 1e-9 / 1e-6, and a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 6: frame t and t + 6 s are identical for both presets (6 times, grain included), the density and the dune crests match to 1e-9 / 1e-6, and a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 7.3: frame t and t + 7.3 s are identical for both presets (6 times, grain included), the density and the dune crests match to 1e-9 / 1e-6, and a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop 10: frame t and t + 10 s are identical for both presets (6 times, grain included), the density and the dune crests match to 1e-9 / 1e-6, and a third of a loop later it is a different frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "without loop: frame t and t + 6 s differ (the drift keeps going)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "loop: each layer drifts a whole number of lattice periods per loop (near and far), at least one",
+   "pass": true,
+   "detail": "1 1"
+  },
+  {
+   "label": "band limit: the finest kept octave has a wavelength of at least 3 samples for every grid size (24-256), scale (0.2-5) and aspect (the smallest is 3.00 samples)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no shimmer: the largest change of density between two frames at 60 fps is 0.0017 at the default drift (limit 0.005) and 0.0152 at 400 px/s (limit 0.03), over a 64 x 36 grid",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dunes: every crest line is continuous (no step over 20 px between 200 columns at 1080p) and inside the frame; the mean crest height falls from far (696 px) to near (953 px): the near dunes are lower in the frame",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "relief 0 flattens the crest lines (a constant y)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "wind 0 freezes the dunes; the wind is faster on the near ridges (parallax)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "the light face follows the sun side (sun left and sun right shade the dunes differently)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "ridges draws that many clipped layers (1, 3, 6)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "unique per item: the draw emits no ids (no url(#...), clipPath, filter), and two layers of the same kind on one page (clouds and dunes, rendered in turn) draw exactly what each would alone",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: 17 numeric parameters x 8 hostile values x both presets never throw, never hang (< 4 s each), stay finite, and draw at most 7964 canvas calls (cap 40000: cells <= 256, ridges <= 6)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: NaN, +-Infinity, a non-numeric string, '', null, undefined, an object, an array or a boolean for any of the 17 numeric parameters throws nothing and draws exactly the default (the pack-wide sanitising policy)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: a numeric string is read as the number (every numeric parameter)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: a colour that is not #RGB / #RRGGBB, a sky with fewer than 2 colours, a bad sand or sun colour throws a clear error naming skyClouds; #RGB shorthand is accepted; more than 3 sky colours use the first 3",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "guards: t that is NaN or infinite throws; a zero, negative or NaN frame size throws; t = 1e9 and t = -1e9 draw finite numbers",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "skyParams clamps: cells 1e9 -> 256, ridges 99 -> 6, grain 5 -> 1, height 9 -> 0.9, cover 7 -> 1; the defaults come back unchanged; the preset sets cover and sun when cover is -1 / sun is null (clouds 0.55, dunes 0.16); colours become RGB triples",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "clouds: mounted via mountStack (skyClouds), bit-identical at t 1 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "clouds, later in the drift: mounted via mountStack (skyClouds), bit-identical at t 9 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "overcast (cover 0.9, softness 0.8): mounted via mountStack (skyClouds), bit-identical at t 3 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "clear (cover 0.1): mounted via mountStack (skyClouds), bit-identical at t 3 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dusk sky, big clouds: mounted via mountStack (skyClouds), bit-identical at t 3 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dunes: mounted via mountStack (skyClouds), bit-identical at t 1 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dunes, later in the wind: mounted via mountStack (skyClouds), bit-identical at t 9 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dunes, sun on the right: mounted via mountStack (skyClouds), bit-identical at t 1 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "dunes, loop 6 at t = 6: mounted via mountStack (skyClouds), bit-identical at t 6 after rendering t 0.37",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "pixels, clear sky: the horizon band (mean luma 211.5) is lighter than the top band (159.6): the gradient runs top to horizon",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "skyClouds (dunes + clouds): pixels identical when the same 6 times are rendered again in shuffled order",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "skyClouds clouds loop 6: real pixels at t and t + 6 s are identical (5 times)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "skyClouds dunes loop 6: real pixels at t and t + 6 s are identical (5 times)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "skyClouds (dunes + clouds) at 1080p (includes the 1 px read-back): 31.8 ms per frame (budget 400 ms)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "label": "no console errors",
+   "pass": true,
+   "detail": "[]"
+  }
+ ]
+}

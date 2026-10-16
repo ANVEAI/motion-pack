@@ -11,6 +11,7 @@ SUITES=(
   "layers/tests/r3.test.mjs"
   "layers/tests/r45.test.mjs --chrome"
   "layers/tests/r6.test.mjs --chrome"
+  "layers/tests/r78.test.mjs --chrome"
   "type/tests/type.test.mjs"
   "type/tests/r45type.test.mjs --chrome"
   "type/tests/cards.test.mjs"
@@ -19,6 +20,7 @@ SUITES=(
   "camera/tests/camera3d.test.mjs"
   "layers/tests/overlay2-sheet.mjs"
   "type/tests/gfx-sheet.mjs"
+  "type/tests/r78-sheet.mjs"
   "transitions/tests/dom-sheet.mjs"
 )
 for s in "${SUITES[@]}"; do echo "=== $s"; node $s 2>&1 | grep -E "FAIL|passed|pass \(|rendered|mounted|Error|not found" ; [ ${PIPESTATUS[0]} -eq 0 ] || rc=1; done

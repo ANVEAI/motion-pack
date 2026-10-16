@@ -231,6 +231,13 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | an accessibility check before and after the render | `python3 tools/a11y_check.py --plan out/plan.json --design design.json --captions <events.json> [--mp4 out/film.mp4]` | flashes, caption contrast on real frames, text size (48 px read floor on 16:9, 56 px on 9:16), reading time, colour-blind collapse |
 | the platform file (YouTube, Shorts, Reels, TikTok, X, LinkedIn, broadcast ProRes, web H.264 / HEVC / AV1, GIF, alpha) | `python3 tools/deliver.py out/film.mp4 --preset <id> --out dist/` (`--list`) | BT.709 tags, faststart, loudness per platform with its source; the file is verified after the encode |
 | the same title or icon animation in an app or website | `python3 tools/lottie/export.py spec.json --validate` (`--matrix` lists what exports) | kinetic type, draw-on icons, spring shapes; SVG gfx parts, blur and 3D do not export |
+| a glass card / a frosted panel over the picture | `ui.glassPanel` (`blurIn: [t0, t1]`; `mode: 'backdrop'` needs a DOM host, `mode: 'plate'` works anywhere, a canvas or a still SVG included) | fade the glass by its own blur and tint, never by a wrapper's opacity |
+| a lit window edge, a light running round a card | `ui.rimLight` (`turns`, corner, one stroke width at every t; `rimContrast(p)` >= 4.5) | reads on a dark field |
+| a review layer (comment flags, pins, a record clock) or an approval gate | `ui.reviewLayer`, `ui.approvalSlider` (`approvalTimes(p).approvedAt` is the flip frame: `sfx/ui/success_chime` on it) | names and comments are placeholders, labelled |
+| one sentence carried across several shots, a word per cut | `type.sentenceAcrossShots` (the word changes ON the cut frame, fixed slot; `sentenceLint` flags short shots) + `cutgen.py sentence` | |
+| a wall of text, a wall of language pills, a phone lock screen | `layout.textWall`, `layout.pillWall` (`pillWallLint(p)`: the bundled Manrope covers Latin, Greek, Cyrillic, Vietnamese), `device.lockScreen` (the clock is a parameter) | |
+| a sky or dunes plate that loops exactly | `background.skyClouds` (presets `clouds`, `dunes`; loop L = whole periods) | seeded, band-limited |
+| a before / after audio swap (the same picture, the new sound) | `cutgen.py ab-replay` (modes `replay`, `flip`; switch on the flip frame, stems level-matched by LUFS) + `ears/ab_replay` (level within 1 dB, the swap on the flip frame), `cutgen.py verify-picture` | a clear spectral difference between the stems is needed for the detector |
 
 ## RECIPES
 
@@ -298,6 +305,7 @@ Every recipe ends with the VIRALITY and QA checklists below.
 3. **Screen hot spots** (`scenes.mjs` SPOT, measured on the 1440 x 900 placeholder screen) drive the cursor, the highlight and the zoom rects; re-measure them on your own screenshot.
 4. **Explainer VO:** `--set voice.words=/abs/words.json`; scene changes land in the breaths, the bed ducks, the captions light the spoken word.
 5. **Build** `node make.mjs`, look at stills through `index.html?t=<s>`, render, then `sheet.py`, ears and eyes on the delivered MP4. Tests: `node type/tests/saas.test.mjs`, `node templates/_shared/saas/saas-templates.test.mjs`.
+6. **Approval gate as the hero beat:** `ui.approvalSlider`, the sound on `approvalTimes(p).approvedAt`; label it prototype.
 
 ### RECIPE HW: AI-hardware / device launch, templates `templates/hardware-reveal`, `hardware-teaser`, `spec-sheet`
 

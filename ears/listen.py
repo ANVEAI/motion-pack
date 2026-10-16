@@ -18,6 +18,7 @@ default (ears/manifest.json "spec"), and a concrete fix with timestamps:
               near-silence (dead air unless planned in plan.audio.quiet [{t: [a, b], kind: open|dip|gap|hold, why}]), ending shape
   repetition  the same SFX-like onset repeated too often in 10 s; repeated plan cue ids
   stereo      L/R correlation, mono loss, width
+  ab_replay   only with plan.audio.abReplay (cuts/story78.py): the two halves are level-matched (<= 1 dB) and the sound changes ON the picture's flip frame
   compare     with --ref refstudy study.json files: loudness-curve shape, band shares, tempo, brightness, cuts on onsets, quiet open / tail;
               with --role (or plan.audio.role) the bass share against the round 4/5 range for that role
   mood        optional: EARS_CLAP_MODEL=<local CLAP checkpoint> + transformers/torch, or --mood gemini (opt-in cloud, paid);
@@ -33,7 +34,7 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
-from ears import core, checks_level, checks_time, checks_shape, report, mood  # noqa: E402
+from ears import core, checks_level, checks_time, checks_shape, checks_ab, report, mood  # noqa: E402
 from ears.core import SR  # noqa: E402
 
 
@@ -60,6 +61,7 @@ def analyze(x, fps=30.0, is_master=False, channels=2, plan=None, cuts=None, tran
     ctx['words'], ctx['role'] = words, (role.strip().lower() if isinstance(role, str) and role.strip() else pa['role'])
     if target_lufs is not None:
         ctx['target_lufs'] = float(target_lufs)
+    ctx['ab'] = checks_ab.plan_block(plan)                # plan.audio.abReplay: the before / after swap (cuts/story78.py), judged by ears/checks_ab.py
     ctx['S'] = core.stft_power(y, 2048, 480)
     ctx['S_tone'] = checks_level.tone_stft(y)
     on, st, _, _ = core.onsets(y)
@@ -70,6 +72,8 @@ def analyze(x, fps=30.0, is_master=False, channels=2, plan=None, cuts=None, tran
     ctx['lufs'] = checks[0]['measured'].get('integrated_lufs')
     ctx['cuts_on_onset'] = checks[4]['measured'].get('cuts_on_onset')
     checks.append(checks_shape.compare(ctx))
+    if ctx['ab']:
+        checks.append(checks_ab.ab_replay(ctx))
     secs = checks[5]['measured'].get('sections') or [{'t': [0.0, len(y) / SR]}]
     rep = {'input': name, 'duration_s': round(len(y) / SR, 3), 'channels': channels, 'fps': fps, 'is_master': is_master, 'mode': ctx['mode'],
            'checks': checks, 'mood': mood.labels(y, SR, secs)}

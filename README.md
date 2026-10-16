@@ -90,25 +90,25 @@ The skills pair well with [charlie947/social-media-skills](https://github.com/ch
 | module | what | read first |
 |---|---|---|
 | `transitions/` | 50 transitions: 26 with an exact DOM back-end, 23 WebGL with a DOM approximation, 1 timing-only (speed ramp); 146 aliases incl. 59 ffmpeg xfade modes | `transitions/README.md` |
-| `cuts/` | 48 cut patterns (beat grids, sections, J/L splits, talking-head, story shapes, pace) + 3 rule sets + 6 retime presets | `cuts/README.md` |
+| `cuts/` | 49 cut patterns (beat grids, sections, J/L splits, talking-head, story shapes, pace) + 3 rule sets + 6 retime presets | `cuts/README.md` |
 | `sfx/` | 356 synthesised sounds in 28 families, 18 role bundles per video type | `sfx/README.md` |
 | `music/` | 45 beds from 37 style presets, 10 stingers, 14 sonic logos, plus the mixer | `music/README.md` |
-| `layers/` | 158 finishing components (overlays, grades, grain stocks, finisher) incl. 53 looks; 57 `.cube` LUTs | `layers/README.md` |
-| `type/` | 277 kinetic-type presets, caption styles, icons, editor graphics and stickers | `type/README.md` |
+| `layers/` | 159 finishing components (overlays, grades, grain stocks, finisher) incl. 53 looks; 57 `.cube` LUTs | `layers/README.md` |
+| `type/` | 285 kinetic-type presets, caption styles, icons, editor graphics and stickers | `type/README.md` |
 | `camera/` | 33 camera moves (19 2D, 14 3D) plus 16 helpers (lock, sequence, lint, CSS and GSAP export, presets, bake) | `camera/README.md` |
 | `objects/` | 44 three.js props, set pieces and materials, with 2 characters (a rigged 3D worker and a flat 2D mascot) | `objects/README.md` |
-| `templates/` | 24 genre templates: ad, beat-edit, character-spot, course-lesson, data-story, explainer-diagram, film-scene, founder-story, hardware-reveal, hardware-teaser, multi-voice-doc, podcast-clip, process-howto, proof-film, saas-explainer, saas-feature-drop, saas-launch, short-film, spec-sheet, talking-head, title-sequence, trailer, tutorial, vlog-personal; plus 11 part demos (`demo-*`) that show the newer parts | `templates/README.md` |
+| `templates/` | 24 genre templates: ad, beat-edit, character-spot, course-lesson, data-story, explainer-diagram, film-scene, founder-story, hardware-reveal, hardware-teaser, multi-voice-doc, podcast-clip, process-howto, proof-film, saas-explainer, saas-feature-drop, saas-launch, short-film, spec-sheet, talking-head, title-sequence, trailer, tutorial, vlog-personal; plus 12 part demos (`demo-*`) that show the newer parts | `templates/README.md` |
 | `blender/` | 12 Blender recipes for photoreal plates (9 product and scene plates, 3 seamless art loops), 4 device presets, 8 showcase previews | `blender/README.md` |
 | `physics/` | build-time rigid-body baking (Rapier) with a dependency-free table player; 2 example specs, 1 baked table | `physics/README.md` |
 | `terminal/` | 5 baked flock looks (cbirds, fetched and built at a pinned commit): flock, braille, a word the flock writes, 3D murmuration, code that flies | `terminal/README.md` |
-| `ears/` | automated listening and critique of a delivered MP4 or WAV: 10 checks (loudness, clipping, tone, speech, sync scored by edit mode (music, VO or continuous), structure with planned quiet judged as shape, repetition, stereo, reference comparison, optional mood), each with a fix and timestamps | `ears/README.md` |
+| `ears/` | automated listening and critique of a delivered MP4 or WAV: 11 checks (loudness, clipping, tone, speech, sync scored by edit mode (music, VO or continuous), structure with planned quiet judged as shape, repetition, stereo, reference comparison, optional mood), each with a fix and timestamps | `ears/README.md` |
 | `storyboard/` | a storyboard sheet (PNG, HTML, PDF) and an animatic MP4 drawn from `shotlist.json` before any build: one panel per shot with the text at its real size and the safe zone, 7 checks (the story-script linter, reading speed, safe zone, label hold, panel count, animatic duration to the frame and loudness), real key frames from a built composition, the sound intent as real sounds mastered to the pack spec | `storyboard/README.md` |
 | `eyes/` | automated looking and critique of a delivered MP4's picture, the visual twin of ears: 9 checks (frame 0, black and frozen frames, WCAG flashes, banding, safe zones, text size / time / contrast, pacing, composition, encode), each with a fix and timestamps | `eyes/README.md` |
 | `patterns/` | 20 beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), 13 hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/research/`; `tools/structure_check.py` scores a plan against them | `patterns/README.md` |
 | delivery + accessibility | `tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) to 42 chars, 2 lines, 20 cps (17 kids); an audio-description script (standard + extended, no TTS); an accessibility lint (flash, caption contrast, size, reading time, colour-blind, colour-only); 14 platform delivery presets with BT.709 tags, faststart and loudness by source; Lottie export of kinetic type and draw-on icons | `docs/DELIVERY-AND-ACCESSIBILITY.md` |
 | `cloud/` | optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, Gemini Live voiceover with a word-for-word check, a Gemini mood judge | `cloud/README.md` |
 
-The catalog lists **1120** browsable components. Counts generated by `python3 tools/count.py`.
+The catalog lists **1130** browsable components. Counts generated by `python3 tools/count.py`.
 <!-- counts:end -->
 
 Every module has a README with its API, measured numbers and honest limits. Modules reference each other by id (`transitions/whip`, `sfx/whoosh/swish_s`, `music/bed_tech_pulse_loop8`, `type/scaleSlam`, `objects/laptop`, `blender/turntable`), and `python3 tools/check_ids.py --docs` resolves them: the nine families of the skill's rule 1 (transitions, sfx, music, type, layers, objects, blender, cam2d / cam3d, cuts) plus template ids, in code, config, data and the `code spans` of every Markdown file. The part ids of `type/gfx` (`ui.promptBar`, `counter.statCard`, ...) are not scanned.
@@ -232,7 +232,7 @@ Audio enters the sound catalogue only through `sfx/tools/check_origin.py` and `c
 | check | command |
 |---|---|
 | Ids resolve across modules (code and Markdown) | `python3 tools/check_ids.py --docs` |
-| Python (cuts, sfx, music, tools, cloud) | `python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py sfx/tests music/tests tools/tests cloud/tests` |
+| Python (cuts, sfx, music, tools, cloud) | `python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py cuts/test_story78.py sfx/tests music/tests tools/tests cloud/tests` |
 | Transitions core + lint | `node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs` |
 | Camera maths | `node camera/tests/camera.test.mjs` |
 | Every part's defaults carry a placeholder label | `node type/tests/honesty-defaults.test.mjs` |

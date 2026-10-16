@@ -9735,6 +9735,602 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "ui.glassPanel",
+   "file": "type/gfx/glass.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 8,
+    "gain_db": -3
+   },
+   "dur_s": 3.2,
+   "in_frames": 14,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.3,
+     0.24,
+     0.4,
+     0.5
+    ],
+    "radius": 36,
+    "blur": 22,
+    "tint": "#FFFFFF",
+    "tintAlpha": 0.14,
+    "edge": "#FFFFFF",
+    "edgeAlpha": 0.6,
+    "edgeWidth": 1.5,
+    "shadow": 0.38,
+    "saturate": 1.45,
+    "blurIn": [
+     0,
+     0.7
+    ],
+    "rise": 28,
+    "grain": 0.1,
+    "grainFps": 8,
+    "seed": 1,
+    "mode": "auto",
+    "plate": null,
+    "skeleton": 3,
+    "label": "",
+    "accent": "#9EC5FF",
+    "ink": "#FFFFFF"
+   },
+   "tags": [
+    "glass",
+    "frosted",
+    "blur",
+    "panel",
+    "material",
+    "card",
+    "backdrop",
+    "ui",
+    "launch"
+   ],
+   "demo": "type/demo/out/gfx-r78.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.rimLight",
+   "file": "type/gfx/glass.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hw/light_sweep",
+    "offset_f": 30,
+    "gain_db": -4
+   },
+   "dur_s": 3.6,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.3,
+     0.26,
+     0.4,
+     0.48
+    ],
+    "radius": 40,
+    "color": "#FF4A5E",
+    "width": 3,
+    "sweep": [
+     0.2,
+     1.8,
+     1
+    ],
+    "tail": 0.3,
+    "rest": 0.4,
+    "bloom": 1,
+    "bleed": 0.6,
+    "corner": "tl",
+    "fill": "#0D0F16",
+    "fillAlpha": 0.92,
+    "field": "#06070B",
+    "segments": 180
+   },
+   "tags": [
+    "rim",
+    "light",
+    "edge",
+    "glow",
+    "sweep",
+    "bloom",
+    "window",
+    "dark",
+    "ui",
+    "launch"
+   ],
+   "demo": "type/demo/out/gfx-r78.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.reviewLayer",
+   "file": "type/gfx/review.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 27,
+    "gain_db": -3
+   },
+   "dur_s": 5.2,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "flags": [
+     {
+      "name": "Maya Rao",
+      "track": [
+       [
+        0,
+        0.03,
+        0.2
+       ],
+       [
+        1.2,
+        0.2,
+        0.34
+       ],
+       [
+        3.4,
+        0.27,
+        0.44
+       ]
+      ],
+      "at": 0.15
+     },
+     {
+      "name": "Dev Patel",
+      "track": [
+       [
+        0,
+        0.97,
+        0.7
+       ],
+       [
+        1.5,
+        0.76,
+        0.58
+       ],
+       [
+        3.6,
+        0.7,
+        0.5
+       ]
+      ],
+      "at": 0.4
+     },
+     {
+      "name": "Sam Lee",
+      "track": [
+       [
+        0,
+        0.5,
+        0.02
+       ],
+       [
+        1.8,
+        0.46,
+        0.2
+       ],
+       [
+        3.5,
+        0.5,
+        0.3
+       ]
+      ],
+      "at": 0.7
+     }
+    ],
+    "pins": [
+     {
+      "at": 0.9,
+      "xy": [
+       0.3,
+       0.38
+      ],
+      "text": "Can this button be larger?",
+      "who": "Maya Rao"
+     },
+     {
+      "at": 1.5,
+      "xy": [
+       0.72,
+       0.5
+      ],
+      "text": "Love the new spacing here.",
+      "who": "Dev Patel"
+     },
+     {
+      "at": 2.1,
+      "xy": [
+       0.5,
+       0.26
+      ],
+      "text": "Placeholder copy: please review.",
+      "who": "Sam Lee"
+     }
+    ],
+    "record": {
+     "at": 2.4,
+     "dur": 3
+    },
+    "slider": {
+     "at": 3,
+     "prompt": "How clear was this step?",
+     "value": 0.72,
+     "low": "Unclear",
+     "high": "Clear"
+    },
+    "note": "placeholder names and comments",
+    "accent": "#4C8DFF",
+    "panel": "#14161D",
+    "ink": "#F4F6FA",
+    "muted": "#9AA3B2",
+    "recBox": [
+     0.5,
+     0.9
+    ],
+    "card": [
+     0.6,
+     0.58,
+     0.34,
+     0.25
+    ]
+   },
+   "tags": [
+    "review",
+    "comment",
+    "feedback",
+    "prototype",
+    "cursor",
+    "flag",
+    "pin",
+    "record",
+    "slider",
+    "ui",
+    "collaboration"
+   ],
+   "demo": "type/demo/out/gfx-r78.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.approvalSlider",
+   "file": "type/gfx/review.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/success_chime",
+    "offset_f": 90,
+    "gain_db": -2
+   },
+   "dur_s": 5,
+   "in_frames": 10,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.3,
+     0.2,
+     0.4,
+     0.56
+    ],
+    "title": "Agent request",
+    "detail": "Wants to run one task for you",
+    "items": [
+     "Scope: example files only",
+     "Can be undone"
+    ],
+    "slideAt": 0.9,
+    "slideDur": 1.1,
+    "workDur": 1,
+    "outcome": "approved",
+    "decline": false,
+    "labels": {
+     "pending": "Slide to approve",
+     "working": "Approving",
+     "approved": "Approved",
+     "declined": "Declined"
+    },
+    "label": "prototype · example request",
+    "accent": "#2FD487",
+    "danger": "#E5484D",
+    "panel": "#14161D",
+    "ink": "#F4F6FA",
+    "muted": "#9AA3B2"
+   },
+   "tags": [
+    "approval",
+    "consent",
+    "gate",
+    "slide-to-approve",
+    "human-in-the-loop",
+    "agent",
+    "request",
+    "ui",
+    "prototype"
+   ],
+   "demo": "type/demo/out/gfx-r78.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "type.sentenceAcrossShots",
+   "file": "type/gfx/r78-type.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/cut_tick",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 4,
+   "in_frames": 0,
+   "out_frames": 0,
+   "params": {
+    "words": [
+     "Your",
+     "ideas",
+     "deserve",
+     "better."
+    ],
+    "cuts": [
+     0,
+     0.6,
+     1.2,
+     1.8
+    ],
+    "hold": 1.4,
+    "pos": [
+     0.5,
+     0.5
+    ],
+    "size": 168,
+    "weight": 800,
+    "fill": "#FFFFFF",
+    "accent": "#FFD84A",
+    "accentIndex": 3,
+    "carry": 0,
+    "pop": 0.12,
+    "scrim": 0.3,
+    "outline": 0.35,
+    "ls": -0.02,
+    "minWord": 0.25,
+    "dur": 3.2
+   },
+   "tags": [
+    "type",
+    "sentence",
+    "word-per-shot",
+    "cuts",
+    "hook",
+    "kinetic",
+    "fixed-slot",
+    "across-shots"
+   ],
+   "demo": "type/demo/out/gfx-r78.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.textWall",
+   "file": "type/gfx/r78-wall.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/highlight_draw",
+    "offset_f": 90,
+    "gain_db": -4
+   },
+   "dur_s": 5,
+   "in_frames": 8,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.04,
+     0.06,
+     0.92,
+     0.88
+    ],
+    "cols": 4,
+    "rows": 4,
+    "lines": 9,
+    "density": 0.88,
+    "size": 17,
+    "gap": 18,
+    "scroll": 70,
+    "multiply": [
+     0,
+     1.6
+    ],
+    "highlight": {
+     "at": 3,
+     "card": 6,
+     "line": 4
+    },
+    "seed": 3,
+    "page": "#F2F0EB",
+    "paper": "#FFFFFF",
+    "ink": "#4A4F5C",
+    "accent": "#FFC23D",
+    "note": "placeholder text",
+    "noteAt": 0
+   },
+   "tags": [
+    "layout",
+    "wall",
+    "text",
+    "paragraphs",
+    "scroll",
+    "answer",
+    "over-long",
+    "highlight",
+    "placeholder"
+   ],
+   "demo": "type/demo/out/gfx-r78.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "layout.pillWall",
+   "file": "type/gfx/r78-wall.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 18,
+    "gain_db": -4
+   },
+   "dur_s": 5,
+   "in_frames": 10,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "labels": [
+     "Hello",
+     "Привет",
+     "Γειά σου",
+     "Xin chào",
+     "Merhaba",
+     "Hola",
+     "Bonjour",
+     "Olá",
+     "Здравствуйте",
+     "Ciao",
+     "Hej",
+     "Salut",
+     "Dobrý den",
+     "Καλημέρα",
+     "Cześć",
+     "Hallo",
+     "Terve",
+     "Bună ziua",
+     "Selam",
+     "Chào bạn",
+     "Buenas",
+     "Servus",
+     "Здраво",
+     "Aloha"
+    ],
+    "rows": 7,
+    "size": 34,
+    "gap": 14,
+    "scroll": 60,
+    "lit": {
+     "at": 0.6,
+     "texts": [
+      "Say it once",
+      "Say it your way",
+      "Say it in any language"
+     ],
+     "steps": [
+      0,
+      1.4,
+      2.8
+     ],
+     "resize": 0.32
+    },
+    "center": [
+     0.5,
+     0.5
+    ],
+    "bg": [
+     "#FF9A4D",
+     "#F05A1A"
+    ],
+    "pill": "#FFFFFF",
+    "pillAlpha": 0.2,
+    "ink": "#FFFFFF",
+    "litFill": "#FFFFFF",
+    "litInk": "#1B1B22",
+    "seed": 2,
+    "note": "placeholder labels"
+   },
+   "tags": [
+    "layout",
+    "wall",
+    "pills",
+    "chips",
+    "scripts",
+    "languages",
+    "marquee",
+    "swap",
+    "resize",
+    "placeholder"
+   ],
+   "demo": "type/demo/out/gfx-r78.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "device.lockScreen",
+   "file": "type/gfx/r78-wall.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/device/notify_soft",
+    "offset_f": 45,
+    "gain_db": -3
+   },
+   "dur_s": 8,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.2,
+     0.06,
+     0.6,
+     0.88
+    ],
+    "aspect": 0.46,
+    "time": "9:30",
+    "date": "Tuesday",
+    "wake": 0.7,
+    "openAt": 4.6,
+    "rise": 0.7,
+    "notifs": [
+     {
+      "at": 1.5,
+      "app": "Chat",
+      "text": "Your order is ready for pickup"
+     },
+     {
+      "at": 2.2,
+      "app": "Tasks",
+      "text": "Review is due today"
+     },
+     {
+      "at": 2.9,
+      "app": "Mail",
+      "text": "New message from Maya Rao"
+     }
+    ],
+    "thread": [
+     {
+      "at": 5.4,
+      "from": "me",
+      "text": "On my way."
+     },
+     {
+      "at": 6.4,
+      "from": "them",
+      "text": "See you soon."
+     }
+    ],
+    "threadTitle": "Maya Rao",
+    "accent": "#3B82F6",
+    "bezel": "#0B0C10",
+    "label": "placeholder UI"
+   },
+   "tags": [
+    "device",
+    "phone",
+    "lock-screen",
+    "notifications",
+    "clock",
+    "wake",
+    "message",
+    "handoff",
+    "placeholder"
+   ],
+   "demo": "type/demo/out/gfx-r78.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "layout.splitScreen",
    "file": "type/gfx/layout.js",
    "kind": "layout",

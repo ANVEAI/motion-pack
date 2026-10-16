@@ -16,7 +16,8 @@ import { life, ctxFor } from './core.js'; import { saneParams } from './safe.js'
 import { PROOF, PROOF_CUES } from './ui-proof.js'; import { TRACE, TRACE_CUES } from './ui-trace.js'; import { R6, R6_CUES } from './r6.js';
 import { HW_GFX, HW_CUES } from './hw.js';   // xp-hardware 2026-10-16: hw.specCallout, hw.dimensionLine, hw.chipDie, hw.edgeGlint, hw.dateCard, hw.specCard
 import { FILM_GFX, FILM_SFX } from './film.js';   // film lane (2026-10-16): trailer titles, billing block, credits roll, cards, subtitles, chapters, opening names
-import { SAAS, SAAS_CUES } from './ui-saas.js'; import { SAAS2, SAAS2_CUES } from './ui-saas2.js';   /* xp-saas (2026-10-16): SaaS launch / product-demo kit */
+import { SAAS, SAAS_CUES } from './ui-saas.js'; import { SAAS2, SAAS2_CUES } from './ui-saas2.js';
+import { GLASS_GFX, GLASS_CUES } from './glass.js'; import { REVIEW_GFX, REVIEW_CUES } from './review.js'; import { R78_TYPE_GFX, R78_TYPE_CUES } from './r78-type.js'; import { R78_WALL_GFX, R78_WALL_CUES } from './r78-wall.js';   /* xp-r78 2026-10-16: ui.glassPanel, ui.rimLight, ui.reviewLayer, ui.approvalSlider, type.sentenceAcrossShots */   /* xp-saas (2026-10-16): SaaS launch / product-demo kit */
 import { EXPLAIN, EXPLAIN_CUES } from './explain.js'; import { EXPLAIN_DATA, EXPLAIN_DATA_CUES } from './explain-data.js'; import { EXPLAIN_LIM } from './explain-lim.js'; Object.assign(GFX_LIM, EXPLAIN_LIM);   /* xp-explainer 2026-10-16: diagram.*, chart.story, map.hexTile, callout.datum, counter.hero, layout.scrolly, process.*, title.takeaway, chart.sourceFooter */   // xp-hardware 2026-10-16: hw.specCallout, hw.dimensionLine, hw.chipDie, hw.edgeGlint, hw.dateCard, hw.specCard
 /* round 4+5 (ui-proof.js, ui-trace.js): the ui.* ones join the UI kit (uiCues); chart.*, caption.*, type.* and lowerThird.* ones get per-action cues through gfxCues */
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
@@ -35,7 +36,9 @@ export { LAYOUTS, layoutAt, applyLayout } from './layout.js'; export { prepareDr
 export { STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource };
 export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN, ...HW_GFX, ...FILM_GFX, ...EXPLAIN, ...EXPLAIN_DATA };
 export { fmtNum, pointAt as hwPointAt, dieBlocks } from './hw.js';
-Object.assign(GFX, SAAS, SAAS2);   /* xp-saas: ui-saas.js + ui-saas2.js (ui.*, callout.uiHighlight, callout.arrowLabel, device.mock) */
+Object.assign(GFX, SAAS, SAAS2);
+Object.assign(GFX, GLASS_GFX, REVIEW_GFX, R78_TYPE_GFX, R78_WALL_GFX);   /* xp-r78: glass.js, review.js, r78-type.js (kept out of the round-1 UI table that ui.test.mjs pins, like the SaaS kit) */
+export { glassState, rimState, rimIntensity, rimContrast, perimeterAt, perimeterLen } from './glass.js'; export { recordClock, approvalState, approvalTimes } from './review.js'; export { sentenceState, sentenceCuts, sentenceEnd, sentenceLint } from './r78-type.js'; export { wallLine, pillWidth, litState, pillWallLint, lockStack, lockGeo } from './r78-wall.js'; export { missingGlyphs, hasGlyphs, MANROPE_RANGES } from './r78-glyphs.js';   /* xp-saas: ui-saas.js + ui-saas2.js (ui.*, callout.uiHighlight, callout.arrowLabel, device.mock) */
 export { fmtNumber, fmtAxis, groupDigits, compactParts, LOCALES } from './numfmt.js'; export { parseGraph, layoutGraph, edgeKey } from './graph.js'; export { chartGeom, datumXY, niceDomain, hexLayout, footerSVG } from './explain-data.js'; export { diagramTimes, camAt, scrollyGeom, stepActive, baGeom, wrap as wrapText } from './explain.js'; export { ICONS, ICON_NAMES, iconSVG } from './explain-icons.js';
 export const GFX_IDS = Object.keys(GFX);
 /* default sound pairing per gfx id prefix (sfx/<category>/<name>, anchor = the item's at + 1 frame, gain over the bed). Longest prefix wins. */
@@ -79,6 +82,9 @@ export const GFX_SFX = {
   /* xp-explainer (2026-10-16): explain.js + explain-data.js; gfxCues gives one cue per action */
   diagram: ['sfx/ui/pop', 1, -3], 'diagram.flow': ['sfx/whoosh/swish_s', 0, -4], 'chart.story': ['sfx/ui/count_run', 1, -3], 'chart.sourceFooter': ['sfx/ui/blip', 0, -12], 'callout.datum': ['sfx/ui/pop', 1, -3], 'map.hexTile': ['sfx/sparkle/shimmer', 3, -4],
   'counter.hero': ['sfx/ui/count_run', 1, -2], 'layout.scrolly': ['sfx/ui/slide', 0, -4], 'title.takeaway': ['sfx/hit/soft', 0, -2], process: ['sfx/ui/count_tick', 1, -4], 'process.beforeAfter': ['sfx/tx/mask_reveal', 0, -3] };
+/* xp-r78 (2026-10-16): defaults for the glass / review / approval / sentence parts (gfxCues gives one cue per action from GLASS_CUES / REVIEW_CUES / R78_TYPE_CUES) */
+Object.assign(GFX_SFX, { 'ui.glassPanel': ['sfx/ui/pop', 8, -3], 'ui.rimLight': ['sfx/hw/light_sweep', 30, -4], 'ui.reviewLayer': ['sfx/ui/pop', 27, -3], 'ui.approvalSlider': ['sfx/ui/success_chime', 90, -2], 'type.sentenceAcrossShots': ['sfx/tx/cut_tick', 0, -6],
+  'layout.textWall': ['sfx/ui/highlight_draw', 90, -4], 'layout.pillWall': ['sfx/ui/pop', 18, -4], 'device.lockScreen': ['sfx/device/notify_soft', 45, -3] });
 Object.assign(GFX_SFX, FILM_SFX);   // film lane (2026-10-16): type/gfx/film.js defaults
 /* xp-saas (2026-10-16): defaults for the SaaS kit (gfxCues gives one cue per action from SAAS_CUES / SAAS2_CUES) */
 Object.assign(GFX_SFX, { 'ui.appWindow': ['sfx/whoosh/swish_s', 0, -3], 'ui.cursorJourney': ['sfx/device/mouse_click', 1, -3], 'callout.uiHighlight': ['sfx/ui/highlight_draw', 1, -4], 'callout.arrowLabel': ['sfx/ui/pop', 1, -3],
@@ -118,6 +124,7 @@ uiHooks.renderInner = renderInner;
 /* per-action sound cues for every gfx id that has them (the ui.* kit and the round-3 parts): [{ t (absolute s), id: 'sfx/<cat>/<name>', why }];
    ids without an action table fall back to their single sfxFor() default at `at` + offset. */
 const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES, ...HUMAN_CUES, ...HW_CUES, ...EXPLAIN_CUES, ...EXPLAIN_DATA_CUES };
+Object.assign(ACTION_CUES, GLASS_CUES, REVIEW_CUES, R78_TYPE_CUES, R78_WALL_CUES);   /* xp-r78 */
 Object.assign(ACTION_CUES, SAAS_CUES, SAAS2_CUES);   /* xp-saas: per-action cues for every SaaS part (gfxCues; they stay out of the round-1 UI kit table that ui.test.mjs pins) */
 export function gfxCues(id, { at = 0, params = {}, dur } = {}) {
   if (UI_CUES[id]) return uiCues(id, { at, params }); const g = GFX[id], f = ACTION_CUES[id];

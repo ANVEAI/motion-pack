@@ -1,0 +1,42 @@
+{
+ "template": "demo-r78",
+ "fps": 30,
+ "seconds": 11,
+ "W": 960,
+ "H": 540,
+ "claims": [],
+ "shots": [
+  {
+   "id": "type.sentenceAcrossShots",
+   "start": 0,
+   "dur": 3.2,
+   "transition": "transitions/cut",
+   "why": "a part demo"
+  },
+  {
+   "id": "ui.glassPanel",
+   "start": 3.2,
+   "dur": 3.8,
+   "transition": "transitions/cut",
+   "why": "a part demo"
+  },
+  {
+   "id": "ui.rimLight",
+   "start": 3.4,
+   "dur": 3.6,
+   "transition": "transitions/cut",
+   "why": "a part demo"
+  },
+  {
+   "id": "ui.approvalSlider",
+   "start": 7.2,
+   "dur": 3.8,
+   "transition": "transitions/cut",
+   "why": "a part demo"
+  }
+ ],
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": []
+ }
+}

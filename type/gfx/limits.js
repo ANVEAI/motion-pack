@@ -13,4 +13,5 @@ export const GFX_LIM = {
   'layout.scatterCollage': { photos: [0, 40], dots: [0, 40], cols: [1, 24], rows: [1, 24] }, 'layout.mosaicBurst': { cols: [1, 40], rows: [1, 24] }, 'layout.logoWall': { cols: [1, 20], rows: [1, 12] },
   'callout.connectorLabel': { gridStep: [0.004, 0.5] }, 'type.imageFill': { 'tiles.*': [1, 24], drift: [-4, 4] }, 'title.timeCard': { rays: [0, 200] },
   'type.asciiMosaic': { cols: [4, 240], 'area.2': [0.02, 1], 'area.3': [0.02, 1] },
+  /* xp-r78 (2026-10-16) */ 'layout.textWall': { cols: [1, 8], rows: [1, 8], lines: [1, 16], size: [6, 80], 'multiply.*': [0, 1000] }, 'layout.pillWall': { rows: [1, 12], size: [8, 120], gap: [2, 100] }, 'ui.rimLight': { segments: [24, 480] }, 'ui.glassPanel': { skeleton: [0, 8] },
 };

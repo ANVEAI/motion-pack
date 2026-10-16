@@ -16,7 +16,7 @@ Thanks for helping. The pack stays useful because every part follows the same fe
 
 ```bash
 python3 tools/check_ids.py --docs               # 0 unresolved (code, config, data and Markdown)
-python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py sfx/tests music/tests tools/tests cloud/tests
+python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py cuts/test_story78.py sfx/tests music/tests tools/tests cloud/tests
 python3 tools/check_names.py                    # no studied account or brand name outside docs/research
 node type/tests/honesty-defaults.test.mjs       # every part's defaults carry a placeholder label
 node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs

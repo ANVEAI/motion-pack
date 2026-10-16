@@ -2484,6 +2484,63 @@
    "test": "layers/tests/r6.test.mjs"
   },
   {
+   "id": "background.skyClouds",
+   "file": "layers/backgrounds-r78.js",
+   "kind": "background",
+   "backend": "canvas2d",
+   "blend": "normal",
+   "tags": [
+    "sky",
+    "clouds",
+    "dunes",
+    "desert",
+    "scenic",
+    "plate",
+    "background",
+    "procedural",
+    "seeded",
+    "drift",
+    "ui",
+    "soft"
+   ],
+   "params": {
+    "preset": "clouds",
+    "sky": [
+     "#4C8FE0",
+     "#CFE5FF"
+    ],
+    "cover": -1,
+    "scale": 1,
+    "drift": 36,
+    "softness": 0.4,
+    "haze": 0.3,
+    "octaves": 4,
+    "cells": 160,
+    "sun": null,
+    "sunGlow": 0.6,
+    "sunSize": 0.3,
+    "sunColor": null,
+    "cloud": "#FFFFFF",
+    "shade": "#8FA9CF",
+    "sand": [
+     "#F1CE96",
+     "#DBA46A",
+     "#B87843"
+    ],
+    "ridges": 5,
+    "height": 0.46,
+    "relief": 0.055,
+    "wind": 18,
+    "loop": 0,
+    "grain": 0,
+    "seed": 7,
+    "intensity": 1
+   },
+   "doc": "preset = 'clouds' | 'dunes'; sky = 2-3 hex (top to horizon); cover = 0..1 cloud cover (-1 = the preset's: 0.55 clouds, 0.16 dunes); scale = cloud size (1 = three cells across the height); drift = px per second at 1080 (negative = the other way); softness / haze 0..1; octaves 1-5 (the finest is dropped when it would alias at `cells` samples); cells = samples on the long side (24-256); sun = [x, y] frame fractions (null = the preset's, false = none), sunGlow, sunSize; cloud / shade = the lit and the shaded colour; dunes: sand = [lit, mid, shade], ridges 1-6, height (fraction of the frame the dunes fill), relief (crest amplitude, fraction of H), wind (px per second at 1080, the near ridges move more); loop = seconds for an exact repeat (0 = free-running); seed; intensity",
+   "demo": "layers/demo/out/r78-sheet.png",
+   "test": "layers/tests/r78.test.mjs"
+  },
+  {
    "id": "look.gradeIn",
    "file": "layers/stylize.js",
    "kind": "look-filter",

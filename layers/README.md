@@ -135,6 +135,16 @@ leaks / bokeh / glow, **grade**, paper, vignette, scanlines, **story type**, dus
 - letterbox 2.39:1 on 1080p = 138 px bars; flash and chroma hit peak ON the hit frame; vignette roundness 1 is circular in 9:16
 - perf @1080p (M3 Pro): premium 1.3 ms, warm-film 6 ms, retro-vhs 2.4 ms per frame
 
+## xp-r78 (2026-10-16): background.skyClouds
+
+One Canvas2D background in `backgrounds-r78.js`, merged into `BG` like `auroraRibbon`, so it mounts through `mountStack` and appears in the catalog as `background.skyClouds`. A procedural scenic plate for UI to sit on. Preset `clouds`: a sky gradient, an optional sun glow and two parallax layers of periodic fractal-noise clouds with a lit side and a shaded underside (the light is the density minus the density one step towards the sun). Preset `dunes`: the same sky over 3-6 clipped dune ridges with asymmetric crests, a light face and a shade face that follow the sun side, and haze on the far ones. Seeded hash only; no clock, no `Math.random`, no module state. `loop: L` makes the drift a whole number of lattice periods (and the dune wind whole cycles) per L seconds: frame t and t + L are the same bits (tested, in node and in Chrome pixels). The finest noise octave is dropped when its wavelength would be under 3 samples of the `cells` grid (`cloudOctaves`), and the largest change of density between two frames at 60 fps is tested to stay small, so it does not shimmer.
+
+| id | params |
+|---|---|
+| `background.skyClouds` | `preset` clouds / dunes, `sky` 2-3 hex (top to horizon), `cover` (-1 = the preset's), `scale`, `drift` px/s, `softness`, `haze`, `octaves`, `cells`, `sun` [x, y] / false, `sunGlow`, `sunSize`, `cloud`, `shade`, `sand` [lit, mid, shade], `ridges`, `height`, `relief`, `wind`, `loop`, `grain`, `seed`, `intensity` |
+
+State functions for tests and hosts: `cloudAt`, `cloudDensity`, `cloudGrid`, `cloudOctaves`, `cloudRates`, `duneProfile`, `duneWind`, `skyParams`. Tests: `node tests/r78.test.mjs` (40 checks on a recording context, no browser) and `--chrome` (15 more, writes `demo/out/r78-sheet.png`).
+
 ## Honest limits
 Grades are starting values judged on synthetic stills (skin ramp, primaries, greys): re-judge on real footage. Overlay `grain` behaves like midBias 1 (quiet in shadows and highlights); for exact kit grain use the Finisher. Bloom/halation/chroma/lens/diffusion need plate pixels: DOM-only compositions cannot do them (render the plate to a canvas and use Finisher).
 Demos: `demo/out/finisher-wide.jpg`, `finisher-tall.jpg`, `overlays.jpg`, `hf-demo.mp4` (HyperFrames project built by `demo/hf/make.sh <dir> lint|render`). Tests: `tests/run-all.sh` runs every browser suite of layers/, type/, camera/ and the DOM transitions (r45 and r45type with `--chrome`; `tools/tests/test_suites_listed.py` in CI fails when a browser suite is missing from it). Browser tests fail on every console error, page error and failed request (`harness.mjs` records failed requests with their path; `pageErrors(errors, allow)` drops only the favicon request and what a test allows by name), and a page that needs gsap or three.js stops at once with the install line when the harness cannot find it.

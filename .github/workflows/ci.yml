@@ -46,7 +46,7 @@ jobs:
       - name: "the layers / type / camera manifests match their generator"
         run: node layers/tests/make-manifests.mjs && python3 tools/check_generated.py layers/manifest.json type/manifest.json camera/manifest.json
       - name: "python tests (cuts, sfx, music, tools incl. the no-clock gate and the run-all / CI suite lists, cloud, blender recipes vs manifest, storyboard)"
-        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py cuts/test_trailer_cuts.py sfx/tests music/tests tools/tests cloud/tests blender/tests storyboard/tests
+        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py cuts/test_story78.py cuts/test_trailer_cuts.py sfx/tests music/tests tools/tests cloud/tests blender/tests storyboard/tests
       - name: "ears tests (automated listening, synthetic signals)"
         run: python3 -m pytest -q ears/tests
       - name: "storyboard mutation proof (each check in storyboard/tests fails when the code under test is broken - timeline, safe zone, reading speed, lint gate, panels, determinism, animatic frames and loudness, real key frames, sound intents)"
@@ -81,6 +81,8 @@ jobs:
         run: node layers/tests/r45.test.mjs
       - name: "round-6 layer (auroraRibbon on a recording context: rise, loop seam, grain, guards, seek order; node, no browser)"
         run: node layers/tests/r6.test.mjs
+      - name: "xp-r78 layer (skyClouds, clouds and dunes presets, on a recording context: the field, cover, loop seams, the band limit, the dune crests, guards, seek order, two processes; node, no browser)"
+        run: node layers/tests/r78.test.mjs
       - name: "round-6 story shape mutation proof (every check in cuts/test_story6.py fails when the code under test is broken; the layer's 30 mutants run locally, see tools/mutation_check.py)"
         run: python3 tools/mutation_check.py cuts/test_story6.mutants.json && python3 tools/mutation_check.py cuts/test_story6.cutgen.mutants.json
       - name: "problem-pivot demo template (plan from cuts/story6.py: gap, pivot frame, bass = the ribbon's cue, hold, committed plan current, same bytes in two processes; node + python, no browser)"
@@ -119,6 +121,8 @@ jobs:
         run: node templates/short-film/short-film.test.mjs
       - name: "SaaS kit parts (app window + zoom, cursor journey, callouts, command bar, AI answer, shortcut chip, pricing, integrations, before / after, toasts, dashboard, device mock; node, no browser)"
         run: node type/tests/saas.test.mjs
+      - name: "r78 type parts (glass panel, rim light, review layer, approval slider, sentence across shots: closed-form blur and sweep, constant rim width, clock digits, the flip frame, the fixed word slot, hostile params, seek order, two processes; node, no browser)"
+        run: node type/tests/r78.test.mjs
       - name: "SaaS templates (saas-launch, saas-feature-drop, saas-explainer: both aspects, every length, safe zones, honesty gate, media slots, VO breaths; node, no browser)"
         run: node templates/_shared/saas/saas-templates.test.mjs
       - name: "physics table player (the baked table is committed; no npm install)"

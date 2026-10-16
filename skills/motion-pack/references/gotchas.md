@@ -200,3 +200,5 @@
 - **`compose.mjs mix(plan, wav, py, args)`: the third argument is the PYTHON executable.** Pass audio.py flags in the fourth (`['--stem']`); a flag in the third is refused (`tools/tests/test_mix_calls.py`).
 - **A scaled word needs room:** a 1.12 pop eats the 0.28 em gap of a long word. Both caption layouts reserve (scale - 1) / 2 of the word's width per side (`type/captions.js popScale`).
 - **A line mask cannot hide a rise at rest:** the 1.12 em mask showed the top 0.26 em of maskRise / charRise glyphs before `at`. Line-masked units are now hidden until their own entrance.
+- **`backdrop-filter` stops seeing the page under an ancestor with `opacity < 1`, a `filter`, a `mask` or `mix-blend-mode`.** Fade the glass by its own blur and tint (`ui.glassPanel` does) and never wrap it.
+- **An SVG drawn as an image into a canvas draws no `foreignObject` content:** use `ui.glassPanel` `mode: 'plate'` there.

@@ -16,6 +16,7 @@ numpy and scipy only (plus ffmpeg to decode). It reuses the pack's one loudness 
 | `core.py` | decoding, side inputs (plan, cuts, transcript, reference studies), STFT, onsets, tempo, short-term loudness, LRA, true-peak envelope, the mixer's cue takes |
 | `checks_level.py` | loudness, clipping / distortion, tonal balance, stereo |
 | `checks_time.py` | speech (detector, ducking, masking, words per minute), rhythm and sync |
+| `checks_ab.py` | the before / after audio swap (only with `plan.audio.abReplay`, from `cuts/story78.py`): the two halves level-matched within 1 dB (integrated LUFS), and the sound changes ON the picture's flip frame (a log-spectrum change-point detector, 12 bands, localises a hard switch to about 5 ms; a miss of more than 2 frames fails) |
 | `checks_shape.py` | structure (sections, drop, the breath before the final sting, planned and unplanned quiet, the ending shape, loop seam), repetition fatigue, comparison with reference studies and role ranges |
 | `report.py` | scores, the ranked listener summary, Markdown |
 | `mood.py` | the optional local CLAP hook |
