@@ -12,7 +12,7 @@ import { loadDataset, aggregate } from '../_explain/dataset.mjs';
 import { storyProblems, HonestyError } from '../_explain/honesty.mjs';
 import { fmtNumber } from '../../type/gfx/numfmt.js';
 const HERE = HERE_OF(import.meta.url);
-const DEMO_SRC = 'Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)', DEMO_METHOD = 'Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data';
+const DEMO_SRC = 'Fictional demo data (Orbit City is not a real place)', DEMO_METHOD = 'Invented to show the charts; measures nothing';
 
 /* ============================== CONFIG (edit me) ============================== */
 export const CONFIG = {
@@ -64,7 +64,7 @@ export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'relayout', t
 /* per-aspect boxes as fractions of the SAFE rect (inSafe), so every chart, label and footer stays inside it */
 const LAYOUT = {
   '16:9': { chart: [0, 0.2, 1, 0.84], hero: 'c', scrollyText: [0.03, 0.06, 0.34, 0.94], scrollyChart: [0.4, 0.04, 1, 0.84], map: [0.2, 0.0, 0.8, 0.86], hookPos: 'tc', capPos: 'bc', capSize: 0.6, hookSize: 0.85, size: 1, mapSize: 1, heroSize: 220 },
-  '9:16': { chart: [0, 0.22, 1, 0.74], hero: 'c', scrollyText: [0.06, 0.66, 1, 1], scrollyChart: [0, 0.03, 1, 0.58], map: [0.04, 0.02, 0.96, 0.82], hookPos: 'tc', capPos: 'bc', capSize: 0.7, hookSize: 0.78, size: 0.62, mapSize: 0.7, heroSize: 150 },
+  '9:16': { chart: [0, 0.19, 1, 0.8], hero: 'c', scrollyText: [0.06, 0.64, 1, 1], scrollyChart: [0, 0.0, 1, 0.5], map: [0.04, 0.02, 0.96, 0.82], hookPos: 'tc', capPos: 'bc', capSize: 0.7, hookSize: 0.78, size: 0.62, mapSize: 0.7, heroSize: 150 },
 };
 export function datasets(C) { const out = {}; for (const [id, d] of Object.entries(C.data || {})) out[id] = loadDataset(HERE, d, id); return out; }
 export function dataStoryProblems(C) { return storyProblems(C, datasets(C)); }

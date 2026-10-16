@@ -26,9 +26,11 @@ export function niceDomain(lo, hi, n = 5) {
 export function footerSVG(p, c, x, y, w, op = 1) {
   const s = c.s * num(p.size, 1), sz = Math.max(28 * c.s, 28 * s), src = 'Source: ' + srcOf(p), meth = String(p.method ?? '').trim();
   const pill = p.demo !== false ? 'DEMO DATA' : '', pw = pill ? measure(pill, sz, { weight: 800, ls: 1 * c.s }) * 1.08 + 30 * c.s : 0, line = src + (meth ? '  \u00b7  Method: ' + meth : '');
-  let fs = sz; const room = w - pw - 20 * c.s, mw = measure(line, fs, { weight: 600 }) * 1.1; if (mw > room) fs = Math.max(20 * c.s, (fs * room) / mw);
-  return `<g opacity="${f2(op)}">${pill ? `<rect x="${f2(x)}" y="${f2(y - sz * 0.95)}" width="${f2(pw)}" height="${f2(sz * 1.35)}" rx="${f2(6 * c.s)}" fill="${p.ink || PAPER_INK}"/>` + text(pill, x + 14 * c.s, y, { size: sz, weight: 800, fill: p.paper || '#FFFFFF', ls: 1 * c.s }) : ''}`
-    + text(line, x + pw + (pill ? 14 * c.s : 0), y, { size: fs, weight: 600, fill: p.ink || PAPER_INK, op: 0.78 }) + '</g>';
+  /* one line when it fits at >= 24 px (at 1080); else Source and Method on two lines, each shrunk to fit (never below 20 px) */
+  const room = w - pw - 20 * c.s, fit = (str, f0) => { const mw = measure(str, f0, { weight: 600 }) * 1.1; return mw > room ? Math.max(20 * c.s, (f0 * room) / mw) : f0; }, one = fit(line, sz), two = meth && one < 24 * c.s;
+  const rows = two ? [[src, fit(src, sz * 0.9)], ['Method: ' + meth, fit('Method: ' + meth, sz * 0.9)]] : [[line, one]], y0 = two ? Math.min(y, c.safe.y1 - 6 * c.s - rows[0][1] * 1.25) : y;
+  return `<g opacity="${f2(op)}">${pill ? `<rect x="${f2(x)}" y="${f2(y0 - sz * 0.95)}" width="${f2(pw)}" height="${f2(sz * 1.35)}" rx="${f2(6 * c.s)}" fill="${p.ink || PAPER_INK}"/>` + text(pill, x + 14 * c.s, y0, { size: sz, weight: 800, fill: p.paper || '#FFFFFF', ls: 1 * c.s }) : ''}`
+    + rows.map(([str, f], i) => text(str, x + pw + (pill ? 14 * c.s : 0), y0 + i * rows[0][1] * 1.25, { size: f, weight: 600, fill: p.ink || PAPER_INK, op: 0.78 })).join('') + '</g>';
 }
 const footY = (c, y1) => Math.min(c.safe.y1 - 6 * c.s, y1);
 /* x labels that fit their slot: shrink to 18 px (at 1080) first, then print every k-th label */
@@ -48,17 +50,18 @@ export function chartGeom(p0, c) {
   const pts = kind === 'scatter' ? [].concat(p.points || []).slice(0, 400).map((q) => ({ x: num(q?.[0] ?? q?.x, NaN), y: num(q?.[1] ?? q?.y, NaN), label: q?.[2] ?? q?.label ?? '' })).filter((q) => Number.isFinite(q.x) && Number.isFinite(q.y)) : [];
   const ys = kind === 'scatter' ? pts.map((q) => q.y) : series.flatMap((q) => q.values.filter(Number.isFinite)), vmin = ys.length ? Math.min(...ys) : 0, vmax = ys.length ? Math.max(...ys) : 1;
   const wantLo = ZERO_KINDS.includes(kind) ? Math.min(0, vmin) : p.yMin != null && Number.isFinite(+p.yMin) ? Math.min(+p.yMin, vmin) : Math.min(0, vmin);
-  const dom = niceDomain(wantLo, p.yMax != null && Number.isFinite(+p.yMax) ? Math.max(+p.yMax, vmax) : Math.max(0, vmax), 5);
+  const dom = niceDomain(wantLo, p.yMax != null && Number.isFinite(+p.yMax) ? Math.max(+p.yMax, vmax) : Math.max(0, vmax * 1.06), 5);   // 6% headroom so the top value and its label clear the frame of the plot
   if (!ZERO_KINDS.includes(kind) && p.yMin != null && Number.isFinite(+p.yMin) && +p.yMin > 0 && +p.yMin <= vmin) { dom.lo = +p.yMin; dom.ticks = [dom.lo, ...dom.ticks.filter((t) => t > dom.lo + dom.step * 0.4)]; }
   const truncated = dom.lo > 0 || (dom.hi < 0);
-  const tickW = Math.max(...dom.ticks.map((t) => measure(fmtAxis(t, { locale: p.locale, dec: p.dec }), 24 * s, { weight: 600 })), 30 * s);
-  const top = (p.title ? 70 * s : 0) + (p.subtitle ? 40 * s : 0) + (p.yLabel || p.unit ? 44 * s : 10 * s), left = tickW + 22 * s, bottom = (kind === 'scatter' ? 78 : 64) * s + (p.xLabel ? 36 * s : 0);
+  const tickW = Math.max(...dom.ticks.map((t) => measure(fmtAxis(t, { locale: p.locale, dec: p.dec, ref: Math.max(...dom.ticks.map(Math.abs)), ticks: dom.ticks }), 24 * s, { weight: 600 })), 30 * s);
+  const legW = p.legend && series.length >= 2 && kind !== 'scatter' ? series.reduce((a, q) => a + measure(q.name, 24 * s, { weight: 700 }) + 70 * s, 0) : 0, ylW = p.yLabel || p.unit ? measure(p.yLabel || p.unit, 26 * s, { weight: 700 }) + 30 * s : 0, legendRow = legW && legW + ylW > Wb ? 1 : 0;
+  const top = (p.title ? 70 * s : 0) + (p.subtitle ? 40 * s : 0) + (p.yLabel || p.unit ? 44 * s : 10 * s) + legendRow * 40 * s, left = tickW + 22 * s, bottom = (kind === 'scatter' ? 78 : 64) * s + (p.xLabel ? 36 * s : 0);
   const x = X + left, y = Y + top, w = Math.max(10, Wb - left - 10 * s), h = Math.max(10, Hb - top - bottom);
   const sy = (v) => y + h - (h * (v - dom.lo)) / (dom.hi - dom.lo || 1);
   let sx, xdom = null; const n = Math.max(1, kind === 'scatter' ? pts.length : Math.max(p.labels?.length || 0, ...series.map((q) => q.values.length)));
   if (kind === 'scatter') { const xs = pts.map((q) => q.x); xdom = niceDomain(p.xMin ?? (xs.length ? Math.min(...xs) : 0), p.xMax ?? (xs.length ? Math.max(...xs) : 1), 5); sx = (v) => x + (w * (v - xdom.lo)) / (xdom.hi - xdom.lo || 1); }
   else if (kind === 'bar') sx = (i) => x + ((i + 0.5) * w) / n; else sx = (i) => x + (n > 1 ? (i * w) / (n - 1) : w / 2);
-  return { p, s, kind, series, pts, dom, xdom, truncated, x, y, w, h, X, Y, Wb, Hb, sx, sy, n, base: sy(Math.max(dom.lo, Math.min(dom.hi, 0))) };
+  return { p, s, kind, series, pts, dom, xdom, truncated, x, y, w, h, X, Y, Wb, Hb, sx, sy, n, legW, legendRow, base: sy(Math.max(dom.lo, Math.min(dom.hi, 0))) };
 }
 /* the datum's pixel: [category index, series index] for bar / line / area, [x, y] (data units) or a point index for scatter */
 export function datumXY(G, datum = [0, 0]) {
@@ -84,9 +87,9 @@ function storySVG(L, p, c) {
   const XL = xLabels(p, G); let g = '';
   if (p.title) { const tw = measure(p.title, 44 * s, { weight: 800 }); g += text(p.title, G.X, G.Y + 44 * s, { size: tw > G.Wb ? Math.max(28 * s, (44 * s * G.Wb) / tw) : 44 * s, weight: 800, fill: ink }); }
   if (p.subtitle) g += text(p.subtitle, G.X, G.Y + (p.title ? 88 : 36) * s, { size: 28 * s, weight: 600, fill: ink, op: 0.72 });
-  if (p.yLabel || p.unit) g += text(p.yLabel || p.unit, G.X, y - 18 * s, { size: 26 * s, weight: 700, fill: ink, op: 0.8 });
+  if (p.yLabel || p.unit) g += text(p.yLabel || p.unit, G.X, y - (G.legendRow ? 58 : 18) * s, { size: 26 * s, weight: 700, fill: ink, op: 0.8 });
   /* grid + ticks (recessive), the zero line (strong) */
-  for (const t of dom.ticks) { const yy = G.sy(t); if (yy < y - 1 || yy > y + h + 1) continue; g += `<line x1="${f2(x)}" x2="${f2(x + w)}" y1="${f2(yy)}" y2="${f2(yy)}" stroke="${ink}" stroke-opacity="${t === 0 ? 0.7 : 0.12}" stroke-width="${f2((t === 0 ? 2.5 : 1.5) * s)}"/>` + text(fmtAxis(t, { locale: p.locale, dec: p.dec }), x - 14 * s, yy + 8 * s, { size: 24 * s, weight: 600, fill: ink, anchor: 'end', op: 0.7 }); }
+  for (const t of dom.ticks) { const yy = G.sy(t); if (yy < y - 1 || yy > y + h + 1) continue; g += `<line x1="${f2(x)}" x2="${f2(x + w)}" y1="${f2(yy)}" y2="${f2(yy)}" stroke="${ink}" stroke-opacity="${t === 0 ? 0.7 : 0.12}" stroke-width="${f2((t === 0 ? 2.5 : 1.5) * s)}"/>` + text(fmtAxis(t, { locale: p.locale, dec: p.dec, ref: Math.max(...dom.ticks.map(Math.abs)), ticks: dom.ticks }), x - 14 * s, yy + 8 * s, { size: 24 * s, weight: 600, fill: ink, anchor: 'end', op: 0.7 }); }
   if (G.truncated) { const yb = y + h, zz = `M${f2(x - 12 * s)} ${f2(yb - 6 * s)} l${f2(8 * s)} ${f2(-8 * s)} l${f2(8 * s)} ${f2(8 * s)} l${f2(8 * s)} ${f2(-8 * s)}`;
     g += `<path d="${zz}" fill="none" stroke="${WARN}" stroke-width="${f2(3 * s)}"/><path d="${zz.replace(/^M(\S+) (\S+)/, (m0, a, b) => `M${a} ${f2(+b + 10 * s)}`)}" fill="none" stroke="${WARN}" stroke-width="${f2(3 * s)}"/>`
       + text(String(p.truncated || '').trim() || `Axis starts at ${fmtAxis(dom.lo, { locale: p.locale, dec: p.dec })}, not zero`, x + 14 * s, yb - 14 * s, { size: 26 * s, weight: 800, fill: WARN }); }
@@ -95,7 +98,8 @@ function storySVG(L, p, c) {
     for (let i = 0; i < G.n; i++) { const st = startOf(p, i); if (u < st) continue; const e = E.hero(seg(u, st, st + num(p.grow, 0.9)));
       G.series.forEach((q, si) => { const v = q.values[i]; if (!Number.isFinite(v)) return; const x0 = G.sx(i) - bw / 2 + sub * si + gap / 2, y1 = lerp(G.base, G.sy(v), e);
         g += `<path d="${barPath(x0, G.base, sub - gap, y1, 4 * s)}" fill="${colOf(i, si)}"/>`;
-        if (p.valueLabels && k <= 2) g += text(fmtV(v * e), x0 + (sub - gap) / 2, v >= 0 ? y1 - 12 * s : y1 + 32 * s, { size: (k > 1 ? 24 : 30) * s, weight: 800, fill: ink, anchor: 'middle', op: seg(e, 0.2, 0.6) }); });
+        if (p.valueLabels && (k === 1 || si === k - 1)) { const fz = (k > 1 ? 24 : 30) * s, full = fmtV(v * e), lab = measure(fmtV(v), fz, { weight: 800 }) > (k > 1 ? bw : sub) * 1.05 ? fmtNumber(v * e, { locale: p.locale, compact: 'short', dec: 1, unit: p.unit }) : full;
+          g += text(lab, k > 1 ? G.sx(i) : x0 + (sub - gap) / 2, v >= 0 ? Math.min(y1, ...G.series.map((q2) => G.sy(num(q2.values[i]) * e))) - 12 * s : y1 + 32 * s, { size: fz, weight: 800, fill: ink, anchor: 'middle', op: seg(e, 0.2, 0.6) }); } });
       if (i % XL.every === 0) g += text(String(p.labels?.[i] ?? ''), G.sx(i), y + h + 40 * s, { size: XL.fs, weight: 600, fill: ink, anchor: 'middle', op: E.soft(seg(u, st, st + 0.3)) * 0.85 }); }
   } else if (kind === 'line' || kind === 'area') {
     for (let i = 0; i < G.n; i++) { const st = startOf(p, i); if (u >= st - 0.2 && (i % XL.every === 0 || (i === G.n - 1 && (G.n - 1) % XL.every >= XL.every / 2))) g += text(String(p.labels?.[i] ?? ''), G.sx(i), y + h + 40 * s, { size: XL.fs, weight: 600, fill: ink, anchor: 'middle', op: 0.8 }); }
@@ -113,7 +117,7 @@ function storySVG(L, p, c) {
       g += `<circle cx="${f2(G.sx(q.x))}" cy="${f2(G.sy(q.y))}" r="${f2((isH ? 12 : 9) * s * e)}" fill="${isH ? p.accent : p.muted}" fill-opacity="${isH ? 1 : 0.85}" stroke="${p.paper}" stroke-width="${f2(2 * s)}"/>`; });
   }
   if (p.xLabel) g += text(p.xLabel, x + w, y + h + (kind === 'scatter' ? 74 : 76) * s, { size: 24 * s, weight: 700, fill: ink, anchor: 'end', op: 0.75 });
-  if (p.legend && G.series.length >= 2 && kind !== 'scatter') G.series.forEach((q, si) => { const lx = x + w - (G.series.length - si) * 260 * s; g += `<rect x="${f2(lx)}" y="${f2(y - 40 * s)}" width="${f2(22 * s)}" height="${f2(22 * s)}" rx="${f2(4 * s)}" fill="${colOf(-1, si)}"/>` + text(q.name, lx + 32 * s, y - 21 * s, { size: 24 * s, weight: 700, fill: ink }); });
+  if (G.legW) { let lx = G.X + G.Wb - G.legW, ly = y - (G.legendRow ? 80 : 40) * s; G.series.forEach((q, si) => { g += `<rect x="${f2(lx)}" y="${f2(ly)}" width="${f2(22 * s)}" height="${f2(22 * s)}" rx="${f2(4 * s)}" fill="${natural(si)}"/>` + text(q.name, lx + 32 * s, ly + 19 * s, { size: 24 * s, weight: 700, fill: ink }); lx += measure(q.name, 24 * s, { weight: 700 }) + 70 * s; }); }
   g += footerSVG(p, c, G.X, footY(c, G.Y + G.Hb + 40 * s), G.Wb, 1);
   return `<g opacity="${f2(o * Math.max(0.0001, E.soft(L.in)))}">${g}</g>`;
 }

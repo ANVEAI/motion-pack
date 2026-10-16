@@ -34,12 +34,13 @@ export function compactParts(v, locale = 'intl', mode = 'short', dec = 1) {
   for (const [k, word] of steps) if (+(a / k).toFixed(d) >= 1) return { value: v / k, word, k };
   return { value: v, word: '', k: 1 };
 }
-export function fmtNumber(v, { locale = 'intl', dec = 0, compact = false, prefix = '', suffix = '', unit = '', sign = false, minus = MINUS } = {}) {
+export function fmtNumber(v, { locale = 'intl', dec = 0, compact = false, prefix = '', suffix = '', unit = '', sign = false, minus = MINUS, step = null } = {}) {
   const n = typeof v === 'string' && v.trim() !== '' ? Number(v) : v;
   if (typeof n !== 'number' || !Number.isFinite(n)) return '\u2013';
   const L = loc(locale), d = decOf(dec);
   let val = n, word = '';
-  if (compact === 'short' || compact === 'long' || compact === true) { const c = compactParts(n, locale, compact === 'long' ? 'long' : 'short', d); val = c.value; word = c.word; }
+  if (compact === 'short' || compact === 'long' || compact === true) { const mode = compact === 'long' ? 'long' : 'short', steps = mode === 'long' ? L.long : L.short, fixedStep = step != null ? steps.find(([k]) => k === step) : null;
+    const c = fixedStep ? { value: n / fixedStep[0], word: fixedStep[1] } : step === 1 ? { value: n, word: '' } : compactParts(n, locale, mode, d); val = c.value; word = c.word; }
   const fixed = Math.abs(val).toFixed(d), neg = val < 0 && +fixed !== 0, [ip, fp] = fixed.split('.');
   let body = groupDigits(ip, L.grouping, L.group) + (fp ? L.decimal + fp : '');
   if (word) body += (compact === 'long' || word.length > 2 || word.includes(' ') || L.grouping === 'in' ? ' ' : '') + word;
@@ -47,11 +48,13 @@ export function fmtNumber(v, { locale = 'intl', dec = 0, compact = false, prefix
   return (neg ? minus : sign && n > 0 ? '+' : '') + prefix + body + u + suffix;
 }
 /* an axis tick: compact short once the number has 4+ integer digits, otherwise plain at the given decimals */
-export function fmtAxis(v, { locale = 'intl', dec = 0, unit = '', prefix = '', compact = 'auto' } = {}) {
-  const c = compact === 'auto' ? (Math.abs(v) >= 1e4 ? 'short' : false) : compact;
+export function fmtAxis(v, { locale = 'intl', dec = 0, unit = '', prefix = '', compact = 'auto', ref = null, ticks = null } = {}) {
+  const R = Math.abs(ref ?? v), c = compact === 'auto' ? (R >= 1e4 ? 'short' : false) : compact;
+  if (v === 0) return prefix + '0' + (unit ? (unit === '%' ? unit : THIN + unit) : '');   // the baseline prints as a plain 0
   if (!c) return fmtNumber(v, { locale, dec, unit, prefix });
-  const pv = compactParts(v, locale, c === 'long' ? 'long' : 'short', 1).value, d = Number.isInteger(+pv.toFixed(1)) ? 0 : 1;   // 25K, 12.5K: never 25.0K, never 13K for 12,500
-  return fmtNumber(v, { locale, dec: d, compact: c, unit, prefix });
+  /* one scale for the whole axis (the reference value's: 40K never sits under 1 L), and the fewest decimals that keep every tick distinct and exact */
+  const k = compactParts(R, locale, c === 'long' ? 'long' : 'short', 1).k, vals = [].concat(ticks || [v]), d = vals.every((t) => Number.isInteger(+(t / k).toFixed(6))) ? 0 : vals.every((t) => Number.isInteger(+((t / k) * 10).toFixed(6))) ? 1 : 2;
+  return fmtNumber(v, { locale, dec: d, compact: c, unit, prefix, step: k });
 }
 /* decimals that show a value without noise: 0 for big numbers, up to 2 for small ones */
 export const autoDec = (v) => { const a = Math.abs(v); return a >= 100 || Number.isInteger(v) ? 0 : a >= 10 ? 1 : 2; };

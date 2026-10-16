@@ -1,6 +1,6 @@
 {
-  "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-  "method": "Invented numbers that show how the hex-tile map works; they measure nothing. Replace this file with your own table",
+  "source": "Fictional demo data (Orbit City is not a real place)",
+  "method": "Invented to show the hex-tile map; measures nothing",
   "unit": "%",
   "demo": true,
   "rows": [

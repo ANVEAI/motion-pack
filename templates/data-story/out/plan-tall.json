@@ -21,8 +21,8 @@
     "at": 0,
     "dur": 19.5,
     "params": {
-     "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-     "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+     "source": "Fictional demo data (Orbit City is not a real place)",
+     "method": "Invented to show the charts; measures nothing",
      "demo": true,
      "locale": "in",
      "accent": "#4A18ED",
@@ -30,9 +30,9 @@
      "size": 0.62,
      "box": [
       0.0602,
-      0.2523,
+      0.237,
       0.8287,
-      0.2651
+      0.311
      ],
      "kind": "line",
      "labels": [
@@ -129,8 +129,8 @@
     "dur": 3.6,
     "params": {
      "chart": {
-      "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-      "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+      "source": "Fictional demo data (Orbit City is not a real place)",
+      "method": "Invented to show the charts; measures nothing",
       "demo": true,
       "locale": "in",
       "accent": "#4A18ED",
@@ -138,9 +138,9 @@
       "size": 0.62,
       "box": [
        0.0602,
-       0.2523,
+       0.237,
        0.8287,
-       0.2651
+       0.311
       ],
       "kind": "line",
       "labels": [
@@ -249,8 +249,8 @@
     "dur": 2.2,
     "params": {
      "chart": {
-      "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-      "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+      "source": "Fictional demo data (Orbit City is not a real place)",
+      "method": "Invented to show the charts; measures nothing",
       "demo": true,
       "locale": "in",
       "accent": "#4A18ED",
@@ -258,9 +258,9 @@
       "size": 0.62,
       "box": [
        0.0602,
-       0.2523,
+       0.237,
        0.8287,
-       0.2651
+       0.311
       ],
       "kind": "line",
       "labels": [
@@ -375,8 +375,8 @@
      "dec": 1,
      "unit": "",
      "label": "books borrowed this year",
-     "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-     "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+     "source": "Fictional demo data (Orbit City is not a real place)",
+     "method": "Invented to show the charts; measures nothing",
      "demo": true,
      "accent": "#4A18ED",
      "ink": "#16151B",
@@ -389,8 +389,8 @@
     "at": 25.2,
     "dur": 7.5,
     "params": {
-     "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-     "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+     "source": "Fictional demo data (Orbit City is not a real place)",
+     "method": "Invented to show the charts; measures nothing",
      "demo": true,
      "locale": "in",
      "accent": "#4A18ED",
@@ -398,9 +398,9 @@
      "size": 0.62,
      "box": [
       0.0602,
-      0.2523,
+      0.237,
       0.8287,
-      0.2651
+      0.311
      ],
      "kind": "bar",
      "labels": [
@@ -436,8 +436,8 @@
     "dur": 3,
     "params": {
      "chart": {
-      "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-      "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+      "source": "Fictional demo data (Orbit City is not a real place)",
+      "method": "Invented to show the charts; measures nothing",
       "demo": true,
       "locale": "in",
       "accent": "#4A18ED",
@@ -445,9 +445,9 @@
       "size": 0.62,
       "box": [
        0.0602,
-       0.2523,
+       0.237,
        0.8287,
-       0.2651
+       0.311
       ],
       "kind": "bar",
       "labels": [
@@ -494,8 +494,8 @@
     "at": 33.2,
     "dur": 12.1,
     "params": {
-     "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-     "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+     "source": "Fictional demo data (Orbit City is not a real place)",
+     "method": "Invented to show the charts; measures nothing",
      "demo": true,
      "locale": "in",
      "accent": "#4A18ED",
@@ -503,9 +503,9 @@
      "size": 0.62,
      "box": [
       0.0602,
-      0.1554,
+      0.1401,
       0.8287,
-      0.2804
+      0.2549
      ],
      "kind": "bar",
      "labels": [
@@ -594,9 +594,9 @@
      ],
      "box": [
       0.1099,
-      0.4766,
+      0.4664,
       0.779,
-      0.1734
+      0.1836
      ],
      "accent": "#4A18ED",
      "ink": "#16151B",
@@ -725,8 +725,8 @@
        ]
       ]
      ],
-     "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-     "method": "Invented numbers that show how the hex-tile map works; they measure nothing. Replace this file with your own table",
+     "source": "Fictional demo data (Orbit City is not a real place)",
+     "method": "Invented to show the hex-tile map; measures nothing",
      "demo": true,
      "box": [
       0.0933,
@@ -823,8 +823,8 @@
     "at": 54.800000000000004,
     "dur": 6.3,
     "params": {
-     "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-     "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data | Invented numbers that show how the hex-tile map works; they measure nothing. Replace this file with your own table",
+     "source": "Fictional demo data (Orbit City is not a real place)",
+     "method": "Invented to show the charts; measures nothing | Invented to show the hex-tile map; measures nothing",
      "demo": true,
      "box": [
       0.0602,
@@ -1045,31 +1045,31 @@
  "claims": [
   {
    "text": "Books borrowed each month (This year): 1,01,400, 98,800, 1,04,100, 1,08,300, 1,13,500, 1,19,200, 1,34,700, 1,31,200, 1,22,600, 1,25,300, 1,28,100, 1,39,400 books",
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place); method: Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data"
+   "source": "Fictional demo data (Orbit City is not a real place); method: Invented to show the charts; measures nothing"
   },
   {
    "text": "Books borrowed each month (Last year): 96,200, 94,100, 99,300, 97,400, 1,01,200, 1,04,300, 1,12,600, 1,09,100, 1,03,400, 1,06,200, 1,08,300, 1,15,500 books",
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place); method: Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data"
+   "source": "Fictional demo data (Orbit City is not a real place); method: Invented to show the charts; measures nothing"
   },
   {
    "text": "books borrowed this year: 14,26,600 books",
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place); method: Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data"
+   "source": "Fictional demo data (Orbit City is not a real place); method: Invented to show the charts; measures nothing"
   },
   {
    "text": "Books borrowed in the year (Books borrowed): 12,47,600, 14,26,600 books",
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place); method: Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data"
+   "source": "Fictional demo data (Orbit City is not a real place); method: Invented to show the charts; measures nothing"
   },
   {
    "text": "Books borrowed by branch (Last year): 4,02,300, 2,51,400, 1,98,700, 1,63,200, 1,41,900, 90,100 books",
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place); method: Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data"
+   "source": "Fictional demo data (Orbit City is not a real place); method: Invented to show the charts; measures nothing"
   },
   {
    "text": "Books borrowed by branch (This year): 4,21,800, 2,62,900, 2,14,300, 1,71,600, 2,12,500, 1,43,500 books",
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place); method: Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data"
+   "source": "Fictional demo data (Orbit City is not a real place); method: Invented to show the charts; measures nothing"
   },
   {
    "text": "Residents with a library card, by zone: 61, 55, 48, 72, 58, 52, 31, 50, 46, 39, 27, 44 %",
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place); method: Invented numbers that show how the hex-tile map works; they measure nothing. Replace this file with your own table"
+   "source": "Fictional demo data (Orbit City is not a real place); method: Invented to show the hex-tile map; measures nothing"
   }
  ],
  "structure": {
@@ -1334,22 +1334,22 @@
   "monthly": {
    "file": "data/loans-monthly.csv",
    "rows": 12,
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-   "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+   "source": "Fictional demo data (Orbit City is not a real place)",
+   "method": "Invented to show the charts; measures nothing",
    "demo": true
   },
   "branches": {
    "file": "data/branches.csv",
    "rows": 6,
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-   "method": "Invented numbers that show how the charts work; they measure nothing. Replace the file and this text with your own data",
+   "source": "Fictional demo data (Orbit City is not a real place)",
+   "method": "Invented to show the charts; measures nothing",
    "demo": true
   },
   "zones": {
    "file": "data/zones.json",
    "rows": 12,
-   "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
-   "method": "Invented numbers that show how the hex-tile map works; they measure nothing. Replace this file with your own table",
+   "source": "Fictional demo data (Orbit City is not a real place)",
+   "method": "Invented to show the hex-tile map; measures nothing",
    "demo": true
   }
  },
