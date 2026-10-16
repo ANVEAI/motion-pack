@@ -324,23 +324,39 @@ def add_sdh(evs, plan, o):
     dur = float(plan.get('seconds') or 0) or None
     evs = sorted(evs, key=lambda e: e['start'])
     new = []
-    for t, tag in tags:
-        host = next((e for e in evs if e['start'] - 1e-6 <= t < e['end']), None)
-        if host is None:
-            prev = max((e['end'] for e in evs + new if e['end'] <= t + 1e-6), default=0.0)
-            nxt = min((e['start'] for e in evs + new if e['start'] > t), default=dur if dur else t + o['max_dur'])
-            a = snap(max(t, prev + gap), fps)
+
+    def free_gap(t, horizon):
+        """the first gap at or after t (within horizon s) that holds min_dur: (a, b) or None"""
+        allev = sorted(evs + new, key=lambda e: e['start'])
+        cand = [max(t, 0.0)] + [e['end'] + gap for e in allev if t <= e['end'] + gap <= t + horizon]
+        for a0 in cand:
+            if any(e['start'] - 1e-6 <= a0 < e['end'] for e in allev):
+                continue
+            nxt = min((e['start'] for e in allev if e['start'] > a0), default=dur if dur else a0 + o['max_dur'])
+            a = snap(a0, fps)
             b = snap(min(nxt - gap, a + max(o['min_dur'], len(tag) / o['cps'])), fps)
             if b - a >= o['min_dur'] - 1e-6:
-                new.append({'start': a, 'end': b, 'lines': [tag], 'kind': 'music' if 'music' in tag else 'sound', 'speaker': None, 'words': [], 'notes': []})
-                continue
-            host = min(evs, key=lambda e: min(abs(e['start'] - t), abs(e['end'] - t))) if evs else None
-        if host is not None and len(host['lines']) < o['max_lines'] and len(tag) <= o['max_chars']:
+                return a, b
+        return None
+
+    for t, tag in tags:
+        kind = 'music' if 'music' in tag else 'sound'
+        g = free_gap(t, 0.0)
+        if g:
+            new.append({'start': g[0], 'end': g[1], 'lines': [tag], 'kind': kind, 'speaker': None, 'words': [], 'notes': []})
+            continue
+        host = next((e for e in evs if e['start'] - 1e-6 <= t < e['end']), None) or (
+            min(evs, key=lambda e: min(abs(e['start'] - t), abs(e['end'] - t))) if evs else None)
+        if host is not None and len(host['lines']) < o['max_lines'] and len(tag) <= o['max_chars'] and \
+                (sum(len(x) for x in host['lines']) + len(tag)) / max(host['end'] - host['start'], 1e-3) <= o['cps']:
             host['lines'] = [tag] + host['lines'] if t <= host['start'] + 0.3 else host['lines'] + [tag]
-            if 'music' in tag and host['kind'] == 'speech':
-                host['music'] = True
+            continue
+        g = free_gap(t, 10.0 if kind == 'music' else 2.0)                 # no room where it happens: the next gap shortly after
+        if g:
+            new.append({'start': g[0], 'end': g[1], 'lines': [tag], 'kind': kind, 'speaker': None, 'words': [],
+                        'notes': ['%s moved from %.2f s to %.2f s: no gap or free line earlier' % (tag, t, g[0])]})
         elif host is not None:
-            host['notes'].append('sound tag %s at %.2f s dropped: no gap of %.2f s and no free line' % (tag, t, o['min_dur']))
+            host['notes'].append('sound tag %s at %.2f s dropped: no gap of %.2f s, no free line within the reading speed' % (tag, t, o['min_dur']))
     return sorted(evs + new, key=lambda e: e['start'])
 
 
