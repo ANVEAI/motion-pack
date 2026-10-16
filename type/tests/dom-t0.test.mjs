@@ -3,7 +3,7 @@
    bake at t0 and drive at t0 must agree at every timeline position T. Until 2026-10-15 they used opposite signs of t0 (bake: states at t0 + t; drive: states at T - t0), which only showed for t0 != 0
    and which every test and demo missed because they all used t0 = 0. The elements are stand-ins that record what bake writes (a fake timeline) and what drive sets (a style object). */
 import { mountType, bakeType, driveType, bakeCaptions, driveCaptions } from '../dom.js';
-import { PRESETS } from '../presets.js'; import { chunkWords, CAPTION_STYLES, popScale } from '../captions.js';
+import { PRESETS, unitStates } from '../presets.js'; import { chunkWords, CAPTION_STYLES, popScale } from '../captions.js';
 import { reporter } from '../../layers/tests/harness.mjs';
 const R = reporter('type dom t0');
 const el = () => ({ style: { setProperty(k, v) { this[k] = v; } }, textContent: '' });
@@ -27,9 +27,9 @@ for (const id of ['maskRise', 'scaleSlam', 'wordStagger', 'blurIn', 'charStagger
     for (let i = -4; i <= Math.round(DUR * FPS) + 4; i++) { const T = t0 + i / FPS; drive(T);
       m.units.forEach((u, k) => { const b = tl.at(u.el, T), d = m2.units[k].el.style, tf = d.transform || '';
         const dx = Math.abs(num(tf, /translate\(([-\d.e]+)px/) - b.x), dy = Math.abs(num(tf, /translate\([-\d.e]+px, ([-\d.e]+)px/) - b.y), ds = Math.abs((tf.includes('scale(') ? num(tf, /scale\(([-\d.e]+)\)/) : 1) - b.scale), dr = Math.abs(num(tf, / rotate\(([-\d.e]+)deg/) - b.rotation), dop = Math.abs(+d.opacity - b.opacity);
-        worst = Math.max(worst, dx, dy, ds * 100, dr, dop * 100); n++; if (b.opacity > 0.01) visible++; if (b.opacity > 0.01 && b.opacity < 0.99) moving++; if (!def.mask && T < spec.at - 1e-9 && b.opacity > 0.01) outsideAt++; }); } } }
+        worst = Math.max(worst, dx, dy, ds * 100, dr, dop * 100); n++; if (b.opacity > 0.01) visible++; if (b.opacity > 0.01 && b.opacity < 0.99) moving++; if (T < spec.at - 1e-9 && b.opacity > 0.01) outsideAt++; }); } } }
 R.check(`bakeType vs driveType agree at every timeline position, 6 presets x t0 = ${T0S.join(', ')} (${n} unit-frames incl. before and after the window; worst deviation ${worst.toExponential(1)})`, worst < 0.01 && n > 5000);
-R.check(`the comparison is not vacuous: ${visible} unit-frames visible, ${moving} mid-transition; no opacity preset shows before spec.at (${outsideAt} that do; maskRise hides behind its line mask instead)`, visible > 500 && moving > 100 && outsideAt === 0);
+R.check(`the comparison is not vacuous: ${visible} unit-frames visible, ${moving} mid-transition; no preset shows before spec.at, the line-masked rises included (${outsideAt} that do)`, visible > 500 && moving > 100 && outsideAt === 0);
 { /* a spec with at: 3 starts at timeline 3 s for a window that starts at 2 s (it used to start at 5 s when driven) */
   const spec = { preset: 'scaleSlam', text: 'Voice that sells', at: 3, out: 1e9 }, texts = ['Voice', 'that', 'sells'], m = { units: texts.map((t) => ({ el: el(), text: t })), texts, fontPx: 100, H: 1080, spec }, drive = live(() => driveType(m, spec, { t0: 2, dur: 4 }));
   drive(2.5); const before = +m.units[0].el.style.opacity; drive(3.8); const after = +m.units[0].el.style.opacity;
@@ -51,4 +51,9 @@ R.check(`the comparison is not vacuous: ${visible} unit-frames visible, ${moving
 { const S = CAPTION_STYLES, e = { emph: true }, p = {};
   R.check('popScale: the emphasis pop reserves 1.12 for flagged words only, karaoke for every word, the one-word impact style none', popScale(S.emphasis, e) === S.emphasis.emphScale && popScale(S.emphasis, p) === 1
     && popScale(S.karaoke, p) === S.karaoke.activeScale && popScale(S.impact, e) === 1 && Object.values(S).every((st) => popScale(st, e) >= 1)); }
+/* ---- the maskRise sliver: a line-masked unit is hidden before its own entrance (the 1.12 em mask showed the top 0.26 em of the glyphs at the rest offset) ---- */
+{ const sp = { preset: 'maskRise', text: 'Voice that sells', at: 1.0 }, T = ['Voice', 'that', 'sells'], before = unitStates(sp, T, 0.99).states, d2 = unitStates(sp, T, 1.0 + 4 / 30 + 0.001).states, mid = unitStates(sp, T, 1.6).states;
+  const cr = unitStates({ preset: 'charRise', text: 'Orbit', at: 0.5 }, [...'Orbit'], 0.4).states;
+  R.check('maskRise / charRise: every unit hidden before its own start, the second word still hidden while the first rises, all visible mid-entrance', before.every((x) => x.opacity === 0) && cr.every((x) => x.opacity === 0)
+    && d2[0].opacity > 0 && d2[2].opacity === 0 && mid.every((x) => x.opacity > 0)); }
 const res = R.done(); process.exit(R.failed ? 1 : 0);

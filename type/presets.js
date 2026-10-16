@@ -78,6 +78,9 @@ export function unitStates(spec, unitTexts, t) {
     const c = { i, n, p, e, tIn, tAbs: t, params, text: unitTexts[i], spec };
     const m = mergeState((spec.out === null || spec.noExit) ? def.enter(e, c) : (q > 0 ? def.exit(eo, c) : def.enter(e, c)));
     if (q >= 1) m.opacity = 0;
+    /* a line-masked rise (maskRise, charRise) waits BELOW its line box, but the 1.12 em mask cannot hide the top ~0.26 em of the glyphs at the 0.6-0.7 em rest offset:
+       hidden until its own entrance starts, so no sliver shows before `at` + its delay (compositions hid it only because their clip starts at `at`) */
+    if (def.mask === 'line' && tIn <= 0 && !(q > 0)) m.opacity = 0;
     return m;
   });
   const caret = def.caret ? { blink: def.caret.blink, on: Math.floor((t - at) / def.caret.blink) % 2 === 0 || t - at < 0, upto: states.filter((s) => s.opacity > 0).length, done: t - at > delays[n - 1] + F } : null;
