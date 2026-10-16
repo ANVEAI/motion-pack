@@ -101,6 +101,8 @@ jobs:
         run: node tools/tests/project.test.mjs
       - name: "proof film template (honesty gate: a number without source or method fails the build; plan, camera, safe zone, VO mechanics; node + python, no browser)"
         run: node templates/proof-film/proof-film.test.mjs
+      - name: "human kit (lane human: subtitles to words, fillers, breath-keeping autocut, cursor and zoom-follow, punch-ins, B-roll slots, active speaker, captions, placeholder labels, the five human templates at both aspects; node, no browser)"
+        run: node templates/_shared/human/human.test.mjs
       - name: "physics table player (the baked table is committed; no npm install)"
         run: node physics/tests/test-player.mjs
       - name: "blender scripts compile (no Blender on CI; renders are tested locally with blender/tests/smoke.sh)"

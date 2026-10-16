@@ -1,0 +1,335 @@
+{
+ "source": "transcript.example.vtt",
+ "estimated": true,
+ "words": [
+  {
+   "w": "So",
+   "s": 0.3,
+   "e": 0.44,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "what",
+   "s": 0.465,
+   "e": 0.709,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "changed",
+   "s": 0.739,
+   "e": 1.148,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "when",
+   "s": 1.178,
+   "e": 1.423,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "you",
+   "s": 1.453,
+   "e": 1.643,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "stopped",
+   "s": 1.673,
+   "e": 2.082,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "posting",
+   "s": 2.112,
+   "e": 2.521,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "every",
+   "s": 2.551,
+   "e": 2.85,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "day?",
+   "s": 2.88,
+   "e": 3.07,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "Honestly?",
+   "s": 3.6,
+   "e": 4.07,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "I",
+   "s": 4.1,
+   "e": 4.194,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "started",
+   "s": 4.211,
+   "e": 4.626,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "finishing",
+   "s": 4.656,
+   "e": 5.181,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "things.",
+   "s": 5.211,
+   "e": 5.57,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "A",
+   "s": 6.3,
+   "e": 6.404,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "finished",
+   "s": 6.422,
+   "e": 6.942,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "video",
+   "s": 6.972,
+   "e": 7.309,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "beats",
+   "s": 7.339,
+   "e": 7.676,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "a",
+   "s": 7.706,
+   "e": 7.809,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "rushed",
+   "s": 7.828,
+   "e": 8.226,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "one,",
+   "s": 8.256,
+   "e": 8.47,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "every",
+   "s": 8.5,
+   "e": 8.837,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "single",
+   "s": 8.867,
+   "e": 9.264,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "time.",
+   "s": 9.294,
+   "e": 9.57,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "Even",
+   "s": 10.2,
+   "e": 10.436,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "if",
+   "s": 10.466,
+   "e": 10.601,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "the",
+   "s": 10.625,
+   "e": 10.808,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "views",
+   "s": 10.838,
+   "e": 11.126,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "drop",
+   "s": 11.156,
+   "e": 11.392,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "at",
+   "s": 11.422,
+   "e": 11.557,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "first?",
+   "s": 11.581,
+   "e": 11.87,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "They",
+   "s": 12.5,
+   "e": 12.806,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "did",
+   "s": 12.836,
+   "e": 13.075,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "drop.",
+   "s": 13.105,
+   "e": 13.411,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "Then",
+   "s": 13.441,
+   "e": 13.748,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "the",
+   "s": 13.778,
+   "e": 14.017,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "people",
+   "s": 14.047,
+   "e": 14.487,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "who",
+   "s": 14.517,
+   "e": 14.756,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "stayed",
+   "s": 14.786,
+   "e": 15.227,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "actually",
+   "s": 15.257,
+   "e": 15.832,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "watched.",
+   "s": 15.862,
+   "e": 16.37,
+   "est": true,
+   "speaker": "Guest"
+  },
+  {
+   "w": "That",
+   "s": 17,
+   "e": 17.246,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "is",
+   "s": 17.276,
+   "e": 17.417,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "the",
+   "s": 17.441,
+   "e": 17.632,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "clip,",
+   "s": 17.662,
+   "e": 17.908,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "right",
+   "s": 17.938,
+   "e": 18.239,
+   "est": true,
+   "speaker": "Host"
+  },
+  {
+   "w": "there.",
+   "s": 18.269,
+   "e": 18.57,
+   "est": true,
+   "speaker": "Host"
+  }
+ ]
+}

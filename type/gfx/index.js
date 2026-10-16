@@ -17,6 +17,7 @@ import { PROOF, PROOF_CUES } from './ui-proof.js'; import { TRACE, TRACE_CUES } 
 /* round 4+5 (ui-proof.js, ui-trace.js): the ui.* ones join the UI kit (uiCues); chart.*, caption.*, type.* and lowerThird.* ones get per-action cues through gfxCues */
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
 const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45), ...onlyUI(R6) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES), ...onlyUI(R6_CUES) }; import { DOC } from './doc.js';
+import { HUMAN, HUMAN_CUES, HUMAN_LIM } from './human.js'; Object.assign(GFX_LIM, HUMAN_LIM);   /* lane human (2026-10-16): tutorial / personal / human-blended parts */
 import { SWAP, SWAP_CUES } from './swap.js'; import { TYPE_R45, TYPE_R45_CUES } from './r45-type.js'; import { GLYPH_R45, GLYPH_R45_CUES, ELECTRIC_SOUND } from './r45-glyph.js'; import { BADGES, BADGE_CUES } from './badges.js'; import { BRAND_LAYOUTS, BRAND_CUES } from './brand.js';
 export { stepAt, mixHex } from './swap.js'; export { selectionZoom, selectionZoomCss } from './badges.js'; export { CIRCLE4, SPARK4, PLATES } from './brand.js';
 export { PARTNER_MARKS, MERGE_ICONS, lintPartnerMarks, inkFromMask, markFromImage, partnerLockupLayout, iconMergeFit, iconMergeState, flankBox, flankFitK, lintFlank, flankShots, flankState, srcAt, figurePlate } from './r45-type.js';
@@ -28,7 +29,7 @@ export { BOARD, BOARD_D, boardAt, drawBoard, mountBoard } from './board.js';
 export { PIN_LAYOUTS, homography, matrix3d, cornersAt, lintQuad, drawQuad, mountPin } from './cornerpin.js';
 export { LAYOUTS, layoutAt, applyLayout } from './layout.js'; export { prepareDrawOn, drawOnAt, trimAt, bindDrawOn, drawAttrs } from './drawon.js';
 export { STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource };
-export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6 };
+export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN };
 export const GFX_IDS = Object.keys(GFX);
 /* default sound pairing per gfx id prefix (sfx/<category>/<name>, anchor = the item's at + 1 frame, gain over the bed). Longest prefix wins. */
 export const GFX_SFX = {
@@ -61,7 +62,11 @@ export const GFX_SFX = {
   'title.partnerLockup': ['sfx/hit/soft', 1, -2], 'layout.iconMergeLockup': ['sfx/hit/soft', 1, -3], 'type.asciiMosaic': ['sfx/whoosh/magic_swirl', 10, -4], 'type.textOnPath': ['sfx/whoosh/flyby', 3, -4],
   'type.flankWords': ['sfx/whoosh/swish_s', 0, -4], 'type.electricOutline': [ELECTRIC_SOUND, 0, -6], 'type.behindSubject': ['sfx/whoosh/whoosh_in_m', 0, -4],
   /* round 6 (2026-10-15): r6.js; gfxCues / uiCues give one cue per action */
-  'chart.hoverTooltip': ['sfx/ui/tick', 1, -4], 'ui.dockLaunch': ['sfx/device/mouse_click', 1, -2], 'title.verbCard': ['sfx/hit/soft', 1, -2], 'ui.connectRows': ['sfx/device/mouse_click', 1, -2], 'layout.degradingDiagram': ['sfx/ui/pop', 1, -4], 'type.commandPill': ['sfx/ui/type_key', 1, -5] };
+  'chart.hoverTooltip': ['sfx/ui/tick', 1, -4], 'ui.dockLaunch': ['sfx/device/mouse_click', 1, -2], 'title.verbCard': ['sfx/hit/soft', 1, -2], 'ui.connectRows': ['sfx/device/mouse_click', 1, -2], 'layout.degradingDiagram': ['sfx/ui/pop', 1, -4], 'type.commandPill': ['sfx/ui/type_key', 1, -5],
+  /* lane human (2026-10-16): human.js; gfxCues gives one cue per action */
+  'ui.keyCombo': ['sfx/device/keyboard_mech_clack', 5, -4], 'callout.highlightBox': ['sfx/ui/slide', 0, -4], 'ui.codeCallout': ['sfx/whoosh/swish_xs', 0, -4], 'ui.stepCounter': ['sfx/ui/count_tick', 1, -5], 'ui.cursorTrack': ['sfx/device/mouse_click', 0, -4],
+  'ui.waveform': ['sfx/ui/blip', 0, -10], 'title.locationCard': ['sfx/whoosh/swish_s', 0, -3], 'title.yearTimeline': ['sfx/ui/slide', 0, -4], 'caption.pullQuote': ['sfx/paper/flip', 3, -4], 'ui.quizCard': ['sfx/ui/pop', 1, -3],
+  'title.recapCard': ['sfx/ui/pop', 15, -4], 'title.hookCard': ['sfx/hit/soft', 0, -2], 'title.endScreen': ['sfx/whoosh/whoosh_in_m', 0, -3], 'callout.resultReveal': ['sfx/tx/mask_reveal', 0, -3], 'title.stepCard': ['sfx/whoosh/whoosh_in_m', 0, -3] };
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 /* def ids are document-wide: every <svg> of every host in a page shares one id namespace, and url(#id) resolves to the FIRST match. Parts used to name their defs by hand ('lc' / 'lg' in chart.line, 'neon', 'odo',
    'dsScrim') or by a hash of a few params (uidOf: no `at`, most params missing), so two items in one host (two chart.line items; two ui.stateMorph with the same text at different times) shared a def and the second
@@ -94,7 +99,7 @@ export function uiCues(id, { at = 0, params = {} } = {}) { const g = UI[id], f =
 uiHooks.renderInner = renderInner;
 /* per-action sound cues for every gfx id that has them (the ui.* kit and the round-3 parts): [{ t (absolute s), id: 'sfx/<cat>/<name>', why }];
    ids without an action table fall back to their single sfxFor() default at `at` + offset. */
-const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES };
+const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES, ...HUMAN_CUES };
 export function gfxCues(id, { at = 0, params = {}, dur } = {}) {
   if (UI_CUES[id]) return uiCues(id, { at, params }); const g = GFX[id], f = ACTION_CUES[id];
   if (g && f) return f({ ...g.d, dur: dur ?? g.dur, ...params }).map((c) => ({ ...c, t: +(c.t + at).toFixed(4) }));
