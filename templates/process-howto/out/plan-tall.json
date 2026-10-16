@@ -133,9 +133,9 @@
      "layout": "column",
      "box": [
       0.0933,
-      0.2268,
+      0.2778,
       0.7624,
-      0.2906
+      0.2498
      ],
      "accent": "#2F6B3A",
      "ink": "#16151B",
@@ -272,7 +272,8 @@
      "progress": true,
      "theme": "light",
      "accent": "#2F6B3A",
-     "card": true
+     "card": true,
+     "scale": 1
     }
    }
   ],

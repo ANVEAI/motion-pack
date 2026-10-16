@@ -23,9 +23,9 @@
     "start": 29.35,
     "end": 35.65,
     "rect": [
-     155,
-     161,
-     715,
+     158,
+     175,
+     708,
      429
     ],
     "fit": "cover",
@@ -57,9 +57,9 @@
     "start": 30.8,
     "end": 35.65,
     "rect": [
-     1050,
-     161,
-     715,
+     1054,
+     175,
+     708,
      429
     ],
     "fit": "cover",
@@ -136,14 +136,14 @@
      ],
      "layout": "row",
      "box": [
-      0.068,
-      0.212,
-      0.864,
-      0.432
+      0.05,
+      0.23,
+      0.9,
+      0.45
      ],
      "accent": "#2F6B3A",
      "ink": "#16151B",
-     "size": 1,
+     "size": 1.3,
      "stagger": 0.5
     }
    },
@@ -180,7 +180,7 @@
      "mediaH": 0.46,
      "accent": "#2F6B3A",
      "ink": "#16151B",
-     "size": 1
+     "size": 1.15
     }
    }
   ],
@@ -207,7 +207,7 @@
      "kicker": "Step 1",
      "pos": "bc",
      "accent": "#2F6B3A",
-     "size": 0.66,
+     "size": 0.7,
      "bg": "#FFFFFF"
     }
    },
@@ -221,7 +221,7 @@
      "kicker": "Step 2",
      "pos": "bc",
      "accent": "#2F6B3A",
-     "size": 0.66,
+     "size": 0.7,
      "bg": "#FFFFFF"
     }
    },
@@ -235,7 +235,7 @@
      "kicker": "Step 3",
      "pos": "bc",
      "accent": "#2F6B3A",
-     "size": 0.66,
+     "size": 0.7,
      "bg": "#FFFFFF"
     }
    },
@@ -249,7 +249,7 @@
      "kicker": "Step 4",
      "pos": "bc",
      "accent": "#2F6B3A",
-     "size": 0.66,
+     "size": 0.7,
      "bg": "#FFFFFF"
     }
    },
@@ -259,10 +259,10 @@
     "dur": 7.2,
     "params": {
      "box": [
-      0.23,
-      0.104,
-      0.54,
-      0.792
+      0.248,
+      0.086,
+      0.504,
+      0.828
      ],
      "title": "You need",
      "steps": [
@@ -276,7 +276,8 @@
      "progress": true,
      "theme": "light",
      "accent": "#2F6B3A",
-     "card": true
+     "card": true,
+     "scale": 1.6
     }
    }
   ],

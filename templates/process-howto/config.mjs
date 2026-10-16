@@ -51,8 +51,8 @@ export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'relayout', t
 
 /* boxes as fractions of the SAFE rect: 16:9 puts the timeline across the middle and the tip card under it; 9:16 stacks the steps as a column and the tip under it */
 const LAYOUT = {
-  '16:9': { steps: [0.02, 0.18, 0.98, 0.66], layout: 'row', tipPos: 'bc', tipSize: 0.66, hookPos: 'tc', hookSize: 0.9, ba: [0.02, 0.02, 0.98, 0.98], check: [0.2, 0.06, 0.8, 0.94], size: 1, baSize: 1 },
-  '9:16': { steps: [0.04, 0.17, 0.96, 0.74], layout: 'column', tipPos: 'bc', tipSize: 0.72, hookPos: 'tc', hookSize: 0.8, ba: [0.02, 0.0, 0.98, 1], check: [0.03, 0.08, 0.97, 0.9], size: 0.62, baSize: 0.6 },
+  '16:9': { steps: [0.0, 0.2, 1.0, 0.7], layout: 'row', tipPos: 'bc', tipSize: 0.7, hookPos: 'tc', hookSize: 0.9, ba: [0.02, 0.02, 0.98, 0.98], check: [0.22, 0.04, 0.78, 0.96], size: 1.3, baSize: 1.15, checkScale: 1.6 },
+  '9:16': { steps: [0.04, 0.27, 0.96, 0.76], layout: 'column', tipPos: 'bc', tipSize: 0.72, hookPos: 'tc', hookSize: 0.8, ba: [0.02, 0.0, 0.98, 1], check: [0.03, 0.08, 0.97, 0.9], size: 0.62, baSize: 0.6, checkScale: 1 },
 };
 export function processProblems(C) {
   const out = []; if (!Array.isArray(C.steps) || C.steps.length < 2 || C.steps.length > 8) out.push('steps: give 2 to 8 steps');
@@ -89,7 +89,7 @@ export function buildPlan(C0) {
   events.push(res.at, res.at + 0.45, res.at + res.swap, res.at + res.swap + 0.7, res.until - 2.2);
   /* the checklist end card */
   const cb = box(L.check), n = C.text.checklist.length;
-  top.push({ id: 'ui.checklist', at: ck.at, dur: r3(T - ck.at - 0.4), params: { box: cb, title: C.text.checklistTitle, steps: C.text.checklist, start: 0.5, step: ck.step, progress: true, theme: 'light', accent: C.brand.accent, card: true } });
+  top.push({ id: 'ui.checklist', at: ck.at, dur: r3(T - ck.at - 0.4), params: { box: cb, title: C.text.checklistTitle, steps: C.text.checklist, start: 0.5, step: ck.step, progress: true, theme: 'light', accent: C.brand.accent, card: true, scale: L.checkScale } });
   texts.push({ text: C.text.checklist.join('. '), a: ck.at, b: T, role: 'checklist' }); events.push(ck.at, ...C.text.checklist.map((_, i) => ck.at + 0.5 + (i + 1) * ck.step));
   const sections = [{ name: 'hook', t: [0, r3(steps[0].at)] }, { name: 'steps', t: [r3(steps[0].at), r3(res.at)] }, { name: 'result', t: [r3(res.at), r3(ck.at)] }, { name: 'checklist', t: [r3(ck.at), r3(T)] }];
   const shots = sections.map((s) => ({ id: s.name, sec: s.name, start: s.t[0], dur: r3(s.t[1] - s.t[0]), move: 'process camera', ...(s.name === 'checklist' ? { hold: true } : {}) }));
