@@ -11,6 +11,7 @@ SUITES=(
   "layers/tests/r3.test.mjs"
   "layers/tests/r45.test.mjs --chrome"
   "layers/tests/r6.test.mjs --chrome"
+  "layers/tests/r78.test.mjs --chrome"
   "type/tests/type.test.mjs"
   "type/tests/r45type.test.mjs --chrome"
   "type/tests/cards.test.mjs"

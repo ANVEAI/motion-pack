@@ -7,11 +7,13 @@
      meshGradient (2026-10-14, round 3) soft mesh / aurora field: 3-8 colour blobs (gaussian-like radial falloff) drifting on closed-form
                  Lissajous paths (loop: L makes every frequency a multiple of 1/L, so the field repeats exactly), optional vertical sky base,
                  optional seeded grain (a 256 px noise tile re-offset per grain frame by a hash of the frame number). Palettes: MESH_PALETTES.
+     skyClouds    (2026-10-16, xp-r78; backgrounds-r78.js) a procedural sky of seeded fractal-noise clouds, or a dune horizon (preset 'dunes'), with a closed-form drift; loop: exact seam.
      auroraRibbon (2026-10-15, round 6; backgrounds-r6.js) a bottom-anchored glowing ribbon in brand colours that rises on cue (riseAt) and drifts; loop: exact seam.
    Same layer contract as overlay.js / canvas2d.js (canvas + mix-blend-mode, render(t, {frame})); mounted through overlay.js mountStack:
      mountStack(el, [{ kind: 'gridTunnel', params: { color: '#4A18ED', bg: '#F5F2EA' } }], { width, height, fps })
    Sizes are px at 1080 (scaled by H / 1080), so 16:9 and 9:16 share numbers. Pure functions of t: no clock, no random. */
 import { BG_R6 } from './backgrounds-r6.js';   // round 6 (2026-10-15): auroraRibbon
+import { BG_R78 } from './backgrounds-r78.js';   // xp-r78 (2026-10-16): skyClouds (clouds and dunes presets)
 import { BG_LIM, guardKinds } from './limits.js';
 const rgba = (hex, a) => { const n = parseInt(String(hex).slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${Math.min(1, Math.max(0, a)).toFixed(4)})`; };
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -103,7 +105,7 @@ export const BG = {
         g.save(); g.globalCompositeOperation = 'overlay'; g.globalAlpha = Math.min(1, p.grain * 4); g.translate(-ox, -oy); g.fillStyle = g.createPattern(tile, 'repeat'); g.fillRect(ox, oy, W, H); g.restore(); } }
     } },
 };
-Object.assign(BG, BG_R6);
+Object.assign(BG, BG_R6, BG_R78);
 guardKinds(BG, BG_LIM);   // draw sanitises p first (layers/limits.js)
 export const BG_KINDS = Object.keys(BG);
 
