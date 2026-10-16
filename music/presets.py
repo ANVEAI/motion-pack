@@ -145,3 +145,28 @@ TRAILERS = {
                         desc="trailer arc: low drone + sub pulse, rising 16th ostinato, full wall (taiko, strings, brass), a 3 s sub-only valley, "
                              "a 2-bar crescendo, a title hit with a hard stop, a quiet hold; markers in the sidecar"),
 }
+# 2026-10-16 film lane: genre trailer scores (music/trailer_styles.py). Same marker rule (whole beats), plus a button (post-title near-silence) and a tail
+# (credit block + release card bed with a final hit). cresc_bars 0 = the title hit lands straight out of the silence. gap_below_wall_db >= 90 = digital silence.
+# Fit a cut with trailer_styles.render_styled(style, act_bars=..., button_beats=..., tail_beats=...): templates/trailer does it from its plan.
+TRAILERS.update({
+    "trailer_thriller": dict(style="thriller", bpm=120, key=9, scale="minor", act_bars=(4, 4, 4), gap_beats=4, cresc_bars=0, ring_beats=6, button_beats=8, tail_beats=16,
+                             final_hit_beat=8, prog_act1=["i", "i", "i", "i"], prog_act2=["i", "VI", "iv", "V"], prog_act3=["i", "VI", "III", "VII"], prog_cresc=["V"],
+                             gap_below_wall_db=40.0, mood=["cinematic", "tense", "thriller"], use=["trailer", "short_film", "launch"],
+                             desc="thriller trailer score: a ticking clock and a sub pulse, a 16th ostinato with braam stabs, a wall with a braam on every bar, a 2 s silence, "
+                                  "the title hit straight out of it, a quiet button, a pulsing credits tail with a final hit"),
+    "trailer_scifi": dict(style="scifi", bpm=100, key=9, scale="minor", act_bars=(4, 4, 4), gap_beats=4, cresc_bars=1, ring_beats=5, button_beats=8, tail_beats=16,
+                          final_hit_beat=8, prog_act1=["i", "i", "i", "i"], prog_act2=["i", "III", "VII", "iv"], prog_act3=["i", "VI", "III", "VII"], prog_cresc=["V"],
+                          gap_below_wall_db=40.0, mood=["cinematic", "cold", "scifi"], use=["trailer", "launch", "short_film"],
+                          desc="sci-fi trailer score: a cold add9 pad and a glassy arpeggio, an 8th synth pulse, a wall of kicks, stabs and braams, a silence, a 1-bar crescendo, "
+                               "a title hit with a glass bell, a credits tail"),
+    "trailer_horror": dict(style="horror", bpm=80, key=9, scale="minor", act_bars=(4, 4, 4), gap_beats=4, cresc_bars=0, ring_beats=4, button_beats=8, tail_beats=12,
+                           final_hit_beat=6, prog_act1=["i", "i", "i", "i"], prog_act2=["i", "i", "i", "i"], prog_act3=["i", "i", "i", "i"], prog_cresc=["i"],
+                           gap_below_wall_db=120.0, mood=["cinematic", "dark", "horror"], use=["trailer", "short_film"],
+                           desc="horror trailer score: a minor-second drone and a music-box line, a heartbeat and cluster swells, a wall of tremolo clusters and metal, "
+                                "DIGITAL silence, the shock hit, a music-box tail"),
+    "trailer_drama": dict(style="drama", bpm=84, key=9, scale="minor", act_bars=(4, 4, 4), gap_beats=4, cresc_bars=1, ring_beats=4, button_beats=8, tail_beats=12,
+                          final_hit_beat=6, prog_act1=["i", "VI", "III", "VII"], prog_act2=["VI", "VII", "i", "V"], prog_act3=["i", "VI", "III", "VII"], prog_cresc=["V"],
+                          gap_below_wall_db=40.0, mood=["cinematic", "warm", "drama"], use=["trailer", "short_film", "brand"],
+                          desc="drama trailer score: a piano motif over a warm pad, strings and an 8th pulse join, a full string-and-brass wall with taiko, a silence, "
+                               "a 1-bar crescendo, a warm title hit, a piano tail"),
+})

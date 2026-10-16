@@ -1,0 +1,7 @@
+{"note": "placeholder dialogue for the demo short (fictional), shown as subtitles only; s / e in seconds from the start of `scene`", "lines": [
+ {"scene": "s1", "s": 6.6, "e": 8.8, "text": "Relay North. Do you copy?", "speaker": "radio"},
+ {"scene": "s1", "s": 9.4, "e": 11.0, "text": "Who is this?"},
+ {"scene": "s1", "s": 12.6, "e": 15.4, "text": "Nobody has called this station in years."},
+ {"scene": "s2", "s": 7.2, "e": 9.6, "text": "Are you still there?", "speaker": "radio"},
+ {"scene": "s3", "s": 1.2, "e": 3.2, "text": "I am still here."}
+]}

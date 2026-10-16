@@ -1,0 +1,566 @@
+{
+ "template": "title-sequence",
+ "fps": 30,
+ "seconds": 40.2,
+ "W": 1920,
+ "H": 1080,
+ "aspect": "16:9",
+ "platform": "x.video",
+ "genre": "thriller",
+ "bars": 138,
+ "letterbox": 2.39,
+ "music": "music/bed_suspense_pulse_loop8",
+ "bpm": 100,
+ "framesPerBeat": 18,
+ "shots": [
+  {
+   "id": "tex0",
+   "sec": "names",
+   "start": 0,
+   "dur": 10.2,
+   "kind": "plate",
+   "plate": "smoke",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "smoke texture"
+  },
+  {
+   "id": "tex1",
+   "sec": "names",
+   "start": 10.2,
+   "dur": 9,
+   "kind": "plate",
+   "plate": "beams",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "light beams",
+   "tx": "transitions/dissolve",
+   "txReason": "PLACE: a new texture, the same sequence",
+   "txKind": "dissolve",
+   "txDur": 1
+  },
+  {
+   "id": "tex2",
+   "sec": "names",
+   "start": 19.2,
+   "dur": 9,
+   "kind": "plate",
+   "plate": "coast",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "coast at night",
+   "tx": "transitions/dissolve",
+   "txReason": "PLACE: a new texture, the same sequence",
+   "txKind": "dissolve",
+   "txDur": 1
+  },
+  {
+   "id": "tex3",
+   "sec": "names",
+   "start": 28.2,
+   "dur": 3,
+   "kind": "plate",
+   "plate": "ink",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "ink texture",
+   "tx": "transitions/dissolve",
+   "txReason": "PLACE: a new texture, the same sequence",
+   "txKind": "dissolve",
+   "txDur": 1
+  },
+  {
+   "id": "tex4",
+   "sec": "title",
+   "start": 31.2,
+   "dur": 9,
+   "kind": "plate",
+   "plate": "signal",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "the signal",
+   "tx": "transitions/dissolve",
+   "txReason": "PLACE: a new texture, the same sequence",
+   "txKind": "dissolve",
+   "txDur": 1,
+   "hold": true
+  }
+ ],
+ "gfx": [
+  {
+   "id": "title.namesOver",
+   "at": 1.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "",
+    "name": "ORBIT PICTURES",
+    "style": "split",
+    "pos": "bl",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 1.7,
+   "dur": 1.7667,
+   "params": {
+    "role": "",
+    "name": "PRESENTS",
+    "style": "drift",
+    "pos": "bl",
+    "size": 34,
+    "padY": 152
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 4.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "a film by",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "tr",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 7.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "starring",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "c",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 10.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "br",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 13.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "tl",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 16.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "music by",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "c",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 19.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "edited by",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "bl",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 22.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "director of photography",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "tr",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 25.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "production design",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "c",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 28.2,
+   "dur": 2.266667,
+   "params": {
+    "role": "written by",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "br",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 202
+   }
+  },
+  {
+   "id": "title.trailerSlab",
+   "at": 31.2,
+   "dur": 4.3,
+   "params": {
+    "text": "THE LAST SIGNAL",
+    "size": 180
+   }
+  },
+  {
+   "id": "title.namesOver",
+   "at": 36,
+   "dur": 4,
+   "params": {
+    "role": "directed by",
+    "name": "PLACEHOLDER NAME",
+    "style": "split",
+    "pos": "c",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "padY": 138
+   }
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/hit/soft",
+   "t": 1.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 4.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 7.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 10.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 13.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 16.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 19.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 22.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 25.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 28.2,
+   "why": "a name lands on the bar"
+  },
+  {
+   "id": "sfx/trailer/braam_low",
+   "t": 31.2,
+   "why": "the main title hit"
+  },
+  {
+   "id": "sfx/trailer/sub_drop_long",
+   "t": 36,
+   "why": "the last card"
+  }
+ ],
+ "burns": [],
+ "flares": [],
+ "flashes": [],
+ "texts": [
+  {
+   "text": "ORBIT PICTURES",
+   "t": [
+    1.2,
+    3.4667
+   ],
+   "box": [
+    607,
+    790,
+    1313,
+    882
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    4.2,
+    6.4667
+   ],
+   "box": [
+    557,
+    261,
+    1363,
+    353
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    7.2,
+    9.4667
+   ],
+   "box": [
+    557,
+    502,
+    1363,
+    595
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    10.2,
+    12.4667
+   ],
+   "box": [
+    557,
+    790,
+    1363,
+    882
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    13.2,
+    15.4667
+   ],
+   "box": [
+    557,
+    261,
+    1363,
+    353
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    16.2,
+    18.4667
+   ],
+   "box": [
+    557,
+    502,
+    1363,
+    595
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    19.2,
+    21.4667
+   ],
+   "box": [
+    557,
+    790,
+    1363,
+    882
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    22.2,
+    24.4667
+   ],
+   "box": [
+    557,
+    261,
+    1363,
+    353
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    25.2,
+    27.4667
+   ],
+   "box": [
+    557,
+    502,
+    1363,
+    595
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "PLACEHOLDER NAME",
+   "t": [
+    28.2,
+    30.4667
+   ],
+   "box": [
+    557,
+    790,
+    1363,
+    882
+   ],
+   "fontPx": 84,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "THE LAST SIGNAL",
+   "t": [
+    31.2,
+    35.5
+   ],
+   "box": [
+    170,
+    441,
+    1750,
+    634
+   ],
+   "fontPx": 175,
+   "role": "headline",
+   "fg": "#F2F2F2"
+  }
+ ],
+ "holds": [
+  {
+   "t": [
+    39.6,
+    40.2
+   ],
+   "why": "the picture holds before the film starts"
+  }
+ ],
+ "claims": [],
+ "labels": {
+  "film": "placeholder footage · fictional film · placeholder names",
+  "slots": true
+ },
+ "layers": {
+  "grain": "film35",
+  "dust": 0.25,
+  "vignette": 0.24
+ },
+ "eyes": {
+  "letterbox": true
+ },
+ "audio": {
+  "mode": "music",
+  "role": "trailer",
+  "events": [
+   1.2,
+   1.7,
+   4.2,
+   7.2,
+   10.2,
+   13.2,
+   16.2,
+   19.2,
+   22.2,
+   25.2,
+   28.2,
+   31.2,
+   36
+  ]
+ },
+ "ceilingDb": -2.5,
+ "paceRule": {
+  "aslMax": 20,
+  "longMax": 60
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 5,
+   "asl": 8.04,
+   "longest": 10.2,
+   "pass": true
+  }
+ }
+}

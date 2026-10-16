@@ -46,7 +46,7 @@ jobs:
       - name: "the layers / type / camera manifests match their generator"
         run: node layers/tests/make-manifests.mjs && python3 tools/check_generated.py layers/manifest.json type/manifest.json camera/manifest.json
       - name: "python tests (cuts, sfx, music, tools incl. the no-clock gate and the run-all / CI suite lists, cloud, blender recipes vs manifest, storyboard)"
-        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py sfx/tests music/tests tools/tests cloud/tests blender/tests storyboard/tests
+        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py cuts/test_trailer_cuts.py sfx/tests music/tests tools/tests cloud/tests blender/tests storyboard/tests
       - name: "ears tests (automated listening, synthetic signals)"
         run: python3 -m pytest -q ears/tests
       - name: "storyboard mutation proof (each check in storyboard/tests fails when the code under test is broken - timeline, safe zone, reading speed, lint gate, panels, determinism, animatic frames and loudness, real key frames, sound intents)"
@@ -105,6 +105,16 @@ jobs:
         run: node templates/_shared/human/human.test.mjs
       - name: "hardware templates (hardware-reveal, hardware-teaser, spec-sheet: plans pure, bar grid, drop on the reveal, tracks in frame, text in the safe rect, claims sourced, lint gate; explode, projection, die table; node, no browser)"
         run: node templates/_hw/hw.test.mjs
+      - name: "film layers (filmBurn, anamorphicFlare, gate weave, flicker, halation / ink filters, genre looks and their generated cubes; node, no browser)"
+        run: node layers/tests/film.test.mjs
+      - name: "film type parts (trailer titles, billing block, credits roll, cards, quote needs a source, subtitles, opening names; node, no browser)"
+        run: node type/tests/film.test.mjs
+      - name: "trailer template (every cut, aspect and score: lengths, the half-beat grid, acceleration, act-3 downbeats, the silence, the title on the hit; node, no browser)"
+        run: node templates/trailer/trailer.test.mjs
+      - name: "title-sequence template (every genre, aspect and length: names on beats, one at a time, the title then directed by; node, no browser)"
+        run: node templates/title-sequence/title-sequence.test.mjs
+      - name: "short-film template (scenes, chapters, slugs, scene-relative subtitles, J / L sound, credits roll, the stage slot, the voice; node, no browser)"
+        run: node templates/short-film/short-film.test.mjs
       - name: "physics table player (the baked table is committed; no npm install)"
         run: node physics/tests/test-player.mjs
       - name: "blender scripts compile (no Blender on CI; renders are tested locally with blender/tests/smoke.sh)"

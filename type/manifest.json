@@ -7597,6 +7597,606 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "title.trailerSlab",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/boom_metal",
+    "offset_f": 0,
+    "gain_db": 0
+   },
+   "dur_s": 3,
+   "in_frames": 2,
+   "out_frames": 12,
+   "params": {
+    "text": "THE LAST SIGNAL",
+    "sub": "",
+    "size": 190,
+    "width": 0.9,
+    "y": 0.5,
+    "steel": [
+     "#2A2E35",
+     "#E8ECF1",
+     "#8A919B",
+     "#22262C",
+     "#C8CDD5"
+    ],
+    "edge": "#FFFFFF",
+    "sweepAt": 0.25,
+    "sweepDur": 1.2,
+    "shadow": 0.6
+   },
+   "tags": [
+    "title",
+    "trailer",
+    "metallic",
+    "slab",
+    "film"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.trailerThin",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/sub_drop_long",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "dur_s": 3.5,
+   "in_frames": 18,
+   "out_frames": 14,
+   "params": {
+    "text": "THE LAST SIGNAL",
+    "sub": "",
+    "size": 120,
+    "width": 0.92,
+    "y": 0.5,
+    "color": "#F2F4F7",
+    "track": [
+     0.32,
+     0.5
+    ],
+    "rules": true
+   },
+   "tags": [
+    "title",
+    "trailer",
+    "thin",
+    "tracking",
+    "scifi",
+    "elegant"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.trailerDistressed",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/braam_short",
+    "offset_f": 0,
+    "gain_db": 0
+   },
+   "dur_s": 3,
+   "in_frames": 6,
+   "out_frames": 10,
+   "params": {
+    "text": "THE LAST SIGNAL",
+    "sub": "",
+    "size": 180,
+    "width": 0.9,
+    "y": 0.5,
+    "color": "#E9E2D2",
+    "wear": 0.5,
+    "boil": 12,
+    "jitter": 1.2,
+    "seed": 7
+   },
+   "tags": [
+    "title",
+    "trailer",
+    "distressed",
+    "horror",
+    "grunge",
+    "print"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.trailerGlow",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/braam_low",
+    "offset_f": 0,
+    "gain_db": 0
+   },
+   "dur_s": 3.5,
+   "in_frames": 20,
+   "out_frames": 14,
+   "params": {
+    "text": "THE LAST SIGNAL",
+    "sub": "",
+    "size": 170,
+    "width": 0.9,
+    "y": 0.5,
+    "light": "#FFF2D6",
+    "glow": "#FF9A3C",
+    "rise": 1.4,
+    "bloom": 0.7,
+    "outline": 0.35
+   },
+   "tags": [
+    "title",
+    "trailer",
+    "glow",
+    "light",
+    "drama",
+    "epic"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.trailerCut",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/metal_hit",
+    "offset_f": 14,
+    "gain_db": 0
+   },
+   "dur_s": 3,
+   "in_frames": 14,
+   "out_frames": 12,
+   "params": {
+    "text": "THE LAST SIGNAL",
+    "sub": "",
+    "size": 190,
+    "width": 0.9,
+    "y": 0.5,
+    "color": "#F4F4F4",
+    "angle": -7,
+    "gap": 0.5,
+    "seam": "#FFFFFF",
+    "open": false
+   },
+   "tags": [
+    "title",
+    "trailer",
+    "cut",
+    "split",
+    "slice",
+    "action",
+    "noir"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "credits.billingBlock",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/cut_tick",
+    "offset_f": 0,
+    "gain_db": -8
+   },
+   "dur_s": 4,
+   "in_frames": 10,
+   "out_frames": 10,
+   "params": {
+    "lines": [
+     [
+      [
+       "",
+       "ORBIT PICTURES"
+      ],
+      [
+       "presents",
+       ""
+      ],
+      [
+       "a",
+       "PLACEHOLDER"
+      ],
+      [
+       "production",
+       ""
+      ]
+     ],
+     [
+      [
+       "",
+       "LEAD ONE"
+      ],
+      [
+       "",
+       "LEAD TWO"
+      ],
+      [
+       "",
+       "LEAD THREE"
+      ],
+      [
+       "",
+       "LEAD FOUR"
+      ]
+     ],
+     [
+      [
+       "",
+       "\"THE LAST SIGNAL\""
+      ],
+      [
+       "music by",
+       "COMPOSER NAME"
+      ],
+      [
+       "edited by",
+       "EDITOR NAME"
+      ]
+     ],
+     [
+      [
+       "director of photography",
+       "DP NAME"
+      ],
+      [
+       "production designer",
+       "DESIGNER NAME"
+      ]
+     ],
+     [
+      [
+       "written by",
+       "WRITER NAME"
+      ],
+      [
+       "produced by",
+       "PRODUCER NAME"
+      ],
+      [
+       "directed by",
+       "DIRECTOR NAME"
+      ]
+     ]
+    ],
+    "width": 0.62,
+    "y": 0.62,
+    "color": "#DADDE2",
+    "squeeze": 0.56,
+    "big": 58,
+    "small": 0.42,
+    "font": null,
+    "note": "placeholder credits · fictional names"
+   },
+   "tags": [
+    "credits",
+    "billing",
+    "trailer",
+    "poster",
+    "condensed"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "credits.roll",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/cut_tick",
+    "offset_f": 0,
+    "gain_db": -10
+   },
+   "dur_s": 8,
+   "in_frames": 6,
+   "out_frames": 12,
+   "params": {
+    "items": [
+     {
+      "head": "CAST"
+     },
+     [
+      "The operator",
+      "PLACEHOLDER NAME"
+     ],
+     [
+      "The voice",
+      "PLACEHOLDER NAME"
+     ],
+     {
+      "head": "CREW"
+     },
+     [
+      "Written and directed by",
+      "PLACEHOLDER NAME"
+     ],
+     [
+      "Music",
+      "motion-pack (synthesised)"
+     ],
+     [
+      "Picture",
+      "motion-pack placeholder plates"
+     ],
+     {
+      "head": ""
+     },
+     [
+      "A fictional film",
+      "placeholder credits"
+     ]
+    ],
+    "speed": 70,
+    "size": 34,
+    "color": "#E8E8EC",
+    "head": "#9AA3AE",
+    "gap": 1.9,
+    "startY": 1,
+    "edge": 0.12
+   },
+   "tags": [
+    "credits",
+    "roll",
+    "end-credits",
+    "film",
+    "short-film"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "card.fromTheMakers",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/braam_short",
+    "offset_f": 0,
+    "gain_db": -2
+   },
+   "dur_s": 2.6,
+   "in_frames": 12,
+   "out_frames": 10,
+   "params": {
+    "kicker": "FROM THE MAKERS OF",
+    "work": "YOUR PREVIOUS FILM",
+    "placeholder": true,
+    "color": "#EDEFF2",
+    "size": 96
+   },
+   "tags": [
+    "card",
+    "trailer",
+    "makers",
+    "pedigree"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "card.releaseDate",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/boom_hit",
+    "offset_f": 0,
+    "gain_db": 0
+   },
+   "dur_s": 3,
+   "in_frames": 4,
+   "out_frames": 12,
+   "params": {
+    "top": "",
+    "date": "COMING SOON",
+    "url": "",
+    "placeholder": false,
+    "color": "#F3F4F6",
+    "accent": "#FFFFFF",
+    "size": 150
+   },
+   "tags": [
+    "card",
+    "trailer",
+    "date",
+    "release",
+    "end-card"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "card.quote",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/metal_hit",
+    "offset_f": 0,
+    "gain_db": -3
+   },
+   "dur_s": 2.8,
+   "in_frames": 10,
+   "out_frames": 10,
+   "params": {
+    "quote": "PLACEHOLDER QUOTE: REPLACE WITH A REAL, ATTRIBUTED LINE",
+    "source": "placeholder source",
+    "color": "#F1F1F1",
+    "size": 72
+   },
+   "tags": [
+    "card",
+    "trailer",
+    "quote",
+    "press",
+    "source-required"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "card.production",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/trailer/reverse_swell_2s",
+    "offset_f": 18,
+    "gain_db": -4
+   },
+   "dur_s": 3,
+   "in_frames": 18,
+   "out_frames": 12,
+   "params": {
+    "name": "ORBIT PICTURES",
+    "line": "PRESENTS",
+    "color": "#ECEEF2",
+    "accent": "#9FD3FF",
+    "size": 74,
+    "mark": true
+   },
+   "tags": [
+    "card",
+    "production",
+    "company",
+    "presents",
+    "trailer"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "card.scene",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/foley/typewriter",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 2.6,
+   "in_frames": 2,
+   "out_frames": 10,
+   "params": {
+    "slug": "INT. RELAY STATION - NIGHT",
+    "title": "",
+    "cps": 28,
+    "pos": "bl",
+    "color": "#F2F2F2",
+    "size": 40,
+    "padY": 0
+   },
+   "tags": [
+    "card",
+    "scene",
+    "slug",
+    "short-film",
+    "screenplay"
+   ],
+   "demo": "type/demo/out/gfx-stickers.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "caption.filmSubtitle",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/tx/cut_tick",
+    "offset_f": 0,
+    "gain_db": -14
+   },
+   "dur_s": 2.2,
+   "in_frames": 3,
+   "out_frames": 3,
+   "params": {
+    "text": "Relay North, do you copy?",
+    "speaker": "",
+    "y": 0.86,
+    "size": 44,
+    "maxChars": 42,
+    "color": "#FFFFFF",
+    "outline": "#000000",
+    "italic": false
+   },
+   "tags": [
+    "subtitle",
+    "dialogue",
+    "caption",
+    "film",
+    "short-film",
+    "trailer"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.filmChapter",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/soft",
+    "offset_f": 0,
+    "gain_db": -4
+   },
+   "dur_s": 2.6,
+   "in_frames": 18,
+   "out_frames": 14,
+   "params": {
+    "kicker": "CHAPTER ONE",
+    "title": "The night shift",
+    "color": "#F4EFE6",
+    "rule": "#C9A46A",
+    "size": 96,
+    "bg": null
+   },
+   "tags": [
+    "title",
+    "chapter",
+    "short-film",
+    "serif",
+    "film"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "title.namesOver",
+   "file": "type/gfx/film.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/whoosh/swish_s",
+    "offset_f": 0,
+    "gain_db": -6
+   },
+   "dur_s": 2.4,
+   "in_frames": 12,
+   "out_frames": 10,
+   "params": {
+    "role": "a film by",
+    "name": "PLACEHOLDER NAME",
+    "style": "drift",
+    "pos": "c",
+    "color": "#F2F2F2",
+    "accent": "#FF9A3C",
+    "size": 84,
+    "seed": 3,
+    "padY": 0
+   },
+   "tags": [
+    "title",
+    "opening-titles",
+    "names",
+    "credits",
+    "title-sequence"
+   ],
+   "demo": "type/demo/out/gfx-counters-titles.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "layout.splitScreen",
    "file": "type/gfx/layout.js",
    "kind": "layout",

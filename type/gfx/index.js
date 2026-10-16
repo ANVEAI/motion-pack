@@ -15,6 +15,7 @@ import { KINETIC } from './kinetic.js'; import { COLLAGE } from './collage.js';
 import { life, ctxFor } from './core.js'; import { saneParams } from './safe.js'; import { GFX_LIM } from './limits.js'; import { UI as UI1, UI_CUES as UI1_CUES, hooks as uiHooks } from './ui.js'; import { UI2, UI2_CUES } from './ui-data.js'; import { UI3, UI3_CUES } from './ui-nav.js';
 import { PROOF, PROOF_CUES } from './ui-proof.js'; import { TRACE, TRACE_CUES } from './ui-trace.js'; import { R6, R6_CUES } from './r6.js';
 import { HW_GFX, HW_CUES } from './hw.js';   // xp-hardware 2026-10-16: hw.specCallout, hw.dimensionLine, hw.chipDie, hw.edgeGlint, hw.dateCard, hw.specCard
+import { FILM_GFX, FILM_SFX } from './film.js';   // film lane (2026-10-16): trailer titles, billing block, credits roll, cards, subtitles, chapters, opening names
 /* round 4+5 (ui-proof.js, ui-trace.js): the ui.* ones join the UI kit (uiCues); chart.*, caption.*, type.* and lowerThird.* ones get per-action cues through gfxCues */
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
 const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45), ...onlyUI(R6) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES), ...onlyUI(R6_CUES) }; import { DOC } from './doc.js';
@@ -30,7 +31,7 @@ export { BOARD, BOARD_D, boardAt, drawBoard, mountBoard } from './board.js';
 export { PIN_LAYOUTS, homography, matrix3d, cornersAt, lintQuad, drawQuad, mountPin } from './cornerpin.js';
 export { LAYOUTS, layoutAt, applyLayout } from './layout.js'; export { prepareDrawOn, drawOnAt, trimAt, bindDrawOn, drawAttrs } from './drawon.js';
 export { STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource };
-export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN, ...HW_GFX };
+export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN, ...HW_GFX, ...FILM_GFX };
 export { fmtNum, pointAt as hwPointAt, dieBlocks } from './hw.js';
 export const GFX_IDS = Object.keys(GFX);
 /* default sound pairing per gfx id prefix (sfx/<category>/<name>, anchor = the item's at + 1 frame, gain over the bed). Longest prefix wins. */
@@ -71,6 +72,7 @@ export const GFX_SFX = {
   'title.recapCard': ['sfx/ui/pop', 15, -4], 'title.hookCard': ['sfx/hit/soft', 0, -2], 'title.endScreen': ['sfx/whoosh/whoosh_in_m', 0, -3], 'callout.resultReveal': ['sfx/tx/mask_reveal', 0, -3], 'title.stepCard': ['sfx/whoosh/whoosh_in_m', 0, -3],
   /* xp-hardware (2026-10-16): hw.js; gfxCues gives one cue per action */
   hw: ['sfx/hw/click_detent', 1, -3], 'hw.dateCard': ['sfx/hit/soft', 4, -2], 'hw.edgeGlint': ['sfx/hw/light_sweep', 18, -4], 'hw.chipDie': ['sfx/hw/led_on', 10, -3] };
+Object.assign(GFX_SFX, FILM_SFX);   // film lane (2026-10-16): type/gfx/film.js defaults
 export const sfxFor = (id) => { let best = null; for (const k of Object.keys(GFX_SFX)) if ((id === k || id.startsWith(k + '.')) && (!best || k.length > best.length)) best = k; return best ? { id: GFX_SFX[best][0], offset_f: GFX_SFX[best][1], gain_db: GFX_SFX[best][2] } : null; };
 /* def ids are document-wide: every <svg> of every host in a page shares one id namespace, and url(#id) resolves to the FIRST match. Parts used to name their defs by hand ('lc' / 'lg' in chart.line, 'neon', 'odo',
    'dsScrim') or by a hash of a few params (uidOf: no `at`, most params missing), so two items in one host (two chart.line items; two ui.stateMorph with the same text at different times) shared a def and the second

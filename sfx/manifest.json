@@ -3,7 +3,7 @@
  "sample_rate": 48000,
  "bit_depth": 24,
  "peak_dbfs_target": -6.0,
- "count": 316,
+ "count": 344,
  "notes": "All sounds synthesised in code (numpy/scipy). Library level is peak -6 dBFS; real levels are set by the mixer (over-bed rules). anchor_sample = the sample that must land on (visual frame + 1) x SR/fps.",
  "sounds": [
   {
@@ -11138,6 +11138,1464 @@
    "file": "library/stinger/snd.stinger.win.wav"
   },
   {
+   "id": "snd.trailer.boom_hit",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:crest",
+    "size:xl",
+    "sub",
+    "boom"
+   ],
+   "tier": 1,
+   "desc": "trailer boom: 118 -> 31 Hz sub with a driven chest punch, a brown-noise body, a closing crack and a cavern tail (about 5 s); anchor = the punch",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 5.878,
+   "samples": 282146,
+   "anchor_sample": 370,
+   "anchor_ms": 7.71,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 1310,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.95,
+   "lufs_integrated": -24.05,
+   "lufs_m_max": -15.44,
+   "lufs_s_max": -23.4,
+   "centroid_hz": 49,
+   "crest_db": 20.2,
+   "sub28_db": -28.3,
+   "sha": "e21ceadc1945bf91",
+   "phone_drop_db": -6.8,
+   "phone_safe": false,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.boom_hit.wav"
+  },
+  {
+   "id": "snd.trailer.boom_metal",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:crest",
+    "size:xl",
+    "metal",
+    "impact",
+    "sub"
+   ],
+   "tier": 1,
+   "desc": "metallic trailer impact: inharmonic anvil modes (1, 2.32, 4.25, 6.63, 9.38) on a sub boom, a broadband crack and a long ringing hall",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 3.6015,
+   "samples": 172871,
+   "anchor_sample": 512,
+   "anchor_ms": 10.67,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 1311,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.8,
+   "lufs_integrated": -25.26,
+   "lufs_m_max": -18.5,
+   "lufs_s_max": -26.87,
+   "centroid_hz": 50,
+   "crest_db": 21.8,
+   "sub28_db": -25.5,
+   "sha": "8a7ceaa417fe7ac3",
+   "phone_drop_db": -5.4,
+   "phone_safe": true,
+   "pairs_with": [
+    "flash",
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.boom_metal.wav"
+  },
+  {
+   "id": "snd.trailer.braam_low",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:onset",
+    "size:xl",
+    "brass",
+    "braam",
+    "key:A"
+   ],
+   "tier": 1,
+   "desc": "trailer braam on A1 / E2 / A2: detuned saw stacks, a bite that closes, a fading growl, a sine sub; 3.6 s + hall; anchor = the onset (cut on it)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 4.9174,
+   "samples": 236033,
+   "anchor_sample": 50,
+   "anchor_ms": 1.04,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1301,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -19.63,
+   "lufs_m_max": -14.41,
+   "lufs_s_max": -18.72,
+   "centroid_hz": 76,
+   "crest_db": 14.6,
+   "sub28_db": -45.0,
+   "sha": "79f92efd2570255c",
+   "phone_drop_db": -4.2,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.braam_low.wav"
+  },
+  {
+   "id": "snd.trailer.braam_octave",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:onset",
+    "size:xl",
+    "brass",
+    "braam",
+    "key:A",
+    "minor"
+   ],
+   "tier": 1,
+   "desc": "heavier braam: A1 + A2 + C3 + E3 (A minor, wide), more drive, longer bite; for the last act-3 downbeat or the title",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 5.5275,
+   "samples": 265320,
+   "anchor_sample": 49,
+   "anchor_ms": 1.02,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1302,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -20.07,
+   "lufs_m_max": -14.63,
+   "lufs_s_max": -18.51,
+   "centroid_hz": 95,
+   "crest_db": 14.8,
+   "sub28_db": -44.9,
+   "sha": "89a8c9c0e53031a9",
+   "phone_drop_db": -4.2,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.braam_octave.wav"
+  },
+  {
+   "id": "snd.trailer.braam_short",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:onset",
+    "size:m",
+    "brass",
+    "braam",
+    "pulse",
+    "key:A",
+    "rr:4"
+   ],
+   "tier": 2,
+   "desc": "short braam stab, 1.1 s: the montage pulse on act-2 / act-3 downbeats (rr:4: four takes)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 1.6012,
+   "samples": 76858,
+   "anchor_sample": 58,
+   "anchor_ms": 1.21,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1303,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -21.08,
+   "lufs_m_max": -16.63,
+   "lufs_s_max": -23.93,
+   "centroid_hz": 81,
+   "crest_db": 15.2,
+   "sub28_db": -40.3,
+   "sha": "4470cb1fec8e196b",
+   "phone_drop_db": -3.8,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.braam_short.wav"
+  },
+  {
+   "id": "snd.trailer.clock_accel",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:no",
+    "mood:cinematic",
+    "anchor:end",
+    "clock",
+    "tick",
+    "riser",
+    "accelerate"
+   ],
+   "tier": 2,
+   "desc": "accelerating clock, 8 s: ticks from one per beat to one per 32nd note, rising in level and pitch; anchor = the END (cue it one frame before the hit)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 8.0015,
+   "samples": 384071,
+   "anchor_sample": 384070,
+   "anchor_ms": 8001.46,
+   "anchor_kind": "fixed",
+   "tonal": false,
+   "loop": false,
+   "seed": 1341,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.55,
+   "lufs_integrated": -24.94,
+   "lufs_m_max": -19.69,
+   "lufs_s_max": -22.47,
+   "centroid_hz": 3736,
+   "crest_db": 26.1,
+   "sub28_db": -56.4,
+   "sha": "164179522ee4b5ad",
+   "phone_drop_db": 1.8,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.clock_accel.wav"
+  },
+  {
+   "id": "snd.trailer.clock_tick_loop",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:no",
+    "mood:cinematic",
+    "anchor:loop",
+    "clock",
+    "tick",
+    "bpm:120",
+    "loop"
+   ],
+   "tier": 2,
+   "desc": "ticking clock, 4.0 s seamless loop at 120 BPM: a tick (2.1 kHz) and a lower tock (1.6 kHz) on every beat, a small room; start it on a beat",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 4.0,
+   "samples": 192000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": false,
+   "loop": true,
+   "seed": 1340,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.92,
+   "lufs_integrated": -28.84,
+   "lufs_m_max": -28.19,
+   "lufs_s_max": -29.73,
+   "centroid_hz": 2844,
+   "crest_db": 29.2,
+   "sub28_db": -48.3,
+   "sha": "d1b8e3d0f50d6102",
+   "phone_drop_db": 1.9,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/trailer/snd.trailer.clock_tick_loop.wav"
+  },
+  {
+   "id": "snd.trailer.drone_dark_loop",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:3",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:loop",
+    "drone",
+    "dark",
+    "sub",
+    "loop",
+    "key:A"
+   ],
+   "tier": 3,
+   "desc": "dark trailer drone, 8.0 s seamless loop: A0 / A1 / E2 beating partials, a circular low rumble and a slow breathing filter (whole cycles per loop)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 8.0,
+   "samples": 384000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": true,
+   "loop": true,
+   "seed": 1360,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -18.06,
+   "lufs_m_max": -14.89,
+   "lufs_s_max": -17.48,
+   "centroid_hz": 65,
+   "crest_db": 11.3,
+   "sub28_db": -20.2,
+   "sha": "7a8b3b6ab67b876b",
+   "phone_drop_db": -7.3,
+   "phone_safe": false,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/trailer/snd.trailer.drone_dark_loop.wav"
+  },
+  {
+   "id": "snd.trailer.drone_metal_loop",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:3",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:loop",
+    "drone",
+    "metal",
+    "bowed",
+    "eerie",
+    "loop"
+   ],
+   "tier": 3,
+   "desc": "bowed-metal drone, 8.0 s seamless loop: inharmonic plate partials (311 Hz family) beating slowly, a scraping band of noise; horror and sci-fi beds",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 8.0,
+   "samples": 384000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": true,
+   "loop": true,
+   "seed": 1361,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.97,
+   "lufs_integrated": -15.24,
+   "lufs_m_max": -13.39,
+   "lufs_s_max": -14.01,
+   "centroid_hz": 543,
+   "crest_db": 11.7,
+   "sub28_db": -124.4,
+   "sha": "ad3051bd7945f691",
+   "phone_drop_db": -0.5,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/trailer/snd.trailer.drone_metal_loop.wav"
+  },
+  {
+   "id": "snd.trailer.heartbeat_loop",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:loop",
+    "heart",
+    "pulse",
+    "sub",
+    "loop",
+    "bpm:75"
+   ],
+   "tier": 2,
+   "desc": "heartbeat, 4.0 s seamless loop at 75 BPM: 5 lub-dubs (a 52 Hz thump and a softer 64 Hz one 0.22 s later); under a quiet scene or the silence",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 4.0,
+   "samples": 192000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": true,
+   "loop": true,
+   "seed": 1342,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -20.25,
+   "lufs_m_max": -18.39,
+   "lufs_s_max": -21.12,
+   "centroid_hz": 70,
+   "crest_db": 15.3,
+   "sub28_db": -34.9,
+   "sha": "a7758e5bb16d001f",
+   "phone_drop_db": -6.6,
+   "phone_safe": false,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/trailer/snd.trailer.heartbeat_loop.wav"
+  },
+  {
+   "id": "snd.trailer.hit_silence_hit",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:crest",
+    "pattern",
+    "silence",
+    "boom",
+    "braam"
+   ],
+   "tier": 1,
+   "desc": "the hit-silence-hit pattern as one file: a boom (the anchor), 1.6 s of near-silence with a faint ring, then a braam + boom exactly 2.0 s after the anchor",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 6.4974,
+   "samples": 311877,
+   "anchor_sample": 69,
+   "anchor_ms": 1.44,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1371,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -21.31,
+   "lufs_m_max": -14.88,
+   "lufs_s_max": -20.66,
+   "centroid_hz": 89,
+   "crest_db": 17.7,
+   "sub28_db": -28.7,
+   "sha": "9c80017359d82b98",
+   "phone_drop_db": -6.6,
+   "phone_safe": false,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.hit_silence_hit.wav"
+  },
+  {
+   "id": "snd.trailer.hit_title",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:crest",
+    "size:xl",
+    "sub",
+    "braam",
+    "metal",
+    "reverse-swell",
+    "title"
+   ],
+   "tier": 1,
+   "desc": "the title-card hit: a 0.5 s reverse swell into a braam, a boom and a metal ring together; anchor = the hit (the swell sits before it), long hall tail",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 6.7172,
+   "samples": 322428,
+   "anchor_sample": 19811,
+   "anchor_ms": 412.73,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1313,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -22.11,
+   "lufs_m_max": -15.45,
+   "lufs_s_max": -22.1,
+   "centroid_hz": 75,
+   "crest_db": 19.5,
+   "sub28_db": -33.0,
+   "sha": "008b37e69f207bd0",
+   "phone_drop_db": -5.5,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.hit_title.wav"
+  },
+  {
+   "id": "snd.trailer.metal_hit",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:crest",
+    "size:m",
+    "metal",
+    "impact",
+    "rr:4"
+   ],
+   "tier": 2,
+   "desc": "short steel hit, 1.2 s: a struck plate (bar modes), a crack and a small room; for montage cuts and card slams (rr:4)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 0.8553,
+   "samples": 41054,
+   "anchor_sample": 790,
+   "anchor_ms": 16.46,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 1312,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.94,
+   "lufs_integrated": -25.26,
+   "lufs_m_max": -21.16,
+   "lufs_s_max": -29.91,
+   "centroid_hz": 228,
+   "crest_db": 20.5,
+   "sub28_db": -30.3,
+   "sha": "3b4cb3524ec4b58b",
+   "phone_drop_db": -2.6,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.metal_hit.wav"
+  },
+  {
+   "id": "snd.trailer.radio_static_loop",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:3",
+    "tonal:no",
+    "mood:cinematic",
+    "anchor:loop",
+    "radio",
+    "static",
+    "noise",
+    "loop"
+   ],
+   "tier": 3,
+   "desc": "radio static, 4.0 s seamless loop: band-limited hiss (300 Hz - 3.4 kHz, circular), wrapped crackles, a heterodyne whistle that drifts (whole cycles) and a slow fade-in-fade-out of the carrier",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 4.0,
+   "samples": 192000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": false,
+   "loop": true,
+   "seed": 1380,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.98,
+   "lufs_integrated": -13.79,
+   "lufs_m_max": -12.09,
+   "lufs_s_max": -13.49,
+   "centroid_hz": 2496,
+   "crest_db": 13.0,
+   "sub28_db": -64.4,
+   "sha": "76d6dde22034f5d8",
+   "phone_drop_db": 0.5,
+   "phone_safe": true,
+   "pairs_with": [
+    "glitch",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/trailer/snd.trailer.radio_static_loop.wav"
+  },
+  {
+   "id": "snd.trailer.reverse_braam",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:end",
+    "size:l",
+    "brass",
+    "braam",
+    "reverse",
+    "key:A"
+   ],
+   "tier": 1,
+   "desc": "reverse braam, 2.4 s: the braam's hall tail played backwards, swelling into its anchor at the END (it sucks into the title hit; cue it on the hit frame)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 2.4315,
+   "samples": 116712,
+   "anchor_sample": 115271,
+   "anchor_ms": 2401.48,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1304,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.98,
+   "lufs_integrated": -20.75,
+   "lufs_m_max": -15.83,
+   "lufs_s_max": -22.64,
+   "centroid_hz": 113,
+   "crest_db": 16.1,
+   "sub28_db": -36.5,
+   "sha": "505ef56023060c4a",
+   "phone_drop_db": -4.9,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.reverse_braam.wav"
+  },
+  {
+   "id": "snd.trailer.reverse_swell_1s",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:end",
+    "reverse",
+    "swell",
+    "size:s"
+   ],
+   "tier": 2,
+   "desc": "reverse swell, 1 s: a reversed hall tail that rises and ENDS on the anchor (cue it on the hit frame: the hit lands where the swell ends)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 1.0244,
+   "samples": 49172,
+   "anchor_sample": 47971,
+   "anchor_ms": 999.4,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1320,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.9,
+   "lufs_integrated": -19.76,
+   "lufs_m_max": -14.97,
+   "lufs_s_max": -23.16,
+   "centroid_hz": 641,
+   "crest_db": 16.5,
+   "sub28_db": -40.2,
+   "sha": "2143f03adfa0e797",
+   "phone_drop_db": -0.7,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.reverse_swell_1s.wav"
+  },
+  {
+   "id": "snd.trailer.reverse_swell_2s",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:end",
+    "reverse",
+    "swell",
+    "size:m"
+   ],
+   "tier": 2,
+   "desc": "reverse swell, 2 s: a reversed hall tail that rises and ENDS on the anchor (cue it on the hit frame: the hit lands where the swell ends)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 2.0208,
+   "samples": 96996,
+   "anchor_sample": 95795,
+   "anchor_ms": 1995.73,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1321,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -19.62,
+   "lufs_m_max": -14.15,
+   "lufs_s_max": -21.65,
+   "centroid_hz": 1102,
+   "crest_db": 18.6,
+   "sub28_db": -44.3,
+   "sha": "10db13fd16ac2fbf",
+   "phone_drop_db": -2.0,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.reverse_swell_2s.wav"
+  },
+  {
+   "id": "snd.trailer.reverse_swell_4s",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:end",
+    "reverse",
+    "swell",
+    "size:l"
+   ],
+   "tier": 2,
+   "desc": "reverse swell, 4 s: a reversed hall tail that rises and ENDS on the anchor (cue it on the hit frame: the hit lands where the swell ends)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 3.998,
+   "samples": 191906,
+   "anchor_sample": 190705,
+   "anchor_ms": 3973.02,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1322,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.98,
+   "lufs_integrated": -18.15,
+   "lufs_m_max": -12.77,
+   "lufs_s_max": -18.91,
+   "centroid_hz": 2360,
+   "crest_db": 18.7,
+   "sub28_db": -48.8,
+   "sha": "97aa2c13973c9adc",
+   "phone_drop_db": -2.6,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.reverse_swell_4s.wav"
+  },
+  {
+   "id": "snd.trailer.ring_tinnitus",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:3",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:onset",
+    "ring",
+    "silence",
+    "tinnitus",
+    "size:s"
+   ],
+   "tier": 3,
+   "desc": "tinnitus ring, 3 s: a soft 3.52 kHz tone with a slow beat, fading in and out; the ear ringing in the silence before the hit (keep it 20+ dB under)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 3.0013,
+   "samples": 144063,
+   "anchor_sample": 63,
+   "anchor_ms": 1.31,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1370,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -10.55,
+   "lufs_m_max": -5.25,
+   "lufs_s_max": -10.82,
+   "centroid_hz": 3521,
+   "crest_db": 11.1,
+   "sub28_db": -97.8,
+   "sha": "9ca2f1cd54076a28",
+   "phone_drop_db": 1.0,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.ring_tinnitus.wav"
+  },
+  {
+   "id": "snd.trailer.riser_12s",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:end",
+    "riser",
+    "bars:6",
+    "bpm:120",
+    "shepard",
+    "strings",
+    "size:l"
+   ],
+   "tier": 1,
+   "desc": "tension riser, 6 bars at 120 BPM (12 s): Shepard climb, opening noise, a tightening string cluster, an accelerating sub pulse; anchor = the END: cue it ONE FRAME BEFORE the hit",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 11.9973,
+   "samples": 575870,
+   "anchor_sample": 575869,
+   "anchor_ms": 11997.27,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1333,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.95,
+   "lufs_integrated": -21.51,
+   "lufs_m_max": -15.9,
+   "lufs_s_max": -18.2,
+   "centroid_hz": 819,
+   "crest_db": 18.9,
+   "sub28_db": -28.7,
+   "sha": "ae8116a21c68450f",
+   "phone_drop_db": -0.0,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.riser_12s.wav"
+  },
+  {
+   "id": "snd.trailer.riser_2s",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:end",
+    "riser",
+    "bars:1",
+    "bpm:120",
+    "shepard",
+    "strings",
+    "size:s"
+   ],
+   "tier": 2,
+   "desc": "tension riser, 1 bar at 120 BPM (2 s): Shepard climb, opening noise, a tightening string cluster, an accelerating sub pulse; anchor = the END: cue it ONE FRAME BEFORE the hit",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 1.9973,
+   "samples": 95871,
+   "anchor_sample": 95870,
+   "anchor_ms": 1997.29,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1330,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.95,
+   "lufs_integrated": -21.56,
+   "lufs_m_max": -16.64,
+   "lufs_s_max": -23.39,
+   "centroid_hz": 971,
+   "crest_db": 17.4,
+   "sub28_db": -29.5,
+   "sha": "b5eb30e1616114c1",
+   "phone_drop_db": -0.4,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.riser_2s.wav"
+  },
+  {
+   "id": "snd.trailer.riser_4s",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:end",
+    "riser",
+    "bars:2",
+    "bpm:120",
+    "shepard",
+    "strings",
+    "size:m"
+   ],
+   "tier": 2,
+   "desc": "tension riser, 2 bars at 120 BPM (4 s): Shepard climb, opening noise, a tightening string cluster, an accelerating sub pulse; anchor = the END: cue it ONE FRAME BEFORE the hit",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 3.9973,
+   "samples": 191870,
+   "anchor_sample": 191869,
+   "anchor_ms": 3997.27,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1331,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.93,
+   "lufs_integrated": -22.04,
+   "lufs_m_max": -16.66,
+   "lufs_s_max": -22.19,
+   "centroid_hz": 950,
+   "crest_db": 18.6,
+   "sub28_db": -29.2,
+   "sha": "ff53078832f4f502",
+   "phone_drop_db": -0.0,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.riser_4s.wav"
+  },
+  {
+   "id": "snd.trailer.riser_8s",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:end",
+    "riser",
+    "bars:4",
+    "bpm:120",
+    "shepard",
+    "strings",
+    "size:l"
+   ],
+   "tier": 1,
+   "desc": "tension riser, 4 bars at 120 BPM (8 s): Shepard climb, opening noise, a tightening string cluster, an accelerating sub pulse; anchor = the END: cue it ONE FRAME BEFORE the hit",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 7.9973,
+   "samples": 383871,
+   "anchor_sample": 383870,
+   "anchor_ms": 7997.29,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1332,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -22.59,
+   "lufs_m_max": -17.32,
+   "lufs_s_max": -20.35,
+   "centroid_hz": 894,
+   "crest_db": 19.6,
+   "sub28_db": -30.2,
+   "sha": "3f8102359b58823d",
+   "phone_drop_db": 0.0,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "flash",
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.riser_8s.wav"
+  },
+  {
+   "id": "snd.trailer.sting_button",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:crest",
+    "sting",
+    "button",
+    "shock",
+    "strings"
+   ],
+   "tier": 1,
+   "desc": "button sting, 2.6 s: a dissonant string cluster stab (A3 Bb3 Eb4 A4), a metal scrape and a short boom: the last beat after the title",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 2.6922,
+   "samples": 129227,
+   "anchor_sample": 650,
+   "anchor_ms": 13.54,
+   "anchor_kind": "peak",
+   "tonal": true,
+   "loop": false,
+   "seed": 1372,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -24.97,
+   "lufs_m_max": -18.21,
+   "lufs_s_max": -26.75,
+   "centroid_hz": 160,
+   "crest_db": 21.1,
+   "sub28_db": -31.2,
+   "sha": "de70db7286e353b4",
+   "phone_drop_db": -4.7,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "smash"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.sting_button.wav"
+  },
+  {
+   "id": "snd.trailer.strings_tension_loop",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:3",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:loop",
+    "strings",
+    "tremolo",
+    "tension",
+    "loop",
+    "key:A"
+   ],
+   "tier": 3,
+   "desc": "tension strings bed, 8.0 s seamless loop: a tremolo cluster on A3 / Bb3 / E4 (12 Hz, whole cycles), bow noise, a slow swell; the act-1 / act-2 bed",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 8.0,
+   "samples": 384000,
+   "anchor_sample": 0,
+   "anchor_ms": 0.0,
+   "anchor_kind": "loop",
+   "tonal": true,
+   "loop": true,
+   "seed": 1362,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -18.52,
+   "lufs_m_max": -15.96,
+   "lufs_s_max": -16.78,
+   "centroid_hz": 410,
+   "crest_db": 15.0,
+   "sub28_db": -181.5,
+   "sha": "b40fec3aed009b46",
+   "phone_drop_db": -0.1,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "loop: starts at the cue frame and loops/crossfades",
+   "over_bed_db": null,
+   "file": "library/trailer/snd.trailer.strings_tension_loop.wav"
+  },
+  {
+   "id": "snd.trailer.sub_drop_long",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:1",
+    "tonal:yes",
+    "mood:cinematic",
+    "anchor:crest",
+    "size:l",
+    "sub",
+    "drop"
+   ],
+   "tier": 1,
+   "desc": "long sub drop, 3 s: 62 -> 30 Hz under a title or a cut to black, a soft click on the onset; anchor = the onset",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 3.0015,
+   "samples": 144072,
+   "anchor_sample": 72,
+   "anchor_ms": 1.5,
+   "anchor_kind": "fixed",
+   "tonal": true,
+   "loop": false,
+   "seed": 1314,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -17.19,
+   "lufs_m_max": -11.83,
+   "lufs_s_max": -18.88,
+   "centroid_hz": 37,
+   "crest_db": 11.2,
+   "sub28_db": -33.5,
+   "sha": "0d14c95f379892ff",
+   "phone_drop_db": -8.1,
+   "phone_safe": false,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.sub_drop_long.wav"
+  },
+  {
+   "id": "snd.trailer.whoosh_by",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:no",
+    "mood:cinematic",
+    "anchor:crest",
+    "whoosh",
+    "doppler",
+    "pass-by",
+    "size:l"
+   ],
+   "tier": 2,
+   "desc": "trailer pass-by, 1.8 s: a low noise body and a tone with a Doppler fall, panned left to right; anchor = the pass (peaks on the cut)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 1.8015,
+   "samples": 86472,
+   "anchor_sample": 38941,
+   "anchor_ms": 811.27,
+   "anchor_kind": "peak",
+   "tonal": false,
+   "loop": false,
+   "seed": 1350,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.86,
+   "lufs_integrated": -18.74,
+   "lufs_m_max": -15.12,
+   "lufs_s_max": -22.27,
+   "centroid_hz": 819,
+   "crest_db": 16.8,
+   "sub28_db": -42.6,
+   "sha": "8f44db00fb44c95b",
+   "phone_drop_db": 0.3,
+   "phone_safe": true,
+   "pairs_with": [
+    "hardCut",
+    "push",
+    "whip",
+    "zoomThrough"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.whoosh_by.wav"
+  },
+  {
+   "id": "snd.trailer.whoosh_suck",
+   "category": "trailer",
+   "tags": [
+    "family:trailer",
+    "trailer",
+    "tier:2",
+    "tonal:no",
+    "mood:cinematic",
+    "anchor:end",
+    "whoosh",
+    "reverse",
+    "suck",
+    "stop"
+   ],
+   "tier": 2,
+   "desc": "reverse suck, 1.0 s: air pulled in, ENDING on the anchor (the hard stop into silence; cue it on the frame the picture cuts to black)",
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "duration_s": 0.9302,
+   "samples": 44651,
+   "anchor_sample": 44266,
+   "anchor_ms": 922.21,
+   "anchor_kind": "fixed",
+   "tonal": false,
+   "loop": false,
+   "seed": 1351,
+   "peak_dbfs": -6.0,
+   "true_peak_dbtp": -5.99,
+   "lufs_integrated": -19.68,
+   "lufs_m_max": -16.01,
+   "lufs_s_max": -24.48,
+   "centroid_hz": 2091,
+   "crest_db": 18.9,
+   "sub28_db": -47.8,
+   "sha": "aa527f60f9caa8af",
+   "phone_drop_db": -0.6,
+   "phone_safe": true,
+   "pairs_with": [
+    "dipToBlack",
+    "hardCut"
+   ],
+   "roles": [],
+   "anchor_frame_offset": 0,
+   "place_rule": "anchor sample lands on (visual frame + 1) x SR / fps",
+   "over_bed_db": 4.5,
+   "file": "library/trailer/snd.trailer.whoosh_suck.wav"
+  },
+  {
    "id": "snd.tx.blur_cross",
    "category": "transition",
    "tags": [
@@ -14998,6 +16456,25 @@
    "snd.riser.heartbeat",
    "snd.riser.shepard",
    "snd.stinger.cut_to_black",
+   "snd.trailer.boom_hit",
+   "snd.trailer.braam_low",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.ring_tinnitus",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.strings_tension_loop",
+   "snd.trailer.sub_drop_long",
+   "snd.trailer.whoosh_suck",
    "snd.tx.dip_to_black",
    "snd.whoosh.whoosh_l",
    "snd.whoosh.whoosh_xl"
@@ -15100,6 +16577,16 @@
    "snd.sparkle.shimmer",
    "snd.stinger.reveal",
    "snd.stinger.win",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.hit_title",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
    "snd.tx.flash_swell",
    "snd.tx.shutter_flash",
    "snd.ui.camera_ping",
@@ -15115,6 +16602,7 @@
    "snd.elec.arc",
    "snd.metal.scrape",
    "snd.stinger.alert",
+   "snd.trailer.radio_static_loop",
    "snd.tx.glitch_stutter",
    "snd.tx.pixel_dissolve",
    "snd.ui.error",
@@ -15334,6 +16822,34 @@
    "snd.stinger.question",
    "snd.stinger.reveal",
    "snd.stinger.win",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.clock_accel",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.metal_hit",
+   "snd.trailer.radio_static_loop",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.ring_tinnitus",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sting_button",
+   "snd.trailer.strings_tension_loop",
+   "snd.trailer.sub_drop_long",
+   "snd.trailer.whoosh_by",
+   "snd.trailer.whoosh_suck",
    "snd.tx.cut_tick",
    "snd.tx.smash_cut",
    "snd.ui.agent_working",
@@ -15465,6 +16981,7 @@
    "snd.paper.card_riffle",
    "snd.paper.card_shuffle_settle",
    "snd.paper.flip",
+   "snd.trailer.whoosh_by",
    "snd.tx.luma_wipe",
    "snd.tx.push",
    "snd.ui.slide",
@@ -15531,6 +17048,18 @@
    "snd.riser.snare_roll_build",
    "snd.riser.string_tension",
    "snd.riser.supersaw_2bar",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.clock_accel",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.metal_hit",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sting_button",
    "snd.tx.smash_cut"
   ],
   "speedRamp": [
@@ -15553,6 +17082,7 @@
    "snd.cartoon.zip_run",
    "snd.cloth.flap",
    "snd.cloth.swish",
+   "snd.trailer.whoosh_by",
    "snd.whoosh.blade",
    "snd.whoosh.fire",
    "snd.whoosh.flyby",
@@ -15571,6 +17101,7 @@
    "snd.riser.siren",
    "snd.riser.snare_roll_build",
    "snd.riser.string_tension",
+   "snd.trailer.whoosh_by",
    "snd.tx.zoom_through",
    "snd.whoosh.fire",
    "snd.whoosh.flyby",
@@ -15581,6 +17112,9 @@
   ]
  },
  "by_tag": {
+  "accelerate": [
+   "snd.trailer.clock_accel"
+  ],
   "agent": [
    "snd.ui.agent_working"
   ],
@@ -15692,6 +17226,14 @@
    "snd.stinger.question",
    "snd.stinger.reveal",
    "snd.stinger.win",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.metal_hit",
+   "snd.trailer.sting_button",
+   "snd.trailer.sub_drop_long",
+   "snd.trailer.whoosh_by",
    "snd.tx.flash_swell",
    "snd.tx.match_link",
    "snd.tx.scale_punch",
@@ -15734,6 +17276,16 @@
    "snd.riser.supersaw_2bar",
    "snd.riser.tape_up",
    "snd.sparkle.letter_assemble",
+   "snd.trailer.clock_accel",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.whoosh_suck",
    "snd.tx.mask_reveal",
    "snd.ui.ai_think_pulse",
    "snd.ui.hologram_beam",
@@ -15769,6 +17321,12 @@
    "snd.elec.crackle_loop",
    "snd.hw.hum_loop",
    "snd.indian.shruti_drone",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.radio_static_loop",
+   "snd.trailer.strings_tension_loop",
    "snd.ui.agent_working",
    "snd.ui.listening_loop"
   ],
@@ -15871,6 +17429,12 @@
    "snd.wood.knock",
    "snd.wood.tap"
   ],
+  "anchor:onset": [
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.ring_tinnitus"
+  ],
   "anchor:peak": [
    "snd.hw.light_sweep"
   ],
@@ -15928,16 +17492,22 @@
    "snd.riser.glitch_stutter",
    "snd.riser.noise_1bar",
    "snd.riser.pitch_noise",
-   "snd.riser.siren"
+   "snd.riser.siren",
+   "snd.trailer.riser_2s"
   ],
   "bars:2": [
    "snd.riser.noise_2bar",
    "snd.riser.snare_roll_build",
    "snd.riser.string_tension",
-   "snd.riser.supersaw_2bar"
+   "snd.riser.supersaw_2bar",
+   "snd.trailer.riser_4s"
   ],
   "bars:4": [
-   "snd.riser.noise_4bar"
+   "snd.riser.noise_4bar",
+   "snd.trailer.riser_8s"
+  ],
+  "bars:6": [
+   "snd.trailer.riser_12s"
   ],
   "beam": [
    "snd.ui.hologram_beam"
@@ -15948,8 +17518,15 @@
   "blip": [
    "snd.hw.led_on"
   ],
+  "boom": [
+   "snd.trailer.boom_hit",
+   "snd.trailer.hit_silence_hit"
+  ],
   "boot": [
    "snd.hw.power_on"
+  ],
+  "bowed": [
+   "snd.trailer.drone_metal_loop"
   ],
   "bpm:120": [
    "snd.riser.glitch_stutter",
@@ -15960,10 +17537,33 @@
    "snd.riser.siren",
    "snd.riser.snare_roll_build",
    "snd.riser.string_tension",
-   "snd.riser.supersaw_2bar"
+   "snd.riser.supersaw_2bar",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s"
+  ],
+  "bpm:75": [
+   "snd.trailer.heartbeat_loop"
+  ],
+  "braam": [
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.reverse_braam"
   ],
   "brass": [
-   "snd.hit.braam"
+   "snd.hit.braam",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.reverse_braam"
+  ],
+  "button": [
+   "snd.trailer.sting_button"
   ],
   "cards": [
    "snd.paper.card_riffle",
@@ -15982,6 +17582,10 @@
   "char:tiny": [
    "snd.voice.chirp",
    "snd.voice.chirp_question"
+  ],
+  "clock": [
+   "snd.trailer.clock_accel",
+   "snd.trailer.clock_tick_loop"
   ],
   "clunk": [
    "snd.hw.parts_seat"
@@ -16010,6 +17614,9 @@
    "snd.ui.count_run",
    "snd.ui.count_tick"
   ],
+  "dark": [
+   "snd.trailer.drone_dark_loop"
+  ],
   "detent": [
    "snd.hw.click_detent"
   ],
@@ -16030,9 +17637,22 @@
    "snd.hw.sub_hit",
    "snd.hw.sub_pulse"
   ],
+  "doppler": [
+   "snd.trailer.whoosh_by"
+  ],
   "downlifter": [
    "snd.lift.down",
    "snd.lift.down_long"
+  ],
+  "drone": [
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop"
+  ],
+  "drop": [
+   "snd.trailer.sub_drop_long"
+  ],
+  "eerie": [
+   "snd.trailer.drone_metal_loop"
   ],
   "electric": [
    "snd.elec.arc",
@@ -16328,6 +17948,36 @@
    "snd.stinger.reveal",
    "snd.stinger.win"
   ],
+  "family:trailer": [
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.clock_accel",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.metal_hit",
+   "snd.trailer.radio_static_loop",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.ring_tinnitus",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sting_button",
+   "snd.trailer.strings_tension_loop",
+   "snd.trailer.sub_drop_long",
+   "snd.trailer.whoosh_by",
+   "snd.trailer.whoosh_suck"
+  ],
   "family:transition": [
    "snd.tx.blur_cross",
    "snd.tx.cut_tick",
@@ -16486,6 +18136,9 @@
    "snd.hw.sub_hit",
    "snd.hw.sub_pulse"
   ],
+  "heart": [
+   "snd.trailer.heartbeat_loop"
+  ],
   "heartbeat": [
    "snd.hw.sub_pulse"
   ],
@@ -16500,7 +18153,9 @@
    "snd.hw.led_on"
   ],
   "impact": [
-   "snd.glass.shatter"
+   "snd.glass.shatter",
+   "snd.trailer.boom_metal",
+   "snd.trailer.metal_hit"
   ],
   "instrument:bansuri": [
    "snd.indian.bansuri_note"
@@ -16613,6 +18268,12 @@
    "snd.stinger.question",
    "snd.stinger.reveal",
    "snd.stinger.win",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.strings_tension_loop",
    "snd.ui.agent_working",
    "snd.ui.ai_reply",
    "snd.ui.ai_think_pulse",
@@ -16639,6 +18300,12 @@
    "snd.elec.crackle_loop",
    "snd.hw.hum_loop",
    "snd.indian.shruti_drone",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.radio_static_loop",
+   "snd.trailer.strings_tension_loop",
    "snd.ui.agent_working",
    "snd.ui.listening_loop"
   ],
@@ -16660,7 +18327,14 @@
   "metal": [
    "snd.hit.slam",
    "snd.hw.chime_metal",
-   "snd.hw.chime_reveal"
+   "snd.hw.chime_reveal",
+   "snd.trailer.boom_metal",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.hit_title",
+   "snd.trailer.metal_hit"
+  ],
+  "minor": [
+   "snd.trailer.braam_octave"
   ],
   "mood:calm": [
    "snd.amb.birds_morning",
@@ -16685,6 +18359,34 @@
    "snd.hit.taiko",
    "snd.riser.string_tension",
    "snd.stinger.cut_to_black",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.clock_accel",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.metal_hit",
+   "snd.trailer.radio_static_loop",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.ring_tinnitus",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sting_button",
+   "snd.trailer.strings_tension_loop",
+   "snd.trailer.sub_drop_long",
+   "snd.trailer.whoosh_by",
+   "snd.trailer.whoosh_suck",
    "snd.tx.dip_to_black",
    "snd.tx.ink_bloom"
   ],
@@ -16870,6 +18572,15 @@
    "snd.elec.crackle_loop",
    "snd.elec.zap_off"
   ],
+  "noise": [
+   "snd.trailer.radio_static_loop"
+  ],
+  "pass-by": [
+   "snd.trailer.whoosh_by"
+  ],
+  "pattern": [
+   "snd.trailer.hit_silence_hit"
+  ],
   "pixel": [
    "snd.tx.pixel_dissolve"
   ],
@@ -16888,6 +18599,13 @@
   ],
   "precision": [
    "snd.hw.chime_metal"
+  ],
+  "pulse": [
+   "snd.trailer.braam_short",
+   "snd.trailer.heartbeat_loop"
+  ],
+  "radio": [
+   "snd.trailer.radio_static_loop"
   ],
   "region:in": [
    "snd.amb.indian_street_horns",
@@ -16927,14 +18645,28 @@
    "snd.hw.sub_hit"
   ],
   "reverse": [
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.whoosh_suck",
    "snd.whoosh.reverse"
   ],
   "reverse-swell": [
    "snd.hit.cinema",
-   "snd.hit.cymbal_swell"
+   "snd.hit.cymbal_swell",
+   "snd.trailer.hit_title"
+  ],
+  "ring": [
+   "snd.trailer.ring_tinnitus"
   ],
   "riser": [
-   "snd.drum.snare_roll"
+   "snd.drum.snare_roll",
+   "snd.trailer.clock_accel",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s"
   ],
   "rr:4": [
    "snd.device.card_flip",
@@ -16982,7 +18714,9 @@
    "snd.indian.tabla_tirakita",
    "snd.indian.tabla_tun",
    "snd.paper.card_riffle",
-   "snd.paper.card_shuffle_settle"
+   "snd.paper.card_shuffle_settle",
+   "snd.trailer.braam_short",
+   "snd.trailer.metal_hit"
   ],
   "scan": [
    "snd.ui.scan_sweep"
@@ -16991,8 +18725,21 @@
    "snd.hw.click_latch",
    "snd.hw.parts_seat"
   ],
+  "shepard": [
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s"
+  ],
   "shimmer": [
    "snd.hw.light_sweep"
+  ],
+  "shock": [
+   "snd.trailer.sting_button"
+  ],
+  "silence": [
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.ring_tinnitus"
   ],
   "size:l": [
    "snd.cartoon.sad_brass",
@@ -17028,6 +18775,12 @@
    "snd.logo.question",
    "snd.logo.two_note",
    "snd.riser.noise_4bar",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sub_drop_long",
+   "snd.trailer.whoosh_by",
    "snd.tx.dip_to_black",
    "snd.tx.film_burn",
    "snd.tx.ink_bloom",
@@ -17113,6 +18866,10 @@
    "snd.sizzle.grain",
    "snd.sparkle.letter_assemble",
    "snd.stinger.reveal",
+   "snd.trailer.braam_short",
+   "snd.trailer.metal_hit",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.riser_4s",
    "snd.tx.blur_cross",
    "snd.tx.dissolve_pad",
    "snd.tx.flash_swell",
@@ -17192,6 +18949,9 @@
    "snd.paper.flip",
    "snd.paper.rustle",
    "snd.riser.noise_1bar",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.ring_tinnitus",
+   "snd.trailer.riser_2s",
    "snd.tx.iris_close",
    "snd.tx.iris_open",
    "snd.tx.mask_reveal",
@@ -17216,6 +18976,11 @@
    "snd.hit.cinema",
    "snd.hit.deep_impact",
    "snd.hit.metal_cinematic",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.hit_title",
    "snd.whoosh.whoosh_xl"
   ],
   "size:xs": [
@@ -17279,6 +19044,23 @@
   "soft": [
    "snd.hit.brand_field_slam"
   ],
+  "static": [
+   "snd.trailer.radio_static_loop"
+  ],
+  "sting": [
+   "snd.trailer.sting_button"
+  ],
+  "stop": [
+   "snd.trailer.whoosh_suck"
+  ],
+  "strings": [
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sting_button",
+   "snd.trailer.strings_tension_loop"
+  ],
   "sub": [
    "snd.drum.808",
    "snd.drum.kick_sub",
@@ -17291,7 +19073,16 @@
    "snd.hw.sub_hit",
    "snd.hw.sub_pulse",
    "snd.riser.heartbeat",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.hit_title",
+   "snd.trailer.sub_drop_long",
    "snd.tx.ink_bloom"
+  ],
+  "suck": [
+   "snd.trailer.whoosh_suck"
   ],
   "surface:carpet": [
    "snd.foley.footstep_carpet"
@@ -17308,11 +19099,21 @@
   "sweep": [
    "snd.hw.light_sweep"
   ],
+  "swell": [
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s"
+  ],
   "tape": [
    "snd.riser.tape_up"
   ],
+  "tension": [
+   "snd.trailer.strings_tension_loop"
+  ],
   "tick": [
-   "snd.hw.click_detent"
+   "snd.hw.click_detent",
+   "snd.trailer.clock_accel",
+   "snd.trailer.clock_tick_loop"
   ],
   "tier:1": [
    "snd.glass.shatter",
@@ -17332,6 +19133,17 @@
    "snd.logo.question",
    "snd.logo.two_note",
    "snd.stinger.cut_to_black",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sting_button",
+   "snd.trailer.sub_drop_long",
    "snd.tx.smash_cut",
    "snd.whoosh.whoosh_xl"
   ],
@@ -17397,6 +19209,18 @@
    "snd.stinger.alert",
    "snd.stinger.reveal",
    "snd.stinger.win",
+   "snd.trailer.braam_short",
+   "snd.trailer.clock_accel",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.metal_hit",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.whoosh_by",
+   "snd.trailer.whoosh_suck",
    "snd.tx.dip_to_black",
    "snd.tx.film_burn",
    "snd.tx.flash_swell",
@@ -17578,6 +19402,11 @@
    "snd.sparkle.shimmer",
    "snd.stinger.bump",
    "snd.stinger.question",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.radio_static_loop",
+   "snd.trailer.ring_tinnitus",
+   "snd.trailer.strings_tension_loop",
    "snd.tx.blur_cross",
    "snd.tx.cut_tick",
    "snd.tx.dissolve_pad",
@@ -17636,8 +19465,12 @@
    "snd.wood.knock",
    "snd.wood.tap"
   ],
+  "tinnitus": [
+   "snd.trailer.ring_tinnitus"
+  ],
   "title": [
-   "snd.hw.chime_reveal"
+   "snd.hw.chime_reveal",
+   "snd.trailer.hit_title"
   ],
   "tonal:no": [
    "snd.camera.shutter",
@@ -17718,6 +19551,11 @@
    "snd.riser.reverse_cymbal",
    "snd.riser.snare_roll_build",
    "snd.sizzle.grain",
+   "snd.trailer.clock_accel",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.radio_static_loop",
+   "snd.trailer.whoosh_by",
+   "snd.trailer.whoosh_suck",
    "snd.tx.blur_cross",
    "snd.tx.cut_tick",
    "snd.tx.dip_to_black",
@@ -17892,6 +19730,29 @@
    "snd.stinger.question",
    "snd.stinger.reveal",
    "snd.stinger.win",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.metal_hit",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.ring_tinnitus",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sting_button",
+   "snd.trailer.strings_tension_loop",
+   "snd.trailer.sub_drop_long",
    "snd.tx.dissolve_pad",
    "snd.tx.flash_swell",
    "snd.tx.freeze_hit",
@@ -17939,7 +19800,38 @@
    "snd.hw.power_on"
   ],
   "trailer": [
-   "snd.hit.deep_impact"
+   "snd.hit.deep_impact",
+   "snd.trailer.boom_hit",
+   "snd.trailer.boom_metal",
+   "snd.trailer.braam_low",
+   "snd.trailer.braam_octave",
+   "snd.trailer.braam_short",
+   "snd.trailer.clock_accel",
+   "snd.trailer.clock_tick_loop",
+   "snd.trailer.drone_dark_loop",
+   "snd.trailer.drone_metal_loop",
+   "snd.trailer.heartbeat_loop",
+   "snd.trailer.hit_silence_hit",
+   "snd.trailer.hit_title",
+   "snd.trailer.metal_hit",
+   "snd.trailer.radio_static_loop",
+   "snd.trailer.reverse_braam",
+   "snd.trailer.reverse_swell_1s",
+   "snd.trailer.reverse_swell_2s",
+   "snd.trailer.reverse_swell_4s",
+   "snd.trailer.ring_tinnitus",
+   "snd.trailer.riser_12s",
+   "snd.trailer.riser_2s",
+   "snd.trailer.riser_4s",
+   "snd.trailer.riser_8s",
+   "snd.trailer.sting_button",
+   "snd.trailer.strings_tension_loop",
+   "snd.trailer.sub_drop_long",
+   "snd.trailer.whoosh_by",
+   "snd.trailer.whoosh_suck"
+  ],
+  "tremolo": [
+   "snd.trailer.strings_tension_loop"
   ],
   "type": [
    "snd.foley.typewriter",
@@ -17989,7 +19881,9 @@
    "snd.ui.mic_on"
   ],
   "whoosh": [
-   "snd.hw.parts_separate"
+   "snd.hw.parts_separate",
+   "snd.trailer.whoosh_by",
+   "snd.trailer.whoosh_suck"
   ],
   "wordless": [
    "snd.crowd.aww_synth",

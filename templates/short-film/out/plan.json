@@ -1,0 +1,570 @@
+{
+ "template": "short-film",
+ "fps": 30,
+ "seconds": 53.6,
+ "W": 1920,
+ "H": 1080,
+ "aspect": "16:9",
+ "platform": "x.video",
+ "genre": "drama",
+ "bars": 60,
+ "letterbox": 2,
+ "music": "music/bed_cinematic_drone_loop8",
+ "bedAutomation": [
+  {
+   "frame": 0,
+   "gain_db": -30
+  },
+  {
+   "frame": 543,
+   "gain_db": -30
+  },
+  {
+   "frame": 663,
+   "gain_db": -8
+  },
+  {
+   "frame": 1308,
+   "gain_db": -8
+  },
+  {
+   "frame": 1338,
+   "gain_db": -4
+  }
+ ],
+ "scenes": [
+  {
+   "id": "s1",
+   "start": 0,
+   "dur": 17,
+   "sound": "sfx/amb/room_tone"
+  },
+  {
+   "id": "s2",
+   "start": 19.6,
+   "dur": 18,
+   "sound": "sfx/amb/wind"
+  },
+  {
+   "id": "s3",
+   "start": 37.6,
+   "dur": 6,
+   "sound": "sfx/amb/room_tone"
+  }
+ ],
+ "shots": [
+  {
+   "id": "s1_0",
+   "sec": "s1",
+   "start": 0,
+   "dur": 6,
+   "kind": "plate",
+   "plate": "lamp",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "swinging lamp"
+  },
+  {
+   "id": "s1_1",
+   "sec": "s1",
+   "start": 6,
+   "dur": 6,
+   "kind": "plate",
+   "plate": "radio",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "radio close-up"
+  },
+  {
+   "id": "s1_2",
+   "sec": "s1",
+   "start": 12,
+   "dur": 5,
+   "kind": "plate",
+   "plate": "window",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "rain window"
+  },
+  {
+   "id": "s2_chapter",
+   "sec": "chapter",
+   "kind": "black",
+   "start": 17,
+   "dur": 2.6,
+   "hold": true,
+   "tx": "transitions/dip-to-black",
+   "txReason": "STORY: a new chapter",
+   "txKind": "dip",
+   "txDur": 0.8
+  },
+  {
+   "id": "s2_0",
+   "sec": "s2",
+   "start": 19.6,
+   "dur": 6,
+   "kind": "plate",
+   "plate": "coast",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "coast at night"
+  },
+  {
+   "id": "s2_1",
+   "sec": "s2",
+   "start": 25.6,
+   "dur": 6,
+   "kind": "plate",
+   "plate": "corridor",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "three.js stage slot (render templates/film-scene)"
+  },
+  {
+   "id": "s2_2",
+   "sec": "s2",
+   "start": 31.6,
+   "dur": 6,
+   "kind": "plate",
+   "plate": "ship",
+   "plateParams": {},
+   "mediaStart": 0,
+   "label": "ship in fog"
+  },
+  {
+   "id": "s3_0",
+   "sec": "s3",
+   "start": 37.6,
+   "dur": 6,
+   "kind": "plate",
+   "plate": "radio",
+   "plateParams": {},
+   "mediaStart": 0.7,
+   "label": "radio close-up",
+   "tx": "transitions/dissolve",
+   "txReason": "TIME: back inside, after it",
+   "txKind": "dissolve",
+   "txDur": 1
+  },
+  {
+   "id": "credits",
+   "sec": "credits",
+   "kind": "black",
+   "start": 43.6,
+   "dur": 10,
+   "hold": true,
+   "tx": "transitions/dip-to-black",
+   "txReason": "STORY: the film ends, the credits begin",
+   "txKind": "dip",
+   "txDur": 1.2
+  }
+ ],
+ "gfx": [
+  {
+   "id": "card.scene",
+   "at": 0.5,
+   "dur": 2.4,
+   "params": {
+    "slug": "INT. RELAY STATION - NIGHT",
+    "pos": "bl",
+    "size": 40,
+    "padY": 96
+   }
+  },
+  {
+   "id": "title.filmChapter",
+   "at": 17.2,
+   "dur": 1.9,
+   "params": {
+    "kicker": "CHAPTER TWO",
+    "title": "The answer",
+    "rule": "#C9A46A"
+   }
+  },
+  {
+   "id": "card.scene",
+   "at": 20.1,
+   "dur": 2.4,
+   "params": {
+    "slug": "EXT. CLIFF - NIGHT",
+    "pos": "bl",
+    "size": 40,
+    "padY": 96
+   }
+  },
+  {
+   "id": "card.scene",
+   "at": 38.1,
+   "dur": 2.4,
+   "params": {
+    "slug": "INT. RELAY STATION - LATER",
+    "pos": "bl",
+    "size": 40,
+    "padY": 96
+   }
+  },
+  {
+   "id": "title.trailerThin",
+   "at": 1.2,
+   "dur": 4.2,
+   "params": {
+    "text": "THE LAST SIGNAL",
+    "sub": "a short film",
+    "size": 120,
+    "y": 0.46
+   }
+  },
+  {
+   "id": "caption.filmSubtitle",
+   "at": 6.6,
+   "dur": 2.2,
+   "params": {
+    "text": "Relay North. Do you copy?",
+    "speaker": "radio",
+    "y": 0.9018518518518519
+   }
+  },
+  {
+   "id": "caption.filmSubtitle",
+   "at": 9.4,
+   "dur": 1.6,
+   "params": {
+    "text": "Who is this?",
+    "speaker": "",
+    "y": 0.9018518518518519
+   }
+  },
+  {
+   "id": "caption.filmSubtitle",
+   "at": 12.6,
+   "dur": 2.8,
+   "params": {
+    "text": "Nobody has called this station in years.",
+    "speaker": "",
+    "y": 0.9018518518518519
+   }
+  },
+  {
+   "id": "caption.filmSubtitle",
+   "at": 26.8,
+   "dur": 2.4,
+   "params": {
+    "text": "Are you still there?",
+    "speaker": "radio",
+    "y": 0.9018518518518519
+   }
+  },
+  {
+   "id": "caption.filmSubtitle",
+   "at": 38.8,
+   "dur": 2,
+   "params": {
+    "text": "I am still here.",
+    "speaker": "",
+    "y": 0.9018518518518519
+   }
+  },
+  {
+   "id": "credits.roll",
+   "at": 44.2,
+   "dur": 8.8,
+   "params": {
+    "speed": 80,
+    "startY": 0.95
+   }
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/amb/room_tone",
+   "t": 0,
+   "untilT": 17,
+   "overBedDb": -14,
+   "why": "s1 sound in on the cut"
+  },
+  {
+   "id": "sfx/foley/typewriter",
+   "t": 0.5,
+   "why": "the slug types on"
+  },
+  {
+   "id": "sfx/trailer/sub_drop_long",
+   "t": 1.2,
+   "why": "the opening title"
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 17.2,
+   "why": "chapter title"
+  },
+  {
+   "id": "sfx/amb/wind",
+   "t": 19,
+   "untilT": 37.6,
+   "overBedDb": -6,
+   "why": "J cut: the sound of s2 leads its picture by 0.6 s"
+  },
+  {
+   "id": "sfx/foley/typewriter",
+   "t": 20.1,
+   "why": "the slug types on"
+  },
+  {
+   "id": "sfx/amb/room_tone",
+   "t": 37,
+   "untilT": 43.6,
+   "overBedDb": -14,
+   "why": "J cut: the sound of s3 leads its picture by 0.6 s"
+  },
+  {
+   "id": "sfx/foley/typewriter",
+   "t": 38.1,
+   "why": "the slug types on"
+  },
+  {
+   "id": "sfx/trailer/sting_button",
+   "t": 41.6,
+   "why": "s3 shot 0 action"
+  },
+  {
+   "id": "sfx/stinger/cut_to_black",
+   "t": 43.6,
+   "why": "the last frame cuts to black"
+  }
+ ],
+ "burns": [],
+ "flares": [],
+ "flashes": [],
+ "texts": [
+  {
+   "text": "INT. RELAY STATION - NIGHT",
+   "t": [
+    1.428571,
+    2.9
+   ],
+   "box": [
+    96,
+    946,
+    720,
+    990
+   ],
+   "fontPx": 40,
+   "role": "label",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "The answer",
+   "t": [
+    17.4,
+    19.3
+   ],
+   "box": [
+    710,
+    498,
+    1210,
+    604
+   ],
+   "fontPx": 96,
+   "role": "headline",
+   "fg": "#F4EFE6"
+  },
+  {
+   "text": "EXT. CLIFF - NIGHT",
+   "t": [
+    20.742857,
+    22.5
+   ],
+   "box": [
+    96,
+    946,
+    528,
+    990
+   ],
+   "fontPx": 40,
+   "role": "label",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "INT. RELAY STATION - LATER",
+   "t": [
+    39.028571,
+    40.5
+   ],
+   "box": [
+    96,
+    946,
+    720,
+    990
+   ],
+   "fontPx": 40,
+   "role": "label",
+   "fg": "#F2F2F2"
+  },
+  {
+   "text": "THE LAST SIGNAL",
+   "t": [
+    1.8,
+    5.4
+   ],
+   "box": [
+    156,
+    435,
+    1764,
+    567
+   ],
+   "fontPx": 120,
+   "role": "headline",
+   "fg": "#F2F4F7"
+  },
+  {
+   "text": "Relay North. Do you copy?",
+   "t": [
+    6.6,
+    8.8
+   ],
+   "box": [
+    674,
+    937,
+    1246,
+    985
+   ],
+   "fontPx": 44,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "text": "Who is this?",
+   "t": [
+    9.4,
+    11
+   ],
+   "box": [
+    823,
+    937,
+    1097,
+    985
+   ],
+   "fontPx": 44,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "text": "Nobody has called this station in years.",
+   "t": [
+    12.6,
+    15.4
+   ],
+   "box": [
+    502,
+    937,
+    1418,
+    985
+   ],
+   "fontPx": 44,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "text": "Are you still there?",
+   "t": [
+    26.8,
+    29.2
+   ],
+   "box": [
+    731,
+    937,
+    1189,
+    985
+   ],
+   "fontPx": 44,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  },
+  {
+   "text": "I am still here.",
+   "t": [
+    38.8,
+    40.8
+   ],
+   "box": [
+    777,
+    937,
+    1143,
+    985
+   ],
+   "fontPx": 44,
+   "role": "caption",
+   "fg": "#FFFFFF"
+  }
+ ],
+ "holds": [
+  {
+   "t": [
+    43.6,
+    53.6
+   ],
+   "why": "end credits"
+  }
+ ],
+ "claims": [],
+ "labels": {
+  "film": "placeholder footage · fictional film",
+  "slots": true
+ },
+ "layers": {
+  "grain": "film35",
+  "dust": 0.3,
+  "vignette": 0.2
+ },
+ "eyes": {
+  "letterbox": true
+ },
+ "audio": {
+  "mode": "continuous",
+  "role": "vo_doc",
+  "quiet": [
+   {
+    "t": [
+     0,
+     1.5
+    ],
+    "kind": "open",
+    "why": "room tone only: the score enters on emotion"
+   },
+   {
+    "t": [
+     50.6,
+     53.6
+    ],
+    "kind": "hold",
+    "why": "the credits settle"
+   }
+  ],
+  "events": [
+   0,
+   6,
+   12,
+   17,
+   19.6,
+   25.6,
+   31.6,
+   37.6,
+   43.6
+  ]
+ },
+ "ceilingDb": -2.5,
+ "paceRule": {
+  "aslMax": 7,
+  "longMax": 8
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 9,
+   "asl": 5.96,
+   "longest": 6,
+   "pass": true
+  }
+ }
+}

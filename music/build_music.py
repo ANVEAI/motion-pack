@@ -37,7 +37,8 @@ THEKA_BEDS = [("bed_tabla_teental_loop", "theka", "teental", 2, ["calm", "warm"]
               ("bed_tabla_dadra_loop", "theka", "dadra", 6, ["warm", "playful"], ["ad", "short_film", "mime"], "tabla dadra theka (6 matras x 6 cycles) over a tanpura; lilting 6-beat feel"),
               ("bed_bhangra_dhol_loop", "bhangra", None, 8, ["hype", "festive"], ["ad", "beat_edit", "mime"], "bhangra dhol chaal (12/8 feel, own dhol voices) with a high plucked riff")]
 # trailer arcs (music/trailer.py, presets.TRAILERS): non-loop beds with section markers in the sidecar: (bed name, TRAILERS key)
-TRAILER_BEDS = [("bed_trailer_arc", "trailer_arc")]
+TRAILER_BEDS = [("bed_trailer_arc", "trailer_arc"), ("bed_trailer_thriller", "trailer_thriller"), ("bed_trailer_scifi", "trailer_scifi"),   # 2026-10-16 film lane: genre trailer scores (trailer_styles.py)
+                ("bed_trailer_horror", "trailer_horror"), ("bed_trailer_drama", "trailer_drama")]
 TRAILER_LENGTH_RULE = ("fixed length, NOT a loop: never loop or crossfade it into itself. To fit a cut, re-render with trailer.render_trailer(act_bars=(a1, a2, a3)) "
                        "(whole bars, acts 1-3 only, all before the gap), or trim the WAV only by whole bars inside acts 1-2 (cut on bar_frames, 10 ms crossfade); never trim "
                        "inside or after gap_start: the gap, crescendo, hit and hold keep fixed beat lengths. Cut picture to black on visual_cut_frame (hit - 1, rule R1).")
@@ -118,12 +119,13 @@ def build(fps=30, only=None, write_wav=True):
                       **stats(y, {"mastered_lufs": BED_LUFS})})
     # ---- trailer arcs (frame-exact markers, hard stop, quiet hold; last 0.15 s digital zero)
     import trailer as TR
+    import trailer_styles as TS
     from presets import TRAILERS
     for name, tname in TRAILER_BEDS:
         if only and only not in name:
             continue
         seed = 1 + len(name) % 7
-        r = TR.render_trailer(tname, fps, seed)
+        r = TS.render_styled(TRAILERS[tname]["style"], fps, seed) if TRAILERS[tname].get("style") else TR.render_trailer(tname, fps, seed)   # genre scores: music/trailer_styles.py
         y, G, g = mixer.master(r["mix"], BED_LUFS, -1.5)
         y = TR.finish(y, fps)
         meta, mk, tp = r["meta"], r["markers"], TRAILERS[tname]
@@ -134,7 +136,7 @@ def build(fps=30, only=None, write_wav=True):
         side = {"meta": meta, "tempo": {"bpm": meta["bpm"], "frames_per_beat": meta["frames_per_beat"], "frames_per_bar": meta["frames_per_bar"],
                                         "beat_seconds": round(meta["frames_per_beat"] / fps, 5), "bar_seconds": round(meta["frames_per_bar"] / fps, 5),
                                         "snap_error_pct": round(100 * (meta["bpm"] - tp["bpm"]) / tp["bpm"], 3)},
-                "markers": mk["frames"], "markers_s": mk["seconds"], "marker_beats": mk["beats"], "marker_doc": TR.MARKER_DOC, "act_bars": mk["act_bars"],
+                "markers": mk["frames"], "markers_s": mk["seconds"], "marker_beats": mk["beats"], "marker_doc": TS.MARKER_DOC if tp.get("style") else TR.MARKER_DOC, "act_bars": mk["act_bars"],
                 "loop": False, "length_rule": TRAILER_LENGTH_RULE, "drop_frames": drop, "hit_frame": mk["frames"]["hit"],
                 "kick_frames": [e["frame"] for e in r["events"] if e["kind"] in EVENT_KICKS], "clap_snare_frames": [e["frame"] for e in r["events"] if e["kind"] in ("clap", "snare")],
                 "riser_frames": [e["frame"] for e in r["events"] if e["kind"] == "riser"], "bar_frames": r["bar_frames"], "beat_frames": r["beat_frames"]}

@@ -4,7 +4,7 @@
  "bit_depth": 24,
  "fps_default": 30,
  "bed_lufs_i": -16.0,
- "count": 65,
+ "count": 69,
  "items": [
   {
    "id": "music.bed_tech_pulse_loop8",
@@ -2616,6 +2616,544 @@
    "centroid_hz": 623,
    "crest_db": 18.1,
    "duration_s": 36.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_trailer_thriller",
+   "kind": "bed",
+   "file": "library/beds/bed_trailer_thriller.wav",
+   "preset": "trailer_thriller",
+   "structure": "trailer_styled",
+   "loop": false,
+   "fps": 30,
+   "bpm": 120.0,
+   "bpm_requested": 120,
+   "frames_per_beat": 15,
+   "bars": 12,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "tense",
+    "thriller"
+   ],
+   "use": [
+    "trailer",
+    "short_film",
+    "launch"
+   ],
+   "desc": "thriller trailer score: a ticking clock and a sub pulse, a 16th ostinato with braam stabs, a wall with a braam on every bar, a 2 s silence, the title hit straight out of it, a quiet button, a pulsing credits tail with a final hit",
+   "sections": [
+    {
+     "name": "act1",
+     "frame0": 0,
+     "frames": 240,
+     "bars": 4.0,
+     "energy": 0.25
+    },
+    {
+     "name": "act2",
+     "frame0": 240,
+     "frames": 240,
+     "bars": 4.0,
+     "energy": [
+      0.45,
+      0.75
+     ]
+    },
+    {
+     "name": "act3",
+     "frame0": 480,
+     "frames": 240,
+     "bars": 4.0,
+     "energy": 1.0
+    },
+    {
+     "name": "gap",
+     "frame0": 720,
+     "frames": 60,
+     "bars": 1.0,
+     "energy": 0.02
+    },
+    {
+     "name": "hit",
+     "frame0": 780,
+     "frames": 90,
+     "bars": 1.5,
+     "energy": 1.0
+    },
+    {
+     "name": "button",
+     "frame0": 870,
+     "frames": 120,
+     "bars": 2.0,
+     "energy": 0.05
+    },
+    {
+     "name": "tail",
+     "frame0": 990,
+     "frames": 240,
+     "bars": 4.0,
+     "energy": [
+      0.3,
+      0.8
+     ]
+    }
+   ],
+   "drop_frames": [
+    480,
+    780
+   ],
+   "sidecar": "library/beds/bed_trailer_thriller.json",
+   "markers": {
+    "act1_start": 0,
+    "act2_start": 240,
+    "act3_start": 480,
+    "gap_start": 720,
+    "gap_end": 780,
+    "crescendo_start": 780,
+    "hit": 780,
+    "button_start": 870,
+    "tail_start": 990,
+    "final_hit": 1110,
+    "end": 1230,
+    "visual_cut_frame": 779
+   },
+   "act_bars": [
+    4,
+    4,
+    4
+   ],
+   "length_rule": "fixed length, NOT a loop: never loop or crossfade it into itself. To fit a cut, re-render with trailer.render_trailer(act_bars=(a1, a2, a3)) (whole bars, acts 1-3 only, all before the gap), or trim the WAV only by whole bars inside acts 1-2 (cut on bar_frames, 10 ms crossfade); never trim inside or after gap_start: the gap, crescendo, hit and hold keep fixed beat lengths. Cut picture to black on visual_cut_frame (hit - 1, rule R1).",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:trailer_thriller",
+    "trailer",
+    "markers",
+    "non-loop",
+    "mood:cinematic",
+    "mood:tense",
+    "mood:thriller",
+    "use:trailer",
+    "use:short_film",
+    "use:launch"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -11.74,
+   "centroid_hz": 268,
+   "crest_db": 16.5,
+   "duration_s": 41.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_trailer_scifi",
+   "kind": "bed",
+   "file": "library/beds/bed_trailer_scifi.wav",
+   "preset": "trailer_scifi",
+   "structure": "trailer_styled",
+   "loop": false,
+   "fps": 30,
+   "bpm": 100.0,
+   "bpm_requested": 100,
+   "frames_per_beat": 18,
+   "bars": 13,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "cold",
+    "scifi"
+   ],
+   "use": [
+    "trailer",
+    "launch",
+    "short_film"
+   ],
+   "desc": "sci-fi trailer score: a cold add9 pad and a glassy arpeggio, an 8th synth pulse, a wall of kicks, stabs and braams, a silence, a 1-bar crescendo, a title hit with a glass bell, a credits tail",
+   "sections": [
+    {
+     "name": "act1",
+     "frame0": 0,
+     "frames": 288,
+     "bars": 4.0,
+     "energy": 0.25
+    },
+    {
+     "name": "act2",
+     "frame0": 288,
+     "frames": 288,
+     "bars": 4.0,
+     "energy": [
+      0.45,
+      0.75
+     ]
+    },
+    {
+     "name": "act3",
+     "frame0": 576,
+     "frames": 288,
+     "bars": 4.0,
+     "energy": 1.0
+    },
+    {
+     "name": "gap",
+     "frame0": 864,
+     "frames": 72,
+     "bars": 1.0,
+     "energy": 0.02
+    },
+    {
+     "name": "crescendo",
+     "frame0": 936,
+     "frames": 72,
+     "bars": 1.0,
+     "energy": [
+      0.3,
+      1.0
+     ]
+    },
+    {
+     "name": "hit",
+     "frame0": 1008,
+     "frames": 90,
+     "bars": 1.25,
+     "energy": 1.0
+    },
+    {
+     "name": "button",
+     "frame0": 1098,
+     "frames": 144,
+     "bars": 2.0,
+     "energy": 0.05
+    },
+    {
+     "name": "tail",
+     "frame0": 1242,
+     "frames": 288,
+     "bars": 4.0,
+     "energy": [
+      0.3,
+      0.8
+     ]
+    }
+   ],
+   "drop_frames": [
+    576,
+    1008
+   ],
+   "sidecar": "library/beds/bed_trailer_scifi.json",
+   "markers": {
+    "act1_start": 0,
+    "act2_start": 288,
+    "act3_start": 576,
+    "gap_start": 864,
+    "gap_end": 936,
+    "crescendo_start": 936,
+    "hit": 1008,
+    "button_start": 1098,
+    "tail_start": 1242,
+    "final_hit": 1386,
+    "end": 1530,
+    "visual_cut_frame": 1007
+   },
+   "act_bars": [
+    4,
+    4,
+    4
+   ],
+   "length_rule": "fixed length, NOT a loop: never loop or crossfade it into itself. To fit a cut, re-render with trailer.render_trailer(act_bars=(a1, a2, a3)) (whole bars, acts 1-3 only, all before the gap), or trim the WAV only by whole bars inside acts 1-2 (cut on bar_frames, 10 ms crossfade); never trim inside or after gap_start: the gap, crescendo, hit and hold keep fixed beat lengths. Cut picture to black on visual_cut_frame (hit - 1, rule R1).",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:trailer_scifi",
+    "trailer",
+    "markers",
+    "non-loop",
+    "mood:cinematic",
+    "mood:cold",
+    "mood:scifi",
+    "use:trailer",
+    "use:launch",
+    "use:short_film"
+   ],
+   "lufs_i": -16.03,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -11.69,
+   "centroid_hz": 263,
+   "crest_db": 16.6,
+   "duration_s": 51.0,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_trailer_horror",
+   "kind": "bed",
+   "file": "library/beds/bed_trailer_horror.wav",
+   "preset": "trailer_horror",
+   "structure": "trailer_styled",
+   "loop": false,
+   "fps": 30,
+   "bpm": 81.8182,
+   "bpm_requested": 80,
+   "frames_per_beat": 22,
+   "bars": 12,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "dark",
+    "horror"
+   ],
+   "use": [
+    "trailer",
+    "short_film"
+   ],
+   "desc": "horror trailer score: a minor-second drone and a music-box line, a heartbeat and cluster swells, a wall of tremolo clusters and metal, DIGITAL silence, the shock hit, a music-box tail",
+   "sections": [
+    {
+     "name": "act1",
+     "frame0": 0,
+     "frames": 352,
+     "bars": 4.0,
+     "energy": 0.25
+    },
+    {
+     "name": "act2",
+     "frame0": 352,
+     "frames": 352,
+     "bars": 4.0,
+     "energy": [
+      0.45,
+      0.75
+     ]
+    },
+    {
+     "name": "act3",
+     "frame0": 704,
+     "frames": 352,
+     "bars": 4.0,
+     "energy": 1.0
+    },
+    {
+     "name": "gap",
+     "frame0": 1056,
+     "frames": 88,
+     "bars": 1.0,
+     "energy": 0.0
+    },
+    {
+     "name": "hit",
+     "frame0": 1144,
+     "frames": 88,
+     "bars": 1.0,
+     "energy": 1.0
+    },
+    {
+     "name": "button",
+     "frame0": 1232,
+     "frames": 176,
+     "bars": 2.0,
+     "energy": 0.05
+    },
+    {
+     "name": "tail",
+     "frame0": 1408,
+     "frames": 264,
+     "bars": 3.0,
+     "energy": [
+      0.3,
+      0.8
+     ]
+    }
+   ],
+   "drop_frames": [
+    704,
+    1144
+   ],
+   "sidecar": "library/beds/bed_trailer_horror.json",
+   "markers": {
+    "act1_start": 0,
+    "act2_start": 352,
+    "act3_start": 704,
+    "gap_start": 1056,
+    "gap_end": 1144,
+    "crescendo_start": 1144,
+    "hit": 1144,
+    "button_start": 1232,
+    "tail_start": 1408,
+    "final_hit": 1540,
+    "end": 1672,
+    "visual_cut_frame": 1143
+   },
+   "act_bars": [
+    4,
+    4,
+    4
+   ],
+   "length_rule": "fixed length, NOT a loop: never loop or crossfade it into itself. To fit a cut, re-render with trailer.render_trailer(act_bars=(a1, a2, a3)) (whole bars, acts 1-3 only, all before the gap), or trim the WAV only by whole bars inside acts 1-2 (cut on bar_frames, 10 ms crossfade); never trim inside or after gap_start: the gap, crescendo, hit and hold keep fixed beat lengths. Cut picture to black on visual_cut_frame (hit - 1, rule R1).",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:trailer_horror",
+    "trailer",
+    "markers",
+    "non-loop",
+    "mood:cinematic",
+    "mood:dark",
+    "mood:horror",
+    "use:trailer",
+    "use:short_film"
+   ],
+   "lufs_i": -16.02,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -12.37,
+   "centroid_hz": 215,
+   "crest_db": 16.8,
+   "duration_s": 55.733,
+   "mastered_lufs": -16.0
+  },
+  {
+   "id": "music.bed_trailer_drama",
+   "kind": "bed",
+   "file": "library/beds/bed_trailer_drama.wav",
+   "preset": "trailer_drama",
+   "structure": "trailer_styled",
+   "loop": false,
+   "fps": 30,
+   "bpm": 85.7143,
+   "bpm_requested": 84,
+   "frames_per_beat": 21,
+   "bars": 13,
+   "key": "A",
+   "scale": "minor",
+   "mood": [
+    "cinematic",
+    "warm",
+    "drama"
+   ],
+   "use": [
+    "trailer",
+    "short_film",
+    "brand"
+   ],
+   "desc": "drama trailer score: a piano motif over a warm pad, strings and an 8th pulse join, a full string-and-brass wall with taiko, a silence, a 1-bar crescendo, a warm title hit, a piano tail",
+   "sections": [
+    {
+     "name": "act1",
+     "frame0": 0,
+     "frames": 336,
+     "bars": 4.0,
+     "energy": 0.25
+    },
+    {
+     "name": "act2",
+     "frame0": 336,
+     "frames": 336,
+     "bars": 4.0,
+     "energy": [
+      0.45,
+      0.75
+     ]
+    },
+    {
+     "name": "act3",
+     "frame0": 672,
+     "frames": 336,
+     "bars": 4.0,
+     "energy": 1.0
+    },
+    {
+     "name": "gap",
+     "frame0": 1008,
+     "frames": 84,
+     "bars": 1.0,
+     "energy": 0.02
+    },
+    {
+     "name": "crescendo",
+     "frame0": 1092,
+     "frames": 84,
+     "bars": 1.0,
+     "energy": [
+      0.3,
+      1.0
+     ]
+    },
+    {
+     "name": "hit",
+     "frame0": 1176,
+     "frames": 84,
+     "bars": 1.0,
+     "energy": 1.0
+    },
+    {
+     "name": "button",
+     "frame0": 1260,
+     "frames": 168,
+     "bars": 2.0,
+     "energy": 0.05
+    },
+    {
+     "name": "tail",
+     "frame0": 1428,
+     "frames": 252,
+     "bars": 3.0,
+     "energy": [
+      0.3,
+      0.8
+     ]
+    }
+   ],
+   "drop_frames": [
+    672,
+    1176
+   ],
+   "sidecar": "library/beds/bed_trailer_drama.json",
+   "markers": {
+    "act1_start": 0,
+    "act2_start": 336,
+    "act3_start": 672,
+    "gap_start": 1008,
+    "gap_end": 1092,
+    "crescendo_start": 1092,
+    "hit": 1176,
+    "button_start": 1260,
+    "tail_start": 1428,
+    "final_hit": 1554,
+    "end": 1680,
+    "visual_cut_frame": 1175
+   },
+   "act_bars": [
+    4,
+    4,
+    4
+   ],
+   "length_rule": "fixed length, NOT a loop: never loop or crossfade it into itself. To fit a cut, re-render with trailer.render_trailer(act_bars=(a1, a2, a3)) (whole bars, acts 1-3 only, all before the gap), or trim the WAV only by whole bars inside acts 1-2 (cut on bar_frames, 10 ms crossfade); never trim inside or after gap_start: the gap, crescendo, hit and hold keep fixed beat lengths. Cut picture to black on visual_cut_frame (hit - 1, rule R1).",
+   "tags": [
+    "family:music",
+    "bed",
+    "preset:trailer_drama",
+    "trailer",
+    "markers",
+    "non-loop",
+    "mood:cinematic",
+    "mood:warm",
+    "mood:drama",
+    "use:trailer",
+    "use:short_film",
+    "use:brand"
+   ],
+   "lufs_i": -16.01,
+   "true_peak_db": -1.5,
+   "sample_peak_db": -1.51,
+   "lufs_s_max": -11.45,
+   "centroid_hz": 746,
+   "crest_db": 17.8,
+   "duration_s": 56.0,
    "mastered_lufs": -16.0
   },
   {

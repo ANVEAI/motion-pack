@@ -982,6 +982,239 @@
     },
     "fade": 0.1
    }
+  },
+  {
+   "id": "look.film-thriller",
+   "file": "layers/looks/look.film-thriller.cube",
+   "tags": [
+    "thriller",
+    "trailer",
+    "teal-orange",
+    "action",
+    "film"
+   ],
+   "params": {
+    "temp": 0.02,
+    "contrast": 0.3,
+    "sat": 0.92,
+    "power": [
+     1.02,
+     1,
+     0.98
+    ],
+    "split": {
+     "shadowHue": 188,
+     "shadowSat": 0.36,
+     "highHue": 30,
+     "highSat": 0.24,
+     "balance": -0.05
+    },
+    "fade": 0.01
+   }
+  },
+  {
+   "id": "look.film-scifi",
+   "file": "layers/looks/look.film-scifi.cube",
+   "tags": [
+    "scifi",
+    "trailer",
+    "cold",
+    "space",
+    "tech",
+    "film"
+   ],
+   "params": {
+    "temp": -0.26,
+    "tint": -0.03,
+    "contrast": 0.26,
+    "slope": [
+     0.94,
+     1,
+     1.08
+    ],
+    "sat": 0.84,
+    "split": {
+     "shadowHue": 222,
+     "shadowSat": 0.3,
+     "highHue": 190,
+     "highSat": 0.14,
+     "balance": -0.1
+    },
+    "fade": 0.006
+   }
+  },
+  {
+   "id": "look.film-horror",
+   "file": "layers/looks/look.film-horror.cube",
+   "tags": [
+    "horror",
+    "trailer",
+    "crushed",
+    "dark",
+    "film"
+   ],
+   "params": {
+    "exposure": -0.25,
+    "temp": -0.12,
+    "tint": -0.05,
+    "contrast": 0.44,
+    "power": [
+     1.12,
+     1.08,
+     1.1
+    ],
+    "sat": 0.55,
+    "split": {
+     "shadowHue": 160,
+     "shadowSat": 0.22,
+     "highHue": 200,
+     "highSat": 0.06
+    },
+    "fade": 0
+   }
+  },
+  {
+   "id": "look.film-drama",
+   "file": "layers/looks/look.film-drama.cube",
+   "tags": [
+    "drama",
+    "trailer",
+    "warm",
+    "human",
+    "film"
+   ],
+   "params": {
+    "temp": 0.16,
+    "contrast": 0.16,
+    "slope": [
+     1.04,
+     1,
+     0.93
+    ],
+    "sat": 1,
+    "split": {
+     "shadowHue": 25,
+     "shadowSat": 0.08,
+     "highHue": 38,
+     "highSat": 0.16
+    },
+    "fade": 0.025
+   }
+  },
+  {
+   "id": "look.film-documentary",
+   "file": "layers/looks/look.film-documentary.cube",
+   "tags": [
+    "documentary",
+    "natural",
+    "interview",
+    "film"
+   ],
+   "params": {
+    "temp": 0.04,
+    "contrast": 0.08,
+    "sat": 0.98,
+    "split": {
+     "shadowHue": 210,
+     "shadowSat": 0.02,
+     "highHue": 40,
+     "highSat": 0.03
+    },
+    "fade": 0.01
+   }
+  },
+  {
+   "id": "look.film-noir",
+   "file": "layers/looks/look.film-noir.cube",
+   "tags": [
+    "noir",
+    "bw",
+    "mono",
+    "thriller",
+    "film"
+   ],
+   "params": {
+    "contrast": 0.48,
+    "slope": [
+     1.24,
+     0.95,
+     0.7
+    ],
+    "power": [
+     1.1,
+     1.1,
+     1.1
+    ],
+    "sat": 0,
+    "split": {
+     "shadowHue": 220,
+     "shadowSat": 0.03,
+     "highHue": 45,
+     "highSat": 0.02
+    },
+    "fade": 0.008
+   }
+  },
+  {
+   "id": "look.film-period",
+   "file": "layers/looks/look.film-period.cube",
+   "tags": [
+    "period",
+    "vintage",
+    "nostalgia",
+    "archive",
+    "film"
+   ],
+   "params": {
+    "temp": 0.2,
+    "contrast": 0.08,
+    "slope": [
+     1.04,
+     1,
+     0.86
+    ],
+    "power": [
+     0.96,
+     0.97,
+     1
+    ],
+    "sat": 0.72,
+    "split": {
+     "shadowHue": 190,
+     "shadowSat": 0.14,
+     "highHue": 46,
+     "highSat": 0.26
+    },
+    "fade": 0.07
+   }
+  },
+  {
+   "id": "look.film-anime-ink",
+   "file": "layers/looks/look.film-anime-ink.cube",
+   "tags": [
+    "anime",
+    "cel",
+    "ink",
+    "animation",
+    "film"
+   ],
+   "params": {
+    "exposure": 0.1,
+    "contrast": 0.22,
+    "sat": 1.28,
+    "power": [
+     0.94,
+     0.94,
+     0.96
+    ],
+    "split": {
+     "shadowHue": 250,
+     "shadowSat": 0.14,
+     "highHue": 50,
+     "highSat": 0.06
+    },
+    "fade": 0
+   }
   }
  ]
 }

@@ -439,6 +439,51 @@
   },
   "notes": "one arc per outline strike (the id is rr:4: a repeated cue gets a different strike); the buzz is tuned to A2 (110 Hz), so it sits under A-major beds; levels over the bed: arc +3.5 dB (manifest over_bed_db), zap-off about +2, the crackle loop about 10 dB under the bed, ended on the zap-off frame"
  },
+ "trailer": {
+  "desc": "film trailer: braams on the act-3 bar downbeats, booms and metal hits on cards, risers that end one frame before the hit, a reverse suck into the silence before the title, a button sting, a final hit on the release card",
+  "bed": [
+   "trailer_thriller",
+   "trailer_scifi",
+   "trailer_horror",
+   "trailer_drama",
+   "trailer_arc"
+  ],
+  "bpm": [
+   80,
+   120
+  ],
+  "lufs": -14,
+  "roles": {
+   "braam": "snd.trailer.braam_low",
+   "braam_big": "snd.trailer.braam_octave",
+   "pulse": "snd.trailer.braam_short",
+   "into_title": "snd.trailer.reverse_braam",
+   "boom": "snd.trailer.boom_hit",
+   "metal": "snd.trailer.boom_metal",
+   "card": "snd.trailer.metal_hit",
+   "title": "snd.trailer.hit_title",
+   "drop": "snd.trailer.sub_drop_long",
+   "swell": "snd.trailer.reverse_swell_2s",
+   "riser": "snd.trailer.riser_8s",
+   "riser_short": "snd.trailer.riser_2s",
+   "clock": "snd.trailer.clock_tick_loop",
+   "clock_build": "snd.trailer.clock_accel",
+   "heart": "snd.trailer.heartbeat_loop",
+   "pass": "snd.trailer.whoosh_by",
+   "stop": "snd.trailer.whoosh_suck",
+   "drone": "snd.trailer.drone_dark_loop",
+   "drone_metal": "snd.trailer.drone_metal_loop",
+   "strings": "snd.trailer.strings_tension_loop",
+   "ring": "snd.trailer.ring_tinnitus",
+   "hit_silence_hit": "snd.trailer.hit_silence_hit",
+   "button": "snd.trailer.sting_button",
+   "radio": "snd.trailer.radio_static_loop",
+   "burn": "snd.tx.film_burn",
+   "flash": "snd.tx.flash_swell",
+   "room": "snd.amb.room_tone"
+  },
+  "notes": "the score carries the act-3 braams (every bar) and the title hit: do not double them; risers end ONE FRAME BEFORE the hit (cue frame = hit - 1, the anchor is the end); the silence before the hit is 1-3 s (cuts/trailer/silenceBeforeHit) and is marked in plan.audio.quiet as a gap; loops (clock, heart, drones, strings, radio) sit 10 dB under the bed unless the plan sets overBedDb"
+ },
  "hardware_launch": {
   "desc": "AI-hardware / device launch film: a dark cold open on a sub heartbeat and an electric hum, an airy shimmer on the light sweep, ONE deep sub hit on the reveal, a metal chime on the name, a magnetic release and seat for the exploded view, a detent click per spec or port, a connector click-in on the IO tour, a fan spin-up and a power-on tone when it boots, logo last",
   "bed": [

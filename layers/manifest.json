@@ -2101,6 +2101,126 @@
    "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
   },
   {
+   "id": "look.film-thriller",
+   "file": "layers/looks/look.film-thriller.cube",
+   "kind": "look",
+   "tags": [
+    "thriller",
+    "trailer",
+    "teal-orange",
+    "action",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.film-scifi",
+   "file": "layers/looks/look.film-scifi.cube",
+   "kind": "look",
+   "tags": [
+    "scifi",
+    "trailer",
+    "cold",
+    "space",
+    "tech",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.film-horror",
+   "file": "layers/looks/look.film-horror.cube",
+   "kind": "look",
+   "tags": [
+    "horror",
+    "trailer",
+    "crushed",
+    "dark",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.film-drama",
+   "file": "layers/looks/look.film-drama.cube",
+   "kind": "look",
+   "tags": [
+    "drama",
+    "trailer",
+    "warm",
+    "human",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.film-documentary",
+   "file": "layers/looks/look.film-documentary.cube",
+   "kind": "look",
+   "tags": [
+    "documentary",
+    "natural",
+    "interview",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.film-noir",
+   "file": "layers/looks/look.film-noir.cube",
+   "kind": "look",
+   "tags": [
+    "noir",
+    "bw",
+    "mono",
+    "thriller",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.film-period",
+   "file": "layers/looks/look.film-period.cube",
+   "kind": "look",
+   "tags": [
+    "period",
+    "vintage",
+    "nostalgia",
+    "archive",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
+   "id": "look.film-anime-ink",
+   "file": "layers/looks/look.film-anime-ink.cube",
+   "kind": "look",
+   "tags": [
+    "anime",
+    "cel",
+    "ink",
+    "animation",
+    "film"
+   ],
+   "source": "layers/presets/looks.js",
+   "demo": "layers/demo/out/looks-sheet.jpg",
+   "test": "layers/tools/looks_sheet.py (ffmpeg lut3d parses every cube)"
+  },
+  {
    "id": "log.logc3-to-709",
    "file": "layers/looks/log.logc3-to-709.cube",
    "kind": "conversion-lut",
@@ -2723,6 +2843,461 @@
    "doc": "nodes seeded in a field (radius fraction of H, wider in 16:9) around center; links = nearest-neighbour edges per node (plus hub edges); hub / dot = start and end radius of the solid dot px @1080; at / dur / stagger (radius-dependent delay; order outside-in | inside-out); reverse blooms the network out of the dot; bg = paper colour or null (transparent)",
    "demo": "layers/demo/out/r45-sheet.png",
    "test": "layers/tests/r45.test.mjs"
+  },
+  {
+   "id": "layers.filmBurn",
+   "file": "layers/canvas2d-film.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "film-burn",
+    "transition",
+    "film",
+    "trailer",
+    "analog",
+    "warm"
+   ],
+   "params": {
+    "at": 1,
+    "dur": 0.9,
+    "peak": 0.78,
+    "from": "left",
+    "origin": [
+     0.15,
+     0.5
+    ],
+    "scale": 3.2,
+    "warp": 0.55,
+    "speed": 0.6,
+    "colors": [
+     "#FFF4D6",
+     "#FF9A2E",
+     "#C2310C"
+    ],
+    "glow": 1,
+    "cells": 96,
+    "intensity": 1,
+    "seed": 11
+   },
+   "doc": "organic film burn for a transition: fbm field burning from an edge or a point, white-hot front, coverage peaks ON `at` (the cut) then retracts",
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "layers.anamorphicFlare",
+   "file": "layers/canvas2d-film.js",
+   "kind": "overlay-layer",
+   "backend": "canvas2d",
+   "blend": "screen",
+   "tags": [
+    "flare",
+    "anamorphic",
+    "lens",
+    "trailer",
+    "scifi",
+    "film"
+   ],
+   "params": {
+    "at": 0,
+    "dur": 2.4,
+    "path": null,
+    "sweepFrom": [
+     -0.15,
+     0.42
+    ],
+    "sweepTo": [
+     1.15,
+     0.46
+    ],
+    "color": "#7FC8FF",
+    "core": "#FFFFFF",
+    "streak": 1,
+    "width": 1,
+    "ghosts": 3,
+    "intensity": 0.9,
+    "fadeIn": 0.25,
+    "fadeOut": 0.35,
+    "flicker": 0.06,
+    "seed": 5
+   },
+   "doc": "anamorphic flare: horizontal streak + hot line + core glow through a moving source, 3 mirrored ghost ovals; `path` keys or a sweep",
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.finish",
+   "file": "layers/film.js",
+   "kind": "finish",
+   "backend": "svg-filter | css transform",
+   "tags": [
+    "film",
+    "halation",
+    "gate-weave",
+    "flicker",
+    "anime-ink",
+    "letterbox"
+   ],
+   "doc": "the genre finish on a DOM picture wrapper: grade + halation (+ ink) SVG filters, gate weave and exposure flicker per film frame; works on real <video> footage",
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.thriller",
+   "file": "layers/presets/film-looks.js",
+   "kind": "genre-finish",
+   "tags": [
+    "film",
+    "genre",
+    "thriller"
+   ],
+   "params": {
+    "look": "film-thriller",
+    "grain": "film35",
+    "halation": {
+     "amount": 0.32,
+     "threshold": 0.78,
+     "radius": 9,
+     "tint": [
+      1,
+      0.36,
+      0.12
+     ]
+    },
+    "weave": {
+     "amp": 0.9,
+     "rot": 0.03,
+     "fps": 24
+    },
+    "flicker": 0.012,
+    "vignette": 0.24,
+    "dust": 0.25,
+    "bars": 2.39,
+    "flare": "#7FC8FF",
+    "burn": [
+     "#FFF4D6",
+     "#FF9A2E",
+     "#C2310C"
+    ],
+    "title": "title.trailerSlab",
+    "score": "thriller",
+    "sfx": "trailer"
+   },
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.scifi",
+   "file": "layers/presets/film-looks.js",
+   "kind": "genre-finish",
+   "tags": [
+    "film",
+    "genre",
+    "scifi"
+   ],
+   "params": {
+    "look": "film-scifi",
+    "grain": "film35",
+    "halation": {
+     "amount": 0.22,
+     "threshold": 0.8,
+     "radius": 10,
+     "tint": [
+      0.55,
+      0.75,
+      1
+     ]
+    },
+    "weave": {
+     "amp": 0.5,
+     "rot": 0.02,
+     "fps": 24
+    },
+    "flicker": 0.006,
+    "vignette": 0.2,
+    "dust": 0.1,
+    "bars": 2.39,
+    "flare": "#5FB4FF",
+    "burn": [
+     "#E8F6FF",
+     "#6EC3FF",
+     "#1D3F9C"
+    ],
+    "title": "title.trailerThin",
+    "score": "scifi",
+    "sfx": "trailer"
+   },
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.horror",
+   "file": "layers/presets/film-looks.js",
+   "kind": "genre-finish",
+   "tags": [
+    "film",
+    "genre",
+    "horror"
+   ],
+   "params": {
+    "look": "film-horror",
+    "grain": "film16",
+    "halation": {
+     "amount": 0.18,
+     "threshold": 0.82,
+     "radius": 8,
+     "tint": [
+      1,
+      0.3,
+      0.2
+     ]
+    },
+    "weave": {
+     "amp": 1.4,
+     "rot": 0.05,
+     "fps": 24
+    },
+    "flicker": 0.03,
+    "vignette": 0.42,
+    "dust": 0.6,
+    "bars": 2.39,
+    "flare": "#C9E7FF",
+    "burn": [
+     "#FFE9C9",
+     "#E0561B",
+     "#5A0A06"
+    ],
+    "title": "title.trailerDistressed",
+    "score": "horror",
+    "sfx": "trailer"
+   },
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.drama",
+   "file": "layers/presets/film-looks.js",
+   "kind": "genre-finish",
+   "tags": [
+    "film",
+    "genre",
+    "drama"
+   ],
+   "params": {
+    "look": "film-drama",
+    "grain": "film35",
+    "halation": {
+     "amount": 0.36,
+     "threshold": 0.76,
+     "radius": 11,
+     "tint": [
+      1,
+      0.42,
+      0.16
+     ]
+    },
+    "weave": {
+     "amp": 0.7,
+     "rot": 0.025,
+     "fps": 24
+    },
+    "flicker": 0.01,
+    "vignette": 0.2,
+    "dust": 0.3,
+    "bars": 2,
+    "flare": "#FFC27A",
+    "burn": [
+     "#FFF7E3",
+     "#FFB04A",
+     "#B4430F"
+    ],
+    "title": "title.trailerGlow",
+    "score": "drama",
+    "sfx": "trailer"
+   },
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.documentary",
+   "file": "layers/presets/film-looks.js",
+   "kind": "genre-finish",
+   "tags": [
+    "film",
+    "genre",
+    "documentary"
+   ],
+   "params": {
+    "look": "film-documentary",
+    "grain": "digital-soft",
+    "halation": {
+     "amount": 0.08,
+     "threshold": 0.86,
+     "radius": 6,
+     "tint": [
+      1,
+      0.55,
+      0.3
+     ]
+    },
+    "weave": {
+     "amp": 0,
+     "rot": 0,
+     "fps": 24
+    },
+    "flicker": 0,
+    "vignette": 0.1,
+    "dust": 0,
+    "bars": 1.85,
+    "flare": "#FFE2B8",
+    "burn": [
+     "#FFFFFF",
+     "#FFD08A",
+     "#B86A22"
+    ],
+    "title": "title.trailerThin",
+    "score": "drama",
+    "sfx": "short_film"
+   },
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.noir",
+   "file": "layers/presets/film-looks.js",
+   "kind": "genre-finish",
+   "tags": [
+    "film",
+    "genre",
+    "noir"
+   ],
+   "params": {
+    "look": "film-noir",
+    "grain": "film16",
+    "halation": {
+     "amount": 0.26,
+     "threshold": 0.78,
+     "radius": 9,
+     "tint": [
+      1,
+      1,
+      1
+     ]
+    },
+    "weave": {
+     "amp": 1.1,
+     "rot": 0.04,
+     "fps": 24
+    },
+    "flicker": 0.02,
+    "vignette": 0.38,
+    "dust": 0.45,
+    "bars": 2,
+    "flare": "#FFFFFF",
+    "burn": [
+     "#FFFFFF",
+     "#D8D8D8",
+     "#4A4A4A"
+    ],
+    "title": "title.trailerCut",
+    "score": "thriller",
+    "sfx": "trailer"
+   },
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.period",
+   "file": "layers/presets/film-looks.js",
+   "kind": "genre-finish",
+   "tags": [
+    "film",
+    "genre",
+    "period"
+   ],
+   "params": {
+    "look": "film-period",
+    "grain": "film16",
+    "halation": {
+     "amount": 0.3,
+     "threshold": 0.74,
+     "radius": 12,
+     "tint": [
+      1,
+      0.48,
+      0.2
+     ]
+    },
+    "weave": {
+     "amp": 1.6,
+     "rot": 0.06,
+     "fps": 18
+    },
+    "flicker": 0.035,
+    "vignette": 0.34,
+    "dust": 0.9,
+    "bars": 1.85,
+    "flare": "#FFD9A0",
+    "burn": [
+     "#FFF3D9",
+     "#FF9E3D",
+     "#8A2A08"
+    ],
+    "title": "title.trailerGlow",
+    "score": "drama",
+    "sfx": "archive_open"
+   },
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
+  },
+  {
+   "id": "film.anime-ink",
+   "file": "layers/presets/film-looks.js",
+   "kind": "genre-finish",
+   "tags": [
+    "film",
+    "genre",
+    "anime-ink"
+   ],
+   "params": {
+    "look": "film-anime-ink",
+    "grain": "clean",
+    "halation": {
+     "amount": 0.12,
+     "threshold": 0.84,
+     "radius": 7,
+     "tint": [
+      1,
+      0.7,
+      0.9
+     ]
+    },
+    "weave": {
+     "amp": 0,
+     "rot": 0,
+     "fps": 24
+    },
+    "flicker": 0,
+    "vignette": 0.08,
+    "dust": 0,
+    "bars": 2,
+    "flare": "#FFFFFF",
+    "burn": [
+     "#FFFFFF",
+     "#FFD24A",
+     "#FF4F7B"
+    ],
+    "title": "title.trailerCut",
+    "score": "scifi",
+    "sfx": "trailer",
+    "ink": {
+     "levels": 6,
+     "edge": 0.55,
+     "color": "#1A1428"
+    }
+   },
+   "demo": "templates/trailer/out/sheet.jpg",
+   "test": "layers/tests/film.test.mjs"
   },
   {
    "id": "hf.integration",
