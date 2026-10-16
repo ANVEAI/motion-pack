@@ -5,7 +5,8 @@
   "platform": "published by the platform (its help pages, ad guides or commissioned studies it publishes)",
   "study": "a measured study (academic, or a named research firm with a stated method)",
   "practitioner": "editors, creators, agencies, vendors: belief from practice, not measured",
-  "inference": "our synthesis of the sources; a tunable house default"
+  "inference": "our synthesis of the sources; a tunable house default",
+  "house": "the pack's tunable default"
  },
  "universal": {
   "frame0": "A strong image already in motion; first visible change by frame 6; never black, never a logo bumper, never a fade-in from nothing.",

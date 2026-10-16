@@ -63,7 +63,7 @@ post/
 | X | 9:16 or 16:9 | 20-45 s | standard accounts: 2 min 20 s and 512 MB per video | first reply |
 | LinkedIn | 16:9 or 1:1 (4:5 also fine) | 30-60 s | MP4 with H.264 and AAC is the safe container | first comment |
 
-Masters for every platform: H.264 High, yuv420p, AAC, `+faststart`, about -14 LUFS integrated with true peak at or below -1 dBTP (motion-pack's master spec). Only YouTube publishes its normalisation (it turns loud content down toward about -14 LUFS); the others publish nothing, so one -14 master is the safe choice. Full table with sources and safe-zone notes: `references/platforms.md`.
+Masters for every platform: H.264 High, yuv420p, AAC, `+faststart`, about -14 LUFS integrated, true peak -1.5 dBTP on the WAV master and at or below -1.0 dBTP decoded from the delivered file (motion-pack's master spec). Only YouTube publishes its normalisation (it turns loud content down toward about -14 LUFS); the others publish nothing, so one -14 master is the safe choice. Full table with sources and safe-zone notes: `references/platforms.md`.
 
 ## AI-content disclosure
 

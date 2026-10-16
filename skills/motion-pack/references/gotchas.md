@@ -196,3 +196,7 @@
 - **ffmpeg 7+ takes a stream's colour tags from the frames:** `-color_primaries bt709` alone left primaries and transfer unset after a `scale` filter. Add `setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709:range=tv` to the filter chain (`tools/deliver.py` does).
 - **lottie-web ignores `masksProperties` unless the layer has `hasMask: true`,** and draws nothing when a mask has no `x` (expansion) property. `tools/lottie/export.py` writes both.
 - **The native VP9 decoder drops the alpha plane of a WebM;** decode with `-c:v libvpx-vp9` before `-i` (`tools/deliver.py --alpha-src`).
+- **soundfile writes a time-stamped PEAK chunk into float WAVs,** so two identical builds differ in bytes. Write float WAVs that must be reproducible with `scipy.io.wavfile` (`templates/multi-voice-doc/vo.py`, `templates/_shared/film/score.py` do).
+- **`compose.mjs mix(plan, wav, py, args)`: the third argument is the PYTHON executable.** Pass audio.py flags in the fourth (`['--stem']`); a flag in the third is refused (`tools/tests/test_mix_calls.py`).
+- **A scaled word needs room:** a 1.12 pop eats the 0.28 em gap of a long word. Both caption layouts reserve (scale - 1) / 2 of the word's width per side (`type/captions.js popScale`).
+- **A line mask cannot hide a rise at rest:** the 1.12 em mask showed the top 0.26 em of maskRise / charRise glyphs before `at`. Line-masked units are now hidden until their own entrance.

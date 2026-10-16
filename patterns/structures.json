@@ -5,7 +5,8 @@
   "platform": "published by the platform",
   "study": "a measured study",
   "practitioner": "editors, creators, agencies, vendors: belief from practice",
-  "inference": "our synthesis of the sources; a tunable house default"
+  "inference": "our synthesis of the sources; a tunable house default",
+  "house": "the pack's tunable default"
  },
  "pass_score": 70,
  "weights": {

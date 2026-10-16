@@ -23,7 +23,7 @@ The feed overlays the title, the account name and the action buttons. Keep faces
 
 ## Loudness
 
-- One master at about -14 LUFS integrated, true peak at or below -1 dBTP (motion-pack's master spec). [house]
+- One master at about -14 LUFS integrated: true peak -1.5 dBTP on the WAV master, at or below -1.0 dBTP decoded from the delivered MP4 (motion-pack's master spec). [house]
 - YouTube normalises playback toward about -14 LUFS and turns loud content down; it does not boost quiet content. [pub]
 - Instagram, TikTok, X and LinkedIn publish no loudness target. [none published] Office viewers (LinkedIn) listen quietly: keep dialogue forward and transients soft.
 

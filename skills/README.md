@@ -43,7 +43,7 @@ Six Agent Skills that take a video from a one-line brief to a published post: th
 | `shotlist.json` | story-script | frame-design, motion-pack, social-video | one row per shot: beat, duration, scale, action, sound intent, on-screen text, honesty label, transition with reason; hooks; claims with sources |
 | `design.json` | frame-design | motion-pack, spec-to-loop, social-video | tone cell, motion personality, palette and contrast pairs, type, grid, safe zones, look, key frames, cover, and a map onto real template `CONFIG` keys |
 | `plan.json` | motion-pack | motion-pack's renderer and lint | shots, transitions with reasons, the SFX cue sheet, lint results |
-| `out/*.mp4` | motion-pack, spec-to-loop | social-video | one master per aspect, about -14 LUFS, true peak at or below -1 dBTP |
+| `out/*.mp4` | motion-pack, spec-to-loop | social-video | one master per aspect, about -14 LUFS, true peak at or below -1.0 dBTP decoded (the WAV master sits at -1.5) |
 | `post/` | social-video | the user | per-platform copy, covers, upload copies, checklist, posting log |
 
 ## Install

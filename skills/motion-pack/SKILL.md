@@ -62,6 +62,7 @@ Every path below is relative to the pack root.
 5. **Master spec:**
    - −14 LUFS-I, and true peak ≤ −1.5 dBTP on the WAV master. Use −2.0 if clicky transients push the AAC probe over.
    - The delivered MP4 decodes to ≤ −1.0 dBTP. HyperFrames lowers the whole track if its AAC goes over −1, so check the probe, not just the WAV.
+   - This is the one loudness contract of the pack: **−1.5 dBTP on the WAV master, ≤ −1.0 dBTP decoded from the delivered AAC / MP4.** A doc or study that says "true peak ≤ −1 dBTP" means the delivered file; the 0.5 dB between them is the AAC overshoot. A plan's `ceilingDb` (−2.0 to −2.5 on clicky films) only moves the master lower, never the delivered limit.
    - The last 0.15 s is digital zero.
    - Use `music/mixer.py`. Never gain SFX by hand (an editor, ffmpeg `volume`): the library is normalised to −6 dBFS peak and the level is set in the plan: `overBedDb` / `overVoDb` on a cue for the mixer, or `gainDb` on a cue when there is no bed (`templates/_shared/audio.py`).
 6. **Honesty.**
@@ -362,7 +363,7 @@ Every recipe ends with the VIRALITY and QA checklists below.
 ### RECIPE T: film trailer, title sequence, short film, templates `templates/trailer`, `title-sequence`, `short-film`
 
 1. **Pick the genre** (`layers/presets/film-looks.js` FILM_GENRES: thriller, scifi, horror, drama, documentary, noir, period, anime-ink). It sets the look (`look.film-<genre>`), halation, gate weave, grain, dust, the letterbox (2.39 / 2.0 / 1.85 on 16:9; 9:16 is re-laid out, never letterboxed), the title style and the trailer score.
-2. **Trailer** (`node make.mjs [--set length=30|15] [--set aspect=9:16]`): cold open -> your production card (never first) -> the world -> the inciting beat -> act 2 (the cut rate halves, cards on the braam downbeats) -> act 3 (every bar a cut and a braam) -> the silence before the hit (1-3 s, `plan.audio.quiet` gap) -> the title ON the hit -> a button -> the billing block -> the release card. The score (`music/trailer_styles.py`) is rendered for the exact cut; never double its braams and title hit with sfx.
+2. **Trailer** (`node make.mjs [--set length=30|15] [--set aspect=9:16]`): cold open -> your production card (never first) -> the world -> the inciting beat -> act 2 (shots fall from 4 to 2 beats, a braam every other bar downbeat) -> act 3 (shots fall from 2 beats to 1 beat to 8th notes, a braam and a cut on every bar downbeat; `cuts/patterns.json` `trailer.accelerate3Act`, about 2 cuts/s at 120 BPM, 4 at the end) -> the silence before the hit (1-3 s, `plan.audio.quiet` gap) -> the title ON the hit -> a button -> the billing block -> the release card. The score (`music/trailer_styles.py`) is rendered for the exact cut; never double its braams and title hit with sfx.
 3. **Title sequence** (30-60 s): one name at a time on a beat, over textures or footage; the title late; "directed by" last.
 4. **Short film:** scenes of shots (your footage, the three.js stage render, or labelled plates), chapter cards, typed slugs, subtitles from a lines or words JSON (no generated voice), the J / L builder for each scene's sound, the score entering on emotion, a dip into the credits roll. Give every shot its `beat` (coldopen, want, obstacle, turn, consequence, resolution) so the plan carries `plan.structure`.
 5. **Honesty:** no studio logos, rating marks or real titles; `card.quote` needs a source; "from the makers of" and the date card print placeholder labels until they are real; the film pill "placeholder footage · fictional film" stays on with placeholder footage.
@@ -491,6 +492,7 @@ The pack ships what it generates, plus three bundled OFL font families (Manrope,
   - Kenney audio (CC0), OwlishMedia foley (CC0).
 - **Fetching them:** `scripts/fetch-external.sh` downloads them from pinned URLs, verifies checksums, and writes an `ORIGIN.txt` per set.
 - **Imported audio:** pass `python3 sfx/tools/check_origin.py DIR` (licence allow-list; exit 2 = refused), then `python3 sfx/tools/catalog_import.py DIR --category NAME`. It lands in `sfx/library_ext/`, tagged `source:ext`, and never in `sfx/manifest.json`.
+- **HyperFrames registry items** (`npx hyperframes add <name>`) are remote, third-party files: the pack never vendors them and ships owned equivalents (grain, vignette, leaks, captions, social cards, stickers). Adding one to YOUR project folder is a download: name the item, read its `registry-item.json` licence, and ask first; it has no pack id, so `check_ids.py` and the plan lint do not see it (`docs/research/visual.md`, `docs/research/expansion-skills.md`).
 - **Avoid:**
   - Apple Color Emoji (not licensed);
   - OpenMoji (CC BY-SA, share-alike);
@@ -555,7 +557,8 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 - [ ] **Ears:** `ears/listen.py` on the delivered MP4 shows no fail, and you listened once at phone size.
 - [ ] **Eyes:** `eyes/look.py` on the delivered MP4 (with `--plan out/plan.json`) shows no fail: frame 0 not black and moving by frame 6, no unplanned black or frozen run, at most 3 flashes a second, no banding, every text box inside the safe zone and over the size, time and contrast floors, no unplanned bars; and you looked once at a 360 px wide still.
 - [ ] **Legibility:**
-  - Captions are at most 18 characters per line and at most 2 lines.
+  - On-screen text that is not speech (titles, cards, supers, kinetic lines): at most 3.5 words/s and held at least **max(0.5 s, 0.35 s + 0.28 s per word)** (eyes, frame-design, story-script). `tools/structure_check.py` also applies its beat-sheet floor, max(0.83 s, 0.3 s per word) with the section's words/s ceiling; the two agree within a frame or two for 2-8 words, and the longer hold wins.
+  - Captions of speech follow the speech, never the hold formula: subtitle files (SRT / VTT / TTML from `tools/captions/export.py`) at most 42 characters a line, 2 lines, 20 cps (17 for kids), each event on screen 5/6 s to 7 s; burned-in kinetic captions (`type/captions.js`) at most 18 characters per line and at most 2 lines.
   - The active word is exactly the spoken word.
   - It reads at phone size (360 px wide).
 - [ ] **Honesty:** no fabricated numbers, reviews, logos or testimonials. Placeholders and concept renders are labelled.
@@ -627,7 +630,7 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 | Cut patterns, the generator and retime | `cuts/patterns.json`, `cuts/cutgen.py`, `cuts/retime.py` |
 | SFX, bundles, sweeteners, import gate | `sfx/manifest.json`, `sfx/bundles.json`, `sfx/sweeteners.json`, `sfx/tools/` |
 | Music, mixer, thekas, tempo maps | `music/manifest.json`, `music/mixer.py`, `music/presets.py`, `music/theka.py`, `music/tempo_maps.json` |
-| Layers, type, camera | `layers/`, `type/` (+ `gfx/`), `camera/` (each with a README, manifest.json and tests) |
+| Layers, type, camera | `layers/`, `type/` (+ `gfx/`), `camera/` (each with a README, manifest.json and tests); colour grades: 8 genre grades + `neutral` (9 entries in `layers/presets/grades.js` GRADES); film looks: 8 `look.film-<genre>` LUTs (`layers/presets/film-looks.js`), counted with the looks |
 | Objects and the character | `objects/index.js`, `objects/characters/poses.js` |
 | Blender recipes | `blender/run.py`, `blender/README.md`, `blender/manifest.json` |
 | Gallery | `catalog/index.html` |

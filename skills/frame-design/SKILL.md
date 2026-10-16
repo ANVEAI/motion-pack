@@ -94,7 +94,7 @@ Then write the **motion personality** in one sentence plus four numbers: a base 
 
 ## Looks and grain (by pack id)
 
-- **One grade per piece** from `layers/presets/grades.js` (`premium-product`, `warm-film`, `cool-tech`, `retro-vhs`, `nostalgic-print`, `bright-playful`, `noir`, `documentary`), or one LUT from `layers/looks/look.<name>.cube`. A look replaces the genre grade; do not stack them. Send log footage through `layers/looks/log.<camera>-to-709.cube` first.
+- **One grade per piece** from `layers/presets/grades.js` (`premium-product`, `warm-film`, `cool-tech`, `retro-vhs`, `nostalgic-print`, `bright-playful`, `noir`, `documentary`; plus `neutral`, the identity: 9 entries), or one LUT from `layers/looks/look.<name>.cube`. A look replaces the genre grade; do not stack them. Send log footage through `layers/looks/log.<camera>-to-709.cube` first.
 - **One grain stock** from `layers/presets/stocks.js` (`clean`, `digital-soft`, `film35`, `film16`, `super8`, `vhs`, `upload-safe`). Use `upload-safe` for a clean look that has to survive platform re-encoding, which smears 1-pixel grain.
 - **Finish recipes** in `layers/presets/finish.js` bundle grade, bloom, vignette and grain per genre. Stack rule: light leaks below the type; grain over everything except the brand and the letterbox bars.
 - **Character comedy and kids' work look best clean:** `bright-playful` with no grain and almost no vignette.
