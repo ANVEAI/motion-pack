@@ -154,13 +154,13 @@ function takeawaySVG(L, p, c) {
 
 /* ---------- process.steps ---------- */
 const STEPS_D = { steps: [{ title: 'Gather', icon: 'search' }, { title: 'Prepare', icon: 'gear' }, { title: 'Wait', icon: 'timer' }, { title: 'Serve', icon: 'cup' }], active: [], layout: 'auto', box: [0.08, 0.3, 0.84, 0.44],
-  accent: BRAND, ink: PAPER_INK, paper: '#FFFFFF', muted: '#B8B2A7', size: 1 };
+  accent: BRAND, ink: PAPER_INK, paper: '#FFFFFF', muted: '#B8B2A7', stagger: 0.08, size: 1 };
 export const stepActive = (p, u) => { const a = list(p.active).filter((q) => Array.isArray(q)); if (!a.length) { const n = list(p.steps, 12).length; return Math.min(n, Math.max(-1, Math.floor((u - 0.5) / 1.1))); } let k = -1; for (const [t, i] of a) if (u >= num(t)) k = Math.trunc(num(i)); return k; };
 function stepsSVG(L, p, c) {
   const s = c.s * num(p.size, 1), u = L.u, st = list(p.steps, 12), n = st.length; if (!n) return ''; const [X, Y, Wb, Hb] = bx(p.box, c), col = p.layout === 'column' || (p.layout === 'auto' && c.tall), act = stepActive(p, u);
   const at = list(p.active).filter((q) => Array.isArray(q)), tOf = (i) => { const q = at.find((x) => Math.trunc(num(x[1])) === i); return q ? num(q[0]) : 0.5 + i * 1.1; };
   const R = col ? Math.min((Hb / n) * 0.26, 56 * s) : Math.min((Wb / n) * 0.17, 70 * s), P = st.map((_, i) => (col ? [X + R + 4 * s, Y + ((i + 0.5) * Hb) / n] : [X + ((i + 0.5) * Wb) / n, Y + Hb * 0.48]));
-  let g = ''; const ent = (i) => E.hero(seg(u, i * 0.08, i * 0.08 + 0.45));
+  let g = ''; const stg = clamp(num(p.stagger, 0.08), 0, 3), ent = (i) => E.hero(seg(u, i * stg, i * stg + 0.45));
   if (n > 1) { const [a, b] = [P[0], P[n - 1]], k = act >= n ? 1 : act <= 0 ? 0 : clamp((act - 1 + E.soft(seg(u, tOf(act), tOf(act) + 0.45))) / (n - 1));
     g += `<line x1="${f2(a[0])}" y1="${f2(a[1])}" x2="${f2(b[0])}" y2="${f2(b[1])}" stroke="${p.muted}" stroke-width="${f2(6 * s)}" stroke-linecap="round" opacity="${f2(ent(0))}"/>`;
     if (k > 0) g += `<line x1="${f2(a[0])}" y1="${f2(a[1])}" x2="${f2(lerp(a[0], b[0], k))}" y2="${f2(lerp(a[1], b[1], k))}" stroke="${p.accent}" stroke-width="${f2(6 * s)}" stroke-linecap="round"/>`; }
@@ -176,18 +176,27 @@ function stepsSVG(L, p, c) {
 }
 
 /* ---------- process.beforeAfter ---------- */
+/* the geometry a template needs to put real photos in the cards: media: true leaves a window [x, y, w, h] (px) open in each card (the card is drawn around it, never over it) */
+export function baGeom(p, c) {
+  const s = c.s * num(p.size, 1), [X, Y, Wb, Hb] = bx(p.box, c), col = p.layout === 'column' || (p.layout === 'auto' && c.tall), gap = col ? 0.1 * Hb : 0.08 * Wb;
+  const cw = col ? Wb : (Wb - gap) / 2, ch = col ? (Hb - gap) / 2 : Hb, A = [X, Y], B = col ? [X, Y + ch + gap] : [X + cw + gap, Y];
+  const win = (o) => (p.media ? [o[0] + 24 * s, o[1] + 88 * s, cw - 48 * s, Math.max(40 * s, ch * num(p.mediaH, 0.5))] : null);
+  return { s, col, gap, cw, ch, A, B, winA: win(A), winB: win(B) };
+}
 function baSVG(L, p, c) {
-  const s = c.s * num(p.size, 1), u = L.u, [X, Y, Wb, Hb] = bx(p.box, c), col = p.layout === 'column' || (p.layout === 'auto' && c.tall), gap = (col ? 0.1 * Hb : 0.08 * Wb);
-  const cw = col ? Wb : (Wb - gap) / 2, ch = col ? (Hb - gap) / 2 : Hb, A = [X, Y], B = col ? [X, Y + ch + gap] : [X + cw + gap, Y], sw = num(p.swap, 1.4), kb = E.hero(seg(u, 0, 0.45)), ka = E.move(seg(u, sw, sw + 0.7));
-  const card = (o, pos, k, after, clipK) => { const [x, y] = pos, id = `ba${after ? 'a' : 'b'}${Math.round(x)}${Math.round(y)}`, fs = 44 * s, ls = list(o?.lines, 6), chip = String(o?.label ?? (after ? 'After' : 'Before')).toUpperCase(), cwid = measure(chip, 24 * s, { weight: 800, ls: 1.5 * s }) * 1.1 + 34 * s;
-    let g = `<defs><clipPath id="${id}"><rect x="${f2(x)}" y="${f2(y)}" width="${f2(col ? cw : cw * clipK)}" height="${f2(col ? ch * clipK : ch)}"/></clipPath></defs><g clip-path="url(#${id})" opacity="${f2(k)}">`;
-    g += `<rect x="${f2(x)}" y="${f2(y)}" width="${f2(cw)}" height="${f2(ch)}" rx="${f2(20 * s)}" fill="${p.paper}" stroke="${after ? p.accent : p.ink}" stroke-opacity="${after ? 0.9 : 0.15}" stroke-width="${f2((after ? 4 : 2) * s)}"/>`;
+  const G = baGeom(p, c), { s, col, gap, cw, ch, A, B } = G, u = L.u, sw = num(p.swap, 1.4), kb = E.hero(seg(u, 0, 0.45)), ka = E.move(seg(u, sw, sw + 0.7)), [X, Y] = A;
+  const card = (o, pos, k, after, clipK, win) => { const [x, y] = pos, id = `ba${after ? 'a' : 'b'}${Math.round(x)}${Math.round(y)}`, fs = 44 * s, ls = list(o?.lines, 6), chip = String(o?.label ?? (after ? 'After' : 'Before')).toUpperCase(), cwid = measure(chip, 24 * s, { weight: 800, ls: 1.5 * s }) * 1.1 + 34 * s;
+    const r = 20 * s, outer = `M${f2(x + r)} ${f2(y)} H${f2(x + cw - r)} Q${f2(x + cw)} ${f2(y)} ${f2(x + cw)} ${f2(y + r)} V${f2(y + ch - r)} Q${f2(x + cw)} ${f2(y + ch)} ${f2(x + cw - r)} ${f2(y + ch)} H${f2(x + r)} Q${f2(x)} ${f2(y + ch)} ${f2(x)} ${f2(y + ch - r)} V${f2(y + r)} Q${f2(x)} ${f2(y)} ${f2(x + r)} ${f2(y)} Z`;
+    const hole = win ? ` M${f2(win[0])} ${f2(win[1])} V${f2(win[1] + win[3])} H${f2(win[0] + win[2])} V${f2(win[1])} Z` : '';
+    let g = `<defs><clipPath id="${id}"><rect x="${f2(x - 4 * s)}" y="${f2(y - 4 * s)}" width="${f2(col ? cw + 8 * s : (cw + 8 * s) * clipK)}" height="${f2(col ? (ch + 8 * s) * clipK : ch + 8 * s)}"/></clipPath></defs><g clip-path="url(#${id})" opacity="${f2(k)}">`;
+    g += `<path d="${outer}${hole}" fill="${p.paper}" fill-rule="evenodd" stroke="${after ? p.accent : p.ink}" stroke-opacity="${after ? 0.9 : 0.15}" stroke-width="${f2((after ? 4 : 2) * s)}"/>`;
+    if (win) g += `<rect x="${f2(win[0])}" y="${f2(win[1])}" width="${f2(win[2])}" height="${f2(win[3])}" fill="none" stroke="${p.ink}" stroke-opacity="0.2" stroke-width="${f2(2 * s)}"/>`;
     g += `<rect x="${f2(x + 32 * s)}" y="${f2(y + 30 * s)}" width="${f2(cwid)}" height="${f2(42 * s)}" rx="${f2(21 * s)}" fill="${after ? p.accent : p.muted}"/>` + text(chip, x + 48 * s, y + 59 * s, { size: 24 * s, weight: 800, fill: after ? inkOn(p.accent) : PAPER_INK, ls: 1.5 * s });
-    const tl = wrap(o?.title ?? '', cw - 64 * s, fs, { weight: 800, max: 2 }); g += lines(tl, x + 32 * s, y + 130 * s, fs, fs * 1.12, { weight: 800, fill: p.ink });
-    let yy = y + 130 * s + tl.length * fs * 1.12 + 20 * s; for (const l of ls) { if (yy > y + ch - 30 * s) break; g += iconSVG(after ? 'check' : 'dot', x + 50 * s, yy - 10 * s, 30 * s, after ? p.accent : p.muted, 1, after ? 3 : 2) + text(l, x + 80 * s, yy, { size: 30 * s, weight: 600, fill: p.ink, op: 0.85 }); yy += 46 * s; }
+    const ty = win ? win[1] + win[3] + 30 * s : y + 100 * s, tl = wrap(o?.title ?? '', cw - 64 * s, fs, { weight: 800, max: 2 }); g += lines(tl, x + 32 * s, ty + fs * 0.8, fs, fs * 1.12, { weight: 800, fill: p.ink });
+    let yy = ty + fs * 0.8 + tl.length * fs * 1.12 + 14 * s; for (const l of ls) { if (yy > y + ch - 24 * s) break; g += iconSVG(after ? 'check' : 'dot', x + 50 * s, yy - 10 * s, 30 * s, after ? p.accent : p.muted, 1, after ? 3 : 2) + text(l, x + 80 * s, yy, { size: 30 * s, weight: 600, fill: p.ink, op: 0.85 }); yy += 44 * s; }
     return g + '</g>'; };
-  let g = card(p.before, A, kb * (1 - 0.4 * ka), false, 1);
-  if (u >= sw) { g += card(p.after, B, 1, true, ka); const m = col ? [X + cw / 2, Y + ch + gap / 2] : [X + cw + gap / 2, Y + ch / 2], r = 22 * s * E.hero(seg(u, sw, sw + 0.35));
+  let g = card(p.before, A, kb * (1 - 0.4 * ka), false, 1, G.winA);
+  if (u >= sw) { g += card(p.after, B, 1, true, ka, G.winB); const m = col ? [X + cw / 2, Y + ch + gap / 2] : [X + cw + gap / 2, Y + ch / 2], r = 22 * s * E.hero(seg(u, sw, sw + 0.35));
     g += `<circle cx="${f2(m[0])}" cy="${f2(m[1])}" r="${f2(r * 1.6)}" fill="${p.accent}"/>` + `<g transform="translate(${f2(m[0])} ${f2(m[1])}) rotate(${col ? 90 : 0})"><path d="M${f2(-r * 0.7)} 0 H${f2(r * 0.6)} M${f2(r * 0.1)} ${f2(-r * 0.55)} L${f2(r * 0.65)} 0 L${f2(r * 0.1)} ${f2(r * 0.55)}" fill="none" stroke="${inkOn(p.accent)}" stroke-width="${f2(4 * s)}" stroke-linecap="round" stroke-linejoin="round"/></g>`; }
   return `<g opacity="${f2(1 - L.out)}">${g}</g>`;
 }
@@ -203,7 +212,7 @@ export const EXPLAIN = {
   'process.steps': { file: 'type/gfx/explain.js', tags: ['process', 'steps', 'how-to', 'timeline', 'icons', 'numbered'], dur: 6, inF: 6, outF: 9, d: STEPS_D, svg: stepsSVG },
   'process.beforeAfter': { file: 'type/gfx/explain.js', tags: ['before-after', 'comparison', 'process', 'how-to', 'explainer'], dur: 4, inF: 6, outF: 9,
     d: { before: { label: 'Before', title: 'Placeholder before state', lines: ['Placeholder line one', 'Placeholder line two'] }, after: { label: 'After', title: 'Placeholder after state', lines: ['Placeholder line one', 'Placeholder line two'] },
-      swap: 1.4, layout: 'auto', box: [0.08, 0.2, 0.84, 0.6], accent: BRAND, ink: PAPER_INK, paper: '#FFFFFF', muted: '#D9D3C7', size: 1 }, svg: baSVG },
+      swap: 1.4, layout: 'auto', box: [0.08, 0.2, 0.84, 0.6], media: false, mediaH: 0.5, accent: BRAND, ink: PAPER_INK, paper: '#FFFFFF', muted: '#D9D3C7', size: 1 }, svg: baSVG },
 };
 export const EXPLAIN_CUES = {
   'diagram.graph': (p) => { const T = diagramTimes(p), out = [];

@@ -2812,8 +2812,8 @@
      "name": "hook",
      "aliases": [
       "promise",
-      "result",
-      "open"
+      "open",
+      "coldopen"
      ],
      "start": 0,
      "end": 12,
@@ -2848,6 +2848,7 @@
     {
      "name": "result",
      "aliases": [
+      "result",
       "beforeafter",
       "before",
       "after",
