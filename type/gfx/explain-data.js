@@ -24,13 +24,17 @@ export function niceDomain(lo, hi, n = 5) {
 }
 /* the footer: Source + Method + a DEMO DATA pill, inside the safe rect */
 export function footerSVG(p, c, x, y, w, op = 1) {
-  const s = c.s * num(p.size, 1), sz = Math.max(24 * c.s, 24 * s), src = 'Source: ' + srcOf(p), meth = String(p.method ?? '').trim();
-  const pill = p.demo !== false ? 'DEMO DATA' : '', pw = pill ? measure(pill, sz, { weight: 800 }) + 28 * c.s : 0, line = src + (meth ? '  ·  Method: ' + meth : '');
-  let fs = sz; const room = w - pw - 20 * c.s; if (measure(line, fs, { weight: 600 }) > room) fs = Math.max(18 * c.s, fs * room / measure(line, fs, { weight: 600 }));
+  const s = c.s * num(p.size, 1), sz = Math.max(28 * c.s, 28 * s), src = 'Source: ' + srcOf(p), meth = String(p.method ?? '').trim();
+  const pill = p.demo !== false ? 'DEMO DATA' : '', pw = pill ? measure(pill, sz, { weight: 800, ls: 1 * c.s }) * 1.08 + 30 * c.s : 0, line = src + (meth ? '  \u00b7  Method: ' + meth : '');
+  let fs = sz; const room = w - pw - 20 * c.s, mw = measure(line, fs, { weight: 600 }) * 1.1; if (mw > room) fs = Math.max(20 * c.s, (fs * room) / mw);
   return `<g opacity="${f2(op)}">${pill ? `<rect x="${f2(x)}" y="${f2(y - sz * 0.95)}" width="${f2(pw)}" height="${f2(sz * 1.35)}" rx="${f2(6 * c.s)}" fill="${p.ink || PAPER_INK}"/>` + text(pill, x + 14 * c.s, y, { size: sz, weight: 800, fill: p.paper || '#FFFFFF', ls: 1 * c.s }) : ''}`
     + text(line, x + pw + (pill ? 14 * c.s : 0), y, { size: fs, weight: 600, fill: p.ink || PAPER_INK, op: 0.78 }) + '</g>';
 }
 const footY = (c, y1) => Math.min(c.safe.y1 - 6 * c.s, y1);
+/* x labels that fit their slot: shrink to 18 px (at 1080) first, then print every k-th label */
+function xLabels(p, G) { const slot = G.kind === 'bar' ? G.w / G.n : G.w / Math.max(1, G.n - 1), labs = [].concat(p.labels || []).slice(0, G.n).map(String), mw = Math.max(1, ...labs.map((l) => measure(l, 26 * G.s, { weight: 600 })));
+  const fs = Math.max(18 * G.s, Math.min(26 * G.s, (26 * G.s * slot * 0.9) / mw)), need = (mw * fs) / (26 * G.s) + 12 * G.s; return { fs, every: Math.max(1, Math.ceil(need / Math.max(1, slot))) }; }
+export function wrapLines(str, width, size, max = 2) { const words = String(str ?? '').split(/\s+/).filter(Boolean), out = []; let cur = ''; for (const w of words) { const t = cur ? cur + ' ' + w : w; if (cur && measure(t, size, { weight: 800 }) > width) { out.push(cur); cur = w; } else cur = t; } if (cur) out.push(cur); return out.slice(0, max); }
 
 /* ---------- chart.story: the geometry is a function the callout reuses ---------- */
 const STORY_D = { kind: 'bar', title: '', subtitle: '', labels: ['North', 'South', 'East', 'West', 'Central'], series: [{ name: 'Demo series', values: [42, 35, 28, 19, 12] }], points: null,
@@ -39,7 +43,7 @@ const STORY_D = { kind: 'bar', title: '', subtitle: '', labels: ['North', 'South
   source: PLACEHOLDER, method: '', demo: true, size: 1 };
 export const ZERO_KINDS = ['bar', 'area'];   // these encode magnitude by length or area: the baseline is zero, always
 export function chartGeom(p0, c) {
-  const p = { ...STORY_D, ...p0 }, s = c.s * num(p.size, 1), [X, Y, Wb, Hb] = bx(p.box, c), kind = ['bar', 'line', 'area', 'scatter'].includes(p.kind) ? p.kind : 'bar';
+  const p = { ...STORY_D, ...p0 }, s = c.s * num(p.size, 1), [X, Y, Wb, Hb0] = bx(p.box, c), Hb = Math.max(40 * c.s, Math.min(Hb0, c.safe.y1 - 56 * c.s - Y)), kind = ['bar', 'line', 'area', 'scatter'].includes(p.kind) ? p.kind : 'bar';
   const series = [].concat(p.series || []).slice(0, 8).map((q, i) => ({ name: String(q?.name ?? 'Series ' + (i + 1)), values: [].concat(q?.values || []).slice(0, 60).map((v) => num(v, NaN)), color: q?.color }));
   const pts = kind === 'scatter' ? [].concat(p.points || []).slice(0, 400).map((q) => ({ x: num(q?.[0] ?? q?.x, NaN), y: num(q?.[1] ?? q?.y, NaN), label: q?.[2] ?? q?.label ?? '' })).filter((q) => Number.isFinite(q.x) && Number.isFinite(q.y)) : [];
   const ys = kind === 'scatter' ? pts.map((q) => q.y) : series.flatMap((q) => q.values.filter(Number.isFinite)), vmin = ys.length ? Math.min(...ys) : 0, vmax = ys.length ? Math.max(...ys) : 1;
@@ -72,11 +76,11 @@ const barPath = (x, y0, w, y1, r) => { const up = y1 < y0, rr = Math.min(r, Math
     : `M${f2(x)} ${f2(y0)} V${f2(y1 - rr)} Q${f2(x)} ${f2(y1)} ${f2(x + rr)} ${f2(y1)} H${f2(x + w - rr)} Q${f2(x + w)} ${f2(y1)} ${f2(x + w)} ${f2(y1 - rr)} V${f2(y0)} Z`; };
 function storySVG(L, p, c) {
   const G = chartGeom(p, c), { s, x, y, w, h, dom, kind } = G, u = L.u, ink = p.ink, o = 1 - L.out, fmtV = (v) => fmtNumber(v, { locale: p.locale, dec: p.dec, unit: p.unit });
-  const H = hlAt(p, u), colOf = (i, si) => { const isH = (j) => j === i || (typeof j === 'string' && (p.labels?.[i] === j || G.series[si]?.name === j));
+  const H = hlAt(p, u), colOf = (i, si) => { const key = kind === 'bar' ? i : si, isH = (j) => (typeof j === 'number' && j >= 0 && j === key) || (typeof j === 'string' && j !== '' && (p.labels?.[i] === j || G.series[si]?.name === j));
     const base = G.series[si]?.color || (si === num(p.compare, -1) ? p.muted : G.series.length > 1 && si > 0 ? mixHex(p.accent, p.paper, 0.45) : p.highlight < 0 && !(p.hl || []).length ? p.accent : p.muted);
     const was = isH(H.from) ? p.accent : base, now = isH(H.h) ? p.accent : base; return mixHex(was, now, H.k); };
-  let g = '';
-  if (p.title) g += text(p.title, G.X, G.Y + 44 * s, { size: 44 * s, weight: 800, fill: ink });
+  const XL = xLabels(p, G); let g = '';
+  if (p.title) { const tw = measure(p.title, 44 * s, { weight: 800 }); g += text(p.title, G.X, G.Y + 44 * s, { size: tw > G.Wb ? Math.max(28 * s, (44 * s * G.Wb) / tw) : 44 * s, weight: 800, fill: ink }); }
   if (p.subtitle) g += text(p.subtitle, G.X, G.Y + (p.title ? 88 : 36) * s, { size: 28 * s, weight: 600, fill: ink, op: 0.72 });
   if (p.yLabel || p.unit) g += text(p.yLabel || p.unit, G.X, y - 18 * s, { size: 26 * s, weight: 700, fill: ink, op: 0.8 });
   /* grid + ticks (recessive), the zero line (strong) */
@@ -90,9 +94,9 @@ function storySVG(L, p, c) {
       G.series.forEach((q, si) => { const v = q.values[i]; if (!Number.isFinite(v)) return; const x0 = G.sx(i) - bw / 2 + sub * si + gap / 2, y1 = lerp(G.base, G.sy(v), e);
         g += `<path d="${barPath(x0, G.base, sub - gap, y1, 4 * s)}" fill="${colOf(i, si)}"/>`;
         if (p.valueLabels && k <= 2) g += text(fmtV(v * e), x0 + (sub - gap) / 2, v >= 0 ? y1 - 12 * s : y1 + 32 * s, { size: (k > 1 ? 24 : 30) * s, weight: 800, fill: ink, anchor: 'middle', op: seg(e, 0.2, 0.6) }); });
-      g += text(String(p.labels?.[i] ?? ''), G.sx(i), y + h + 40 * s, { size: 26 * s, weight: 600, fill: ink, anchor: 'middle', op: E.soft(seg(u, st, st + 0.3)) * 0.85 }); }
+      if (i % XL.every === 0) g += text(String(p.labels?.[i] ?? ''), G.sx(i), y + h + 40 * s, { size: XL.fs, weight: 600, fill: ink, anchor: 'middle', op: E.soft(seg(u, st, st + 0.3)) * 0.85 }); }
   } else if (kind === 'line' || kind === 'area') {
-    for (let i = 0; i < G.n; i++) { const st = startOf(p, i); if (u >= st - 0.2 && (i % Math.ceil(G.n / 8) === 0 || i === G.n - 1)) g += text(String(p.labels?.[i] ?? ''), G.sx(i), y + h + 40 * s, { size: 24 * s, weight: 600, fill: ink, anchor: 'middle', op: 0.8 }); }
+    for (let i = 0; i < G.n; i++) { const st = startOf(p, i); if (u >= st - 0.2 && (i % XL.every === 0 || (i === G.n - 1 && (G.n - 1) % XL.every >= XL.every / 2))) g += text(String(p.labels?.[i] ?? ''), G.sx(i), y + h + 40 * s, { size: XL.fs, weight: 600, fill: ink, anchor: 'middle', op: 0.8 }); }
     G.series.forEach((q, si) => { const col = colOf(-1, si), vis = []; q.values.forEach((v, i) => { if (!Number.isFinite(v)) return; const st = startOf(p, i), e = seg(u, st, st + num(p.grow, 0.9) * 0.5); if (e > 0) vis.push([G.sx(i), G.sy(v), e, v]); });
       if (!vis.length) return; const last = vis.at(-1), tail = last[2] < 1 && vis.length > 1 ? [lerp(vis.at(-2)[0], last[0], last[2]), lerp(vis.at(-2)[1], last[1], last[2])] : [last[0], last[1]];
       const ptsD = [...vis.slice(0, -1).map((q2) => [q2[0], q2[1]]), tail], d = ptsD.map((q2, i) => `${i ? 'L' : 'M'}${f2(q2[0])} ${f2(q2[1])}`).join(' ');
@@ -140,10 +144,10 @@ export function hexLayout(tiles, box) {
 }
 export function binsOf(values, n = 5) { const v = values.filter(Number.isFinite); if (!v.length) return [0]; const D = niceDomain(Math.min(...v), Math.max(...v), Math.max(1, Math.min(9, n))); return D.ticks.slice(0, -1); }
 function hexSVG(L, p, c) {
-  const s = c.s * num(p.size, 1), u = L.u, [X, Y, Wb, Hb] = bx(p.box, c), legendH = 120 * s, top = p.title ? 70 * s : 0, H = hexLayout(p.tiles, [X, Y + top, Wb, Hb - top - legendH]);
-  const vals = H.tiles.map((t) => num(t.value, NaN)), edges = binsOf(vals, num(p.bins, 5)), nb = edges.length, binOf = (v) => { let b = 0; for (let i = 0; i < nb; i++) if (v >= edges[i]) b = i; return b; };
+  const s = c.s * num(p.size, 1), u = L.u, [X, Y, Wb, Hb0] = bx(p.box, c), Hb = Math.max(160 * c.s, Math.min(Hb0, c.safe.y1 - 56 * c.s - Y)), legendH = 120 * s, tl = p.title ? wrapLines(p.title, Wb, 44 * s, 2) : [], top = tl.length * 52 * s + (tl.length ? 18 * s : 0), H = hexLayout(p.tiles, [X, Y + top, Wb, Hb - top - legendH]);
+  const vals = H.tiles.map((t) => (t.value == null || t.value === '' ? NaN : num(t.value, NaN))), edges = binsOf(vals, num(p.bins, 5)), nb = edges.length, binOf = (v) => { let b = 0; for (let i = 0; i < nb; i++) if (v >= edges[i]) b = i; return b; };
   const colOf = (v) => (Number.isFinite(v) ? mixHex(p.ramp[0], p.ramp[1], nb > 1 ? binOf(v) / (nb - 1) : 1) : p.missing), hl = new Set([].concat(p.highlight || []));
-  let g = p.title ? text(p.title, X, Y + 44 * s, { size: 44 * s, weight: 800, fill: p.ink }) : '';
+  let g = tl.map((l, i) => text(l, X, Y + 44 * s + i * 52 * s, { size: 44 * s, weight: 800, fill: p.ink })).join('');
   H.tiles.forEach((t, i) => { const st = (t.r * 0.5 + t.q * 0.25 + 1.5) * num(p.stagger, 0.12), e = E.hero(seg(u, st, st + 0.45)); if (e <= 0) return;
     const r = H.size * 0.94 * (0.82 + 0.18 * e), pts = Array.from({ length: 6 }, (_, k) => { const a = (Math.PI / 180) * (60 * k - 30); return `${f2(t.cx + r * Math.cos(a))},${f2(t.cy + r * Math.sin(a))}`; }).join(' ');
     const v = vals[i], fill = colOf(v), ink = inkOn(fill, PAPER_INK, '#FFFFFF');
@@ -152,9 +156,10 @@ function hexSVG(L, p, c) {
     const fz = Math.min(30 * s, H.size * 0.34); g += text(String(t.short ?? t.label ?? ''), t.cx, t.cy - fz * 0.15, { size: fz, weight: 800, fill: ink, anchor: 'middle', op: e });
     g += text(Number.isFinite(v) ? fmtNumber(v, { locale: p.locale, dec: p.dec, compact: Math.abs(v) >= 1e4 ? 'short' : false, unit: p.unit }) : 'no data', t.cx, t.cy + fz * 0.95, { size: fz * 0.8, weight: 600, fill: ink, anchor: 'middle', op: e * 0.9 }); });
   /* legend: one swatch per bin, the lower bound printed (with the unit) */
-  const ly = Y + Hb - legendH + 40 * s, sw = Math.min(140 * s, (Wb * 0.7) / Math.max(1, nb)), lo = E.soft(seg(u, 0.3, 0.8));
+  const ly = Y + Hb - legendH + 40 * s, sw = Math.min(160 * s, (Wb * 0.86) / Math.max(1, nb + 1)), lo = E.soft(seg(u, 0.3, 0.8));
   g += `<g opacity="${f2(lo)}">` + text(p.legendTitle || p.unit || 'Value', X, ly - 8 * s, { size: 24 * s, weight: 700, fill: p.ink, op: 0.8 });
-  edges.forEach((ev, i) => { g += `<rect x="${f2(X + i * sw)}" y="${f2(ly + 4 * s)}" width="${f2(sw - 2 * s)}" height="${f2(22 * s)}" fill="${mixHex(p.ramp[0], p.ramp[1], nb > 1 ? i / (nb - 1) : 1)}"/>` + text('≥ ' + fmtAxis(ev, { locale: p.locale, dec: p.dec }), X + i * sw, ly + 56 * s, { size: 22 * s, weight: 600, fill: p.ink, op: 0.75 }); });
+  const labs = edges.map((ev) => '\u2265 ' + fmtAxis(ev, { locale: p.locale, dec: p.dec })), every = Math.max(1, Math.ceil(Math.max(...labs.map((l) => measure(l, 22 * s, { weight: 600 }))) / Math.max(1, sw - 6 * s)));
+  edges.forEach((ev, i) => { g += `<rect x="${f2(X + i * sw)}" y="${f2(ly + 4 * s)}" width="${f2(sw - 2 * s)}" height="${f2(22 * s)}" fill="${mixHex(p.ramp[0], p.ramp[1], nb > 1 ? i / (nb - 1) : 1)}"/>` + (i % every === 0 ? text(labs[i], X + i * sw, ly + 56 * s, { size: 22 * s, weight: 600, fill: p.ink, op: 0.75 }) : ''); });
   if (vals.some((v) => !Number.isFinite(v))) g += `<rect x="${f2(X + nb * sw + 20 * s)}" y="${f2(ly + 4 * s)}" width="${f2(22 * s)}" height="${f2(22 * s)}" fill="${p.missing}"/>` + text('no data', X + nb * sw + 50 * s, ly + 22 * s, { size: 22 * s, weight: 600, fill: p.ink, op: 0.75 });
   g += '</g>' + footerSVG(p, c, X, footY(c, Y + Hb + 30 * s), Wb, 1);
   return `<g opacity="${f2((1 - L.out) * Math.max(0.0001, E.soft(L.in)))}">${g}</g>`;
@@ -170,7 +175,7 @@ function heroSVG(L, p, c) {
   const lw = measure(final, sz, { weight: 800 }) * E.hero(seg(u, num(p.count, 1.4) - 0.1, num(p.count, 1.4) + 0.4));
   g += `<rect x="${f2(cx - lw / 2)}" y="${f2(cy + sz * 0.16)}" width="${f2(lw)}" height="${f2(Math.max(6 * s, sz * 0.05))}" rx="${f2(4 * s)}" fill="${p.accent}"/>`;
   if (p.label) g += text(p.label, cx, cy + sz * 0.16 + 70 * s, { size: 40 * s, weight: 700, fill: p.ink, anchor: 'middle', op: E.soft(seg(u, 0.3, 0.8)) });
-  const fw = Math.min(room, 1400 * s); g += footerSVG(p, c, cx - fw / 2, footY(c, cy + sz * 0.16 + 150 * s), fw, 1);
+  const fw = Math.min(room, 1400 * s); g += footerSVG({ ...p, size: 1 }, c, cx - fw / 2, footY(c, cy + sz * 0.16 + 150 * s), fw, 1);
   return `<g opacity="${f2(o * Math.max(0.0001, E.soft(L.in)))}">${g}</g>`;
 }
 

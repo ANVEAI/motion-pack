@@ -11,7 +11,7 @@
      compactParts(v, locale, mode) -> { value, word } the scaled value and the word / letter for it
      fmtAxis(v, opts) the tick label: the same rules, compact 'short' by default for 4+ digit numbers
    Indian system: lakh = 1,00,000 (1e5), crore = 1,00,00,000 (1e7), lakh crore = 1e12; the grouping is the last three digits, then pairs. Non-finite input prints an en dash. */
-export const MINUS = '−', THIN = ' ';
+export const MINUS = '\u2212', THIN = '\u2009';
 export const LOCALES = {
   intl: { group: ',', decimal: '.', grouping: 'intl', short: [[1e12, 'T'], [1e9, 'B'], [1e6, 'M'], [1e3, 'K']], long: [[1e12, 'trillion'], [1e9, 'billion'], [1e6, 'million'], [1e3, 'thousand']] },
   in: { group: ',', decimal: '.', grouping: 'in', short: [[1e12, 'L Cr'], [1e7, 'Cr'], [1e5, 'L'], [1e3, 'K']], long: [[1e12, 'lakh crore'], [1e7, 'crore'], [1e5, 'lakh'], [1e3, 'thousand']] },
@@ -36,14 +36,14 @@ export function compactParts(v, locale = 'intl', mode = 'short', dec = 1) {
 }
 export function fmtNumber(v, { locale = 'intl', dec = 0, compact = false, prefix = '', suffix = '', unit = '', sign = false, minus = MINUS } = {}) {
   const n = typeof v === 'string' && v.trim() !== '' ? Number(v) : v;
-  if (typeof n !== 'number' || !Number.isFinite(n)) return '–';
+  if (typeof n !== 'number' || !Number.isFinite(n)) return '\u2013';
   const L = loc(locale), d = decOf(dec);
   let val = n, word = '';
   if (compact === 'short' || compact === 'long' || compact === true) { const c = compactParts(n, locale, compact === 'long' ? 'long' : 'short', d); val = c.value; word = c.word; }
   const fixed = Math.abs(val).toFixed(d), neg = val < 0 && +fixed !== 0, [ip, fp] = fixed.split('.');
   let body = groupDigits(ip, L.grouping, L.group) + (fp ? L.decimal + fp : '');
   if (word) body += (compact === 'long' || word.length > 2 || word.includes(' ') || L.grouping === 'in' ? ' ' : '') + word;
-  const u = unit ? (unit === '%' || unit === '‰' ? unit : THIN + unit) : '';
+  const u = unit ? (unit === '%' || unit === '\u2030' ? unit : THIN + unit) : '';
   return (neg ? minus : sign && n > 0 ? '+' : '') + prefix + body + u + suffix;
 }
 /* an axis tick: compact short once the number has 4+ integer digits, otherwise plain at the given decimals */

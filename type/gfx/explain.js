@@ -20,7 +20,7 @@ const list = (v, n = 64) => (Array.isArray(v) ? v.slice(0, n) : []);
 export function wrap(str, width, size, { weight = 700, max = 3 } = {}) {
   const words = String(str ?? '').split(/\s+/).filter(Boolean), out = []; let cur = '';
   for (const w of words) { const t = cur ? cur + ' ' + w : w; if (cur && measure(t, size, { weight }) > width) { out.push(cur); cur = w; } else cur = t; }
-  if (cur) out.push(cur); if (out.length > max) { const keep = out.slice(0, max); keep[max - 1] = keep[max - 1].replace(/\s*\S*$/, '') + '…'; return keep; } return out;
+  if (cur) out.push(cur); if (out.length > max) { const keep = out.slice(0, max); keep[max - 1] = keep[max - 1].replace(/\s*\S*$/, '') + '\u2026'; return keep; } return out;
 }
 const lines = (ls, x, y, size, lh, o) => ls.map((l, i) => text(l, x, y + i * lh, { size, ...o })).join('');
 /* a tiny memo for layouts (pure input -> pure output; the key is the input itself) */
@@ -49,15 +49,15 @@ export function appearTimes(lay, p) {
   return out;
 }
 const stateAt = (entries, u, fn) => { const es = list(entries).filter((e) => e && Number.isFinite(+e.at)).sort((a, b) => a.at - b.at); let cur = null, prev = null; for (const e of es) if (u >= e.at) { prev = cur; cur = e; } return { cur, prev, fn }; };
-function viewOf(lay, e, c) { if (!e || !e.ids || e.ids === 'all') return { cx: c.W / 2, cy: c.H / 2, k: 1 }; const [x, y, w, h] = boundsOf(lay, e.ids), pad = clamp(num(e.pad, 0.14), 0, 0.4);
-  return { cx: x + w / 2, cy: y + h / 2, k: clamp(Math.min((c.W * (1 - 2 * pad)) / Math.max(1, w), (c.H * (1 - 2 * pad)) / Math.max(1, h)), 0.5, num(e.max, 2.6)) }; }
+function viewOf(lay, e, c) { if (!e || !e.ids || e.ids === 'all') return { cx: c.W / 2, cy: c.H / 2, k: 1 }; const [x, y, w, h] = boundsOf(lay, e.ids), pad = clamp(num(e.pad, 0.16), 0, 0.4);
+  return { cx: x + w / 2, cy: y + h / 2, k: clamp(Math.min((c.W * (1 - 2 * pad)) / Math.max(1, w), (c.H * (1 - 2 * pad)) / Math.max(1, h)), 0.5, num(e.max, 2.0)) }; }
 const mixView = (a, b, k) => ({ cx: lerp(a.cx, b.cx, k), cy: lerp(a.cy, b.cy, k), k: Math.exp(lerp(Math.log(a.k), Math.log(b.k), k)) });
 export function camAt(lay, p, u, c) {
   const es = list(p.cam).filter((e) => e && Number.isFinite(+e.at)).sort((a, b) => a.at - b.at); let v = viewOf(lay, null, c);
   for (const e of es) { if (u < e.at) break; v = mixView(v, viewOf(lay, e, c), E.move(seg(u, e.at, e.at + num(e.dur, 0.9)))); }
   const z = p.zoom; let kz = 0;
   if (z && lay.nodes[z.node]) { const n = lay.nodes[z.node], dur = num(z.dur, 1.1), out = num(z.out, Infinity); kz = E.move(seg(u, num(z.at), num(z.at) + dur)) * (1 - E.move(seg(u, out, out + dur)));
-    if (kz > 0) v = mixView(v, { cx: n.cx, cy: n.cy, k: Math.max(c.W / Math.max(1, n.w), c.H / Math.max(1, n.h)) * 1.12 }, kz); }
+    if (kz > 0) v = mixView(v, { cx: n.cx, cy: n.cy, k: Math.max(c.W / Math.max(1, n.w), c.H / Math.max(1, n.h)) * 1.6 }, kz); }
   return { ...v, kz };
 }
 function nodeShape(n, kind, fill, stroke, sw) {
@@ -156,7 +156,7 @@ export const stepActive = (p, u) => { const a = list(p.active).filter((q) => Arr
 function stepsSVG(L, p, c) {
   const s = c.s * num(p.size, 1), u = L.u, st = list(p.steps, 12), n = st.length; if (!n) return ''; const [X, Y, Wb, Hb] = bx(p.box, c), col = p.layout === 'column' || (p.layout === 'auto' && c.tall), act = stepActive(p, u);
   const at = list(p.active).filter((q) => Array.isArray(q)), tOf = (i) => { const q = at.find((x) => Math.trunc(num(x[1])) === i); return q ? num(q[0]) : 0.5 + i * 1.1; };
-  const R = col ? Math.min((Hb / n) * 0.26, 52 * s) : Math.min((Wb / n) * 0.16, 58 * s), P = st.map((_, i) => (col ? [X + R + 4 * s, Y + ((i + 0.5) * Hb) / n] : [X + ((i + 0.5) * Wb) / n, Y + Hb * 0.48]));
+  const R = col ? Math.min((Hb / n) * 0.26, 56 * s) : Math.min((Wb / n) * 0.17, 70 * s), P = st.map((_, i) => (col ? [X + R + 4 * s, Y + ((i + 0.5) * Hb) / n] : [X + ((i + 0.5) * Wb) / n, Y + Hb * 0.48]));
   let g = ''; const ent = (i) => E.hero(seg(u, i * 0.08, i * 0.08 + 0.45));
   if (n > 1) { const [a, b] = [P[0], P[n - 1]], k = act >= n ? 1 : act <= 0 ? 0 : clamp((act - 1 + E.soft(seg(u, tOf(act), tOf(act) + 0.45))) / (n - 1));
     g += `<line x1="${f2(a[0])}" y1="${f2(a[1])}" x2="${f2(b[0])}" y2="${f2(b[1])}" stroke="${p.muted}" stroke-width="${f2(6 * s)}" stroke-linecap="round" opacity="${f2(ent(0))}"/>`;
@@ -176,7 +176,7 @@ function stepsSVG(L, p, c) {
 function baSVG(L, p, c) {
   const s = c.s * num(p.size, 1), u = L.u, [X, Y, Wb, Hb] = bx(p.box, c), col = p.layout === 'column' || (p.layout === 'auto' && c.tall), gap = (col ? 0.1 * Hb : 0.08 * Wb);
   const cw = col ? Wb : (Wb - gap) / 2, ch = col ? (Hb - gap) / 2 : Hb, A = [X, Y], B = col ? [X, Y + ch + gap] : [X + cw + gap, Y], sw = num(p.swap, 1.4), kb = E.hero(seg(u, 0, 0.45)), ka = E.move(seg(u, sw, sw + 0.7));
-  const card = (o, pos, k, after, clipK) => { const [x, y] = pos, id = `ba${after ? 'a' : 'b'}${Math.round(x)}${Math.round(y)}`, fs = 44 * s, ls = list(o?.lines, 6), chip = String(o?.label ?? (after ? 'After' : 'Before')).toUpperCase(), cwid = measure(chip, 24 * s, { weight: 800 }) + 32 * s;
+  const card = (o, pos, k, after, clipK) => { const [x, y] = pos, id = `ba${after ? 'a' : 'b'}${Math.round(x)}${Math.round(y)}`, fs = 44 * s, ls = list(o?.lines, 6), chip = String(o?.label ?? (after ? 'After' : 'Before')).toUpperCase(), cwid = measure(chip, 24 * s, { weight: 800, ls: 1.5 * s }) * 1.1 + 34 * s;
     let g = `<defs><clipPath id="${id}"><rect x="${f2(x)}" y="${f2(y)}" width="${f2(col ? cw : cw * clipK)}" height="${f2(col ? ch * clipK : ch)}"/></clipPath></defs><g clip-path="url(#${id})" opacity="${f2(k)}">`;
     g += `<rect x="${f2(x)}" y="${f2(y)}" width="${f2(cw)}" height="${f2(ch)}" rx="${f2(20 * s)}" fill="${p.paper}" stroke="${after ? p.accent : p.ink}" stroke-opacity="${after ? 0.9 : 0.15}" stroke-width="${f2((after ? 4 : 2) * s)}"/>`;
     g += `<rect x="${f2(x + 32 * s)}" y="${f2(y + 30 * s)}" width="${f2(cwid)}" height="${f2(42 * s)}" rx="${f2(21 * s)}" fill="${after ? p.accent : p.muted}"/>` + text(chip, x + 48 * s, y + 59 * s, { size: 24 * s, weight: 800, fill: after ? inkOn(p.accent) : PAPER_INK, ls: 1.5 * s });
