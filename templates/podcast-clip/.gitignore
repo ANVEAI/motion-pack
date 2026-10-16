@@ -7,3 +7,4 @@ out/smoke*/
 */assets/
 out/work-*/
 out/.*hf-transaction*/
+out/make*.log

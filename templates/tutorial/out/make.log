@@ -1,6 +1,0 @@
-/Users/adarshkant/Developer/mp-xp-human/templates/tutorial/out/plan.json 23 cues, 5 shots, 30.2667s proof ok tx ok {"shots":5,"asl":6.05,"longest":10.6,"pass":true}
-warning: cursor track ESTIMATED from click times (tools/human/human.mjs cursor); record the real track with your screen recorder when you can
-/Users/adarshkant/Developer/mp-xp-human/templates/tutorial/out/vo.wav 1 pieces 0 from your recordings
-/Users/adarshkant/Developer/mp-xp-human/templates/tutorial/assets/media/mix.wav via music mixer, bed music/bed_lofi_warm_loop8 LUFS-I -13.99 TP -2.0 cues 23
-/Users/adarshkant/Developer/mp-xp-human/templates/tutorial/index.html 30.2667 s, 16:9, 2 slots (labelled placeholders: screen webcam), 8 gfx, 23 cues todo: none
-render: npx -y hyperframes@0.8.142 render . -o out/tutorial.mp4 --crf 23
