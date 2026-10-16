@@ -9,6 +9,7 @@ plan.audio.quiet and plan.bedAutomation pass through. Master: -14 LUFS-I, plan.c
 import json, os, sys, subprocess, tempfile, shutil
 import numpy as np
 import soundfile as sf
+from scipy.io import wavfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 PACK = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 MUSIC = os.path.join(PACK, 'music')
@@ -35,7 +36,7 @@ def bed_from_library(mid, seconds, d):
     if it.get('loop') and len(y) < n:
         y = np.concatenate([y] * (n // len(y) + 1), axis=0)[:n]
     out = os.path.join(d, 'bed.wav')
-    sf.write(out, y, sr, subtype='FLOAT')
+    wavfile.write(out, sr, np.asarray(y, dtype=np.float32))   # no PEAK chunk (libsndfile time-stamps float WAVs): byte-identical rebuilds
     return out, None
 
 
@@ -51,7 +52,7 @@ def bed_from_score(sc, fps, d):
     y, _, _ = mixer.master(r['mix'], -16.0, -1.5)
     y = TS.finish(y, fps)
     out = os.path.join(d, 'score.wav')
-    sf.write(out, y, 48000, subtype='FLOAT')
+    wavfile.write(out, 48000, np.asarray(y, dtype=np.float32))   # no PEAK chunk: byte-identical rebuilds
     return out, r['markers']
 
 

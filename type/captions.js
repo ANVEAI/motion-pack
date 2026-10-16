@@ -49,6 +49,9 @@ export function captionFrame(chunks, t, style = CAPTION_STYLES.karaoke, { icons 
   });
   return { chunk: c, index: c.index, words, icons: ic, style: st };
 }
+/* the largest scale a word reaches in its life under a style (the active pop, the emphasis pop). Layout reserves (scale - 1) / 2 of the word's width on each side,
+   so a popped word never eats the gap to its neighbour (an emphasised "favourite" at 1.12 used to touch "hour"). 'single' mode shows one word: nothing to reserve. */
+export const popScale = (style, w) => (style.mode === 'single' ? 1 : Math.max(1, style.activeScale || 1, w && w.emph ? style.emphScale || 1 : 1));
 /* lint a caption track: timing coverage, chunk size, line budget, overlapping chunks, words per second */
 export function lintCaptions(chunks, style, { maxWords = 4, maxCharsPerLine = 18, lines = 2, maxWps = 5 } = {}) {
   const o = []; chunks.forEach((c, i) => { if (c.words.length > maxWords) o.push(`chunk ${i}: ${c.words.length} words > ${maxWords}`); if (c.text.length > maxCharsPerLine * lines) o.push(`chunk ${i}: ${c.text.length} chars > ${maxCharsPerLine * lines}`); const dur = c.e - c.s; if (dur < 0.25 && c.words.length > 1) o.push(`chunk ${i}: ${dur.toFixed(2)} s too short to read`); if (c.words.length / dur > maxWps) o.push(`chunk ${i}: ${(c.words.length / dur).toFixed(1)} words/s`); if (chunks[i + 1] && c.e > chunks[i + 1].s + 1e-9) o.push(`chunk ${i}: overlaps next`); }); return o;

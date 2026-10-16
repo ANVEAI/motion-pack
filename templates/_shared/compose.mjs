@@ -37,10 +37,12 @@ export function lintStop(fails, who, waive = allowLint()) {
   if (!waive) { console.error('\nFix the CONFIG block, or pass --allow-lint to build anyway (MP_ALLOW_LINT=1 for render3d.sh). Never waive a stat that has no source.'); process.exit(2); }
 }
 
-/* mix(planJson, wav, py = 'python3'): run _shared/audio.py (music/mixer.py under it). Like runPlan, a failure (a missing music bed, a mixer error) ends this process with audio.py's own
-   message and exit code, not a Node stack trace on top of it. */
-export function mix(planJson, wav, py = 'python3') {
-  const r = spawnSync(py, [path.join(SH, 'audio.py'), planJson, wav], { stdio: 'inherit' });
+/* mix(planJson, wav, py = 'python3', args = []): run _shared/audio.py (music/mixer.py under it) with its flags in `args` (['--stem'] = a stem under dialogue, never normalised).
+   Like runPlan, a failure (a missing music bed, a mixer error) ends this process with audio.py's own message and exit code, not a Node stack trace on top of it.
+   The third argument is the PYTHON executable: a flag there (the old talking-head call passed '--stem') is refused, because it would be spawned as a program. */
+export function mix(planJson, wav, py = 'python3', args = []) {
+  if (typeof py !== 'string' || py.startsWith('-')) { console.error(`mix: the third argument is the python executable, got ${JSON.stringify(py)}; pass audio.py flags in the fourth: mix(plan, wav, py, ['--stem'])`); process.exit(2); }
+  const r = spawnSync(py, [path.join(SH, 'audio.py'), planJson, wav, ...args], { stdio: 'inherit' });
   if (r.error) { console.error(`mix: could not run ${py} (${r.error.message})`); process.exit(1); }
   if (r.status !== 0) process.exit(r.status ?? 1);
 }

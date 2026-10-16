@@ -3,7 +3,7 @@
    spec = { text | lines:[...], preset, at, out, stagger, dur, params, font:{family,size,weight,tracking,lineHeight}, color, accent, anchor:{x,y} (fractions), align:'left'|'center', maxWidth (fraction of W), highlight:[word idx], bar:'#hex' }
    size = px at 1080 (scaled by H/1080 so 9:16 and 16:9 share numbers).                                                                                                         */
 import { PRESETS, unitStates, holdTime } from './presets.js';
-import { captionFrame } from './captions.js';
+import { captionFrame, popScale } from './captions.js';
 import { drawIcon } from './icons.js';
 import { E, seg, lerp, clamp } from './ease.js';
 import { captionBox } from './safezones.js';
@@ -59,7 +59,8 @@ export function drawCaptions(g, chunks, t, style, { W, H, platform = 'conservati
   const F = captionFrame(chunks, t, style, { icons, iconMap }); if (!F) return null; const S = (H > W ? W : H) / 1080, fontPx = style.size * S, b = box || captionBox(platform, W, H, { lines: 2, fontPx });
   const text = F.words.map((w) => (style.upper ? w.text.toUpperCase() : w.text)).join(' '), fnt = { family: font, weight: style.weight, tracking: -0.01 };
   g.save(); g.font = fontStr(fnt, fontPx); g.letterSpacing = '0px'; const sp = g.measureText(' ').width + (style.stroke || 0) * fontPx * 2 + (style.pill ? fontPx * 0.3 : 0), lines = []; let cur = [], cw = 0;
-  F.words.forEach((w, i) => { const tx = style.upper ? w.text.toUpperCase() : w.text, wd = g.measureText(tx).width; if (cur.length && cw + sp + wd > b.w) { lines.push({ cur, cw }); cur = []; cw = 0; } cur.push({ w, tx, wd, x: cw + (cur.length ? sp : 0) }); cw += (cur.length > 1 ? sp : 0) + wd; }); if (cur.length) lines.push({ cur, cw });
+  /* each word's box includes the room its pop needs ((scale - 1) / 2 of its width per side, captions.js popScale): the scaled word never touches its neighbour */
+  F.words.forEach((w, i) => { const tx = style.upper ? w.text.toUpperCase() : w.text, wd = g.measureText(tx).width, rm = wd * (popScale(style, w) - 1) / 2, bw = wd + 2 * rm; if (cur.length && cw + sp + bw > b.w) { lines.push({ cur, cw }); cur = []; cw = 0; } cur.push({ w, tx, wd, x: cw + (cur.length ? sp : 0) + rm }); cw += (cur.length > 1 ? sp : 0) + bw; }); if (cur.length) lines.push({ cur, cw });
   const lh = fontPx * 1.18, y1 = b.y1; let top = y1 - lines.length * lh; const pos = [];
   if (style.mode === 'single') { top = y1 - lh; lines.length = 0; lines.push({ cur: [], cw: 0 }); F.words.forEach((w) => { const tx = style.upper ? w.text.toUpperCase() : w.text, wd = g.measureText(tx).width; pos[w.i] = { x: b.cx - wd / 2, y: top + fontPx * 0.92, w: wd, tx }; lines[0].cw = Math.max(lines[0].cw, wd); }); }
   else lines.forEach((l, li) => { const x0 = b.cx - l.cw / 2; l.cur.forEach((e) => { pos[e.w.i] = { x: x0 + e.x, y: top + li * lh + fontPx * 0.92, w: e.wd, tx: e.tx }; }); });

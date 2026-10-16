@@ -8,7 +8,7 @@ music/mixer.py receives it as the "vo" stem (templates/_shared/audio.py, plan.vo
 import argparse, json, os, subprocess, zlib
 import numpy as np
 from scipy.signal import butter, sosfilt
-import soundfile as sf
+from scipy.io import wavfile   # not soundfile: libsndfile writes a PEAK chunk with a time stamp into float WAVs, so two identical builds differ in bytes
 
 SR = 48000
 
@@ -69,7 +69,7 @@ def main():
         m = min(len(y), N - at)
         out[at:at + m] += y[:m]
         rep.append({'clip': s['clip'], 'start_frame': s['start'], 'samples': int(m), 'kind': kind})
-    sf.write(a.out, out.astype(np.float32), SR, subtype='FLOAT')
+    wavfile.write(a.out, SR, out.astype(np.float32))   # IEEE float, no PEAK chunk: the same plan gives the same bytes
     json.dump({'segments': rep, 'placeholder': a.placeholder}, open(a.out + '.json', 'w'), indent=1)
     print(a.out, len(rep), 'segments', sum(1 for r in rep if r['kind'] == 'clip'), 'from real clips')
 

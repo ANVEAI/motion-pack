@@ -3,7 +3,7 @@
    bake at t0 and drive at t0 must agree at every timeline position T. Until 2026-10-15 they used opposite signs of t0 (bake: states at t0 + t; drive: states at T - t0), which only showed for t0 != 0
    and which every test and demo missed because they all used t0 = 0. The elements are stand-ins that record what bake writes (a fake timeline) and what drive sets (a style object). */
 import { mountType, bakeType, driveType, bakeCaptions, driveCaptions } from '../dom.js';
-import { PRESETS } from '../presets.js'; import { chunkWords, CAPTION_STYLES } from '../captions.js';
+import { PRESETS } from '../presets.js'; import { chunkWords, CAPTION_STYLES, popScale } from '../captions.js';
 import { reporter } from '../../layers/tests/harness.mjs';
 const R = reporter('type dom t0');
 const el = () => ({ style: { setProperty(k, v) { this[k] = v; } }, textContent: '' });
@@ -47,4 +47,8 @@ R.check(`the comparison is not vacuous: ${visible} unit-frames visible, ${moving
           if (bo === 1) { liveC++; e.words.forEach((s, k) => { const bw = tl.at(s, T), dw = m2.els[ci].words[k].style; worstC = Math.max(worstC, Math.abs(+dw.opacity - bw.opacity), Math.abs(num(dw.transform, /scale\(([-\d.e]+)\)/) - bw.scale) * 100); if (dw.color !== bw.color || dw.background !== bw.background) worstC = Infinity; }); } }); } } }
   R.check(`bakeCaptions vs driveCaptions agree at every timeline position, t0 = ${T0S.join(', ')} (${nC} chunk-frames, ${liveC} live; worst deviation ${worstC.toExponential(1)})`, worstC < 0.01 && liveC > 100); }
 
+/* ---- the pop room: a word that scales (emphasis pop, karaoke active) gets (scale - 1) / 2 of its width on each side in both layouts, so it keeps its gap ---- */
+{ const S = CAPTION_STYLES, e = { emph: true }, p = {};
+  R.check('popScale: the emphasis pop reserves 1.12 for flagged words only, karaoke for every word, the one-word impact style none', popScale(S.emphasis, e) === S.emphasis.emphScale && popScale(S.emphasis, p) === 1
+    && popScale(S.karaoke, p) === S.karaoke.activeScale && popScale(S.impact, e) === 1 && Object.values(S).every((st) => popScale(st, e) >= 1)); }
 const res = R.done(); process.exit(R.failed ? 1 : 0);

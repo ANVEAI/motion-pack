@@ -8,7 +8,7 @@
    unitStates(spec, texts, T) whatever t0 is. bake* writes frames T = t0 + i/fps and holds the T = t0 state before the window and the last sample after it; drive* does the same from 'hf-seek' (pass dur to
    hold the end too). They used opposite signs of t0 until 2026-10-15 (test: type/tests/dom-t0.test.mjs).                                                                                    */
 import { PRESETS, unitStates } from './presets.js';
-import { captionFrame } from './captions.js';
+import { captionFrame, popScale } from './captions.js';
 import { captionBox } from './safezones.js';
 import { iconSVG } from './icons.js';
 
@@ -51,7 +51,10 @@ export function mountCaptions(root, chunks, style, { W = 1080, H = 1920, platfor
   const S = (H > W ? W : H) / 1080, fontPx = style.size * S, b = box || captionBox(platform, W, H, { lines: 2, fontPx }), els = [];
   chunks.forEach((c) => { const d = document.createElement('div'); d.className = 'mp-cap'; css(d, { position: 'absolute', left: b.x0 + 'px', width: b.w + 'px', top: b.y0 + 'px', height: b.h + 'px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'flex-end', gap: `0 ${(fontPx * 0.28).toFixed(1)}px`, opacity: '0', fontFamily: font, fontWeight: String(style.weight), fontSize: fontPx + 'px', lineHeight: '1.18', color: style.color, textAlign: 'center', pointerEvents: 'none',
       textShadow: style.shadow ? `0 ${(style.shadow * fontPx * 0.35).toFixed(1)}px ${(style.shadow * fontPx * 1.2).toFixed(1)}px rgba(0,0,0,.55)` : 'none', webkitTextStroke: style.stroke ? `${(style.stroke * fontPx * 1.0).toFixed(2)}px rgba(8,8,16,.92)` : '0', paintOrder: 'stroke fill' });
-    const ws = c.words.map((w) => { const s = document.createElement('span'); s.textContent = style.upper ? w.w.toUpperCase() : w.w; css(s, { display: 'inline-block', padding: style.pill ? `0 ${(fontPx * 0.22).toFixed(1)}px` : '0', borderRadius: (fontPx * 0.3).toFixed(1) + 'px', willChange: 'transform' }); d.appendChild(s); return s; }); root.appendChild(d); els.push({ chunk: c, el: d, words: ws }); });
+    const ws = c.words.map((w) => { const s = document.createElement('span'); s.textContent = style.upper ? w.w.toUpperCase() : w.w; css(s, { display: 'inline-block', padding: style.pill ? `0 ${(fontPx * 0.22).toFixed(1)}px` : '0', borderRadius: (fontPx * 0.3).toFixed(1) + 'px', willChange: 'transform' }); d.appendChild(s); return s; }); root.appendChild(d);
+    /* room for the pop: (scale - 1) / 2 of the measured width on each side (captions.js popScale), so a scaled word keeps its gap to the next */
+    c.words.forEach((w, k) => { const r = popScale(style, w); if (r > 1) { const wpx = typeof ws[k].getBoundingClientRect === 'function' ? ws[k].getBoundingClientRect().width || 0 : 0, m = (wpx * (r - 1) / 2).toFixed(1) + 'px'; ws[k].style.marginLeft = m; ws[k].style.marginRight = m; } });
+    els.push({ chunk: c, el: d, words: ws }); });
   return { els, fontPx, style, box: b };
 }
 const capVars = (m, F) => F ? { chunkOp: Math.min(1, F.words[0] ? F.words[0].opacity : 0), words: F.words.map((w) => ({ opacity: +w.opacity.toFixed(3), scale: +w.scale.toFixed(4), color: w.color, background: m.style.pill && w.bg > 0.01 ? m.style.accent : 'transparent' })) } : null;

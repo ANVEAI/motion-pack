@@ -409,6 +409,11 @@ class MultiVoiceDocTemplate(unittest.TestCase):
             out = os.path.join(td, "vo.wav")
             subprocess.run([sys.executable, os.path.join(TPL, "vo.py"), pp, out], check=True, capture_output=True)
             self.assertTrue(all("guide" in r["kind"] for r in json.load(open(out + ".json"))["segments"]))
+            first = open(out, "rb").read()
+            import time
+            time.sleep(1.1)                                                                 # libsndfile's float PEAK chunk carried a time stamp: a second build a second later differed
+            subprocess.run([sys.executable, os.path.join(TPL, "vo.py"), pp, out], check=True, capture_output=True)
+            self.assertEqual(open(out, "rb").read(), first, "vo.py must write the same bytes for the same plan")
             subprocess.run([sys.executable, os.path.join(TPL, "vo.py"), pp, out, "--placeholder", "none"], check=True, capture_output=True)
             self.assertEqual(json.load(open(out + ".json"))["segments"], [])
 

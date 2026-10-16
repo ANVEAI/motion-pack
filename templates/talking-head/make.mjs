@@ -11,7 +11,7 @@ const abs = (p) => (path.isAbsolute(p) ? p : path.resolve(DIR, p));
 const input = abs(C.input); if (!fs.existsSync(input)) { console.error('input MP4 not found: ' + input); process.exit(2); }
 const st = stage(DIR, { media: [...new Set(plan.broll.map((b) => abs(b.src)))], layers: (C.layers || []).length > 0 });
 fs.rmSync(path.join(DIR, 'assets', 'media', 'input.mp4'), { force: true }); fs.linkSync(input, path.join(DIR, 'assets', 'media', 'input.mp4'));
-mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'), '--stem');   // audio.py: a failure ends the build with its own message, no stack trace   // a stem under the dialogue: never normalised on its own
+mix(path.join(DIR, 'out', 'plan.json'), path.join(DIR, 'assets', 'media', 'mix.wav'), process.env.PYTHON || 'python3', ['--stem']);   // audio.py: a failure ends the build with its own message, no stack trace   // a stem under the dialogue: never normalised on its own
 const [W, H] = plan.size, F = plan.fps, T = plan.seconds, A = C.framing.anchor, acc = C.captions.accent, f = (x) => (+x).toFixed(4);
 const css = `
 .frame { position: absolute; inset: 0; transform-origin: ${A[0] * 100}% ${A[1] * 100}%; }
