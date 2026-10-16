@@ -7,7 +7,7 @@
 import path from 'node:path';
 import { aspectOf, atOf, fixSets, bare } from '../_shared/human/core.mjs';
 import { pickCaption, captionTrack } from '../_shared/human/edit.mjs';
-import { loadWords, emphasize, cuesFor, audioFields, tagOf, talkTrack, talkSlots } from '../_shared/human/kit.mjs';
+import { loadWords, emphasize, cuesFor, audioFields, tagOf, talkTrack, talkSlots, structureOf, textOf } from '../_shared/human/kit.mjs';
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 
 /* ============================== CONFIG (edit me) ============================== */
@@ -21,18 +21,20 @@ export const CONFIG = {
     quiz: { q: 'Which one keeps the file only on your desk?', options: ['The cloud', 'Your laptop', 'Both of them'], answer: 1 },
     recap: { title: 'Recap', items: ['Local: one place', 'Cloud: many copies', 'You choose the trade'] },
   },
-  sections: [ { kind: 'presenter', at: 0, title: 'Intro' },
-              { kind: 'slide', slide: 0, at: { word: 'On', offset: -0.15 }, title: 'Laptop' },
-              { kind: 'split', slide: 1, at: { word: 'In', offset: -0.15 }, title: 'Cloud' },
-              { kind: 'presenter', at: { word: 'So', offset: -0.15 }, title: 'The difference' },
-              { kind: 'quiz', at: { word: 'Quick', offset: -0.1 }, reveal: { word: 'Right:' }, pause: 2.3, title: 'Quick check' },
-              { kind: 'recap', at: { word: 'Recap:', offset: -0.1 }, title: 'Recap' } ],
+  /* beat = the section's name in the explainer pattern (patterns/structures.json: question, wrong model, reframe, proof, so-what; a lesson has no pattern of its own yet):
+     the two models are the set-up, the difference is the reframe, the quiz is the worked example, the recap is the takeaway */
+  sections: [ { kind: 'presenter', at: 0, title: 'Intro', beat: 'question' },
+              { kind: 'slide', slide: 0, at: { word: 'On', offset: -0.15 }, title: 'Laptop', beat: 'setup' },
+              { kind: 'split', slide: 1, at: { word: 'In', offset: -0.15 }, title: 'Cloud', beat: 'context' },
+              { kind: 'presenter', at: { word: 'So', offset: -0.15 }, title: 'The difference', beat: 'reframe' },
+              { kind: 'quiz', at: { word: 'Quick', offset: -0.1 }, reveal: { word: 'Right:' }, pause: 2.3, title: 'Quick check', beat: 'example' },
+              { kind: 'recap', at: { word: 'Recap:', offset: -0.1 }, title: 'Recap', beat: 'takeaway' } ],
   media: { presenter: { src: null, start: 0, label: 'presenter camera', name: 'Teacher' }, slides: [ { src: null }, { src: null } ] },   // a slide src (image) replaces the drawn slide
   voice: { words: 'words.json', chain: true, placeholder: 'guide' },
   autocut: { on: true, silenceMin: 0.55, padBefore: 0.06, padAfter: 0.09, breath: 0.12, beatHold: 0.45 },
   fillers: { cut: 'hard' },
   captions: { style: { '16:9': 'doc', '9:16': 'karaoke' }, emph: ['laptop,', 'cloud,', 'control,', 'rent.'] },
-  end: { holdS: 2.4 },
+  end: { holdS: 3.0 },                           // the recap card reads at <= 2 words/s
   claims: [],
   music: 'music/bed_corporate_bright_loop8', musicGainDb: -3, duckDb: 12, ceilingDb: -2.0,
   layers: [ { kind: 'vignette', params: { amount: 0.04 } }, { kind: 'grain', params: { stock: 'upload-safe' } } ],
@@ -81,7 +83,10 @@ export function buildPlan(C0) {
   const shots = marks.slice(0, -1).map((a, i) => ({ id: 'shot' + i, start: r3(a), dur: r3(marks[i + 1] - a), section: (sec.filter((s) => s.t0 <= a + 1e-6).at(-1) || sec[0]).kind, ...(a >= (sec.find((s) => s.kind === 'quiz')?.t0 ?? 1e9) ? { hold: true } : {}) })).filter((s) => s.dur > 0.001);
   const scene = { W: A.W, H: A.H, fps, seconds: T, bg: C.brand.paper, platform: A.safe, slots, gfx, gfxTop: top, captions: { chunks: cap.chunks, style: pick.style, box: pick.box },
     speaking: Object.fromEntries(slots.filter((s) => s.kind === 'speaker').map((s) => [s.id, words.map((w) => [w.os, w.oe])])) };
-  return { template: 'course-lesson', aspect: C.aspect, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe })),
+  const structure = structureOf(sec.map((s) => [s.beat || s.kind, s.t0]), T);
+  const qz2 = sec.find((s) => s.kind === 'quiz'), rc = sec.find((s) => s.kind === 'recap');
+  const texts = [textOf(C.text.title, 0, top[0].dur, 'hook'), ...(qz2 ? [textOf(C.text.quiz.q, qz2.t0 + 0.33, r3(qz2.t1 - qz2.t0 - 0.6), 'card')] : []), ...(rc ? [textOf([C.text.recap.title, ...C.text.recap.items].join(' '), rc.t0 + 0.33, r3(T - rc.t0 - 0.4), 'card')] : [])];
+  return { template: 'course-lesson', aspect: C.aspect, structure, texts, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe })),
     sections: sec.map((s) => ({ kind: s.kind, title: s.title, t0: s.t0, t1: s.t1 })), edit: { cuts: tr.cuts, fillers: tr.fillers }, captionStyle: pick.name,
     ...audioFields(C, tag, { role: 'explainer' }), paceRule: { aslMax: 4.5, longMax: 7 }, warnings };
 }

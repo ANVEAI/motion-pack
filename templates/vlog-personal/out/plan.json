@@ -1,8 +1,72 @@
 {
  "template": "vlog-personal",
  "aspect": "9:16",
+ "structure": {
+  "sections": [
+   {
+    "name": "coldopen",
+    "t": [
+     0,
+     3.393
+    ]
+   },
+   {
+    "name": "setup",
+    "t": [
+     3.393,
+     6.793
+    ]
+   },
+   {
+    "name": "journey",
+    "t": [
+     6.793,
+     10.993
+    ]
+   },
+   {
+    "name": "cost",
+    "t": [
+     10.993,
+     12.627
+    ]
+   },
+   {
+    "name": "change",
+    "t": [
+     12.627,
+     14.693
+    ]
+   },
+   {
+    "name": "signoff",
+    "t": [
+     14.693,
+     20.1
+    ]
+   }
+  ]
+ },
+ "texts": [
+  {
+   "text": "Placeholder Harbour Sunday, early",
+   "t": [
+    0.783,
+    3.183
+   ],
+   "role": "card"
+  },
+  {
+   "text": "Follow",
+   "t": [
+    17,
+    19.6
+   ],
+   "role": "cta"
+  }
+ ],
  "fps": 30,
- "seconds": 19.1,
+ "seconds": 20.1,
  "size": [
   1080,
   1920
@@ -11,7 +75,7 @@
   "W": 1080,
   "H": 1920,
   "fps": 30,
-  "seconds": 19.1,
+  "seconds": 20.1,
   "bg": "#0B0D12",
   "platform": "conservative",
   "slots": [
@@ -735,7 +799,7 @@
     "src": null,
     "mediaStart": 21.0067,
     "start": 16.9,
-    "end": 19.1,
+    "end": 20.1,
     "rect": [
      0,
      0,
@@ -905,7 +969,7 @@
    {
     "id": "social.followButton",
     "at": 17,
-    "dur": 1.6,
+    "dur": 2.6,
     "params": {
      "label": "Follow",
      "done": "Following",
@@ -3368,7 +3432,7 @@
   {
    "id": "cut13",
    "start": 16.9,
-   "dur": 2.2,
+   "dur": 3.2,
    "hold": true
   }
  ],
@@ -3804,7 +3868,7 @@
   "unmotivatedTransitions": [],
   "pace": {
    "shots": 14,
-   "asl": 1.36,
+   "asl": 1.44,
    "longest": 3.333,
    "pass": true
   }

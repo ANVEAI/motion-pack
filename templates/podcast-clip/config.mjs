@@ -7,9 +7,9 @@
    clip.from / clip.to = the excerpt in source seconds, voice.words = the transcript with speaker tags (VTT <v Name>, whisper diarisation, or "NAME:" lines in an SRT).
    DEMO (no footage, no people): two labelled silhouettes, a guide signal per speaker at the hand-timed words of transcript.example.vtt, placeholder names ("Host name", "Guest name"). */
 import path from 'node:path';
-import { aspectOf, atOf, fixSets, safeBox } from '../_shared/human/core.mjs';
+import { aspectOf, atOf, fixSets, safeBox, quoteCheck, segments, remapWords } from '../_shared/human/core.mjs';
 import { speakerTurns, activeCuts, activeAt, speakerLowerThirds, pickCaption, captionTrack } from '../_shared/human/edit.mjs';
-import { loadWords, emphasize, cuesFor, audioFields, tagOf, talkTrack, talkSlots } from '../_shared/human/kit.mjs';
+import { loadWords, emphasize, cuesFor, audioFields, tagOf, talkTrack, talkSlots, structureOf, textOf } from '../_shared/human/kit.mjs';
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 
 /* ============================== CONFIG (edit me) ============================== */
@@ -20,6 +20,10 @@ export const CONFIG = {
   speakers: { Host: { name: 'Host name', role: 'Host · placeholder', slot: 'host' }, Guest: { name: 'Guest name', role: 'Guest · placeholder', slot: 'guest' } },
   media: { host: { src: null, start: 0, label: 'host camera' }, guest: { src: null, start: 0, label: 'guest camera' }, mix: { src: null, start: 0, label: 'episode audio' } },
   clip: { from: null, to: null },               // source seconds of the excerpt (null = the whole transcript)
+  /* the sharpest line FIRST (patterns/structures.json podcast-clip): a verbatim run of the transcript pulled to the open, then the clip plays from its start (the line is heard
+     again in context). null = no cold open. The build fails if the line is not the speakers' own words. */
+  hookLine: { quote: 'A finished video beats a rushed one, every single time.', padBefore: 0.1, padAfter: 0.3 },
+  button: { word: 'That' },                      // the button: the last line, then the end card (null = the end card alone)
   voice: { words: 'words.json', audio: 'mix', chain: true, placeholder: 'guide' },   // audio: 'mix' (one episode track) | 'speaker' (each speaker's own camera audio)
   layout: { '9:16': 'stack', '16:9': 'split' },  // 'stack' | 'split' | 'active'
   active: { lagMs: 220, minShot: 1.4, dim: 0.5, ring: 8, grow: 0.0 },
@@ -27,7 +31,7 @@ export const CONFIG = {
   fillers: { cut: 'hard' },
   captions: { style: 'karaoke', emph: ['finishing', 'finished', 'stayed', 'watched.'] },
   waveform: { bars: 40, window: 1.8 },
-  end: { holdS: 2.2 },
+  end: { holdS: 2.8 },                           // the end card reads at <= 2.5 words/s
   claims: [],
   music: 'music/bed_ambient_pad_loop8', musicGainDb: -8, duckDb: 14, ceilingDb: -2.0,   // a podcast clip barely needs music: a quiet pad, ducked deep
   layers: [ { kind: 'vignette', params: { amount: 0.06 } }, { kind: 'grain', params: { stock: 'upload-safe' } } ],
@@ -47,7 +51,15 @@ export function buildPlan(C0) {
   if (C.clip.from != null || C.clip.to != null) raw = raw.filter((w) => w.s >= (C.clip.from ?? -1) && w.e <= (C.clip.to ?? 1e9));
   const names = Object.keys(C.speakers); for (const w of raw) if (!w.speaker) w.speaker = names[0];
   const unknown = [...new Set(raw.map((w) => w.speaker))].filter((s) => !C.speakers[s]); if (unknown.length) warnings.push('speaker tags with no entry in CONFIG.speakers: ' + unknown.join(', '));
-  const tr = talkTrack(raw, { fps, autocut: C.autocut, fillers: C.fillers }), words = tr.words, talkEnd = tr.seconds, T = +(talkEnd + C.end.holdS).toFixed(4);
+  let tr = talkTrack(raw, { fps, autocut: C.autocut, fillers: C.fillers }), hook = null;
+  if (C.hookLine && C.hookLine.quote) {   /* the cold open: the quote's own source range, placed before the clip's first kept range */
+    const kept = tr.srcWords.filter((w) => !w.cut), qc = quoteCheck(C.hookLine.quote, kept); if (!qc.ok) throw new Error('podcast-clip hook line: ' + qc.why);
+    const a = Math.max(0, kept[qc.i0].s - C.hookLine.padBefore), b = kept[qc.i1].e + C.hookLine.padAfter, segs = segments([[+a.toFixed(3), +b.toFixed(3)], ...tr.segs.map((g) => [g.src_in, g.src_out])], fps);
+    const hw = remapWords([segs[0]], kept.slice(qc.i0, qc.i1 + 1)).map((w) => ({ ...w, hook: true })), rest = remapWords(segs.slice(1), kept);
+    hook = { seg: segs[0].id, a: +a.toFixed(3), b: +b.toFixed(3), end: +(segs[0].f1 / fps).toFixed(4), speaker: kept[qc.i0].speaker };
+    tr = { ...tr, segs, words: [...hw, ...rest], seconds: +(segs.at(-1).f1 / fps).toFixed(4) };
+  }
+  const words = tr.words, talkEnd = tr.seconds, T = +(talkEnd + C.end.holdS).toFixed(4);
   const turns = speakerTurns(words), cuts = activeCuts(turns, { lagMs: C.active.lagMs, minShot: C.active.minShot }), mode = C.layout[C.aspect] || 'stack';
   /* picture */
   const slots = [], screenGfx = {};
@@ -77,21 +89,27 @@ export function buildPlan(C0) {
   const cues = cuesFor([...gfx.filter((g) => g.id !== 'ui.waveform'), ...sg, ...top], { overVoDb: -14 });
   /* voice: the episode mix (or each speaker's own camera audio), through the keep ranges */
   const sources = { mix: { src: C.media.mix.src, chain: C.voice.chain }, ...Object.fromEntries(names.map((n) => [C.speakers[n].slot, { src: C.media[C.speakers[n].slot].src, chain: C.voice.chain }])) };
-  const segments = [], mixReal = C.voice.audio === 'mix' && !!C.media.mix.src;
+  const vsegs = [], mixReal = C.voice.audio === 'mix' && !!C.media.mix.src;
   for (const g of tr.segs) {
     const inSeg = (spk) => tr.srcWords.filter((w) => !w.cut && (spk == null || w.speaker === spk) && w.e > g.src_in && w.s < g.src_out);
-    if (mixReal) { const ws = inSeg(null), b0 = C.media.mix.start || 0; segments.push({ source: 'mix', src_in: +(b0 + g.src_in).toFixed(4), src_out: +(b0 + g.src_out).toFixed(4), start: g.start, speaker: ws[0]?.speaker || names[0], words: ws.map((w) => [w.s + b0, w.e + b0]) }); continue; }
+    if (mixReal) { const ws = inSeg(null), b0 = C.media.mix.start || 0; vsegs.push({ source: 'mix', src_in: +(b0 + g.src_in).toFixed(4), src_out: +(b0 + g.src_out).toFixed(4), start: g.start, speaker: ws[0]?.speaker || names[0], words: ws.map((w) => [w.s + b0, w.e + b0]) }); continue; }
     for (const spk of names) { const ws = inSeg(spk); if (!ws.length) continue; const sl = C.speakers[spk].slot, own = C.voice.audio === 'speaker' && C.media[sl].src, b0 = own ? C.media[sl].start || 0 : 0;
       /* each speaker's own mic only across their own words (no bleed from the other camera); the placeholder guide uses the whole segment, one band per speaker */
       const a = own ? Math.max(g.src_in, ws[0].s - 0.1) : g.src_in, z = own ? Math.min(g.src_out, ws.at(-1).e + 0.15) : g.src_out;
-      segments.push({ source: own ? sl : 'mix', src_in: +(b0 + a).toFixed(4), src_out: +(b0 + z).toFixed(4), start: +(g.start + (a - g.src_in)).toFixed(4), speaker: spk, words: ws.map((w) => [w.s + b0, w.e + b0]) }); }
+      vsegs.push({ source: own ? sl : 'mix', src_in: +(b0 + a).toFixed(4), src_out: +(b0 + z).toFixed(4), start: +(g.start + (a - g.src_in)).toFixed(4), speaker: spk, words: ws.map((w) => [w.s + b0, w.e + b0]) }); }
   }
-  const voice = { fps, placeholder: C.voice.placeholder, sources, segments };
+  const voice = { fps, placeholder: C.voice.placeholder, sources, segments: vsegs };
   const marks = [...new Set([0, ...tr.segs.map((g) => g.start), ...cuts.map((c) => c.t), talkEnd, T])].sort((a, b) => a - b);
   const shots = marks.slice(0, -1).map((a, i) => ({ id: 'shot' + i, start: r3(a), dur: r3(marks[i + 1] - a), speaker: activeAt(cuts, a + 1e-3), ...(a >= talkEnd ? { hold: true } : {}) })).filter((s) => s.dur > 0.001);
   const scene = { W: A.W, H: A.H, fps, seconds: T, bg: '#0B0D12', platform: A.safe, slots, gfx, gfxTop: top, screenGfx, captions: { chunks: cap.chunks, style: pick.style, box: pick.box },
     speaking: Object.fromEntries(slots.filter((s) => s.kind === 'speaker').map((s) => { const spk = names.find((n) => s.id.startsWith(C.speakers[n].slot)); return [s.id, words.filter((w) => w.speaker === spk).map((w) => [w.os, w.oe])]; })) };
-  return { template: 'podcast-clip', aspect: C.aspect, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe, speaker: w.speaker })),
+  /* the beats (patterns/structures.json podcast-clip): the sharpest line, the context (the host's question), the payoff (the answer), the button + the end card */
+  const after = (t) => words.filter((w) => w.os >= t - 1e-6), ctx0 = hook ? hook.end : 0, ans = after(ctx0 + 0.01).find((w, i, a) => i && w.speaker !== a[0].speaker);
+  const btn = C.button ? words.filter((w) => w.w.toLowerCase().startsWith(C.button.word.toLowerCase()) && w.os > ctx0).at(-1) : null;
+  const structure = structureOf([...(hook ? [['hook', 0]] : []), ['context', ctx0], ...(ans ? [['payoff', r3(ans.os - 0.06)]] : []), ['button', btn ? r3(btn.os - 0.06) : talkEnd]], T);
+  if (hook) cues.push({ id: 'sfx/tx/cut_tick', t: hook.end, why: 'the cold open hands over to the clip from its start', overVoDb: -18 });
+  const texts = [textOf(C.text.hook, 0, top[0].dur, 'hook'), textOf(C.text.end, r3(talkEnd + 0.1), r3(C.end.holdS - 0.5), 'cta')];
+  return { template: 'podcast-clip', aspect: C.aspect, structure, texts, hookLine: hook, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe, speaker: w.speaker })),
     edit: { layout: mode, turns, cuts, keep: tr.segs.map((g) => [g.src_in, g.src_out]), fillers: tr.fillers, lowerThirds: LT.map((x) => ({ speaker: x.speaker, at: x.at })) }, captionStyle: pick.name,
     ...audioFields(C, tag, { role: 'vo_doc' }), paceRule: { aslMax: 4.5, longMax: 6 }, warnings };
 }

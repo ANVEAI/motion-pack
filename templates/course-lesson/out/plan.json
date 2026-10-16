@@ -1,8 +1,80 @@
 {
  "template": "course-lesson",
  "aspect": "16:9",
+ "structure": {
+  "sections": [
+   {
+    "name": "question",
+    "t": [
+     0,
+     3.037
+    ]
+   },
+   {
+    "name": "setup",
+    "t": [
+     3.037,
+     4.437
+    ]
+   },
+   {
+    "name": "context",
+    "t": [
+     4.437,
+     11.203
+    ]
+   },
+   {
+    "name": "reframe",
+    "t": [
+     11.203,
+     14.887
+    ]
+   },
+   {
+    "name": "example",
+    "t": [
+     14.887,
+     21.82
+    ]
+   },
+   {
+    "name": "takeaway",
+    "t": [
+     21.82,
+     28.267
+    ]
+   }
+  ]
+ },
+ "texts": [
+  {
+   "text": "Where your files really live",
+   "t": [
+    0,
+    2.537
+   ],
+   "role": "hook"
+  },
+  {
+   "text": "Which one keeps the file only on your desk?",
+   "t": [
+    15.217,
+    21.55
+   ],
+   "role": "card"
+  },
+  {
+   "text": "Recap Local: one place Cloud: many copies You choose the trade",
+   "t": [
+    22.15,
+    28.197
+   ],
+   "role": "card"
+  }
+ ],
  "fps": 30,
- "seconds": 27.6667,
+ "seconds": 28.2667,
  "size": [
   1920,
   1080
@@ -11,7 +83,7 @@
   "W": 1920,
   "H": 1080,
   "fps": 30,
-  "seconds": 27.6667,
+  "seconds": 28.2667,
   "bg": "#FBFAF7",
   "platform": "wideTitle",
   "slots": [
@@ -333,7 +405,7 @@
     "kind": "slide",
     "src": null,
     "start": 21.82,
-    "end": 27.6667,
+    "end": 28.2667,
     "rect": [
      0,
      0,
@@ -354,9 +426,9 @@
    {
     "id": "title.progressBar",
     "at": 0,
-    "dur": 27.6667,
+    "dur": 28.2667,
     "params": {
-     "total": 27.6667,
+     "total": 28.2667,
      "chapters": [
       3.037,
       4.437,
@@ -403,7 +475,7 @@
    {
     "id": "title.recapCard",
     "at": 21.82,
-    "dur": 5.447,
+    "dur": 6.047,
     "params": {
      "title": "Recap",
      "items": [
@@ -4348,7 +4420,7 @@
   {
    "id": "shot12",
    "start": 25.267,
-   "dur": 2.4,
+   "dur": 3,
    "section": "recap",
    "hold": true
   }
@@ -4856,7 +4928,7 @@
   "unmotivatedTransitions": [],
   "pace": {
    "shots": 13,
-   "asl": 2.13,
+   "asl": 2.17,
    "longest": 4.136,
    "pass": true
   }

@@ -10,7 +10,7 @@ import path from 'node:path';
 import { aspectOf, atOf, fixSets, safeBox } from '../_shared/human/core.mjs';
 import { cursorFromClicks, zoomKeys } from '../_shared/human/screen.mjs';
 import { pickCaption, captionTrack } from '../_shared/human/edit.mjs';
-import { loadWords, emphasize, cuesFor, audioFields, tagOf } from '../_shared/human/kit.mjs';
+import { loadWords, emphasize, cuesFor, audioFields, tagOf, structureOf, textOf } from '../_shared/human/kit.mjs';
 import { DESKTOP_TARGETS, DESKTOP_BOXES } from '../_shared/human/plates.mjs';
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 
@@ -41,7 +41,7 @@ export const CONFIG = {
   code: { at: { word: 'Look', offset: -0.2 }, until: { word: 'it.', nth: 1, offset: 0.4 }, title: 'settings.js · placeholder code',
     highlight: [ { from: 5, to: 5, at: { word: 'five:' } }, { from: 6, to: 6, at: { word: 'remembers' } } ] },
   result: { at: { word: 'toggle.', nth: 1, offset: 0.25 }, dur: 2.4, target: 'preview' },
-  end: { holdS: 4.4, gapS: 0.4 },
+  end: { holdS: 5.4, gapS: 0.4 },               // the end screen holds >= 5 s (the platform end-screen elements need 5-20 s)
   /* the placeholder screen's story (ignored once media.screen.src is set) */
   screenEvents: { base: { file: 'index.js', dark: true, lines: ["import { theme } from './theme';", "import { save } from './store';", ''] },
     events: [ { at: { word: 'you.' , offset: 0.25 }, kind: 'toggle', on: false }, { at: { word: 'sidebar.', offset: 0.12 }, kind: 'file', file: 'settings.js' },
@@ -83,7 +83,7 @@ export function buildPlan(C0) {
   if (cur.estimated) warnings.push('cursor track ESTIMATED from click times (tools/human/human.mjs cursor); record the real track with your screen recorder when you can');
   const zscale = C.zoom.scale[C.aspect] ?? C.zoom.scale['16:9'], keys = zoomKeys(clicks, { ...C.zoom, scale: zscale });
   /* chapter cards, code callout, end screen: windows the PiP hides under */
-  const chap = C.text.chapters.map((c) => ({ ...c, t: at(c.at) })), cardDur = 0.8, cardSpan = cardDur + (10 + 10) / 30;
+  const chap = C.text.chapters.map((c) => ({ ...c, t: at(c.at) })), cardDur = 1.0, cardSpan = cardDur + (10 + 10) / 30;   // the step title reads at <= 3 words/s
   const code0 = at(C.code.at), code1 = at(C.code.until), hides = [...chap.map((c) => [c.t, c.t + cardSpan]), [code0, code1 + 0.3], [endAt, T]];
   /* slots */
   const slots = [], scr = { id: 'screen', kind: 'screen', src: C.media.screen.src, mediaStart: C.media.screen.start || 0, start: 0, end: endAt, rect: L.screen, inner: [SW, SH], fit: L.fit,
@@ -120,7 +120,10 @@ export function buildPlan(C0) {
   const voice = { fps, placeholder: C.voice.placeholder, sources: { cam: { src: C.media[C.voice.audio]?.src || null, chain: C.voice.chain } },
     segments: [{ source: 'cam', src_in: (C.media[C.voice.audio]?.start || 0), src_out: (C.media[C.voice.audio]?.start || 0) + endAt, start: 0, speaker: 'A', words: words.map((w) => [w.s + (C.media[C.voice.audio]?.start || 0), w.e + (C.media[C.voice.audio]?.start || 0)]) }] };
   const scene = { W: A.W, H: A.H, fps, seconds: T, bg: '#0E0E14', platform: A.safe, slots, gfx, gfxTop: top, screenGfx: { screen: sgfx }, captions: { chunks: cap.chunks, style: pick.style, box: pick.box }, speaking: { webcam: camSpeak } };
-  return { template: 'tutorial', aspect: C.aspect, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe })),
+  /* the beats the structure checker reads (patterns/structures.json tutorial): the result first, the steps, the end screen */
+  const structure = structureOf([['hook', 0], ...chap.map((c) => ['steps', c.t]), ['endscreen', endAt]], T);
+  const texts = [textOf(C.text.hook, 0, gfx[0].dur, 'hook'), ...chap.map((c) => textOf(c.title, c.t, cardDur + 10 / 30, 'card')), ...C.shortcuts.map((k) => textOf(k.label, at(k.at), 1.3, 'label')), textOf(C.text.endTitle, endAt, T - endAt, 'card')];
+  return { template: 'tutorial', aspect: C.aspect, structure, texts, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe })),
     cursor: { source: cur.estimated ? 'estimated from click times' : 'recorded track', clicks: clicks.length }, zoom: keys, captionStyle: pick.name,
     ...audioFields(C, tag, { role: 'explainer' }),
     paceRule: { aslMax: 8, longMax: 11 }, warnings };
