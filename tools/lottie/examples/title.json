@@ -1,0 +1,11 @@
+{
+  "name": "motion-pack example: a title, a drawn icon and a spring card (fictional copy)",
+  "w": 1080, "h": 1080, "fps": 30, "seconds": 3,
+  "background": "#0E0E14",
+  "layers": [
+    {"type": "shape", "shape": "rect", "size": [760, 300], "radius": 36, "fill": "#1C1C28", "pos": [540, 620],
+     "track": {"cls": "panel", "y": [[0, 760], [0.1, 620]], "opacity": [[0, 0], [0.1, 100]]}},
+    {"type": "text", "text": "Ship it today", "preset": "maskRise", "at": 0.3, "out": 2.4, "size": 120, "weight": 800, "color": "#FFFFFF", "pos": [540, 300], "align": "center"},
+    {"type": "drawon", "svg": "tools/lottie/examples/check.svg", "at": 0.9, "dur": 0.7, "stagger": 0.1, "ease": "soft", "pos": [540, 640], "size": 180, "stroke": "#2BD9A0", "width": 14}
+  ]
+}
