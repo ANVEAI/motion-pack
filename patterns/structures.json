@@ -80,6 +80,36 @@
     "pattern": null,
     "why": "the demo is 6.5 s of placeholder talk with no sections (it proves autocut and captions); score a real edit with --pattern podcast-clip, vlog or tutorial"
    }
+  ],
+  "tutorial": [
+   {
+    "pattern": "tutorial",
+    "why": "screen-recording tutorial beat sheet"
+   }
+  ],
+  "vlog-personal": [
+   {
+    "pattern": "vlog",
+    "why": "personal vlog beat sheet"
+   }
+  ],
+  "podcast-clip": [
+   {
+    "pattern": "podcast-clip",
+    "why": "podcast clip beat sheet"
+   }
+  ],
+  "founder-story": [
+   {
+    "pattern": "founder-story",
+    "why": "founder story beat sheet"
+   }
+  ],
+  "course-lesson": [
+   {
+    "pattern": "explainer",
+    "why": "a lesson is an explainer with recap and quiz; no separate lesson pattern yet"
+   }
   ]
  },
  "structures": {
