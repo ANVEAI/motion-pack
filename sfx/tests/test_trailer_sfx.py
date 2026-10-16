@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for the trailer family (recipes/trailer.py, film lane 2026-10-16): measurement only, no listening (pytest, or: python3 sfx/tests/test_trailer.py).
+"""Tests for the trailer family (recipes/trailer.py, film lane 2026-10-16): measurement only, no listening (pytest, or: python3 sfx/tests/test_trailer_sfx.py).
 The sfx QA rules on every sound (peak -6 dBFS, finite, DC, silent edges for one-shots, loop seams), and the shapes the trailer template relies on:
 risers are exactly N bars at 120 BPM with the anchor on the last sample, reverse swells end on their anchor, the braam's fundamental is A1, the hit-silence-hit
 file has its silence and its second hit 2.0 s after the anchor, the clock loop ticks on every beat at 120 BPM, the heartbeat loop beats 5 times in 4 s, the bundle resolves."""

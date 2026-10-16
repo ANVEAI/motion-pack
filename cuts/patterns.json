@@ -128,7 +128,7 @@
  },
  "trailer": {
   "accelerate3Act": {"beats_per_shot": {"act1": [[0, 8], [1, 6]], "act2": [[0, 4], [1, 2]], "act3": [[0, 2], [0.6, 1], [1, 0.5]]}, "quantum_beats": 0.5, "braam_every_bars": {"act2": 2, "act3": 1},
-                     "use": "trailer montage: act 1 holds (the world), act 2 halves the shot length (the turn), act 3 runs 2 beats -> 1 beat -> 8th notes (the wall); every cut on a half-beat of the score, a braam on act-2 every-other and act-3 every bar downbeat; templates/trailer and cuts/trailer.py"},
+                     "use": "trailer montage: act 1 holds (the world), act 2 halves the shot length (the turn), act 3 runs 2 beats -> 1 beat -> 8th notes (the wall); every cut on a half-beat of the score, a braam on act-2 every-other and act-3 every bar downbeat; templates/trailer and cuts/trailer_plan.py"},
   "hitSilenceHit":  {"gap_s": 2.0, "gap_range_s": [1.0, 3.0], "ring_frames": 6, "ring_db": -28, "sfx_a": "sfx/trailer/boom_hit", "sfx_ring": "sfx/trailer/ring_tinnitus", "sfx_b": "sfx/trailer/hit_title",
                      "use": "the last wall hit, the picture cuts to black on the next frame, 1-3 s of planned silence (a faint ring at most), then the title hit; mark the silence in plan.audio.quiet (kind gap)"},
   "silenceBeforeHit": {"min_s": 1.0, "max_s": 3.0, "bed": "digital silence (horror) or a sub 38-40 dB under the wall", "picture": "black, or one held frame with one line of dialogue", "into": "sfx/trailer/whoosh_suck",

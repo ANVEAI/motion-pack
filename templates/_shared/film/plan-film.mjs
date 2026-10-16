@@ -1,7 +1,7 @@
 /* motion-pack / templates / _shared / film / plan-film.mjs: pure plan helpers shared by the film templates (trailer, title-sequence, short-film). Node and browser, no DOM.
      FRAME             per-aspect frame sizes (16:9 1920x1080, 9:16 1080x1920, 1:1 1080x1080, 4:5 1080x1350)
      SCORES / scoreMarkers(style, fps, actBars, buttonBeats, tailBeats)   the JS mirror of music/trailer_styles.py styled_markers (the trailer test checks they agree)
-     montage(f0, f1, fpb, act)          the JS mirror of cuts/trailer.py montage(): accelerating cut points on the half-beat grid (patterns.json trailer.accelerate3Act)
+     montage(f0, f1, fpb, act)          the JS mirror of cuts/trailer_plan.py montage(): accelerating cut points on the half-beat grid (patterns.json trailer.accelerate3Act)
      textBox(text, { W, H, fontPx, y, anchor, weight })   an estimated box for plan.texts (eyes reads it for the safe-zone, size, time and contrast checks)
      subLines(lines, { at, gap, minHold, wps })            dialogue lines -> subtitle items with reading-time holds (0.35 s + 0.28 s per word, at most 3.5 words / s)
      jlCut(scenes, { j, l })                               the J / L cut builder: a scene's sound (room tone, ambience, dialogue) leads its picture by j s (J) or lingers after it by l s (L)

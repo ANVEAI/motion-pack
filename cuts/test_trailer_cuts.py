@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Tests for the trailer cut plan (cuts/trailer.py + patterns.json `trailer`, film lane 2026-10-16): the cut rate accelerates act by act, every cut sits on the
 half-beat grid, no stub shot, braams on the pattern's downbeats, hit-silence-hit stays inside its range, and the JS mirror (templates/_shared/film/plan-film.mjs
-montage) gives the same cuts. pytest, or: python3 cuts/test_trailer.py"""
+montage) gives the same cuts. pytest, or: python3 cuts/test_trailer_cuts.py"""
 import json
 import os
 import subprocess
 import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import trailer as TR  # noqa: E402
+import trailer_plan as TR  # noqa: E402
 
 
 def _acts(bars, fpb):

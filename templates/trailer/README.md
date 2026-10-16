@@ -28,7 +28,7 @@ node trailer.test.mjs                            # the plan's craft rules for ev
 | the button | one more radio shot, a line, the sting on the cut to black | `sfx/trailer/sting_button` |
 | credit block + release card | a small title over the placeholder billing block; the date card on the score's final hit, held | `credits.billingBlock`, `card.releaseDate` |
 
-Every cut is on the score's half-beat grid (`cuts/trailer.py`, `cuts/patterns.json` `trailer.accelerate3Act`). The 30 s and 15 s cuts trim whole bars (largest section first) until they fit; the 80-84 BPM scores (horror, drama) keep their silence, title ring and tail in beats, so their 15 s cut runs to about 19.6 s.
+Every cut is on the score's half-beat grid (`cuts/trailer_plan.py`, `cuts/patterns.json` `trailer.accelerate3Act`). The 30 s and 15 s cuts trim whole bars (largest section first) until they fit; the 80-84 BPM scores (horror, drama) keep their silence, title ring and tail in beats, so their 15 s cut runs to about 19.6 s.
 
 ## CONFIG (the editable contract)
 

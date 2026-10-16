@@ -10,8 +10,8 @@ music's grid, the stakes-rising hits (braams) land on bar downbeats, and the fas
   hit_silence_hit(frame, fps, gap_s)   the pattern as cue rows: hit A, picture to black, a planned silence, hit B
   cutdown(beats, keep)             which beats a 30 s or 15 s cut keeps (by priority), so the cut-downs come from ONE plan
 
-CLI:  python3 cuts/trailer.py accel --bpm 120 --fps 30 --act-bars 4,6,6
-      python3 cuts/trailer.py hsh --frame 900 --fps 30 [--gap 2.0]
+CLI:  python3 cuts/trailer_plan.py accel --bpm 120 --fps 30 --act-bars 4,6,6
+      python3 cuts/trailer_plan.py hsh --frame 900 --fps 30 [--gap 2.0]
 The same numbers are data in cuts/patterns.json, group `trailer` (`cuts/trailer/accelerate3Act`, `cuts/trailer/hitSilenceHit`, `cuts/trailer/silenceBeforeHit`,
 `cuts/trailer/cutdown30`, `cuts/trailer/cutdown15`)."""
 import argparse

@@ -32,7 +32,7 @@ What we did NOT do this round: no new reference intake, no view-count or retenti
 
 ## 3. Cut rate against time
 
-A trailer accelerates. The pack's rule (`cuts/patterns.json` `trailer.accelerate3Act`, `cuts/trailer.py`): beats per shot fall from 8 -> 6 in act 1, 4 -> 2 in act 2 and 2 -> 1 -> 0.5 in act 3; every cut sits on the score's half-beat grid; every act-3 bar downbeat is a cut (the braam lands on it). At 120 BPM that is about 0.25 cuts/s in act 1, 0.6-0.7 in act 2 and about 2 in act 3, ending on 8th notes (4 cuts/s). The fastest stretch stops dead into the silence: the contrast is the point.
+A trailer accelerates. The pack's rule (`cuts/patterns.json` `trailer.accelerate3Act`, `cuts/trailer_plan.py`): beats per shot fall from 8 -> 6 in act 1, 4 -> 2 in act 2 and 2 -> 1 -> 0.5 in act 3; every cut sits on the score's half-beat grid; every act-3 bar downbeat is a cut (the braam lands on it). At 120 BPM that is about 0.25 cuts/s in act 1, 0.6-0.7 in act 2 and about 2 in act 3, ending on 8th notes (4 cuts/s). The fastest stretch stops dead into the silence: the contrast is the point.
 
 **Flash safety:** the fast end cuts between plates of similar luminance; white flash frames are at most one every two bars (far under the WCAG limit of 3 per second); `eyes/flashes` measures the delivered file.
 

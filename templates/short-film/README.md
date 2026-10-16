@@ -5,7 +5,7 @@ A narrative scaffold for a short film (60-180 s) beyond `templates/film-scene`'s
 ```bash
 node make.mjs                                                     # the demo short, 16:9 -> projects/full-16x9/
 node make.mjs --set aspect=9:16                                   # re-laid out             -> projects/full-9x16/
-bash ../_shared/render3d.sh templates/film-scene scene.html wide 23   # from the repo root: the three.js stage render -> templates/film-scene/out/film-scene-wide.mp4
+(cd ../.. && bash templates/_shared/render3d.sh templates/film-scene scene.html wide 23)   # from the repo root: the three.js stage render -> templates/film-scene/out/film-scene-wide.mp4
 node make.mjs --set media.stage.src=$PWD/../film-scene/out/film-scene-wide.mp4 --set lines=$PWD/lines.example.json
 node make.mjs --set voice.src=/abs/dialogue.wav                   # your recording: the bed ducks 12 dB under it, plan.audio.mode = vo
 npx -y hyperframes@0.8.142 render projects/full-16x9 -o out/short-film-full-16x9.mp4 --crf 23
