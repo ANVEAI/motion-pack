@@ -1,0 +1,104 @@
+{
+ "title": "saas-launch: Acme Flow (fictional demo brand)",
+ "tone": {
+  "cell": "calm-sharp",
+  "why": "a bright product launch: premium, quick, never shouty; UI does the talking"
+ },
+ "motion": {
+  "personality": "The cursor hurries; the product never does. Base unit 5 frames, cam easing for the camera and the cursor, a pop only on the reveal mark, at most 6% overshoot, a 12-frame hold after every key action.",
+  "base_frames": 5,
+  "easing": "cam (0.33 0 0.12 1) / enter (0.16 1 0.3 1)",
+  "overshoot_max": 0.06,
+  "hold_frames": 12,
+  "type_presets": {
+   "headline": "kit headSVG: words rise out of the line mask, 0.055 s stagger"
+  }
+ },
+ "palette": {
+  "paper": "#F5F4F0",
+  "ink": "#14131A",
+  "accent": "#3B5BFD",
+  "accent_ink": "#FFFFFF",
+  "muted": "#5D5A66",
+  "success": "#06A260",
+  "warning": "#B2382E",
+  "caption": "#FFFFFF",
+  "scrim": "#0E0D14"
+ },
+ "contrast": {
+  "pairs": [
+   {
+    "fg": "ink",
+    "bg": "paper",
+    "use": "text"
+   },
+   {
+    "fg": "accent",
+    "bg": "paper",
+    "use": "large"
+   },
+   {
+    "fg": "accent_ink",
+    "bg": "accent",
+    "use": "text"
+   },
+   {
+    "fg": "muted",
+    "bg": "paper",
+    "use": "text"
+   },
+   {
+    "fg": "warning",
+    "bg": "paper",
+    "use": "text"
+   },
+   {
+    "fg": "caption",
+    "bg": "scrim",
+    "use": "text"
+   },
+   {
+    "fg": "success",
+    "bg": "paper",
+    "use": "ui"
+   }
+  ]
+ },
+ "type": {
+  "display": "Manrope 800",
+  "text": "Manrope 600-700",
+  "mono": "IBM Plex Mono 600",
+  "sizes": {
+   "headline_16x9": "72-124 px",
+   "headline_9x16": "76-112 px",
+   "labels": ">= 22 px (16:9) / >= 24 px (9:16)"
+  }
+ },
+ "grid": {
+  "16:9": "12 columns, 96 px margins (wideTitle)",
+  "9:16": "text inside x 65-960, y 269-1248 (conservative)"
+ },
+ "look": {
+  "grade": "neutral",
+  "grain": "upload-safe",
+  "vignette": false
+ },
+ "frames": {
+  "hero_by_shot": {
+   "hook": "the inbox window, toasts landing",
+   "reveal": "the mark",
+   "tour": "the window and the cursor",
+   "payoff": "the split divider",
+   "end": "the CTA pill"
+  },
+  "end_card": {
+   "line": "Start free"
+  }
+ },
+ "config_map": {
+  "palette.accent": "brand.accent",
+  "palette.ink": "brand.ink",
+  "palette.paper": "brand.paper",
+  "frames.end_card.line": "brand.cta"
+ }
+}
