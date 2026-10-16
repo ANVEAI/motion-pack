@@ -107,7 +107,7 @@ def rect_path(x0, y0, x1, y1):
     return {'c': True, 'v': [[x0, y0], [x1, y0], [x1, y1], [x0, y1]], 'i': [[0, 0]] * 4, 'o': [[0, 0]] * 4}
 
 
-def shape_layer(name, shapes, frames, ind, masks=None, ip=0):
+def make_layer(name, shapes, frames, ind, masks=None, ip=0):
     L = {'ty': 4, 'nm': name, 'ind': ind, 'ip': ip, 'op': frames, 'st': 0, 'ks': static_ks(), 'shapes': shapes}
     if masks:
         L['masksProperties'] = masks
@@ -204,7 +204,7 @@ def build_text(L, smp, frames, W, H, ind0):
             else:
                 pt = {'a': 0, 'k': rect_path(round(x0, 3), round(y0, 3), round(p['k'][0], 3), round(y1, 3))}
             masks.append({'mode': 'a', 'inv': False, 'o': {'a': 0, 'k': 100}, 'x': {'a': 0, 'k': 0}, 'pt': pt})   # lottie-web reads x (expansion)
-        layers.append(shape_layer('%s unit %d: %s' % (L['preset'], i, u['text']), [group(shapes, tr)], op, ind0 + i, masks, ip))
+        layers.append(make_layer('%s unit %d: %s' % (L['preset'], i, u['text']), [group(shapes, tr)], op, ind0 + i, masks, ip))
     return layers, dropped
 
 
@@ -226,7 +226,7 @@ def build_drawon(L, smp, frames, ind):
         if fill and fill not in ('none', 'currentColor') and L.get('fillAfter', 0) > 0:
             items.append({'ty': 'fl', 'c': {'a': 0, 'k': color(fill)}, 'o': prop([row[j] * 100 for row in smp['fill']], EPS['o'], False), 'r': 1})
         groups.append(group(items, {'a': {'a': 0, 'k': [0, 0]}, 'p': {'a': 0, 'k': [0, 0]}, 's': {'a': 0, 'k': [100, 100]}, 'r': {'a': 0, 'k': 0}, 'o': {'a': 0, 'k': 100}}))
-    return [shape_layer('drawon: %s' % os.path.basename(L.get('svg', 'inline')), groups, frames, ind)], notes
+    return [make_layer('drawon: %s' % os.path.basename(L.get('svg', 'inline')), groups, frames, ind)], notes
 
 
 def build_shape(L, smp, frames, ind):
@@ -247,7 +247,7 @@ def build_shape(L, smp, frames, ind):
     y = pr.get('y', [L['pos'][1]] * n)
     tr = {'a': {'a': 0, 'k': [0, 0]}, 'p': prop([[a, b] for a, b in zip(x, y)], EPS['p']), 's': prop([[v, v] for v in pr.get('scale', [100] * n)], EPS['s']),
           'r': prop(pr.get('rot', [0] * n), EPS['r'], False), 'o': prop(pr.get('opacity', [100] * n), EPS['o'], False)}
-    return [shape_layer('shape: %s' % L.get('shape', 'rect'), [group(geo, tr)], frames, ind)]
+    return [make_layer('shape: %s' % L.get('shape', 'rect'), [group(geo, tr)], frames, ind)]
 
 
 # ------------------------------------------------------------------------------------------------ the document
@@ -293,7 +293,7 @@ def export(spec, allow_lossy=False):
         raise ExportError('these preset properties cannot be exported: %s (pass --allow-lossy to export without them)' %
                           '; '.join('%s: %s' % (p, ', '.join(sorted(d))) for p, d in report['dropped'].items()))
     if spec.get('background'):
-        layers.insert(0, shape_layer('background', [group([{'ty': 'rc', 'p': {'a': 0, 'k': [W / 2, H / 2]}, 's': {'a': 0, 'k': [W, H]}, 'r': {'a': 0, 'k': 0}},
+        layers.insert(0, make_layer('background', [group([{'ty': 'rc', 'p': {'a': 0, 'k': [W / 2, H / 2]}, 's': {'a': 0, 'k': [W, H]}, 'r': {'a': 0, 'k': 0}},
                                                            {'ty': 'fl', 'c': {'a': 0, 'k': color(spec['background'])}, 'o': {'a': 0, 'k': 100}, 'r': 1}],
                                                           {'a': {'a': 0, 'k': [0, 0]}, 'p': {'a': 0, 'k': [0, 0]}, 's': {'a': 0, 'k': [100, 100]}, 'r': {'a': 0, 'k': 0}, 'o': {'a': 0, 'k': 100}})],
                                      frames, ind))
