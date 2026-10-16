@@ -26,7 +26,7 @@ export async function makeSaas(DIR, { title = 'SaaS film' } = {}) {
   const lnk = (src, dst) => { const d = path.join(PROJ, 'assets', 'mp', dst); fs.mkdirSync(path.dirname(d), { recursive: true }); fs.rmSync(d, { force: true }); try { fs.linkSync(src, d); } catch { fs.copyFileSync(src, d); } };
   for (const f of ['kit.mjs', 'screens.mjs']) lnk(path.join(SH, 'saas', f), path.join('saas', f));
   const brand = { ...B, logo: B.logo ? 'assets/media/' + path.basename(B.logo) : null };
-  const wav = path.join(PROJ, 'assets', 'media', 'mix.wav'); if (allArgs.includes('--no-mix') && fs.existsSync(wav)) console.log('mix: kept', wav, '(--no-mix: picture-only rebuild)'); else mix(path.join(OUT, planName + '.json'), wav);
+  const wav = path.join(PROJ, 'assets', 'media', 'mix.wav'); if (allArgs.includes('--no-mix')) console.log(fs.existsSync(wav) ? 'mix: kept ' + wav + ' (--no-mix: picture-only rebuild)' : 'mix: PENDING (--no-mix and no mix.wav yet: run node make.mjs without --no-mix before rendering)'); else mix(path.join(OUT, planName + '.json'), wav);
   /* transition windows: plan shots -> txPlan (kind dom: the module's DOM back-end; cut / smash: none) */
   const P = txPlan(plan.shots, F), wins = P.wins.map((w) => ({ i: w.i, key: w.key, id: w.id, params: w.params, startF: w.startF, endF: w.endF, cutF: w.cutF, start: w.start, end: w.end, cut: w.cut }));
   if (P.todo.length) console.log('transitions todo:', P.todo.join(' | '));

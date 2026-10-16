@@ -222,7 +222,7 @@ const aiAnswer = { tags: ['ui', 'ai', 'prompt', 'chat', 'answer', 'streaming', '
 /* ---------- 6. keyboard shortcut chip ---------- */
 const GLYPH = { '⌘': 'M9 9h6v6H9z M9 9V6.5A2.5 2.5 0 1 0 6.5 9H9 M15 9V6.5A2.5 2.5 0 1 1 17.5 9H15 M9 15v2.5A2.5 2.5 0 1 1 6.5 15H9 M15 15v2.5a2.5 2.5 0 1 0 2.5-2.5H15', '⇧': 'M12 4L4 12h4.5v7h7v-7H20z',
   '⌥': 'M3 6h5l7 12h6 M14 6h7', '⌃': 'M6 14l6-6l6 6', '↵': 'M19 6v6a2 2 0 0 1-2 2H6 M10 10l-4 4l4 4', '⌫': 'M9 5h11v14H9l-6-7z M12 9l5 6 M17 9l-5 6' };
-const KEY_D = { keys: ['⌘', 'K'], label: 'Open anywhere', pos: [0.5, 0.5], pressAt: 0.5, stagger: 0.12, hold: 0.55, size: 1, theme: 'light', accent: BRAND, stack: false };
+const KEY_D = { keys: ['⌘', 'K'], label: 'Open anywhere', pos: [0.5, 0.5], pressAt: 0.5, stagger: 0.12, hold: 0.55, size: 1, theme: 'light', accent: BRAND, stack: false, plate: false };   // plate: a panel behind the chip (over busy UI)
 const shortcutChip = { tags: ['ui', 'keyboard', 'shortcut', 'keycap', 'chip', 'changelog', 'saas', 'tutorial'], dur: 2.6, inF: 8, outF: 8, d: KEY_D,
   svg(L, p, c) {
     const T = th(p), s = unit(c) * num(p.size, 1), u = L.u, keys = list(p.keys).map(String).slice(0, 6), kh = 96 * s, gap = 16 * s, kw = (kk) => Math.max(kh, measure(kk, 44 * s, { weight: 700 }) + 48 * s);
@@ -236,7 +236,8 @@ const shortcutChip = { tags: ['ui', 'keyboard', 'shortcut', 'keycap', 'chip', 'c
       out += GLYPH[kk] ? `<path transform="translate(${f2(kx + w / 2 - 22 * s)} ${f2(y0 + dy + (kh - lip) / 2 - 22 * s)}) scale(${f2(44 * s / 24)})" d="${GLYPH[kk]}" fill="none" stroke="${ink}" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>` : text(kk, kx + w / 2, y0 + dy + (kh - lip) / 2 + 15 * s, { size: 44 * s, weight: 700, fill: ink, anchor: 'middle' });
       kx += w; if (i < keys.length - 1) { out += text('+', kx + gap / 2 + plus / 2, y0 + kh / 2 + 12 * s, { size: 34 * s, weight: 600, fill: T.muted, anchor: 'middle' }); kx += gap + plus; } });
     if (p.label) out += p.stack ? text(p.label, cx, y0 + kh + 30 * s + fsL * 0.8, { size: fsL, weight: 700, fill: T.ink, anchor: 'middle' }) : text(p.label, x0 + rowW + 40 * s, y0 + kh / 2 + fsL * 0.36, { size: fsL, weight: 700, fill: T.ink });
-    return `<g${op(clamp(k * 2) * (1 - L.out))} transform="translate(${f2(cx)} ${f2(cy)}) scale(${f2(Math.max(0.001, lerp(0.85, 1, clamp(k, 0, 1.2))))}) translate(${f2(-cx)} ${f2(-cy)})">${out}</g>`; } };
+    const pl = p.plate ? `<defs>${shadowDef('kcs', s * 1.4)}</defs>${softShadow('kcs', cx - totalW / 2 - 30 * s, y0 - 26 * s, totalW + 60 * s, totalH + 62 * s, 28 * s, s, 1)}${rect(cx - totalW / 2 - 30 * s, y0 - 26 * s, totalW + 60 * s, totalH + 62 * s, 28 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.2 * s)}"`)}` : '';
+    return `<g${op(clamp(k * 2) * (1 - L.out))} transform="translate(${f2(cx)} ${f2(cy)}) scale(${f2(Math.max(0.001, lerp(0.85, 1, clamp(k, 0, 1.2))))}) translate(${f2(-cx)} ${f2(-cy)})">${pl}${out}</g>`; } };
 
 /* ---------- registry + sound ---------- */
 export const SAAS = { 'ui.appWindow': appWindow, 'ui.cursorJourney': cursorJourney, 'callout.highlightBox': highlightBox, 'callout.arrowLabel': arrowLabel, 'ui.commandBar': commandBar, 'ui.aiAnswer': aiAnswer, 'ui.shortcutChip': shortcutChip };

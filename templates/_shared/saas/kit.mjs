@@ -39,7 +39,7 @@ export function headSVG(h, t, env) {
 }
 /* a small kicker pill above a headline ("NEW", "Step 1", "How it works") */
 export function kickerSVG(k, t, env) {
-  const u = t - k.at; if (u < 0) return ''; const s = k.size ?? 30, w = env.measure(k.text, s, { weight: 800, ls: 0.08 * s }) + s * 1.4, hh = s * 1.8, kk = EASE.pop(cl(u / 0.35)), x = k.align === 'center' ? k.x - w / 2 : k.x;
+  const u = t - k.at; if (u < 0) return ''; const s = k.size ?? 30, w = env.measure(String(k.text).toUpperCase(), s, { weight: 800, ls: 0.08 * s }) + s * 1.4, hh = s * 1.8, kk = EASE.pop(cl(u / 0.35)), x = k.align === 'center' ? k.x - w / 2 : k.x;
   return `<g transform="translate(${f2(x + w / 2)} ${f2(k.y + hh / 2)}) scale(${f2(Math.max(0.001, kk))}) translate(${f2(-w / 2)} ${f2(-hh / 2)})"><rect width="${f2(w)}" height="${f2(hh)}" rx="${f2(hh / 2)}" fill="${k.bg ?? env.B.accent}"/>` +
     `<text x="${f2(s * 0.7)}" y="${f2(hh / 2 + s * 0.36)}" font-family="${esc(FONT)}" font-size="${f2(s)}" font-weight="800" letter-spacing="${f2(0.08 * s)}" fill="${k.color ?? '#FFFFFF'}">${esc(String(k.text).toUpperCase())}</text></g>`;
 }

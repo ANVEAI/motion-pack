@@ -31,10 +31,10 @@ export const PROJECT_MAP = { 'brand.name': 'brand.name', 'brand.accent': 'brand.
 
 export const BUDGETS = { 15: { hook: 2, before: 3, after: 4.5, shortcut: 2, cta: 3.5 }, 20: { hook: 2.5, before: 4, after: 5, compare: 3.5, shortcut: 2, cta: 3 }, 30: { hook: 3, before: 5.5, after: 7, compare: 5, shortcut: 3, cta: 6.5 } };
 export const LY = {
-  wide: { top: { x: 110, y: 62, w: 1700, size: 76 }, kicker: { x: 110, y: 40, size: 28 }, hookHead: { x: 110, y: 112, w: 1700, size: 96 }, win: [0.09, 0.22, 0.82, 0.74], hookWin: [0.09, 0.3, 0.82, 0.66],
+  wide: { top: { x: 110, y: 62, w: 1700, size: 76 }, kicker: { x: 110, y: 62, size: 28 }, hookHead: { x: 110, y: 132, w: 1700, size: 92 }, win: [0.09, 0.22, 0.82, 0.74], hookWin: [0.09, 0.33, 0.82, 0.64],
     split: [0.08, 0.21, 0.84, 0.74], chip: [0.5, 0.48], chipSize: 2.2, toasts: { pos: [0.64, 0.25], width: 0.32 }, tz: {} },
   tall: { top: { x: 80, y: 290, w: 900, size: 80 }, kicker: { x: 80, y: 250, size: 30 }, hookHead: { x: 80, y: 320, w: 900, size: 104 }, win: [0.03, 0.31, 0.94, 0.5], hookWin: [0.03, 0.4, 0.94, 0.46],
-    split: [0.04, 0.31, 0.92, 0.48], chip: [0.5, 0.44], chipSize: 1.8, toasts: { pos: [0.08, 0.33], width: 0.84 }, tz: { inbox: [0.17, 0.05, 0.62, 0.62] } },
+    split: [0.04, 0.31, 0.92, 0.48], chip: [0.5, 0.44], chipSize: 1.8, toasts: { pos: [0.08, 0.33], width: 0.84 }, tz: { inbox: [0.18, 0.08, 0.8, 0.52] } },
 };
 const ROW = (i) => 0.169 + 0.084 * i, TAGX = 0.86, CHKX = 0.219, BULK = [0.905, 0.068];   // where things are on the placeholder inbox (measured in Chrome, 1440 x 900)
 
@@ -56,7 +56,7 @@ export function dropScenes(C, A, B) {
   add({ id: 'after', bg: 'paper', grid: 1, why: 'the new way: select, one shortcut, everything at once', heads: [hd(T.after, 0.05, L.top)],
     items: [applyMedia(win('aWin', L.win, { name: 'inbox', keys: [[0, { select: 0, calm: 0, bulk: 0 }], [sel0, { select: 1 }, 0.05], [sel1, { select: 8, bulk: 1 }, 0.5], [press + 0.15, { calm: 1 }, 1.0]] }, { kb: [1, 1.03] }), M.after, 'after'),
       { id: 'ui.cursorJourney', at: 0, winOf: 'aWin', params: { path: [{ t: 0.2, x: 0.5, y: 0.7 }, { t: sel0, x: CHKX, y: ROW(0), click: true }, { t: sel1, x: CHKX, y: ROW(7), click: true }, { t: press - 0.2, x: BULK[0] - 0.01, y: BULK[1] + 0.01, hover: [0.83, 0.036, 0.15, 0.064] }], size: tall ? 1.15 : 1 } },
-      { id: 'ui.shortcutChip', at: press - 0.7, dur: 1.4, params: { keys: C.shortcut, label: T.shortcut, pos: tall ? [0.5, 0.86] : [0.5, 0.88], pressAt: 0.55, stagger: 0.07, size: tall ? 1.1 : 1, stack: false } },
+      { id: 'ui.shortcutChip', at: press - 0.7, dur: 1.4, params: { keys: C.shortcut, label: T.shortcut, pos: tall ? [0.5, 0.74] : [0.5, 0.86], pressAt: 0.55, stagger: 0.07, size: tall ? 1.05 : 1, stack: false, plate: true } },
       { id: 'ui.notifyStack', at: press + 1.2, params: { ...L.toasts, max: 1, accent: B.accent, app: B.name, items: [{ at: 0, title: T.toast[0], body: T.toast[1], icon: T.toast[2] }] } }],
     cues: [{ t: press + 1.0, id: C.sfx.cascade, why: 'everything routed' }] });
   /* COMPARE: the same screen, before and after */

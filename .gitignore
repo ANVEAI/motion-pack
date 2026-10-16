@@ -99,3 +99,4 @@ storyboard/examples/*/real/
 templates/saas-*/out/*.mp4
 templates/saas-*/tall/assets/
 templates/saas-*/out/sheet-dev*.jpg
+templates/saas-*/out/build*.log

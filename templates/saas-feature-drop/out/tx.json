@@ -1,0 +1,26 @@
+[
+ {
+  "i": 3,
+  "key": "push",
+  "id": "transitions/push",
+  "params": {},
+  "startF": 339,
+  "endF": 350,
+  "cutF": 345,
+  "start": 11.3,
+  "end": 11.666666666666666,
+  "cut": 11.5
+ },
+ {
+  "i": 4,
+  "key": "scalePunch",
+  "id": "transitions/scale-punch",
+  "params": {},
+  "startF": 448,
+  "endF": 455,
+  "cutF": 450,
+  "start": 14.933333333333334,
+  "end": 15.166666666666666,
+  "cut": 15
+ }
+]
