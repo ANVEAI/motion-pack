@@ -110,6 +110,24 @@
     "pattern": "explainer",
     "why": "a lesson is an explainer with recap and quiz; no separate lesson pattern yet"
    }
+  ],
+  "hardware-reveal": [
+   {
+    "pattern": "hardware-reveal",
+    "why": "the RECIPE HW device launch film: dark open, light sweep, the reveal on the drop, exploded view, specs, the end card"
+   }
+  ],
+  "hardware-teaser": [
+   {
+    "pattern": "teaser",
+    "why": "a device teaser: the silhouette (hook), the tease line and one detail (build), the hit with the name (title), the date (plan.structure names the beats)"
+   }
+  ],
+  "spec-sheet": [
+   {
+    "pattern": null,
+    "why": "a 20-30 s spec comparison is one beat (the specs section of hardware-reveal) held as a data card, not a story shape; no beat sheet fits; score the launch film it cuts from with --pattern hardware-reveal"
+   }
   ]
  },
  "structures": {

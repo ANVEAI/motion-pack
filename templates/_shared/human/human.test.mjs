@@ -90,6 +90,19 @@ R.check('desktop plate replays its events by t (typing progress, toggle), whatev
 const ids = Object.keys(GFX).filter((k) => GFX[k].file === 'type/gfx/human.js');
 let pure = true; for (const id of ids) for (const [W, H] of [[1920, 1080], [1080, 1920]]) { const a = renderSVG(id, 1.3, { at: 0 }, { W, H }); renderSVG(id, 0.2, { at: 0 }, { W, H }); if (renderSVG(id, 1.3, { at: 0 }, { W, H }) !== a || !a) pure = false; }
 R.check(`the ${ids.length} human gfx parts draw at 16:9 and 9:16 and are pure functions of t`, ids.length >= 15 && pure);
+{ /* the seek contract of the UI kit (type/tests/ui.test.mjs) for every human part: empty before `at`, drawn inside its life, the same string in shuffled seek order at both aspects,
+     finite numbers over [-1, 12] s, and every gfxCues cue resolves to a library sound at or after `at` with a reason */
+  const { gfxCues } = await import('../../../type/gfx/index.js'), SND = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'sfx/manifest.json'), 'utf8')).sounds.map((s) => s.id));
+  let r = 7; const rnd = () => { r = (r * 1664525 + 1013904223) >>> 0; return r / 4294967296; }, bad = [];
+  for (const id of ids) for (const [W, H] of [[1920, 1080], [1080, 1920]]) {
+    const ts = Array.from({ length: 60 }, (_, i) => -1 + i * 0.22), a = ts.map((t) => renderSVG(id, t, { at: 0 }, { W, H })), ord = ts.map((_, i) => i).sort(() => rnd() - 0.5), b = [];
+    for (const i of ord) b[i] = renderSVG(id, ts[i], { at: 0 }, { W, H });
+    const life = ts.filter((t) => t >= 0 && t <= (GFX[id].dur || 2)), drawn = life.some((t) => renderSVG(id, t, { at: 0 }, { W, H }).length > 300);
+    if (renderSVG(id, -0.3, { at: 0 }, { W, H }) !== '' || !drawn || a.some((x, i) => x !== b[i]) || a.some((x) => /NaN|undefined|Infinity|\[object/.test(x))) bad.push(`${id}@${W}x${H}`);
+  }
+  const cueBad = ids.flatMap((id) => gfxCues(id, { at: 2 }).filter((c) => !SND.has('snd.' + c.id.split('/').slice(1).join('.')) || c.t < 2 - 1e-9 || !c.why).map((c) => `${id}:${c.id}`));
+  R.check(`the ${ids.length} human gfx parts keep the seek contract (empty before at, drawn in their life, same SVG in shuffled seek order, finite) at both aspects`, !bad.length, bad.join(' '));
+  R.check('every human gfx cue (gfxCues) resolves to a library sound at or after the part\'s at, with a reason', !cueBad.length, cueBad.join(' ')); }
 R.check('title.hookCard is visible and already moving on frame 0 (the hook rule)', renderSVG('title.hookCard', 0, { at: 0 }, {}) !== '' && renderSVG('title.hookCard', 0, { at: 0 }, {}) !== renderSVG('title.hookCard', 0.2, { at: 0 }, {}));
 R.check('ui.cursorTrack draws a click ripple only after a click', /circle/.test(renderSVG('ui.cursorTrack', 0.9, { at: 0 }, {})) && !/circle/.test(renderSVG('ui.cursorTrack', 0.5, { at: 0 }, {})));
 

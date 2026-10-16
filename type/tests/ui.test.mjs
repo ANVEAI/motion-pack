@@ -36,7 +36,9 @@ check('springTrack works element-wise on arrays ([x, y] positions, RGB)', Math.a
 
 /* ---------- 2. UI kit ---------- */
 /* the round 4+5 ui.* parts (ui-proof.js, ui-trace.js, ui.promptBar.attach) are covered by tests/r45ui.test.mjs; the round-6 ones (ui.dockLaunch, ui.connectRows) by tests/r6.test.mjs */
-const R45UI = ['ui.branchTrace', 'ui.dataTable', 'ui.costTicker', 'ui.promptBar.attach', 'ui.dockLaunch', 'ui.connectRows'], UIIDS = Object.keys(GFX).filter((k) => k.startsWith('ui.') && !R45UI.includes(k));
+/* the lane-human ui.* parts (type/gfx/human.js: ui.keyCombo, ui.codeCallout, ui.stepCounter, ui.cursorTrack, ui.waveform, ui.quizCard) size from the frame, not a `scale` param, and cue
+   through gfxCues; templates/_shared/human/human.test.mjs holds every human part to the same seek contract (empty before at, shuffled order, finite, cues resolve) */
+const R45UI = ['ui.branchTrace', 'ui.dataTable', 'ui.costTicker', 'ui.promptBar.attach', 'ui.dockLaunch', 'ui.connectRows'], UIIDS = Object.keys(GFX).filter((k) => k.startsWith('ui.') && !R45UI.includes(k) && GFX[k].file !== 'type/gfx/human.js');
 const HERO = { 'ui.agentActivity': 1.75, 'ui.promptBar': 1.95, 'ui.checklist': 1.75, 'ui.nodeGraph': 2.9, 'ui.scanOverlay': 1.1, 'ui.isometricTilt': 1.4, 'ui.stateMorph': 6.1,
   'ui.liveTranscript': 4.9, 'ui.wordRegenerate': 3.1, 'ui.receiptCompare': 2.9, 'ui.failoverRoute': 2.75, 'ui.fileChip': 1.5, 'ui.pageFlythrough': 2.3, 'ui.tabPillNav': 2.1, 'ui.windowWall': 2.6, 'ui.optionPicker': 2.2 };
 check(`16 ui ids registered in GFX (${UIIDS.join(', ')})`, UIIDS.length === 16 && Object.keys(HERO).every((k) => UIIDS.includes(k)));

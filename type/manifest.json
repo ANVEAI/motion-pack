@@ -7501,6 +7501,7 @@
     "source": "placeholder data",
     "cta": "",
     "name": "Acme Node",
+    "dateAt": 0,
     "accent": "#5CC8FF",
     "ink": "#F4F6FA",
     "muted": "#9AA3B2",

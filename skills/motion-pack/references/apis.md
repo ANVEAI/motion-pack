@@ -22,6 +22,17 @@ python3 templates/_shared/sheet.py <mp4> <sheet.jpg> t1,t2,...       # contact s
   - `honesty.mjs` (pure): `problems(CONFIG, { voWords })` -> messages that name the field, `assertHonest` (throws `HonestyError`), `numberFields`, `claimWords`, `numberIn(text)` (a digit in any script, a currency or percent sign, or a number word: the gate's idea of "a number in prose"), `weak('source'|'method', text)` (filler, too short); `config.mjs gateProblems(CONFIG)` adds the VO transcript; make.mjs exits 2 and `cues.mjs` fails on any of them.
   - `panels.mjs` (pure, node + browser): `stage(plan, st, t)` draws one cell, `cameraFor(plan)` -> `{ pan, zoom }` (two nested cam2d state functions), `mapCell`, `safeInset(zone, W, H, push)`; `config.mjs` `buildPlan(CONFIG)` -> `plan.stages`, `plan.camera`, `plan.honesty`, `plan.audio` (`quiet` open + hold, `events`, `role` proof).
   - plan cue `overVoDb` (negative dB, read by `templates/_shared/audio.py`) puts a cue relative to the VOICE; without it a cue sits over the un-ducked bed. Plan cue `overBedDb` (dB, negative = under the bed) sets a LOOP cue's level against the un-dipped bed (the mixer's loop default is -10 dB): the proof film's `sfx/amb/room_tone` under the quiet hold sits at -26.
+- **`templates/hardware-reveal`, `templates/hardware-teaser`, `templates/spec-sheet`** (AI-hardware / device films, 16:9 + 9:16; shared pipeline `templates/_hw/makehw.mjs`: plan, then the three.js plate once per aspect, cached by hash, then the composed score and the mix). `node make.mjs [--set aspect=9:16] [--set length=...]`, then render; 9:16 renders from `tall/`. Every spec needs a `source` (a missing or generic one stops the build); a price always prints its note and source.
+
+  ```
+  templates/_hw/hwplan.mjs   layoutBars(sections, bpm, fps) | calloutItem(D, A, {name|point, at, dur, spec, off}) | dimItem(D, A, {a, b, at, dur, value, unit, source}) | glintItem(D, A, {a, b, at, dur}) | visibleWindow(D, name, t0, t1)
+  objects/lib/hwshots.js     director(plan) -> { cameraAt(t), stateAt(t), px(anchor, t), pxPoint(local, t), track(anchor, t0, t1, fps, local) }; SHOT_KINDS silhouette sweep hero explode scale ports inside spin card end
+  objects/lib/explode.js     explodePlan(parts, {at, dur, stagger, overshoot, hold, back, breathe}) -> explodeAt(X, t) -> {id: {k, off, rot}}; explodeCues(X)
+  objects/kit/project.js     project(cam, point, W, H) -> [px, py, depth] (the kit rig as pure maths); poseApply(pose, local)
+  objects/lib/hwdata.js      nodeLayout(spec) -> {spec, ports, anchors, anchorPart, explode, dims (mm)}; anchorAt(L, name, offs); dieLayout({cores})
+  music/reveal.py            render_reveal(sections, fps, bpm, seed, tail_s) / CLI --sections --out score.wav (+ score.json markers, drops)
+  templates/_shared/audio.py plan.musicFile (a composed bed next to the plan) | cue.untilT (a loop cue stops there)
+  ```
 - **`templates/_shared/txplan.mjs`**:
   - `txPlan(shots, fps, {bpm})` gives `{wins, todo}`.
   - `span(P, {sel, start, dur, mediaStart})` stretches clips around each window.
@@ -85,7 +96,7 @@ rep = m.render('out_dir')                        # master.wav -14 LUFS / -1.5 dB
 
 - **CLI:** `python3 music/mixer.py cuesheet.json --out DIR` (the JSON cue sheet format is in `music/README.md`).
 - **Ids:** `sfx/<cat>/<name>` maps to `snd.<cat>.<name>` (`sfx/manifest.json`: anchor, LUFS, centroid, `phone_safe`, `pairs_with`).
-- **Bundles:** `sfx/bundles.json` maps roles to ids; its <!--n:sfx_bundles-->16<!--/n--> bundles are `launch_film`, `mime_spot`, `beat_edit`, `talking_head`, `short_film`, `product_ad`, `kinetic_type`, `loop_short`, `india_festive`, `voice_agent_demo`, `office_comedy`, `saas_launch`, `mockumentary`, `archive_open` and `neon_power_on`.
+- **Bundles:** `sfx/bundles.json` maps roles to ids; its <!--n:sfx_bundles-->16<!--/n--> bundles are `launch_film`, `mime_spot`, `beat_edit`, `talking_head`, `short_film`, `product_ad`, `kinetic_type`, `loop_short`, `india_festive`, `voice_agent_demo`, `office_comedy`, `saas_launch`, `mockumentary`, `archive_open`, `neon_power_on` and `hardware_launch`.
 - **SFX families (<!--n:sfx-->316<!--/n--> sounds in <!--n:sfx_families-->27<!--/n--> families):** the largest are cartoon, indian, ui, ambience, transition, foley, impact, drum, device, riser, whoosh and voice, then smaller liquid / logo / stinger / glass / paper / wood / cloth / crowd / elec / metal / sparkle / plastic / camera / cash (per-family counts: `sfx/README.md`). Ids tagged `rr:4` have four round-robin takes (seeds s..s+3).
 - **Electric (round 4/5):** `sfx/elec/arc` (`snd.elec.arc`, a 0.4 s zap, anchor = the crack, `rr:4` four strikes), `sfx/elec/crackle_loop` (4.0 s seamless loop on a seeded random-walk envelope, sit it under the bed with `Mix.add_cue(..., until_frame=F)`) and `sfx/elec/zap_off` (1.2 s power-down, anchor = the snap: put it on the frame the light dies). The buzz is tuned to A2 (110 Hz). Bundle `neon_power_on`. Pairs with electric / neon outline type and `blender/cableTangle` bulb-out frames.
 - **Sweeteners:** `sfx/sweeteners.json` has a row for every transition kind (incl. the formerly pending shutter, swipeUp, spin, pagePeel, pixelSort); new visual transitions fall back to their `transitions/catalog.json` sfx list.

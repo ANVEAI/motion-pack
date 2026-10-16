@@ -153,18 +153,19 @@ const GLINT = { tags: ['hardware', 'flare', 'glint', 'edge', 'lens', 'streak', '
   } };
 
 /* ================================================================ hw.dateCard ================================================================ */
-const DATE_D = { kicker: 'Available', date: 'Spring 2027', priceLabel: 'From', price: 999, currency: '$', dec: 0, note: 'indicative price · placeholder', source: SRC0, cta: '', name: 'Acme Node', accent: '#5CC8FF', ink: '#F4F6FA', muted: '#9AA3B2', align: 'center', box: [0.1, 0.18, 0.8, 0.64] };
+const DATE_D = { kicker: 'Available', date: 'Spring 2027', priceLabel: 'From', price: 999, currency: '$', dec: 0, note: 'indicative price · placeholder', source: SRC0, cta: '', name: 'Acme Node', dateAt: 0, accent: '#5CC8FF', ink: '#F4F6FA', muted: '#9AA3B2', align: 'center', box: [0.1, 0.18, 0.8, 0.64] };
 const DATE = { tags: ['hardware', 'availability', 'date', 'price', 'launch', 'end-card', 'number'], dur: 3.6, inF: 12, outF: 9, d: DATE_D,
   svg(L, p, c) {
     const s = sc(c), b = Array.isArray(p.box) && p.box.length >= 4 ? p.box.map((v, i) => num(v, DATE_D.box[i], -1, 2)) : DATE_D.box, X = b[0] * c.W, Y = b[1] * c.H, W = b[2] * c.W, H = b[3] * c.H;
     const left = p.align === 'left', ax = left ? X : X + W / 2, anc = left ? 'start' : 'middle', acc = hex(p.accent, DATE_D.accent), ink = hex(p.ink, DATE_D.ink), mut = hex(p.muted, DATE_D.muted), u = L.u, o = 1 - E.exit(L.out);
     const dateS = str(p.date, '', 40), ds = Math.min(150 * s, (W * 0.92) / Math.max(1, measure(dateS, 1, { weight: 800 }))), cy = Y + H * 0.46;
-    const kk = E.enter(seg(u, 0, 0.4)), kd = E.enter(seg(u, 0.12, 0.6)), kr = E.move(seg(u, 0.45, 0.95)), kp = E.enter(seg(u, 0.8, 1.2)), kn = kd; /* the note (indicative / placeholder + source) is on screen whenever a digit is */
+    /* dateAt (s, default 0): the kicker + name land first and the date line (with its rule, price and note) lands dateAt seconds later: a teaser's title beat, then its date beat */
+    const da = num(p.dateAt, 0, 0, 30), kk = E.enter(seg(u, 0, 0.4)), kd = E.enter(seg(u, 0.12 + da, 0.6 + da)), kr = E.move(seg(u, 0.45 + da, 0.95 + da)), kp = E.enter(seg(u, 0.8 + da, 1.2 + da)), kn = kd; /* the note (indicative / placeholder + source) is on screen whenever a digit is */
     let out = `<g opacity="${f2(o)}">` + text(str(p.name, '', 40) ? str(p.kicker, '', 40).toUpperCase() + '  ·  ' + str(p.name, '', 40) : str(p.kicker, '', 40).toUpperCase(), ax, cy - ds * 0.95, { size: 30 * s, weight: 700, fill: acc, anchor: anc, ls: 3 * s, op: kk });
     out += `<g opacity="${f2(kd)}" transform="translate(0 ${f2((1 - kd) * 30 * s)})">` + text(dateS, ax, cy, { size: ds, weight: 800, fill: ink, anchor: anc, ls: -0.02 * ds }) + '</g>';
     const rw = Math.min(W, 520 * s) * kr; out += `<rect x="${f2(left ? ax : ax - rw / 2)}" y="${f2(cy + 36 * s)}" width="${f2(rw)}" height="${f2(3 * s)}" fill="${acc}"/>`;
     const hasP = p.price != null && p.price !== '' && Number.isFinite(+p.price);
-    if (hasP) { const v = num(p.price, 0, 0, 1e9) * E.expoOut(seg(u, 0.8, 1.7)), ps = str(p.priceLabel, '', 20) + ' ' + str(p.currency, '', 4) + fmtNum(v, p.dec); out += text(ps, ax, cy + 110 * s, { size: 58 * s, weight: 700, fill: ink, anchor: anc, op: kp, extra: tnum }); }
+    if (hasP) { const v = num(p.price, 0, 0, 1e9) * E.expoOut(seg(u, 0.8 + da, 1.7 + da)), ps = str(p.priceLabel, '', 20) + ' ' + str(p.currency, '', 4) + fmtNum(v, p.dec); out += text(ps, ax, cy + 110 * s, { size: 58 * s, weight: 700, fill: ink, anchor: anc, op: kp, extra: tnum }); }
     const note = str(p.note, '', 80).trim() || 'indicative price · placeholder', srcT = hasP ? '  ·  ' + srcLine(p) : '';
     out += text(note + srcT, ax, cy + (hasP ? 160 : 100) * s, { size: 26 * s, weight: 600, fill: mut, anchor: anc, op: kn });
     if (str(p.cta, '', 60)) out += text(str(p.cta, '', 60), ax, cy + (hasP ? 220 : 160) * s, { size: 34 * s, weight: 700, fill: ink, anchor: anc, op: kn });

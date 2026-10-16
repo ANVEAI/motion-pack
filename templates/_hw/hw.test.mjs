@@ -34,6 +34,8 @@ for (const [name, spec] of Object.entries(T)) {
     ok(`${tag}: every claim has a source (lint.proof clean)`, lintClaims(P.claims).length === 0 && P.claims.every((c) => /\d/.test(c.text)));
     ok(`${tag}: the frame label is on`, typeof P.label === 'string' && /render/.test(P.label));
     ok(`${tag}: the plate covers the film`, P.shots3d.at(-1).t0 + P.shots3d.at(-1).dur >= P.seconds - 1e-6 && P.shots.reduce((a, s) => a + s.dur, 0) >= P.seconds - 1e-3);
+    if (P.structure) ok(`${tag}: plan.structure names its beats end to end (0 -> runtime, no gap; tools/structure_check.py reads it)`, P.structure.sections.length >= 3 && P.structure.sections[0].t[0] === 0 && P.structure.sections.every((x, i, A) => x.t[1] > x.t[0] && (!i || Math.abs(A[i - 1].t[1] - x.t[0]) < 1e-6)) && Math.abs(P.structure.sections.at(-1).t[1] - P.seconds) < 1e-6);
+    if (P.audio.events) ok(`${tag}: plan.audio.events are sorted motion times inside the film`, P.audio.events.every((t, i, A) => t >= 0 && t < P.seconds && (!i || t > A[i - 1])));
     ok(`${tag}: every non-cut transition has a reason`, P.shots.every((s) => !s.tx || s.tx === 'transitions/cut' || (s.txReason && s.txReason.length > 10)));
   }
   const W = M.buildPlan({ ...structuredClone(M.CONFIG), aspect: '16:9' }), Tl = M.buildPlan({ ...structuredClone(M.CONFIG), aspect: '9:16' });
