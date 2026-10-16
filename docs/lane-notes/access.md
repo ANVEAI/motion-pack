@@ -16,7 +16,7 @@ It was **code-only**: the disk was nearly full. No template was rendered. Every 
 | `tools/a11y_check.py` | planned flashes (plus measured ones through `eyes/look.py analyze(only=['flashes'])`), caption contrast against decoded frames, text size, reading time, colour-blind collapse, colour-only meaning |
 | `tools/deliver.py` | 14 presets as pure functions to ffmpeg arguments; loudness policies with sources; two-pass linear loudnorm only when needed; file verification (codec, BT.709 tags, faststart, alpha, limits, LUFS / TP) |
 | `tools/lottie/{sample.mjs,geom.py,export.py,validate.py,playcheck.mjs}` + `examples/{title.json,check.svg}` | Lottie export of kinetic type (glyph outlines), draw-on icons (trim paths) and spring shapes; schema validation against lottie-spec 1.0.1, fetched from a pinned URL and verified by SHA-256 (not vendored); a lottie-web still check |
-| `tools/tests/test_{captions,describe,a11y_check,deliver,lottie}.py` | 70 tests. CI already runs `tools/tests`, so no `ci.yml` change is needed |
+| `tools/tests/test_{captions,describe,a11y_check,deliver,lottie}.py` | 71 tests (70 pass, 1 skip without libwebp; 2 skip without jsonschema). CI already runs `tools/tests`, so no `ci.yml` change is needed |
 | `docs/DELIVERY-AND-ACCESSIBILITY.md` | the guide |
 
 ## Shared-file edits NEEDED at integration (exact text; none made on this branch)
