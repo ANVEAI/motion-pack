@@ -2678,20 +2678,20 @@
     {
      "name": "hit",
      "frame0": 780,
-     "frames": 60,
-     "bars": 1.0,
+     "frames": 90,
+     "bars": 1.5,
      "energy": 1.0
     },
     {
      "name": "button",
-     "frame0": 840,
+     "frame0": 870,
      "frames": 120,
      "bars": 2.0,
      "energy": 0.05
     },
     {
      "name": "tail",
-     "frame0": 960,
+     "frame0": 990,
      "frames": 240,
      "bars": 4.0,
      "energy": [
@@ -2713,10 +2713,10 @@
     "gap_end": 780,
     "crescendo_start": 780,
     "hit": 780,
-    "button_start": 840,
-    "tail_start": 960,
-    "final_hit": 1080,
-    "end": 1200,
+    "button_start": 870,
+    "tail_start": 990,
+    "final_hit": 1110,
+    "end": 1230,
     "visual_cut_frame": 779
    },
    "act_bars": [
@@ -2744,8 +2744,8 @@
    "sample_peak_db": -1.51,
    "lufs_s_max": -11.74,
    "centroid_hz": 268,
-   "crest_db": 16.4,
-   "duration_s": 40.0,
+   "crest_db": 16.5,
+   "duration_s": 41.0,
    "mastered_lufs": -16.0
   },
   {
@@ -2818,20 +2818,20 @@
     {
      "name": "hit",
      "frame0": 1008,
-     "frames": 72,
-     "bars": 1.0,
+     "frames": 90,
+     "bars": 1.25,
      "energy": 1.0
     },
     {
      "name": "button",
-     "frame0": 1080,
+     "frame0": 1098,
      "frames": 144,
      "bars": 2.0,
      "energy": 0.05
     },
     {
      "name": "tail",
-     "frame0": 1224,
+     "frame0": 1242,
      "frames": 288,
      "bars": 4.0,
      "energy": [
@@ -2853,10 +2853,10 @@
     "gap_end": 936,
     "crescendo_start": 936,
     "hit": 1008,
-    "button_start": 1080,
-    "tail_start": 1224,
-    "final_hit": 1368,
-    "end": 1512,
+    "button_start": 1098,
+    "tail_start": 1242,
+    "final_hit": 1386,
+    "end": 1530,
     "visual_cut_frame": 1007
    },
    "act_bars": [
@@ -2885,7 +2885,7 @@
    "lufs_s_max": -11.69,
    "centroid_hz": 263,
    "crest_db": 16.6,
-   "duration_s": 50.4,
+   "duration_s": 51.0,
    "mastered_lufs": -16.0
   },
   {
