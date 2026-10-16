@@ -46,7 +46,7 @@ jobs:
       - name: "the layers / type / camera manifests match their generator"
         run: node layers/tests/make-manifests.mjs && python3 tools/check_generated.py layers/manifest.json type/manifest.json camera/manifest.json
       - name: "python tests (cuts, sfx, music, tools incl. the no-clock gate and the run-all / CI suite lists, cloud, blender recipes vs manifest, storyboard)"
-        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py cuts/test_trailer_cuts.py sfx/tests music/tests tools/tests cloud/tests blender/tests storyboard/tests
+        run: python3 -m pytest -q cuts/test_cutgen.py cuts/test_retime.py cuts/test_story45.py cuts/test_story6.py cuts/test_story78.py cuts/test_trailer_cuts.py sfx/tests music/tests tools/tests cloud/tests blender/tests storyboard/tests
       - name: "ears tests (automated listening, synthetic signals)"
         run: python3 -m pytest -q ears/tests
       - name: "storyboard mutation proof (each check in storyboard/tests fails when the code under test is broken - timeline, safe zone, reading speed, lint gate, panels, determinism, animatic frames and loudness, real key frames, sound intents)"
