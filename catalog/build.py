@@ -209,6 +209,10 @@ TPL = {'ad': ('Ad 15/30 s: hook, problem, product, proof, CTA', 'out/ad-15.mp4',
        'demo-r6-pivot': ('Round-6 problem-pivot film 30 s square, no cuts (typed sentence, problem ladder, audio gap, pivot, value ladder, command CTA, quiet hold; placeholder brand)', 'out/demo-r6-pivot.mp4', 'out/sheet.jpg'),   # MP4 not committed: rebuild it
        'multi-voice-doc': ('Multi-voice documentary launch film (your interview clips + words.json; labelled placeholder demo 29 s)', 'out/multi-voice-doc.mp4', 'out/sheet.jpg'),   # MP4 not committed: rebuild it
        'proof-film': ('Proof film 36-60 s, 16:9 + 9:16 re-layout (claim, method card, one builder, head-to-head, numbers, stat cards; every number needs a source and a method; labelled placeholder demo)', 'out/proof-film.mp4', 'out/sheet.jpg')}   # MP4 not committed: rebuild it
+TPL.update({   # xp-saas (2026-10-16): the SaaS genre templates (MP4s and sheets are rendered locally, not committed)
+    'saas-launch': ('SaaS launch film 45/60/75 s, 16:9 + 9:16 re-layout (pain on frame 0, problem beats, reveal, cursor-journey UI tour, feature trio, works with, before / after payoff, sourced proof, pricing, end card; placeholder Acme Flow screens)', 'out/saas-launch-60.mp4', 'out/sheet.jpg'),
+    'saas-feature-drop': ('SaaS feature drop / changelog 15/20/30 s, 16:9 + 9:16 (NEW kicker, before, after with a shortcut chip, before / after split, the shortcut, CTA)', 'out/saas-feature-drop-20.mp4', 'out/sheet.jpg'),
+    'saas-explainer': ('SaaS explainer 60/70/90 s, 16:9 + 9:16 (question, wrong model, reframe, three steps, result; captions on every line, optional VO through words.json)', 'out/saas-explainer-70.mp4', 'out/sheet.jpg')})
 IDRX = re.compile(r"['\"`]((?:transitions|sfx|music|type)/[A-Za-z0-9_./-]+)['\"`]")
 for k, (name, vid, sheet) in TPL.items():
     cfg = open(os.path.join(PACK, 'templates', k, 'config.mjs')).read()

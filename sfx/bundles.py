@@ -81,6 +81,15 @@ BUNDLES = {
                                 "switch": "snd.ui.toggle_on", "beam": "snd.ui.hologram_beam", "build": "snd.riser.noise_1bar", "hit": "snd.hit.punch", "to_black": "snd.stinger.cut_to_black",
                                 "logo": "snd.logo.hybrid"},
                       "notes": "one arc per outline strike (the id is rr:4: a repeated cue gets a different strike); the buzz is tuned to A2 (110 Hz), so it sits under A-major beds; levels over the bed: arc +3.5 dB (manifest over_bed_db), zap-off about +2, the crackle loop about 10 dB under the bed, ended on the zap-off frame"},
+    # 2026-10-16 xp-saas: the SaaS product-demo palette (templates saas-launch / saas-feature-drop / saas-explainer; parts type/gfx/ui-saas*.js)
+    "saas_ui": {"desc": "SaaS launch film / product demo / changelog: one quiet sound per UI action under a bright bed: hover tick, click, drag lift and drop snap, zoom to region, highlight ring, palette open, typed keys and the chord of a shortcut, the soft ticks of a streaming answer, a toast per notification, a chime on the result, the price reveal, the integration link; logo last",
+                "bed": ["corporate_bright", "tech_pulse", "uplift_corporate", "documentary_marimba"], "bpm": [90, 124], "lufs": -14,
+                "roles": {"hover": "snd.ui.hover_tick", "click": "snd.device.mouse_click", "drag": "snd.ui.drag_lift", "drop": "snd.ui.drop_snap", "zoom": "snd.ui.zoom_in", "highlight": "snd.ui.highlight_draw",
+                          "palette": "snd.ui.palette_open", "key": "snd.device.keyboard_mech_soft", "chord": "snd.ui.key_chord", "typing": "snd.ui.typing_burst", "send": "snd.device.message_sent",
+                          "thinking": "snd.ui.ai_think_pulse", "stream": "snd.ui.stream_tick", "answer": "snd.ui.ai_reply", "toast": "snd.ui.toast_in", "result": "snd.ui.success_chime",
+                          "price": "snd.ui.price_reveal", "connect": "snd.ui.connect", "headline": "snd.whoosh.swish_xs", "window": "snd.whoosh.swish_s", "reveal": "snd.hit.soft",
+                          "letters": "snd.sparkle.letter_assemble", "brand_field": "snd.hit.brand_field_slam", "logo": "snd.logo.hybrid"},
+                "notes": "a UI film is busy: let gfxCues give one cue per action and keep them under the bed (the mixer's ui tier, overBedDb -9 to -12 on headlines and stream ticks); never two clicks inside 3 frames; one chime per result, one slam on the cut to the end card; set plan ceilingDb -2.5 (click transients push the AAC probe); synthesised, measured, never auditioned by a person: listen once before a hero use"},
 }
 
 
