@@ -70,7 +70,12 @@ export function buildPlan(C) {
   const ea = sec(endAt, fps); gfx.push({ id: 'title.namesOver', at: ea, dur: sec(endF + 12, fps), params: { role: C.text.directedBy[0], name: C.text.directedBy[1], style, pos: 'c', accent: C.brand.accent, size: tall ? 74 : 84, padY: barPx } });
   cues.push({ id: C.sfx.last, t: ea, why: 'the last card' }); holds.push({ t: [sec(endAt + endF, fps), T], why: 'the picture holds before the film starts' });
   const layers = { grain: C.layers.grain ?? G.grain, dust: C.layers.dust ?? G.dust, vignette: C.layers.vignette ?? G.vignette };
-  return { template: 'title-sequence', fps, seconds: T, W, H, aspect: asp, platform: C.platform || (tall ? 'reels.organic' : 'x.video'), genre: C.genre in FILM_GENRES ? C.genre : 'thriller', bars: barPx, letterbox: lb || null,
+  /* the beats on the title-sequence beat sheet (patterns/structures.json `title-sequence`; tools/structure_check.py reads plan.structure): the motif is the texture alone
+     plus the "presents" card when the first credit has one; the credits run to the title; the main title and its "directed by" card are one title block (the pattern has no beat
+     after the main title, and this template puts "directed by" last on purpose) */
+  const motifEnd = names.length && names[0][2] ? sec(lead + per, fps) : sec(lead, fps);
+  const structure = { pattern: 'title-sequence', sections: [{ name: 'motif', t: [0, motifEnd] }, { name: 'credits', t: [motifEnd, ta] }, { name: 'maintitle', t: [ta, T] }] };
+  return { template: 'title-sequence', structure, fps, seconds: T, W, H, aspect: asp, platform: C.platform || (tall ? 'reels.organic' : 'x.video'), genre: C.genre in FILM_GENRES ? C.genre : 'thriller', bars: barPx, letterbox: lb || null,
     music, bpm: +(fps * 60 / fpb).toFixed(3), framesPerBeat: fpb, shots, gfx, cues, burns: [], flares: [], flashes: [], texts, holds, claims: C.claims, labels: { film: C.text.label, slots: true }, layers,
     eyes: { letterbox: !!barPx }, audio: { mode: 'music', role: 'trailer', events: gfx.map((g) => g.at) }, ceilingDb: -2.5, paceRule: { aslMax: 20, longMax: 60 } };
 }

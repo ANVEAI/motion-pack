@@ -80,3 +80,18 @@ Then, per delivered file (also through the lock): `python3 ../_shared/sheet.py o
 - The 15 s cut of the 80-84 BPM scores (horror, drama) runs about 19.6 s: the silence, title ring and tail keep their beat lengths.
 - Nothing synthesised here has been heard by a human. The trailer scores were checked by measurement (section loudness, digital-silence gap for horror, hard stop, tail zero) only.
 - No mutation proofs for the new tests (the other rounds ship `*.mutants.json`).
+
+## Integration (xp-integrate, 16 Oct): beats on the beat sheets
+
+The three film plans now carry `plan.structure` (their own beats named with the pattern's section names), so `tools/structure_check.py` scores them. Scores at the default cut (16:9; the trailer's committed 9:16 plan scores the same):
+
+| template | pattern | before | after | how the beats map |
+|---|---|---|---|---|
+| trailer | trailer | 66 | **94** | cold -> coldopen; production card + world + inciting beat -> act1; m2 -> act2; m3 -> act3; the planned silence + the title hit -> title (the pattern lists `gap` under title); button; billing block + release card -> date |
+| title-sequence | title-sequence | 70 | **83** | texture + the "presents" card -> motif; the names -> credits; the main title and its "directed by" card -> maintitle |
+| short-film | short-film | 44 | **78** | each demo shot names its `beat` in CONFIG (lamp coldopen, radio want, window + coast obstacle, stage turn, ship consequence, the last radio shot resolution); a chapter card takes the beat of the shot it opens; the credits are the tag. The scene slugs now hold 2.2 s after they type on (they read at 18 chars/s before) |
+
+Where the pattern does not fit, kept as is (not mapped to null, not stretched to game the number):
+- **trailer:** the demo is front-loaded: the cold open + world take 40% (the pattern's act 1 ends at 30%), so the title lands at 78% instead of 88-94%. A real cut with a longer act 2 / 3 moves it.
+- **title-sequence:** the pattern ends on the main title; this template puts "directed by" last on purpose, so it is counted inside the title block. Pace scores 0.2 because the textures hold 9 s under the names (the names change every 3 s, but the checker counts texture shots). At `length=60` the demo's 10 names fill only 34 s and the rest is a hold, so the 60 s cut scores 66: per-name time does not stretch to the length. Open follow-up: stretch `per` to fill the length, or add names.
+- **short-film:** pace scores 0: the plan's `audio.mode` is `continuous` (ears scores motion events against onsets), so structure_check reads motion events against a 3.5 s ceiling, and the demo holds 4-6 s plates with nothing landing. `plan.audio.events` now lists every real event (cuts, title, slugs, chapter card, subtitles, credits roll), and gaps of 4.4-5.5 s remain. A structure needs a beat on every story shot; without beats, plan.structure is omitted and the checker says so.

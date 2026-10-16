@@ -18,11 +18,13 @@ export const CONFIG = {
   film: { title: 'THE LAST SIGNAL', sub: 'a short film', titleStyle: 'title.trailerThin', titleAt: 1.2, titleDur: 4.2 },
   text: { label: 'placeholder footage · fictional film' },
   scenes: [
-    { id: 's1', slug: 'INT. RELAY STATION - NIGHT', sound: 'sfx/amb/room_tone', shots: [{ slot: 'lamp', dur: 6 }, { slot: 'radio', dur: 6 }, { slot: 'window', dur: 5 }] },
+    { id: 's1', slug: 'INT. RELAY STATION - NIGHT', sound: 'sfx/amb/room_tone', shots: [{ slot: 'lamp', dur: 6, beat: 'coldopen' }, { slot: 'radio', dur: 6, beat: 'want' }, { slot: 'window', dur: 5, beat: 'obstacle' }] },
     { id: 's2', chapter: { kicker: 'CHAPTER TWO', title: 'The answer' }, slug: 'EXT. CLIFF - NIGHT', sound: 'sfx/amb/wind', tx: ['transitions/dissolve', 'TIME: night has moved on, the answer is outside'],
-      shots: [{ slot: 'coast', dur: 6 }, { slot: 'stage', dur: 6 }, { slot: 'ship', dur: 6 }] },
-    { id: 's3', slug: 'INT. RELAY STATION - LATER', sound: 'sfx/amb/room_tone', tx: ['transitions/dissolve', 'TIME: back inside, after it'], shots: [{ slot: 'radio', dur: 6, sfx: [{ id: 'sfx/trailer/sting_button', at: 4.0 }] }] },
+      shots: [{ slot: 'coast', dur: 6, beat: 'obstacle' }, { slot: 'stage', dur: 6, beat: 'turn' }, { slot: 'ship', dur: 6, beat: 'consequence' }] },
+    { id: 's3', slug: 'INT. RELAY STATION - LATER', sound: 'sfx/amb/room_tone', tx: ['transitions/dissolve', 'TIME: back inside, after it'], shots: [{ slot: 'radio', dur: 6, beat: 'resolution', sfx: [{ id: 'sfx/trailer/sting_button', at: 4.0 }] }] },
   ],
+  /* each shot's `beat` (optional) names its place on the short-film beat sheet (patterns/structures.json `short-film`: coldopen, want, obstacle, turn, consequence,
+     resolution; the credits are the tag): with a beat on every shot the plan carries plan.structure for tools/structure_check.py. The beats are your story's, not timing rules. */
   lines: [                         // or a path: '/abs/lines.json' ([{ text, s, e, speaker?, scene? }]) or a whisper words.json ([{ w, s, e }]); s / e are scene-relative when `scene` is set
     { scene: 's1', s: 6.6, e: 8.8, text: 'Relay North. Do you copy?', speaker: 'radio' }, { scene: 's1', s: 9.4, e: 11.0, text: 'Who is this?' },
     { scene: 's1', s: 12.6, e: 15.4, text: 'Nobody has called this station in years.' }, { scene: 's2', s: 7.2, e: 9.6, text: 'Are you still there?', speaker: 'radio' },
@@ -64,11 +66,11 @@ export function buildPlan(C) {
       cues.push({ id: C.sfx.chapter, t: sec(a + F(0.2)), why: 'chapter title' }); f = b; }
     const s0 = f;
     sc.shots.forEach((sh, k) => { const a = f, b = f + F(sh.dur), tx = k === 0 && sc.tx && !sc.chapter ? { tx: sc.tx[0], txReason: sc.tx[1], txKind: /dissolve/.test(sc.tx[0]) ? 'dissolve' : /burn/.test(sc.tx[0]) ? 'filmBurn' : /dip/.test(sc.tx[0]) ? 'dip' : 'cut', txDur: 1.0 } : {};
-      shots.push({ id: `${sc.id}_${k}`, sec: sc.id, start: sec(a), dur: sec(b - a), ...slot(sh.slot), ...tx });
+      shots.push({ id: `${sc.id}_${k}`, sec: sc.id, ...(sh.beat ? { beat: sh.beat } : {}), start: sec(a), dur: sec(b - a), ...slot(sh.slot), ...tx });
       for (const x of sh.sfx || []) cues.push({ id: x.id, t: sec(a + F(x.at)), why: `${sc.id} shot ${k} action` }); f = b; });
     sceneSpans.push({ id: sc.id, start: sec(s0), dur: sec(f - s0), sound: sc.sound });
-    if (sc.slug) { const at = sec(s0 + F(C.slugDelay)); gfx.push({ id: 'card.scene', at, dur: 2.4, params: { slug: sc.slug, pos: tall ? 'tl' : 'bl', size: 40, padY: barPx ? barPx + Math.round(36 * s) : 0 } });
-      texts.push({ text: sc.slug, t: [r6(at + sc.slug.length / 28), r6(at + 2.4)], box: textBox(sc.slug, { W, H, fontPx: 40 * s, x: tall ? 65 : 96, anchor: 'start', y: tall ? 269 + 40 * s : H - barPx - 36 * s - 4, weight: 600, mono: true }), fontPx: Math.round(40 * s), role: 'label', fg: '#F2F2F2' });
+    if (sc.slug) { const at = sec(s0 + F(C.slugDelay)); const sdur = r6(Math.max(2.4, sc.slug.length / 28 + 2.2)); gfx.push({ id: 'card.scene', at, dur: sdur, params: { slug: sc.slug, pos: tall ? 'tl' : 'bl', size: 40, padY: barPx ? barPx + Math.round(36 * s) : 0 } });
+      texts.push({ text: sc.slug, t: [r6(at + sc.slug.length / 28), r6(at + sdur)], box: textBox(sc.slug, { W, H, fontPx: 40 * s, x: tall ? 65 : 96, anchor: 'start', y: tall ? 269 + 40 * s : H - barPx - 36 * s - 4, weight: 600, mono: true }), fontPx: Math.round(40 * s), role: 'label', fg: '#F2F2F2' });
       cues.push({ id: C.sfx.slug, t: at, why: 'the slug types on' }); }
   });
   /* the opening title over the first shot */
@@ -89,9 +91,17 @@ export function buildPlan(C) {
   const T = sec(cr1), sIn = span[C.scoreIn] ? F(span[C.scoreIn].start) : 0, D = C.bedDb;
   const bedAutomation = [{ frame: 0, gain_db: D.open }, { frame: Math.max(1, sIn - F(1.5)), gain_db: D.open }, { frame: sIn + F(2.5), gain_db: D.in }, { frame: cr0, gain_db: D.in }, { frame: cr0 + F(1.0), gain_db: D.credits }];
   const layers = { grain: C.layers.grain ?? G.grain, dust: C.layers.dust ?? G.dust, vignette: C.layers.vignette ?? G.vignette };
-  return { template: 'short-film', fps, seconds: T, W, H, aspect: asp, platform: C.platform || (tall ? 'reels.organic' : 'x.video'), genre: C.genre in FILM_GENRES ? C.genre : 'drama', bars: barPx, letterbox: lb || null,
+  /* plan.structure from the shots' beats: a chapter card takes the beat of the shot it opens, the credits are the tag; only when every story shot names a beat */
+  let structure; const story = shots.filter((x) => x.sec !== 'chapter' && x.sec !== 'credits');
+  if (story.length && story.every((x) => x.beat)) { const beats = [];
+    shots.forEach((x, i) => { const name = x.sec === 'credits' ? 'tag' : x.sec === 'chapter' ? (shots.slice(i + 1).find((y) => y.beat) || {}).beat : x.beat, b = beats.at(-1), end = r6(x.start + x.dur);
+      if (b && b.name === name) b.t[1] = end; else beats.push({ name, t: [x.start, end] }); });
+    structure = { pattern: 'short-film', sections: beats }; }
+  /* motion events: every cut, the opening title, each slug and chapter card, each subtitle line, the credits roll */
+  const events = [...new Set([...shots.map((x) => x.start), ...gfx.map((g) => g.at)].map((t) => r6(t)))].filter((t) => t < T).sort((a, b) => a - b);
+  return { template: 'short-film', ...(structure ? { structure } : {}), fps, seconds: T, W, H, aspect: asp, platform: C.platform || (tall ? 'reels.organic' : 'x.video'), genre: C.genre in FILM_GENRES ? C.genre : 'drama', bars: barPx, letterbox: lb || null,
     music: C.music, bedAutomation, ...(C.voice && C.voice.src ? { vo: C.voice.src, duckDb: 12 } : {}), scenes: sceneSpans, shots, gfx, cues: cues.sort((a, b) => a.t - b.t || a.id.localeCompare(b.id)), burns: [], flares: [], flashes: [], texts, holds,
     claims: C.claims, labels: { film: C.text.label, slots: true }, layers, eyes: { letterbox: !!barPx },
-    audio: { mode: C.voice && C.voice.src ? 'vo' : 'continuous', role: 'vo_doc', quiet: [{ t: [0, 1.5], kind: 'open', why: 'room tone only: the score enters on emotion' }, { t: [sec(cr1) - 3, sec(cr1)], kind: 'hold', why: 'the credits settle' }], events: shots.map((x) => x.start) },
+    audio: { mode: C.voice && C.voice.src ? 'vo' : 'continuous', role: 'vo_doc', quiet: [{ t: [0, 1.5], kind: 'open', why: 'room tone only: the score enters on emotion' }, { t: [sec(cr1) - 3, sec(cr1)], kind: 'hold', why: 'the credits settle' }], events },
     ceilingDb: -2.5, paceRule: { aslMax: 7.0, longMax: 8.0 } };
 }

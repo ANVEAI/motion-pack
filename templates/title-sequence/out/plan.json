@@ -1,5 +1,31 @@
 {
  "template": "title-sequence",
+ "structure": {
+  "pattern": "title-sequence",
+  "sections": [
+   {
+    "name": "motif",
+    "t": [
+     0,
+     4.2
+    ]
+   },
+   {
+    "name": "credits",
+    "t": [
+     4.2,
+     31.2
+    ]
+   },
+   {
+    "name": "maintitle",
+    "t": [
+     31.2,
+     40.2
+    ]
+   }
+  ]
+ },
  "fps": 30,
  "seconds": 40.2,
  "W": 1920,

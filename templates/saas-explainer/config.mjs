@@ -137,6 +137,11 @@ export function buildPlan(C) {
   plan.bedAutomation = [{ frame: 0, gain_db: 0 }, { frame: lift, gain_db: 0 }, { frame: lift + fade, gain_db: C.tail.bedDb }];
   plan.audio = { mode: words ? 'vo' : 'music', role: 'explainer', quiet: [{ t: [+((lift + fade) / F).toFixed(4), plan.seconds], kind: 'hold', why: 'end card on a quiet hold' }] };
   if (words) { plan.vo = 'vo.wav'; plan.duckDb = C.duckDb; plan.voice = { words, audio: C.voice.audio ?? null }; for (const c of plan.cues) if (words.some((w) => c.t >= w.s - 0.1 && c.t <= w.e + 0.15)) c.overVoDb = -20; }
+  /* the beats on the explainer beat sheet (patterns/structures.json `explainer`; tools/structure_check.py reads plan.structure): the three steps are the reframe's
+     walkthrough (the new model shown working), the result is the proof (the same inbox, routed), the end card is the so-what */
+  const BEAT = { question: 'question', wrong: 'wrongmodel', reframe: 'reframe', step1: 'reframe', step2: 'reframe', step3: 'reframe', result: 'proof', end: 'sowhat' }, secs = [];
+  for (const sc of plan.scenes) { const name = BEAT[sc.id] || sc.id, last = secs.at(-1); if (last && last.name === name) last.t[1] = sc.end; else secs.push({ name, t: [sc.start, sc.end] }); }
+  plan.structure = { pattern: 'explainer', sections: secs };
   plan.honesty = 'fictional product (Acme Flow); placeholder HTML screens labelled in frame' + (words && !C.voice.audio ? '; the VO is a labelled guide signal (no voice)' : '');
   return plan;
 }

@@ -146,6 +146,42 @@
     "pattern": "process-howto",
     "why": "numbered steps on a timeline, before / after, checklist end card (lane explainer)"
    }
+  ],
+  "saas-launch": [
+   {
+    "pattern": "saas-launch",
+    "why": "RECIPE S launch film: pain, reveal, one-window UI tour, features, works with, before / after, sourced proof, pricing, CTA"
+   }
+  ],
+  "saas-feature-drop": [
+   {
+    "pattern": "saas-feature-drop",
+    "why": "RECIPE S feature drop: payoff first, before, after with the shortcut, compare, where it is live"
+   }
+  ],
+  "saas-explainer": [
+   {
+    "pattern": "explainer",
+    "why": "RECIPE S explainer: question, wrong model, reframe with three steps as its walkthrough, the result as proof, the end card (plan.structure names the beats)"
+   }
+  ],
+  "trailer": [
+   {
+    "pattern": "trailer",
+    "why": "RECIPE T trailer: cold open, act 1 (production card, world, inciting beat), act 2, act 3, the silence + title (the pattern lists gap under title), button, billing block + release card (plan.structure names the beats)"
+   }
+  ],
+  "title-sequence": [
+   {
+    "pattern": "title-sequence",
+    "why": "RECIPE T title sequence: the motif (texture + the presents card), the credits, the main title with its directed-by card as one title block (plan.structure)"
+   }
+  ],
+  "short-film": [
+   {
+    "pattern": "short-film",
+    "why": "RECIPE T short film: each shot names its beat in CONFIG (coldopen, want, obstacle, turn, consequence, resolution), the credits are the tag (plan.structure)"
+   }
   ]
  },
  "structures": {

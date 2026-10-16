@@ -169,7 +169,12 @@ export function buildPlan(C) {
   const quiet = [{ t: [sec(Fm.gap_start, fps), sec(Fm.crescendo_start, fps)], kind: 'gap', why: 'the silence before the hit (score gap)' }];
   if (Fm.tail_start > Fm.button_start) quiet.push({ t: [+(sec(Fm.button_start, fps) + 1.5).toFixed(4), sec(Fm.tail_start, fps)], kind: 'dip', why: 'the button: the hit has rung out, only the radio' });
   const layers = { grain: C.layers.grain ?? G.grain, dust: C.layers.dust ?? G.dust, vignette: C.layers.vignette ?? G.vignette };
-  return { template: 'trailer', fps, seconds: T, W, H, aspect: asp, cut: String(C.length), platform: plat, genre: C.genre in FILM_GENRES ? C.genre : 'thriller', bars: barPx, letterbox: lb || null,
+  /* the beats on the trailer beat sheet (patterns/structures.json `trailer`; tools/structure_check.py reads plan.structure): the production card, the world and the
+     inciting beat are act 1; the planned silence is the title's gap (the pattern lists `gap` under title); the billing block and the release card are the date card */
+  const BEAT = { cold: 'coldopen', production: 'act1', world: 'act1', incite: 'act1', m2_: 'act2', m3_: 'act3', silence: 'title', title: 'title', button: 'button', tail: 'date' }, beats = [];
+  for (const x of shots) { const name = BEAT[x.sec] || x.sec, b = beats.at(-1), end = +(x.start + x.dur).toFixed(4); if (b && b.name === name) b.t[1] = Math.max(b.t[1], end); else beats.push({ name, t: [x.start, end] }); }
+  const structure = { pattern: 'trailer', sections: beats };
+  return { template: 'trailer', structure, fps, seconds: T, W, H, aspect: asp, cut: String(C.length), platform: plat, genre: C.genre in FILM_GENRES ? C.genre : 'thriller', bars: barPx, letterbox: lb || null,
     score: { style, seed: C.score.seed ?? 1, act_bars: M.act_bars, button_beats: M.button_beats, tail_beats: M.tail_beats, markers: Fm }, bpm: M.bpm, framesPerBeat: fpb,
     shots, gfx, cues: cues.sort((a, b) => a.t - b.t || a.id.localeCompare(b.id)), burns, flares, flashes, texts, holds, black: shots.filter((x) => x.kind === 'black' && x.sec === 'silence').map((x) => [x.start, +(x.start + x.dur).toFixed(4)]),
     claims: C.claims, labels: { film: C.text.label, slots: true }, layers, eyes: { letterbox: !!barPx },

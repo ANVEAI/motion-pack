@@ -1862,6 +1862,46 @@
    }
   ]
  },
+ "structure": {
+  "pattern": "explainer",
+  "sections": [
+   {
+    "name": "question",
+    "t": [
+     0,
+     6
+    ]
+   },
+   {
+    "name": "wrongmodel",
+    "t": [
+     6,
+     14
+    ]
+   },
+   {
+    "name": "reframe",
+    "t": [
+     14,
+     52.6667
+    ]
+   },
+   {
+    "name": "proof",
+    "t": [
+     52.666667,
+     63.3333
+    ]
+   },
+   {
+    "name": "sowhat",
+    "t": [
+     63.333333,
+     70
+    ]
+   }
+  ]
+ },
  "honesty": "fictional product (Acme Flow); placeholder HTML screens labelled in frame",
  "lint": {
   "claimsWithoutSource": [],

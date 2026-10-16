@@ -1,5 +1,59 @@
 {
  "template": "trailer",
+ "structure": {
+  "pattern": "trailer",
+  "sections": [
+   {
+    "name": "coldopen",
+    "t": [
+     0,
+     8
+    ]
+   },
+   {
+    "name": "act1",
+    "t": [
+     8,
+     28
+    ]
+   },
+   {
+    "name": "act2",
+    "t": [
+     28,
+     40
+    ]
+   },
+   {
+    "name": "act3",
+    "t": [
+     40,
+     52
+    ]
+   },
+   {
+    "name": "title",
+    "t": [
+     52,
+     57
+    ]
+   },
+   {
+    "name": "button",
+    "t": [
+     57,
+     61
+    ]
+   },
+   {
+    "name": "date",
+    "t": [
+     61,
+     69
+    ]
+   }
+  ]
+ },
  "fps": 30,
  "seconds": 69,
  "W": 1080,
@@ -132,7 +186,7 @@
    "mediaStart": 0,
    "label": "swinging lamp",
    "start": 28,
-   "dur": 2.133333
+   "dur": 2
   },
   {
    "id": "m2_1",
@@ -142,8 +196,8 @@
    "plateParams": {},
    "mediaStart": 0,
    "label": "night road",
-   "start": 30.133333,
-   "dur": 1.866667
+   "start": 30,
+   "dur": 2
   },
   {
    "id": "m2_card2",
@@ -161,7 +215,7 @@
    "mediaStart": 0.7,
    "label": "corridor",
    "start": 34,
-   "dur": 1.6
+   "dur": 1.5
   },
   {
    "id": "m2_4",
@@ -171,8 +225,8 @@
    "plateParams": {},
    "mediaStart": 0,
    "label": "storm",
-   "start": 35.6,
-   "dur": 0.4
+   "start": 35.5,
+   "dur": 0.5
   },
   {
    "id": "m2_card5",
@@ -190,7 +244,7 @@
    "mediaStart": 0,
    "label": "night sky",
    "start": 38,
-   "dur": 1.066667
+   "dur": 1.266667
   },
   {
    "id": "m2_7",
@@ -200,8 +254,8 @@
    "plateParams": {},
    "mediaStart": 0.7,
    "label": "rain window",
-   "start": 39.066667,
-   "dur": 0.933333
+   "start": 39.266667,
+   "dur": 0.733333
   },
   {
    "id": "m3_card0",
@@ -219,7 +273,7 @@
    "mediaStart": 0.7,
    "label": "ship in fog",
    "start": 41.5,
-   "dur": 0.8
+   "dur": 0.5
   },
   {
    "id": "m3_2",
@@ -229,8 +283,8 @@
    "plateParams": {},
    "mediaStart": 0.7,
    "label": "coast at night",
-   "start": 42.3,
-   "dur": 0.8
+   "start": 42,
+   "dur": 0.5
   },
   {
    "id": "m3_3",
@@ -240,26 +294,26 @@
    "plateParams": {},
    "mediaStart": 0.7,
    "label": "radio close-up",
-   "start": 43.1,
-   "dur": 0.9
+   "start": 42.5,
+   "dur": 0.766667
   },
   {
-   "id": "m3_card4",
-   "sec": "m3_",
-   "kind": "black",
-   "start": 44,
-   "dur": 1.5
-  },
-  {
-   "id": "m3_5",
+   "id": "m3_4",
    "sec": "m3_",
    "kind": "plate",
    "plate": "signal",
    "plateParams": {},
    "mediaStart": 0.7,
    "label": "the signal",
-   "start": 45.5,
-   "dur": 0.533333
+   "start": 43.266667,
+   "dur": 0.733333
+  },
+  {
+   "id": "m3_card5",
+   "sec": "m3_",
+   "kind": "black",
+   "start": 44,
+   "dur": 1.5
   },
   {
    "id": "m3_6",
@@ -269,8 +323,8 @@
    "plateParams": {},
    "mediaStart": 0.7,
    "label": "swinging lamp",
-   "start": 46.033333,
-   "dur": 0.533333
+   "start": 45.5,
+   "dur": 0.5
   },
   {
    "id": "m3_7",
@@ -280,8 +334,8 @@
    "plateParams": {},
    "mediaStart": 0.7,
    "label": "night road",
-   "start": 46.566667,
-   "dur": 0.533333
+   "start": 46,
+   "dur": 0.5
   },
   {
    "id": "m3_8",
@@ -291,8 +345,8 @@
    "plateParams": {},
    "mediaStart": 1.4,
    "label": "corridor",
-   "start": 47.1,
-   "dur": 0.533333
+   "start": 46.5,
+   "dur": 0.5
   },
   {
    "id": "m3_9",
@@ -302,26 +356,26 @@
    "plateParams": {},
    "mediaStart": 0.7,
    "label": "storm",
-   "start": 47.633333,
-   "dur": 0.366667
+   "start": 47,
+   "dur": 0.5
   },
   {
-   "id": "m3_card10",
-   "sec": "m3_",
-   "kind": "black",
-   "start": 48,
-   "dur": 1.5
-  },
-  {
-   "id": "m3_11",
+   "id": "m3_10",
    "sec": "m3_",
    "kind": "plate",
    "plate": "sky",
    "plateParams": {},
    "mediaStart": 0.7,
    "label": "night sky",
-   "start": 49.5,
-   "dur": 0.266667
+   "start": 47.5,
+   "dur": 0.5
+  },
+  {
+   "id": "m3_card11",
+   "sec": "m3_",
+   "kind": "black",
+   "start": 48,
+   "dur": 1.5
   },
   {
    "id": "m3_12",
@@ -331,8 +385,8 @@
    "plateParams": {},
    "mediaStart": 1.4,
    "label": "rain window",
-   "start": 49.766667,
-   "dur": 0.266667
+   "start": 49.5,
+   "dur": 0.5
   },
   {
    "id": "m3_13",
@@ -342,7 +396,7 @@
    "plateParams": {},
    "mediaStart": 1.4,
    "label": "ship in fog",
-   "start": 50.033333,
+   "start": 50,
    "dur": 0.266667
   },
   {
@@ -353,8 +407,8 @@
    "plateParams": {},
    "mediaStart": 1.4,
    "label": "coast at night",
-   "start": 50.3,
-   "dur": 0.266667
+   "start": 50.266667,
+   "dur": 0.233333
   },
   {
    "id": "m3_15",
@@ -364,8 +418,8 @@
    "plateParams": {},
    "mediaStart": 1.4,
    "label": "radio close-up",
-   "start": 50.566667,
-   "dur": 0.266667
+   "start": 50.5,
+   "dur": 0.233333
   },
   {
    "id": "m3_16",
@@ -375,7 +429,7 @@
    "plateParams": {},
    "mediaStart": 1.4,
    "label": "the signal",
-   "start": 50.833333,
+   "start": 50.733333,
    "dur": 0.266667
   },
   {
@@ -386,7 +440,7 @@
    "plateParams": {},
    "mediaStart": 1.4,
    "label": "swinging lamp",
-   "start": 51.1,
+   "start": 51,
    "dur": 0.266667
   },
   {
@@ -397,8 +451,8 @@
    "plateParams": {},
    "mediaStart": 1.4,
    "label": "night road",
-   "start": 51.366667,
-   "dur": 0.266667
+   "start": 51.266667,
+   "dur": 0.233333
   },
   {
    "id": "m3_19",
@@ -408,8 +462,19 @@
    "plateParams": {},
    "mediaStart": 2.1,
    "label": "corridor",
-   "start": 51.633333,
-   "dur": 0.366667
+   "start": 51.5,
+   "dur": 0.233333
+  },
+  {
+   "id": "m3_20",
+   "sec": "m3_",
+   "kind": "plate",
+   "plate": "storm",
+   "plateParams": {},
+   "mediaStart": 1.4,
+   "label": "storm",
+   "start": 51.733333,
+   "dur": 0.266667
   },
   {
    "id": "silence",
@@ -674,7 +739,7 @@
   },
   {
    "id": "sfx/trailer/whoosh_by",
-   "t": 30.133333,
+   "t": 30,
    "why": "pass-by on the cut"
   },
   {
@@ -694,7 +759,7 @@
   },
   {
    "id": "sfx/trailer/whoosh_by",
-   "t": 39.066667,
+   "t": 39.266667,
    "why": "pass-by on the cut"
   },
   {
@@ -1089,8 +1154,8 @@
   "claimsWithoutSource": [],
   "unmotivatedTransitions": [],
   "pace": {
-   "shots": 41,
-   "asl": 1.68,
+   "shots": 42,
+   "asl": 1.64,
    "longest": 4,
    "pass": true
   }
