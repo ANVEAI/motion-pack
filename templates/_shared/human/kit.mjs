@@ -51,3 +51,13 @@ export function talkSlots(segs, { id = 'talk', src = null, srcStart = 0, rect, c
     out.push({ id: `${id}-${g.id}`, kind, src, mediaStart: +(srcStart + g.src_in + (a - g.start)).toFixed(4), start: +a.toFixed(4), end: +b.toFixed(4), rect, cam, z, ph, ...extra }); }
   return out;
 }
+
+/* ---------- structure for tools/structure_check.py: the plan says which beat is which ----------
+   beats [[name, start s], ...] in order -> plan.structure.sections [{ name, t: [a, b] }] (each beat runs to the next; the last to T).
+   Names are the pattern's section names or aliases (patterns/structures.json); the starts come from the edit (words, cards), never from the pattern. */
+export function structureOf(beats, T, pattern = null) {
+  const b = beats.filter(([, t]) => t != null && t < T).map(([n, t]) => [n, +(+t).toFixed(3)]).sort((x, y) => x[1] - y[1]);
+  return { ...(pattern ? { pattern } : {}), sections: b.map(([n, t], i) => ({ name: n, t: [t, i + 1 < b.length ? b[i + 1][1] : +(+T).toFixed(3)] })) };
+}
+/* on-screen read text (not the captions) for the structure checker and eyes: [{ text, t: [a, b], role }] */
+export const textOf = (text, a, dur, role = 'read') => ({ text: String(text), t: [+(+a).toFixed(3), +(+a + dur).toFixed(3)], role });

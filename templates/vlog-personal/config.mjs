@@ -9,7 +9,7 @@
 import path from 'node:path';
 import { aspectOf, atOf, fixSets, safeBox } from '../_shared/human/core.mjs';
 import { punchPlan, brollSlots, reactionsFromWords, jlWindows, pickCaption, captionTrack } from '../_shared/human/edit.mjs';
-import { loadWords, emphasize, cuesFor, audioFields, tagOf, talkTrack, talkSlots } from '../_shared/human/kit.mjs';
+import { loadWords, emphasize, cuesFor, audioFields, tagOf, talkTrack, talkSlots, structureOf, textOf } from '../_shared/human/kit.mjs';
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 
 /* ============================== CONFIG (edit me) ============================== */
@@ -32,7 +32,9 @@ export const CONFIG = {
   map: { at: { word: 'walked', offset: -0.25 }, dur: 1.3, draw: 0.85 },   // the walk to the market IS the map insert
   reactions: [ { match: 'coffee', sticker: 'chai' }, { match: 'loud', sticker: 'megaphone' }, { match: 'favourite', sticker: 'heart' } ],
   captions: { style: 'emphasis', override: { emphScale: 1.05 }, emph: ['asleep.', 'coffee', 'loud,', 'favourite'] },
-  end: { holdS: 2.2 },
+  end: { holdS: 3.2 },                           // the sign-off (last line + follow card) holds >= 5 s
+  /* the story beats, on the words that start them (patterns/structures.json vlog): cold open, setup, journey, the peak, the change, the sign-off */
+  beats: [ ['coldopen', 0], ['setup', { word: 'First' }], ['journey', { word: 'Then' }], ['cost', { word: 'and', nth: 1 }], ['change', { word: 'This' }], ['signoff', { word: 'Same' }] ],
   claims: [ { text: '1.2 km', source: 'placeholder data: measure your own route and name the map or app it came from' } ],
   music: 'music/bed_acoustic_folk_pluck_loop8', musicGainDb: 0, duckDb: 12, ceilingDb: -2.0,
   layers: [ { kind: 'vignette', params: { amount: 0.08 } }, { kind: 'grain', params: { stock: 'upload-safe' } } ],
@@ -88,7 +90,9 @@ export function buildPlan(C0) {
   const shots = marks.slice(0, -1).map((a, i) => ({ id: 'cut' + i, start: a, dur: r3(marks[i + 1] - a), ...(a >= talkEnd ? { hold: true } : {}) })).filter((s) => s.dur > 0);
   const scene = { W: A.W, H: A.H, fps, seconds: T, bg: '#0B0D12', platform: A.safe, slots, gfx, gfxTop: top, captions: { chunks: cap.chunks, style: pick.style, box: pick.box },
     speaking: Object.fromEntries(slots.filter((s) => s.kind === 'speaker').map((s) => [s.id, words.map((w) => [w.os, w.oe])])) };
-  return { template: 'vlog-personal', aspect: C.aspect, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe })),
+  const structure = structureOf(C.beats.map(([n, w]) => [n, typeof w === 'number' ? w : r3(Math.max(0, at(w) - 0.06))]), T);
+  const texts = [textOf(C.text.place + ' ' + C.text.date, 0.25 + 16 / 30, 2.4, 'card'), textOf(C.text.follow, r3(talkEnd + 0.1), r3(C.end.holdS - 0.6), 'cta')];
+  return { template: 'vlog-personal', aspect: C.aspect, structure, texts, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe })),
     edit: { keep: tr.segs.map((g) => [g.src_in, g.src_out]), cuts: tr.cuts, fillers: tr.fillers, punches: P.punches, framing: P.rule, broll: B, jl }, captionStyle: pick.name,
     ...audioFields(C, tag, { role: 'vo_doc' }), paceRule: { aslMax: 3.5, longMax: 5.5 }, warnings };
 }

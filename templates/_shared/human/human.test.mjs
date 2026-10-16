@@ -125,11 +125,16 @@ for (const [name, def] of Object.entries(TPL)) {
   R.check(`${name}: every cue resolves to a library sound, and there is at least one`, a.cues.length > 0 && !badCue.length, badCue.map((c) => c.id).join(' '));
   R.check(`${name}: PROJECT_MAP targets are CONFIG paths`, !!mod.PROJECT_MAP && !core.projectMapProblems(mod.CONFIG, mod.PROJECT_MAP).length, core.projectMapProblems(mod.CONFIG, mod.PROJECT_MAP).join(' '));
   R.check(`${name}: CONFIG keeps the editable contract (brand.*, platform, fps, length, aspect, text, media, claims)`, ['brand', 'platform', 'fps', 'length', 'aspect', 'text', 'media', 'claims'].every((k) => k in mod.CONFIG) && ['name', 'accent', 'ink', 'paper', 'logo', 'url', 'cta', 'font'].every((k) => k in mod.CONFIG.brand));
+  const secOk = (p) => p.structure && p.structure.sections.length >= 3 && p.structure.sections.every((x, i, A) => x.t[0] < x.t[1] && (!i || Math.abs(A[i - 1].t[1] - x.t[0]) < 1e-6)) && Math.abs(p.structure.sections.at(-1).t[1] - p.seconds) < 1e-3 && p.structure.sections[0].t[0] === 0;
+  R.check(`${name}: plan.structure names its beats end to end over the runtime, and plan.texts carries the hook / card text (tools/structure_check.py reads both)`, secOk(a) && secOk(b) && a.texts.length > 0 && a.texts.every((x) => x.t[1] > x.t[0]));
   R.check(`${name}: the voice track and the mix fields are planned (vo stem, a bed ducked >= 9 dB)`, a.voice.segments.length > 0 && a.vo && a.duckDb >= 9 && a.audio.mode === 'vo');
 }
 const fs1 = await import(pathToFileURL(path.join(ROOT, 'templates/founder-story/config.mjs')).href);
 R.check('founder-story: the quote gate refuses a paraphrase (gateProblems names text.quote; buildPlan throws)', fs1.gateProblems({ ...fs1.CONFIG, text: { ...fs1.CONFIG.text, quote: 'it always starts with listening' } }).some((x) => x.startsWith('text.quote')) && !fs1.gateProblems(fs1.CONFIG).length
   && (() => { try { fs1.buildPlan({ ...fs1.CONFIG, text: { ...fs1.CONFIG.text, quote: 'we love our users' } }); return false; } catch { return true; } })());
+const pc = await import(pathToFileURL(path.join(ROOT, 'templates/podcast-clip/config.mjs')).href), pcp = pc.buildPlan(structuredClone(pc.CONFIG));
+R.check('podcast-clip: the sharpest line plays first (the guest\'s words at 0 s), then the clip from its start; a hook line that is not verbatim is refused', pcp.hookLine && pcp.transcript[0].speaker === 'Guest' && pcp.transcript[0].s < 0.3 && pcp.structure.sections[0].name === 'hook'
+  && (() => { try { pc.buildPlan({ ...pc.CONFIG, hookLine: { ...pc.CONFIG.hookLine, quote: 'posting daily is bad' } }); return false; } catch { return true; } })());
 const tut = (await import(pathToFileURL(path.join(ROOT, 'templates/tutorial/config.mjs')).href));
 const tp = tut.buildPlan(structuredClone(tut.CONFIG)), tpr = tut.buildPlan(structuredClone({ ...tut.CONFIG, media: { ...tut.CONFIG.media, screen: { ...tut.CONFIG.media.screen, src: '/abs/rec.mp4' } } }));
 R.check('tutorial: our cursor is drawn on the placeholder only (a real recording has its own pointer); the plan says the track is estimated', tp.scene.screenGfx.screen.some((g) => g.id === 'ui.cursorTrack') && !tpr.scene.screenGfx.screen.some((g) => g.id === 'ui.cursorTrack') && tp.cursor.source === 'estimated from click times');

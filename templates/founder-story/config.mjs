@@ -9,17 +9,17 @@
 import path from 'node:path';
 import { aspectOf, atOf, fixSets, quoteCheck } from '../_shared/human/core.mjs';
 import { punchPlan, pickCaption, captionTrack } from '../_shared/human/edit.mjs';
-import { loadWords, emphasize, cuesFor, audioFields, tagOf, talkTrack, talkSlots } from '../_shared/human/kit.mjs';
+import { loadWords, emphasize, cuesFor, audioFields, tagOf, talkTrack, talkSlots, structureOf, textOf } from '../_shared/human/kit.mjs';
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 
 /* ============================== CONFIG (edit me) ============================== */
 export const CONFIG = {
-  brand: { name: 'Orbit', accent: '#4A18ED', ink: '#FFFFFF', paper: '#F5F2EA', logo: null, url: 'orbit.example', cta: 'Come and see how we work', font: { display: 'Manrope', text: 'Manrope' } },
+  brand: { name: 'Orbit', accent: '#4A18ED', ink: '#FFFFFF', paper: '#F5F2EA', logo: null, url: 'orbit.example', cta: 'Come and see', font: { display: 'Manrope', text: 'Manrope' } },
   platform: 'youtube', fps: 30, length: 'auto', aspect: '16:9', aspects: ['16:9', '9:16'],
   text: {
     name: 'Founder name', role: 'Founder, Orbit · placeholder',
     years: [ { y: '2019', label: 'a spare room' }, { y: '2021', label: 'rebuilt, twice' }, { y: '2024', label: 'a small team' } ], yearsAt: [ { word: 'started' }, { word: 'rebuilt' }, { word: 'Today' } ], yearsNote: 'example years · placeholder data',
-    quote: 'it still starts with listening', cta: 'Come and see how we work',
+    quote: 'it still starts with listening', cta: 'Come and see',   // the end card echoes the spoken ask; at most 4 words with the brand (it must read at <= 1.5 words/s)
   },
   media: {
     talk: { src: null, start: 0, label: 'founder talking head' },
@@ -36,6 +36,8 @@ export const CONFIG = {
   quoteAt: { word: 'listening.', nth: 1, offset: 0.25 }, quoteDur: 2.6,
   captions: { style: 'brand', emph: ['spare', 'twice.', 'listening.', 'team,'] },
   end: { holdS: 3.2 },
+  /* the story beats on the words that start them (patterns/structures.json founder-story): the opening line, the why, the problem, the chapter that changed it, the ask */
+  beats: [ ['hook', 0], ['why', { word: 'with' }], ['problem', { word: 'The' }], ['chapter', { word: 'What' }], ['ask', { word: 'If' }] ],
   claims: [ { text: '2019', source: 'placeholder data: replace with your own date and where it is recorded' }, { text: '2021', source: 'placeholder data: replace with your own date and where it is recorded' },
             { text: '2024', source: 'placeholder data: replace with your own date and where it is recorded' } ],
   music: 'music/bed_documentary_marimba_loop8', musicGainDb: 0, duckDb: 12, ceilingDb: -2.0,
@@ -85,7 +87,9 @@ export function buildPlan(C0) {
   const shots = marks.slice(0, -1).map((a, i) => ({ id: 'shot' + i, start: r3(a), dur: r3(marks[i + 1] - a), ...(a >= talkEnd ? { hold: true } : {}) })).filter((s) => s.dur > 0.001);
   const scene = { W: A.W, H: A.H, fps, seconds: T, bg: '#0B0D12', platform: A.safe, slots, gfx, gfxTop: top, captions: { chunks: cap.chunks, style: pick.style, box: pick.box },
     speaking: Object.fromEntries(slots.filter((s) => s.kind === 'speaker').map((s) => [s.id, words.map((w) => [w.os, w.oe])])) };
-  return { template: 'founder-story', aspect: C.aspect, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe })),
+  const structure = structureOf(C.beats.map(([n, w]) => [n, typeof w === 'number' ? w : r3(Math.max(0, at(w) - 0.06))]), T);
+  const texts = [textOf(C.text.name + ' ' + C.text.role, C.lowerThird.at + 0.6, C.lowerThird.dur, 'lowerthird'), textOf(C.text.quote, qa, C.quoteDur, 'quote'), textOf(C.brand.name + ' ' + C.text.cta, r3(talkEnd + 0.15), r3(T - talkEnd - 0.15), 'cta')];
+  return { template: 'founder-story', aspect: C.aspect, structure, texts, fps, seconds: T, size: [A.W, A.H], scene, voice, cues, shots, claims: C.claims, transcript: words.map((w) => ({ w: w.w, s: w.os, e: w.oe })),
     quote: { text: C.text.quote, verbatim: true, words: [qc.i0, qc.i1], s: qc.s, e: qc.e }, edit: { cuts: tr.cuts, fillers: tr.fillers, punches: P.punches, photos: photos.map((p) => ({ label: p.label, a: p.a, b: p.b })) },
     layers, captionStyle: pick.name, ...audioFields(C, tag, { role: 'vo_doc', quiet: [] }), paceRule: { aslMax: 3.5, longMax: 5 }, warnings };
 }

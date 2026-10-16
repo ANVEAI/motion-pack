@@ -3,6 +3,7 @@
 A **two-person podcast excerpt**, 9:16 first, with a 16:9 re-layout.
 
 - **Frame 0** is a title hook card already moving over both faces.
+- **The sharpest line plays first** (`hookLine.quote`): it must be a verbatim run of the transcript, or the build fails. The clip then plays from its start, so the line is heard again in context.
 - **Layout:** the speakers are stacked (9:16) or side by side (16:9), or `layout: 'active'` shows one full-frame speaker at a time.
 - **Active-speaker emphasis** comes from the speaker tags in the transcript:
   - the talker is at full brightness with an accent ring, and the listener dims;
@@ -29,6 +30,7 @@ node make.mjs --set media.host.src=/abs/host.mp4 --set media.guest.src=/abs/gues
 | `media.mix`, `voice.audio` | `mix` takes the episode audio. `speaker` takes each speaker's own camera audio, only across their own words, so there is no bleed. |
 | `speakers` | speaker tag -> `{ name, role, slot }`. The tags come from VTT `<v Name>`, diarisation, or ALL-CAPS `NAME:` lines. A tag with no entry is a build warning. |
 | `clip.from` / `clip.to` | the excerpt in source seconds |
+| `hookLine`, `button` | the cold-open line (`quote`, padding) and the word that starts the button (the last line before the end card) |
 | `layout` | per aspect: `stack`, `split` or `active` |
 | `active` | `lagMs`, `minShot`, how far the listener dims, the ring width |
 | `waveform`, `captions`, `music` | bars and window; the shared caption picker; a quiet pad ducked 14 dB (`music: null` drops it to -60 dB) |
