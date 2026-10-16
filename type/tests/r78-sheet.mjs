@@ -4,15 +4,16 @@
    inside the panel are measurably smoother than the plate), and the plate mode must agree with it within a tolerance on the same picture.
    Needs puppeteer-core + Chrome (tools/chrome.mjs). Software GL is allowed here: nothing in these parts uses WebGL. */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { execFileSync } from 'node:child_process'; import { open, ROOT, pageErrors, decodePNG } from '../../layers/tests/harness.mjs';
-const HERO = { 'ui.glassPanel': 1.6, 'ui.rimLight': 1.0, 'ui.reviewLayer': 3.6, 'ui.approvalSlider': 3.4, 'type.sentenceAcrossShots': 1.9 };
+const HERO = { 'ui.glassPanel': 1.6, 'ui.rimLight': 1.0, 'ui.reviewLayer': 3.6, 'ui.approvalSlider': 3.4, 'type.sentenceAcrossShots': 1.9, 'layout.textWall': 3.6, 'layout.pillWall': 2.2, 'device.lockScreen': 3.6 };
+const PLATES = { 'ui.rimLight': '#07080C', 'layout.textWall': '#14161D', 'layout.pillWall': '#14161D' };
 const PLATE = 'repeating-linear-gradient(115deg,#ff5f6d 0 60px,#ffc371 60px 120px,#2b86c5 120px 190px,#1a1a2e 190px 260px)';
 const h = await open('/type/demo/gfx.html', '', { allowSoftware: true }); let fail = 0; const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-r78-')), tiles = [];
 const show = (id, t, W, H, params = {}, plate = PLATE) => h.page.evaluate((i, tt, w, hh, pp, pl) => { const on = window.show(i, tt, pp, w, hh, { light: false }); document.getElementById('bg').style.background = pl; return on; }, id, t, W, H, params, plate);
 for (const [W, H] of [[1920, 1080], [1080, 1920]]) {
   await h.page.setViewport({ width: W, height: H });
   for (const [id, t] of Object.entries(HERO)) {
-    const on = await show(id, t, W, H); const a = await h.page.evaluate(() => document.getElementById('ov').innerHTML); await show(id, t, W, H); const b = await h.page.evaluate(() => document.getElementById('ov').innerHTML);
-    const pre = await show(id, -0.5, W, H); await show(id, t, W, H);
+    const on = await show(id, t, W, H, {}, PLATES[id] || PLATE); const a = await h.page.evaluate(() => document.getElementById('ov').innerHTML); await show(id, t, W, H, {}, PLATES[id] || PLATE); const b = await h.page.evaluate(() => document.getElementById('ov').innerHTML);
+    const pre = await show(id, -0.5, W, H, {}, PLATES[id] || PLATE); await show(id, t, W, H, {}, PLATES[id] || PLATE);
     if (!on) { console.log('FAIL empty at hero time', id, W, H); fail++; } if (a !== b) { console.log('FAIL not seek-stable', id); fail++; } if (pre) { console.log('FAIL visible before start', id); fail++; }
     const f = path.join(dir, `${id}-${W}.png`); await h.page.screenshot({ path: f, clip: { x: 0, y: 0, width: W, height: H } }); tiles.push([`${id} ${W}x${H}`, f]);
   }
@@ -36,12 +37,12 @@ const py = `
 import sys, json
 from PIL import Image, ImageDraw
 items = json.loads(sys.argv[2]); wide = [x for x in items if '1920x' in x[0]]; tall = [x for x in items if '1080x1920' in x[0]]
-tw, th, cols = 640, 360, 3; rows = (len(wide) + cols - 1) // cols
-S = Image.new('RGB', (tw * cols, th * rows + 405), (20, 20, 22))
+tw, th, cols = 640, 360, 3; rows = (len(wide) + cols - 1) // cols; rows2 = (len(tall) + 4) // 5
+S = Image.new('RGB', (tw * cols, th * rows + 405 * ((len(tall) + 7) // 8)), (20, 20, 22))
 for i, (n, f) in enumerate(wide):
     im = Image.open(f).convert('RGB').resize((tw, th), Image.LANCZOS); x, y = (i % cols) * tw, (i // cols) * th; S.paste(im, (x, y)); d = ImageDraw.Draw(S); d.rectangle((x, y, x + 260, y + 18), fill=(0, 0, 0)); d.text((x + 5, y + 3), n, fill=(255, 255, 255))
 for i, (n, f) in enumerate(tall):
-    im = Image.open(f).convert('RGB').resize((225, 400), Image.LANCZOS); x, y = 10 + i * 318, th * rows + 3; S.paste(im, (x, y)); d = ImageDraw.Draw(S); d.text((x + 230, y + 4), n.split(' ')[0], fill=(220, 220, 220))
+    im = Image.open(f).convert('RGB').resize((225, 400), Image.LANCZOS); x, y = 6 + (i % 8) * 238, th * rows + 3 + (i // 8) * 405; S.paste(im, (x, y)); d = ImageDraw.Draw(S); d.rectangle((x, y, x + 150, y + 14), fill=(0, 0, 0)); d.text((x + 3, y + 2), n.split(' ')[0], fill=(255, 255, 255))
 S.save(sys.argv[1]); S.save(sys.argv[1][:-4] + '.jpg', quality=84); print('sheet', sys.argv[1], S.size)`;
 fs.mkdirSync(path.join(ROOT, 'type/demo/out'), { recursive: true });
 console.log(execFileSync('python3', ['-I', '-c', py, path.join(ROOT, 'type/demo/out/gfx-r78.png'), JSON.stringify(tiles)]).toString().trim());

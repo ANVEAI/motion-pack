@@ -8,14 +8,18 @@
      reviewLayer         the record clock is floor(t - at) in any order, frozen at dur; flag cursors sit on their track; pins appear on their own frame; the placeholder note is on whenever
                          anything is
      approvalSlider      the state machine pending > sliding > approving > approved flips on exactly approvedAt; data-state in the markup is the state; the thumb never moves back
-     sentenceAcrossShots the word changes on exactly the cut frame; the slot does not move; carry keeps earlier words where they were; cuts are cleaned; short shots are linted */
+     sentenceAcrossShots the word changes on exactly the cut frame; the slot does not move; carry keeps earlier words where they were; cuts are cleaned; short shots are linted
+     textWall            a line is the same string for the same (seed, card, line); the wall scrolls with absolute card numbers; cards multiply in a seeded order and never un-multiply; the highlight
+                         bar wipes over the string wallLine gives; the placeholder note is on
+     pillWall            the lit pill is the MEASURED text width plus padding at every settled step; it grows from a dot; rows alternate direction; labels the bundled font lacks are found
+     lockScreen          the clock is the parameter; the stack is stable and newest on top; the screen is black before wake; the thread opens with the first notification's text */
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url'; import { execFileSync } from 'node:child_process';
-import { GFX, renderSVG, renderInner, gfxCues, sfxFor, glassState, rimState, rimIntensity, rimContrast, perimeterAt, perimeterLen, recordClock, approvalState, approvalTimes, sentenceState, sentenceCuts, sentenceEnd, sentenceLint } from '../gfx/index.js';
+import { GFX, renderSVG, renderInner, gfxCues, sfxFor, glassState, rimState, rimIntensity, rimContrast, perimeterAt, perimeterLen, recordClock, approvalState, approvalTimes, sentenceState, sentenceCuts, sentenceEnd, sentenceLint, wallLine, pillWidth, litState, pillWallLint, lockStack, lockGeo, missingGlyphs, hasGlyphs } from '../gfx/index.js';
 import { ctxFor } from '../gfx/core.js';
 const here = path.dirname(fileURLToPath(import.meta.url)), ROOT = path.resolve(here, '../..');
 let pass = 0, fail = 0; const check = (name, ok, info = '') => { if (ok) pass++; else fail++; console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${!ok && info ? '  | ' + info : ''}`); };
-const IDS = ['ui.glassPanel', 'ui.rimLight', 'ui.reviewLayer', 'ui.approvalSlider', 'type.sentenceAcrossShots'];
-const HERO = { 'ui.glassPanel': 1.6, 'ui.rimLight': 1.0, 'ui.reviewLayer': 3.6, 'ui.approvalSlider': 3.4, 'type.sentenceAcrossShots': 1.9 };
+const IDS = ['ui.glassPanel', 'ui.rimLight', 'ui.reviewLayer', 'ui.approvalSlider', 'type.sentenceAcrossShots', 'layout.textWall', 'layout.pillWall', 'device.lockScreen'];
+const HERO = { 'ui.glassPanel': 1.6, 'ui.rimLight': 1.0, 'ui.reviewLayer': 3.6, 'ui.approvalSlider': 3.4, 'type.sentenceAcrossShots': 1.9, 'layout.textWall': 3.6, 'layout.pillWall': 2.2, 'device.lockScreen': 3.6 };
 const SFX = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'sfx/manifest.json'), 'utf8')).sounds.map((s) => s.id)), sndOk = (id) => SFX.has('snd.' + id.split('/').slice(1).join('.'));
 const rng = (() => { let a = 78; return () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; })();
 const shuffle = (arr) => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -25,7 +29,7 @@ const near = (a, b, e = 1e-6) => Math.abs(a - b) <= e, TAU = Math.PI * 2, c16 = 
 /* ---------- every id: contract ---------- */
 for (const id of IDS) {
   const g = GFX[id]; if (!g) { check(`${id}: registered`, false); continue; }
-  check(`${id}: registered from its file`, /type\/gfx\/(glass|review|r78-type)\.js$/.test(g.file || ''), g.file);
+  check(`${id}: registered from its file`, /type\/gfx\/(glass|review|r78-type|r78-wall)\.js$/.test(g.file || ''), g.file);
   const wide = renderSVG(id, HERO[id], { at: 0 }, { W: 1920, H: 1080 }), tall = renderSVG(id, HERO[id], { at: 0 }, { W: 1080, H: 1920 });
   check(`${id}: draws at 16:9 and 9:16 at its hero time`, wide.length > 300 && tall.length > 300, `${wide.length} / ${tall.length}`);
   check(`${id}: empty before at`, renderSVG(id, 0.5, { at: 2 }, { W: 1920, H: 1080 }) === '');
@@ -112,6 +116,43 @@ for (const id of IDS) {
   check('sentenceAcrossShots: lint reports a shot under the reading floor and a word with no cut', sentenceLint({ words: ['a', 'b', 'c'], cuts: [0, 0.1, 1], hold: 1 }).some((q) => q.word === 'a') && sentenceLint({ words: ['a', 'b', 'c'], cuts: [0, 1] }).some((q) => q.word === 'c' && /no cut/.test(q.why)) && sentenceLint(P).length === 0);
   const cu = gfxCues('type.sentenceAcrossShots', { at: 4, params: P }); check('sentenceAcrossShots: one sfx/tx/cut_tick per cut, on the cut frame (at + cut)', cu.length === 3 && cu.every((q, i) => q.id === 'sfx/tx/cut_tick' && near(q.t, 4 + [0, 0.5, 1][i])));
   check('sentenceAcrossShots: the part is on from the first cut to the end (sentenceEnd = last cut + hold) and not before', sentenceEnd(P) === 2 && wordsAt(-0.1).length === 0 && wordsAt(1.99).length === 1 && sentenceState(P, 1.2).i === 2 && sentenceState(P, -1).i === -1);
+}
+
+
+/* ---------- textWall ---------- */
+{ const P = {}, wallStr = (u, p = P) => texts(renderSVG('layout.textWall', u, { at: 0, params: p })), cards = (u, p = P) => (renderSVG('layout.textWall', u, { at: 0, params: p }).match(/<g transform="translate\([\d.-]+ [\d.-]+\) scale\(/g) || []).length;
+  check('textWall: a line is the same string for the same (seed, card, line, width) in any order, another seed another string, the last line of a card is short and ends with a full stop', wallLine({}, 5, 3, 40) === wallLine({}, 5, 3, 40) && (wallLine({}, 9, 1, 40), wallLine({}, 5, 3, 40) === wallLine({}, 5, 3, 40)) && wallLine({}, 5, 3, 40) !== wallLine({ seed: 4 }, 5, 3, 40) && wallLine({}, 5, 3, 40) !== wallLine({}, 6, 3, 40) && wallLine({ lines: 9 }, 2, 8, 40).endsWith('.') && wallLine({ lines: 9 }, 2, 8, 40).length < wallLine({ lines: 9 }, 2, 3, 40).length + 4 && Array.from({ length: 60 }, (_, i) => wallLine({}, i, i % 9, 33)).every((q) => q.length <= 34 && /^[a-z .]+$/.test(q)));
+  const c = [0.1, 0.4, 0.8, 1.2, 1.8, 2.5, 4.5].map((u) => cards(u)); check(`textWall: cards multiply on their own seeded times and never un-multiply (${c.join(' <= ')} cards over time), none before the multiply starts, all of the grid after it`, c.every((v, i) => !i || v >= c[i - 1]) && cards(0) <= 1 && c.at(-1) >= 16 && c[0] < c.at(-1));
+  const hot = (u) => { const m = /<rect x="[\d.]+" y="[\d.]+" width="([\d.]+)" height="[\d.]+" rx="[\d.]+" fill="#FFC23D"\/>\s*<text[^>]*>([^<]*)</.exec(renderSVG('layout.textWall', u, { at: 0 })); return m && { w: +m[1], s: m[2] }; };
+  const h1 = hot(3.25), h2 = hot(3.9), h3 = hot(4.8); check('textWall: the highlight bar wipes in from the `at` time (wider at 3.25 s than at 3.0 s, full by 3.9 s) over exactly the string wallLine gives for that card and line', !hot(2.9) && h1 && h2 && h1.w < h2.w && near(h2.w, h3.w, 1e-6) && /^[a-z .]+$/.test(h3.s) && [...new Set([h2.s, h3.s])].length === 1, JSON.stringify([h1, h2, h3]));
+  const strings = (u) => new Set(wallStr(u).filter((q) => q.length > 10)); const a = strings(3.5), b = strings(3.5 + 1.0 * 19 / 70 * 1); check('textWall: the wall is endless and numbered by absolute card: after a scroll by more than one card row the strings of the cards still in view are the same strings', [...a].filter((q) => b.has(q)).length > 40, `${a.size} / ${b.size}`);
+  check('textWall: a huge scroll offset still draws (the wall wraps by absolute row number), and the output stays bounded', renderSVG('layout.textWall', 4, { at: 0, params: { scroll: 3000 } }).length > 5000 && renderSVG('layout.textWall', 4, { at: 0, params: { cols: 8, rows: 8, lines: 16, scroll: 1e9 } }).length < 3e6);
+  const all = wallStr(3.5); check('textWall: the placeholder note is on screen on every visible frame, and the wall prints lorem words and no digit', [0.5, 2, 3.5, 4.8].every((u) => wallStr(u).some((q) => /placeholder/i.test(q))) && !all.some((q) => /\d/.test(q)));
+}
+
+/* ---------- pillWall ---------- */
+{ const P = { lit: { at: 0.5, texts: ['One word', 'A longer phrase here', 'Hi'], steps: [0, 1, 2], resize: 0.3 } }, size = 34, litW = (u) => litState(P, u, size);
+  check('pillWall: the lit pill is on step i from its step time on (before the first step it is not drawn)', litW(0.49).i === -1 && litW(0.5).i === 0 && litW(1.49).i === 0 && litW(1.5).i === 1 && litW(2.5).i === 2 && litW(9).i === 2 && litW(1.6).text === 'A longer phrase here');
+  check('pillWall: once settled (after `resize`), the lit width is the MEASURED text width plus padding at every step', [[0.5 + 0.35, 'One word'], [1.5 + 0.35, 'A longer phrase here'], [2.5 + 0.35, 'Hi']].every(([u, t]) => near(litW(u).width, pillWidth(t, size), pillWidth(t, size) * 0.01)) && pillWidth('A longer phrase here', size) > pillWidth('One word', size) && pillWidth('Hi', size) < pillWidth('One word', size));
+  const w = [1.5, 1.55, 1.65, 1.8, 2.0].map((u) => litW(u).width); check('pillWall: a swap re-sizes the pill smoothly from the old width to the new one (monotone over the resize)', w.every((v, i) => !i || v >= w[i - 1] - 1e-9) && w[0] < w.at(-1) && near(w[0], pillWidth('One word', size), 3));
+  check('pillWall: the first pill grows from a dot (at its step time its width is one pill height), and is full width afterwards', litW(0.5).width < pillWidth('One word', size) * 0.5 && litW(1.0).width > pillWidth('One word', size) * 0.95);
+  const rowX = (u, row) => { const svg = renderSVG('layout.pillWall', u, { at: 0, params: { lit: { texts: [] }, scroll: 120, rows: 4, labels: ['Alpha', 'Beta', 'Gamma', 'Delta'] } }); const ys = [...svg.matchAll(/<rect x="([\d.-]+)" y="([\d.-]+)" width="[\d.]+" height="[\d.]+" rx="[\d.]+" fill="#FFFFFF" fill-opacity/g)].map((m) => [+m[1], +m[2]]); const y0 = [...new Set(ys.map((q) => q[1]))].sort((a, b) => a - b)[row]; return ys.filter((q) => q[1] === y0).map((q) => q[0]).sort((a, b) => a - b); };
+  const d0 = rowX(1, 0), d1 = rowX(1.2, 0), e0 = rowX(1, 1), e1 = rowX(1.2, 1), shift = (a, b) => { const gaps = a.slice(1).map((v, i) => v - a[i]); return [...a].map((v) => { let best = 1e9; for (const q of b) if (Math.abs(q - v) < Math.abs(best)) best = q - v; return best; }); };
+  const sh0 = shift(d0, d1)[2], sh1 = shift(e0, e1)[2]; check('pillWall: neighbouring rows scroll opposite ways (the pills of row 0 and row 1 move in opposite directions over 0.2 s)', Math.sign(sh0) * Math.sign(sh1) === -1 && Math.abs(sh0) > 1 && Math.abs(sh1) > 1, `${sh0} ${sh1}`);
+  check('pillWall: the default labels (Latin, Latin extended, Vietnamese, Greek, Cyrillic) are all in the bundled font; Devanagari, Arabic and CJK labels are reported with their code points', pillWallLint({}).length === 0 && pillWallLint({ labels: ['Hello', 'नमस्ते', 'مرحبا', '你好', 'Привет'] }).map((q) => q.label).join('|') === 'नमस्ते|مرحبا|你好' && missingGlyphs('你').join() === '20320' && hasGlyphs('Xin chào bạn Γειά σου Привет') && !hasGlyphs('日本') && pillWallLint({ lit: { texts: ['ok', 'قلم'] } }).length === 1);
+  const dim = (svg) => (svg.match(/<g opacity="0\.1">/g) || []).length; check('pillWall: wall pills under the lit pill are dimmed (some at 0.1 once it is lit, none before), and the lit pill text is drawn', dim(renderSVG('layout.pillWall', 2.2, { at: 0 })) > 0 && dim(renderSVG('layout.pillWall', 0.2, { at: 0 })) === 0 && texts(renderSVG('layout.pillWall', 2.2, { at: 0 })).includes('Say it your way'));
+  check('pillWall: the placeholder note is printed; no digit anywhere in the default frames', [0.3, 1.5, 3, 4.5].every((u) => { const t = texts(renderSVG('layout.pillWall', u, { at: 0 })); return t.some((q) => /placeholder/i.test(q)) && !t.some((q) => /\d/.test(q)); }));
+}
+
+/* ---------- lockScreen ---------- */
+{ const P = { time: '10:07', wake: 0.5, openAt: 3, notifs: [{ at: 1, app: 'Chat', text: 'First one' }, { at: 1, app: 'Tasks', text: 'Second same time' }, { at: 1.8, app: 'Mail', text: 'Third' }], thread: [{ at: 3.8, from: 'me', text: 'Reply' }] }, ts = (u) => texts(renderSVG('device.lockScreen', u, { at: 0, params: P }));
+  check('lockScreen: the clock is the parameter, drawn verbatim (never the system time); the source reads no clock', ts(1.5).includes('10:07') && ts(1.5).includes('Tuesday') && !/\b(Date|performance|Intl)\b/.test(fs.readFileSync(path.join(ROOT, 'type/gfx/r78-wall.js'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')));
+  check('lockScreen: the screen is black until `wake` (no clock before it), and the clock is there after it', !ts(0.3).includes('10:07') && ts(0.3).every((q) => /placeholder/i.test(q)) && ts(1.0).includes('10:07'));
+  { const S = (u) => lockStack(P, u), s1 = S(1.0 + 0.5), s2 = S(1.8 + 0.6); check('lockScreen: the stack is stable: sorted by `at` then index; newest on top (slot 0); two at the same time keep their order; every older card is pushed one slot down once it is settled', s1.map((q) => q.app).join() === 'Tasks,Chat' && s1[0].slot === 0 && near(s1[1].slot, 1, 1e-9) && s2.map((q) => q.app).join() === 'Mail,Tasks,Chat' && s2.map((q) => Math.round(q.slot)).join() === '0,1,2' && S(0.5).length === 0, JSON.stringify(s1.map((q) => [q.app, +q.slot.toFixed(2)]))); }
+  { const mid = lockStack(P, 1.8 + 0.05).find((q) => q.app === 'Tasks'); check('lockScreen: the push is eased (an older card is part-way down while the new one arrives)', mid.slot > 0.05 && mid.slot < 0.95, String(mid.slot)); }
+  check('lockScreen: the lock layer slides away at `openAt` (no clock after it) and the thread opens: its title, the first notification text as the first bubble, then the thread bubble on its own time', !ts(3.7).includes('10:07') && ts(3.7).includes('Maya Rao') && ts(3.7).includes('First one') && !ts(3.7).includes('Reply') && ts(4.4).includes('Reply'));
+  const a = lockGeo(P, ctxFor(1920, 1080, null, 1)), b = lockGeo(P, ctxFor(1080, 1920, null, 1)); check('lockScreen: the phone keeps its aspect (width / height = 0.46) in 16:9 and 9:16, and is centred in its box', near(a.w / a.h, 0.46, 1e-9) && near(b.w / b.h, 0.46, 1e-9) && near(a.x + a.w / 2, 960, 1e-6) && near(b.x + b.w / 2, 540, 1e-6) && near(b.y + b.h / 2, 0.5 * 1080 * 0 + (0.06 + 0.44) * 1920, 1e-6) && near(lockGeo({ aspect: 0.7 }, ctxFor(1920, 1080, null, 1)).w / lockGeo({ aspect: 0.7 }, ctxFor(1920, 1080, null, 1)).h, 0.7, 1e-9), JSON.stringify([a, b]));
+  check('lockScreen: the placeholder label is printed with the clock digits', ts(1.5).some((q) => /placeholder/i.test(q)));
 }
 
 /* ---------- two fresh processes give the same bytes ---------- */
