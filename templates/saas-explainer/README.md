@@ -1,0 +1,9 @@
+# saas-explainer: the "how it works" film (60 / 70 / 90 s, 16:9 + 9:16, captions, optional VO)
+
+question (the pain as a question, on frame 0) -> the wrong model (what teams do today) -> the reframe (the product, named once) -> step 1, step 2, step 3 (a kicker, one line, the UI doing it) -> the result -> the end card. Built from the SaaS kit and the placeholder HTML screens of the fictional **Acme Flow**.
+
+**Captions on every line, so it works on mute.** `CONFIG.text.<scene>.say` is the narration.
+- **No VO (default):** the lines are captions, chunked (at most 5 words / 34 characters at 16:9, 4 / 18 at 9:16) and timed at reading speed inside each scene; the scenes sit on the beats of `music/bed_documentary_marimba_loop8` (90 BPM).
+- **With VO:** `node make.mjs --set voice.words=/abs/words.json [--set voice.audio=/abs/voice.wav]`. One narration line per scene, in order; the scene lengths come from the voice: each change sits in the middle of the breath between two lines (never inside a word; a breath under 0.12 s is refused, and so is a transcript whose word count does not match the narration). The captions light the spoken word; the bed ducks `duckDb` (12) under the voice; cues under a word sit -20 dB under the voice. With no `audio`, `templates/proof-film/vo.py` lays a labelled guide signal (shaped noise, plainly not a voice) so the mix and ears can be checked before you record. `words.example.json` is hand-timed placeholder text (about 150 wpm), not a recording.
+
+Edit the `CONFIG` block (`brand`, `text`, `voice`, `media.step2` / `media.step3`, `integrations`, `claims`, `transitions`, `music`, `caption`). A digit in `text` stops the build. Build: `node make.mjs [--set length=60|70|90] [--set aspect=9:16]`, then `npx -y hyperframes@0.8.142 render . -o out/saas-explainer-70.mp4 --crf 23` (9:16 from `tall/`).
