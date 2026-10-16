@@ -12,7 +12,8 @@ const HERO = { 'title.countdown321': 1.1, 'title.slate': 0.75, 'caption.oneWordS
   'counter.stepPill': 2.4, 'caption.speakerTag': 0.9, 'title.timeCard': 0.7, 'layout.paletteColumns': 1.2, 'layout.logoConstruction': 1.5, 'layout.mockupInContext': 1.5, 'layout.typeSpecimen': 1.4, 'layout.backdropSwap': 0.6, 'layout.lineup': 1.6,
   'chart.scatterFrontier': 4.0, 'ui.branchTrace': 4.6, 'ui.dataTable': 3.0, 'caption.sceneBubble': 3.2, 'ui.costTicker': 2.2, 'type.paramReadout': 1.3, 'lowerThird.personalTag': 1.2, 'ui.promptBar.attach': 0.85,
   'title.partnerLockup': 1.5, 'layout.iconMergeLockup': 1.75, 'type.asciiMosaic': 2.9, 'type.textOnPath': 1.4, 'type.flankWords': 1.0, 'type.electricOutline': 1.2, 'type.behindSubject': 1.0,
-  'chart.hoverTooltip': 3.6, 'ui.dockLaunch': 2.6, 'title.verbCard': 1.2, 'ui.connectRows': 3.7, 'layout.degradingDiagram': 4.5, 'type.commandPill': 2.0 };
+  'chart.hoverTooltip': 3.6, 'ui.dockLaunch': 2.6, 'title.verbCard': 1.2, 'ui.connectRows': 3.7, 'layout.degradingDiagram': 4.5, 'type.commandPill': 2.0,
+  'caption.soundOnPill': 1.0, 'ui.stateChip': 2.0 };
 /* round-3 parts get their own two sheets (gfx-r3type, gfx-r3layout); round 4+5: proof parts get gfx-r45ui, lockup/glyph/matte parts get gfx-r45type */
 const R45 = new Set(['chart.scatterFrontier', 'ui.branchTrace', 'ui.dataTable', 'caption.sceneBubble', 'ui.costTicker', 'type.paramReadout', 'lowerThird.personalTag', 'ui.promptBar.attach']);
 const R45T = new Set(['title.partnerLockup', 'layout.iconMergeLockup', 'type.asciiMosaic', 'type.textOnPath', 'type.flankWords', 'type.electricOutline', 'type.behindSubject']);
