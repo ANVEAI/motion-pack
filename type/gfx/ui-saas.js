@@ -203,7 +203,7 @@ const aiAnswer = { tags: ['ui', 'ai', 'prompt', 'chat', 'answer', 'streaming', '
     const caretX = ib[0] + 24 * s + (ty ? measure(inputLine, ifs, { weight: 600 }) : 0) + 3 * s, caret = !sent && (typing || Math.floor(u * 2) % 2 === 0) && u >= tm.typeAt - 0.4 ? rect(caretX, ib[1] + ib[3] / 2 - 16 * s, 3 * s, 32 * s, 1.5, p.accent) : '';
     const input = rect(...ib, ib[3] / 2, T.chip, `stroke="${T.line}" stroke-width="${f2(1.2 * s)}"`) + inputTxt + caret + `<g transform="translate(${f2(bxx + bs / 2)} ${f2(byy + bs / 2)}) scale(${f2(1 - 0.12 * pr)})">${rect(-bs / 2, -bs / 2, bs, bs, bs / 2, ty.length >= String(p.prompt ?? '').length || sent ? p.accent : T.faint)}${icon('send', -14 * s, -14 * s, 28 * s, '#FFFFFF', 2.6)}</g>`;
     /* the conversation: the user's bubble (right), then the assistant (left) */
-    let conv = '', cy = y + 110 * s; const bfs = 26 * s, bmax = w * 0.62;
+    let conv = '', cy = y + 110 * s, bottom = cy; const bfs = 26 * s, bmax = w * 0.62;
     if (sent) { const lines = wrapTo(p.prompt, bfs, bmax - 48 * s, 600), bw = Math.max(...lines.map((l) => measure(l, bfs, { weight: 600 }))) + 48 * s, bh = lines.length * bfs * 1.32 + 30 * s, kb = spring(u - tm.sendAt, 'ui'), bx0 = x + w - pad - bw;
       conv += `<g${op(clamp(kb * 2))} transform="translate(0 ${f2((1 - kb) * 40 * s)})">${rect(bx0, cy, bw, bh, 22 * s, p.accent)}${lines.map((l, i) => text(l, bx0 + 24 * s, cy + 15 * s + bfs * (1.02 + i * 1.32), { size: bfs, weight: 600, fill: '#FFFFFF' })).join('')}</g>`; cy += bh + 26 * s; }
     if (u >= tm.sendAt + 0.15) { const ax = x + pad, av = `<circle cx="${f2(ax + 18 * s)}" cy="${f2(cy + 18 * s)}" r="${f2(18 * s)}" fill="${T.chip}" stroke="${T.line}"/>` + text(String(p.avatar).slice(0, 2), ax + 18 * s, cy + 25 * s, { size: 18 * s, weight: 800, fill: p.accent, anchor: 'middle' });
@@ -212,12 +212,15 @@ const aiAnswer = { tags: ['ui', 'ai', 'prompt', 'chat', 'answer', 'streaming', '
       else { let left = Math.floor((u - tm.streamAt) * Math.max(0.5, num(p.wps, 9)) + 1e-9), ly = cy + 26 * s, lastX = tx, lastY = ly;
         for (const para of list(p.answer)) { if (left <= 0) break; const ws = String(para).split(/\s+/).filter(Boolean), take = ws.slice(0, left); left -= take.length;
           const lines = wrapTo(take.join(' '), afs, maxW, 500); lines.forEach((l, i) => { conv += text(l, tx, ly, { size: afs, weight: /^done|^here/i.test(para) && i === 0 ? 700 : 500, fill: T.ink }); lastX = tx + measure(l, afs, { weight: 500 }); lastY = ly; ly += afs * 1.38; }); ly += afs * 0.22; }
+        bottom = Math.max(bottom, ly);
         if (u < tm.streamEnd + 0.2) conv += rect(lastX + 6 * s, lastY - afs * 0.78, 12 * s, afs * 0.92, 2 * s, p.accent, `opacity="${Math.floor(u * 4) % 2 ? 0.45 : 1}"`);
         if (tm.applyAt != null && u >= tm.streamEnd + 0.15) { const ka = spring(u - tm.streamEnd - 0.15, 'headline'), pa = pressAt(u, tm.applyAt), lw = measure(p.apply, 24 * s, { weight: 700 }) + 56 * s, bh2 = 54 * s, ay = ly + 8 * s, done = u >= tm.applyAt + 0.1;
+          bottom = Math.max(bottom, ay + bh2);
           conv += `<g transform="translate(${f2(tx + lw / 2)} ${f2(ay + bh2 / 2)}) scale(${f2(Math.max(0.001, ka) * (1 - 0.08 * pa))}) translate(${f2(-lw / 2)} ${f2(-bh2 / 2)})">${rect(0, 0, lw, bh2, bh2 / 2, done ? '#17A865' : p.accent)}${text(done ? 'Applied' : p.apply, lw / 2, bh2 / 2 + 8.5 * s, { size: 24 * s, weight: 700, fill: '#FFFFFF', anchor: 'middle' })}</g>`;
           if (p.label) conv += text(p.label, tx + lw + 22 * s, ay + bh2 / 2 + 7 * s, { size: 18 * s, weight: 600, fill: T.muted }); }
         else if (p.label && u >= tm.streamEnd) conv += text(p.label, tx, ly + 10 * s, { size: 18 * s, weight: 600, fill: T.muted }); } }
-    return `<g${op(clamp(k * 1.7) * (1 - L.out))} transform="translate(0 ${f2((1 - k) * 50 * s)})"><defs>${shadowDef(id + 's', s * 1.6)}</defs>${softShadow(id + 's', x, y, w, h, 24 * s, s, 1)}${rect(x, y, w, h, 24 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.2 * s)}"`)}${head}${conv}${input}</g>`; } };
+    const limit = ib[1] - 14 * s, scroll = Math.max(0, bottom - limit), clip = `<clipPath id="${id}v"><rect x="${f2(x)}" y="${f2(y + 80 * s)}" width="${f2(w)}" height="${f2(Math.max(0, limit + 8 * s - y - 80 * s))}"/></clipPath>`;   // a long answer scrolls up like a chat, never under the input bar
+    return `<g${op(clamp(k * 1.7) * (1 - L.out))} transform="translate(0 ${f2((1 - k) * 50 * s)})"><defs>${shadowDef(id + 's', s * 1.6)}${clip}</defs>${softShadow(id + 's', x, y, w, h, 24 * s, s, 1)}${rect(x, y, w, h, 24 * s, T.panel, `stroke="${T.line}" stroke-width="${f2(1.2 * s)}"`)}${head}<g clip-path="url(#${id}v)"><g transform="translate(0 ${f2(-scroll)})">${conv}</g></g>${input}</g>`; } };
 
 /* ---------- 6. keyboard shortcut chip ---------- */
 const GLYPH = { '⌘': 'M9 9h6v6H9z M9 9V6.5A2.5 2.5 0 1 0 6.5 9H9 M15 9V6.5A2.5 2.5 0 1 1 17.5 9H15 M9 15v2.5A2.5 2.5 0 1 1 6.5 15H9 M15 15v2.5a2.5 2.5 0 1 0 2.5-2.5H15', '⇧': 'M12 4L4 12h4.5v7h7v-7H20z',

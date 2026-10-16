@@ -33,7 +33,7 @@ export const BUDGETS = { 15: { hook: 2, before: 3, after: 4.5, shortcut: 2, cta:
 export const LY = {
   wide: { top: { x: 110, y: 62, w: 1700, size: 76 }, kicker: { x: 110, y: 62, size: 28 }, hookHead: { x: 110, y: 132, w: 1700, size: 92 }, win: [0.09, 0.22, 0.82, 0.74], hookWin: [0.09, 0.33, 0.82, 0.64],
     split: [0.08, 0.21, 0.84, 0.74], chip: [0.5, 0.48], chipSize: 2.2, toasts: { pos: [0.64, 0.25], width: 0.32 }, tz: {} },
-  tall: { top: { x: 80, y: 290, w: 900, size: 80 }, kicker: { x: 80, y: 250, size: 30 }, hookHead: { x: 80, y: 320, w: 900, size: 104 }, win: [0.03, 0.31, 0.94, 0.5], hookWin: [0.03, 0.4, 0.94, 0.46],
+  tall: { top: { x: 80, y: 290, w: 870, size: 80 }, kicker: { x: 80, y: 250, size: 30 }, hookHead: { x: 80, y: 320, w: 870, size: 104 }, win: [0.03, 0.31, 0.94, 0.5], hookWin: [0.03, 0.4, 0.94, 0.46],
     split: [0.04, 0.31, 0.92, 0.48], chip: [0.5, 0.44], chipSize: 1.8, toasts: { pos: [0.08, 0.33], width: 0.84 }, tz: { inbox: [0.18, 0.08, 0.8, 0.52] } },
 };
 const ROW = (i) => 0.169 + 0.084 * i, TAGX = 0.86, CHKX = 0.219, BULK = [0.905, 0.068];   // where things are on the placeholder inbox (measured in Chrome, 1440 x 900)

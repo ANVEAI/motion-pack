@@ -105,6 +105,9 @@ def test_every_make_runs_the_gate_before_it_stages_and_mixes_through_mix(f):
     """templates/README.md says every make.mjs runs the lint gate first: either cues.mjs (runPlan) or, for a demo that builds its own plan, lintPlan + lintStop, before stage();
     and the mix goes through compose.mix(), so a failing audio.py ends the build with its own message, not a Node stack trace"""
     s = open(f).read()
+    if "makeSaas(" in s and "runPlan(" not in s:   # the SaaS templates (xp-saas) delegate the whole build to templates/_shared/saas/make.mjs: check the gate there
+        s = open(os.path.join(REPO, "templates", "_shared", "saas", "make.mjs")).read()
+        assert s.find("runPlan(DIR") < 0 or s.find("runPlan(") < s.find("stage(PROJ"), "makeSaas must run the gate before it stages"
     gate = min([i for i in (s.find("runPlan("), s.find("lintStop(")) if i >= 0] or [-1])
     assert gate >= 0, "this make.mjs never runs the lint gate (runPlan or lintPlan + lintStop)"
     assert "lintStop(" not in s or "lintPlan(" in s, "lintStop needs lintPlan to fill plan.lint first"

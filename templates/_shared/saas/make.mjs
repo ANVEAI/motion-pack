@@ -3,7 +3,7 @@
        1. plan + lint gates (_shared/cues.mjs: lint.proof, lint.tx; exit 2 stops everything)   2. stage fonts + the type, transitions, layers modules + this kit + CONFIG.media
        3. the mix (_shared/audio.py -> music/mixer.py, -14 LUFS)   4. index.html: ONE director draw(t) on every hf-seek: each scene is its own full-frame layer (an <svg> redrawn
           from the scene data), the transition windows from _shared/txplan.mjs run the transitions module's DOM back-end (applyDom, styles from p alone), nothing reads a clock. */
-import fs from 'node:fs'; import path from 'node:path';
+import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
 import { stage, runPlan, head, mix } from '../compose.mjs';
 import { txPlan } from '../txplan.mjs';
 import { SCREEN_CSS } from './screens.mjs';
@@ -26,6 +26,9 @@ export async function makeSaas(DIR, { title = 'SaaS film' } = {}) {
   const lnk = (src, dst) => { const d = path.join(PROJ, 'assets', 'mp', dst); fs.mkdirSync(path.dirname(d), { recursive: true }); fs.rmSync(d, { force: true }); try { fs.linkSync(src, d); } catch { fs.copyFileSync(src, d); } };
   for (const f of ['kit.mjs', 'screens.mjs']) lnk(path.join(SH, 'saas', f), path.join('saas', f));
   const brand = { ...B, logo: B.logo ? 'assets/media/' + path.basename(B.logo) : null };
+  if (plan.voice && !allArgs.includes('--no-mix')) {   /* the optional VO: your recording placed at 0, or a labelled guide signal (proof-film/vo.py, reused); audio.py hands it to the mixer as plan.vo */
+    fs.writeFileSync(path.join(OUT, 'transcript.json'), JSON.stringify({ source: 'voice.words of CONFIG', words: plan.voice.words }));
+    execFileSync(process.env.PYTHON || 'python3', [path.join(SH, '..', 'proof-film', 'vo.py'), path.join(OUT, planName + '.json'), path.join(OUT, 'vo.wav'), ...(plan.voice.audio ? ['--audio', path.resolve(plan.voice.audio)] : [])], { stdio: 'inherit' }); }
   const wav = path.join(PROJ, 'assets', 'media', 'mix.wav'); if (allArgs.includes('--no-mix')) console.log(fs.existsSync(wav) ? 'mix: kept ' + wav + ' (--no-mix: picture-only rebuild)' : 'mix: PENDING (--no-mix and no mix.wav yet: run node make.mjs without --no-mix before rendering)'); else mix(path.join(OUT, planName + '.json'), wav);
   /* transition windows: plan shots -> txPlan (kind dom: the module's DOM back-end; cut / smash: none) */
   const P = txPlan(plan.shots, F), wins = P.wins.map((w) => ({ i: w.i, key: w.key, id: w.id, params: w.params, startF: w.startF, endF: w.endF, cutF: w.cutF, start: w.start, end: w.end, cut: w.cut }));

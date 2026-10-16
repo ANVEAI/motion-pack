@@ -1,0 +1,62 @@
+[
+ {
+  "i": 2,
+  "key": "blurCross",
+  "id": "transitions/blur-cross",
+  "params": {},
+  "startF": 414,
+  "endF": 425,
+  "cutF": 420,
+  "start": 13.8,
+  "end": 14.166666666666666,
+  "cut": 14
+ },
+ {
+  "i": 3,
+  "key": "push",
+  "id": "transitions/push",
+  "params": {},
+  "startF": 574,
+  "endF": 585,
+  "cutF": 580,
+  "start": 19.133333333333333,
+  "end": 19.5,
+  "cut": 19.333333333333332
+ },
+ {
+  "i": 4,
+  "key": "push",
+  "id": "transitions/push",
+  "params": {},
+  "startF": 894,
+  "endF": 905,
+  "cutF": 900,
+  "start": 29.8,
+  "end": 30.166666666666668,
+  "cut": 30
+ },
+ {
+  "i": 5,
+  "key": "push",
+  "id": "transitions/push",
+  "params": {},
+  "startF": 1254,
+  "endF": 1265,
+  "cutF": 1260,
+  "start": 41.8,
+  "end": 42.166666666666664,
+  "cut": 42
+ },
+ {
+  "i": 6,
+  "key": "dissolve",
+  "id": "transitions/dissolve",
+  "params": {},
+  "startF": 1574,
+  "endF": 1586,
+  "cutF": 1580,
+  "start": 52.46666666666667,
+  "end": 52.86666666666667,
+  "cut": 52.666666666666664
+ }
+]

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>motion-pack saas-explainer (16:9): Acme Flow</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Manrope"; src: url("assets/fonts/Manrope-Variable.ttf") format("truetype"); font-weight: 200 800; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-SemiBold.ttf") format("truetype"); font-weight: 600; }
+html, body { margin: 0; background: #F5F4F0; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F5F4F0; font-family: "Manrope", sans-serif; color: #111; }
+.clip { position: absolute; inset: 0; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#root { width: 1920px; height: 1080px; } #stage { z-index: 0; overflow: hidden; } .scene { position: absolute; inset: 0; visibility: hidden; overflow: hidden; } .host { position: absolute; inset: 0; } .host svg { position: absolute; inset: 0; }
+.vw { position: absolute; overflow: hidden; display: none; } .vi { position: absolute; left: 0; top: 0; transform-origin: 0 0; } .vi video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+#fx { pointer-events: none; } #fx canvas { z-index: 5; }
+
+.af{position:relative;width:1440px;height:900px;background:#F6F5F2;font-family:Manrope,sans-serif;color:#14131A;overflow:hidden;display:flex;letter-spacing:-0.01em}
+.af *{box-sizing:border-box}
+.af-side{width:248px;background:#FFFFFF;border-right:1px solid #E6E3EA;padding:26px 18px;display:flex;flex-direction:column;gap:6px}
+.af-ws{display:flex;align-items:center;gap:12px;font-weight:800;font-size:19px;margin:0 6px 22px}
+.af-mk{width:34px;height:34px;border-radius:10px;background:#3B5BFD;color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
+.af-nav{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border-radius:10px;font-weight:600;font-size:17px;color:#55525E}
+.af-nav.on{background:#3B5BFD14;color:#3B5BFD;font-weight:700}
+.af-cnt{font-size:14px;font-weight:700;background:#EFEDF3;color:#55525E;border-radius:20px;padding:2px 9px}
+.af-nav.on .af-cnt{background:#3B5BFD;color:#fff}
+.af-main{flex:1;padding:28px 34px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.af-top{display:flex;align-items:center;justify-content:space-between}
+.af-h1{font-size:30px;font-weight:800;letter-spacing:-0.02em}
+.af-sub{font-size:16px;color:#77737F;font-weight:600;margin-top:4px}
+.af-btn{background:#3B5BFD;color:#fff;font-weight:700;font-size:17px;padding:12px 20px;border-radius:12px;display:flex;align-items:center;gap:8px}
+.af-btn.ghost{background:#FFFFFF;color:#14131A;border:1px solid #E1DEE6}
+.af-btn.hov{box-shadow:0 0 0 5px #3B5BFD33}
+.af-card{background:#FFFFFF;border:1px solid #E6E3EA;border-radius:16px}
+.af-row{display:flex;align-items:center;gap:16px;padding:15px 20px;border-bottom:1px solid #EFEDF2;font-size:17px;font-weight:600}
+.af-row:last-child{border-bottom:0}
+.af-av{width:36px;height:36px;border-radius:18px;display:grid;place-items:center;font-size:15px;font-weight:800;color:#fff;flex:none}
+.af-tag{font-size:14px;font-weight:700;padding:5px 11px;border-radius:20px;white-space:nowrap}
+.af-dim{color:#8A8693;font-weight:600}
+.af-grow{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.af-canvas{flex:1;border-radius:18px;background-color:#FBFAF8;background-image:radial-gradient(circle,#D9D5DE 1.3px,transparent 1.6px);background-size:26px 26px;border:1px solid #E6E3EA;position:relative;overflow:hidden}
+.af-node{position:absolute;width:330px;background:#fff;border:1.5px solid #E1DEE6;border-radius:16px;padding:10px 18px;box-shadow:0 6px 18px rgba(20,18,30,.07)}
+.af-node .k{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8A8693}
+.af-node .t{font-size:19px;font-weight:800;margin-top:4px}
+.af-node .d{font-size:15px;font-weight:600;color:#77737F;margin-top:2px}
+.af-node.hl{border-color:#3B5BFD;box-shadow:0 0 0 5px #3B5BFD22,0 10px 26px rgba(20,18,30,.12)}
+.af-node.run{border-color:#17A865}
+.af-ok{width:22px;height:22px;border-radius:11px;background:#17A865;display:inline-grid;place-items:center;color:#fff;font-size:13px;font-weight:900;vertical-align:-4px}
+.af-kpi{flex:1;padding:20px 22px}
+.af-kpi .v{font-size:38px;font-weight:800;letter-spacing:-0.03em;margin-top:8px}
+.af-m{width:390px;height:844px;background:#F6F5F2;font-family:Manrope,sans-serif;color:#14131A;overflow:hidden;padding:58px 18px 18px;display:flex;flex-direction:column;gap:12px;letter-spacing:-0.01em}
+.af-m *{box-sizing:border-box}
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="70">
+<div id="stage" class="clip" data-start="0" data-duration="70" data-track-index="0">
+<div class="scene" id="S0"><div class="host" id="h0"></div></div>
+<div class="scene" id="S1"><div class="host" id="h1"></div></div>
+<div class="scene" id="S2"><div class="host" id="h2"></div></div>
+<div class="scene" id="S3"><div class="host" id="h3"></div></div>
+<div class="scene" id="S4"><div class="host" id="h4"></div></div>
+<div class="scene" id="S5"><div class="host" id="h5"></div></div>
+<div class="scene" id="S6"><div class="host" id="h6"></div></div>
+<div class="scene" id="S7"><div class="host" id="h7"></div></div>
+</div>
+<div id="fx" class="clip" data-start="0" data-duration="70" data-track-index="5"></div>
+<audio id="mix" src="assets/media/mix.wav" data-start="0" data-duration="70" data-track-index="9" data-volume="1"></audio>
+</div>
+<script type="module">
+import { renderInner, appWindowGeo, deviceScreenGeo } from './assets/mp/type/gfx/index.js';
+import { ctxFor, measure } from './assets/mp/type/gfx/core.js';
+import { applyDom } from './assets/mp/transitions/lib/tx-dom.js';
+import { sceneSVG } from './assets/mp/saas/kit.mjs';
+import { screenHTML, stateAt } from './assets/mp/saas/screens.mjs';
+import { mountStack, bindHF } from './assets/mp/layers/overlay.js';
+bindHF(mountStack(document.getElementById('fx'), [{"kind":"grain","params":{"stock":"upload-safe"}}], { width: 1920, height: 1080, fps: 30, seed: 7 }), { fps: 30 });
+const PLAN = {"scenes":[{"id":"question","start":0,"end":6,"bg":"paper","grid":1,"heads":[{"text":"Who owns this *request*?","at":0.12,"x":110,"y":300,"w":700,"size":100}],"kickers":[],"items":[{"id":"ui.appWindow","key":"qWin","at":0,"screen":{"name":"inbox","keys":[[0,{"calm":0,"scroll":0}],[0.01,{"scroll":2},6]]},"params":{"box":[0.47,0.12,0.5,0.7],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":22,"enter":"none","kb":[1,1.05]},"dur":6.6},{"id":"ui.notifyStack","at":0.1,"params":{"pos":[0.64,0.22],"width":0.32,"max":3,"accent":"#3B5BFD","app":"Inbox","items":[{"at":0.3,"title":"New request","body":"Refund for a double charge","icon":"mail"},{"at":1,"title":"New message","body":"Cannot log in after reset","icon":"search"},{"at":1.7,"title":"New form","body":"Export button does nothing","icon":"doc"}]},"dur":6.5}],"under":[],"why":"the pain as a question, on frame 0","caption":{"size":46,"y":1000,"w":1500,"maxWords":5,"maxChars":34,"chunks":[{"text":"Every team gets requests from","start":0.35,"end":2.5375},{"text":"email,","start":2.5375,"end":3.325},{"text":"chat and forms.","start":3.325,"end":4.8125},{"text":"Most get forwarded by hand,","start":6.35,"end":8.5375}]}},{"id":"wrong","start":6,"end":14,"bg":"paper","grid":1,"heads":[{"text":"Today: forward it and *hope*.","at":6.08,"x":110,"y":300,"w":700,"size":100}],"kickers":[],"items":[{"id":"ui.appWindow","key":"wWin","at":6,"screen":{"name":"chat","keys":[[0,{"msgs":1}],[0.2,{"msgs":5},3]]},"params":{"box":[0.47,0.12,0.5,0.7],"theme":"light","title":"Team chat","url":"chat.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":22,"enter":"none","kb":[1.02,1.07]},"dur":8.6},{"id":"callout.arrowLabel","at":9.4,"params":{"from":[0.33,0.78],"to":[0.62,0.66],"label":"Still nobody owns it","accent":"#D9473F","size":1},"dur":5.2}],"under":[],"why":"the wrong model: forwarding by hand","caption":{"size":46,"y":1000,"w":1500,"maxWords":5,"maxChars":34,"chunks":[{"text":"Most get forwarded by hand,","start":6.35,"end":8.5375},{"text":"and some never find an","start":8.5375,"end":10.725},{"text":"owner.","start":10.725,"end":11.5125},{"text":"Acme Flow routes them for","start":14.35,"end":16.5375}]}},{"id":"reframe","start":14,"end":19.3333,"bg":"paper","grid":0,"heads":[{"text":"What if each request knew *where to go*?","at":14.8,"x":210,"y":528.8,"w":1500,"size":64,"align":"center","weight":800}],"kickers":[],"items":[],"under":[],"mark":{"at":14.1,"cx":960,"cy":388.8,"size":130,"nameSize":96,"row":true},"why":"the reframe: the product, once","caption":{"size":46,"y":1000,"w":1500,"maxWords":5,"maxChars":34,"chunks":[{"text":"Acme Flow routes them for","start":14.35,"end":16.5375},{"text":"you,","start":16.5375,"end":17.325},{"text":"in three steps.","start":17.325,"end":18.8125},{"text":"First,","start":19.6833,"end":20.4708}]}},{"id":"step1","start":19.333333,"end":30,"bg":"paper","grid":1,"heads":[{"text":"*Connect* where requests arrive.","at":19.4533,"x":110,"y":112,"w":1700,"size":68}],"kickers":[{"text":"Step one","at":19.3833,"x":110,"y":56,"size":26}],"items":[{"id":"ui.integrationGrid","at":19.6333,"params":{"box":[0.16,0.24,0.68,0.54],"hub":"A","accent":"#3B5BFD","glyphs":["mail","chat","doc","calendar","db","sheet","cloud","bell"],"stagger":0.12,"connectAt":0.8,"scale":1},"dur":10.9667}],"under":[],"why":"step 1: connect the sources (neutral glyphs)","caption":{"size":46,"y":1000,"w":1500,"maxWords":5,"maxChars":34,"chunks":[{"text":"in three steps.","start":17.325,"end":18.8125},{"text":"First,","start":19.6833,"end":20.4708},{"text":"connect the places your requests","start":20.4708,"end":22.6583},{"text":"come from.","start":22.6583,"end":23.7958},{"text":"Then write the rule the","start":30.35,"end":32.5375}]}},{"id":"step2","start":30,"end":42,"bg":"paper","grid":1,"heads":[{"text":"*Describe* the rule in a sentence.","at":30.12,"x":110,"y":112,"w":1700,"size":68}],"kickers":[{"text":"Step two","at":30.05,"x":110,"y":56,"size":26}],"items":[{"id":"ui.appWindow","key":"s2Win","at":30,"screen":{"name":"builder","keys":[[0,{"nodes":0}],[3.8,{"nodes":5},6.3]]},"params":{"box":[0.09,0.22,0.82,0.64],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":22,"enter":"none","move":[{"t":0.15,"box":[0.04,0.22,0.6,0.64]},{"t":10.700000000000001,"box":[0.09,0.22,0.82,0.64]}],"zoom":[]},"dur":12.6},{"id":"ui.aiAnswer","at":30.3,"dur":10.5,"params":{"box":[0.6,0.22,0.37,0.62],"prompt":"Send each new request to the team that owns it","answer":["Done. Here is your flow:","• Read each request as it lands","• Pick the owning team from its topic","• Post it to that team","• Tell the customer who has it"],"typeAt":0.6000000000000001,"cps":22,"thinkS":0.5,"wps":9,"applyAt":10.1,"apply":"Apply flow","accent":"#3B5BFD","title":"Ask Acme Flow","avatar":"A","scale":1.05}}],"under":[],"why":"step 2: describe the rule, the steps build","caption":{"size":46,"y":1000,"w":1500,"maxWords":5,"maxChars":34,"chunks":[{"text":"Then write the rule the","start":30.35,"end":32.5375},{"text":"way you would say it,","start":32.5375,"end":34.725},{"text":"and the steps build themselves.","start":34.725,"end":36.9125},{"text":"Now each new request goes","start":42.35,"end":44.5375}]}},{"id":"step3","start":42,"end":52.6667,"bg":"paper","grid":1,"heads":[{"text":"Requests *route themselves*.","at":42.12,"x":110,"y":112,"w":1700,"size":68}],"kickers":[{"text":"Step three","at":42.05,"x":110,"y":56,"size":26}],"items":[{"id":"ui.appWindow","key":"s3Win","at":42,"screen":{"name":"builder","keys":[[0,{"nodes":5,"run":0}],[1.3,{"hoverRun":1}],[1.75,{"run":5,"hoverRun":0},1.2]]},"params":{"box":[0.09,0.22,0.82,0.64],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":22,"enter":"none","zoom":[]},"dur":11.2667},{"id":"ui.cursorJourney","at":42,"params":{"path":[{"t":0.3,"x":0.6,"y":0.6},{"t":1.3,"x":0.923,"y":0.078,"hover":[0.884,0.035,0.098,0.066]},{"t":1.6,"x":0.933,"y":0.07300000000000001,"click":true},{"t":3,"x":0.7,"y":0.5}],"size":1,"win":{"at":42,"dur":11.2667,"params":{"box":[0.09,0.22,0.82,0.64],"theme":"light","title":"Acme Flow","url":"flow.example","accent":"#3B5BFD","label":"placeholder UI · demo data","labelSize":22,"enter":"none","zoom":[]}}},"dur":11.2667},{"id":"ui.notifyStack","at":44.6,"params":{"pos":[0.64,0.22],"width":0.32,"max":3,"accent":"#3B5BFD","app":"Inbox","items":[{"at":0,"title":"Request routed","body":"Refund → Billing","icon":"branch"},{"at":0.6,"title":"Request routed","body":"Login issue → Access","icon":"branch"},{"at":1.2,"title":"Customer told","body":"Billing has it","icon":"mail"}]},"dur":8.6667}],"under":[],"why":"step 3: it runs on its own","caption":{"size":46,"y":1000,"w":1500,"maxWords":5,"maxChars":34,"chunks":[{"text":"Now each new request goes","start":42.35,"end":44.5375},{"text":"to the team that owns","start":44.5375,"end":46.725},{"text":"it,","start":46.725,"end":47.5125},{"text":"and the customer hears back.","start":47.5125,"end":49.7},{"text":"You see every run,","start":53.0167,"end":54.8542}]}},{"id":"result","start":52.666667,"end":63.3333,"bg":"paper","grid":1,"heads":[{"text":"Nothing waits *without an owner*.","at":52.7867,"x":110,"y":62,"w":1700,"size":72}],"kickers":[],"items":[{"id":"ui.dashboardAssemble","at":52.9167,"params":{"box":[0.08,0.19,0.84,0.66],"accent":"#3B5BFD","title":"Acme Flow · Overview","cols":4,"rows":3,"source":"placeholder data","scale":1},"dur":11.0166}],"under":[],"why":"the result: what changes","caption":{"size":46,"y":1000,"w":1500,"maxWords":5,"maxChars":34,"chunks":[{"text":"You see every run,","start":53.0167,"end":54.8542},{"text":"and nothing waits without an","start":54.8542,"end":57.0417},{"text":"owner.","start":57.0417,"end":57.8292}]}},{"id":"end","start":63.333333,"end":70,"bg":"paper","grid":0,"heads":[],"kickers":[],"items":[],"under":[],"card":{"at":63.3833,"unit":1,"stack":false,"cy":388.8,"fine":"Acme Flow is fictional · placeholder UI · demo data","fineY":64},"why":"end card held","caption":{"size":46,"y":1000,"w":1500,"maxWords":5,"maxChars":34,"chunks":[]}}],"videos":[],"fps":30,"W":1920,"H":1080}, WINS = [{"i":2,"key":"blurCross","id":"transitions/blur-cross","params":{},"startF":414,"endF":425,"cutF":420,"start":13.8,"end":14.166666666666666,"cut":14},{"i":3,"key":"push","id":"transitions/push","params":{},"startF":574,"endF":585,"cutF":580,"start":19.133333333333333,"end":19.5,"cut":19.333333333333332},{"i":4,"key":"push","id":"transitions/push","params":{},"startF":894,"endF":905,"cutF":900,"start":29.8,"end":30.166666666666668,"cut":30},{"i":5,"key":"push","id":"transitions/push","params":{},"startF":1254,"endF":1265,"cutF":1260,"start":41.8,"end":42.166666666666664,"cut":42},{"i":6,"key":"dissolve","id":"transitions/dissolve","params":{},"startF":1574,"endF":1586,"cutF":1580,"start":52.46666666666667,"end":52.86666666666667,"cut":52.666666666666664}], B = {"name":"Acme Flow","accent":"#3B5BFD","ink":"#14131A","paper":"#F5F4F0","logo":null,"url":"flow.example","cta":"Start free","font":{"display":"Manrope","text":"Manrope"}};
+const root = document.getElementById('root'), S = PLAN.scenes.map((_, i) => document.getElementById('S' + i)), HOST = PLAN.scenes.map((_, i) => document.getElementById('h' + i));
+const env = { W: 1920, H: 1080, B, renderInner, ctx: ctxFor(1920, 1080, "wideTitle", 1), screenHTML, stateAt, measure };
+const PROPS = ['transform', 'transformOrigin', 'filter', 'opacity', 'clipPath', 'webkitMaskImage', 'maskImage', 'borderRadius', 'boxShadow', 'zIndex', 'webkitMaskSize', 'maskSize', 'webkitMaskPosition', 'maskPosition', 'webkitMaskRepeat', 'maskRepeat', 'backfaceVisibility', 'mixBlendMode'];
+const reset = (el) => { for (const k of PROPS) el.style[k] = ''; };
+const clearOv = () => { const ov = root.querySelector(':scope > .mptx-ov'); if (!ov) return; const f = ov.querySelector('.mptx-fill'); if (f) { f.style.opacity = '0'; f.style.background = ''; f.style.mixBlendMode = ''; f.style.clipPath = ''; } const b = ov.querySelector('.mptx-bars'); if (b) b.innerHTML = '';
+  const sh = ov.querySelector(':scope > .mptx-share'); if (sh) sh.style.display = 'none'; for (const el of root.querySelectorAll('[data-mptx-hide]')) { el.style.visibility = el.dataset.mptxHide === '-' ? '' : el.dataset.mptxHide; el.removeAttribute('data-mptx-hide'); } };
+const sceneAt = (t) => { let k = 0; PLAN.scenes.forEach((s, i) => { if (t >= s.start - 1e-6) k = i; }); return k; };
+/* a screen recording sits in its window's content rect (or a device's screen), scaled and zoomed with the same pure maths as the SVG frame */
+function placeVideos(i, t) { PLAN.videos.filter((v) => v.scene === PLAN.scenes[i].id).forEach((v, j) => { const wrap = document.getElementById('vw' + i + '_' + j), inner = document.getElementById('vi' + i + '_' + j);
+  const it = [...PLAN.scenes[i].under, ...PLAN.scenes[i].items].find((x) => (x.key || x.id) === v.item); if (!it || t < it.at || t > it.at + it.dur + 0.4) { wrap.style.display = 'none'; return; }
+  const G = appWindowGeo(it.params, env.ctx, t - it.at, it.dur), [cx, cy, cw, ch] = G.content, [p0x, p0y] = G.toFrame(cx, cy), [p1x, p1y] = G.toFrame(cx + cw, cy + ch), M = G.M;
+  wrap.style.display = 'block'; wrap.style.left = p0x + 'px'; wrap.style.top = p0y + 'px'; wrap.style.width = (p1x - p0x) + 'px'; wrap.style.height = (p1y - p0y) + 'px'; wrap.style.opacity = String(Math.min(1, G.k * 1.8));
+  inner.style.width = M.sw + 'px'; inner.style.height = M.sh + 'px'; inner.style.transform = 'translate(' + ((M.X - cx) * G.sc) + 'px,' + ((M.Y - cy) * G.sc) + 'px) scale(' + (M.A * G.sc) + ')'; }); }
+const shown = PLAN.scenes.map(() => false);
+function frame(t) {
+  const f = Math.round(t * PLAN.fps), w = WINS.find((x) => f >= x.startF && f < x.endF), on = new Set(w ? [w.i - 1, w.i] : [sceneAt(t)]);
+  PLAN.scenes.forEach((sc, i) => { reset(S[i]);
+    if (!on.has(i)) { if (shown[i]) { HOST[i].innerHTML = ''; S[i].style.visibility = 'hidden'; shown[i] = false; } return; }
+    S[i].style.visibility = 'visible'; shown[i] = true; HOST[i].innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">' + sceneSVG(sc, t, env) + '</svg>'; placeVideos(i, t); });
+  clearOv(); if (w) applyDom(w.key, Math.min(1, Math.max(0, (t - w.start) / (w.end - w.start))), { a: S[w.i - 1], b: S[w.i], root, params: w.params, cut: (w.cut - w.start) / (w.end - w.start) });
+}
+const qt = new URLSearchParams(location.search).get('t'); let last = qt != null && Number.isFinite(+qt) ? +qt : window.__hfThreeTime || 0;   /* ?t=12.5 opens the page on that time (stills without a render) */ window.addEventListener('hf-seek', (e) => frame((last = e.detail.time))); frame(last); window.__seek = (t) => frame((last = t));
+Promise.all(['500', '600', '700', '800'].map((wt) => document.fonts.load(wt + ' 30px Manrope')).concat([document.fonts.load('600 20px "IBM Plex Mono"')])).then(() => { frame(last); window.__ready = true; });
+const tl = gsap.timeline({ paused: true }); tl.set({}, {}, 70);
+window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

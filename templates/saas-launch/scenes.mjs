@@ -13,7 +13,7 @@ export const LY = {
     tourZoom: { branch: [0.13, 0.28, 0.6, 0.42], wide: [0.1, 0.06, 0.82, 0.92], run: [0.45, 0, 0.55, 0.5] },
     featWin: [0.09, 0.22, 0.82, 0.74], cmd: [0.3, 0.3, 0.4, 0.5], chip: [0.5, 0.56], dash: [0.08, 0.2, 0.84, 0.74], ints: [0.14, 0.2, 0.72, 0.68], split: [0.08, 0.21, 0.84, 0.74],
     proof: { pos: [0.5, 0.56] }, price: [0.1, 0.22, 0.8, 0.7], endUnit: 1, markSize: 150, nameSize: 112, markY: 0.42 },
-  tall: { side: { x: 80, y: 300, w: 900, size: 104 }, top: { x: 80, y: 290, w: 900, size: 76 }, card: { x: 80, y: 640, w: 920, size: 112, align: 'center' }, sub: { x: 100, y: 1000, w: 880, size: 52, align: 'center', weight: 700 },
+  tall: { side: { x: 80, y: 300, w: 870, size: 104 }, top: { x: 80, y: 290, w: 870, size: 76 }, card: { x: 80, y: 640, w: 920, size: 112, align: 'center' }, sub: { x: 100, y: 1000, w: 880, size: 52, align: 'center', weight: 700 },
     hookWin: [0.04, 0.3, 0.92, 0.5], hookToasts: { pos: [0.08, 0.33], width: 0.84 }, copyA: [0.03, 0.3, 0.8, 0.34], copyB: [0.17, 0.46, 0.8, 0.34], chaseWin: [0.04, 0.3, 0.92, 0.5], repeatWin: [0.04, 0.3, 0.92, 0.5],
     tz: { hook: [0.17, 0.06, 0.55, 0.6], copyA: [0.17, 0.08, 0.5, 0.55], copyB: [0.17, 0, 0.5, 0.55], chase: [0.17, 0, 0.55, 0.62], repeat: [0, 0, 0.6, 0.62], feat1: [0.17, 0.05, 0.6, 0.6] },
     tourWin: [0.03, 0.34, 0.94, 0.52], tourWinAsk: [0.03, 0.62, 0.94, 0.3], ask: [0.05, 0.27, 0.9, 0.34], tourToasts: { pos: [0.08, 0.38], width: 0.84 },
@@ -107,7 +107,7 @@ function tour(C, A, B, L, BUD, tx, hd, win) {
 export const BUDGETS = {
   45: { hook: 3, copy: 2, chase: 2, repeat: 2, reveal: 3.5, tour: 11.5, feat1: 4, feat3: 4, payoff: 4.5, proof: 3.5, end: 5 },
   60: { hook: 3, copy: 2, chase: 2, repeat: 2, reveal: 4, tour: 16, feat1: 4, feat2: 4, feat3: 4, works: 4, payoff: 4, proof: 3.5, pricing: 3.5, end: 4 },
-  75: { hook: 3, copy: 2, chase: 2, repeat: 2, reveal: 4.5, tour: 18, feat1: 5, feat2: 5, feat3: 5, works: 5, payoff: 5, proof: 4, pricing: 5, end: 5.5 },
+  75: { hook: 3, copy: 2, chase: 2, repeat: 2, reveal: 5, tour: 20, feat1: 5, feat2: 5, feat3: 5, works: 5, payoff: 5.5, proof: 4, pricing: 5.5, end: 6 },
 };
 const DASH_TALL = [{ kind: 'kpi', label: 'Requests routed', value: 1284, span: [0, 0, 1, 1] }, { kind: 'kpi', label: 'Open right now', value: 7, span: [1, 0, 1, 1] }, { kind: 'line', label: 'Routed per day', span: [0, 1, 2, 1] },
   { kind: 'bar', label: 'By topic', span: [0, 2, 1, 2] }, { kind: 'donut', label: 'By team', value: 0.64, span: [1, 2, 1, 2] }];
