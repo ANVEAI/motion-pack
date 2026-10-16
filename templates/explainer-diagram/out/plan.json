@@ -1,0 +1,1216 @@
+{
+ "template": "explainer-diagram",
+ "aspect": "16:9",
+ "fps": 30,
+ "seconds": 76.8,
+ "size": [
+  1920,
+  1080
+ ],
+ "scene": {
+  "W": 1920,
+  "H": 1080,
+  "fps": 30,
+  "seconds": 76.8,
+  "bg": "#F5F2EA",
+  "platform": "wideTitle",
+  "slots": [],
+  "gfx": [
+   {
+    "id": "diagram.graph",
+    "at": 0,
+    "dur": 10.6,
+    "params": {
+     "spec": {
+      "nodes": [
+       {
+        "id": "you",
+        "label": "Your letter",
+        "kind": "io",
+        "icon": "doc"
+       },
+       {
+        "id": "door",
+        "label": "Their door",
+        "kind": "io",
+        "icon": "person"
+       }
+      ],
+      "edges": [
+       {
+        "from": "you",
+        "to": "door"
+       }
+      ]
+     },
+     "dir": "LR",
+     "box": [
+      0.07,
+      0.24,
+      0.86,
+      0.5
+     ],
+     "accent": "#4A18ED",
+     "ink": "#16151B",
+     "paper": "#FFFFFF",
+     "size": 1,
+     "reveal": 0.3,
+     "steps": [],
+     "focus": [],
+     "flow": [
+      {
+       "at": 3,
+       "edges": "all",
+       "until": 10.4
+      }
+     ],
+     "cam": [],
+     "notes": [
+      {
+       "at": 5.2,
+       "node": "door",
+       "text": "the next day?",
+       "dur": 3.2
+      }
+     ],
+     "zoom": null
+    }
+   },
+   {
+    "id": "diagram.graph",
+    "at": 10.6,
+    "dur": 11.4,
+    "params": {
+     "spec": {
+      "nodes": [
+       {
+        "id": "Town_A",
+        "label": "Town A"
+       },
+       {
+        "id": "Town_E",
+        "label": "Town E"
+       },
+       {
+        "id": "Town_F",
+        "label": "Town F"
+       },
+       {
+        "id": "Town_G",
+        "label": "Town G"
+       },
+       {
+        "id": "Town_H",
+        "label": "Town H"
+       },
+       {
+        "id": "Town_B",
+        "label": "Town B"
+       },
+       {
+        "id": "Town_C",
+        "label": "Town C"
+       },
+       {
+        "id": "Town_D",
+        "label": "Town D"
+       }
+      ],
+      "edges": [
+       {
+        "from": "Town_A",
+        "to": "Town_E"
+       },
+       {
+        "from": "Town_A",
+        "to": "Town_F"
+       },
+       {
+        "from": "Town_A",
+        "to": "Town_G"
+       },
+       {
+        "from": "Town_A",
+        "to": "Town_H"
+       },
+       {
+        "from": "Town_B",
+        "to": "Town_E"
+       },
+       {
+        "from": "Town_B",
+        "to": "Town_F"
+       },
+       {
+        "from": "Town_B",
+        "to": "Town_G"
+       },
+       {
+        "from": "Town_B",
+        "to": "Town_H"
+       },
+       {
+        "from": "Town_C",
+        "to": "Town_E"
+       },
+       {
+        "from": "Town_C",
+        "to": "Town_F"
+       },
+       {
+        "from": "Town_C",
+        "to": "Town_G"
+       },
+       {
+        "from": "Town_C",
+        "to": "Town_H"
+       },
+       {
+        "from": "Town_D",
+        "to": "Town_E"
+       },
+       {
+        "from": "Town_D",
+        "to": "Town_F"
+       },
+       {
+        "from": "Town_D",
+        "to": "Town_G"
+       },
+       {
+        "from": "Town_D",
+        "to": "Town_H"
+       }
+      ],
+      "groups": [],
+      "problems": []
+     },
+     "dir": "LR",
+     "box": [
+      0.07,
+      0.24,
+      0.86,
+      0.5
+     ],
+     "accent": "#4A18ED",
+     "ink": "#16151B",
+     "paper": "#FFFFFF",
+     "size": 1,
+     "reveal": 0.25,
+     "steps": [],
+     "focus": [
+      {
+       "at": 4,
+       "ids": [
+        "Town_A"
+       ]
+      },
+      {
+       "at": 6.3,
+       "ids": "all"
+      }
+     ],
+     "flow": [
+      {
+       "at": 9,
+       "edges": "all",
+       "until": 11.4
+      }
+     ],
+     "cam": [],
+     "notes": [],
+     "zoom": null
+    }
+   },
+   {
+    "id": "diagram.graph",
+    "at": 22,
+    "dur": 40.4,
+    "params": {
+     "spec": {
+      "nodes": [
+       {
+        "id": "tA",
+        "label": "Town A",
+        "kind": "io",
+        "group": "collect"
+       },
+       {
+        "id": "tB",
+        "label": "Town B",
+        "kind": "io",
+        "group": "collect"
+       },
+       {
+        "id": "tC",
+        "label": "Town C",
+        "kind": "io",
+        "group": "collect"
+       },
+       {
+        "id": "oL",
+        "label": "Collection office",
+        "group": "collect",
+        "icon": "upload"
+       },
+       {
+        "id": "hub",
+        "label": "Sorting hub",
+        "kind": "decision"
+       },
+       {
+        "id": "oR",
+        "label": "Delivery office",
+        "group": "deliver",
+        "icon": "download"
+       },
+       {
+        "id": "tE",
+        "label": "Town E",
+        "kind": "io",
+        "group": "deliver"
+       },
+       {
+        "id": "tF",
+        "label": "Town F",
+        "kind": "io",
+        "group": "deliver"
+       },
+       {
+        "id": "tG",
+        "label": "Town G",
+        "kind": "io",
+        "group": "deliver"
+       }
+      ],
+      "edges": [
+       {
+        "from": "tA",
+        "to": "oL"
+       },
+       {
+        "from": "tB",
+        "to": "oL"
+       },
+       {
+        "from": "tC",
+        "to": "oL"
+       },
+       {
+        "from": "oL",
+        "to": "hub"
+       },
+       {
+        "from": "hub",
+        "to": "oR"
+       },
+       {
+        "from": "oR",
+        "to": "tE"
+       },
+       {
+        "from": "oR",
+        "to": "tF"
+       },
+       {
+        "from": "oR",
+        "to": "tG"
+       }
+      ],
+      "groups": [
+       {
+        "id": "collect",
+        "label": "COLLECT"
+       },
+       {
+        "id": "deliver",
+        "label": "DELIVER"
+       }
+      ]
+     },
+     "dir": "LR",
+     "box": [
+      0.07,
+      0.24,
+      0.86,
+      0.5
+     ],
+     "accent": "#4A18ED",
+     "ink": "#16151B",
+     "paper": "#FFFFFF",
+     "size": 1,
+     "reveal": 0.3,
+     "steps": [
+      {
+       "at": 0.2,
+       "show": [
+        "tA",
+        "tB",
+        "tC"
+       ]
+      },
+      {
+       "at": 2.8,
+       "show": [
+        "oL"
+       ]
+      },
+      {
+       "at": 6,
+       "show": [
+        "hub"
+       ]
+      },
+      {
+       "at": 9.4,
+       "show": [
+        "oR"
+       ]
+      },
+      {
+       "at": 11.4,
+       "show": [
+        "tE",
+        "tF",
+        "tG"
+       ]
+      }
+     ],
+     "focus": [
+      {
+       "at": 21.4,
+       "ids": [
+        "hub"
+       ]
+      },
+      {
+       "at": 24,
+       "ids": "all"
+      },
+      {
+       "at": 35.9,
+       "ids": [
+        "tA",
+        "oL",
+        "hub",
+        "oR",
+        "tF"
+       ]
+      }
+     ],
+     "flow": [
+      {
+       "at": 16.6,
+       "edges": "all",
+       "until": 23.8
+      },
+      {
+       "at": 36,
+       "edges": [
+        "tA>oL",
+        "oL>hub",
+        "hub>oR",
+        "oR>tF"
+       ],
+       "until": 40.4
+      }
+     ],
+     "cam": [
+      {
+       "at": 0,
+       "ids": [
+        "tA",
+        "tB",
+        "tC",
+        "oL"
+       ],
+       "dur": 0.05
+      },
+      {
+       "at": 5.6,
+       "ids": [
+        "oL",
+        "hub",
+        "oR"
+       ],
+       "dur": 0.9
+      },
+      {
+       "at": 9,
+       "ids": [
+        "oR",
+        "tE",
+        "tF",
+        "tG"
+       ],
+       "dur": 0.9
+      },
+      {
+       "at": 14.4,
+       "ids": "all",
+       "dur": 1
+      }
+     ],
+     "notes": [
+      {
+       "at": 18.6,
+       "node": "hub",
+       "text": "every letter passes here",
+       "dur": 3.6
+      },
+      {
+       "at": 38.2,
+       "node": "tF",
+       "text": "delivered",
+       "dur": 2
+      }
+     ],
+     "zoom": {
+      "node": "hub",
+      "at": 24,
+      "dur": 1.1,
+      "out": 34.6,
+      "spec": {
+       "nodes": [
+        {
+         "id": "Read_the_address",
+         "label": "Read the address"
+        },
+        {
+         "id": "Group_by_region",
+         "label": "Group by region"
+        },
+        {
+         "id": "Load_the_matching_truck",
+         "label": "Load the matching truck"
+        },
+        {
+         "id": "Unclear?",
+         "label": "Unclear?",
+         "kind": "decision"
+        },
+        {
+         "id": "Checked_by_hand",
+         "label": "Checked by hand"
+        }
+       ],
+       "edges": [
+        {
+         "from": "Read_the_address",
+         "to": "Group_by_region"
+        },
+        {
+         "from": "Group_by_region",
+         "to": "Load_the_matching_truck"
+        },
+        {
+         "from": "Read_the_address",
+         "to": "Unclear?",
+         "label": "can't read it"
+        },
+        {
+         "from": "Unclear?",
+         "to": "Checked_by_hand"
+        },
+        {
+         "from": "Checked_by_hand",
+         "to": "Group_by_region"
+        }
+       ],
+       "groups": [],
+       "problems": []
+      },
+      "title": "Inside the sorting hub",
+      "dir": "LR",
+      "reveal": 0.4,
+      "notes": [
+       {
+        "at": 29,
+        "node": "Unclear?",
+        "text": "the rare case",
+        "dur": 2.6
+       },
+       {
+        "at": 31.8,
+        "node": "Checked_by_hand",
+        "text": "a person decides",
+        "dur": 2.6
+       }
+      ]
+     }
+    }
+   }
+  ],
+  "gfxTop": [
+   {
+    "id": "title.hookCard",
+    "at": 0,
+    "dur": 6.6,
+    "params": {
+     "line": "How does a letter cross a country?",
+     "kicker": "Orbit Explains",
+     "pos": "tc",
+     "accent": "#4A18ED",
+     "size": 0.9
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 7.4,
+    "dur": 3.4,
+    "silent": true,
+    "params": {
+     "line": "The picture most of us carry: one straight trip.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 11.2,
+    "dur": 5.4,
+    "silent": true,
+    "params": {
+     "line": "But every town would need a road to every other town.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 17,
+    "dur": 4.6,
+    "silent": true,
+    "params": {
+     "line": "That is a lot of half-empty trucks.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 22.4,
+    "dur": 5,
+    "silent": true,
+    "params": {
+     "line": "Instead, letters go to a collection office first.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 27.8,
+    "dur": 3.4,
+    "silent": true,
+    "params": {
+     "line": "Every office sends its bag to one sorting hub.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 31.4,
+    "dur": 4.8,
+    "silent": true,
+    "params": {
+     "line": "From the hub, a few trucks drive out to delivery offices.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 36.6,
+    "dur": 3.8,
+    "silent": true,
+    "params": {
+     "line": "Many trips become a few full ones.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 40.6,
+    "dur": 5.2,
+    "silent": true,
+    "params": {
+     "line": "Each letter makes three short hops, not one long one.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 47.6,
+    "dur": 4.4,
+    "silent": true,
+    "params": {
+     "line": "Inside the hub: read, group, load.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 52.2,
+    "dur": 4.2,
+    "silent": true,
+    "params": {
+     "line": "Hard-to-read addresses go to a person.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.hookCard",
+    "at": 58,
+    "dur": 4.2,
+    "silent": true,
+    "params": {
+     "line": "Follow one letter from Town A to Town F.",
+     "pos": "bc",
+     "accent": "#4A18ED",
+     "size": 0.62,
+     "bg": "#FFFFFF"
+    }
+   },
+   {
+    "id": "title.recapCard",
+    "at": 63,
+    "dur": 6.4,
+    "params": {
+     "title": "Recap",
+     "items": [
+      "Collect it locally",
+      "Sort it once, at a hub",
+      "Deliver it locally"
+     ],
+     "pos": "c",
+     "accent": "#4A18ED",
+     "stagger": 1.4,
+     "size": 1
+    }
+   },
+   {
+    "id": "title.takeaway",
+    "at": 69.4,
+    "dur": 7.1,
+    "params": {
+     "kicker": "THE TAKEAWAY",
+     "line": "A hub turns many long trips into a few short ones.",
+     "accent": "#4A18ED",
+     "ink": "#16151B",
+     "size": 1
+    }
+   }
+  ],
+  "captions": null,
+  "speaking": {}
+ },
+ "voice": null,
+ "cues": [
+  {
+   "id": "sfx/hit/soft",
+   "t": 0,
+   "why": "title.hookCard: hook card on frame 0",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 0,
+   "why": "diagram.graph: node you lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 0.3,
+   "why": "diagram.graph: node door lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 3,
+   "why": "diagram.graph: flow starts",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 10.6,
+   "why": "diagram.graph: node Town_A lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 10.85,
+   "why": "diagram.graph: node Town_E lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 19.6,
+   "why": "diagram.graph: flow starts",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/whoosh/swish_xs",
+   "t": 22,
+   "why": "diagram.graph: camera moves to a region",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 22.2,
+   "why": "diagram.graph: node tA lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 24.8,
+   "why": "diagram.graph: node oL lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/whoosh/swish_xs",
+   "t": 27.6,
+   "why": "diagram.graph: camera moves to a region",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 28,
+   "why": "diagram.graph: node hub lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/whoosh/swish_xs",
+   "t": 31,
+   "why": "diagram.graph: camera moves to a region",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/tick",
+   "t": 31.4,
+   "why": "diagram.graph: node oR lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 33.4,
+   "why": "diagram.graph: node tE lands",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/whoosh/swish_xs",
+   "t": 36.4,
+   "why": "diagram.graph: camera moves to a region",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 38.6,
+   "why": "diagram.graph: flow starts",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/tx/zoom_through",
+   "t": 46,
+   "why": "diagram.graph: zoom into the node",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/whoosh/swish_s",
+   "t": 56.6,
+   "why": "diagram.graph: zoom back out",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/slide",
+   "t": 58,
+   "why": "diagram.graph: flow starts",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 63.5,
+   "why": "title.recapCard: recap item 1",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 64.9,
+   "why": "title.recapCard: recap item 2",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 66.3,
+   "why": "title.recapCard: recap item 3",
+   "overBedDb": -6
+  },
+  {
+   "id": "sfx/hit/soft",
+   "t": 69.4,
+   "why": "title.takeaway: takeaway lands",
+   "overBedDb": -6
+  }
+ ],
+ "shots": [
+  {
+   "id": "question",
+   "sec": "question",
+   "start": 0,
+   "dur": 7.4,
+   "move": "diagram camera"
+  },
+  {
+   "id": "wrongmodel",
+   "sec": "wrongmodel",
+   "start": 7.4,
+   "dur": 14.6,
+   "move": "diagram camera"
+  },
+  {
+   "id": "reframe",
+   "sec": "reframe",
+   "start": 22,
+   "dur": 24,
+   "move": "diagram camera"
+  },
+  {
+   "id": "proof",
+   "sec": "proof",
+   "start": 46,
+   "dur": 17,
+   "move": "diagram camera"
+  },
+  {
+   "id": "sowhat",
+   "sec": "sowhat",
+   "start": 63,
+   "dur": 13.8,
+   "move": "diagram camera",
+   "hold": true
+  }
+ ],
+ "claims": [],
+ "structure": {
+  "pattern": "explainer",
+  "sections": [
+   {
+    "name": "question",
+    "t": [
+     0,
+     7.4
+    ]
+   },
+   {
+    "name": "wrongmodel",
+    "t": [
+     7.4,
+     22
+    ]
+   },
+   {
+    "name": "reframe",
+    "t": [
+     22,
+     46
+    ]
+   },
+   {
+    "name": "proof",
+    "t": [
+     46,
+     63
+    ]
+   },
+   {
+    "name": "sowhat",
+    "t": [
+     63,
+     76.8
+    ]
+   }
+  ]
+ },
+ "texts": [
+  {
+   "text": "How does a letter cross a country?",
+   "t": [
+    0,
+    6.6
+   ],
+   "role": "hook"
+  },
+  {
+   "text": "the next day?",
+   "t": [
+    5.2,
+    8.4
+   ],
+   "role": "label"
+  },
+  {
+   "text": "The picture most of us carry: one straight trip.",
+   "t": [
+    7.4,
+    11.1
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "But every town would need a road to every other town.",
+   "t": [
+    11.2,
+    16.9
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "That is a lot of half-empty trucks.",
+   "t": [
+    17,
+    21.9
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Instead, letters go to a collection office first.",
+   "t": [
+    22.4,
+    27.7
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Every office sends its bag to one sorting hub.",
+   "t": [
+    27.8,
+    31.5
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "From the hub, a few trucks drive out to delivery offices.",
+   "t": [
+    31.4,
+    36.5
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Many trips become a few full ones.",
+   "t": [
+    36.6,
+    40.7
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "every letter passes here",
+   "t": [
+    40.6,
+    44.2
+   ],
+   "role": "label"
+  },
+  {
+   "text": "Each letter makes three short hops, not one long one.",
+   "t": [
+    40.6,
+    46.1
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Inside the sorting hub",
+   "t": [
+    47.1,
+    56.3
+   ],
+   "role": "label"
+  },
+  {
+   "text": "the rare case",
+   "t": [
+    51,
+    53.6
+   ],
+   "role": "label"
+  },
+  {
+   "text": "a person decides",
+   "t": [
+    53.8,
+    56.4
+   ],
+   "role": "label"
+  },
+  {
+   "text": "Inside the hub: read, group, load.",
+   "t": [
+    47.6,
+    52.3
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Hard-to-read addresses go to a person.",
+   "t": [
+    52.2,
+    56.7
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "Follow one letter from Town A to Town F.",
+   "t": [
+    58,
+    62.5
+   ],
+   "role": "caption-super"
+  },
+  {
+   "text": "delivered",
+   "t": [
+    60.2,
+    62.2
+   ],
+   "role": "label"
+  },
+  {
+   "text": "Collect it locally. Sort it once, at a hub. Deliver it locally",
+   "t": [
+    63,
+    69.4
+   ],
+   "role": "recap"
+  },
+  {
+   "text": "A hub turns many long trips into a few short ones.",
+   "t": [
+    69.4,
+    76.8
+   ],
+   "role": "takeaway"
+  }
+ ],
+ "transcript": [],
+ "music": "music/bed_documentary_marimba_loop8",
+ "musicGainDb": 0,
+ "duckDb": 12,
+ "ceilingDb": -2,
+ "audio": {
+  "mode": "continuous",
+  "role": "explainer",
+  "quiet": [
+   {
+    "t": [
+     71,
+     76.8
+    ],
+    "kind": "hold",
+    "why": "the takeaway holds on the end card after its words land"
+   }
+  ],
+  "events": [
+   0,
+   0.3,
+   3,
+   5.2,
+   7.4,
+   10.6,
+   10.85,
+   11.2,
+   14.6,
+   16.9,
+   17,
+   19.6,
+   22,
+   22.2,
+   22.4,
+   24.8,
+   27.6,
+   27.8,
+   28,
+   31,
+   31.4,
+   33.4,
+   36.4,
+   36.6,
+   38.6,
+   40.6,
+   43.4,
+   46,
+   47.1,
+   47.5,
+   47.6,
+   47.9,
+   48.3,
+   48.7,
+   51,
+   52.2,
+   53.8,
+   56.6,
+   57.7,
+   57.9,
+   58,
+   60.2,
+   63,
+   63.35,
+   63.5,
+   64.75,
+   64.9,
+   66.15,
+   66.3,
+   69.4
+  ]
+ },
+ "paceRule": {
+  "aslMax": 30,
+  "longMax": 40
+ },
+ "warnings": [],
+ "pattern": "explainer",
+ "layers": [
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "upload-safe"
+   }
+  }
+ ],
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 5,
+   "asl": 15.36,
+   "longest": 24,
+   "pass": true
+  }
+ }
+}

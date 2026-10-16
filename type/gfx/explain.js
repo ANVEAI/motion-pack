@@ -98,13 +98,13 @@ function graphSVG(L, p, c) {
     g += `<rect x="0" y="0" width="${c.W}" height="${c.H}" fill="${p.zoomFill}" opacity="${f2(seg(kz, 0.75, 0.98))}"/>`;
     if (op > 0) { const sb = bx(z.box || p.box, c), sl = graphOf(z.spec || DIAG_SPEC, z.dir || p.dir, sb), sa = Object.fromEntries(Object.entries(sl.nodes).map(([id, n]) => [id, zat + n.layer * num(z.reveal, 0.32)]));
       const sub = { ...p, node: '#FFFFFF' }, title = z.title ?? 'Inside: ' + (lay.nodes[z.node].label || z.node);
-      g += `<g opacity="${f2(op)}">` + text(title, sb[0], Math.max(c.safe.y0 + 44 * s, sb[1] - 30 * s), { size: 44 * s, weight: 800, fill: p.ink }) + drawGraph(sl, sub, u, s, { appear: sa, flowOn: (e) => seg(u, zat + 1.2, zat + 1.5) * (1 - seg(u, out - 0.4, out)) }) + '</g>'; } }
+      g += `<g opacity="${f2(op)}">` + text(title, sb[0], Math.max(c.safe.y0 + 44 * s, sb[1] - 30 * s), { size: 44 * s, weight: 800, fill: p.ink }) + drawGraph(sl, sub, u, s, { appear: sa, flowOn: (e) => seg(u, zat + 1.2, zat + 1.5) * (1 - seg(u, out - 0.4, out)), notes: list(z.notes) }) + '</g>'; } }
   return `<g opacity="${f2((1 - L.out) * Math.max(0.0001, E.soft(L.in)))}">${g}</g>`;
 }
 export function diagramTimes(p0, c = { W: 1920, H: 1080, s: 1 }) {
   const p = { ...DIAG_D, ...p0 }, lay = graphOf(p.spec, p.dir, bx(p.box, c)), ap = appearTimes(lay, p), ids = Object.keys(lay.nodes).filter((id) => Number.isFinite(ap[id])).sort((a, b) => ap[a] - ap[b] || a.localeCompare(b));
   return { nodes: ids.map((id) => [id, ap[id]]), cam: list(p.cam).filter((e) => e && Number.isFinite(+e.at)).map((e) => +e.at), zoom: p.zoom ? [num(p.zoom.at), num(p.zoom.out, NaN)].filter(Number.isFinite) : [],
-    flow: list(p.flow).map((f) => num(f.at)), notes: list(p.notes).map((q) => num(q.at)), problems: (typeof p.spec === 'string' ? parseGraph(p.spec) : parseGraph(p.spec)).problems };
+    flow: list(p.flow).map((f) => num(f.at)), notes: [...list(p.notes), ...list(p.zoom?.notes)].map((q) => num(q.at)), problems: (typeof p.spec === 'string' ? parseGraph(p.spec) : parseGraph(p.spec)).problems };
 }
 
 /* ---------- diagram.flow ---------- */
