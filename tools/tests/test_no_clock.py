@@ -10,7 +10,7 @@ import subprocess
 
 PACK = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 SCOPE = ('type/', 'layers/', 'camera/', 'transitions/lib/', 'objects/', 'templates/', 'terminal/', 'physics/')
-SKIP = re.compile(r'(^|/)(demo|tests|qa)/|^physics/bake\.mjs$|^templates/[^/]+/out/')
+SKIP = re.compile(r'(^|/)(demo|tests|qa)/|\.test\.mjs$|^physics/bake\.mjs$|^templates/[^/]+/out/')   # *.test.mjs: a test next to its template (templates/_explain, _hw) times its runs, like tests/
 BAN = re.compile(r'\bMath\.random\s*\(|\bDate\.now\s*\(|\bperformance\.now\s*\(|\bnew\s+Date\s*\(')
 
 

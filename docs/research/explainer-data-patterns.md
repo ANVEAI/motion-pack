@@ -14,7 +14,7 @@ We studied the craft, not any one film. No shots, copy, music or designs were co
 - **Trace one item through the whole system.** After the mechanism is built, one example travels the path (focus + flow on the path edges). That is the proof beat.
 - **Recap, then one takeaway line.** A short recap card, then a single sentence held on the end card.
 
-## What data stories tend to do (`data-story`, new)
+## What data stories tend to do (`data-story`, new) {#data-story}
 
 | section | share of runtime (default) | what happens |
 |---|---|---|
@@ -29,7 +29,7 @@ We studied the craft, not any one film. No shots, copy, music or designs were co
 - **Scrollytelling, adapted to video.** The web pattern (a text column that scrolls past a sticky graphic that changes with each step) translates to a timed column whose active card lines up with a highlight in the chart.
 - **Sources on screen.** Newsroom graphics conventionally carry a source line on every chart. The template makes it unconditional.
 
-## What process how-tos tend to do (`process-howto`, new)
+## What process how-tos tend to do (`process-howto`, new) {#process-howto}
 
 | section | share | what happens |
 |---|---|---|

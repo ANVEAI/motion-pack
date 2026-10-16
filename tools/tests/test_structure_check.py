@@ -60,7 +60,8 @@ def test_pattern_files_parse_and_are_consistent():
             assert x['text_wps_max'] > 0 and x['asl_s'][0] <= x['asl_s'][1], (pid, x['name'])
         assert s['sections'][0]['start'] == 0 and s['sections'][-1]['end'] == 100, pid
         assert s['length_s'][0] <= s['length_s'][1] and s['asl_s'][0] <= s['asl_s'][1], pid
-        assert s['evidence'].startswith('docs/research/launch-video-patterns.md'), pid
+        ev = s['evidence'].split('#', 1)[0]   # the evidence lives in docs/research (launch-video-patterns.md, or a lane's own research note such as explainer-data-patterns.md)
+        assert ev.startswith('docs/research/') and ev.endswith('.md') and os.path.exists(os.path.join(REPO, ev)), (pid, s['evidence'])
         assert s['grade'] in P['grades'], (pid, s['grade'])
         if s.get('cta'):
             lo, hi = s['cta']['start_pct']
@@ -98,8 +99,8 @@ def test_lengths_and_ctas_cite_sources():
 
 
 def test_evidence_doc_has_every_structure_section():
-    doc = open(DOC, encoding='utf-8').read()
     for pid, s in P['structures'].items():
+        doc = open(os.path.join(REPO, s['evidence'].split('#', 1)[0]), encoding='utf-8').read()
         anchor = s['evidence'].split('#', 1)[1] if '#' in s['evidence'] else None
         assert anchor and ('{#%s}' % anchor in doc or '<a id="%s">' % anchor in doc), (pid, s['evidence'])
 
