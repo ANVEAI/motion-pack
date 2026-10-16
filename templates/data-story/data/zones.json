@@ -1,0 +1,20 @@
+{
+  "source": "Fictional demo dataset written for the motion-pack data-story template (Orbit City is not a real place)",
+  "method": "Invented numbers that show how the hex-tile map works; they measure nothing. Replace this file with your own table",
+  "unit": "%",
+  "demo": true,
+  "rows": [
+    { "id": "z1", "q": 0, "r": 0, "label": "North", "short": "N", "value": 61 },
+    { "id": "z2", "q": 1, "r": 0, "label": "North-east", "short": "NE", "value": 55 },
+    { "id": "z3", "q": -1, "r": 1, "label": "West", "short": "W", "value": 48 },
+    { "id": "z4", "q": 0, "r": 1, "label": "Centre", "short": "C", "value": 72 },
+    { "id": "z5", "q": 1, "r": 1, "label": "East", "short": "E", "value": 58 },
+    { "id": "z6", "q": 2, "r": 1, "label": "Riverside", "short": "R", "value": 52 },
+    { "id": "z7", "q": -1, "r": 2, "label": "Old Town", "short": "OT", "value": 31 },
+    { "id": "z8", "q": 0, "r": 2, "label": "Market", "short": "M", "value": 50 },
+    { "id": "z9", "q": 1, "r": 2, "label": "Hill Road", "short": "HR", "value": 46 },
+    { "id": "z10", "q": -1, "r": 3, "label": "South-west", "short": "SW", "value": 39 },
+    { "id": "z11", "q": 0, "r": 3, "label": "Lakeview", "short": "L", "value": 27 },
+    { "id": "z12", "q": 1, "r": 3, "label": "South", "short": "S", "value": 44 }
+  ]
+}

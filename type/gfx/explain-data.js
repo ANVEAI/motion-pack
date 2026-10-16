@@ -76,9 +76,11 @@ const barPath = (x, y0, w, y1, r) => { const up = y1 < y0, rr = Math.min(r, Math
     : `M${f2(x)} ${f2(y0)} V${f2(y1 - rr)} Q${f2(x)} ${f2(y1)} ${f2(x + rr)} ${f2(y1)} H${f2(x + w - rr)} Q${f2(x + w)} ${f2(y1)} ${f2(x + w)} ${f2(y1 - rr)} V${f2(y0)} Z`; };
 function storySVG(L, p, c) {
   const G = chartGeom(p, c), { s, x, y, w, h, dom, kind } = G, u = L.u, ink = p.ink, o = 1 - L.out, fmtV = (v) => fmtNumber(v, { locale: p.locale, dec: p.dec, unit: p.unit });
-  const H = hlAt(p, u), colOf = (i, si) => { const key = kind === 'bar' ? i : si, isH = (j) => (typeof j === 'number' && j >= 0 && j === key) || (typeof j === 'string' && j !== '' && (p.labels?.[i] === j || G.series[si]?.name === j));
-    const base = G.series[si]?.color || (si === num(p.compare, -1) ? p.muted : G.series.length > 1 && si > 0 ? mixHex(p.accent, p.paper, 0.45) : p.highlight < 0 && !(p.hl || []).length ? p.accent : p.muted);
-    const was = isH(H.from) ? p.accent : base, now = isH(H.h) ? p.accent : base; return mixHex(was, now, H.k); };
+  /* colour by job: natural series colours (the last / only series in the accent, earlier ones lighter, a `compare` series muted); while a highlight is on, the highlighted
+     category (bars) or series (lines) keeps its colour and everything else goes muted; the change blends over 0.35 s */
+  const H = hlAt(p, u), nS = G.series.length, natural = (si) => G.series[si]?.color || (si === num(p.compare, -1) ? p.muted : nS > 1 && si < nS - 1 && kind === 'bar' ? mixHex(p.accent, p.paper, 0.55) : nS > 1 && si > 0 && kind !== 'bar' ? mixHex(p.accent, p.paper, 0.45) : p.accent);
+  const on = (j) => (typeof j === 'number' && j >= 0) || (typeof j === 'string' && j !== ''), hit = (j, i, si) => (kind === 'bar' ? (typeof j === 'number' ? j === i : p.labels?.[i] === j || G.series[si]?.name === j) : (typeof j === 'number' ? j === si : G.series[si]?.name === j));
+  const stateCol = (j, i, si) => (!on(j) || hit(j, i, si) ? natural(si) : p.muted), colOf = (i, si) => mixHex(stateCol(H.from, i, si), stateCol(H.h, i, si), H.k);
   const XL = xLabels(p, G); let g = '';
   if (p.title) { const tw = measure(p.title, 44 * s, { weight: 800 }); g += text(p.title, G.X, G.Y + 44 * s, { size: tw > G.Wb ? Math.max(28 * s, (44 * s * G.Wb) / tw) : 44 * s, weight: 800, fill: ink }); }
   if (p.subtitle) g += text(p.subtitle, G.X, G.Y + (p.title ? 88 : 36) * s, { size: 28 * s, weight: 600, fill: ink, op: 0.72 });
@@ -146,12 +148,15 @@ export function binsOf(values, n = 5) { const v = values.filter(Number.isFinite)
 function hexSVG(L, p, c) {
   const s = c.s * num(p.size, 1), u = L.u, [X, Y, Wb, Hb0] = bx(p.box, c), Hb = Math.max(160 * c.s, Math.min(Hb0, c.safe.y1 - 56 * c.s - Y)), legendH = 120 * s, tl = p.title ? wrapLines(p.title, Wb, 44 * s, 2) : [], top = tl.length * 52 * s + (tl.length ? 18 * s : 0), H = hexLayout(p.tiles, [X, Y + top, Wb, Hb - top - legendH]);
   const vals = H.tiles.map((t) => (t.value == null || t.value === '' ? NaN : num(t.value, NaN))), edges = binsOf(vals, num(p.bins, 5)), nb = edges.length, binOf = (v) => { let b = 0; for (let i = 0; i < nb; i++) if (v >= edges[i]) b = i; return b; };
-  const colOf = (v) => (Number.isFinite(v) ? mixHex(p.ramp[0], p.ramp[1], nb > 1 ? binOf(v) / (nb - 1) : 1) : p.missing), hl = new Set([].concat(p.highlight || []));
+  const colOf = (v) => (Number.isFinite(v) ? mixHex(p.ramp[0], p.ramp[1], nb > 1 ? binOf(v) / (nb - 1) : 1) : p.missing);
+  /* highlight schedule: hls [[t, [ids]], ...] (local s), or highlight + hlAt; a tile eases in from the first entry of the run it is still part of */
+  const sched = ([].concat(p.hls || []).filter((q) => Array.isArray(q)).length ? p.hls.filter((q) => Array.isArray(q)) : [[num(p.hlAt, 0), [].concat(p.highlight || [])]]).map(([t, ids]) => [num(t), [].concat(ids || [])]).sort((a, b) => a[0] - b[0]);
+  const hkOf = (id) => { let k = -1; for (let i = 0; i < sched.length; i++) if (u >= sched[i][0]) k = i; if (k < 0 || !sched[k][1].includes(id)) return 0; let j = k; while (j > 0 && sched[j - 1][1].includes(id)) j--; return E.soft(seg(u, sched[j][0], sched[j][0] + 0.4)); };
   let g = tl.map((l, i) => text(l, X, Y + 44 * s + i * 52 * s, { size: 44 * s, weight: 800, fill: p.ink })).join('');
   H.tiles.forEach((t, i) => { const st = (t.r * 0.5 + t.q * 0.25 + 1.5) * num(p.stagger, 0.12), e = E.hero(seg(u, st, st + 0.45)); if (e <= 0) return;
     const r = H.size * 0.94 * (0.82 + 0.18 * e), pts = Array.from({ length: 6 }, (_, k) => { const a = (Math.PI / 180) * (60 * k - 30); return `${f2(t.cx + r * Math.cos(a))},${f2(t.cy + r * Math.sin(a))}`; }).join(' ');
-    const v = vals[i], fill = colOf(v), ink = inkOn(fill, PAPER_INK, '#FFFFFF');
-    g += `<polygon points="${pts}" fill="${fill}" opacity="${f2(e)}" stroke="${hl.has(t.id) ? p.accent : p.paper}" stroke-width="${f2((hl.has(t.id) ? 6 : 3) * s)}"/>`;
+    const hk = hkOf(t.id), v = vals[i], fill = colOf(v), ink = inkOn(fill, PAPER_INK, '#FFFFFF');
+    g += `<polygon points="${pts}" fill="${fill}" opacity="${f2(e)}" stroke="${mixHex(p.paper, p.accent, hk)}" stroke-width="${f2((3 + 4 * hk) * s)}"/>`;
     if (!Number.isFinite(v)) g += `<path d="M${f2(t.cx - r * 0.4)} ${f2(t.cy - r * 0.4)} L${f2(t.cx + r * 0.4)} ${f2(t.cy + r * 0.4)}" stroke="${PAPER_INK}" stroke-opacity="0.35" stroke-width="${f2(3 * s)}"/>`;
     const fz = Math.min(30 * s, H.size * 0.34); g += text(String(t.short ?? t.label ?? ''), t.cx, t.cy - fz * 0.15, { size: fz, weight: 800, fill: ink, anchor: 'middle', op: e });
     g += text(Number.isFinite(v) ? fmtNumber(v, { locale: p.locale, dec: p.dec, compact: Math.abs(v) >= 1e4 ? 'short' : false, unit: p.unit }) : 'no data', t.cx, t.cy + fz * 0.95, { size: fz * 0.8, weight: 600, fill: ink, anchor: 'middle', op: e * 0.9 }); });
@@ -184,7 +189,7 @@ export const EXPLAIN_DATA = {
   'callout.datum': { file: 'type/gfx/explain-data.js', tags: ['callout', 'annotation', 'leader', 'datum', 'chart', 'data-story'], dur: 2.6, inF: 6, outF: 8,
     d: { chart: null, datum: [0, 0], point: [0.62, 0.4], label: 'Placeholder note', sub: '', dx: 0.1, dy: -0.12, accent: BRAND, ink: PAPER_INK, paper: '#FFFFFF', size: 1 }, svg: datumSVG },
   'map.hexTile': { file: 'type/gfx/explain-data.js', tags: ['map', 'choropleth', 'hex-tile', 'data-story', 'region', 'explainer'], dur: 5, inF: 9, outF: 9,
-    d: { tiles: DEMO_TILES, title: '', unit: '', legendTitle: '', locale: 'intl', dec: 0, bins: 5, ramp: ['#E8E1F9', '#3A12B8'], missing: '#E4E0D8', highlight: [], box: [0.2, 0.14, 0.6, 0.72], accent: '#E8590C', ink: PAPER_INK, paper: '#FFFFFF', stagger: 0.12, source: PLACEHOLDER, method: '', demo: true, size: 1 }, svg: hexSVG },
+    d: { tiles: DEMO_TILES, title: '', unit: '', legendTitle: '', locale: 'intl', dec: 0, bins: 5, ramp: ['#E8E1F9', '#3A12B8'], missing: '#E4E0D8', highlight: [], hlAt: 0, hls: [], box: [0.2, 0.14, 0.6, 0.72], accent: '#E8590C', ink: PAPER_INK, paper: '#FFFFFF', stagger: 0.12, source: PLACEHOLDER, method: '', demo: true, size: 1 }, svg: hexSVG },
   'counter.hero': { file: 'type/gfx/explain-data.js', tags: ['counter', 'hero-number', 'stat', 'data-story', 'lakh', 'crore', 'locale'], dur: 3.5, inF: 6, outF: 9,
     d: { value: 12500000, from: 0, locale: 'in', compact: 'long', dec: 1, prefix: '', unit: '', label: 'Placeholder context line', pos: 'c', size: 220, count: 1.4, accent: BRAND, ink: PAPER_INK, paper: '#FFFFFF', source: PLACEHOLDER, method: '', demo: true }, svg: heroSVG },
   'chart.sourceFooter': { file: 'type/gfx/explain-data.js', tags: ['source', 'footer', 'honesty', 'data-story', 'chart'], dur: 4, inF: 6, outF: 6,
@@ -195,7 +200,7 @@ export const EXPLAIN_DATA_CUES = {
   'chart.story': (p) => { const out = [{ t: 0, id: 'sfx/ui/count_run', why: 'chart builds' }]; for (const q of [].concat(p.hl || [])) if (Array.isArray(q)) out.push({ t: num(q[0]), id: 'sfx/ui/tick', why: 'highlight moves' });
     for (const q of [].concat(p.show || [])) if (Array.isArray(q) && num(q[0]) > 0) out.push({ t: num(q[0]), id: 'sfx/ui/slide', why: 'more data revealed' }); return out; },
   'callout.datum': () => [{ t: 1 / 30, id: 'sfx/ui/pop', why: 'datum ring' }],
-  'map.hexTile': (p) => [{ t: 0.1, id: 'sfx/sparkle/shimmer', why: 'tiles fill' }],
+  'map.hexTile': (p) => [{ t: 0.1, id: 'sfx/sparkle/shimmer', why: 'tiles fill' }, ...([].concat(p.hls || []).filter((q) => Array.isArray(q)).length ? p.hls.filter((q) => Array.isArray(q)).map((q) => [num(q[0]), q[1]]) : [[num(p.hlAt, 0), p.highlight]]).filter(([t, ids]) => t > 0 && [].concat(ids || []).length).map(([t]) => ({ t, id: 'sfx/ui/tick', why: 'tiles highlighted' }))],
   'counter.hero': (p) => [{ t: 0, id: 'sfx/ui/count_run', why: 'number counts' }, { t: num(p.count, 1.4), id: 'sfx/hit/soft', why: 'number lands' }],
   'chart.sourceFooter': () => [],
 };

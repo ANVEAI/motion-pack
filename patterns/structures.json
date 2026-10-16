@@ -110,6 +110,24 @@
     "pattern": "explainer",
     "why": "a lesson is an explainer with recap and quiz; no separate lesson pattern yet"
    }
+  ],
+  "explainer-diagram": [
+   {
+    "pattern": "explainer",
+    "why": "question, wrong model, reframe, proof, so-what: the diagram walk-through (lane explainer)"
+   }
+  ],
+  "data-story": [
+   {
+    "pattern": "data-story",
+    "why": "data-journalism short: hook, context chart, the number that matters, breakdown, takeaway with sources (lane explainer)"
+   }
+  ],
+  "process-howto": [
+   {
+    "pattern": "process-howto",
+    "why": "numbered steps on a timeline, before / after, checklist end card (lane explainer)"
+   }
   ]
  },
  "structures": {
@@ -2632,6 +2650,239 @@
      "text_wps_max": 1.0,
      "music": 0.5,
      "sfx_role": "breathe out; loop seam or end hit",
+     "required": true
+    }
+   ]
+  },
+  "data-story": {
+   "label": "Data story: the question over a chart already drawing, the baseline chart with one annotation, the number that matters, the honest comparison, a breakdown, the takeaway with every source",
+   "length_s": [
+    45,
+    90
+   ],
+   "asl_s": [
+    3.0,
+    12.0
+   ],
+   "change_every_s_max": 3.5,
+   "tolerance_pct": 10,
+   "grade": "inference",
+   "evidence": "docs/research/explainer-data-patterns.md#data-story",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.5,
+    "max_words": 7
+   },
+   "cta": {
+    "section": "takeaway",
+    "start_pct": [
+     82,
+     94
+    ],
+    "min_hold_s": 3.0
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "question",
+      "open",
+      "coldopen"
+     ],
+     "start": 0,
+     "end": 10,
+     "asl_s": [
+      1.5,
+      6.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "one sound as the first data lands; a planned quiet open is fine",
+     "required": true
+    },
+    {
+     "name": "context",
+     "aliases": [
+      "baseline",
+      "setup",
+      "chart"
+     ],
+     "start": 8,
+     "end": 34,
+     "asl_s": [
+      3.0,
+      12.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.3,
+     "sfx_role": "a soft run as the chart builds; one pop on the annotation",
+     "required": true
+    },
+    {
+     "name": "evidence",
+     "aliases": [
+      "number",
+      "hero",
+      "comparison",
+      "proof"
+     ],
+     "start": 32,
+     "end": 56,
+     "asl_s": [
+      3.0,
+      10.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.5,
+     "sfx_role": "a count run under the number, one soft hit when it lands",
+     "required": true
+    },
+    {
+     "name": "detail",
+     "aliases": [
+      "breakdown",
+      "map",
+      "scrolly",
+      "why"
+     ],
+     "start": 54,
+     "end": 88,
+     "asl_s": [
+      3.0,
+      12.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "a tick per scrolly step or highlight",
+     "required": false
+    },
+    {
+     "name": "takeaway",
+     "aliases": [
+      "sowhat",
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "close",
+      "sources"
+     ],
+     "start": 84,
+     "end": 100,
+     "asl_s": [
+      3.0,
+      12.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.3,
+     "sfx_role": "a quiet hold under the takeaway and the sources",
+     "required": true
+    }
+   ]
+  },
+  "process-howto": {
+   "label": "Process how-to: the promise with the steps already on screen, numbered steps on a timeline, the before / after, a checklist end card",
+   "length_s": [
+    30,
+    60
+   ],
+   "asl_s": [
+    2.0,
+    8.0
+   ],
+   "change_every_s_max": 3.5,
+   "tolerance_pct": 10,
+   "grade": "inference",
+   "evidence": "docs/research/explainer-data-patterns.md#process-howto",
+   "hook": {
+    "text_required": true,
+    "text_by_s": 0.5,
+    "max_words": 7
+   },
+   "cta": {
+    "section": "checklist",
+    "start_pct": [
+     80,
+     93
+    ],
+    "min_hold_s": 3.0
+   },
+   "sections": [
+    {
+     "name": "hook",
+     "aliases": [
+      "promise",
+      "result",
+      "open"
+     ],
+     "start": 0,
+     "end": 12,
+     "asl_s": [
+      1.5,
+      5.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "one sound on frame 0-3 as the steps appear",
+     "required": true
+    },
+    {
+     "name": "steps",
+     "aliases": [
+      "step",
+      "howto",
+      "walkthrough",
+      "body"
+     ],
+     "start": 10,
+     "end": 72,
+     "asl_s": [
+      2.0,
+      8.0
+     ],
+     "text_wps_max": 3.0,
+     "music": 0.4,
+     "sfx_role": "a tick per step, a soft success when the last one is done",
+     "required": true
+    },
+    {
+     "name": "result",
+     "aliases": [
+      "beforeafter",
+      "before",
+      "after",
+      "compare"
+     ],
+     "start": 68,
+     "end": 86,
+     "asl_s": [
+      2.0,
+      8.0
+     ],
+     "text_wps_max": 2.5,
+     "music": 0.5,
+     "sfx_role": "a wipe sound on the after reveal",
+     "required": true
+    },
+    {
+     "name": "checklist",
+     "aliases": [
+      "end",
+      "endcard",
+      "card",
+      "outro",
+      "cta",
+      "close"
+     ],
+     "start": 82,
+     "end": 100,
+     "asl_s": [
+      3.0,
+      10.0
+     ],
+     "text_wps_max": 2.0,
+     "music": 0.3,
+     "sfx_role": "a pop per ticked item, then a quiet hold",
      "required": true
     }
    ]
