@@ -113,6 +113,17 @@ def counts():
     sm = os.path.join(REPO, 'storyboard/manifest.json')
     if os.path.exists(sm):
         c['storyboard_checks'] = len(json.load(open(sm))['checks'])
+    pj = os.path.join(REPO, 'patterns', 'structures.json')
+    if os.path.isfile(pj):
+        c['pattern_structures'] = len(json.load(open(pj))['structures'])
+        hj = os.path.join(REPO, 'patterns', 'hooks.json')
+        H = json.load(open(hj)) if os.path.isfile(hj) else {}
+        c['pattern_hooks'] = len(H.get('hooks', H.get('archetypes', []))) if isinstance(H, dict) else len(H)
+    dp = os.path.join(REPO, 'tools', 'deliver.py')
+    if os.path.isfile(dp):   # the delivery presets, read from tools/deliver.py PRESETS (stdlib-only module)
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('mp_deliver', dp); mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+        c['deliver_presets'] = len(mod.PRESETS)
     ym = os.path.join(REPO, 'eyes/manifest.json')
     if os.path.exists(ym):
         c['eyes_checks'] = len(json.load(open(ym))['checks'])
@@ -161,6 +172,14 @@ def table(c):
     if 'eyes_checks' in c:
         rows.append(('`eyes/`', f"automated looking and critique of a delivered MP4's picture, the visual twin of ears: {c['eyes_checks']} checks (frame 0, black and frozen frames, WCAG flashes, banding, "
                                 "safe zones, text size / time / contrast, pacing, composition, encode), each with a fix and timestamps", '`eyes/README.md`'))
+    if 'pattern_structures' in c:   # xp research lane: beat sheets + the structure checker
+        rows.append(('`patterns/`', f"{c['pattern_structures']} beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), "
+                                    f"{c['pattern_hooks']} hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/research/`; "
+                                    "`tools/structure_check.py` scores a plan against them", '`patterns/README.md`'))
+    if os.path.isfile(os.path.join(REPO, 'tools', 'deliver.py')):   # xp access lane
+        rows.append(('delivery + accessibility', "`tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) "
+                     f"to 42 chars, 2 lines, 20 cps (17 kids); an audio-description script (standard + extended, no TTS); an accessibility lint (flash, caption contrast, size, reading time, colour-blind, colour-only); "
+                     f"{c['deliver_presets']} platform delivery presets with BT.709 tags, faststart and loudness by source; Lottie export of kinetic type and draw-on icons", '`docs/DELIVERY-AND-ACCESSIBILITY.md`'))
     if os.path.isdir(os.path.join(REPO, 'cloud')):
         rows.append(('`cloud/`', "optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, "
                      "Gemini Live voiceover with a word-for-word check, a Gemini mood judge", '`cloud/README.md`'))

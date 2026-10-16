@@ -44,6 +44,20 @@ Reusable three.js props, set pieces and <!--n:objects_characters-->2<!--/n--> ch
 | objects/mascot2d | character mascot 2d flat narrator **new** | `characters/mascot2d.js` (no three.js): `mascotSVG(t, spec)`, `drawMascot2d(g, t, spec)`, `mountMascot2d(el, spec)`; in a 3D scene `makeMascotPlane(ctx, p, {spec, height})` (canvas texture). Original bean body + sprout, eyes, brows, mouth (smile / open / talk), stick arms; poses `idle point read cheer dive wave think` changed by closed-form springs; `hops` (anticipation squash, stretch, landing squash), `blinks`, `talk`, `aim` (the point pose aims at a px target) | new 2026-10-14 |
 | objects/logo-extrude | logo mark extrude bevel chrome glass iridescent satin **new** | `lib/logo.js`: `makeLogoExtrude(ctx, p, {svg, preset, size, depth, bevel, spin, slice})` -> `update(t)`, `set({yaw, tilt, slice, scale})`; SVG path(s) in a 100 box (default: the pack's placeholder orbit mark), SVGLoader shapes with holes, creased normals (smooth bevels, crisp edges), presets chrome / glass / iridescent / satin, optional sliced-and-offset beat (two world-space clipping planes) | new 2026-10-14 |
 | objects/worker | character mascot pantomime original | `makeWorker(ctx, p, spec, zoneX?, rimLight?)`: `update(t)` from `{keys, path, blinks}`; rig, hops, follow-through (head 2 f, arms 3 f), breathing, blinks | v10 story B worker.js |
+| objects/enclosure | hardware device enclosure chamfer led **new** | `makeEnclosure(ctx, p, spec)`: `setBand(level, hex, sweep)`, `pose(p, yaw, s)`; parts `shell top base` | new 2026-10-16 |
+| objects/vent-grille | hardware vent slots hex **new** | `makeVentGrille(ctx, p, {w, h, kind, rows, cols})` (instanced) | new |
+| objects/ports | hardware ports io **new** | `makePorts(ctx, p, {ports: [{kind, x, y}]})` generic power / network / display out / data / wide / audio | new |
+| objects/cable | hardware cable plug **new** | `makeCable(ctx, p, {from, to, dir, plug})`: `set({insert})` | new |
+| objects/hw-node | hardware device explode hero **new** | `makeNode(ctx, p, spec)`: `set({band, bandSweep, explode, die, dieGlow, fanSpin, cardGlow})`, layout from `lib/hwdata.js` | new |
+| objects/pcb | hardware pcb board **new** | `makePCB(ctx, p, {w, d, chips, soc})` seeded traces, chip, memory, chokes, MLCC, gold fingers | new |
+| objects/chip-die | hardware chip die reveal **new** | `makeChip(ctx, p, o)`: `set({open, glow, accent})` the lid lifts, the die blocks light one by one | new |
+| objects/heatsink | hardware heatsink fins **new** | `makeHeatsink(ctx, p, {w, d, h, fins})` | new |
+| objects/fan | hardware fan **new** | `makeFan(ctx, p, {r, blades})`: `set({spin})` | new |
+| objects/gpu-card | hardware gpu card **new** | `makeGPUCard(ctx, p, {w, d, t, fans})`: `set({spin, glow})` | new |
+| objects/xray | hardware xray wireframe **new** | `makeXray(ctx, root, {axis, color})`: `set(k)` 0 wire .. 1 solid | new |
+| objects/hw-studio | hardware studio rim sweep dark **new** | `makeDarkStudio(ctx)` + `makeHwRig(ctx).update(n, slot, {rim, top, key, edge, sweep})` | new |
+| objects/model | hardware your-product glb obj **new** | `await loadModel(ctx, p, url, {size, axis, yaw})`: `applyExplode(offs)`, `pose()` | new |
+| objects/photo-25d | hardware photo parallax **new** | `await makePhotoParallax(ctx, p, {src, depth, w})` | new |
 
 Character data lives in `characters/poses.js`:
 

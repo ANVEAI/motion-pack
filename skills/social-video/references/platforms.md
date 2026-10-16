@@ -15,6 +15,8 @@ Platforms change limits often. Each row says where the number comes from; re-che
 | X | 9:16 or 16:9 (16:9 for cinematic pieces) | standard accounts 2 min 20 s, 512 MB [pub]; longer for paid tiers | videos autoplay muted: burn in captions |
 | LinkedIn | 16:9, 1:1 or 4:5 (aspect 1:2.4 to 2.4:1) | up to about 15 min from desktop [pub]; aim 30-60 s [house] | MP4 (H.264 + AAC) is the safe container; videos autoplay muted: burn in captions |
 
+Machine-readable limits and CTA windows with their sources: `patterns/lengths.json` and `patterns/ctas.json` (in the pack). A YouTube or Instagram "view" now counts every start or replay; judge a hook by the 3 s hold and average view duration, not by views.
+
 ## Safe zones for vertical video
 
 The feed overlays the title, the account name and the action buttons. Keep faces, words and the CTA inside the conservative safe rectangle: on 1080 x 1920, top 269 px, bottom 672 px, left 65 px and right 120 px are reserved (motion-pack `type/safezones.js` `conservative`, the union of conflicting sources; every per-platform row there is flagged "verify"). [house]

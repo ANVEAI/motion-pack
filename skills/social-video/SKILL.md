@@ -94,6 +94,8 @@ Build them with frame-design's rules (one subject, at most 4 words, readable at 
 
 ## Upload copies under a size cap
 
+Make the platform master itself with `python3 tools/deliver.py out/film.mp4 --preset youtube|shorts|reels|tiktok|x|linkedin` (BT.709 tags, faststart, loudness checked, the file verified); `upload_copy.py` then makes a capped copy of that master when a tool needs one. Post the SRT or VTT from `tools/captions/export.py` as the platform caption file where the platform takes one (YouTube), and burn captions in (`--burn`) for X and LinkedIn.
+
 Some browser-automation upload tools cap a single file at about 10 MB, while a 1080p master can be several times larger. Make a copy with:
 
 ```bash

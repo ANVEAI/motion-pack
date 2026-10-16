@@ -140,6 +140,7 @@ No template has a CONFIG key yet for the grade name, the LUT or the font family:
 - [ ] The cover reads at 120 px wide.
 - [ ] No image-model text or UI anywhere; screenshots are real and composited.
 - [ ] One grade, one grain, one accent, at most two type families.
+- [ ] `python3 tools/a11y_check.py --design design.json` shows no colour-blind collapse between roles that must read apart, and every state colour has a non-colour cue in `design.json` `a11y.cues`.
 
 ## Files in this skill
 

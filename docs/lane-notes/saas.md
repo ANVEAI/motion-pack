@@ -90,3 +90,9 @@ RECIPE S: SaaS films, templates `templates/saas-launch` (45/60/75 s), `saas-feat
 - **9:16 in-window UI is still small** where a whole screen must be seen (the payoff split, the builder at its widest); captions sit over the windows in the explainer at 9:16.
 - **Hot spots are tied to the placeholder screens**: a user who swaps in a screenshot must re-measure SPOT, or the cursor clicks empty space.
 - The research note adds no new studied films; a fresh study of high-reach SaaS launch videos belongs to the research lane.
+
+## Integration (xp-integrate, 16 Oct)
+
+- **Renamed `callout.highlightBox` -> `callout.uiHighlight`** (the SaaS ring): the human lane's tutorial part already owned `callout.highlightBox`. Changed in `type/gfx/ui-saas.js`, the GFX_SFX row in `type/gfx/index.js`, `type/tests/saas.test.mjs`, `templates/saas-launch` (scenes, plans, pages, README), apis.md and these notes.
+- **saas-explainer beats:** `buildPlan` writes `plan.structure` on the `explainer` beat sheet (question, wrong model -> wrongmodel, reframe + the three steps -> reframe (the walkthrough), result -> proof, end -> sowhat): 69 -> 85 at both aspects. Pace stays 0.27: scenes of 8-12 s against the pattern's 2.5-6 s ASL (the cursor and zoom moves inside a scene are not shots).
+- **The 9:16 "mismatch" was a tool bug, not a stale plan:** `cues.mjs --aspect 9:16` without `--project` ignored the aspect for templates whose PROJECT_MAP maps `aspects` (the committed `plan-tall.json` matched `--set aspect=9:16` exactly). Fixed in `templates/_shared/project.mjs`.

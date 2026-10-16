@@ -87,6 +87,18 @@ Every path below is relative to the pack root.
 6. **Full pass.** Polish, the mixed sound, then the critic loop (`references/critic.md`) until every score is 8 or more. **Eyes:** `eyes/look.py` on the delivered MP4 shows no fail and no category under 8 that you cannot explain.
 7. **Formats, loop, poster, README.** 16:9 / 9:16 / 1:1 by re-layout, the loop check, a poster frame, and a README with the ids used and the measured loudness.
 
+## Edit without code: one project file, the `mp` CLI
+
+For a person who does not code, or an agent that should not touch template code, make the video from ONE `project.json` (schema `templates/_shared/project.schema.json`; walkthrough `docs/EDIT-WITHOUT-CODE.md`):
+
+1. `tools/mp new <template>[,<template>] <dir> [--project p.json]`: a folder OUTSIDE the pack with `project.json`, `renders/` and `build/` (a copy-on-write copy of the template; the rest of the pack is linked).
+2. `mp brand logo.svg --write`: accent, ink and paper from the logo, contrast-checked (a failing colour moves in L* to the nearest passing one).
+3. `mp set text.headline "..."`, `mp set media.hook.src clip.mp4`, `mp set aspects 16:9,9:16`, `mp set config.<template>.<CONFIG path> <value>`: each one validates the whole file first, so a refused value changes nothing.
+4. `mp render [--template <id>] [--workers 1]`: every template of the project in every aspect it supports, as `renders/<template>-<WxH>.mp4` plus its plan and a contact sheet with loudness; a `manual` aspect is skipped with the reason.
+5. `mp check`: project honesty, banned demo words, the name denylist, check_ids, the plan lint, LUFS / TP from the MP4, eyes and ears. Then LOOK at `renders/*.sheet.jpg`.
+
+`mp list [--json]` is the contract for agents: every template, the project fields it uses, their CONFIG targets and values, required slots and aspects. A digit in `text.*`, `brand.cta` or `brand.line` needs a claim with a real source; a null media slot renders a labelled placeholder. Inside a template folder, `node make.mjs --project p.json --aspect 9:16 --set k=v` does the same as `mp build` (project, then `overrides.<template>`, then `--set`).
+
 ## Banned defaults (each needs a written reason in `plan.json` to appear)
 
 - A centred title on a gradient.
@@ -108,14 +120,18 @@ What is the deliverable?
 ├─ Music drives it (lyric, montage, beat promo, dance, loop to a track) ──> RECIPE B (beat edit)
 ├─ Wordless character comedy, one gag + one feature ──> RECIPE Z (character spot)
 ├─ Story with a turn (cold open -> want -> obstacle -> turn -> button) ──> RECIPE F (short film / scene)
+│     a film trailer, a teaser, an opening title sequence or a short film from your footage? -> RECIPE T (`templates/trailer`, `title-sequence`, `short-film`)
 ├─ Sell a product in 6 / 15 / 30 / 45 s (hook, problem, product, proof, CTA) ──> RECIPE A (ad)
 │     launch / reveal / sizzle with a hero product? -> RECIPE L (launch film)
+│     software / SaaS launch, feature drop or explainer with a cursor through the product? -> RECIPE S (`templates/saas-launch`, `saas-feature-drop`, `saas-explainer`)
+│     an AI-hardware / device launch, teaser or spec sheet? -> RECIPE HW (`templates/hardware-reveal`, `hardware-teaser`, `spec-sheet`)
 │     a measured result (benchmark, cost, a failure the method catches) for builders? -> RECIPE I (proof film, `templates/proof-film`)
 ├─ Photoreal product, 3D title or abstract 3D art ──> RECIPE P (Blender plates), then composite here
 ├─ Terminal or ASCII look, a flock, a word a flock writes ──> terminal/ (baked plate as a <video> layer; set real titles with type/)
-├─ Diagram / "how it works" / data / math ──> a diagram animation tool for the plates, then type, layers and sound here
+├─ "How it works" / process diagram, a data story, a numbered how-to ──> RECIPE E (`templates/explainer-diagram`, `data-story`, `process-howto`); math animation ──> a math tool (manimgx) for the plates
+├─ The user wants to change copy, colours or footage themselves, or an agent should not edit template code ──> `tools/mp new` + project.json ("Edit without code" below)
 └─ Anything else in HTML ──> a HyperFrames composition built from pack parts
-Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY checklist -> QA checklist.
+Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY checklist -> QA checklist -> RECIPE D (captions, audio description, delivery) for every public video.
 ```
 
 **Engine choice:**
@@ -199,6 +215,21 @@ Then: aspect set (16:9 master + re-layout 9:16 / 1:1, not a crop) -> VIRALITY ch
 | a tempo build into a drop | `music/bed_anthem_ramp16` (100 → 128 BPM; real beat frames in its sidecar) and `music/tempo_maps.json` | cut from the sidecar, not from a constant BPM |
 | a photoreal product shot or 3D title | `blender/turntable`, `blender/macroSweep`, `blender/explode`, `blender/title3d`; art loops `blender/art.*` | EEVEE for motion plates, Cycles for key-art stills |
 | an "everything is connected" problem beat (one dependency pulled, the system goes dark; or the fix) | `blender/cableTangle` (`mode=off`: the bulbs go out in sequence on plan frames; `mode=on`: it untangles and they light; `--beats` puts the changes on sound hits) then an abstract untangle diagram | a metaphor, not wiring advice; needs >= 3 s of air; Cycles, so a 1080p plate is slow (about 1.8 s/frame at 480p, 12 samples); `--device cpu` for a hash-level repeat |
+| a beat sheet for a genre (SaaS launch, feature drop, explainer, data story, how-to, hardware reveal, teaser, trailer, title sequence, tutorial, vlog, podcast clip, founder story, short film, ad 15/30) | `patterns/structures.json`; hooks `patterns/hooks.json`; CTAs `patterns/ctas.json`; lengths `patterns/lengths.json`; check with `tools/structure_check.py` | every number is graded; beat percentages are practitioner or inference, never platform rules (`docs/research/launch-video-patterns.md`) |
+| a SaaS product demo: a window you zoom into, a cursor that clicks / hovers / drags, a command palette, an AI answer that streams, a shortcut, pricing, "works with", before / after, toasts, a dashboard that assembles, a device with your screen | `ui.appWindow`, `ui.cursorJourney`, `callout.uiHighlight`, `callout.arrowLabel`, `ui.commandBar`, `ui.aiAnswer`, `ui.shortcutChip`, `ui.pricingCards`, `ui.integrationGrid`, `ui.beforeAfterSplit`, `ui.notifyStack`, `ui.dashboardAssemble`, `device.mock` (`type/gfx/ui-saas*.js`); bundle `saas_ui` | screens are YOUR screenshots / recordings or the labelled placeholder screens of `templates/_shared/saas/screens.mjs` (fictional Acme Flow), never image-model UI; glyphs are categories, never marks |
+| a device / hardware hero in 3D: an enclosure with an LED band, an exploded view, a chip that opens, a GPU-like card, ports, a cable | `objects/hw-node` (or `objects/enclosure`, `pcb`, `chip-die`, `heatsink`, `fan`, `gpu-card`, `ports`, `cable`) on `objects/hw-studio`; `objects/xray`; your own `objects/model` (GLB / OBJ) or `objects/photo-25d` | generic, no brand marks; `objects/lib/explode.js` choreographs any part list; `objects/lib/hwshots.js` gives the cameras per shot kind |
+| a spec number ON a part of a 3D object, a dimension line, an edge glint, a die diagram, a date / price card, a spec card | `hw.specCallout`, `hw.dimensionLine`, `hw.edgeGlint`, `hw.chipDie`, `hw.dateCard` (`dateAt`: the date lands after the name), `hw.specCard` (`type/gfx/hw.js`) | pass a `track` (per-frame projection of a 3D anchor, `hwshots.js` `track()`) so the line stays on the part; every number prints its source |
+| a film trailer and its 30 / 15 s cut-downs | `templates/trailer`, `music/trailer_styles.py`, bundle `trailer`, `cuts/trailer_plan.py` | never double the score's braams and title hit with sfx |
+| a trailer title, a billing block, end credits, film cards and subtitles | `title.trailerSlab` / `Thin` / `Distressed` / `Glow` / `Cut`, `credits.billingBlock`, `credits.roll`, `card.releaseDate`, `card.quote` (source required), `caption.filmSubtitle`, `title.filmChapter`, `title.namesOver` (`type/gfx/film.js`) | no studio logos, rating marks or real titles |
+| a film look on footage, a film burn, an anamorphic flare | `layers/film.js` `mountFilmFinish(el, genre)` (grade + halation + weave + flicker), `layers/filmBurn` (peaks ON the cut), `layers/anamorphicFlare`, looks `look.film-<genre>` | 9:16 is re-laid out, never letterboxed |
+| a "how it works" diagram | `diagram.graph` (steps, focus, flow, cam, notes, zoom into a node), `diagram.flow` | JSON or DSL spec; `type/gfx/graph.js` `layoutGraph` is deterministic |
+| an honest chart for a data story | `chart.story` (bar / line / area / scatter; show, hl, compare), `callout.datum`, `counter.hero`, `map.hexTile`, `chart.sourceFooter`, `layout.scrolly` | source + method required; zero baselines; `numfmt.js` for lakh / crore |
+| a numbered how-to | `process.steps`, `process.beforeAfter`, `title.takeaway` | icons from `type/gfx/explain-icons.js` |
+| captions a viewer can switch on (SRT, WebVTT, TTML), SDH, or burned in | `python3 tools/captions/export.py --plan out/plan.json [--sdh] [--burn out/film.mp4]`; check with `tools/captions/validate.py` | 42 chars a line, 2 lines, 20 cps adults / 17 kids; fast speech is reported, condense it by hand |
+| an audio-description script | `python3 tools/describe/export.py --plan out/plan.json [--shotlist shotlist.json]` | DRAFT lines need a human check; no voice is synthesised |
+| an accessibility check before and after the render | `python3 tools/a11y_check.py --plan out/plan.json --design design.json --captions <events.json> [--mp4 out/film.mp4]` | flashes, caption contrast on real frames, text size (48 px read floor on 16:9, 56 px on 9:16), reading time, colour-blind collapse |
+| the platform file (YouTube, Shorts, Reels, TikTok, X, LinkedIn, broadcast ProRes, web H.264 / HEVC / AV1, GIF, alpha) | `python3 tools/deliver.py out/film.mp4 --preset <id> --out dist/` (`--list`) | BT.709 tags, faststart, loudness per platform with its source; the file is verified after the encode |
+| the same title or icon animation in an app or website | `python3 tools/lottie/export.py spec.json --validate` (`--matrix` lists what exports) | kinetic type, draw-on icons, spring shapes; SVG gfx parts, blur and 3D do not export |
 
 ## RECIPES
 
@@ -243,6 +274,7 @@ Every recipe ends with the VIRALITY and QA checklists below.
    - L7 metaphor manifesto.
 
    Fill its beat sheet. Frame 0 is the product or the thesis. Show real UI or the reveal inside the window. Use 3 mundane demos and one defensible number.
+   For a SaaS, AI, hardware, founder or trailer-shaped launch, start from the matching structure in `patterns/structures.json` and run `tools/structure_check.py` on the plan before rendering.
 1. **Arc:** hook, tease, reveal, feature montage, end card. Pick one tone and commit to it.
 2. **Lock the music first.**
    - Generate with `music/compose.py` presets (`tech_pulse` or `anthem_build`) or use `music/bed_*`.
@@ -257,6 +289,23 @@ Every recipe ends with the VIRALITY and QA checklists below.
    - Use one `transitions/shutter` or `transitions/maskReveal` for the title.
    - Put a stinger on the title and a sonic logo on the end card.
 5. **Exports:** 16:9, then re-layout to 9:16 and 1:1, plus a 6 s cut-down.
+
+### RECIPE S: SaaS films, templates `templates/saas-launch` (45 / 60 / 75 s), `saas-feature-drop` (15 / 20 / 30 s), `saas-explainer` (60 / 70 / 90 s)
+
+1. **Pick the film:** a launch (pain -> reveal -> one-window UI tour -> three features -> works with -> before / after payoff -> one sourced number -> pricing -> CTA), a feature drop (payoff first, before, after with the shortcut, compare, the keys, where it is live), or an explainer (question, wrong model, reframe, three steps, result; captions always, VO optional).
+2. **Edit only CONFIG:** `brand`, `text` (no digits: numbers go to `claims` with a source), `media` (screenshots fill the window's screen slot; recordings become a zoomed video layer), `claims`, `pricing`, `integrations`, `transitions` (with reasons), `music`. `--set aspect=9:16` builds the vertical re-layout in `tall/`.
+3. **Screen hot spots** (`scenes.mjs` SPOT, measured on the 1440 x 900 placeholder screen) drive the cursor, the highlight and the zoom rects; re-measure them on your own screenshot.
+4. **Explainer VO:** `--set voice.words=/abs/words.json`; scene changes land in the breaths, the bed ducks, the captions light the spoken word.
+5. **Build** `node make.mjs`, look at stills through `index.html?t=<s>`, render, then `sheet.py`, ears and eyes on the delivered MP4. Tests: `node type/tests/saas.test.mjs`, `node templates/_shared/saas/saas-templates.test.mjs`.
+
+### RECIPE HW: AI-hardware / device launch, templates `templates/hardware-reveal`, `hardware-teaser`, `spec-sheet`
+
+1. **Pick the length.** A teaser (6 / 10 / 15 s) promises: the silhouette alone, the tease line and one detail, the hit with the name, then the date; the product is never whole. The launch film (46 / 56 / 70 s) pays off. The spec sheet (20 / 24 / 30 s) is for the numbers.
+2. **Edit the CONFIG only:** `brand`, `product`, `text` (no digits in copy), `device` (dimensions, chamfer, material, LED band colour, ports), `specs` (every number with its `source`; a missing or generic source stops the build), `price` (`value: null` for none; a price always prints its note and source), `media.model.src` (YOUR GLB / glTF / OBJ) or `media.photo.src` (a 2.5D plate).
+3. **The music is composed to the cut:** `music/reveal.py` builds the dark > reveal score from the template's sections, so the drop lands on the reveal bar at any length. Do not swap in a loop bed.
+4. **Sound:** bundle `hardware_launch`. ONE `sfx/hw/sub_hit` on the reveal frame; the `sfx/hw/hum_loop` under the dark open stops on it (`untilT`); `sfx/hw/light_sweep` peaks on the glint; a detent per callout and spec row, never a chime per row.
+5. **Build and render:** `node make.mjs` (renders the 3D plate once per aspect, cached by hash), then the HyperFrames render; 9:16: `node make.mjs --set aspect=9:16`, then render from `tall/`.
+6. **Check:** `node templates/_hw/hw.test.mjs`, `templates/_shared/sheet.py`, `eyes/look.py --plan out/plan.json`, `ears/listen.py --plan out/plan.json`. Photoreal hero: `blender/turntable`, `macroSweep`, `explode` take `--param model=/abs/your.glb`.
 
 ### RECIPE I: proof film, template `templates/proof-film`
 
@@ -309,6 +358,15 @@ Every recipe ends with the VIRALITY and QA checklists below.
    - `cam3d.handheld` level `doc`; use `cam3d.dollyZoom` at most once.
 6. **Character.** Use `objects/worker` with `characters/poses.js` `ACTS` and `EMOTIONS`. Hold reactions for 1.5 s.
 7. **Render** with `bash templates/_shared/render3d.sh templates/film-scene scene.html wide 23`.
+
+### RECIPE T: film trailer, title sequence, short film, templates `templates/trailer`, `title-sequence`, `short-film`
+
+1. **Pick the genre** (`layers/presets/film-looks.js` FILM_GENRES: thriller, scifi, horror, drama, documentary, noir, period, anime-ink). It sets the look (`look.film-<genre>`), halation, gate weave, grain, dust, the letterbox (2.39 / 2.0 / 1.85 on 16:9; 9:16 is re-laid out, never letterboxed), the title style and the trailer score.
+2. **Trailer** (`node make.mjs [--set length=30|15] [--set aspect=9:16]`): cold open -> your production card (never first) -> the world -> the inciting beat -> act 2 (the cut rate halves, cards on the braam downbeats) -> act 3 (every bar a cut and a braam) -> the silence before the hit (1-3 s, `plan.audio.quiet` gap) -> the title ON the hit -> a button -> the billing block -> the release card. The score (`music/trailer_styles.py`) is rendered for the exact cut; never double its braams and title hit with sfx.
+3. **Title sequence** (30-60 s): one name at a time on a beat, over textures or footage; the title late; "directed by" last.
+4. **Short film:** scenes of shots (your footage, the three.js stage render, or labelled plates), chapter cards, typed slugs, subtitles from a lines or words JSON (no generated voice), the J / L builder for each scene's sound, the score entering on emotion, a dip into the credits roll. Give every shot its `beat` (coldopen, want, obstacle, turn, consequence, resolution) so the plan carries `plan.structure`.
+5. **Honesty:** no studio logos, rating marks or real titles; `card.quote` needs a source; "from the makers of" and the date card print placeholder labels until they are real; the film pill "placeholder footage · fictional film" stays on with placeholder footage.
+6. **Check:** `node <template>.test.mjs`, `tools/structure_check.py`, then render, `sheet.py`, `eyes/look.py --plan ...` (the plan asks for the letterbox in `plan.eyes`), `ears/listen.py --plan ...` (role trailer).
 
 ### RECIPE Z: wordless mime-style character spot (6 / 15 / 30 s), template `templates/character-spot`
 
@@ -383,6 +441,24 @@ Every recipe ends with the VIRALITY and QA checklists below.
 4. **Sound.** The voice stem is your recording through the tone chain (HPF 80 Hz, de-ess, 3:1; `tools/human/voice_chain.py` alone masters a voice to -14 LUFS-I / <= -1.5 dBTP); the bed is ducked 12-14 dB under it by `music/mixer.py`; one cue per gfx action (`gfxCues`) under the voice. Run `ears` with `--transcript out/transcript.json`.
 5. **Green screen:** `python3 tools/human/chroma.py key fg.mp4 out.mp4 --bg plate.png` (chromakey + despill, deterministic). No ML background blur is shipped (no pinned open model): see the guide.
 6. **Check:** `node templates/_shared/human/human.test.mjs`, `python3 -m pytest -q tools/tests/test_human_tools.py`, then sheet, `ears` and `eyes` on the delivered MP4.
+
+### RECIPE E: explainer, data story, how-to, templates `templates/explainer-diagram`, `data-story`, `process-howto`
+
+1. **One canvas, no hard cuts:** every change is a camera beat, a node landing or a highlight (`plan.audio.events`; no gap over 3.5 s outside a planned hold).
+2. **Explainer:** the question on frame 0 over a diagram already drawing -> the wrong model -> the mechanism built node by node (`diagram.graph` steps / cam / focus / flow / notes) -> zoom INTO the hardest node -> trace one item -> recap -> takeaway. Diagrams are JSON or the graph DSL; the layout is deterministic (LR on 16:9, TB on 9:16).
+3. **Data story:** every dataset needs `source` AND `method` (make.mjs exits 2 otherwise); bars and areas start at zero; a truncated line axis needs its label; every chart frame prints the source footer (and DEMO DATA for demo data). Numbers come from the data files, never from copy; `locale: 'in'` prints 12,34,567 and lakh / crore.
+4. **How-to:** 2-8 steps (<= 5 words each) with owned icons, a tip card per step, before / after with your photos (null = labelled placeholder), a checklist end card held >= 3 s.
+5. **Optional VO:** `voice.words` (+ `voice.audio`); beats with `word` land on the word, captions follow the voice, the bed ducks 12 dB.
+6. **Check:** `node templates/_explain/explain.test.mjs`, `python3 tools/structure_check.py templates/<t>/out/plan.json`, then `sheet.py`, ears and eyes on the render.
+
+### RECIPE D: delivery and accessibility (every public video)
+
+1. **Captions:** `python3 tools/captions/export.py --plan out/plan.json --out out/captions` (`--sdh` for speaker IDs and [sound] tags; `--audience kids` for 17 cps). A cps fail means the speech is faster than people read: condense those events by hand and re-check with `tools/captions/validate.py`.
+2. **Burned-in copy** for feeds that play muted (X, LinkedIn): `--burn out/film.mp4` (the burned track re-breaks to the safe width).
+3. **Audio description:** `python3 tools/describe/export.py --plan out/plan.json [--shotlist shotlist.json] --out out/ad`. Rewrite every DRAFT line against the picture; a describer records the script (the pack synthesises no voice), or ship `ad.en.vtt` as a descriptions track; offer the extended-AD cut (`--extend-video`) if lines did not fit.
+4. **Lint:** `python3 tools/a11y_check.py --plan out/plan.json --design design.json --captions out/captions/captions.en.events.json --mp4 out/film.mp4 --md out/a11y.md`. No fail before delivery.
+5. **Deliver:** `python3 tools/deliver.py out/film.mp4 --preset youtube --preset reels --out dist/`. Every verification line reads `ok`; broadcast uses `--preset broadcast-prores --region ebu|atsc`. Guide: `docs/DELIVERY-AND-ACCESSIBILITY.md`.
+6. **App or website loop** of the title or icon: `python3 tools/lottie/export.py spec.json --validate`; check the stills with `tools/lottie/playcheck.mjs`.
 
 ### RECIPE B: music / beat edit, template `templates/beat-edit`
 
@@ -470,6 +546,7 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 ## QA checklist (before calling it done)
 
 - [ ] **Ids:** `python3 tools/check_ids.py` shows 0 unresolved, and `make.mjs` prints `todo: none`.
+- [ ] **Structure:** `python3 tools/structure_check.py out/plan.json` scores 70 or more against the genre's beat sheet (`patterns/structures.json`; the template map picks it, `--pattern` forces one; `python3 tools/structure_check.py --all` scores every template), and each printed fix is either applied or answered in the plan (`plan.structure` names the beats when the shot ids cannot).
 - [ ] **Stills:**
   - Run `python3 templates/_shared/sheet.py <mp4> <sheet.jpg> <t1,t2,...>` on every cut, mid-transition, the hook, the reveal and the end card, then LOOK at the sheet.
   - Check for clipped or overlapping type, words cut by masks, and text outside the safe zones at 9:16.
@@ -483,6 +560,8 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
   - It reads at phone size (360 px wide).
 - [ ] **Honesty:** no fabricated numbers, reviews, logos or testimonials. Placeholders and concept renders are labelled.
 - [ ] **Flash safety:** no more than 3 full-frame flashes per second (`eyes/flashes` measures it, WCAG 2.3.1).
+- [ ] **Accessibility:** `tools/a11y_check.py` has no fail; captions exported and validated (`tools/captions/validate.py` no fail, or every cps warning condensed by hand); for a public release, an AD script reviewed by a person.
+- [ ] **Delivery:** each platform file comes from `tools/deliver.py` and its verification lines are all `ok`.
 - [ ] **Determinism:**
   - Render twice with `--format png-sequence` and compare the frames. They should be identical, or above 60 dB where blurs add GPU noise.
   - Don't compare two MP4s: the encoder carries GPU capture noise (at most 2/255) to the next keyframe, so two default renders differ (about 44-50 dB) even though every page frame is the same; `--workers 1` is usually but not always byte-identical. The measured numbers are in the README section "What is and is not deterministic".
@@ -556,3 +635,6 @@ When the user asks for generated music, a voiceover, or "use Lyria / Gemini", us
 | Automated looking and critique of the picture | `eyes/look.py`, `eyes/README.md`, thresholds in `eyes/manifest.json` |
 | Outside assets | `scripts/fetch-external.sh`, `THIRD_PARTY.md` |
 | Research behind the defaults | `docs/research/` |
+| Beat sheets, hooks, CTAs, platform lengths and the structure checker | `patterns/`, `tools/structure_check.py` |
+| Edit without code (one project file, the `mp` CLI) | `tools/mp`, `templates/_shared/project.mjs`, `templates/_shared/project.schema.json`, `docs/EDIT-WITHOUT-CODE.md` |
+| Captions, audio description, accessibility lint, delivery presets, Lottie export | `tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`, `docs/DELIVERY-AND-ACCESSIBILITY.md` |

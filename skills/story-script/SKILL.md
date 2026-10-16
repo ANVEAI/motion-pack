@@ -135,6 +135,7 @@ Full schema and a complete example: `references/templates.md` and `assets/shotli
 - **One idea, said three ways:** the picture, the on-screen text and the sound agree. At most 7 words on screen in the hook and at most 4 on the poster frame (house defaults).
 - **The first sound** lands on frames 0-3, or 1-2 s later on the first meaningful visual event over a moving frame 0 (a planned quiet open, `plan.audio.quiet`; 13 of 28 round 4/5 references did it). A music bed fading in is not a sound event. Details: motion-pack `references/virality.md` §1.
 - **Change only the first 1-3 s** between variants. With an identical body, a test tells you which hook worked.
+- **More archetypes and beat sheets:** `patterns/hooks.json` (13 archetypes with original example lines and frame-0 rules) and `patterns/structures.json` (beat sheets as % of runtime for 20 genres). Use them when the format is a launch, trailer, tutorial, vlog, podcast clip, founder story, explainer or data story.
 
 ## Honesty inside the story
 

@@ -14,6 +14,8 @@ The code source is `templates/_shared/plan.mjs PLATFORMS` and `type/safezones.js
 | `hero.web` | 16:9 | 20-45 s | 5 / 5 / 5 | n/a | n/a | -16 | Autoplays muted, should loop. |
 | Festival / broadcast | per spec | | | | | **-23 LUFS / -1 dBTP** (EBU R128) | Keep a separate -14 social master. |
 
+Machine-readable limits and CTA windows with their sources: `patterns/lengths.json` and `patterns/ctas.json` (in the pack). A YouTube or Instagram "view" now counts every start or replay; judge a hook by the 3 s hold and average view duration, not by views.
+
 ## 9:16 safe rectangle (1080x1920, conservative union)
 
 The safe rectangle is `x 65..960`, `y 269..1248`. That means top 269 px, bottom 672 px and right 120 px are reserved. `type/safezones.js` uses `conservative`, and every platform row there is flagged `verify: true`.
