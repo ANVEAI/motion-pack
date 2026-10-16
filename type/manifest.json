@@ -7283,6 +7283,319 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "hw.specCallout",
+   "file": "type/gfx/hw.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hw/click_detent",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 2.6,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "anchor": [
+     0.56,
+     0.52
+    ],
+    "track": null,
+    "off": [
+     150,
+     -120
+    ],
+    "run": null,
+    "label": "Memory",
+    "value": 128,
+    "from": 0,
+    "dec": 0,
+    "prefix": "",
+    "unit": "GB",
+    "source": "placeholder data",
+    "draw": 0.45,
+    "count": 1.1,
+    "accent": "#5CC8FF",
+    "ink": "#F4F6FA",
+    "muted": "#9AA3B2",
+    "size": 1,
+    "side": "auto",
+    "dot": true
+   },
+   "tags": [
+    "hardware",
+    "spec",
+    "callout",
+    "leader",
+    "count-up",
+    "number",
+    "product"
+   ],
+   "demo": "type/demo/out/gfx-hw.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "hw.dimensionLine",
+   "file": "type/gfx/hw.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hw/click_detent",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 2.4,
+   "in_frames": 6,
+   "out_frames": 9,
+   "params": {
+    "a": [
+     0.36,
+     0.7
+    ],
+    "b": [
+     0.64,
+     0.7
+    ],
+    "off": 60,
+    "ext": 18,
+    "value": 250,
+    "dec": 0,
+    "unit": "mm",
+    "label": null,
+    "source": "placeholder data",
+    "accent": "#5CC8FF",
+    "ink": "#F4F6FA",
+    "muted": "#9AA3B2",
+    "draw": 0.6,
+    "size": 1
+   },
+   "tags": [
+    "hardware",
+    "dimension",
+    "measure",
+    "scale",
+    "size",
+    "number"
+   ],
+   "demo": "type/demo/out/gfx-hw.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "hw.chipDie",
+   "file": "type/gfx/hw.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hw/led_on",
+    "offset_f": 10,
+    "gain_db": -3
+   },
+   "dur_s": 4.2,
+   "in_frames": 9,
+   "out_frames": 9,
+   "params": {
+    "box": [
+     0.3,
+     0.16,
+     0.4,
+     0.68
+    ],
+    "cores": 8,
+    "labels": [
+     {
+      "block": "cores",
+      "text": "CPU cores"
+     },
+     {
+      "block": "matrix",
+      "text": "Neural engine"
+     },
+     {
+      "block": "cache",
+      "text": "Shared cache"
+     },
+     {
+      "block": "mem",
+      "text": "Memory interface"
+     }
+    ],
+    "note": "die pattern: render, not a real floorplan",
+    "accent": "#5CC8FF",
+    "ink": "#F4F6FA",
+    "muted": "#9AA3B2",
+    "stagger": 0.07,
+    "scan": true
+   },
+   "tags": [
+    "hardware",
+    "chip",
+    "die",
+    "silicon",
+    "inside",
+    "reveal",
+    "macro"
+   ],
+   "demo": "type/demo/out/gfx-hw.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "hw.edgeGlint",
+   "file": "type/gfx/hw.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hw/light_sweep",
+    "offset_f": 18,
+    "gain_db": -4
+   },
+   "dur_s": 1.6,
+   "in_frames": 3,
+   "out_frames": 6,
+   "params": {
+    "a": [
+     0.38,
+     0.42
+    ],
+    "b": [
+     0.66,
+     0.4
+    ],
+    "from": 0,
+    "to": 1,
+    "sweep": 1.2,
+    "color": "#DDEBFF",
+    "core": 1,
+    "streak": 0.22,
+    "line": 0.12,
+    "ghosts": true,
+    "intensity": 1
+   },
+   "tags": [
+    "hardware",
+    "flare",
+    "glint",
+    "edge",
+    "lens",
+    "streak",
+    "product"
+   ],
+   "demo": "type/demo/out/gfx-hw.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "hw.dateCard",
+   "file": "type/gfx/hw.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hit/soft",
+    "offset_f": 4,
+    "gain_db": -2
+   },
+   "dur_s": 3.6,
+   "in_frames": 12,
+   "out_frames": 9,
+   "params": {
+    "kicker": "Available",
+    "date": "Spring 2027",
+    "priceLabel": "From",
+    "price": 999,
+    "currency": "$",
+    "dec": 0,
+    "note": "indicative price · placeholder",
+    "source": "placeholder data",
+    "cta": "",
+    "name": "Acme Node",
+    "accent": "#5CC8FF",
+    "ink": "#F4F6FA",
+    "muted": "#9AA3B2",
+    "align": "center",
+    "box": [
+     0.1,
+     0.18,
+     0.8,
+     0.64
+    ]
+   },
+   "tags": [
+    "hardware",
+    "availability",
+    "date",
+    "price",
+    "launch",
+    "end-card",
+    "number"
+   ],
+   "demo": "type/demo/out/gfx-hw.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "hw.specCard",
+   "file": "type/gfx/hw.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/hw/click_detent",
+    "offset_f": 1,
+    "gain_db": -3
+   },
+   "dur_s": 4.5,
+   "in_frames": 9,
+   "out_frames": 9,
+   "params": {
+    "title": "Specifications",
+    "rows": [
+     {
+      "label": "Compute",
+      "value": 120,
+      "unit": "TOPS",
+      "dec": 0
+     },
+     {
+      "label": "Memory",
+      "value": 128,
+      "unit": "GB",
+      "dec": 0
+     },
+     {
+      "label": "Storage",
+      "value": 4,
+      "unit": "TB",
+      "dec": 0
+     },
+     {
+      "label": "Power",
+      "value": 240,
+      "unit": "W",
+      "dec": 0
+     },
+     {
+      "label": "Weight",
+      "value": 2.1,
+      "unit": "kg",
+      "dec": 1
+     }
+    ],
+    "source": "placeholder data",
+    "note": "demo specs",
+    "box": [
+     0.08,
+     0.14,
+     0.4,
+     0.72
+    ],
+    "step": 0.32,
+    "accent": "#5CC8FF",
+    "ink": "#F4F6FA",
+    "muted": "#9AA3B2",
+    "panel": "#0B0D11"
+   },
+   "tags": [
+    "hardware",
+    "spec",
+    "sheet",
+    "table",
+    "count-up",
+    "number"
+   ],
+   "demo": "type/demo/out/gfx-hw.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "layout.splitScreen",
    "file": "type/gfx/layout.js",
    "kind": "layout",

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>motion-pack objects: hardware props gallery</title>
+<link rel="icon" href="data:,">
+<style>html,body{margin:0;padding:0;background:#07080a;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+/* objects/hw-gallery.html?shot=node|silhouette|sweep|explode|xray|board|card|cable (xp-hardware, 2026-10-16): 4-6 s per shot of the hardware props on the dark studio.
+   Stills: node tools/render.mjs objects/hw-gallery.html out/x.mp4 0 0 --stills-only --stills 0,60,120 --query "shot=explode" --stills-dir objects/qa/hw-explode
+   Determinism: node tools/render.mjs objects/hw-gallery.html --qa objects/qa/hash/hw-<shot>.json --query "shot=<shot>". Everything is a function of t. */
+import { runScene, U } from './kit/studio-lite.js';
+import { O } from './index.js';
+import { stageConfig } from './stage.js';
+const { E, seg, lerp } = U, q = new URLSearchParams(location.search), SHOT = q.get('shot') || 'node', SEC = { explode: 6, xray: 5, sweep: 5 }[SHOT] || 4;
+window.CONFIG = stageConfig({ name: 'hw-gallery-' + SHOT, seconds: SEC, qaFrames: [0, 30, 60, 90], colors: { backdrop: '#07080a' }, lights: { key: { kelvin: 5600 } }, grade: { vignette: 0.22, dofK: 14, bloom: 0.75, grain: 0.012 } });
+const st = {};
+runScene({
+  async build(ctx) {
+    st.studio = O.makeDarkStudio(ctx, {}); st.rig = O.makeHwRig(ctx, { target: [0, 0.15, 0] }); const G = st.studio.parent;
+    if (['node', 'silhouette', 'sweep', 'explode', 'xray', 'cable'].includes(SHOT)) {
+      st.node = O.makeNode(ctx, G, {}); st.X = O.explodePlan(st.node.layout.explode, { at: 0.8, hold: 2.2 });
+      if (SHOT === 'xray') st.xr = O.makeXray(ctx, st.node.group, { color: '#5cc8ff' });
+      if (SHOT === 'cable') { const L = st.node.layout, p = L.ports[1]; st.cable = O.makeCable(ctx, G, { from: [p.x + 0.5, 0.0, -1.6], to: [p.x, p.y + L.foot, -L.spec.d / 2 - 0.002], dir: [0, 0, 1], plug: 'net' }); }
+      ctx.probes = { shell: st.node.probes.shell, band: st.node.probes.band };
+    }
+    if (SHOT === 'board') { st.pcb = O.makePCB(ctx, G, { w: 0.9, d: 0.7, soc: { x: 0, z: 0, size: 0.2, t: 0.014 } }); ctx.probes = { die: st.pcb.chip.probes.die }; }
+    if (SHOT === 'card') { st.card = O.makeGPUCard(ctx, G, { w: 0.5, d: 0.9, t: 0.08 }); st.card.group.rotation.x = -0.12; st.card.group.position.y = 0.08; ctx.probes = { card: st.card.probes.card }; }
+  },
+  update(ctx, t, n, slot) {
+    const S = { rim: 1, top: 0.9, key: 0.35, edge: 0, sweep: null };
+    if (SHOT === 'silhouette') Object.assign(S, { rim: 0.2, top: 0, key: 0, edge: 1.6 });
+    if (SHOT === 'sweep') Object.assign(S, { rim: 0.5, top: 0.15, key: 0.05, sweep: E.move(seg(t, 0.4, 4.4)) });
+    st.rig.update(n, slot, S);
+    if (st.node) {
+      const yaw = SHOT === 'node' ? -0.6 + 0.35 * t : SHOT === 'cable' ? Math.PI * 0.82 : -0.55;
+      st.node.pose([0, 0, 0], yaw);
+      st.node.set({ band: SHOT === 'silhouette' ? 0.25 : 1, explode: SHOT === 'explode' ? O.explodeAt(st.X, t) : null, die: SHOT === 'explode' ? E.soft(seg(t, 2.0, 2.8)) : 0, dieGlow: SHOT === 'explode' ? seg(t, 2.2, 3.4) : 0, fanSpin: 9 * t });
+      if (st.xr) st.xr.set(E.move(seg(t, 0.5, 4.2)));
+      if (st.cable) st.cable.set({ insert: E.move(seg(t, 0.8, 2.6)) });
+    }
+    if (st.pcb) st.pcb.chip.set({ open: E.soft(seg(t, 0.5, 1.6)), glow: seg(t, 1.4, 3.6) });
+    if (st.card) st.card.set({ spin: 7 * t, glow: E.soft(seg(t, 0.4, 1.2)) });
+  },
+  camera(ctx, t) {
+    const tall = ctx.aspect === 'tall', K = {
+      node: { fov: 20, elev: [14, 18], az: [-14, -6], dist: [6.0, 5.6], target: [0, 0.16, 0] },
+      silhouette: { fov: 18, elev: 10, az: -4, dist: 6.4, target: [0, 0.15, 0] },
+      sweep: { fov: 16, elev: [12, 14], az: [-20, -16], dist: [4.4, 4.2], target: [0.1, 0.22, 0.1] },
+      explode: { fov: 22, elev: [16, 24], az: [-18, -10], dist: [7.6, 8.4], target: [0, [0.2, 0.55], 0] },
+      xray: { fov: 20, elev: 20, az: -16, dist: 6.0, target: [0, 0.16, 0] },
+      board: { fov: 18, elev: [48, 40], az: [-10, -4], dist: [4.0, 3.5], target: [0, 0.02, 0] },
+      card: { fov: 20, elev: [30, 26], az: [-28, -18], dist: [5.6, 5.2], target: [0, 0.1, 0] },
+      cable: { fov: 18, elev: 12, az: [158, 166], dist: [4.4, 4.0], target: [0.05, 0.12, -0.3] },
+    }[SHOT];
+    const v = (x) => (Array.isArray(x) && typeof x[0] === 'number' && x.length === 2 ? lerp(x[0], x[1], E.cam(seg(t, 0, SEC))) : x);
+    return { fov: v(K.fov), elev: v(K.elev), az: v(K.az), dist: v(K.dist) * (tall ? 1.7 : 1), target: K.target.map(v), screen: tall ? [540, 960] : [960, 560], near: 0.2, far: 80 };
+  },
+  focus(ctx, t) { return SHOT === 'board' ? [0, 0.02, 0] : [0, 0.16, 0.2]; },
+  subframes() { return 4; },
+});
+</script>
+</body>
+</html>

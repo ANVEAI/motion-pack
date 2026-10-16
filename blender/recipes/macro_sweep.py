@@ -28,6 +28,7 @@ PARAMS = {
     "sweep_dur": {"type": "float", "default": 3.2, "doc": "sweep duration (s)"},
     "key_w": {"type": "float", "default": 70.0, "doc": "key strip energy (W, all three feathers)"},
     "band_strength": {"type": "float", "default": None, "doc": "override the preset's band strength"},
+    **C.MODEL_PARAMS,
 }
 
 
@@ -49,7 +50,7 @@ def frame(H, ctx, f, K):
     D, S = H["D"], H["S"]
     t = C.t_of(ctx, f)
     u = C.u_of(ctx, f)
-    DV.set_band(D, K, 1.0, 1.0, 0.0)
+    C.set_band(D, K, 1.0, 1.0, 0.0)
     k = E["glide"](seg(t, p["sweep_at"], p["sweep_at"] + p["sweep_dur"]))
     x = lerp(p["sweep_from"], p["sweep_to"], k)
     ST.move_key(S["rig"], K, Vector((x, -0.3, 0.95)), Vector((0.45 * x, 0.0, 0.08)))

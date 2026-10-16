@@ -41,7 +41,7 @@ def via_music_mixer(P, out, bed, a):
         if c.get('loopTo'): continue   # the bed replaces ambience loops
         k = sid(c['id'])
         if k not in registry.SOUNDS: continue
-        cues.append({'id': k, 'frame': int(round(c['t'] * fps)), 'gain_db': 0.0, 'why': c.get('why', ''), **({'over_vo_db': c['overVoDb']} if c.get('overVoDb') is not None else {}), **({'over_bed_db': c['overBedDb']} if c.get('overBedDb') is not None else {})})   # levels: the mixer solves over-bed dB per tier; plan cue overVoDb (negative dB) sits the cue under the VOICE instead (a cue over the un-ducked bed is as loud as the bed was before it ducked: wrong under a line); plan cue overBedDb (dB, negative = under the bed) sets a LOOP cue's level against the un-dipped bed (a room tone under a quiet hold: the loop default is -10 dB, far too loud there)
+        cues.append({'id': k, 'frame': int(round(c['t'] * fps)), 'gain_db': 0.0, 'why': c.get('why', ''), **({'over_vo_db': c['overVoDb']} if c.get('overVoDb') is not None else {}), **({'over_bed_db': c['overBedDb']} if c.get('overBedDb') is not None else {}), **({'until_frame': int(round(c['untilT'] * fps))} if c.get('untilT') is not None else {})})   # plan cue untilT (seconds): a LOOP cue stops there (mixer add_cue until_frame, 40 ms fade): a hum under a dark open that ends on the reveal (xp-hardware)   # levels: the mixer solves over-bed dB per tier; plan cue overVoDb (negative dB) sits the cue under the VOICE instead (a cue over the un-ducked bed is as loud as the bed was before it ducked: wrong under a line); plan cue overBedDb (dB, negative = under the bed) sets a LOOP cue's level against the un-dipped bed (a room tone under a quiet hold: the loop default is -10 dB, far too loud there)
     d = tempfile.mkdtemp(prefix='mp-mix-'); import soundfile as sf
     # pre-tile the (seamless) loop bed to the full length here: music/mixer.py add_bed(loop=True) mis-tiles stereo beds shorter than
     # the edit (np.tile on a 2-D array -> 4 channels; reported to the music module). Passing a full-length bed with loop False avoids it.
@@ -76,8 +76,11 @@ def main():
     a = ap.parse_args(); P = json.load(open(a.plan)); fps = P.get('fps', 30); N = int(round(P['seconds'] * SR)) + SR
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)   # a template that links no media has no assets/media yet (compose.stage() makes it too)
     bed = music_bed_file(P.get('music'))
+    if P.get('musicFile'):   # a bed composed for this cut (xp-hardware: music/reveal.py writes it next to the plan), a path relative to the plan's folder; it wins over plan.music
+        bed = P['musicFile'] if os.path.isabs(P['musicFile']) else os.path.join(os.path.dirname(os.path.abspath(a.plan)), P['musicFile'])
+        if not os.path.exists(bed): raise SystemExit(f'plan.musicFile missing: {bed}')
     if bed and not os.path.exists(bed): raise SystemExit(f'music bed WAV missing: {bed}\nthe music WAV masters are not in git: run `python3 music/build_music.py` once (about a minute)')
-    if P.get('music') and not bed: print('TODO hook: music bed', P.get('music'), 'not found in music/manifest.json: SFX-only mix')
+    if P.get('music') and not bed and not P.get('musicFile'): print('TODO hook: music bed', P.get('music'), 'not found in music/manifest.json: SFX-only mix')
     if bed and not a.stem: return via_music_mixer(P, a.out, bed, a)
     mix = np.zeros((N, 2), np.float32); rep = {'placed': [], 'todo': [], 'sfx_modules_missing': MISSING_MODULES}
     for i, c in enumerate(P['cues']):

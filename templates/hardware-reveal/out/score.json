@@ -1,0 +1,258 @@
+{
+ "file": "score.wav",
+ "kind": "score",
+ "generator": "music/reveal.py",
+ "seed": 3,
+ "fps": 30,
+ "markers": {
+  "bpm": 120.0,
+  "frames_per_beat": 15,
+  "frames_per_bar": 60,
+  "sections": [
+   {
+    "name": "dark",
+    "bar0": 0,
+    "bars": 3,
+    "frame0": 0,
+    "t0": 0.0,
+    "energy": 0.08
+   },
+   {
+    "name": "sweep",
+    "bar0": 3,
+    "bars": 2,
+    "frame0": 180,
+    "t0": 6.0,
+    "energy": [
+     0.25,
+     0.5
+    ]
+   },
+   {
+    "name": "reveal",
+    "bar0": 5,
+    "bars": 4,
+    "frame0": 300,
+    "t0": 10.0,
+    "energy": 1.0
+   },
+   {
+    "name": "explode",
+    "bar0": 9,
+    "bars": 4,
+    "frame0": 540,
+    "t0": 18.0,
+    "energy": 0.85
+   },
+   {
+    "name": "scale",
+    "bar0": 13,
+    "bars": 2,
+    "frame0": 780,
+    "t0": 26.0,
+    "energy": 0.7
+   },
+   {
+    "name": "ports",
+    "bar0": 15,
+    "bars": 3,
+    "frame0": 900,
+    "t0": 30.0,
+    "energy": 0.8
+   },
+   {
+    "name": "inside",
+    "bar0": 18,
+    "bars": 3,
+    "frame0": 1080,
+    "t0": 36.0,
+    "energy": 0.6
+   },
+   {
+    "name": "specs",
+    "bar0": 21,
+    "bars": 3,
+    "frame0": 1260,
+    "t0": 42.0,
+    "energy": 0.85
+   },
+   {
+    "name": "price",
+    "bar0": 24,
+    "bars": 2,
+    "frame0": 1440,
+    "t0": 48.0,
+    "energy": 0.5
+   },
+   {
+    "name": "tail",
+    "bar0": 26,
+    "bars": 2,
+    "frame0": 1560,
+    "t0": 52.0,
+    "energy": 0.3
+   }
+  ],
+  "drops": [
+   {
+    "section": "reveal",
+    "frame": 300,
+    "t": 10.0
+   }
+  ],
+  "end_frame": 1680,
+  "seconds": 56.0
+ },
+ "meta": {
+  "preset": "hw_reveal",
+  "structure": "custom",
+  "seed": 3,
+  "fps": 30,
+  "bpm": 120.0,
+  "bpm_requested": 120.0,
+  "frames_per_beat": 15,
+  "frames_per_bar": 60,
+  "bars": 28,
+  "key_midi": 57,
+  "scale": "minor",
+  "prog": "cinematic",
+  "loop": false,
+  "length_frames": 1680.0,
+  "length_s": 57.2,
+  "sections": [
+   {
+    "name": "dark",
+    "bar0": 0,
+    "frame0": 0,
+    "bars": 3,
+    "energy": 0.08
+   },
+   {
+    "name": "sweep",
+    "bar0": 3,
+    "frame0": 180,
+    "bars": 2,
+    "energy": [
+     0.25,
+     0.5
+    ]
+   },
+   {
+    "name": "reveal",
+    "bar0": 5,
+    "frame0": 300,
+    "bars": 4,
+    "energy": 1.0
+   },
+   {
+    "name": "explode",
+    "bar0": 9,
+    "frame0": 540,
+    "bars": 4,
+    "energy": 0.85
+   },
+   {
+    "name": "scale",
+    "bar0": 13,
+    "frame0": 780,
+    "bars": 2,
+    "energy": 0.7
+   },
+   {
+    "name": "ports",
+    "bar0": 15,
+    "frame0": 900,
+    "bars": 3,
+    "energy": 0.8
+   },
+   {
+    "name": "inside",
+    "bar0": 18,
+    "frame0": 1080,
+    "bars": 3,
+    "energy": 0.6
+   },
+   {
+    "name": "specs",
+    "bar0": 21,
+    "frame0": 1260,
+    "bars": 3,
+    "energy": 0.85
+   },
+   {
+    "name": "price",
+    "bar0": 24,
+    "frame0": 1440,
+    "bars": 2,
+    "energy": 0.5
+   },
+   {
+    "name": "tail",
+    "bar0": 26,
+    "frame0": 1560,
+    "bars": 2,
+    "energy": 0.3
+   }
+  ],
+  "chords": [
+   "i",
+   "VI",
+   "VII",
+   "i",
+   "i",
+   "VI",
+   "VII",
+   "i",
+   "i",
+   "VI",
+   "VII",
+   "i",
+   "i",
+   "VI",
+   "VII",
+   "i",
+   "i",
+   "VI",
+   "VII",
+   "i",
+   "i",
+   "VI",
+   "VII",
+   "i",
+   "i",
+   "VI",
+   "VII",
+   "i"
+  ],
+  "tuning": "et",
+  "lufs_i": -18.83,
+  "true_peak_dbtp": -1.5,
+  "tail_s": 1.2
+ },
+ "drops": [
+  {
+   "section": "reveal",
+   "frame": 300,
+   "t": 10.0
+  }
+ ],
+ "events": [
+  {
+   "kind": "riser",
+   "sample": 384000,
+   "frame": 240.0,
+   "bars": 1
+  },
+  {
+   "kind": "drop",
+   "sample": 480000,
+   "frame": 300.0,
+   "section": "reveal"
+  },
+  {
+   "kind": "button",
+   "sample": 2496000,
+   "frame": 1560.0
+  }
+ ]
+}

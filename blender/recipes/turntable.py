@@ -29,6 +29,7 @@ PARAMS = {
     "breath": {"type": "float", "default": 0.08, "doc": "band breathing depth (0 = steady)"},
     "band_strength": {"type": "float", "default": None, "doc": "override the preset's band strength"},
     "ignite": {"type": "bool", "default": False, "doc": "ignite the band left-to-right over the first 0.9 s (not a loop)"},
+    **C.MODEL_PARAMS,
 }
 
 
@@ -59,9 +60,9 @@ def frame(H, ctx, f, K):
     if p["ignite"]:
         ign = E["move"](seg(t, 0.25, 1.15))
         hot = 1.6 * (1 - E["soft"](seg(t, 1.0, 1.5))) if t >= 0.25 else 0.0
-        DV.set_band(D, K, lvl, ign, hot)
+        C.set_band(D, K, lvl, ign, hot)
     else:
-        DV.set_band(D, K, lvl, 1.0, 0.0)
+        C.set_band(D, K, lvl, 1.0, 0.0)
     if D.get("blades") is not None:
         K.set(D["blades"], "rotation_euler", (0, 0, 0.0))
     CM.apply(H["cam"], H["s0"], K)

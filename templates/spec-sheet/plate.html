@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>motion-pack hardware plate</title>
+<link rel="icon" href="data:,">
+<style>html,body{margin:0;padding:0;background:#07080a;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+/* the three.js plate of this template: make.mjs writes out/plate-<wide|tall>.json from the plan and renders this page with tools/render.mjs (?plan=plate-wide.json&aspect=wide).
+   Everything comes from the plan through objects/lib/hwshots.js (the same director node uses to put the callouts on the device). */
+import { runHwPlate } from './objects/lib/hwplate.js';
+const q = new URLSearchParams(location.search), P = await (await fetch('out/' + (q.get('plan') || 'plate-wide.json'))).json();
+runHwPlate(P);
+</script>
+</body>
+</html>

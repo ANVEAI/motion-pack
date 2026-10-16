@@ -5,7 +5,7 @@ import math
 
 from mathutils import Vector
 
-from lib import camera as CM, device as DV
+from lib import camera as CM, device as DV, model as MD
 from lib.ease import E, seg, hermite
 
 from . import _common as C
@@ -30,6 +30,7 @@ PARAMS = {
     "fstop": {"type": "float", "default": 8.0, "doc": "aperture"},
     "fill": {"type": "float", "default": 0.0, "doc": "fill of the exploded stack (0 = 0.62 wide / 0.86 tall)"},
     "band_strength": {"type": "float", "default": None, "doc": "override the preset's band strength"},
+    **C.MODEL_PARAMS,
 }
 
 
@@ -41,6 +42,9 @@ def build(ctx):
     k = h / 0.2185
     open_h = h + 0.17 * k * p["spread"]
     open_w = hw + 0.101 * k * p["spread"]
+    if D.get("model"):   # your model: the parts travel 0.45 x its largest side
+        big = max(D["w"], D["d"], D["h"])
+        open_h, open_w = h + 0.6 * big * p["spread"], hw + 0.45 * big * p["spread"]
     fill = p["fill"] or (0.86 if ctx.tall else 0.62)
     d_open = CM.fit_dist(open_w, open_h * 0.55, p["lens"], ctx.W, ctx.H, fill)
     d_seal = d_open * 0.86
@@ -58,12 +62,15 @@ def frame(H, ctx, f, K):
     mid_open = to + 0.95 / p["speed"]
     hold_end = (ts - 0.95 / p["speed"]) if ts else T
     br = math.sin(math.pi * seg(t, mid_open, hold_end)) ** 2 if hold_end > mid_open else 0.0
-    DV.explode(D, K, t, to, ts, p["spread"], br, p["speed"])
+    if D.get("model"):
+        MD.explode(D, K, t, to, ts, p["spread"], br, p["speed"])
+    else:
+        DV.explode(D, K, t, to, ts, p["spread"], br, p["speed"])
     # the seal flare: a fast rise on contact, a 0.3 s fall
     fl = 0.0
     if ts:
         fl = E["soft"](seg(t, ts - 1 / 30.0, ts + 1 / 30.0)) * (1 - E["soft"](seg(t, ts + 1 / 30.0, ts + 0.33)))
-    DV.set_band(D, K, 1.0 + 0.6 * fl, 1.0, 0.0)
+    C.set_band(D, K, 1.0 + 0.6 * fl, 1.0, 0.0)
     # camera: a crane up for the exploded stack, back down for the seal; distance follows the stack; a slow yaw
     tz0, tz1 = H["h"] * 0.47, H["open_h"] * 0.5
     end = ts if ts else T
