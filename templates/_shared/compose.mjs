@@ -37,6 +37,18 @@ export function lintStop(fails, who, waive = allowLint()) {
   if (!waive) { console.error('\nFix the CONFIG block, or pass --allow-lint to build anyway (MP_ALLOW_LINT=1 for render3d.sh). Never waive a stat that has no source.'); process.exit(2); }
 }
 
+/* aspectFlag(argv = process.argv): `--aspect A` (what tools/mp passes, and what cues.mjs / project.mjs read) becomes `--set aspect=A` IN PLACE, unless a `--set aspect=`
+   is already there. The shared builders that parse their own `--set` (templates/_hw/makehw.mjs, _shared/saas/make.mjs, _shared/human/build.mjs, _shared/film/make-film.mjs)
+   call it when they load, so their plan name, project folder and page follow the aspect being built: they used to read only `--set aspect=`, and `mp render` wrote a
+   1920x1080 file named -9x16 for hardware-teaser, trailer, saas-feature-drop and founder-story. Returns argv. */
+export function aspectFlag(argv = process.argv) {
+  const i = argv.findIndex((a) => a === '--aspect' || a.startsWith('--aspect=')); if (i < 0) return argv;
+  const v = argv[i] === '--aspect' ? argv[i + 1] : argv[i].slice(9);
+  const has = argv.some((a, k) => a === '--set' && /^aspect=/.test(argv[k + 1] || ''));
+  argv.splice(i, argv[i] === '--aspect' ? 2 : 1, ...(has || !v ? [] : ['--set', 'aspect=' + v]));
+  return argv;
+}
+
 /* mix(planJson, wav, py = 'python3', args = []): run _shared/audio.py (music/mixer.py under it) with its flags in `args` (['--stem'] = a stem under dialogue, never normalised).
    Like runPlan, a failure (a missing music bed, a mixer error) ends this process with audio.py's own message and exit code, not a Node stack trace on top of it.
    The third argument is the PYTHON executable: a flag there (the old talking-head call passed '--stem') is refused, because it would be spawned as a program. */

@@ -186,3 +186,9 @@ All four are within -14 ± 0.5 LUFS-I and at or under -1.0 dBTP. eyes on ad-16x9
 - **multi-voice-doc 9:16 is marked manual:** it uses fixed 16:9 px sizes.
 - **`mp brand` on an SVG** weights colours by how often they appear, not by painted area. A raster logo is weighted by pixel share.
 - **Stricter `--set` is a behaviour change:** an unknown CONFIG key now exits 2 with a suggestion. It still allows a field name the CONFIG already uses elsewhere, such as `.source` and `.method` (proof-film's honesty tests rely on that).
+
+## Render findings (16-17 Oct) and fixes in `mp`
+
+- `mp render` passed `--project` + `--aspect`, but templates whose PROJECT_MAP maps the project's `aspects` list never saw the aspect (17 of 24 built the wrong size for one aspect through the project path). Fixed in templates/_shared/project.mjs; the shared builders that parse their own `--set` call `aspectFlag()` (templates/_shared/compose.mjs). Guard: `node tools/tests/aspect-builds.test.mjs` (CI).
+- `mp render` now ffprobes every render (tools/mp-size.mjs) and fails a file whose WxH is not its aspect's size, renaming it `.WRONG-SIZE.mp4` (kept); `mp check` runs the same check on every file in renders/. Guard: `tools/tests/test_mp_size.py`.
+- ad 16:9 eyes: the "placeholder: Fernwick on a laptop" plate tag sits 11-23 px under the bottom safe edge at 6.0-7.0 s (placeholder label only). Open.

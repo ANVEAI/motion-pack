@@ -7,8 +7,9 @@
    9:16 is its own project folder (tall/), like proof-film: two root compositions in one folder fail hyperframes lint.
    Flags: --set key=value (any CONFIG path; aspect=9:16), --plates (re-render the plate), --no-plate (page only: a placeholder until the plate exists), --allow-lint. */
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import { execFileSync, spawnSync } from 'node:child_process';
-import { stage, runPlan, head, esc, mix } from '../_shared/compose.mjs';
+import { stage, runPlan, head, esc, mix, aspectFlag } from '../_shared/compose.mjs';
 import { txPlan, span, txCalls } from '../_shared/txplan.mjs';
+aspectFlag();   // --aspect A (tools/mp) -> --set aspect=A, so this builder's own --set parse sees the aspect being built
 const HW = path.dirname(new URL(import.meta.url).pathname), PACK = path.resolve(HW, '..', '..'), PY = process.env.PYTHON || 'python3';
 const sha = (o) => crypto.createHash('sha256').update(typeof o === 'string' ? o : JSON.stringify(o)).digest('hex').slice(0, 16);
 function freeGiB() { try { const l = execFileSync('df', ['-k', PACK]).toString().trim().split('\n').pop().split(/\s+/); return Number(l[3]) / 1048576; } catch { return -1; } }

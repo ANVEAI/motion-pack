@@ -1376,7 +1376,7 @@
    "dur": 3.5,
    "type": "type/maskRise",
    "x": 96,
-   "y": 996,
+   "y": 956,
    "size": 50,
    "anchor": "start",
    "color": "#F4F6FA"
@@ -1438,9 +1438,9 @@
    ],
    "box": [
     96,
-    955,
+    915,
     516,
-    1008
+    968
    ],
    "fontPx": 50,
    "role": "read",

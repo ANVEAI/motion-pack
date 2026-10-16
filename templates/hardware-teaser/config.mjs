@@ -54,7 +54,7 @@ export function buildPlan(C) {
   /* hook: the silhouette alone; the tease line lands one beat before the second bar of the dark (a 1-bar dark has no tease line) */
   const teaseAt = dk.bars >= 2 ? +(dk.t0 + bar - G.beat).toFixed(4) : null, hookEnd = teaseAt ?? dk.t0 + dk.dur, dateAt = +(da.t0 + NAME_BEATS[cut] * G.beat).toFixed(4);
   if (teaseAt != null) title('tease', T.tease, teaseAt, dk.t0 + dk.dur - 0.2 - teaseAt, C.type.tease, { x: W / 2, y: A.tall ? S.y0 + 0.62 * S.h : H * 0.82, size: (A.tall ? 60 : 56) * s, anchor: 'middle', color: B.ink, weight: 700 });
-  title('detail', T.detail, dt.t0 + 0.35, dt.dur - 0.5, C.type.detail, { x: S.x0, y: A.tall ? S.y1 - 40 * s : S.y1 - 30 * s, size: (A.tall ? 56 : 50) * s, anchor: 'start', color: B.ink });
+  title('detail', T.detail, dt.t0 + 0.35, dt.dur - 0.5, C.type.detail, { x: S.x0, y: A.tall ? S.y1 - 40 * s : S.y1 - 70 * s, size: (A.tall ? 56 : 50) * s, anchor: 'start', color: B.ink });   // 16:9: clear of the safe edge and above the bottom-left frame label (eyes safezones, 16 Oct render)
   const gl = glintItem(D, A, { a: [-w / 2 + 0.05, h + foot, d / 2], b: [w / 2 - 0.02, h + foot, d / 2], at: dt.t0 + 0.2, dur: dt.dur - 0.3, sweep: (dt.dur - 0.3) * 0.9 }); if (gl) overlays.push(gl);
   cue(C.sfx.sweep, dt.t0 + 0.2 + (dt.dur - 0.3) * 0.45, 'the glint at its brightest');
   cue(C.sfx.hit, da.t0, 'the hit: one deep sub hit on the drop (the title beat)'); cue(C.sfx.led, da.t0 + 0.08, 'the band ignites behind the name');

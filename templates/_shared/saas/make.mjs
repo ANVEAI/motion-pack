@@ -4,9 +4,10 @@
        3. the mix (_shared/audio.py -> music/mixer.py, -14 LUFS)   4. index.html: ONE director draw(t) on every hf-seek: each scene is its own full-frame layer (an <svg> redrawn
           from the scene data), the transition windows from _shared/txplan.mjs run the transitions module's DOM back-end (applyDom, styles from p alone), nothing reads a clock. */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { stage, runPlan, head, mix } from '../compose.mjs';
+import { stage, runPlan, head, mix, aspectFlag } from '../compose.mjs';
 import { txPlan } from '../txplan.mjs';
 import { SCREEN_CSS } from './screens.mjs';
+aspectFlag();   // --aspect A (tools/mp) -> --set aspect=A, so this builder's own --set parse sees the aspect being built
 const SH = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'), PACK = path.resolve(SH, '..', '..');
 
 export function parseSets(argv, C) {

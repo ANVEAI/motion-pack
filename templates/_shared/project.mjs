@@ -260,10 +260,13 @@ export async function resolve(dir, args = {}) {
     const r = applyProject(C, mod.PROJECT_MAP, project, { template, aspect, platform, ASPECTS: mod.ASPECTS, voiceOut: path.join(dir, 'out', 'voice.words.json') });
     C = r.config; Object.assign(report, { aspect, platform, applied: r.applied, ignored: r.ignored, warnings: [...report.warnings, ...r.warnings] });
     if (args.strict && r.ignored.length) throw new ProjectError(r.ignored.map((p) => `${p}: ${template} does not use it (--strict)`));
-  } else if (aspect) { const r = applyProject(C, mod.PROJECT_MAP, {}, { template, aspect, ASPECTS: mod.ASPECTS }); C = r.config; report.aspect = aspect; report.applied = r.applied;
-    /* a template whose map has no derived 'aspect' entry (it maps the project's `aspects` list onto CONFIG.aspect) used to ignore --aspect without a project and build its default
-       aspect under the asked-for name (cues.mjs --aspect 9:16 wrote a 16:9 plan-tall.json); set its own CONFIG.aspect, exactly as --set aspect= does */
-    if (!(mod.PROJECT_MAP && 'aspect' in mod.PROJECT_MAP) && typeof C.aspect === 'string' && C.aspect !== aspect) { C.aspect = aspect; report.applied.push('aspect'); } }
+  } else if (aspect) { const r = applyProject(C, mod.PROJECT_MAP, {}, { template, aspect, ASPECTS: mod.ASPECTS }); C = r.config; report.aspect = aspect; report.applied = r.applied; }
+  /* a template whose map has no derived 'aspect' entry (it maps the project's `aspects` list, which applyProject never applies, onto CONFIG.aspect) ignored the aspect being built,
+     with or without a project: cues.mjs --aspect 9:16 wrote a 16:9 plan-tall.json, and `mp render` (which passes --project and --aspect) wrote 1920x1080 files named -9x16 for
+     hardware-teaser, trailer, saas-feature-drop and founder-story, and a 1080x1920 file named -16x9 for vlog-personal. Set its own CONFIG.aspect, exactly as --set aspect= does. */
+  if (aspect && !(mod.PROJECT_MAP && 'aspect' in mod.PROJECT_MAP) && typeof C.aspect === 'string') {
+    if (C.aspect !== aspect) { C.aspect = aspect; report.applied.push('aspect'); }
+    report.ignored = (report.ignored || []).filter((k) => k !== 'aspect'); }
   if (args.sets.length) { const r = applySets(C, args.sets, { MAP: mod.PROJECT_MAP, template, ASPECTS: mod.ASPECTS }); C = r.config; report.applied.push(...r.applied); const a = args.sets.find((s) => s.startsWith('aspect=')); if (a) report.aspect = a.slice(7); }
   return { C, report, mod };
 }

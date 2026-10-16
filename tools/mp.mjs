@@ -14,6 +14,7 @@ import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'
 
 const PACK = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), TPL = path.join(PACK, 'templates');
 const P = await import(pathToFileURL(path.join(TPL, '_shared', 'project.mjs')).href);
+const { sizeProblem } = await import(pathToFileURL(path.join(PACK, 'tools', 'mp-size.mjs')).href);   // the WxH-vs-aspect check after every render
 const HF = 'hyperframes@0.8.142', MIN_FREE_GIB = 10, TAG = (a) => a.replace(':', 'x');
 const VENV = process.env.MP_VENV || path.join(os.homedir(), 'Developer', '.venvs', 'motion-pack311');
 const PY = process.env.PYTHON || (fs.existsSync(path.join(VENV, 'bin', 'python3')) ? path.join(VENV, 'bin', 'python3') : 'python3');
@@ -144,6 +145,8 @@ async function cmdRender(argv) {
         if (ok) { fs.renameSync(path.join(T, 'out', `${id}-${tag}.mp4`), out); fs.copyFileSync(path.join(T, 'out', 'plan.json'), out.replace(/\.mp4$/, '.plan.json')); } }
       else { console.log(`${id}: no renderer (no make.mjs or scene.html)`); continue; }
       if (!ok) { console.log(`${id} ${a}: render FAILED or refused (a lock refuses under 10 GiB free): stopping here, no retry; re-run mp render when the machine is free`); process.exit(1); }
+      /* the size check (tools/mp-size.mjs): a file at the wrong size for its aspect is a failed render; it is renamed .WRONG-SIZE.mp4 (kept, never deleted) so no mislabelled file is left */
+      const wrong = sizeProblem(out, a); if (wrong) { const bad = out.replace(/\.mp4$/, '.WRONG-SIZE.mp4'); fs.renameSync(out, bad); console.log(`${id} ${a}: FAILED the size check: ${wrong}; kept as ${path.basename(bad)}`); process.exit(1); }
       sheet(out); }
   }
   process.exit(bad);
@@ -171,6 +174,7 @@ async function cmdCheck(argv) {
     for (const f of fs.readdirSync(path.join(dir, 'renders')).filter((f) => f.startsWith(id + '-') && f.endsWith('.mp4')).sort()) {
       const mp4 = path.join(dir, 'renders', f), planF = mp4.replace(/\.mp4$/, '.plan.json'), base = mp4.replace(/\.mp4$/, '');
       if (fs.existsSync(planF)) { const L = JSON.parse(fs.readFileSync(planF, 'utf8')).lint || {}; const n = (L.claimsWithoutSource || []).length + (L.unmotivatedTransitions || []).length; n ? fail(`${f}: plan lint ${n} problem(s)${L.allowed ? ' (waived with --allow-lint)' : ''}`) : ok(`${f}: plan lint (claims have sources, transitions have reasons)`); }
+      { const tg = /-(\d+)x(\d+)\.mp4$/.exec(f), asp = tg && tg[1] + ':' + tg[2], pr = asp && sizeProblem(mp4, asp); if (asp) (pr ? fail : ok)(pr || `${f}: the frame size matches ${asp}`); }
       const m = sheet(mp4); if (m) (Math.abs(m.lufs + 14) <= 0.5 && m.tp <= -1.0 ? ok : fail)(`${f}: ${m.lufs} LUFS-I (target -14 +/- 0.5), ${m.tp} dBTP (<= -1.0)`);
       for (const [tool, script] of [['eyes', 'eyes/look.py'], ['ears', 'ears/listen.py']]) {
         const r = heavy(PY, [path.join(PACK, script), mp4, ...(fs.existsSync(planF) ? ['--plan', planF] : []), '--json', `${base}.${tool}.json`, '--md', `${base}.${tool}.md`, '--quiet'], { capture: true });

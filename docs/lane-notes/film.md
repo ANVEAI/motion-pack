@@ -95,3 +95,8 @@ Where the pattern does not fit, kept as is (not mapped to null, not stretched to
 - **trailer:** the demo is front-loaded: the cold open + world take 40% (the pattern's act 1 ends at 30%), so the title lands at 78% instead of 88-94%. A real cut with a longer act 2 / 3 moves it.
 - **title-sequence:** the pattern ends on the main title; this template puts "directed by" last on purpose, so it is counted inside the title block. Pace scores 0.2 because the textures hold 9 s under the names (the names change every 3 s, but the checker counts texture shots). At `length=60` the demo's 10 names fill only 34 s and the rest is a hold, so the 60 s cut scores 66: per-name time does not stretch to the length. Open follow-up: stretch `per` to fill the length, or add names.
 - **short-film:** pace scores 0: the plan's `audio.mode` is `continuous` (ears scores motion events against onsets), so structure_check reads motion events against a 3.5 s ceiling, and the demo holds 4-6 s plates with nothing landing. `plan.audio.events` now lists every real event (cuts, title, slugs, chapter card, subtitles, credits roll), and gaps of 4.4-5.5 s remain. A structure needs a beat on every story shot; without beats, plan.structure is omitted and the checker says so.
+
+## Render findings (16-17 Oct, RENDER-QUEUE.md L3)
+
+- **trailer 9:16 wrote the letterboxed 16:9 cut:** fixed in the integration (`aspectFlag` in templates/_shared/film/make-film.mjs + project.mjs; `mp render` size check). Re-render L3.
+- **eyes on the 15 s trailer:** 3 fails (frames, banding, readability) on the dark placeholder plates. Open: brighter plates or grain against banding; re-judge with real footage.

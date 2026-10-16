@@ -153,3 +153,8 @@ Between steps move intermediates to the Trash: `mv templates/*/out/plate-*-raw.m
 What to look at first on the sheets: the callout dots sit ON their parts (the node-side projection `objects/kit/project.js` mirrors the kit rig but has not been
 compared with the page's own `window.__project` yet), frame 0 of the dark open is a visible moving silhouette (eyes/frame0), the 9:16 framings (every tall camera
 is a starting value), the x-ray and the die reveal, and the end-card hold.
+
+## Render findings (16-17 Oct, RENDER-QUEUE.md L1) and what was fixed
+
+- **9:16 wrote a 1920x1080 file:** fixed in the integration (templates/_shared/project.mjs + `aspectFlag` in templates/_hw/makehw.mjs; `mp render` now fails a file at the wrong size). Re-render L1.
+- **eyes, hardware-teaser 16:9:** safezones (the "Lit from within" detail line sat 14 px under the bottom safe edge, on the frame label at 7.2 s): moved up 40 px on 16:9 (not yet re-rendered). frame0 (nothing moves in the first 1.0 s: the dark silhouette) and banding (12/12 frames, dark gradients) are open: they need a brighter edge light from frame 0 and grain / a lower CRF on the plate; judge on the re-render.

@@ -96,3 +96,8 @@ RECIPE S: SaaS films, templates `templates/saas-launch` (45/60/75 s), `saas-feat
 - **Renamed `callout.highlightBox` -> `callout.uiHighlight`** (the SaaS ring): the human lane's tutorial part already owned `callout.highlightBox`. Changed in `type/gfx/ui-saas.js`, the GFX_SFX row in `type/gfx/index.js`, `type/tests/saas.test.mjs`, `templates/saas-launch` (scenes, plans, pages, README), apis.md and these notes.
 - **saas-explainer beats:** `buildPlan` writes `plan.structure` on the `explainer` beat sheet (question, wrong model -> wrongmodel, reframe + the three steps -> reframe (the walkthrough), result -> proof, end -> sowhat): 69 -> 85 at both aspects. Pace stays 0.27: scenes of 8-12 s against the pattern's 2.5-6 s ASL (the cursor and zoom moves inside a scene are not shots).
 - **The 9:16 "mismatch" was a tool bug, not a stale plan:** `cues.mjs --aspect 9:16` without `--project` ignored the aspect for templates whose PROJECT_MAP maps `aspects` (the committed `plan-tall.json` matched `--set aspect=9:16` exactly). Fixed in `templates/_shared/project.mjs`.
+
+## Render findings (16-17 Oct, RENDER-QUEUE.md L4)
+
+- **saas-feature-drop 9:16 wrote a 1920x1080 file:** fixed in the integration (`aspectFlag` in templates/_shared/saas/make.mjs + project.mjs; size check). Re-render L4.
+- **eyes:** frame0 (no readable subject at 1.30:1) and readability (16:9 headlines 76 and 92 px, under the 96 px wide floor; "Live today" 8.2 px on a 360 px phone). Open, not cheap: raising `wide.top.size` / `hookHead.size` moves the window layout (`templates/saas-feature-drop/config.mjs` LAYOUT); do it with a look at the stills.

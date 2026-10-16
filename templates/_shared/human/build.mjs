@@ -3,10 +3,11 @@
      -> out/transcript<tag>.json for ears -> the page (page.mjs) in the aspect's own project folder (the template's default aspect at the root, others in tall/ wide/ square/ portrait/).
    aspectArgs(DIR, CONFIG, argv) tells make.mjs which plan name and folder this run writes, so it can hand cues.mjs `--name` before anything is staged. */
 import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
-import { mix } from '../compose.mjs';
+import { mix, aspectFlag } from '../compose.mjs';
 import { applySets } from './core.mjs';
 import { stageHuman, pageHTML } from './page.mjs';
 import { tagOf, projOf } from './kit.mjs';
+aspectFlag();   // --aspect A (tools/mp) -> --set aspect=A, so this builder's own --set parse sees the aspect being built
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 
 export function aspectArgs(CONFIG, argv, def) { const C = applySets(structuredClone(CONFIG), argv), tag = tagOf(C.aspect, def); return { C, tag, planName: 'plan' + tag, proj: projOf(C.aspect, def) }; }

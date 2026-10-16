@@ -5,7 +5,8 @@
    The default plan (CONFIG as shipped) is out/plan.json (the CI plan test compares it); every other cut / aspect writes out/plan-<cut>-<aspect>.json.
    Render: npx -y hyperframes@0.8.142 render projects/<tag> -o out/<name>-<tag>.mp4 --crf 23 (make.mjs prints it). */
 import fs from 'node:fs'; import path from 'node:path'; import { spawnSync } from 'node:child_process'; import { pathToFileURL } from 'node:url';
-import { runPlan } from '../compose.mjs'; import { stageFilm, filmPage } from './page.mjs';
+import { runPlan, aspectFlag } from '../compose.mjs'; import { stageFilm, filmPage } from './page.mjs';
+aspectFlag();   // --aspect A (tools/mp) -> --set aspect=A, so this builder's own --set parse sees the aspect being built
 const SH = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 export function setArgs(C, argv) {
   for (let i = 0; i < argv.length; i++) if (argv[i] === '--set') { const arg = argv[++i], j = arg.indexOf('='), k = arg.slice(0, j), v = arg.slice(j + 1); let o = C; const ks = k.split('.');
