@@ -59,3 +59,43 @@ Personal, tutorial and human-blended videos: real footage (the user's own) edite
 - `templates/talking-head/make.mjs` calls `mix(planJson, wav, '--stem')`. `compose.mix`'s third argument is the PYTHON executable, so this spawns `--stem` as a program. It looks broken since `mix()` gained that signature.
 - `templates/multi-voice-doc/vo.py` writes its float WAV with soundfile. libsndfile writes a PEAK chunk with a time stamp into float WAVs, so two identical builds differ in bytes. `scipy.io.wavfile` does not (the human kit uses it).
 - `type/captions.js` emphasis style: an emphasised word scaled 1.12 eats the 0.28 em gap to its neighbour ("favouritehour"). The vlog template sets `emphScale: 1.05` through the picker's override; a fix belongs in `type/dom.js` (gap from the scaled width).
+
+## Renders: what was measured, what is pending
+
+The disk fell under the 10 GiB render floor at 02:43 (then to 4 GiB). Every final render, every `eyes` / `ears` pass and every sheet below is **PENDING**.
+
+**Measured earlier,** from the delivered MP4s with `templates/_shared/sheet.py`. These came from builds before the last label and layout fixes; the stills were looked at and fixed in code:
+
+| demo | length | LUFS-I | TP (dBTP) | notes |
+|---|---|---|---|---|
+| tutorial 16:9 | 30.3 s | -14.05 | -1.95 | 5.2 MB at CRF 23. Fixed since: step cards (the stock chapter card overflowed 9:16), highlight-box geometry, PiP over the label, key combo over the captions |
+| tutorial 9:16 | 30.3 s | -14.05 | -2.04 | 4.8 MB |
+| vlog-personal 9:16 | 19.1 s | -14.13 | -1.96 | fixed since: the map insert timing, the emphasis gap, the 16:9 card over the captions |
+| vlog-personal 16:9 | 19.1 s | -14.13 | -1.96 | |
+
+**Pending, through the shared lock, one at a time** (each line rebuilds its page first; run from `~/Developer/mp-xp-human/templates/<t>`):
+
+```bash
+cd ~/Developer/mp-xp-human/templates/tutorial && node make.mjs && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o out/tutorial.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/tutorial && node make.mjs --set aspect=9:16 && cd tall && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o ../out/tutorial-tall.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/vlog-personal && node make.mjs && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o out/vlog-personal.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/vlog-personal && node make.mjs --set aspect=16:9 && cd wide && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o ../out/vlog-personal-wide.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/podcast-clip && node make.mjs && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o out/podcast-clip.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/podcast-clip && node make.mjs --set aspect=16:9 && cd wide && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o ../out/podcast-clip-wide.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/founder-story && node make.mjs && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o out/founder-story.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/founder-story && node make.mjs --set aspect=9:16 && cd tall && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o ../out/founder-story-tall.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/course-lesson && node make.mjs && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o out/course-lesson.mp4 --crf 23 -w 1
+cd ~/Developer/mp-xp-human/templates/course-lesson && node make.mjs --set aspect=9:16 && cd tall && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o ../out/course-lesson-tall.mp4 --crf 23 -w 1
+```
+
+Or the whole batch, which stops on the first disk refusal: the session script `/private/tmp/claude-501/-Users-adarshkant-Documents-voice-forms/2b69758e-3956-429e-9f93-32bae7c71bce/scratchpad/renderall.sh` (`JOBS="podcast-clip:9:16:. podcast-clip:16:9:wide"` picks a subset; it is in a scratch folder and may be gone).
+
+**Then, per MP4** (heavy, also through the lock), for example the tutorial:
+
+```bash
+python3 ../_shared/sheet.py out/tutorial.mp4 out/sheet.jpg 0,1.5,4.5,6.7,9.8,12.3,14.8,18.4,20.5,22.2,24,27
+~/Developer/motion-pack-xp/render-lock.sh python3 ../../ears/listen.py out/tutorial.mp4 --plan out/plan.json --transcript out/transcript.json --md out/ears.md
+~/Developer/motion-pack-xp/render-lock.sh python3 ../../eyes/look.py out/tutorial.mp4 --plan out/plan.json --md out/eyes.md
+```
+
+The 9:16 / 16:9 variants use `out/plan-tall.json` / `out/plan-wide.json` and `out/transcript-tall.json` / `out/transcript-wide.json`. Commit `out/sheet*.jpg` with the plans (the MP4s are gitignored per template). Then fill the measured numbers into the `templates/README.md` rows.
