@@ -1,11 +1,12 @@
 {
- "count": 65,
+ "count": 69,
  "fails": [],
  "warns": [
   "music.bed_desi_bounce_loop8: in-scale chroma share 0.61",
   "music.bed_bhangra_hype_loop8: in-scale chroma share 0.65",
   "music.bed_festive_dhol_loop8: in-scale chroma share 0.68",
-  "music.bed_bhangra_dhol_loop: in-scale chroma share 0.49"
+  "music.bed_bhangra_dhol_loop: in-scale chroma share 0.49",
+  "music.bed_trailer_horror: in-scale chroma share 0.53"
  ],
  "rows": [
   {
@@ -729,6 +730,111 @@
     "harmony": -6.0,
     "lead": -4.0,
     "fx": -9.4
+   }
+  },
+  {
+   "id": "music.bed_trailer_thriller",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "abd3484dfad1",
+   "beat_events_on_whole_frames": "17/17",
+   "inscale_share": 0.93,
+   "top_pc": 9,
+   "bass_share": 0.76,
+   "trailer": {
+    "style": "thriller",
+    "wall_dbfs": -12.9,
+    "gap_below_wall_db": 34.2,
+    "hit_dbfs": -8.5,
+    "button_below_hit_db": 118.7,
+    "final_hit_over_tail_db": 11.4,
+    "tail_zero": true
+   },
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "fx": -10.0
+   }
+  },
+  {
+   "id": "music.bed_trailer_scifi",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "b34fe5ca6b7f",
+   "beat_events_on_whole_frames": "22/22",
+   "inscale_share": 0.94,
+   "top_pc": 9,
+   "bass_share": 0.61,
+   "trailer": {
+    "style": "scifi",
+    "wall_dbfs": -13.2,
+    "gap_below_wall_db": 39.5,
+    "hit_dbfs": -9.0,
+    "button_below_hit_db": 119.0,
+    "final_hit_over_tail_db": 10.6,
+    "tail_zero": true
+   },
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -9.3
+   }
+  },
+  {
+   "id": "music.bed_trailer_horror",
+   "notes": [
+    "warn in-scale chroma share 0.53"
+   ],
+   "ffmpeg_I": -16.0,
+   "sha": "5f0cf9928258",
+   "beat_events_on_whole_frames": "32/32",
+   "inscale_share": 0.53,
+   "top_pc": 10,
+   "bass_share": 0.66,
+   "trailer": {
+    "style": "horror",
+    "wall_dbfs": -13.2,
+    "gap_below_wall_db": 186.8,
+    "hit_dbfs": -8.4,
+    "button_below_hit_db": 123.0,
+    "final_hit_over_tail_db": 14.9,
+    "tail_zero": true
+   },
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -9.7
+   }
+  },
+  {
+   "id": "music.bed_trailer_drama",
+   "notes": [],
+   "ffmpeg_I": -16.0,
+   "sha": "dc81bf93d549",
+   "beat_events_on_whole_frames": "2/2",
+   "inscale_share": 0.95,
+   "top_pc": 4,
+   "bass_share": 0.36,
+   "trailer": {
+    "style": "drama",
+    "wall_dbfs": -14.5,
+    "gap_below_wall_db": 39.9,
+    "hit_dbfs": -8.9,
+    "button_below_hit_db": 120.1,
+    "final_hit_over_tail_db": 12.8,
+    "tail_zero": true
+   },
+   "stem_rel_db": {
+    "drums": 0.0,
+    "bass": -2.0,
+    "harmony": -6.0,
+    "lead": -4.0,
+    "fx": -10.0
    }
   },
   {

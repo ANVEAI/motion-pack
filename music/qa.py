@@ -79,6 +79,8 @@ def trailer_checks(it, y, row, F):
     """the planned shape of a trailer arc, measured on the master: markers, gap depth, crescendo, quiet hold, digital-zero tail"""
     side = json.load(open(os.path.join(HERE, it["sidecar"])))
     mk, spf = side.get("markers", {}), SR // it["fps"]
+    if TRAILERS.get(it["preset"], {}).get("style"):
+        return styled_checks(it, y, row, F, mk, spf)
     need = ("act1_start", "act2_start", "act3_start", "gap_start", "gap_end", "crescendo_start", "hit", "visual_cut_frame", "quiet_hold_start", "end")
     miss = [k for k in need if not isinstance(mk.get(k), int)]
     if miss:
@@ -100,6 +102,41 @@ def trailer_checks(it, y, row, F):
         F("crescendo rises only %.1f dB (>= 12)" % (c_last - c_first))
     if hit - hold < 40:
         F("quiet hold only %.1f dB under the hit (>= 40)" % (hit - hold))
+    if tail != 0.0:
+        F("last 0.15 s is not digital zero")
+
+
+def styled_checks(it, y, row, F, mk, spf):
+    """the genre trailer scores (music/trailer_styles.py) end differently from the arc: after the title hit come a near-silent button and a credit tail with a
+    final hit, not a quiet hold. Same rules as music/tests/test_trailer_styles.py, measured on the master: the wall stops into the gap (>= 30 dB; digital
+    silence when the preset asks for >= 90), the button has rung out (>= 35 dB under the hit), the release-card hit stands out of the tail, digital-zero tail"""
+    need = ("act1_start", "act2_start", "act3_start", "gap_start", "gap_end", "crescendo_start", "hit", "visual_cut_frame", "button_start", "tail_start", "final_hit", "end")
+    miss = [k for k in need if not isinstance(mk.get(k), int)]
+    if miss:
+        F("sidecar markers missing or not whole frames: %s" % ",".join(miss))
+        return
+    if mk != it["markers"] or mk["end"] * spf != len(y):
+        F("sidecar markers disagree with the manifest or the WAV length")
+    S = {k: v * spf for k, v in mk.items()}
+    ms = lambda n: int(SR * n / 1000)
+    db = lambda x: 10 * np.log10(np.mean(x ** 2) + 1e-20)
+    p = TRAILERS[it["preset"]]
+    wall, gap = db(y[S["act3_start"]:S["gap_start"]]), y[S["gap_start"] + ms(60):S["crescendo_start"]]
+    hit = db(y[S["hit"]:S["hit"] + ms(300)])
+    button = db(y[S["button_start"] + ms(1500):S["tail_start"]])
+    final, tail_bed = db(y[S["final_hit"]:S["final_hit"] + ms(300)]), db(y[S["tail_start"]:S["final_hit"]])
+    tail = np.max(np.abs(y[-int(0.15 * SR):]))
+    row["trailer"] = {"style": p["style"], "wall_dbfs": round(wall, 1), "gap_below_wall_db": round(wall - db(gap), 1) if len(gap) else None, "hit_dbfs": round(hit, 1),
+                      "button_below_hit_db": round(hit - button, 1), "final_hit_over_tail_db": round(final - tail_bed, 1), "tail_zero": bool(tail == 0.0)}
+    if p.get("gap_below_wall_db", 0) >= 90:
+        if len(gap) and np.max(np.abs(gap)) != 0.0:
+            F("gap is not digital silence (the preset asks for it)")
+    elif len(gap) and db(gap) > wall - 30:
+        F("gap only %.1f dB under the wall (>= 30)" % (wall - db(gap)))
+    if button > hit - 35:
+        F("button only %.1f dB under the hit (>= 35)" % (hit - button))
+    if final <= tail_bed + 3:
+        F("final hit only %.1f dB over the tail bed (> 3)" % (final - tail_bed))
     if tail != 0.0:
         F("last 0.15 s is not digital zero")
 
@@ -133,6 +170,9 @@ def main():
                 regen = lambda: TK.render_theka(it["tala"], it["fps"], it["bars"], seed=3)
             elif it["preset"] == "bhangra_dhol":
                 regen = lambda: TK.render_bhangra(it["fps"], it["bars"], seed=3)
+            elif it["preset"] in TRAILERS and TRAILERS[it["preset"]].get("style"):   # genre trailer scores (music/trailer_styles.py), as build_music.py renders them
+                import trailer_styles as TS
+                regen = lambda: TS.render_styled(TRAILERS[it["preset"]]["style"], it["fps"], seed, it.get("act_bars"))
             elif it["preset"] in TRAILERS:
                 regen = lambda: TR.render_trailer(it["preset"], it["fps"], seed, it.get("act_bars"))
             else:

@@ -1129,7 +1129,9 @@
    "id": "snd.hw.chime_reveal",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.93
+   "seed_corr": 0.93,
+   "ffmpeg_I": -17.6,
+   "dI": 0.04
   },
   {
    "id": "snd.hw.click_detent",
@@ -1147,14 +1149,18 @@
    "id": "snd.hw.fan_spinup",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.853
+   "seed_corr": 0.853,
+   "ffmpeg_I": -15.0,
+   "dI": 0.02
   },
   {
    "id": "snd.hw.hum_loop",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.06,
-   "seed_corr": 0.534
+   "seed_corr": 0.534,
+   "ffmpeg_I": -12.9,
+   "dI": 0.05
   },
   {
    "id": "snd.hw.led_on",
@@ -1168,7 +1174,9 @@
    "id": "snd.hw.light_sweep",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.061
+   "seed_corr": 0.061,
+   "ffmpeg_I": -15.4,
+   "dI": 0.0
   },
   {
    "id": "snd.hw.parts_seat",
@@ -1200,7 +1208,9 @@
    "id": "snd.hw.power_on",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.947
+   "seed_corr": 0.947,
+   "ffmpeg_I": -20.8,
+   "dI": 0.03
   },
   {
    "id": "snd.hw.sub_hit",
@@ -1208,7 +1218,9 @@
    "notes": [
     "seed-invariant (pure tonal recipe)"
    ],
-   "seed_corr": 0.996
+   "seed_corr": 0.996,
+   "ffmpeg_I": -21.6,
+   "dI": 0.01
   },
   {
    "id": "snd.hw.sub_pulse",
@@ -1783,31 +1795,41 @@
    "id": "snd.trailer.boom_hit",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.387
+   "seed_corr": 0.387,
+   "ffmpeg_I": -24.0,
+   "dI": 0.05
   },
   {
    "id": "snd.trailer.boom_metal",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.32
+   "seed_corr": 0.32,
+   "ffmpeg_I": -25.3,
+   "dI": 0.04
   },
   {
    "id": "snd.trailer.braam_low",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.628
+   "seed_corr": 0.628,
+   "ffmpeg_I": -19.6,
+   "dI": 0.03
   },
   {
    "id": "snd.trailer.braam_octave",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.752
+   "seed_corr": 0.752,
+   "ffmpeg_I": -20.1,
+   "dI": 0.03
   },
   {
    "id": "snd.trailer.braam_short",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.218
+   "seed_corr": 0.218,
+   "ffmpeg_I": -21.1,
+   "dI": 0.02
   },
   {
    "id": "snd.trailer.clock_accel",
@@ -1815,47 +1837,61 @@
    "notes": [
     "warn two seeds correlate 0.76"
    ],
-   "seed_corr": 0.765
+   "seed_corr": 0.765,
+   "ffmpeg_I": -24.9,
+   "dI": 0.04
   },
   {
    "id": "snd.trailer.clock_tick_loop",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.0,
-   "seed_corr": 0.811
+   "seed_corr": 0.811,
+   "ffmpeg_I": -28.8,
+   "dI": 0.04
   },
   {
    "id": "snd.trailer.drone_dark_loop",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.97,
-   "seed_corr": 0.899
+   "seed_corr": 0.899,
+   "ffmpeg_I": -18.1,
+   "dI": 0.04
   },
   {
    "id": "snd.trailer.drone_metal_loop",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.04,
-   "seed_corr": 0.03
+   "seed_corr": 0.03,
+   "ffmpeg_I": -15.2,
+   "dI": 0.04
   },
   {
    "id": "snd.trailer.heartbeat_loop",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.01,
-   "seed_corr": 0.988
+   "seed_corr": 0.988,
+   "ffmpeg_I": -20.3,
+   "dI": 0.05
   },
   {
    "id": "snd.trailer.hit_silence_hit",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.6
+   "seed_corr": 0.6,
+   "ffmpeg_I": -21.3,
+   "dI": 0.01
   },
   {
    "id": "snd.trailer.hit_title",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.361
+   "seed_corr": 0.361,
+   "ffmpeg_I": -22.1,
+   "dI": 0.01
   },
   {
    "id": "snd.trailer.metal_hit",
@@ -1868,13 +1904,17 @@
    "ok": true,
    "notes": [],
    "seam_ratio": 0.02,
-   "seed_corr": 0.536
+   "seed_corr": 0.536,
+   "ffmpeg_I": -13.8,
+   "dI": 0.01
   },
   {
    "id": "snd.trailer.reverse_braam",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.534
+   "seed_corr": 0.534,
+   "ffmpeg_I": -20.8,
+   "dI": 0.05
   },
   {
    "id": "snd.trailer.reverse_swell_1s",
@@ -1886,13 +1926,17 @@
    "id": "snd.trailer.reverse_swell_2s",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.051
+   "seed_corr": 0.051,
+   "ffmpeg_I": -19.6,
+   "dI": 0.02
   },
   {
    "id": "snd.trailer.reverse_swell_4s",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.326
+   "seed_corr": 0.326,
+   "ffmpeg_I": -18.2,
+   "dI": 0.05
   },
   {
    "id": "snd.trailer.ring_tinnitus",
@@ -1900,44 +1944,58 @@
    "notes": [
     "seed-invariant (pure tonal recipe)"
    ],
-   "seed_corr": 1.0
+   "seed_corr": 1.0,
+   "ffmpeg_I": -10.6,
+   "dI": 0.05
   },
   {
    "id": "snd.trailer.riser_12s",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.258
+   "seed_corr": 0.258,
+   "ffmpeg_I": -21.5,
+   "dI": 0.01
   },
   {
    "id": "snd.trailer.riser_2s",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.431
+   "seed_corr": 0.431,
+   "ffmpeg_I": -21.6,
+   "dI": 0.04
   },
   {
    "id": "snd.trailer.riser_4s",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.452
+   "seed_corr": 0.452,
+   "ffmpeg_I": -22.0,
+   "dI": 0.04
   },
   {
    "id": "snd.trailer.riser_8s",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.249
+   "seed_corr": 0.249,
+   "ffmpeg_I": -22.6,
+   "dI": 0.01
   },
   {
    "id": "snd.trailer.sting_button",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.733
+   "seed_corr": 0.733,
+   "ffmpeg_I": -25.0,
+   "dI": 0.03
   },
   {
    "id": "snd.trailer.strings_tension_loop",
    "ok": true,
    "notes": [],
    "seam_ratio": 0.03,
-   "seed_corr": 0.178
+   "seed_corr": 0.178,
+   "ffmpeg_I": -18.5,
+   "dI": 0.02
   },
   {
    "id": "snd.trailer.sub_drop_long",
@@ -1945,13 +2003,17 @@
    "notes": [
     "seed-invariant (pure tonal recipe)"
    ],
-   "seed_corr": 1.0
+   "seed_corr": 1.0,
+   "ffmpeg_I": -17.2,
+   "dI": 0.01
   },
   {
    "id": "snd.trailer.whoosh_by",
    "ok": true,
    "notes": [],
-   "seed_corr": 0.579
+   "seed_corr": 0.579,
+   "ffmpeg_I": -18.7,
+   "dI": 0.04
   },
   {
    "id": "snd.trailer.whoosh_suck",
