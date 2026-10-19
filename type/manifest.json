@@ -8890,6 +8890,91 @@
    "test": "type/tests/gfx-sheet.mjs"
   },
   {
+   "id": "caption.soundOnPill",
+   "file": "type/gfx/chips.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/pop",
+    "offset_f": 15,
+    "gain_db": -8
+   },
+   "dur_s": 1.4333333333333333,
+   "in_frames": 1,
+   "out_frames": 1,
+   "params": {
+    "text": "Sound on",
+    "x": 0.5,
+    "y": null,
+    "solidAt": 0.5,
+    "outAt": 1.5,
+    "icon": "speaker",
+    "theme": "dark",
+    "accent": null,
+    "scale": 1,
+    "platform": null
+   },
+   "tags": [
+    "caption",
+    "sound-on",
+    "muted-autoplay",
+    "pill",
+    "frosted",
+    "feed",
+    "social",
+    "hook",
+    "frame-0"
+   ],
+   "demo": "type/demo/out/gfx-captions.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
+   "id": "ui.stateChip",
+   "file": "type/gfx/chips.js",
+   "kind": "gfx",
+   "sfx": {
+    "id": "sfx/ui/tick",
+    "offset_f": 1,
+    "gain_db": -6
+   },
+   "dur_s": 6,
+   "in_frames": 8,
+   "out_frames": 8,
+   "params": {
+    "states": [
+     {
+      "t": 0,
+      "label": "Draft",
+      "tone": "before",
+      "icon": "dot"
+     },
+     {
+      "t": 1.5,
+      "label": "Checked",
+      "tone": "done",
+      "icon": "tick"
+     }
+    ],
+    "corner": "tr",
+    "colors": null,
+    "flash": 6,
+    "scale": 1,
+    "platform": null
+   },
+   "tags": [
+    "ui",
+    "state",
+    "chip",
+    "status",
+    "persistent",
+    "corner",
+    "before-after",
+    "tick",
+    "badge"
+   ],
+   "demo": "type/demo/out/gfx-ui.png",
+   "test": "type/tests/gfx-sheet.mjs"
+  },
+  {
    "id": "ui.appWindow",
    "file": "type/gfx/ui-saas.js",
    "kind": "gfx",

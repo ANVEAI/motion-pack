@@ -9,6 +9,7 @@
    Round 4+5 proof parts: chart.scatterFrontier, ui.dataTable, ui.costTicker, type.paramReadout (ui-proof.js), ui.branchTrace, caption.sceneBubble, lowerThird.personalTag, ui.promptBar.attach (ui-trace.js).
    Round 4/5 (r45-type.js, r45-glyph.js): title.partnerLockup, layout.iconMergeLockup, type.flankWords, type.behindSubject, type.asciiMosaic, type.textOnPath, type.electricOutline.
    Round 6 (r6.js): chart.hoverTooltip, ui.dockLaunch, title.verbCard, ui.connectRows, layout.degradingDiagram, type.commandPill.
+   Round 8 (chips.js): caption.soundOnPill (frosted "Sound on" pill for muted autoplay), ui.stateChip (persistent corner state chip; stateChipFlips for sound sync).
    Card systems (canvas): layout.cardStack + layout.cardRiver (cards.js), layout.evidenceBoard (board.js): mountCards / mountBoard -> { render(t) }. */
 import { EDITORIAL } from './editorial.js'; import { CALLOUTS } from './callouts.js'; import { SOCIAL } from './social.js'; import { STICKER_GFX, STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource } from './stickers.js';
 import { KINETIC } from './kinetic.js'; import { COLLAGE } from './collage.js';
@@ -23,6 +24,7 @@ import { EXPLAIN, EXPLAIN_CUES } from './explain.js'; import { EXPLAIN_DATA, EXP
 const R45 = { ...PROOF, ...TRACE }, R45_CUES = { ...PROOF_CUES, ...TRACE_CUES }, onlyUI = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k.startsWith('ui.')));
 const UI = { ...UI1, ...UI2, ...UI3, ...onlyUI(R45), ...onlyUI(R6) }, UI_CUES = { ...UI1_CUES, ...UI2_CUES, ...UI3_CUES, ...onlyUI(R45_CUES), ...onlyUI(R6_CUES) }; import { DOC } from './doc.js';
 import { HUMAN, HUMAN_CUES, HUMAN_LIM } from './human.js'; Object.assign(GFX_LIM, HUMAN_LIM);   /* lane human (2026-10-16): tutorial / personal / human-blended parts */
+import { CHIPS, CHIPS_CUES, CHIPS_LIM } from './chips.js'; Object.assign(GFX_LIM, CHIPS_LIM);   /* XP round 8 (2026-10-16): caption.soundOnPill, ui.stateChip */
 import { SWAP, SWAP_CUES } from './swap.js'; import { TYPE_R45, TYPE_R45_CUES } from './r45-type.js'; import { GLYPH_R45, GLYPH_R45_CUES, ELECTRIC_SOUND } from './r45-glyph.js'; import { BADGES, BADGE_CUES } from './badges.js'; import { BRAND_LAYOUTS, BRAND_CUES } from './brand.js';
 export { stepAt, mixHex } from './swap.js'; export { selectionZoom, selectionZoomCss } from './badges.js'; export { CIRCLE4, SPARK4, PLATES } from './brand.js';
 export { PARTNER_MARKS, MERGE_ICONS, lintPartnerMarks, inkFromMask, markFromImage, partnerLockupLayout, iconMergeFit, iconMergeState, flankBox, flankFitK, lintFlank, flankShots, flankState, srcAt, figurePlate } from './r45-type.js';
@@ -34,11 +36,11 @@ export { BOARD, BOARD_D, boardAt, drawBoard, mountBoard } from './board.js';
 export { PIN_LAYOUTS, homography, matrix3d, cornersAt, lintQuad, drawQuad, mountPin } from './cornerpin.js';
 export { LAYOUTS, layoutAt, applyLayout } from './layout.js'; export { prepareDrawOn, drawOnAt, trimAt, bindDrawOn, drawAttrs } from './drawon.js';
 export { STICKER_NAMES, REACTIONS, MOTIONS, setGlyphSource };
-export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN, ...HW_GFX, ...FILM_GFX, ...EXPLAIN, ...EXPLAIN_DATA };
-export { fmtNum, pointAt as hwPointAt, dieBlocks } from './hw.js';
-Object.assign(GFX, SAAS, SAAS2);
+export const GFX = { ...EDITORIAL, ...CALLOUTS, ...SOCIAL, ...STICKER_GFX, ...UI, ...KINETIC, ...COLLAGE, ...DOC, ...SWAP, ...BADGES, ...BRAND_LAYOUTS, ...R45, ...TYPE_R45, ...GLYPH_R45, ...R6, ...HUMAN, ...HW_GFX, ...FILM_GFX, ...EXPLAIN, ...EXPLAIN_DATA, ...CHIPS };
+export { fmtNum, pointAt as hwPointAt, dieBlocks } from './hw.js'; export { stateChipFlips, stateChipAt, soundPillTimes, soundPillContrast, contrastRatio, CHIP_TONES, SOUND_PILL_THEMES } from './chips.js';
+Object.assign(GFX, SAAS, SAAS2);   /* xp-saas: ui-saas.js + ui-saas2.js (ui.*, callout.uiHighlight, callout.arrowLabel, device.mock) */
 Object.assign(GFX, GLASS_GFX, REVIEW_GFX, R78_TYPE_GFX, R78_WALL_GFX);   /* xp-r78: glass.js, review.js, r78-type.js (kept out of the round-1 UI table that ui.test.mjs pins, like the SaaS kit) */
-export { glassState, rimState, rimIntensity, rimContrast, perimeterAt, perimeterLen } from './glass.js'; export { recordClock, approvalState, approvalTimes } from './review.js'; export { sentenceState, sentenceCuts, sentenceEnd, sentenceLint } from './r78-type.js'; export { wallLine, pillWidth, litState, pillWallLint, lockStack, lockGeo } from './r78-wall.js'; export { missingGlyphs, hasGlyphs, MANROPE_RANGES } from './r78-glyphs.js';   /* xp-saas: ui-saas.js + ui-saas2.js (ui.*, callout.uiHighlight, callout.arrowLabel, device.mock) */
+export { glassState, rimState, rimIntensity, rimContrast, perimeterAt, perimeterLen } from './glass.js'; export { recordClock, approvalState, approvalTimes } from './review.js'; export { sentenceState, sentenceCuts, sentenceEnd, sentenceLint } from './r78-type.js'; export { wallLine, pillWidth, litState, pillWallLint, lockStack, lockGeo } from './r78-wall.js'; export { missingGlyphs, hasGlyphs, MANROPE_RANGES } from './r78-glyphs.js';
 export { fmtNumber, fmtAxis, groupDigits, compactParts, LOCALES } from './numfmt.js'; export { parseGraph, layoutGraph, edgeKey } from './graph.js'; export { chartGeom, datumXY, niceDomain, hexLayout, footerSVG } from './explain-data.js'; export { diagramTimes, camAt, scrollyGeom, stepActive, baGeom, wrap as wrapText } from './explain.js'; export { ICONS, ICON_NAMES, iconSVG } from './explain-icons.js';
 export const GFX_IDS = Object.keys(GFX);
 /* default sound pairing per gfx id prefix (sfx/<category>/<name>, anchor = the item's at + 1 frame, gain over the bed). Longest prefix wins. */
@@ -86,6 +88,7 @@ export const GFX_SFX = {
 Object.assign(GFX_SFX, { 'ui.glassPanel': ['sfx/ui/pop', 8, -3], 'ui.rimLight': ['sfx/hw/light_sweep', 30, -4], 'ui.reviewLayer': ['sfx/ui/pop', 27, -3], 'ui.approvalSlider': ['sfx/ui/success_chime', 90, -2], 'type.sentenceAcrossShots': ['sfx/tx/cut_tick', 0, -6],
   'layout.textWall': ['sfx/ui/highlight_draw', 90, -4], 'layout.pillWall': ['sfx/ui/pop', 18, -4], 'device.lockScreen': ['sfx/device/notify_soft', 45, -3] });
 Object.assign(GFX_SFX, FILM_SFX);   // film lane (2026-10-16): type/gfx/film.js defaults
+Object.assign(GFX_SFX, { 'caption.soundOnPill': ['sfx/ui/pop', 15, -8], 'ui.stateChip': ['sfx/ui/tick', 1, -6] });   /* XP round 8: chips.js (gfxCues gives the pill's pop on solidAt and one tick per chip flip) */
 /* xp-saas (2026-10-16): defaults for the SaaS kit (gfxCues gives one cue per action from SAAS_CUES / SAAS2_CUES) */
 Object.assign(GFX_SFX, { 'ui.appWindow': ['sfx/whoosh/swish_s', 0, -3], 'ui.cursorJourney': ['sfx/device/mouse_click', 1, -3], 'callout.uiHighlight': ['sfx/ui/highlight_draw', 1, -4], 'callout.arrowLabel': ['sfx/ui/pop', 1, -3],
   'ui.commandBar': ['sfx/ui/palette_open', 0, -3], 'ui.aiAnswer': ['sfx/ui/stream_tick', 1, -4], 'ui.shortcutChip': ['sfx/ui/key_chord', 15, -2], 'ui.pricingCards': ['sfx/ui/price_reveal', 30, -3], 'ui.integrationGrid': ['sfx/ui/connect', 16, -3],
@@ -103,7 +106,7 @@ export function nsIds(svg) {
   const key = hash64(svg); return svg.replace(ID_ATTR, (_, i) => `id="${i}-${key}"`).replace(URL_REF, (m, i) => (ids.has(i) ? `url(#${i}-${key})` : m));
 }
 export function renderInner(id, t, { at = 0, dur, params = {} } = {}, ctx) {
-  const g = GFX[id]; if (!g) throw new Error('unknown gfx ' + id); const p = saneParams({ ...g.d, ...params }, g.d, GFX_LIM[id]), L = life(t, at, dur ?? p.dur ?? g.dur, g.inF ?? 12, g.outF ?? 9);
+  const g = GFX[id]; if (!g) throw new Error('unknown gfx ' + id); const p = saneParams({ ...g.d, ...params }, g.d, GFX_LIM[id]), L = life(t, at, dur ?? p.dur ?? (g.durOf ? g.durOf(p) : g.dur), g.inF ?? 12, g.outF ?? 9);   // durOf: a part whose lifetime follows its params (caption.soundOnPill ends at outAt)
   L.t = t; L.at = at;   // composition time and the item's start: lets a part follow layout.cornerPin data, whose keys are in composition time (ui.costTicker, caption.sceneBubble anchors)
   return L.on ? nsIds(g.svg(L, p, ctx)) : '';
 }
@@ -125,7 +128,7 @@ uiHooks.renderInner = renderInner;
    ids without an action table fall back to their single sfxFor() default at `at` + offset. */
 const ACTION_CUES = { ...SWAP_CUES, ...BADGE_CUES, ...BRAND_CUES, ...R45_CUES, ...TYPE_R45_CUES, ...GLYPH_R45_CUES, ...R6_CUES, ...HUMAN_CUES, ...HW_CUES, ...EXPLAIN_CUES, ...EXPLAIN_DATA_CUES };
 Object.assign(ACTION_CUES, GLASS_CUES, REVIEW_CUES, R78_TYPE_CUES, R78_WALL_CUES);   /* xp-r78 */
-Object.assign(ACTION_CUES, SAAS_CUES, SAAS2_CUES);   /* xp-saas: per-action cues for every SaaS part (gfxCues; they stay out of the round-1 UI kit table that ui.test.mjs pins) */
+Object.assign(ACTION_CUES, SAAS_CUES, SAAS2_CUES, CHIPS_CUES);   /* xp-saas: per-action cues for every SaaS part (gfxCues; they stay out of the round-1 UI kit table that ui.test.mjs pins); XP round 8: chips.js */
 export function gfxCues(id, { at = 0, params = {}, dur } = {}) {
   if (UI_CUES[id]) return uiCues(id, { at, params }); const g = GFX[id], f = ACTION_CUES[id];
   if (g && f) return f({ ...g.d, dur: dur ?? g.dur, ...params }).map((c) => ({ ...c, t: +(c.t + at).toFixed(4) }));

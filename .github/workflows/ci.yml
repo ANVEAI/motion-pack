@@ -75,6 +75,8 @@ jobs:
         run: node type/tests/r45type.test.mjs
       - name: "round-6 type parts (hover tooltip, dock launch, verb card, connect rows, degrading diagram, command pill; hostile params, seek order, two processes; node, no browser)"
         run: node type/tests/r6.test.mjs
+      - name: "round-8 chips (sound-on pill, persistent state chip: seek order, two processes, outline then frosted fill, flips on planned frames, WCAG contrast, hostile params; node, no browser)"
+        run: node type/tests/chips.test.mjs
       - name: "honesty defaults (every registered gfx part and layers kind, rendered with its defaults, shows no digit without a placeholder label; node, no browser)"
         run: node type/tests/honesty-defaults.test.mjs
       - name: "round-4/5 layers (Canvas2D on a recording context, node, no browser)"
