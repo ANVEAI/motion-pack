@@ -207,7 +207,7 @@ Determinism in any order for all 15 presets; every timing contract above asserte
 
 ## xp-r78 (2026-10-16): glass, rim light, review layer, approval gate, sentence across shots, text wall, pill wall, lock screen
 
-Eight gfx parts from the round 7 / 8 reference studies (craft only, nothing copied; `../docs/research/reference-round8-2026-10.md`, `reference-round7-2026-10.md`). Same contract as every part: SVG markup, a pure function of t, a `source: placeholder` style label wherever a default frame shows a digit. Files: `gfx/glass.js`, `gfx/review.js`, `gfx/r78-type.js`, `gfx/r78-wall.js`, `gfx/r78-util.js` (guards), `gfx/r78-glyphs.js` (which characters the bundled font has). Test: `node tests/r78.test.mjs` (125 checks, node); a browser sheet and the glass blur check in real Chrome: `node tests/r78-sheet.mjs`.
+Eight gfx parts from the round 7 / 8 reference studies (craft only, nothing copied; the studies are kept outside this repo). Same contract as every part: SVG markup, a pure function of t, a `source: placeholder` style label wherever a default frame shows a digit. Files: `gfx/glass.js`, `gfx/review.js`, `gfx/r78-type.js`, `gfx/r78-wall.js`, `gfx/r78-util.js` (guards), `gfx/r78-glyphs.js` (which characters the bundled font has). Test: `node tests/r78.test.mjs` (125 checks, node); a browser sheet and the glass blur check in real Chrome: `node tests/r78-sheet.mjs`.
 
 | id | what it does | main params |
 |---|---|---|

@@ -1,4 +1,4 @@
-/* motion-pack / type / gfx / chips.js: two small persistent-feed chips (2026-10-16; XP round 8 / Mirelo study 2026-10-16, craft only: timings and
+/* motion-pack / type / gfx / chips.js: two small persistent-feed chips (2026-10-16; XP round 8 reference study 2026-10-16, craft only: timings and
    construction were measured from public launch films, no brand, wording, glyph or look-alike is copied; the speaker glyph and every icon here are owned geometry).
    Same contract as core.js: { tags, dur, inF, outF, d, svg(L, p, ctx) } -> SVG markup, a PURE FUNCTION OF TIME t (no clock, no unseeded random, no state between frames,
    no caches: any frame renders the same in any seek order and in any process). Scale: sizes from the SHORTER frame side (S = min(W, H) / 1080 * scale), so a 9:16 frame

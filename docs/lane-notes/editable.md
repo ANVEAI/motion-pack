@@ -143,7 +143,7 @@ Also add to the decision tree:
 
 Folder: `mp new ad,proof-film <dir> --project examples/project.example.json`, then `mp render`.
 
-The MP4s are kept outside git in `~/Developer/mp-xp-editable-demo/`. The contact sheets and plans are committed in `examples/project-demo/`.
+The MP4s are kept outside git. The contact sheets and plans are committed in `examples/project-demo/`.
 
 ### Loudness of the delivered files
 
@@ -167,11 +167,11 @@ All four are within -14 ± 0.5 LUFS-I and at or under -1.0 dBTP. eyes on ad-16x9
 
 1. Re-render `ad` 16:9 + 9:16. The project now points the problem slot at `plate-cast.mp4`. The current ad MP4s were rendered with `plate-film.mp4`, a pack render whose diegetic "FILES SENT OUT" counter shows digits (partly visible in 16:9). Command:
    ```
-   cd <demo dir> && MP_RENDER_PREFIX=~/Developer/motion-pack-xp/render-lock.sh mp render --template ad --workers 1
+   cd <demo dir> && MP_RENDER_PREFIX=$MP_RENDER_PREFIX mp render --template ad --workers 1
    ```
 2. `ears` and `eyes` on all four MP4s, and the full `mp check`:
    ```
-   MP_RENDER_PREFIX=~/Developer/motion-pack-xp/render-lock.sh mp check
+   MP_RENDER_PREFIX=$MP_RENDER_PREFIX mp check
    ```
    It runs eyes and ears through the lock.
 3. Untested so far:

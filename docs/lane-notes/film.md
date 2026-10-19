@@ -53,21 +53,21 @@ Reach-for-X rows: `| a film trailer, its 30 / 15 s cut-downs | templates/trailer
 
 ## Pending renders (the disk was full; nothing rendered in this lane)
 
-Run from `~/Developer/mp-xp-film`, one at a time, through the lock. Each `make.mjs` writes the plan, stages the project, renders the score and the mix (about 2-3 min under load), then prints the render command.
+Run from the repo root, one at a time, through the lock. Each `make.mjs` writes the plan, stages the project, renders the score and the mix (about 2-3 min under load), then prints the render command.
 
 ```bash
-cd ~/Developer/mp-xp-film/templates/trailer
-node make.mjs && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render projects/full-16x9 -o out/trailer-full-16x9.mp4 --crf 23 -w 1
-node make.mjs --set aspect=9:16 && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render projects/full-9x16 -o out/trailer-full-9x16.mp4 --crf 23 -w 1
-node make.mjs --set length=30 && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render projects/30-16x9 -o out/trailer-30-16x9.mp4 --crf 23 -w 1
-node make.mjs --set length=15 --set aspect=9:16 && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render projects/15-9x16 -o out/trailer-15-9x16.mp4 --crf 23 -w 1
+cd templates/trailer
+node make.mjs && $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render projects/full-16x9 -o out/trailer-full-16x9.mp4 --crf 23 -w 1
+node make.mjs --set aspect=9:16 && $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render projects/full-9x16 -o out/trailer-full-9x16.mp4 --crf 23 -w 1
+node make.mjs --set length=30 && $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render projects/30-16x9 -o out/trailer-30-16x9.mp4 --crf 23 -w 1
+node make.mjs --set length=15 --set aspect=9:16 && $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render projects/15-9x16 -o out/trailer-15-9x16.mp4 --crf 23 -w 1
 cd ../title-sequence
-node make.mjs && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render projects/40-16x9 -o out/title-sequence-40-16x9.mp4 --crf 23 -w 1
-node make.mjs --set aspect=9:16 && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render projects/40-9x16 -o out/title-sequence-40-9x16.mp4 --crf 23 -w 1
+node make.mjs && $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render projects/40-16x9 -o out/title-sequence-40-16x9.mp4 --crf 23 -w 1
+node make.mjs --set aspect=9:16 && $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render projects/40-9x16 -o out/title-sequence-40-9x16.mp4 --crf 23 -w 1
 cd ../short-film
-(cd ~/Developer/mp-xp-film && ~/Developer/motion-pack-xp/render-lock.sh bash templates/_shared/render3d.sh templates/film-scene scene.html wide 23)   # optional: the three.js stage for the stage slot
-node make.mjs --set media.stage.src=$PWD/../film-scene/out/film-scene-wide.mp4 && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render projects/full-16x9 -o out/short-film-full-16x9.mp4 --crf 23 -w 1
-node make.mjs --set aspect=9:16 && ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render projects/full-9x16 -o out/short-film-full-9x16.mp4 --crf 23 -w 1
+(cd ../.. && $MP_RENDER_PREFIX bash templates/_shared/render3d.sh templates/film-scene scene.html wide 23)   # optional: the three.js stage for the stage slot
+node make.mjs --set media.stage.src=$PWD/../film-scene/out/film-scene-wide.mp4 && $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render projects/full-16x9 -o out/short-film-full-16x9.mp4 --crf 23 -w 1
+node make.mjs --set aspect=9:16 && $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render projects/full-9x16 -o out/short-film-full-9x16.mp4 --crf 23 -w 1
 ```
 
 Then, per delivered file (also through the lock): `python3 ../_shared/sheet.py out/<file>.mp4 out/sheet.jpg <times>` (commit `out/sheet.jpg`, not the MP4), `python3 ../../eyes/look.py out/<file>.mp4 --plan out/<plan>.json --md out/eyes.md`, `python3 ../../ears/listen.py out/<file>.mp4 --plan out/<plan>.json --md out/ears.md`; target -14 LUFS-I and <= -1.0 dBTP decoded (plans carry `ceilingDb` -2.5; grep the render log for `lowered`). After the sheets exist: add the three TPL rows to `catalog/build.py`, rebuild the catalog and the counts, and fill the "Measured" sections of the three READMEs.

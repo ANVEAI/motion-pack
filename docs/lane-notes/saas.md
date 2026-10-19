@@ -1,6 +1,6 @@
 # LANE_NOTES: lane 1 (saas), branch `xp-saas`
 
-Base `bbd7da9` (v0.3.0). Clone `~/Developer/mp-xp-saas`. Never pushed.
+Base `bbd7da9` (v0.3.0).
 
 ## What shipped (new files)
 
@@ -25,10 +25,10 @@ Base `bbd7da9` (v0.3.0). Clone `~/Developer/mp-xp-saas`. Never pushed.
 ## PENDING renders (disk at 4 GiB free; run when there is space, one at a time, through the lock)
 
 ```bash
-source ~/Developer/.venvs/motion-pack311/bin/activate
-L=~/Developer/motion-pack-xp/render-lock.sh
+source <your Python 3.11 venv>/bin/activate
+L=$MP_RENDER_PREFIX
 # 1. saas-launch 16:9 + 9:16 (60 s)
-cd ~/Developer/mp-xp-saas/templates/saas-launch
+cd templates/saas-launch
 node make.mjs && $L npx -y hyperframes@0.8.142 render . -o out/saas-launch-60.mp4 --crf 23 -w 1
 node make.mjs --set aspect=9:16 && (cd tall && $L npx -y hyperframes@0.8.142 render . -o ../out/saas-launch-tall-60.mp4 --crf 23 -w 1)
 # 2. saas-feature-drop 16:9 + 9:16 (20 s)
@@ -40,7 +40,7 @@ cd ../saas-explainer
 node make.mjs && $L npx -y hyperframes@0.8.142 render . -o out/saas-explainer-70.mp4 --crf 23 -w 1
 node make.mjs --set aspect=9:16 && (cd tall && $L npx -y hyperframes@0.8.142 render . -o ../out/saas-explainer-tall-70.mp4 --crf 23 -w 1)
 # 4. measure every delivered file (sheet + LUFS/TP, ears, eyes); <t> = the plan's shot starts + mid-transition times
-for T in saas-launch:60 saas-feature-drop:20 saas-explainer:70; do n=${T%%:*}; s=${T##*:}; cd ~/Developer/mp-xp-saas/templates/$n
+for T in saas-launch:60 saas-feature-drop:20 saas-explainer:70; do n=${T%%:*}; s=${T##*:}; cd templates/$n
   python3 ../_shared/sheet.py out/$n-$s.mp4 out/sheet.jpg $(node -e "const p=require('./out/plan.json');console.log(p.scenes.map(x=>(x.start+Math.min(1.2,(x.end-x.start)/2)).toFixed(2)).join(','))")
   python3 ../_shared/sheet.py out/$n-tall-$s.mp4 out/sheet-tall.jpg $(node -e "const p=require('./out/plan-tall.json');console.log(p.scenes.map(x=>(x.start+Math.min(1.2,(x.end-x.start)/2)).toFixed(2)).join(','))")
   $L python3 ../../ears/listen.py out/$n-$s.mp4 --plan out/plan.json --md out/ears.md

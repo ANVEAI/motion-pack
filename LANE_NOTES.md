@@ -14,5 +14,5 @@ Per-lane merge notes live in docs/lane-notes/<lane>.md. Shared-doc edits listed 
 | explainer | xp-explainer 2283918 | `docs/lane-notes/explainer.md` | yes (d09d7ef) |
 | r78 | xp-r78 21c0c46 | `docs/lane-notes/r78.md` | yes (xp-integrate-r78) |
 
-The shared-doc edits the notes list (README rows, templates/README rows, objects/README rows, SKILL.md recipes S / HW / T / U / E / D + "Edit without code" + structure and accessibility QA items, apis / gotchas / virality / platforms pointers, story-script / social-video / frame-design lines) are applied in the integration pass. Pending renders: `~/Developer/motion-pack-xp/RENDER-QUEUE.md`.
+The shared-doc edits the notes list (README rows, templates/README rows, objects/README rows, SKILL.md recipes S / HW / T / U / E / D + "Edit without code" + structure and accessibility QA items, apis / gotchas / virality / platforms pointers, story-script / social-video / frame-design lines) are applied in the integration pass. The render results of this round and the known weak spots are summarised in `CHANGELOG.md` (v0.4.0).
 

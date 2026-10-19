@@ -12,7 +12,7 @@ The steps below use the `ad` template. The same file also drives `proof-film` an
 ## 0. Once per machine (2 minutes)
 
 ```bash
-cd ~/Developer/motion-pack-public            # the pack (keep it out of iCloud-synced folders such as ~/Documents)
+cd ~/Developer/motion-pack            # the pack (keep it out of iCloud-synced folders such as ~/Documents)
 ln -s "$PWD/tools/mp" ~/.local/bin/mp        # or call tools/mp by its path
 python3 sfx/build_library.py                 # the sound effects (under a minute)
 python3 music/build_music.py                 # the music beds (1-2 minutes)
@@ -35,7 +35,7 @@ The folder has three things:
 
 To build two templates from the same brand, name both: `mp new ad,proof-film ~/Movies/my-launch`.
 
-To start from a finished example, add `--project <file>`: `mp new ad,proof-film ~/Movies/fernwick --project ~/Developer/motion-pack-public/examples/project.example.json`.
+To start from a finished example, add `--project <file>`: `mp new ad,proof-film ~/Movies/fernwick --project ~/Developer/motion-pack/examples/project.example.json`.
 
 ## 2. Your brand (2 minutes)
 

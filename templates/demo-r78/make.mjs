@@ -1,7 +1,7 @@
 /* templates/demo-r78/make.mjs: the xp-r78 parts in one tiny page (960 x 540, 11 s, no sound, no plan): type.sentenceAcrossShots over four plates that cut on the words, ui.glassPanel (backdrop mode: a real
    CSS backdrop-filter over a moving plate) beside ui.rimLight, then ui.approvalSlider. Every plate and part is a pure function of t, drawn on hf-seek; nothing is hand-timed apart from the scene starts below.
    Placeholder content only (generic words, fictional request), no brand, no number.
-     node make.mjs   then   ~/Developer/motion-pack-xp/render-lock.sh npx -y hyperframes@0.8.142 render . -o out/demo-r78.mp4 --crf 24 -w 1     (ffprobe the WxH after) */
+     node make.mjs   then   $MP_RENDER_PREFIX npx -y hyperframes@0.8.142 render . -o out/demo-r78.mp4 --crf 24 -w 1     (ffprobe the WxH after) */
 import fs from 'node:fs'; import path from 'node:path';
 import { stage, head, write, lintPlan, lintStop } from '../_shared/compose.mjs';
 const DIR = path.dirname(new URL(import.meta.url).pathname), CONFIG = { W: 960, H: 540, T: 11, items: [

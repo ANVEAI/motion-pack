@@ -1,6 +1,6 @@
 # LANE_NOTES: xp-hardware (lane 2, 16 Oct 2026)
 
-Branch `xp-hardware` in `~/Developer/mp-xp-hardware`, from `main` bbd7da9 (v0.3.0). Nothing pushed.
+Branch `xp-hardware`, from `main` bbd7da9 (v0.3.0).
 
 ## What this lane adds
 
@@ -127,7 +127,7 @@ through the floor). The rest of the 3D (board, card, x-ray, sweep, silhouette, c
 ### Renders still pending (run in this order, each through the lock; stop if the lock refuses)
 
 ```bash
-L=~/Developer/motion-pack-xp/render-lock.sh; R=~/Developer/mp-xp-hardware
+L=$MP_RENDER_PREFIX; R=.
 # 0. prop stills (GPU, small): look at them before the films
 cd $R && for s in silhouette sweep explode xray board card cable; do $L node tools/render.mjs objects/hw-gallery.html out-unused.mp4 0 0 --stills-only --stills 45,95 --query "shot=$s" --stills-dir objects/qa/hw-$s --min-free-gib 10; done
 cd $R && $L node type/tests/hw-sheet.mjs                                  # type/demo/out/gfx-hw.jpg (the catalog thumbnail of the hw.* parts) + its smoke test
@@ -144,7 +144,7 @@ for T in hardware-reveal hardware-teaser spec-sheet; do cd $R/templates/$T
   $L python3 ../../eyes/look.py out/$T.mp4 --plan out/plan.json --md out/eyes.md;  $L python3 ../../ears/listen.py out/$T.mp4 --plan out/plan.json --md out/ears.md
   $L python3 ../../eyes/look.py out/$T-tall.mp4 --plan out/plan-tall.json --platform reels.organic --md out/eyes-tall.md; $L python3 ../../ears/listen.py out/$T-tall.mp4 --plan out/plan-tall.json --md out/ears-tall.md; done
 # 3. Blender: your-model round trip (export the pack's own device as a GLB, then turntable / macroSweep / explode on it, 3 frames at 480p EEVEE)
-cd $R && $L bash blender/tests/model.sh --blender ~/Developer/tools/Blender.app/Contents/MacOS/Blender
+cd $R && $L bash blender/tests/model.sh --blender /path/to/Blender
 # 4. catalog: add the three TPL rows (above), then
 cd $R && python3 catalog/build.py && python3 tools/count.py --write && python3 tools/count.py --check
 ```

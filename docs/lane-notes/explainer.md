@@ -1,6 +1,6 @@
 # LANE_NOTES: xp-explainer (lane 7, 16 Oct 2026)
 
-Branch `xp-explainer` in the worktree `~/Developer/mp-xp-explainer`, from the integration head 18056bf. Nothing has been pushed. The lane ran CODE-ONLY because the data volume held 2.7-3.6 GiB free: no renders, no Blender, and no eyes or ears runs.
+Branch `xp-explainer`, from the integration head 18056bf. The lane ran CODE-ONLY because the data volume held 2.7-3.6 GiB free: no renders, no Blender, and no eyes or ears runs.
 
 ## What this lane adds
 
@@ -60,7 +60,7 @@ fd8b396, 0c9fc0f, 0721a5f, bef9e3b, cfecd07, 3d97eed, 5c85c74, 4f8fe35, 380fcfa,
 | data-story | 100 | 100 | `data-story` (new) |
 | process-howto | 100 | 100 | `process-howto` (new) |
 
-**Measured without a render:** the mixes come from `node make.mjs` with `music/library` symlinked from motion-pack-public.
+**Measured without a render:** the mixes come from `node make.mjs` with `music/library` symlinked from another clone of the pack.
 
 | template | LUFS-I | TP (WAV) | cues |
 |---|---|---|---|
@@ -129,12 +129,12 @@ I checked stills of every section at both aspects (SVG frames rasterised by Quic
      - `| an honest chart for a data story | chart.story (bar / line / area / scatter; show, hl, compare), callout.datum, counter.hero, map.hexTile, chart.sourceFooter, layout.scrolly | source + method required; zero baselines; numfmt.js for lakh / crore |`
      - `| a numbered how-to | process.steps, process.beforeAfter (media windows: baGeom), title.takeaway | icons from type/gfx/explain-icons.js |`
 7. **`skills/motion-pack/references/apis.md`**: under the type/gfx section, add `fmtNumber(v, { locale: 'in'|'intl'|'eu'|'si', dec, compact: 'short'|'long', unit })`, `fmtAxis(v, { ref, ticks })`, `parseGraph(dsl|json)`, `layoutGraph(spec, { dir, box })`, `chartGeom(params, ctx)` + `datumXY(G, [row, series])`, `baGeom(params, ctx)`, `diagramTimes(params)`.
-8. **`.gitignore`, or the repo's `info/exclude`**: `music/library` as a symlink is not matched by `music/library/` (that pattern matches directories only). I symlinked `music/library` to motion-pack-public to measure the mixes, then removed the link again; recreate it before the pending renders. The integration clone's exclude has `sfx/library` only; add `music/library` there too.
+8. **`.gitignore`, or the repo's `info/exclude`**: `music/library` as a symlink is not matched by `music/library/` (that pattern matches directories only). I symlinked `music/library` to another clone of the pack to measure the mixes, then removed the link again; recreate it before the pending renders. The integration clone's exclude has `sfx/library` only; add `music/library` there too.
 
 ## PENDING RENDERS (exact commands; run only when the lock allows, >= 10 GiB free)
 
 ```
-L=~/Developer/motion-pack-xp/render-lock.sh; R=~/Developer/mp-xp-explainer/templates
+L=$MP_RENDER_PREFIX; R=templates
 # music/library must exist (symlink as above). Each make rebuilds the plan, mix and page right before its render.
 cd $R/explainer-diagram && node make.mjs && $L npx -y hyperframes@0.8.142 render . -o out/explainer-diagram.mp4 --crf 23 -w 1
 cd $R/explainer-diagram && node make.mjs --set aspect=9:16 && cd tall && $L npx -y hyperframes@0.8.142 render . -o ../out/explainer-diagram-tall.mp4 --crf 23 -w 1
@@ -147,7 +147,7 @@ cd $R/explainer-diagram && python3 ../_shared/sheet.py out/explainer-diagram.mp4
 cd $R/data-story && python3 ../_shared/sheet.py out/data-story.mp4 out/sheet.jpg 0,3,8,12,17,21,24,28,31,35,39,43,47,51,56,60 && python3 ../../ears/listen.py out/data-story.mp4 --plan out/plan.json --md out/ears.md && python3 ../../eyes/look.py out/data-story.mp4 --plan out/plan.json --md out/eyes.md
 cd $R/process-howto && python3 ../_shared/sheet.py out/process-howto.mp4 out/sheet.jpg 0,2,5,8,11,14,17,20,23,26,28.5,30,32,34,37,40,42 && python3 ../../ears/listen.py out/process-howto.mp4 --plan out/plan.json --md out/ears.md && python3 ../../eyes/look.py out/process-howto.mp4 --plan out/plan.json --md out/eyes.md
 # the parts sheet (after shared edit 3) and a seek check of one page:
-cd ~/Developer/mp-xp-explainer && $L node type/tests/gfx-sheet.mjs
+$L node type/tests/gfx-sheet.mjs
 cd $R/data-story && $L node ~/.claude/skills/motion-stack/scripts/seekcheck.mjs index.html --w 1920 --h 1080 --fps 30 --frames 120 --stills 0,60,119
 ```
 

@@ -17,7 +17,7 @@ frame); a crossfade, when asked for, is centred on the flip sample, never before
 when `--lufs-a` and `--lufs-b` are given (measure them with ears: `python3 ears/listen.py`, or ears/checks_ab.py on the rendered file), clamped to +-12 dB; without the two numbers the gain is 0
 and `warnings` says the level was not measured (ears/checks_ab.py then judges it on the file). The result carries `plan_audio`, the block to paste at plan.audio.abReplay, which ears reads.
 check_ab_replay(result) re-derives every rule from the emitted data alone (templates and tests call it; a hand-edited plan fails it). Craft only: the shape of studied references
-(docs/research/reference-mirelo-2026-10.md), no copy, no names. Numbers: cuts/patterns.json story.abReplay."""
+(a reference study kept outside this repo), no copy, no names. Numbers: cuts/patterns.json story.abReplay."""
 import json, math, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
