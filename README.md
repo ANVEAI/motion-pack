@@ -170,9 +170,9 @@ The repository is a Claude Code plugin and marketplace:
 
 Then ask for a video ("make a 30-second launch ad for my app") and the skills load on their own. Run Claude Code from a clone of this repo, because renders and audio builds happen in the clone.
 
-**claude.ai (web and desktop apps):** each skill also ships as a zip on the [latest release](https://github.com/ANVEAI/motion-pack/releases/latest) (`skill-<name>-v0.3.0.zip`). Upload one in **Customize > Skills > Upload skill**. Be clear about what you get there. In claude.ai the skills plan the video: the story and script, the shot list, `design.json` with measured contrast, the cue sheet, and the post copy. Rendering, audio builds and the ears checks need the repo's code, Python and ffmpeg on a computer, so they run in Claude Code (or any agent with a shell) inside a clone.
+**claude.ai (web and desktop apps):** each skill also ships as a zip on the [latest release](https://github.com/ANVEAI/motion-pack/releases/latest) (`skill-<name>-v0.4.0.zip`). Upload one in **Customize > Skills > Upload skill**. Be clear about what you get there. In claude.ai the skills plan the video: the story and script, the shot list, `design.json` with measured contrast, the cue sheet, and the post copy. Rendering, audio builds and the ears checks need the repo's code, Python and ffmpeg on a computer, so they run in Claude Code (or any agent with a shell) inside a clone.
 
-**Full-size sound:** the WAV libraries are generated, not committed. Build them with `python3 sfx/build_library.py` and `python3 music/build_music.py`, or unzip `motion-pack-sfx-wav-v0.3.0.zip` and `motion-pack-music-wav-v0.3.0.zip` from the release at the repo root. Those zips match the v0.3.0 tag only. On a later commit, build the libraries instead (see Heavy media).
+**Full-size sound:** the WAV libraries are generated, not committed. Build them with `python3 sfx/build_library.py` and `python3 music/build_music.py`, or unzip `motion-pack-sfx-wav-v0.4.0.zip` and `motion-pack-music-wav-v0.4.0.zip` from the release at the repo root. Those zips match the v0.4.0 tag only. On a later commit, build the libraries instead (see Heavy media).
 
 **Manual install** (any project, without the plugin system):
 
@@ -216,7 +216,7 @@ The git tree carries code, manifests and small previews. Full-size media is rebu
 | Full-size renders and contact sheets | the module's sheet script | `motion-pack-renders-fullres-<version>.zip` |
 | Demo mixes and stems | `music/demo/demo_mix.py`, `sfx/demo/demo_sfx_reel.py` | `motion-pack-demo-audio-<version>.zip` |
 
-**Each Release's zips match its own tag, not `main`.** Release v0.3.0 (tag `v0.3.0`, 15 Oct 2026) holds 301 sound effects and 65 music pieces, rebuilt from that tag's scripts and checked against its manifests. Release v0.2.0 (tag `v0.2.0`, 15 Oct 2026) holds 301 sound effects and 65 music pieces too: the sound library did not change between the two. Release v0.1.0 (tag `bc3b569`, 13 Oct 2026) holds 288 sound effects and 64 music pieces, so it is missing every sound added since. The current counts on `main` are the `sfx/` and `music/` rows of the module table above, which `tools/count.py` generates. A Release's counts never change, but `main` keeps growing, so a library unzipped from an older Release is missing the newer sounds, and a mix through `music/mixer.py` that cites one stops with a missing-file error. The bed-less, sound-effects-only path synthesises sounds live and is not affected. On any commit other than a release tag, run `python3 sfx/build_library.py` and `python3 music/build_music.py`: they match the checkout and rebuild bit for bit. Each Release lists `SHA256SUMS`. The MP3 previews in git are for listening only: MP3 adds encoder delay, so anchors and mixing use the WAV masters.
+**Each Release's zips match its own tag, not `main`.** Release v0.4.0 (tag `v0.4.0`, 19 Oct 2026) holds 356 sound effects and 69 music pieces. Release v0.3.0 (tag `v0.3.0`, 15 Oct 2026) holds 301 sound effects and 65 music pieces, rebuilt from that tag's scripts and checked against its manifests. Release v0.2.0 (tag `v0.2.0`, 15 Oct 2026) holds 301 sound effects and 65 music pieces too: the sound library did not change between the two. Release v0.1.0 (tag `bc3b569`, 13 Oct 2026) holds 288 sound effects and 64 music pieces, so it is missing every sound added since. The current counts on `main` are the `sfx/` and `music/` rows of the module table above, which `tools/count.py` generates. A Release's counts never change, but `main` keeps growing, so a library unzipped from an older Release is missing the newer sounds, and a mix through `music/mixer.py` that cites one stops with a missing-file error. The bed-less, sound-effects-only path synthesises sounds live and is not affected. On any commit other than a release tag, run `python3 sfx/build_library.py` and `python3 music/build_music.py`: they match the checkout and rebuild bit for bit. Each Release lists `SHA256SUMS`. The MP3 previews in git are for listening only: MP3 adds encoder delay, so anchors and mixing use the WAV masters.
 
 ## Optional third-party sets
 
@@ -251,6 +251,10 @@ CI runs the checks that need no GPU on every push; [docs/testing.md](docs/testin
 - **Fonts** (bundled, unmodified, not MIT and not CC0): Manrope 4.505, IBM Plex Mono 2.3 and STIX Two Text 2.13, all SIL Open Font License 1.1, with the licence text next to each font (`objects/kit/fonts/`, `templates/_shared/fonts/`); sources and copyright lines in [THIRD_PARTY.md](THIRD_PARTY.md) section 1.
 - **Trademarks:** the ANVE name and logo are not covered by either licence, see [TRADEMARKS.md](TRADEMARKS.md).
 - **Third-party:** runtime libraries and the optional fetched sets keep their own licences, see [THIRD_PARTY.md](THIRD_PARTY.md).
+
+## Changelog
+
+What changed in each release, with the counts at each tag and the known weak spots: [CHANGELOG.md](CHANGELOG.md). The latest is v0.4.0 (19 Oct 2026).
 
 ## Credits
 

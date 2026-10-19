@@ -1,7 +1,7 @@
 {
   "name": "motion-pack",
   "displayName": "Motion Pack",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A deterministic motion-production pack for AI agents: transitions, cuts, synthesised SFX and music, finishing layers, kinetic type, camera moves, 3D objects, Blender plates, baked physics and genre templates for HyperFrames, three.js and Blender, plus six skills that plan, design, build, test and ship the video.",
   "author": {
     "name": "ANVE (Anveshana Futurecorp Pvt Ltd)",
