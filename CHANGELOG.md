@@ -41,17 +41,37 @@ The catalog grows from 954 to **1132** components. Genre templates go from 7 to 
 | cut patterns | 48 | 49 |
 | ears checks | 10 | 11 |
 
+### Best demos
+
+Three renders from the 19 Oct run pass loudness and frame size and read well on their contact sheets. They are attached to the v0.4.0 release (not committed):
+- `ad-9x16.mp4` (1080x1920, 15 s): the `ad` template driven by `examples/project.example.json`. Eyes and ears report no fails.
+- `character-spot-16x9.mp4` (1920x1080, 16 s): the wordless `character-spot`. Eyes and ears report no fails.
+- `short-film-16x9.mp4` (1920x1080, 53.6 s): `short-film`, with the `film-scene` three.js plate in its stage slot. It passes loudness and ears; eyes flag black frames, banding and readability on its dark placeholder plates.
+
 ### Known weak spots (read before you rely on a template)
 
-These come from rendering the templates through `mp render` and checking them with `mp check` (eyes, ears, loudness and frame size) on 16-19 Oct. The test renders use the templates' own placeholder plates.
+On 19 Oct every genre template was rendered through `mp render` at both aspects, 44 files in all, and checked with `mp check` (eyes, ears, loudness and frame size). The renders use the templates' own placeholder plates. Every file is the right size. 38 of the 44 pass loudness (-14 LUFS ± 0.5, true peak ≤ -1 dBTP).
 
-- **eyes, banding:** `hardware-teaser`, `trailer` and `vlog-personal` fail the banding check on dark gradients. Add grain or lower the CRF.
-- **eyes, frame 0:** `hardware-teaser` (nothing moves in the first second) and `saas-feature-drop` 16:9 (no readable subject on frame 0).
-- **eyes, readability:** `saas-feature-drop` headlines sit at 76-92 px, under the 96 px floor for wide frames, and its phone label is too small. The `trailer` placeholder plates are dark enough to fail readability too.
-- **eyes, safe zones and composition:** the `vlog-personal` speaker tag and caption row sit outside the conservative safe area, and the captions overlap the placeholder speaker tag. The `founder-story` caption row overlaps its lower third near 3 s. `hardware-teaser` 16:9 and `trailer` 9:16 still fail safe zones, and a placeholder tag in the 16:9 `ad` sits under the bottom safe edge. The 9:16 cuts of `trailer` and `hardware-teaser` also fail composition.
-- **ears:** `founder-story` fails the sync check. Every other checked render passes ears, and every render passed loudness (-14 LUFS ± 0.5, true peak ≤ -1 dBTP) and frame size.
+- **Quiet renders, not fixed in this release.** `data-story` comes out at -21.46 LUFS, `explainer-diagram` at -22.75 and `film-scene` at -17.55, at both aspects.
+  - In `data-story` and `explainer-diagram` the mix WAV is at -14.0 LUFS. The HyperFrames render then lowers the whole track by 7.3 and 8.6 dB, because its true-peak guard reads the encoded audio as over -1 dBTP (its log says "Audio lowered by ... dB").
+  - The `film-scene` mix itself stops at -17.49 LUFS, because the mixer reaches its -2.0 dBTP ceiling first and has no limiter.
+  - Neither is a gain or target setting, so this release leaves them alone. A workaround: limit the master at 4x oversampling, keep the rendered picture and remux the audio yourself, then measure the MP4 with `ffmpeg -af ebur128`, not the WAV.
+- **ears:** `founder-story` fails the sync check at both aspects. Its caption row also overlaps the "Founder name" lower third and the speaker tag. `film-scene` fails ears sync as well as loudness.
+- **eyes, banding:** nearly every dark template fails the banding check. Add grain or lower the CRF.
+- **eyes, frame 0:** `hardware-teaser`, `saas-feature-drop` 16:9, `title-sequence`, `hardware-reveal`, `process-howto`, `data-story` and `explainer-diagram`.
+- **Label collisions seen on the sheets:**
+  - `spec-sheet` 9:16: the "AI COMPUTE" label sits under "120 TOPS" at 19.2 s.
+  - `hardware-reveal`: "Machined from one block" sits over the watermark at 9.2 s, and the port labels overlap at 34.8 s.
+  - `character-spot` 9:16: the end title touches the left edge at 15.4 s.
+  - `data-story`: the footer repeats its demo-data line at 60 s.
+- **eyes, readability and safe zones:** `saas-feature-drop` headlines sit at 76-92 px, under the 96 px floor for wide frames. Placeholder tags, captions or titles sit outside the safe area in 20 of the 44 renders, among them `vlog-personal`, `tutorial`, `founder-story`, the trailers and the 16:9 `ad`.
 - **Structure scores:** `hardware-reveal` scores 72, because its 6-8 s shots run long against the 1.5-3.5 s pattern. `short-film` reads 0 on pace, because its placeholder plates have no motion events. `title-sequence` at `length=60` holds after 34 s with the 10 demo names.
-- **Not every template has a measured render yet.** Some template READMEs still say the render is pending. The new sounds were measured by `sfx/qa.py` (0 fails), not auditioned by a person.
+- **Not heard by a person:** the new sounds were measured by `sfx/qa.py` and `music/qa.py` (0 fails), not auditioned.
+
+### On `main` after the v0.4.0 tag
+
+- MP3 previews for the 55 new sounds and 4 genre trailer beds, and the catalog now points at them. Without them the Pages build of the catalog failed, because the WAV masters are not in git.
+- This changelog section: the 19 Oct render results, the best demos and the weak spots above.
 
 ## v0.3.0 (15 Oct 2026)
 
