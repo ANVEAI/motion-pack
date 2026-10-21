@@ -1327,7 +1327,10 @@
    ],
    "fontPx": 100,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "wrong.head0",
@@ -1344,7 +1347,10 @@
    ],
    "fontPx": 100,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "reframe.head0",
@@ -1361,7 +1367,10 @@
    ],
    "fontPx": 64,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "step1.head0",
@@ -1378,7 +1387,10 @@
    ],
    "fontPx": 68,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "step2.head0",
@@ -1395,7 +1407,10 @@
    ],
    "fontPx": 68,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "step3.head0",
@@ -1412,7 +1427,10 @@
    ],
    "fontPx": 68,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "result.head0",
@@ -1429,7 +1447,10 @@
    ],
    "fontPx": 72,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "end.cta",

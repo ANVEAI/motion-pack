@@ -873,7 +873,10 @@
    ],
    "fontPx": 92,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "before.head0",
@@ -890,7 +893,10 @@
    ],
    "fontPx": 76,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "after.head0",
@@ -907,7 +913,10 @@
    ],
    "fontPx": 76,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "compare.head0",
@@ -924,7 +933,10 @@
    ],
    "fontPx": 76,
    "role": "headline",
-   "fg": "#14131A"
+   "fg": "#14131A",
+   "fgAlt": [
+    "#3B5BFD"
+   ]
   },
   {
    "id": "cta.cta",
