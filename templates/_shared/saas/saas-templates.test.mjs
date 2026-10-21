@@ -30,8 +30,10 @@ for (const [name, lengths] of Object.entries(T)) {
   check(`${name}: 9:16 is a re-layout (its window boxes are not the 16:9 ones)`, boxes(t).some((b, i) => b !== boxes(w)[i]) && t.W === 1080 && t.H === 1920);
   let threw = ''; try { B({ text: { ...CONFIG.text, [Object.keys(CONFIG.text).find((k) => typeof CONFIG.text[k] === 'string')]: 'Saves 40% of your week' } }); } catch (e) { threw = e.message; }
   check(`${name}: a digit in CONFIG.text fails the build`, /digit/.test(threw), threw);
-  const missing = Object.values(PROJECT_MAP).filter((v) => get(CONFIG, v) === undefined && !/logo|words|audio/.test(v));
+  const missing = Object.values(PROJECT_MAP).flatMap((v) => (typeof v === 'string' || Array.isArray(v) ? [].concat(v) : [].concat(v.to))).filter((v) => get(CONFIG, v) === undefined && !/logo|words|audio/.test(v));
   check(`${name}: PROJECT_MAP points at real CONFIG fields`, !missing.length, missing.join(' '));
+  { const e = PROJECT_MAP['brand.name'], ctx = { defaults: CONFIG }, to = typeof e === 'string' ? [e] : e.to, vals = typeof e === 'string' ? ['Orbit'] : e.fn('Orbit', ctx);
+    check(`${name}: brand.name renames the demo brand everywhere the copy names it`, to.every((p, i) => !String(vals[i]).includes(CONFIG.brand.name)), JSON.stringify(vals)); }
   const slot = Object.keys(CONFIG.media || {})[0];
   if (slot) { const img = B({ media: { ...CONFIG.media, [slot]: { src: '/abs/shot.png', label: '' } } }), vid = B({ media: { ...CONFIG.media, [slot]: { src: '/abs/rec.mp4', start: 2, label: '' } } }), its = (p) => p.scenes.flatMap((s) => s.items);
     check(`${name}: a screenshot in media.${slot} replaces the placeholder screen and its label`, its(img).some((i) => i.params?.screen?.src === 'assets/media/shot.png' && i.params.label === '' && !i.screen));

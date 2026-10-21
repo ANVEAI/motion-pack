@@ -44,7 +44,7 @@ export const CONFIG = {
   layers: [{ kind: 'grain', params: { stock: 'upload-safe' } }],
 };
 /* ============================================================================== */
-export const PROJECT_MAP = { 'brand.name': 'brand.name', 'brand.accent': 'brand.accent', 'brand.ink': 'brand.ink', 'brand.paper': 'brand.paper', 'brand.logo': 'brand.logo', 'brand.url': 'brand.url', 'brand.cta': 'brand.cta',
+export const PROJECT_MAP = { 'brand.name': { to: ['brand.name', 'text.askTitle', 'text.reframe.say'], fn: (v, ctx) => { const re = (x) => String(x).split(ctx.defaults.brand.name).join(v); return [v, re(ctx.defaults.text.askTitle), re(ctx.defaults.text.reframe.say)]; }, note: 'also renames the demo brand inside the copy that names it' }, 'brand.accent': 'brand.accent', 'brand.ink': 'brand.ink', 'brand.paper': 'brand.paper', 'brand.logo': 'brand.logo', 'brand.url': 'brand.url', 'brand.cta': 'brand.cta',
   'brand.font.display': 'brand.font.display', 'brand.font.text': 'brand.font.text', 'text.headline': 'text.question.head', 'text.subhead': 'text.reframe.head', 'text.cta': 'brand.cta', 'text.fine': 'text.fine',
   'voice.words': 'voice.words', 'voice.audio': 'voice.audio', 'media.screen': 'media.step2', 'media.screen2': 'media.step3', 'claims': 'claims', 'music': 'music', 'aspects': 'aspect', 'length': 'length' };
 export const ORDER = ['question', 'wrong', 'reframe', 'step1', 'step2', 'step3', 'result', 'end'];
@@ -142,6 +142,6 @@ export function buildPlan(C) {
   const BEAT = { question: 'question', wrong: 'wrongmodel', reframe: 'reframe', step1: 'reframe', step2: 'reframe', step3: 'reframe', result: 'proof', end: 'sowhat' }, secs = [];
   for (const sc of plan.scenes) { const name = BEAT[sc.id] || sc.id, last = secs.at(-1); if (last && last.name === name) last.t[1] = sc.end; else secs.push({ name, t: [sc.start, sc.end] }); }
   plan.structure = { pattern: 'explainer', sections: secs };
-  plan.honesty = 'fictional product (Acme Flow); placeholder HTML screens labelled in frame' + (words && !C.voice.audio ? '; the VO is a labelled guide signal (no voice)' : '');
+  plan.honesty = `fictional product (${C.brand.name}); placeholder HTML screens labelled in frame` + (words && !C.voice.audio ? '; the VO is a labelled guide signal (no voice)' : '');
   return plan;
 }

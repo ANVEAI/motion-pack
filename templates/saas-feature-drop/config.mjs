@@ -25,7 +25,7 @@ export const CONFIG = {
   layers: [{ kind: 'grain', params: { stock: 'upload-safe' } }],
 };
 /* ============================================================================== */
-export const PROJECT_MAP = { 'brand.name': 'brand.name', 'brand.accent': 'brand.accent', 'brand.ink': 'brand.ink', 'brand.paper': 'brand.paper', 'brand.logo': 'brand.logo', 'brand.url': 'brand.url', 'brand.cta': 'brand.cta',
+export const PROJECT_MAP = { 'brand.name': { to: ['brand.name', 'text.kicker'], fn: (v, ctx) => { const re = (x) => String(x).split(ctx.defaults.brand.name).join(v); return [v, re(ctx.defaults.text.kicker)]; }, note: 'also renames the demo brand inside the copy that names it' }, 'brand.accent': 'brand.accent', 'brand.ink': 'brand.ink', 'brand.paper': 'brand.paper', 'brand.logo': 'brand.logo', 'brand.url': 'brand.url', 'brand.cta': 'brand.cta',
   'brand.font.display': 'brand.font.display', 'brand.font.text': 'brand.font.text', 'text.headline': 'text.feature', 'text.kicker': 'text.kicker', 'text.subhead': 'text.after', 'text.cta': 'brand.cta', 'text.fine': 'text.fine',
   'media.before': 'media.before', 'media.after': 'media.after', 'media.screen': 'media.after', 'claims': 'claims', 'music': 'music', 'aspects': 'aspect', 'length': 'length' };
 
@@ -81,6 +81,6 @@ export function buildPlan(C) {
   const end = plan.scenes.at(-1), F = C.fps, lift = Math.round((end.start + C.tail.liftS) * F), fade = Math.round(C.tail.fadeS * F);
   plan.bedAutomation = [{ frame: 0, gain_db: 0 }, { frame: lift, gain_db: 0 }, { frame: lift + fade, gain_db: C.tail.bedDb }];
   plan.audio = { mode: 'music', quiet: [{ t: [+((lift + fade) / F).toFixed(4), plan.seconds], kind: 'hold', why: 'end card on a quiet hold after the sonic logo' }] };
-  plan.honesty = 'fictional product (Acme Flow); placeholder HTML screens labelled in frame';
+  plan.honesty = `fictional product (${C.brand.name}); placeholder HTML screens labelled in frame`;
   return plan;
 }

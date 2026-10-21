@@ -60,7 +60,7 @@ export const CONFIG = {
 
 /* the shared project file (templates/_shared/project.schema.json, lane 6) -> this CONFIG */
 export const PROJECT_MAP = {
-  'brand.name': 'brand.name', 'brand.accent': 'brand.accent', 'brand.ink': 'brand.ink', 'brand.paper': 'brand.paper', 'brand.logo': 'brand.logo', 'brand.url': 'brand.url', 'brand.cta': 'brand.cta',
+  'brand.name': { to: ['brand.name', 'text.after', 'text.askTitle'], fn: (v, ctx) => { const re = (x) => String(x).split(ctx.defaults.brand.name).join(v); return [v, re(ctx.defaults.text.after), re(ctx.defaults.text.askTitle)]; }, note: 'also renames the demo brand inside the copy that names it' }, 'brand.accent': 'brand.accent', 'brand.ink': 'brand.ink', 'brand.paper': 'brand.paper', 'brand.logo': 'brand.logo', 'brand.url': 'brand.url', 'brand.cta': 'brand.cta',
   'brand.font.display': 'brand.font.display', 'brand.font.text': 'brand.font.text',
   'text.headline': 'text.hook', 'text.subhead': 'text.line', 'text.features': 'text.features', 'text.proof': 'text.proof', 'text.cta': 'brand.cta', 'text.fine': 'text.fine',
   'media.screen': 'media.tour', 'media.screen2': 'media.runs', 'media.hero': 'media.hook', 'media.before': 'media.payoffBefore', 'media.after': 'media.payoffAfter',
@@ -80,6 +80,6 @@ export function buildPlan(C) {
   const end = plan.scenes.at(-1), F = C.fps, lift = Math.round((end.start + C.tail.liftS) * F), fade = Math.round(C.tail.fadeS * F);
   plan.bedAutomation = [{ frame: 0, gain_db: 0 }, { frame: lift, gain_db: 0 }, { frame: lift + fade, gain_db: C.tail.bedDb }];
   plan.audio = { mode: 'music', quiet: [{ t: [+((lift + fade) / F).toFixed(4), plan.seconds], kind: 'hold', why: 'end card on a quiet hold after the sonic logo' }] };
-  plan.brandCueAt = rv ? rv.start : null; plan.honesty = 'fictional product (Acme Flow); placeholder HTML screens labelled in frame; every figure is a claim with a placeholder source';
+  plan.brandCueAt = rv ? rv.start : null; plan.honesty = `fictional product (${C.brand.name}); placeholder HTML screens labelled in frame; every figure is a claim with a placeholder source`;
   return plan;
 }
