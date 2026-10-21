@@ -1,6 +1,6 @@
 # motion-pack / patterns
 
-Craft from very high-view launch videos, trailers, tutorials, vlogs, Shorts and podcast clips, turned into data the templates and skills can apply and check. The evidence for every number is in `docs/research/launch-video-patterns.md` (named examples, sources, access dates, contradictions and gaps); these files carry no brand names and link only to the help pages of the platforms the pack targets.
+Craft from very high-view launch videos, trailers, tutorials, vlogs, Shorts and podcast clips, turned into data the templates and skills can apply and check. The evidence for every number is in `docs/evidence/launch-video-patterns.md` (named examples, sources, access dates, contradictions and gaps); these files carry no brand names and link only to the help pages of the platforms the pack targets.
 
 | file | what | used by |
 |---|---|---|

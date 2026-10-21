@@ -514,7 +514,7 @@ Electric (arc zap, sustained crackle loop, zap-off power-down) for neon / electr
 
 ## Honest limits
 - **Nothing here was auditioned by a human yet.** Defaults are starting values from DSP practice; the QA is measurement (spectra, loudness, edges, determinism) plus spectrogram stills. Do one listening pass per new family before shipping a film; record one line per family here.
-- Glass / bell / metal / bubble / formant numbers come from textbook or remembered tables (docs/research/sound.md grades C): they may need retuning by ear. The word-free voices are formant-synth stylisations, not real voices.
-- Platform loudness: only Spotify (-14 LUFS, -1 dBTP) and YouTube normalisation behaviour are documented; Instagram / TikTok / X / LinkedIn are D-grade: house master is -14 LUFS-I / <= -1.5 dBTP (AAC probes <= -1.0) and still needs the empirical upload test (docs/research/sound.md 5.3).
+- Glass / bell / metal / bubble / formant numbers come from textbook or remembered tables (docs/evidence/sound.md grades C): they may need retuning by ear. The word-free voices are formant-synth stylisations, not real voices.
+- Platform loudness: only Spotify (-14 LUFS, -1 dBTP) and YouTube normalisation behaviour are documented; Instagram / TikTok / X / LinkedIn are D-grade: house master is -14 LUFS-I / <= -1.5 dBTP (AAC probes <= -1.0) and still needs the empirical upload test (docs/evidence/sound.md 5.3).
 - 2026-10-13 expansion (+100 sounds: indian 26, foley 20, device 16, ui +5 voice-assistant, impacts +6, risers +5, whooshes +4, ambience +11, crowd 3, cartoon +4) is equally unheard: see `LISTENING_PASS.md`. Indian voices are stylised synthesis (no samples, no imitation of recordings); crowd sounds are word-free formant voices.
 - Spectral-centroid ranges and sub-energy limits in `qa.py` are sanity guards (warn), not perceptual claims.

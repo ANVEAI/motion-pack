@@ -33,7 +33,7 @@
 | Automated listening and critique of the sound | `ears/listen.py`, `ears/README.md`, thresholds in `ears/manifest.json` |
 | Automated looking and critique of the picture | `eyes/look.py`, `eyes/README.md`, thresholds in `eyes/manifest.json` |
 | Outside assets | `scripts/fetch-external.sh`, `THIRD_PARTY.md` |
-| Research behind the defaults | `docs/research/` |
+| Research behind the defaults | `docs/evidence/` |
 | Beat sheets, hooks, CTAs, platform lengths and the structure checker | `patterns/`, `tools/structure_check.py` |
 | Edit without code (one project file, the `mp` CLI) | `tools/mp`, `templates/_shared/project.mjs`, `templates/_shared/project.schema.json`, `docs/EDIT-WITHOUT-CODE.md` |
 | Captions, audio description, accessibility lint, delivery presets, Lottie export | `tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`, `docs/DELIVERY-AND-ACCESSIBILITY.md` |

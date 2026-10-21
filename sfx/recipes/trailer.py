@@ -1,5 +1,5 @@
 """Trailer family (2026-10-16, film lane): the sound shapes a modern film trailer is cut on, synthesised from scratch (numpy/scipy, seeded, no samples).
-Craft learned from how trailers are built (docs/research/film-trailer-craft.md), never copied from any trailer, score or sample library:
+Craft learned from how trailers are built (docs/evidence/film-trailer-craft.md), never copied from any trailer, score or sample library:
   braams        brass-like low blasts (detuned saw stacks on A1 / E2 / A2, a filter that bites then closes, tanh growl, a sub layer): the "the stakes just rose" hit
   booms         a sub boom with a chest punch and a long cavern tail; a metallic impact (inharmonic anvil modes + sub + crack + a ringing hall)
   sub drop      a slow 60 -> 30 Hz drop under a title or a cut to black

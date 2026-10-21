@@ -32,7 +32,7 @@ Honest limits of the expansion: heat haze, halation and true chromatic effects n
 
 ## L7 parts (2026-10-14): two look filters, two backgrounds
 
-Techniques studied in `docs/research/reference-stan-launchpad-2026-10.md` (craft only, nothing copied). One accent colour does the work: the archive, the line art, the field behind the type.
+Techniques studied in `docs/evidence/reference-stan-launchpad-2026-10.md` (craft only, nothing copied). One accent colour does the work: the archive, the line art, the field behind the type.
 
 | Id | File | What | Params (defaults) | Demo |
 |---|---|---|---|---|
@@ -95,7 +95,7 @@ Honest limits: a Fourier series is periodic, so an open path is traced there and
 
 ## Round 6 (2026-10-15): background.auroraRibbon
 
-Technique from a round-6 brand-launch film (craft only, nothing copied; `../docs/research/reference-round6-2026-10.md`). One Canvas2D background in `backgrounds-r6.js`, merged into `BG` like `meshGradient`, so it mounts through `mountStack` and appears in the catalog as `background.auroraRibbon`. It is the "solution" ground after a black problem section: a thin bright core with a wide glow, bottom-anchored, off-frame until `riseAt`, then drifting. Pure function of t (no clock, no `Math.random`, no module-level cache).
+Technique from a round-6 brand-launch film (craft only, nothing copied; `../docs/evidence/reference-round6-2026-10.md`). One Canvas2D background in `backgrounds-r6.js`, merged into `BG` like `meshGradient`, so it mounts through `mountStack` and appears in the catalog as `background.auroraRibbon`. It is the "solution" ground after a black problem section: a thin bright core with a wide glow, bottom-anchored, off-frame until `riseAt`, then drifting. Pure function of t (no clock, no `Math.random`, no module-level cache).
 
 | Id | What | Params (defaults) | Demo |
 |---|---|---|---|

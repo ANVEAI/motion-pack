@@ -1,7 +1,7 @@
 /* motion-pack/templates/_shared/plan.mjs: PURE helpers shared by every template's config.mjs (node + browser, no DOM, no clock).
    Ids follow the pack convention: transitions/<name>, sfx/<category>/<name>, layers/<name>, type/<name>, objects/<name>. */
 
-/* platform presets (docs/research/edit.md 8): safe zones as fractions; brand cue deadline; loudness target */
+/* platform presets (docs/evidence/edit.md 8): safe zones as fractions; brand cue deadline; loudness target */
 export const PLATFORMS = {
   'tiktok.organic': { aspect: 'tall', safe: { top: 0.14, bottom: 0.35, side: 0.06 }, brandCueBy: 5, lufs: -14 },
   'reels.organic': { aspect: 'tall', safe: { top: 0.14, bottom: 0.35, side: 0.06 }, brandCueBy: 6, lufs: -14 },

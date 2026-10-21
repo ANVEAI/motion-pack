@@ -4,8 +4,8 @@ Branch `xp-research`, from `main` bbd7da9. Only new files, except the two shared
 
 ## New files (no conflicts expected)
 
-- `docs/research/launch-video-patterns.md`: the evidence. Nine categories plus the pack's own genres, with the top 15 findings, sources, grades, contradictions and gaps. Named examples live only here.
-- `docs/research/pack-gap-analysis.md`: commercial packs and AI tools vs motion-pack today and after this round, as feature categories, with a ranked list.
+- `docs/evidence/launch-video-patterns.md`: the evidence. Nine categories plus the pack's own genres, with the top 15 findings, sources, grades, contradictions and gaps. Named examples live only here.
+- `docs/evidence/pack-gap-analysis.md`: commercial packs and AI tools vs motion-pack today and after this round, as feature categories, with a ranked list.
 - `patterns/README.md`, `patterns/structures.json` (18 structures), `patterns/hooks.json` (13 archetypes), `patterns/ctas.json`, `patterns/lengths.json`.
 - `tools/structure_check.py`: scores `out/plan.json` against a structure and prints fixes.
 - `tools/tests/test_structure_check.py`: 26 tests, run by the existing `tools/tests` pytest step.
@@ -20,13 +20,13 @@ Branch `xp-research`, from `main` bbd7da9. Only new files, except the two shared
          - name: "structure check mutation proof (each scoring rule fails its test when broken)"
            run: python3 tools/mutation_check.py tools/tests/structure_check.mutants.json
    ```
-2. **`tools/name_denylist.txt`:** 22 hashed lines appended. They cover the studios, vendors, launches and people that `docs/research/launch-video-patterns.md` and `pack-gap-analysis.md` cite (four tagged `person`). Union-merge: keep every line from both sides. After the merge, `python3 tools/check_names.py` must report 0 hits. If another lane's shipped file trips one of these hashes, that file names a studied source outside `docs/research`: fix the file, never drop the hash.
+2. **`tools/name_denylist.txt`:** 22 hashed lines appended. They cover the studios, vendors, launches and people that `docs/evidence/launch-video-patterns.md` and `pack-gap-analysis.md` cite (four tagged `person`). Union-merge: keep every line from both sides. After the merge, `python3 tools/check_names.py` must report 0 hits. If another lane's shipped file trips one of these hashes, that file names a studied source outside `docs/research`: fix the file, never drop the hash.
 
 ## Shared-file edits NEEDED (exact text; I did not touch these files)
 
 **A. `README.md` module table.** Add a row after `storyboard/` (do not hand-edit counts):
 ```
-| `patterns/` | 18 beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), 13 hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/research/launch-video-patterns.md`; `tools/structure_check.py` scores a plan against them | `patterns/README.md` |
+| `patterns/` | 18 beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), 13 hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/evidence/launch-video-patterns.md`; `tools/structure_check.py` scores a plan against them | `patterns/README.md` |
 ```
 
 **B. `skills/motion-pack/SKILL.md`.**
@@ -36,7 +36,7 @@ Branch `xp-research`, from `main` bbd7da9. Only new files, except the two shared
    ```
 2. In "Reach for X when", a new row:
    ```
-   | a beat sheet for a genre (SaaS launch, feature drop, explainer, hardware reveal, teaser, trailer, title sequence, tutorial, vlog, podcast clip, founder story, short film, ad 15/30) with section timing, ASL, text ceilings, music shape and the CTA window | `patterns/structures.json`; hooks `patterns/hooks.json`; CTAs `patterns/ctas.json`; lengths `patterns/lengths.json`; check with `tools/structure_check.py` | every number is graded; beat percentages are practitioner or inference, never platform rules (`docs/research/launch-video-patterns.md`) |
+   | a beat sheet for a genre (SaaS launch, feature drop, explainer, hardware reveal, teaser, trailer, title sequence, tutorial, vlog, podcast clip, founder story, short film, ad 15/30) with section timing, ASL, text ceilings, music shape and the CTA window | `patterns/structures.json`; hooks `patterns/hooks.json`; CTAs `patterns/ctas.json`; lengths `patterns/lengths.json`; check with `tools/structure_check.py` | every number is graded; beat percentages are practitioner or inference, never platform rules (`docs/evidence/launch-video-patterns.md`) |
    ```
 3. Under RECIPE L, step 0, append:
    ```
@@ -45,11 +45,11 @@ Branch `xp-research`, from `main` bbd7da9. Only new files, except the two shared
 
 **C. `skills/motion-pack/references/virality.md`.** At the end of §1, after the seven archetypes:
 ```
-Six more archetypes, each with its frame-0 rule and generic example lines, are in `patterns/hooks.json`: `live-demo` (AI products: the work already running on frame 0), `cold-open` (trailers), `light-from-dark` (hardware), `provocative-line` (podcast clips), `promise` (tutorials), `founder-to-camera`. Evidence: `docs/research/launch-video-patterns.md` §2.
+Six more archetypes, each with its frame-0 rule and generic example lines, are in `patterns/hooks.json`: `live-demo` (AI products: the work already running on frame 0), `cold-open` (trailers), `light-from-dark` (hardware), `provocative-line` (podcast clips), `promise` (tutorials), `founder-to-camera`. Evidence: `docs/evidence/launch-video-patterns.md` §2.
 ```
 Also in §2, after "Static limit", add:
 ```
-- **Pace shape:** contemporary films start with longer shots, shorten through the setup, cut fastest in the climax and lengthen at the end (a measured 210-film study; `docs/research/launch-video-patterns.md` §3). Set ASL per section (`patterns/structures.json` `asl_s`), not one global rate.
+- **Pace shape:** contemporary films start with longer shots, shorten through the setup, cut fastest in the climax and lengthen at the end (a measured 210-film study; `docs/evidence/launch-video-patterns.md` §3). Set ASL per section (`patterns/structures.json` `asl_s`), not one global rate.
 ```
 
 **D. `skills/story-script` (SKILL.md, "Hooks: three variants on one body").** Append:

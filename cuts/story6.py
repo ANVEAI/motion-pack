@@ -6,7 +6,7 @@
 problemPivot is a CONTINUOUS typographic film (zero cuts; sync it by motion events, not cuts): a sentence typed with an accent-word punchline, a three-beat problem
 ladder (about 2-2.5 s a beat), a 1.5-2 s audio gap (the bed thins to a hum, then true silence) that starts inside the last problem beat, the PIVOT (colour, bass and the brand
 line arrive together: the bed is back on the pivot frame, a bass hit lands on it, the ribbon / colour follows by `lead` s), a three-beat value ladder, a typed command CTA with
-the address after it, and a quiet hold of at least 2 s. Craft only: the shape of a studied reference (docs/research/reference-round6-2026-10.md), no copy, no names.
+the address after it, and a quiet hold of at least 2 s. Craft only: the shape of a studied reference (docs/evidence/reference-round6-2026-10.md), no copy, no names.
 
 It returns, in frames: the sections, every caption with its in / out / swap frames (a blur-through swap), the gap (`audio.quiet` kind gap) and the hold (kind hold) in the form
 templates paste into plan.audio, the pivot frame, the bed automation (-> plan.bedAutomation), the sound cues (-> plan.cues; visual_frame + anchor_frame = visual + 1), the motion

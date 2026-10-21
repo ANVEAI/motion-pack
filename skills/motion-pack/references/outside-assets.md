@@ -10,7 +10,7 @@ The pack ships what it generates, plus three bundled OFL font families (Manrope,
   - Kenney audio (CC0), OwlishMedia foley (CC0).
 - **Fetching them:** `scripts/fetch-external.sh` downloads them from pinned URLs, verifies checksums, and writes an `ORIGIN.txt` per set.
 - **Imported audio:** pass `python3 sfx/tools/check_origin.py DIR` (licence allow-list; exit 2 = refused), then `python3 sfx/tools/catalog_import.py DIR --category NAME`. It lands in `sfx/library_ext/`, tagged `source:ext`, and never in `sfx/manifest.json`.
-- **HyperFrames registry items** (`npx hyperframes add <name>`) are remote, third-party files: the pack never vendors them and ships owned equivalents (grain, vignette, leaks, captions, social cards, stickers). Adding one to YOUR project folder is a download: name the item, read its `registry-item.json` licence, and ask first; it has no pack id, so `check_ids.py` and the plan lint do not see it (`docs/research/visual.md`, `docs/research/expansion-skills.md`).
+- **HyperFrames registry items** (`npx hyperframes add <name>`) are remote, third-party files: the pack never vendors them and ships owned equivalents (grain, vignette, leaks, captions, social cards, stickers). Adding one to YOUR project folder is a download: name the item, read its `registry-item.json` licence, and ask first; it has no pack id, so `check_ids.py` and the plan lint do not see it (`docs/evidence/visual.md`, `docs/evidence/expansion-skills.md`).
 - **Avoid:**
   - Apple Color Emoji (not licensed);
   - OpenMoji (CC BY-SA, share-alike);

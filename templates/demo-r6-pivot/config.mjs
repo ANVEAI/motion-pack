@@ -6,7 +6,7 @@
    the bass lands, the bed is back, a glowing ribbon rises along the bottom (background.auroraRibbon, riseAt a few frames after the sound) and the brand line blurs in -> a
    three-beat value ladder as one sentence whose accent phrase swaps in place (type.accentSwap) -> a typed command pill (type.typewriter + an outline that draws on) -> the address
    -> a quiet hold of 2.5 s (plan.audio.quiet kind hold): no stinger, the ribbon fades, the address holds.
-   Craft only: the SHAPE of one studied reference (docs/research/reference-round6-2026-10.md); no wording, mark, mascot or look-alike is reused. "Brand A Notes" is a placeholder
+   Craft only: the SHAPE of one studied reference (docs/evidence/reference-round6-2026-10.md); no wording, mark, mascot or look-alike is reused. "Brand A Notes" is a placeholder
    brand (and says so in frame during the hold); there are no numbers on screen, so nothing needs a source. The diagram is original geometry (boxes with faces), local to this demo.
    Sound: music/bed_tech_pulse_loop8 (60% bass, the brand-launch row of music/README.md) with the story's bed automation; one cue per motion event (cuts/story6.py sfx);
    the pivot bass hit is the SAME cue as layers/backgrounds-r6.js cuesR6('auroraRibbon') (asserted below), so the sound leads the ribbon by `lead` s. */

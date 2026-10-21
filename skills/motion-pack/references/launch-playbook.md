@@ -1,6 +1,6 @@
 # Launch-film playbook
 
-How to plan, build and ship a product launch film that travels. Derived from <!--n:launch_films-->20<!--/n--> launch films from 2023–2026 (founder launches, AI hardware including two failures, and software and UI launches celebrated for motion). **No names in this file:** the products, accounts and sources are named, linked and hedged in `docs/research/launch-films-2026.md`; here you get formats, counts and measured figures. Reception figures are observations of public metrics on the day they were read, not findings about why a film travelled.
+How to plan, build and ship a product launch film that travels. Derived from <!--n:launch_films-->20<!--/n--> launch films from 2023–2026 (founder launches, AI hardware including two failures, and software and UI launches celebrated for motion). **No names in this file:** the products, accounts and sources are named, linked and hedged in `docs/evidence/launch-films-2026.md`; here you get formats, counts and measured figures. Reception figures are observations of public metrics on the day they were read, not findings about why a film travelled.
 
 Numbers here are tunable defaults drawn from those films, not laws. RECIPE L in `SKILL.md` builds what this page plans.
 
@@ -14,10 +14,10 @@ Numbers here are tunable defaults drawn from those films, not laws. RECIPE L in 
 | **L4** | Output montage | 45–60 s | A model or platform whose outputs are visual | one 51 s film |
 | **L5** | Teaser | 6–15 s, 1:1 or 9:16 | The day before; announce a premiere time | a 6 s premiere-time teaser; a 7 s 1:1 teaser |
 | **L6** | Build-in-public clip | 15–30 s, 9:16 | Pre-launch weeks, to build anticipation honestly | (pack practice) |
-| **L7** | Metaphor manifesto | 20–30 s | A brand, programme or cohort with no single product shot. An archival metaphor in three lines, then real people, then the title | one 22 s film: craft reference only, reception unproven (the study is in `docs/research/`) |
-| **L8** | Proof film | 16–80 s, usually 0–4 cuts | You have a measured result (a benchmark, a cost, a caught failure) and a builder audience. One chart or diagram that builds carries the argument | Round 4/5: tier A on reach and saves (a benchmark scatter at 8.5× followers and 1.23% saves; a diagram explainer at 3.3× and 1.0%; a data-table post at 1.31% saves). The best-saved shape of the batch. `docs/research/reference-round45-2026-10.md` |
+| **L7** | Metaphor manifesto | 20–30 s | A brand, programme or cohort with no single product shot. An archival metaphor in three lines, then real people, then the title | one 22 s film: craft reference only, reception unproven (the study is in `docs/evidence/`) |
+| **L8** | Proof film | 16–80 s, usually 0–4 cuts | You have a measured result (a benchmark, a cost, a caught failure) and a builder audience. One chart or diagram that builds carries the argument | Round 4/5: tier A on reach and saves (a benchmark scatter at 8.5× followers and 1.23% saves; a diagram explainer at 3.3× and 1.0%; a data-table post at 1.31% saves). The best-saved shape of the batch. `docs/evidence/reference-round45-2026-10.md` |
 | **L9** | Multi-voice documentary | 1:45–3:00 | A team, a customer base or a launch with real people who can speak to it | Round 4/5: three tier-A pieces at 107–185 s (a frontier-model launch, a finance workspace, a wearable). Long works when it is people talking |
-| **L10** | Problem-pivot typographic film | 25–35 s, 1:1, zero cuts | A product with one sharp problem it removes and a builder audience; no footage, no voice. A typed sentence, a problem that gets worse, a planned silence, then the colour and the product arrive together | Round 6: one tier-B (boosted-looking, an inference; nothing shows reach was paid for) and one tier-C reference: craft only, reception unproven. See `docs/research/reference-round6-2026-10.md` |
+| **L10** | Problem-pivot typographic film | 25–35 s, 1:1, zero cuts | A product with one sharp problem it removes and a builder audience; no footage, no voice. A typed sentence, a problem that gets worse, a planned silence, then the colour and the product arrive together | Round 6: one tier-B (boosted-looking, an inference; nothing shows reach was paid for) and one tier-C reference: craft only, reception unproven. See `docs/evidence/reference-round6-2026-10.md` |
 
 **Pair them.** A long film converts believers; a short one travels:
 - one hardware launch paired a 25:30 keynote with a 57 s spot;
@@ -177,7 +177,7 @@ Rules that came with it: colour appears only at the pivot; one accent colour; sy
 
 ## 4. Anti-patterns (each one sank or dented a launch)
 
-- **Unchecked AI answers on screen.** In one 2024 hardware launch the wrong answers shown on screen are what press coverage focused on (sources in `docs/research/`). Verify every on-screen output.
+- **Unchecked AI answers on screen.** In one 2024 hardware launch the wrong answers shown on screen are what press coverage focused on (sources in `docs/evidence/`). Verify every on-screen output.
 - **Demos that promise more than ships.** One 2024 hardware launch drew press criticism for a demo that promised more than shipped. Show only what runs.
 - **Lifestyle footage where the product never visibly does the job.**
 - **A tone that reads as dystopian.** One trailer drew 26.6M views, a 29% reply-to-like rate and no disclosed sales. Our reading: attention and controversy, not demand; the tone is not shown to be the cause.

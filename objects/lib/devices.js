@@ -1,6 +1,6 @@
 /* motion-pack/objects/lib/devices.js: NEW generic premium props (owned, procedural): LAPTOP, PHONE, MUG.
    Units: the studio-kit world (the ANVE box is 1.36 x 1.00 x 1.08; 1 unit ~ 25 cm), so a laptop is ~1.2 wide. `scale` rescales.
-   Premium rules (docs/research/visual.md 6.1): bevel everything (>= 2% of the smallest dimension), limited material set (lib/mat.js MAT),
+   Premium rules (docs/evidence/visual.md 6.1): bevel everything (>= 2% of the smallest dimension), limited material set (lib/mat.js MAT),
    no pure white/black, real contact via shadows + a soft AO decal, imperfection (roughness grain), no brand marks.
    Screens: a CanvasTexture drawn by `draw(g, w, h, state)` (default = an owned UI mock); `setScreen(level, state)` redraws only when
    the state key changes, colour is pre-multiplied with ctx.emis so the graded pixel reads the drawn hex. Pure functions of state. */

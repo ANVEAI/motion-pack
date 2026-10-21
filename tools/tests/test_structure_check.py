@@ -1,6 +1,6 @@
 """tools/structure_check.py: a plan that follows its beat sheet scores high, a plan that breaks it scores low, and every check names the fix.
 Also: patterns/*.json are well-formed (sections inside 0-100 and ordered, every number in range, every structure cites its evidence in
-docs/research/launch-video-patterns.md, no brand names), and every shipped genre template either passes its pattern or is reported with a reason.
+docs/evidence/launch-video-patterns.md, no brand names), and every shipped genre template either passes its pattern or is reported with a reason.
 Run: python3 -m pytest -q tools/tests/test_structure_check.py"""
 import copy
 import json
@@ -16,7 +16,7 @@ import structure_check as sc  # noqa: E402
 
 P = sc.load_patterns()
 PAT_DIR = os.path.join(REPO, 'patterns')
-DOC = os.path.join(REPO, 'docs', 'research', 'launch-video-patterns.md')
+DOC = os.path.join(REPO, 'docs', 'evidence', 'launch-video-patterns.md')
 
 
 def good_ad15():
@@ -60,8 +60,8 @@ def test_pattern_files_parse_and_are_consistent():
             assert x['text_wps_max'] > 0 and x['asl_s'][0] <= x['asl_s'][1], (pid, x['name'])
         assert s['sections'][0]['start'] == 0 and s['sections'][-1]['end'] == 100, pid
         assert s['length_s'][0] <= s['length_s'][1] and s['asl_s'][0] <= s['asl_s'][1], pid
-        ev = s['evidence'].split('#', 1)[0]   # the evidence lives in docs/research (launch-video-patterns.md, or a lane's own research note such as explainer-data-patterns.md)
-        assert ev.startswith('docs/research/') and ev.endswith('.md') and os.path.exists(os.path.join(REPO, ev)), (pid, s['evidence'])
+        ev = s['evidence'].split('#', 1)[0]   # the evidence lives in docs/evidence (launch-video-patterns.md, or a lane's own research note such as explainer-data-patterns.md)
+        assert ev.startswith('docs/evidence/') and ev.endswith('.md') and os.path.exists(os.path.join(REPO, ev)), (pid, s['evidence'])
         assert s['grade'] in P['grades'], (pid, s['grade'])
         if s.get('cta'):
             lo, hi = s['cta']['start_pct']
@@ -106,7 +106,7 @@ def test_evidence_doc_has_every_structure_section():
 
 
 def test_shipped_pattern_data_links_only_platform_pages():
-    """vendor, studio and author sources are cited through docs/research (tools/check_names.py, a CI step, guards the names themselves);
+    """vendor, studio and author sources are cited through docs/evidence (tools/check_names.py, a CI step, guards the names themselves);
     the only URLs in patterns/*.json are the help pages of the platforms the pack targets"""
     import re
     allowed = ('support.google.com', 'business.google.com', 'ads.tiktok.com', 'www.facebook.com/business', 'www.linkedin.com/help', 'help.x.com')

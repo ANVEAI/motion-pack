@@ -1,5 +1,5 @@
 /* TEMPLATE film-scene: one animated short-film SCENE in four beats: ESTABLISHING -> ACTION -> REACTION -> PAYOFF
-   (docs/research/edit.md 9: one idea per scene, wide -> tight as emotion rises, break the pattern on the turn, hold until the emotion lands).
+   (docs/evidence/edit.md 9: one idea per scene, wide -> tight as emotion rises, break the pattern on the turn, hold until the emotion lands).
    Three.js studio kit (objects/), deterministic renderAt(t). Edit CONFIG; scene.html reads it; cues.mjs exports the SFX cue sheet.
    Demo story (wordless): the worker types; the phone keeps buzzing; double-take; the worker flips the phone face-down and smiles. */
 import { sequence } from './_shared/plan.mjs';

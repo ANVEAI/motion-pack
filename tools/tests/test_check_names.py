@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The name gate (tools/check_names.py): no studied account, handle or brand name outside docs/research.
+"""The name gate (tools/check_names.py): no studied account, handle or brand name outside docs/evidence.
 Run: python3 -m pytest -q tools/tests/test_check_names.py
 
 The matcher is tested with INVENTED names (never a real one: the repo must not publish them, and this file is shipped). The last test is the real gate:
@@ -67,9 +67,9 @@ def test_phrase_mode_needs_all_the_words_but_any_gap():
 
 
 def test_a_path_into_docs_research_is_the_only_exception():
-    assert hits('see docs/research/reference-zorblaxo-launch-2026-10.md for the study') == []
-    assert hits('see docs/research/reference-zorblaxo-launch-2026-10.md; Zorblaxo did it') == ['brand']
-    assert hits('docs/zorblaxo/notes.md') == ['brand']                 # only docs/research is exempt
+    assert hits('see docs/evidence/reference-zorblaxo-launch-2026-10.md for the study') == []
+    assert hits('see docs/evidence/reference-zorblaxo-launch-2026-10.md; Zorblaxo did it') == ['brand']
+    assert hits('docs/zorblaxo/notes.md') == ['brand']                 # only docs/evidence is exempt
 
 
 def test_hits_carry_a_line_number_and_never_the_name():
@@ -128,8 +128,8 @@ def test_cli_scans_file_paths_too(tmp_path, capsys):
 
 
 def test_cli_passes_when_the_name_is_only_in_docs_research_or_a_binary(tmp_path, capsys):
-    d = tree(tmp_path, {'docs/research/study.md': 'Zorblaxo, named, linked and hedged here.\n', 'docs/research/reference-zorblaxo.md': 'x\n',
-                        'media/a.bin': b'\0\1\2 zorblaxo \0', 'README.md': 'see docs/research/reference-zorblaxo.md\n'})
+    d = tree(tmp_path, {'docs/evidence/study.md': 'Zorblaxo, named, linked and hedged here.\n', 'docs/evidence/reference-zorblaxo.md': 'x\n',
+                        'media/a.bin': b'\0\1\2 zorblaxo \0', 'README.md': 'see docs/evidence/reference-zorblaxo.md\n'})
     assert cn.main(['--root', str(tmp_path), '--denylist', d]) == 0
     assert '0 hit' in capsys.readouterr().out
 
@@ -141,6 +141,6 @@ def test_cli_exit_code_through_a_subprocess(tmp_path):
 
 
 def test_shipped_tree_names_no_studied_account_or_brand():
-    """THE GATE: the tracked tree outside docs/research holds none of the names on the denylist (see tools/check_names.py for the rule and how to add one)"""
+    """THE GATE: the tracked tree outside docs/evidence holds none of the names on the denylist (see tools/check_names.py for the rule and how to add one)"""
     found = cn.scan_repo(cn.PACK)
-    assert not found, 'names outside docs/research (file:line, denylist entry): ' + '; '.join('%s:%s %s' % (p, l or 'path', h[:12]) for p, l, h, _ in found[:12])
+    assert not found, 'names outside docs/evidence (file:line, denylist entry): ' + '; '.join('%s:%s %s' % (p, l or 'path', h[:12]) for p, l, h, _ in found[:12])

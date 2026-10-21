@@ -100,5 +100,5 @@ Materials are in `lib/mat.js`. `MAT` holds clay, satin, ceramic, anodised, darkM
 ## Rules kept
 
 - **No third-party marks:** the v10 wall plugs drew Google, Outlook, Zoho, SAP and others. They print our own label or icon here. If you pass your own `faceTex` with a real logo, the type layer must carry the trademark line.
-- **Worker:** an original character. the mime-style genre borrows an edit grammar only (docs/research/edit.md section 10), never a look.
+- **Worker:** an original character. the mime-style genre borrows an edit grammar only (docs/evidence/edit.md section 10), never a look.
 - **Decals:** used only for contact occlusion. Real shadows come from the lights.

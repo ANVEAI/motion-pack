@@ -56,7 +56,7 @@ A path that is not a study folder, or a folder with no `meta.json`, is reported 
 
 ## 3. Write the study
 
-Save it as `docs/research/reference-<name>-<yyyy-mm>.md`. Use these sections, in this order (see `docs/research/reference-stan-launchpad-2026-10.md`):
+Save it as `docs/evidence/reference-<name>-<yyyy-mm>.md`. Use these sections, in this order (see `docs/evidence/reference-stan-launchpad-2026-10.md`):
 
 | section | contents |
 |---|---|
@@ -69,7 +69,7 @@ Save it as `docs/research/reference-<name>-<yyyy-mm>.md`. Use these sections, in
 
 Paraphrase. Quote at most a few words, and never reproduce scripts, lyrics or long on-screen copy. Then add any new, general pattern to `success-patterns.md` with the evidence tier.
 
-**Names stay in the study.** The study in `docs/research/` is the only place that names the account or brand, with its link and its hedges (a tier such as "boosted-looking" is an inference from two rates, never a statement that reach was paid for; a cause is never asserted without a source). `success-patterns.md`, `launch-playbook.md`, the READMEs, templates and code carry tiers, counts and measured numbers only. A shipped file may point at a study by path (`docs/research/<file>`). `python3 tools/check_names.py` fails CI on any listed name outside `docs/research/`. Add each new study's names to the hashed denylist (`python3 tools/check_names.py --hash "<name>" --tag handle`, then append the printed line to `tools/name_denylist.txt`; the name itself is never committed).
+**Names stay in the study.** The study in `docs/evidence/` is the only place that names the account or brand, with its link and its hedges (a tier such as "boosted-looking" is an inference from two rates, never a statement that reach was paid for; a cause is never asserted without a source). `success-patterns.md`, `launch-playbook.md`, the READMEs, templates and code carry tiers, counts and measured numbers only. A shipped file may point at a study by path (`docs/evidence/<file>`). `python3 tools/check_names.py` fails CI on any listed name outside `docs/evidence/`. Add each new study's names to the hashed denylist (`python3 tools/check_names.py --hash "<name>" --tag handle`, then append the printed line to `tools/name_denylist.txt`; the name itself is never committed).
 
 ## 4. Build the gaps as parts
 

@@ -27,7 +27,7 @@ PACK_MASTER = 'pack master spec (skills/motion-pack SKILL.md rule 5: -14 LUFS-I,
 LOUDNESS = {   # target integrated loudness (LUFS / LKFS), true-peak ceiling (dBTP) and where the number comes from
     'pack': {'i': -14.0, 'tp': -1.0, 'lra': 11.0, 'grade': 'house', 'src': PACK_MASTER},
     'youtube': {'i': -14.0, 'tp': -1.0, 'lra': 11.0, 'grade': 'practitioner',
-                'src': 'YouTube publishes no target; about -14 LUFS is reported by audio-tool makers (docs/research/launch-video-patterns.md); the pack master is -14 anyway'},
+                'src': 'YouTube publishes no target; about -14 LUFS is reported by audio-tool makers (docs/evidence/launch-video-patterns.md); the pack master is -14 anyway'},
     'social': {'i': -14.0, 'tp': -1.0, 'lra': 11.0, 'grade': 'house',
                'src': 'Instagram, TikTok, X and LinkedIn publish no loudness target (skills/social-video references/platforms.md); one -14 master is the safe choice'},
     'web': {'i': -16.0, 'tp': -1.0, 'lra': 11.0, 'grade': 'house', 'src': 'templates/_shared/plan.mjs preset hero.web (lufs -16): a page plays at the listener\'s volume'},

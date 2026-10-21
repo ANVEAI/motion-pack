@@ -49,7 +49,7 @@ def _extra():
     import importlib.util
     spec = importlib.util.spec_from_file_location('mp_music_presets', os.path.join(REPO, 'music', 'presets.py')); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
     c['music_presets_py'] = len(m.PRESETS); c['music_progressions'] = len(m.PROGRESSIONS)
-    lf = os.path.join(REPO, 'docs', 'research', 'launch-films-2026.md')
+    lf = os.path.join(REPO, 'docs', 'evidence', 'launch-films-2026.md')
     if os.path.exists(lf):   # one table row per film in sections A, B and C (the header row of each table is not a film)
         sec, rows = '', 0
         for line in open(lf, encoding='utf-8').read().split('\n'):
@@ -174,7 +174,7 @@ def table(c):
                                 "safe zones, text size / time / contrast, pacing, composition, encode), each with a fix and timestamps", '`eyes/README.md`'))
     if 'pattern_structures' in c:   # xp research lane: beat sheets + the structure checker
         rows.append(('`patterns/`', f"{c['pattern_structures']} beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), "
-                                    f"{c['pattern_hooks']} hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/research/`; "
+                                    f"{c['pattern_hooks']} hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/evidence/`; "
                                     "`tools/structure_check.py` scores a plan against them", '`patterns/README.md`'))
     if os.path.isfile(os.path.join(REPO, 'tools', 'deliver.py')):   # xp access lane
         rows.append(('delivery + accessibility', "`tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) "

@@ -1,5 +1,5 @@
 """motion-pack / music / presets.py : genre / mood presets and structure templates.
-BPM ranges are rules of thumb for each style (docs/research/sound.md section 8.3), not measurements. All keys default to A (the pack's house key); change `key` to retune."""
+BPM ranges are rules of thumb for each style (docs/evidence/sound.md section 8.3), not measurements. All keys default to A (the pack's house key); change `key` to retune."""
 
 PRESETS = {
     "tech_pulse": dict(bpm=118, key=9, scale="dorian", prog="tech", drums="four_floor_soft", bass="saw", harmony="pad+pluck", lead="lead", swing=0.0, humanize=0, pump=True, lead_at=0.85,
@@ -40,7 +40,7 @@ STRUCTURES = {
     "hook_6s": [("hit", 1, 1.0), ("tail", 1, 0.4)],
 }
 
-TRIMS_DB = {"drums": 0.0, "bass": -2.0, "harmony": -6.0, "lead": -4.0, "fx": -10.0}   # stem balance (relative loudness), docs/research/sound.md 8.2
+TRIMS_DB = {"drums": 0.0, "bass": -2.0, "harmony": -6.0, "lead": -4.0, "fx": -10.0}   # stem balance (relative loudness), docs/evidence/sound.md 8.2
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------
 # 2026-10-13 expansion: data-driven drum patterns (drums="pattern": rows of (voice, 16th steps over pat_bars bars, vel, gain, min energy[, pan])).

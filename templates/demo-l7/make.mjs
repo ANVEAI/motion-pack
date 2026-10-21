@@ -1,7 +1,7 @@
 /* templates/demo-l7/make.mjs: a 14.8 s, 16:9 metaphor-manifesto demo (launch-playbook archetype L7) that uses the six L7 parts:
      layers  look.duotone, look.threshold1bit (layers/stylize.js), background.gridTunnel, background.dotGrid (layers/backgrounds.js)
      type    type/outlineFill          transitions  transitions/ditherDissolve
-   Techniques learned from docs/research/reference-stan-launchpad-2026-10.md; the content is original and neutral (no third-party footage,
+   Techniques learned from docs/evidence/reference-stan-launchpad-2026-10.md; the content is original and neutral (no third-party footage,
    brands or wording). Pictures are the pack's own renders (templates/_shared/media, blender/previews). Not a genre template: no config.mjs,
    so tools/count.py does not list it; the CONFIG block below is the editable part.
      node make.mjs     then     npx -y hyperframes@0.8.142 render . -o out/demo-l7.mp4 --crf 23                                                */

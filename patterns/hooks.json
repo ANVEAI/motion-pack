@@ -1,6 +1,6 @@
 {
  "schema": "motion-pack/patterns/hooks@1",
- "note": "Hook archetypes for the first 0-3 s. Every example line is written fresh for the pack and is generic: no brand, no real product, no number. A line with a digit needs a sourced claim (lint.proof). The universal frame-0 rule is the pack's one hook rule (skills/motion-pack/references/virality.md section 1); `frame0` here adds what each archetype needs on top of it. Evidence and grades: docs/research/launch-video-patterns.md section 2 (hooks).",
+ "note": "Hook archetypes for the first 0-3 s. Every example line is written fresh for the pack and is generic: no brand, no real product, no number. A line with a digit needs a sourced claim (lint.proof). The universal frame-0 rule is the pack's one hook rule (skills/motion-pack/references/virality.md section 1); `frame0` here adds what each archetype needs on top of it. Evidence and grades: docs/evidence/launch-video-patterns.md section 2 (hooks).",
  "grades": {
   "platform": "published by the platform (its help pages, ad guides or commissioned studies it publishes)",
   "study": "a measured study (academic, or a named research firm with a stated method)",
@@ -16,7 +16,7 @@
   "value_by_s": 3,
   "hook_window_s": 6,
   "grade": "platform",
-  "evidence": "docs/research/launch-video-patterns.md#hooks"
+  "evidence": "docs/evidence/launch-video-patterns.md#hooks"
  },
  "hooks": [
   {

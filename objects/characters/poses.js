@@ -1,8 +1,8 @@
 /* motion-pack/objects/characters/poses.js: the WORKER's pose library, a 6-emotion set and timed ACTS.
    POSES: the 45 poses authored for v10 story B (the ANVE v10 film set's timelines/B.js lines 8-53, verbatim values) + a few generic ones.
    A pose is a partial of worker.BASE (radians; + yaw = turn to screen right; arms: aXu = raise, aXo = out, aXe = elbow bend).
-   EMOTIONS: 6 readable states (docs/research/edit.md 10.1: neutral, happy, sad, surprised, angry, scheming) as pose overrides.
-   ACTS: act(name, t0, o) -> pose keys [[t, pose, ease], ...] at 30 fps beats from docs/research/visual.md 6.3 (anticipation 3..5 f,
+   EMOTIONS: 6 readable states (docs/evidence/edit.md 10.1: neutral, happy, sad, surprised, angry, scheming) as pose overrides.
+   ACTS: act(name, t0, o) -> pose keys [[t, pose, ease], ...] at 30 fps beats from docs/evidence/visual.md 6.3 (anticipation 3..5 f,
    7% overshoot, moving holds). Concatenate act keys into spec.keys (sorted by t) for makeWorker. Everything is data: seek-safe. */
 export const look = (yaw, hYaw, hPitch, o = {}) => ({ yaw, hYaw, hPitch, gx: Math.max(-1, Math.min(1, hYaw * 1.4)), gy: Math.max(-1, Math.min(1, -hPitch * 1.6)), ...o });
 

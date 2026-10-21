@@ -450,7 +450,7 @@ class Mix:
 
 # ---------------------------------------------------------------------------------------------------------------- lint
 def lint_cues(cues, fps=30, short_form=True, voice_first_frame=None, lib=None, quiet=None):
-    """house-rule linter (docs/research/sound.md section 3). cues: list of dicts with id, frame, tier. returns list of issue strings.
+    """house-rule linter (docs/evidence/sound.md section 3). cues: list of dicts with id, frame, tier. returns list of issue strings.
     quiet: the plan's audio.quiet [{t: [a, b], kind, why}]; a planned quiet OPEN (kind open, starting at frame 0) waives R10 when the first cue lands by its end + 0.25 s, the same rule ears applies"""
     issues = []
     cs = sorted(cues, key=lambda c: c["frame"])

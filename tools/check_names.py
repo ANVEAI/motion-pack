@@ -4,7 +4,7 @@
     python3 tools/check_names.py                     # scan every tracked file; exit 1 on a hit
     python3 tools/check_names.py --hash "Some Name"  # print the denylist line(s) to paste into tools/name_denylist.txt
 
-THE RULE (CONTRIBUTING.md, TRADEMARKS.md): the named, linked, hedged notes on studied accounts and launches live in docs/research/ and nowhere else.
+THE RULE (CONTRIBUTING.md, TRADEMARKS.md): the named, linked, hedged notes on studied accounts and launches live in docs/evidence/ and nowhere else.
 Every other shipped file (README, skills, references, templates, tools, catalog, comments) keeps tiers, counts and measured numbers only, so the pack never
 publishes who a measurement came from, never calls a named account "boosted" or "paid", and never ties a named film to a cause.
 
@@ -21,12 +21,12 @@ HOW A NAME IS MATCHED
               tabs or the handle joiners only, never across a comma, a slash or a line break. So one entry covers "ZorBlaxo", "Zor-Blaxo"
               and "Zor Blaxo"; a brand spelled with any other gap needs its own phrase entry.
       phrase  a multi-word brand or a person: matches 2 to 4 consecutive tokens with anything between them ("Name Surname", "Name\nSurname").
-  * A path into docs/research (docs/research/<file>) is removed before tokenising, so a shipped file may POINT at a study whose file name carries a name.
+  * A path into docs/evidence (docs/evidence/<file>) is removed before tokenising, so a shipped file may POINT at a study whose file name carries a name.
     Plain text outside such a path may not.
   * Matches are reported as file:line plus the first 12 hex digits of the hash and its tag, never as the name.
 
 HOW THE ENTRIES WERE CHOSEN (what is in, what is out)
-  * IN: every handle that appears in a docs/research link or mention (they are unique strings, so a hit is never a false positive); the brand and product
+  * IN: every handle that appears in a docs/evidence link or mention (they are unique strings, so a hit is never a false positive); the brand and product
     names the studies cite as evidence; the people named there; and the multi-word forms ("<brand> <product>") of brands whose bare name is an ordinary
     word.
   * OUT, single words: a bare token that is an ordinary English word (checked against the system word list: --hash warns) or shorter than 5 letters would
@@ -44,7 +44,7 @@ import unicodedata
 
 PACK = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 DENYLIST = os.path.join(PACK, 'tools', 'name_denylist.txt')
-EXEMPT_DIR = ('docs/research/', 'docs/evidence/')   # the one place named studies live (docs/evidence since v0.5; docs/research keeps a redirect)
+EXEMPT_DIR = 'docs/evidence/'                    # the one place named studies live (docs/research until v0.5 keeps only a redirect README)
 MAX_WINDOW = 4                                   # tokens joined per candidate (a four-word brand or a three-part handle with a suffix)
 MAX_LEN = 40                                     # no listed name is longer once normalised
 MAX_BYTES = 8_000_000                            # text files only; skip anything bigger
@@ -78,7 +78,7 @@ def load_denylist(path=DENYLIST):
 
 
 def scan_text(text, deny):
-    """[(line, hash, tag)] for every denylisted name in `text` (a path into docs/research is ignored)"""
+    """[(line, hash, tag)] for every denylisted name in `text` (a path into docs/evidence is ignored)"""
     text = unicodedata.normalize('NFKC', DOCS_PATH.sub(' ', text)).lower()
     toks = [(m.group(), m.start(), m.end()) for m in re.finditer(r'[a-z0-9]+', text)]
     hits, cache, seen = [], {}, set()
@@ -122,7 +122,7 @@ def tracked_files(root):
 
 
 def scan_repo(root=PACK, deny=None, denylist_path=None):
-    """[(path, line, hash, tag)]: every hit in the shipped tree (paths too); docs/research and the denylist itself are skipped"""
+    """[(path, line, hash, tag)]: every hit in the shipped tree (paths too); docs/evidence and the denylist itself are skipped"""
     deny = deny if deny is not None else load_denylist(denylist_path or os.path.join(root, 'tools', 'name_denylist.txt'))
     hits = []
     for rel in tracked_files(root):
@@ -172,7 +172,7 @@ def main(argv=None):
         return 0
     hits = scan_repo(a.root, denylist_path=a.denylist)
     for rel, line, h, tag in hits:
-        print('%s:%s: a name on the denylist (%s, entry %s). Move it to docs/research, or say it as a tier, a count and a measured number' % (rel, line or 'path', tag, h[:12]))
+        print('%s:%s: a name on the denylist (%s, entry %s). Move it to docs/evidence, or say it as a tier, a count and a measured number' % (rel, line or 'path', tag, h[:12]))
     print('check_names: %d hit(s) in %d tracked files' % (len(hits), len(tracked_files(a.root))))
     return 1 if hits else 0
 

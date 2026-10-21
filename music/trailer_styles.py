@@ -11,7 +11,7 @@ Sections (every marker is a whole number of BEATS, so a whole frame at any fps a
   hit    the title hit (braam + boom + style colour), hard stop on every other layer
   button the post-title beat: near-silence under the button scene (the template puts the sting there)
   tail   the credit block + release card bed; a final hit on `final_hit` (the release card), then a ring-out to digital zero (last 0.15 s = 0)
-Owned synthesis only (sfx/mpaudio instruments, sfx/recipes/trailer.py braams and booms); deterministic for a seed. Craft from docs/research/film-trailer-craft.md."""
+Owned synthesis only (sfx/mpaudio instruments, sfx/recipes/trailer.py braams and booms); deterministic for a seed. Craft from docs/evidence/film-trailer-craft.md."""
 import numpy as np
 import _path  # noqa: F401
 from mpaudio import dsp, instruments as I, instruments_ext as X

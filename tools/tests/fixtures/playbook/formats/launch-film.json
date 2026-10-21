@@ -31,7 +31,7 @@
     { "id": "fixture-launch-34", "label": "FIXTURE: a launch film, 34 s", "length_s": 34, "grade": "measured",
       "beats": [ { "at": [0, 0.06], "purpose": "stake", "text": "a short question", "sound": "quiet room tone" }, { "at": [0.88, 1], "purpose": "end card", "text": "url", "sound": "quiet hold" } ],
       "lufs": -14.1, "quiet_open_db": -9.0, "quiet_tail_db": -17.0, "cuts_per_min": 20, "bass_entry_pct": 0.3, "end_shape": "quiet-hold",
-      "sources": [ { "doc": "docs/research/launch-films-2026.md", "locator": "fixture" } ] }
+      "sources": [ { "doc": "docs/evidence/launch-films-2026.md", "locator": "fixture" } ] }
   ],
   "recommended_parts": {
     "hook": ["type/wordStagger", "ui.notifyStack"],

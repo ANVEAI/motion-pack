@@ -1,6 +1,6 @@
 /* motion-pack / type / gfx / film.js: film, trailer and title-sequence type (2026-10-16, film lane). Same gfx contract as every part (core.js):
    { tags, dur, inF, outF, d, svg(L, p, c) } -> SVG markup, a pure function of t (no module state, no caches; any frame in any seek order).
-   Craft learned from how trailers and title sequences are built (docs/research/film-trailer-craft.md): original layouts only, NO studio logo, rating-board mark,
+   Craft learned from how trailers and title sequences are built (docs/evidence/film-trailer-craft.md): original layouts only, NO studio logo, rating-board mark,
    real title, real billing, real review or copied design. Every default name is a labelled placeholder.
      title.trailerSlab        slab metallic: heavy caps in a steel gradient with an edge bevel and one specular sweep; arrives BY CUT (no fade), leaves on a fade
      title.trailerThin        thin-wide tracking: weight 200 caps whose tracking keeps opening through the hold, hairline rules either side, blur-in

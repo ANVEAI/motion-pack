@@ -155,7 +155,7 @@ export const REGISTRY_X = {
     sfx: [S('sfx/tx/flash_swell', 'start', 0, 0), S('sfx/sparkle/shimmer', 'cut', 0, -2)],
     reasons: ['TIME', 'EMPHASIS'], tags: ['exposure', 'white', 'heaven', 'memory', 'bright'],
     use: 'Memory, revelation, sunlit lifestyle; a softer dip-to-white.', avoid: 'Stacking with flash; more than one per 10 s.' },
-  /* 2026-10-14 (reference study docs/research/reference-stan-launchpad-2026-10.md, technique only) */
+  /* 2026-10-14 (reference study docs/evidence/reference-stan-launchpad-2026-10.md, technique only) */
   ditherDissolve: { id: 'tx.ditherDissolve', name: 'Dither dissolve (accent pixel blocks)', backends: ['gl', 'dom'], credit: 'ordered (Bayer) dithering, B. E. Bayer (1973); GLSL and DOM written for this pack',
     timing: { ms: 600, beats: 1, cut: 0.5, ease: 'linear' },
     params: { cell: f(24, 4, 120, 'block size in px at 1080p (scaled by height)'), matrix: { type: 'enum', default: 'bayer8', opts: ['bayer4', 'bayer8'], doc: 'ordered-dither matrix that sets the block order' },

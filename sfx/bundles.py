@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sound bundles: a named palette per video type, mapping CUE ROLES to library ids + a bed preset + mix numbers (docs/research/sound.md section 7).
+"""Sound bundles: a named palette per video type, mapping CUE ROLES to library ids + a bed preset + mix numbers (docs/evidence/sound.md section 7).
 `python3 bundles.py` validates every id against manifest.json / music/manifest.json and writes bundles.json (readable from JS / the skill)."""
 import json
 import os

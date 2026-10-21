@@ -1,8 +1,8 @@
 """Every number the delivery and accessibility tools enforce, with where it comes from. Grades: `platform` (a published platform or standards
 document), `study`, `practitioner`, or `house` (a pack default we chose; change it freely). The cited documents are listed with links in
-docs/research/launch-video-patterns.md (section on reading speed) and docs/DELIVERY-AND-ACCESSIBILITY.md. Re-check platform numbers before a paid delivery."""
+docs/evidence/launch-video-patterns.md (section on reading speed) and docs/DELIVERY-AND-ACCESSIBILITY.md. Re-check platform numbers before a paid delivery."""
 
-SUBTITLE_GUIDE = 'a streaming timed-text style guide (docs/research/launch-video-patterns.md, reading-speed table)'
+SUBTITLE_GUIDE = 'a streaming timed-text style guide (docs/evidence/launch-video-patterns.md, reading-speed table)'
 
 CAPTIONS = {
     'max_chars_line': {'v': 42, 'grade': 'platform', 'src': SUBTITLE_GUIDE + ': 42 characters a line'},

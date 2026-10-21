@@ -13,7 +13,7 @@ Base `bbd7da9` (v0.3.0). Everything below is committed on `xp-film`; nothing pus
 | type | `type/gfx/film.js` (15 parts: `title.trailerSlab`, `title.trailerThin`, `title.trailerDistressed`, `title.trailerGlow`, `title.trailerCut`, `credits.billingBlock`, `credits.roll`, `card.fromTheMakers`, `card.releaseDate`, `card.quote` (source required), `card.production`, `card.scene`, `caption.filmSubtitle`, `title.filmChapter`, `title.namesOver`); `type/tests/film.test.mjs` |
 | shared film runtime | `templates/_shared/film/` (`plates.js` 13 procedural placeholder plates, `page.mjs` the director page, `plan-film.mjs` pure helpers incl. the J / L builder and the JS mirrors, `score.py` score + mix, `make-film.mjs`) |
 | templates | `templates/trailer/`, `templates/title-sequence/`, `templates/short-film/` (config.mjs with CONFIG + buildPlan + PROJECT_MAP, make.mjs, README.md, a node test each, out/plan.json; `lines.example.json` for the short) |
-| research | `docs/research/film-trailer-craft.md` (craft only, no film named) |
+| research | `docs/evidence/film-trailer-craft.md` (craft only, no film named) |
 
 ## Shared-file edits (all additive; re-apply exactly when merging)
 

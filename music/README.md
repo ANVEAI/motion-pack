@@ -37,7 +37,7 @@ QA status at build: **65 items, 0 fails, 4 warnings**.
 ```
 `frame` = the VISUAL frame. The mixer places the anchor at (frame + 1) x SR/fps; risers end one frame earlier. `over_bed_db` is K-weighted (60 ms from the anchor, 200 ms before it for risers) against the un-dipped bed; `over_vo_db` references the voice instead (talking-head rule: tier-3 cues -12..-16 dB under the voice). If the limiter budget (<= 1.5 dB tier 1-2, <= 1.0 dB tier 3) cannot be met, the OFFENDING cue is lowered and the report shows target vs measured over-bed; a dense bed can make a +4.5 dB hit unreachable: lower the bed (`gain_db`) or accept. The solver's trim range is -30..+24 dB: a target that needs more is clipped to the range, and the report marks the cue `trim_clipped_from_db` and lists it under `warnings` (the CLI prints them as `WARN`).
 
-### House rules enforced or linted (docs/research/sound.md section 3)
+### House rules enforced or linted (docs/evidence/sound.md section 3)
 R1 one frame after the picture (exact, tested) | R2 over-bed table (hero +4.5, whoosh +2, ui +4, logo +5; > +6 flagged) | R4 hierarchy (tier-1 <= one per ~5 s and never within 3 s; tier-2 average spacing >= 1.0 s) | R5 duck 9 dB, look-ahead 80 ms, attack 15 / hold 120 / release 350 ms, mid carve | R6 pre-hit vacuum | R9 round-robin seeds for repeated ids | R10 short-form needs an audible event on frames 0-3, or a planned quiet open (`audio.quiet` kind `open` in the cue sheet's `quiet`; the first cue within 0.25 s of its end) | R12 phone check (+ lint for sub-only cues) | stems sum exactly to the pre-limiter master.
 
 ## Beds (measured, mastered to -16 LUFS-I stand-alone preview level; the mixer sets the real level)

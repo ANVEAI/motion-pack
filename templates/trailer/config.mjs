@@ -1,5 +1,5 @@
 /* TEMPLATE trailer: a film trailer from ONE plan, with 30 s and 15 s cut-downs and a 9:16 re-layout (2026-10-16, film lane). HyperFrames.
-   Shape (craft from how trailers are built, docs/research/film-trailer-craft.md; nothing copied from any trailer):
+   Shape (craft from how trailers are built, docs/evidence/film-trailer-craft.md; nothing copied from any trailer):
      cold open (a strong image already moving, a line of dialogue) -> YOUR production card (original design, your company name) -> the world -> the inciting beat ->
      act 2 montage (cut rate doubles, braam stabs, interstitial cards) -> act 3 wall (cuts on every beat then every 8th note, a braam on every bar) ->
      the silence before the hit -> the TITLE on the hit -> a button (one more beat and a sting) -> the credit block -> the release card.

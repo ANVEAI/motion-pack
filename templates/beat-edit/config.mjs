@@ -1,5 +1,5 @@
-/* TEMPLATE beat-edit: a music/beat edit whose cuts come from a BPM (docs/research/sound.md: BPM snapped so a beat is a whole number of
-   frames; docs/research/edit.md 3.3: an energy ladder, cut density rises section by section; flash/punch only on designated hits).
+/* TEMPLATE beat-edit: a music/beat edit whose cuts come from a BPM (docs/evidence/sound.md: BPM snapped so a beat is a whole number of
+   frames; docs/evidence/edit.md 3.3: an energy ladder, cut density rises section by section; flash/punch only on designated hits).
    Sections: intro (cut every 4 beats) -> build (every 2, riser into the drop) -> drop (every beat, flash + punch on downbeats) -> out.
    Music: a music-module bed at the same BPM (music/manifest.json), mixed by music/mixer.py; or drums: true for a bare sfx/drum grid. Clips are any MP4s; the demo uses the pack's own renders. */
 import { beatGrid, sequence, PLATFORMS, SIZES } from '../_shared/plan.mjs';

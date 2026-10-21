@@ -104,7 +104,7 @@ The skills pair well with [charlie947/social-media-skills](https://github.com/ch
 | `ears/` | automated listening and critique of a delivered MP4 or WAV: 11 checks (loudness, clipping, tone, speech, sync scored by edit mode (music, VO or continuous), structure with planned quiet judged as shape, repetition, stereo, reference comparison, optional mood), each with a fix and timestamps | `ears/README.md` |
 | `storyboard/` | a storyboard sheet (PNG, HTML, PDF) and an animatic MP4 drawn from `shotlist.json` before any build: one panel per shot with the text at its real size and the safe zone, 7 checks (the story-script linter, reading speed, safe zone, label hold, panel count, animatic duration to the frame and loudness), real key frames from a built composition, the sound intent as real sounds mastered to the pack spec | `storyboard/README.md` |
 | `eyes/` | automated looking and critique of a delivered MP4's picture, the visual twin of ears: 9 checks (frame 0, black and frozen frames, WCAG flashes, banding, safe zones, text size / time / contrast, pacing, composition, encode), each with a fix and timestamps | `eyes/README.md` |
-| `patterns/` | 20 beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), 13 hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/research/`; `tools/structure_check.py` scores a plan against them | `patterns/README.md` |
+| `patterns/` | 20 beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), 13 hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/evidence/`; `tools/structure_check.py` scores a plan against them | `patterns/README.md` |
 | delivery + accessibility | `tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) to 42 chars, 2 lines, 20 cps (17 kids); an audio-description script (standard + extended, no TTS); an accessibility lint (flash, caption contrast, size, reading time, colour-blind, colour-only); 14 platform delivery presets with BT.709 tags, faststart and loudness by source; Lottie export of kinetic type and draw-on icons | `docs/DELIVERY-AND-ACCESSIBILITY.md` |
 | `cloud/` | optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, Gemini Live voiceover with a word-for-word check, a Gemini mood judge | `cloud/README.md` |
 
@@ -236,7 +236,7 @@ Audio enters the sound catalogue only through `sfx/tools/check_origin.py` and `c
 | Transitions core + lint | `node transitions/tests/core.test.mjs && node transitions/tools/lint.mjs` |
 | Camera maths | `node camera/tests/camera.test.mjs` |
 | Every part's defaults carry a placeholder label | `node type/tests/honesty-defaults.test.mjs` |
-| No studied account or brand name outside `docs/research` | `python3 tools/check_names.py` |
+| No studied account or brand name outside `docs/evidence` | `python3 tools/check_names.py` |
 | Physics player | `node physics/tests/test-player.mjs` |
 | Any page is seek-safe | `node skills/motion-stack/scripts/seekcheck.mjs page.html` |
 | Browser tests on a real GPU | `bash layers/tests/run-all.sh` |
@@ -262,7 +262,7 @@ Made by [ANVE](https://anveai.com). The pack grew out of producing our own launc
 - the GL Transitions collection (credited per transition in `transitions/catalog.json`);
 - Walter Murch's *In the Blink of an Eye*;
 - ITU-R BS.1770 / EBU R128 loudness metering;
-- the edit-grammar and platform research cited in `docs/research/`.
+- the edit-grammar and platform research cited in `docs/evidence/`.
 
 ## Contributing
 

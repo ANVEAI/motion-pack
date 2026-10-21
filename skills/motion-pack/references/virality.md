@@ -1,6 +1,6 @@
 # Virality: the expanded checklist, with evidence grades
 
-The sources are `docs/research/edit.md` sections 1, 3, 4, 6, 8 and 14, and `docs/research/visual.md` section 9.
+The sources are `docs/evidence/edit.md` sections 1, 3, 4, 6, 8 and 14, and `docs/evidence/visual.md` section 9.
 
 **Grades:**
 
@@ -47,7 +47,7 @@ Virality is three separate jobs: survive the first second, hold to the end and i
 
 Make three variants per brief that differ only in the hook [P].
 
-Six more archetypes, each with its frame-0 rule and generic example lines, are in `patterns/hooks.json`: `live-demo` (AI products: the work already running on frame 0), `cold-open` (trailers), `light-from-dark` (hardware), `provocative-line` (podcast clips), `promise` (tutorials), `founder-to-camera`. Evidence: `docs/research/launch-video-patterns.md` §2. Beat sheets per genre (as % of runtime) are in `patterns/structures.json`; score a plan with `tools/structure_check.py`.
+Six more archetypes, each with its frame-0 rule and generic example lines, are in `patterns/hooks.json`: `live-demo` (AI products: the work already running on frame 0), `cold-open` (trailers), `light-from-dark` (hardware), `provocative-line` (podcast clips), `promise` (tutorials), `founder-to-camera`. Evidence: `docs/evidence/launch-video-patterns.md` §2. Beat sheets per genre (as % of runtime) are in `patterns/structures.json`; score a plan with `tools/structure_check.py`.
 
 ## 2. Hold
 
@@ -65,7 +65,7 @@ Add 25% jitter so the cadence is not metronomic. `python3 cuts/cutgen.py lint-in
 
 - **Retention structure of a 20-35 s short:** hook (0-3 s), then the why-stay promise or open loop (3-6 s), then 2-4 beats each with a micro-payoff, then the best payoff in the final 20%, then the loop seam or CTA [H].
 - **Static limit:** something visible or audible changes at least every 3.5 s (R4) [H].
-- **Pace shape:** contemporary films start with longer shots, shorten through the setup, cut fastest in the climax and lengthen at the end (a measured 210-film study; `docs/research/launch-video-patterns.md` §3). Set ASL per section (`patterns/structures.json` `asl_s`), not one global rate.
+- **Pace shape:** contemporary films start with longer shots, shorten through the setup, cut fastest in the climax and lengthen at the end (a measured 210-film study; `docs/evidence/launch-video-patterns.md` §3). Set ASL per section (`patterns/structures.json` `asl_s`), not one global rate.
 - **Ending:** if the retention graph dips at the very end, trim the last 1-2 s [P]. The exception is a planned **quiet hold**: explainers and partnership posts hold the end card on near-silence for 3-9 s (17 of 28 round 4/5 references end at least 10 dB under the body; `launch-playbook.md` end shapes) [P].
 
 **Mute-proof:**
@@ -113,7 +113,7 @@ Add 25% jitter so the cadence is not metronomic. `python3 cuts/cutgen.py lint-in
 
 ## Unverified numbers (do not quote as fact)
 
-These come from `docs/research/edit.md` section 14:
+These come from `docs/evidence/edit.md` section 14:
 
 - 3 s retention thresholds of 60, 65 or 70%.
 - "50-60% of drop-offs happen in the first 3 s".

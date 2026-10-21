@@ -155,7 +155,7 @@ def test_motion_cli_fills_an_existing_study_from_a_local_copy(tmp_path):
 
 
 # public reach numbers of the 29 round 4/5 references at study time (views, followers, likes, bookmarks, replies) and the tier the
-# intake graded by hand (the table in docs/research/reference-round45-2026-10.md, same order); the keys are numbers on purpose,
+# intake graded by hand (the table in docs/evidence/reference-round45-2026-10.md, same order); the keys are numbers on purpose,
 # the fixture is about the grading rules and names no account; "*" = claim-driven
 R45 = {
     "r01": (2604288, 806738, 10000, 2428, 517, "A"), "r02": (424982, 106691, 6349, 7040, 131, "A"),

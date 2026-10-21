@@ -18,7 +18,7 @@ TRANSITIONS = {"hardCut", "whip", "flash", "glitch", "scalePunch", "dissolve", "
                "iris", "lumaWipe", "match", "morph", "ink", "speedRamp", "smash", "jcut",
                "shutter", "swipeUp", "spin", "pagePeel", "pixelSort", "dip"}
 PAIR_MAP = {"cut": "hardCut", "hardcut": "hardCut", "punchIn": "scalePunch", "shatter": "smash", "slide": "push", "pageTurn": "maskReveal", "reveal": "maskReveal", "smoke": "dissolve"}
-# suggested level over the bed (K-weighted, 60 ms from the anchor) by class: house rules of docs/research/sound.md section 3
+# suggested level over the bed (K-weighted, 60 ms from the anchor) by class: house rules of docs/evidence/sound.md section 3
 OVER_BED = {"impact": 4.5, "logo": 5.0, "stinger": 4.5, "whoosh": 2.0, "riser": 4.0, "ui": 4.0, "glass": 3.0, "metal": 3.0, "wood": 3.0, "paper": 3.0, "cloth": 2.0, "plastic": 3.0,
             "camera": 3.0, "cash": 3.5, "sparkle": 3.0, "liquid": 3.0, "cartoon": 4.0, "voice": 3.0, "drum": 4.0, "transition": 2.5, "ambience": None,
             "indian": 3.5, "foley": 3.0, "device": 4.0, "crowd": 2.0, "elec": 3.5, "hw": 4.0, "trailer": 4.5}

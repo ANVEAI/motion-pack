@@ -1,4 +1,4 @@
-/* motion-pack/objects/lib/mat.js: shared helpers + the LIMITED MATERIAL SET (docs/research/visual.md 6.1 "premium, not toy").
+/* motion-pack/objects/lib/mat.js: shared helpers + the LIMITED MATERIAL SET (docs/evidence/visual.md 6.1 "premium, not toy").
    Helpers v3/linCol/std/canvasTex/softRectTex are the kit's (props.js lines 8-12), moved here so every prop shares them.
    Rules baked into MAT: whites <= 0.85 linear albedo, blacks >= 0.03, roughness never 0, clearcoat for satin plastics, metals F0 ~0.9.
    Every material factory returns a NEW material (props mutate colours per frame). */

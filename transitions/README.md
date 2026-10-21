@@ -73,10 +73,10 @@ segment). Feed `tSource` to the shot renderer; accumulate 6 sub-frames at 180 de
    at `at + offset_f` frames (house rule: picture first, sound one frame later). Ids marked *pending* do not exist in the
    sound module yet; `tools/lint.mjs` reports which ones are present.
 4. Default to a hard cut. Every transition here needs a reason code (LINK, ENERGY, CONTRAST, TIME, PLACE, REVEAL,
-   EMPHASIS, BEAT); see each entry's use/avoid lines and `../docs/research/edit.md` 2.17 for the decision table.
+   EMPHASIS, BEAT); see each entry's use/avoid lines and `../docs/evidence/edit.md` 2.17 for the decision table.
 5. Flash safety: max 3 full-frame flashes per second; `flash.peak = 0.7` is the safe mode.
 
-## Decision table (from docs/research/edit.md 2.17)
+## Decision table (from docs/evidence/edit.md 2.17)
 
 | situation | pick | never |
 |---|---|---|

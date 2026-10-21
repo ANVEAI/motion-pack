@@ -1,6 +1,6 @@
 {
  "schema": "motion-pack/patterns/lengths@1",
- "note": "Length limits and sweet spots per platform and per format. `max_s` / `min_s` are the platform's own limits where it publishes them; `aim_s` is a sweet spot: published only where `aim_grade` says platform, otherwise a practitioner range or the pack's house default. No platform publishes an ideal length for organic posts. Limits change: re-check the source before a hard-fail rule. Narrative and named examples: docs/research/launch-video-patterns.md#lengths.",
+ "note": "Length limits and sweet spots per platform and per format. `max_s` / `min_s` are the platform's own limits where it publishes them; `aim_s` is a sweet spot: published only where `aim_grade` says platform, otherwise a practitioner range or the pack's house default. No platform publishes an ideal length for organic posts. Limits change: re-check the source before a hard-fail rule. Narrative and named examples: docs/evidence/launch-video-patterns.md#lengths.",
  "grades": {
   "platform": "the platform's own help or spec page",
   "study": "a measured study or corpus",
@@ -75,7 +75,7 @@
    ],
    "aim_grade": "house",
    "note": "3 min per press reports of the 20 Jan 2025 change; the help page did not render for us",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -95,7 +95,7 @@
    ],
    "aim_grade": "house",
    "note": "TikTok publishes no ideal length; longer uploads were tested for some accounts; the in-app upload screen shows each account's limit",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -163,7 +163,7 @@
    ],
    "mean_s": 122.8,
    "note": "corpus mean of 6,926 trailers of 4,004 top-grossing films 1930-2025; the 150 s cap is a voluntary trade rule reported by the trade press",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "study",
    "note_source": "practitioner or study source named in the research doc"
@@ -174,7 +174,7 @@
     60
    ],
    "note": "explainers and editors; exceptions run past 2 min",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -185,7 +185,7 @@
     90
    ],
    "note": "launch-video studios recommend 30-60 s for social and 60-90 s for a site demo; a public gallery of launch videos posted on X read on 2026-10-16 had a median of 72 s (our count of 53 entries; runtime did not separate high-view from low-view entries)",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -196,7 +196,7 @@
     90
    ],
    "note": "practitioner guidance: founder on camera, no music for the first 12-20 s",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -207,7 +207,7 @@
     60
    ],
    "note": "clip tools score windows of about 25-60 s",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -215,14 +215,14 @@
   "lesson.chunk": {
    "max_s": 360,
    "note": "median engagement capped at about 6 min whatever the length (6.9M sessions in four online courses, 2014); segment lessons under 6 min; tutorials are re-watched and skimmed, so chapter them",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "study",
    "note_source": "practitioner or study source named in the research doc"
   },
   "business.video": {
    "note": "completion falls with length: one business-video host reports 66% completion under 1 min, 56% at 1-2 min and 50% at 2-10 min (2022 data); another reports engagement roughly flat from 1 to 5 min, then a drop",
-   "source": "docs/research/launch-video-patterns.md#lengths",
+   "source": "docs/evidence/launch-video-patterns.md#lengths",
    "accessed": "2026-10-16",
    "grade": "platform",
    "note_source": "practitioner or study source named in the research doc"

@@ -1,4 +1,4 @@
-"""Transition sweeteners: the sound of each edit type (see docs/research/sound.md section 4.10 and docs/research/edit.md taxonomy).
+"""Transition sweeteners: the sound of each edit type (see docs/evidence/sound.md section 4.10 and docs/evidence/edit.md taxonomy).
 `pairs_with` uses the plan.* transition names: hardCut whip flash glitch scalePunch dissolve dipToBlack push blurCross freezeHold lightLeak filmBurn
 zoomThrough maskReveal iris lumaWipe match morph ink speedRamp smash."""
 import numpy as np

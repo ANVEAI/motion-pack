@@ -1,7 +1,7 @@
 """motion-pack/templates/_shared/audio.py: render a template's SFX cue sheet (out/plan.json) to a measured WAV with the sfx module.
     python3 templates/_shared/audio.py <dir>/out/plan.json <out.wav> [--target -14] [--ceiling -1.5]
 Ids: sfx/<cat>/<name> -> sfx module id snd.<cat>.<name> (motion-pack/sfx/mpaudio registry). Missing ids are reported as TODO, never faked.
-Placement (v9 contract, docs/research/sound.md): the sound's anchor sample lands on (frame + 1) * SR / fps, frame = round(t * fps).
+Placement (v9 contract, docs/evidence/sound.md): the sound's anchor sample lands on (frame + 1) * SR / fps, frame = round(t * fps).
 Music: plan.music = 'music/<bed id>' (music/manifest.json) hands the whole mix to music/mixer.py (bed + cues, over-bed levels, TP limiter,\nAAC probes). Without a bed this file places the cues itself (SFX-only mix; --stem for a stem under dialogue).
 Master: sum -> gain to target LUFS-I (default -14; --stem skips it) -> true-peak ceiling -2.0 dBTP (lands <= -1.5 after AAC) (simple 4x-oversampled peak gain, no limiter: if the
 cues are too dense to reach target under the ceiling, the report says so). Writes <out>.json with LUFS-I, TP, per-cue placement."""

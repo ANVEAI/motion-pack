@@ -1,5 +1,5 @@
 /* TEMPLATE title-sequence: kinetic opening titles, 30-60 s, names over textures or your footage, genre presets (2026-10-16, film lane). HyperFrames.
-   Shape (craft of opening-title sequences, docs/research/film-trailer-craft.md; nothing copied): the picture moves from frame 0 (a texture or footage), a small role over a
+   Shape (craft of opening-title sequences, docs/evidence/film-trailer-craft.md; nothing copied): the picture moves from frame 0 (a texture or footage), a small role over a
    large name lands on a bar of the bed, the names move around the safe frame (never two at once), the texture changes on a downbeat every few names, the main title
    arrives on the last section with its own hit, "directed by" closes it, and the picture holds a beat before the film would start.
    Edit the CONFIG block only. `node make.mjs [--set length=45] [--set aspect=9:16] [--set genre=noir]`, then the render command it prints.

@@ -3,7 +3,7 @@
    name) -> an exploded view with spec callouts on leader lines -> a scale reference on a desk -> a ports / IO tour -> "inside": x-ray, the cooling lifts away, the
    chip's lid lifts and the die lights -> a spec sheet card -> an availability / price card (price labelled indicative or placeholder) -> the end card.
    The craft is learned from how device keynote reveals and hardware launch films are built (darkness tease, light sweep, macro materials, exploded views, spec
-   reveals; docs/research notes stay out of this file), never their shots, copy, music or designs.
+   reveals; docs/evidence notes stay out of this file), never their shots, copy, music or designs.
    Engines: a three.js plate (objects/lib/hwplate.js, rendered once per aspect by tools/render.mjs on the GPU) under a HyperFrames page (type presets, the hw.*
    overlay parts tracked onto the device, layers). Sound: music/reveal.py composes a dark -> reveal score FITTED to these sections (the drop is the reveal bar)
    and the hardware_launch sfx bundle; music/mixer.py masters it to -14 LUFS.

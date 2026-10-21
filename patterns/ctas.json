@@ -1,6 +1,6 @@
 {
  "schema": "motion-pack/patterns/ctas@1",
- "note": "Where the call to action goes, how long it holds and how it is worded, per platform and per format. `start_pct` is percent of runtime. A CTA states one next step; urgency only if it is true; no invented offers. Narrative: docs/research/launch-video-patterns.md#ctas.",
+ "note": "Where the call to action goes, how long it holds and how it is worded, per platform and per format. `start_pct` is percent of runtime. A CTA states one next step; urgency only if it is true; no invented offers. Narrative: docs/evidence/launch-video-patterns.md#ctas.",
  "grades": {
   "platform": "the platform's own help or spec page",
   "study": "a measured study",
@@ -74,7 +74,7 @@
     100
    ],
    "rule": "under 5 min the CTA goes at the end; over 5 min, at the beginning as well",
-   "source": "docs/research/launch-video-patterns.md#ctas",
+   "source": "docs/evidence/launch-video-patterns.md#ctas",
    "accessed": "2026-10-16",
    "grade": "platform",
    "note_source": "practitioner or study source named in the research doc"
@@ -90,7 +90,7 @@
     10
    ],
    "rule": "one CTA, not three; on a launch platform that bans vote requests, ask the viewer to try it, never to vote",
-   "source": "docs/research/launch-video-patterns.md#ctas",
+   "source": "docs/evidence/launch-video-patterns.md#ctas",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -102,7 +102,7 @@
     96
    ],
    "rule": "the smallest possible ask: one URL or one instruction",
-   "source": "docs/research/launch-video-patterns.md#ctas",
+   "source": "docs/evidence/launch-video-patterns.md#ctas",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -118,7 +118,7 @@
     4
    ],
    "rule": "a specific date on a trailer, a vague one (a season) on a teaser",
-   "source": "docs/research/launch-video-patterns.md#ctas",
+   "source": "docs/evidence/launch-video-patterns.md#ctas",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"
@@ -130,7 +130,7 @@
     98
    ],
    "rule": "a soft pointer to the full episode; never cut the punchline to fit the ask",
-   "source": "docs/research/launch-video-patterns.md#ctas",
+   "source": "docs/evidence/launch-video-patterns.md#ctas",
    "accessed": "2026-10-16",
    "grade": "practitioner",
    "note_source": "practitioner or study source named in the research doc"

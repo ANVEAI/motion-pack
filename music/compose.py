@@ -1,7 +1,7 @@
 """motion-pack / music / compose.py : deterministic procedural composer.
 compose(preset, structure, seed, fps, ...) -> dict(stems={drums,bass,harmony,lead,fx}, events=[...], meta={...}); each stem is a float32 (n,2) buffer so the
 mix can mute / solo / duck stems separately. Everything is an owned synthesis (mpaudio.instruments); no samples.
-Design (docs/research/sound.md 8.2): scales + progressions, Euclidean drums (Bjorklund), root-fifth-octave bass locked to the kick, voice-led triads, motif + variation
+Design (docs/evidence/sound.md 8.2): scales + progressions, Euclidean drums (Bjorklund), root-fifth-octave bass locked to the kick, voice-led triads, motif + variation
 melody (seeded Markov over scale degrees: 70% steps, leaps <= a fifth, ends on chord tones), energy ladder per section (which layers play), a pre-drop gap, tempo
 snapped so one beat is a whole number of frames, optional sidechain pump, seamless loops by folding the ring-out tail onto the head."""
 import numpy as np

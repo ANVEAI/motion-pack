@@ -1,6 +1,6 @@
 # templates/trailer
 
-A film trailer from **one plan**: the full trailer (about 60-75 s, by the score's tempo), a **30 s** and a **15 s** cut-down, each in **16:9 letterboxed** (2.39, 2.0 or 1.85) and as a **9:16 re-layout** (full frame, no bars). The music is the clock: the genre trailer score (`music/trailer_styles.py`) is rendered for exactly this cut, and every section starts on its markers. Craft notes: `docs/research/film-trailer-craft.md`.
+A film trailer from **one plan**: the full trailer (about 60-75 s, by the score's tempo), a **30 s** and a **15 s** cut-down, each in **16:9 letterboxed** (2.39, 2.0 or 1.85) and as a **9:16 re-layout** (full frame, no bars). The music is the clock: the genre trailer score (`music/trailer_styles.py`) is rendered for exactly this cut, and every section starts on its markers. Craft notes: `docs/evidence/film-trailer-craft.md`.
 
 ```bash
 node make.mjs                                    # full trailer, 16:9 2.39 letterbox  -> projects/full-16x9/

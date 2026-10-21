@@ -47,7 +47,7 @@ def fenced_shell_blocks(text):
     return blocks
 
 
-MD = [f for f in tracked("*.md") if not f.startswith("docs/research/") and not f.endswith("RUNLOG.md")]
+MD = [f for f in tracked("*.md") if not f.startswith("docs/evidence/") and not f.endswith("RUNLOG.md")]
 
 
 # ------------------------------------------------------------------------------------------------------------------------------ pasteable commands
@@ -112,7 +112,7 @@ STALE = [
 def test_stale_statements_are_gone(pattern, why):
     hits = []
     for f in tracked("*.md", "*.mjs", "*.js", "*.py", "*.json", "*.yml", "*.txt"):
-        if f.startswith(("docs/research/", "tools/tests/", "catalog/index.html")) or f.endswith(("RUNLOG.md", "package-lock.json")) or "/renders/" in f:
+        if f.startswith(("docs/evidence/", "tools/tests/", "catalog/index.html")) or f.endswith(("RUNLOG.md", "package-lock.json")) or "/renders/" in f:
             continue
         for n, line in enumerate(read(f).split("\n"), 1):
             if re.search(pattern, line):

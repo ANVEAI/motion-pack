@@ -10,7 +10,7 @@ Branch `xp-explainer`, from the integration head 18056bf. The lane ran CODE-ONLY
 | shared template kit | `templates/_explain/core.mjs` (beats, voice words, cues, plan.texts, finish), `build.mjs` (honesty gate first, then stage, voice, mix, page; `--no-audio`), `honesty.mjs` (the data gates, `HonestyError`), `dataset.mjs` (CSV / JSON loader, aggregate), `explain.test.mjs` (77 checks) | |
 | gfx parts | `type/gfx/explain.js`, `type/gfx/explain-data.js`, `type/gfx/explain-icons.js` (17 owned icons), `type/gfx/explain-lim.js` (limits) | `diagram.graph`, `diagram.flow`, `layout.scrolly`, `title.takeaway`, `process.steps`, `process.beforeAfter`, `chart.story`, `callout.datum`, `map.hexTile`, `counter.hero`, `chart.sourceFooter` |
 | pure modules | `type/gfx/numfmt.js` (intl / Indian lakh-crore / eu / si, no `Intl`), `type/gfx/graph.js` (deterministic layered layout + DSL) | exported from `type/gfx/index.js` |
-| research | `docs/research/explainer-data-patterns.md` | |
+| research | `docs/evidence/explainer-data-patterns.md` | |
 | example | `templates/explainer-diagram/words.example.json` (hand-timed fictional VO words for the voice test) | |
 
 ### How the brief maps to the code

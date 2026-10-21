@@ -16,7 +16,7 @@ export const BUILDERS = ['scatter', 'trace', 'table'];
 export const UNITS = ['', 'K', 'M', '%', '$', 's', 'ms', 'dur'];   // the formats type/gfx fmtUnit knows: a unit is a token the part formats, never typed prose
 export const FORMATS = ['wide', 'tall'];
 export const STAGES = ['claim', 'name', 'setting', 'builder', 'h2h', 'numbers', 'cards', 'end'];
-export const CUT_REASONS = ['EMOTION', 'STORY', 'RHYTHM', 'ENERGY', 'REVEAL', 'PLACE', 'EYE_TRACE', 'SCREEN_PLANE', 'SPACE'];   // Murch's order (docs/research/edit.md) + story-script's txReason list
+export const CUT_REASONS = ['EMOTION', 'STORY', 'RHYTHM', 'ENERGY', 'REVEAL', 'PLACE', 'EYE_TRACE', 'SCREEN_PLANE', 'SPACE'];   // Murch's order (docs/evidence/edit.md) + story-script's txReason list
 export class HonestyError extends Error { constructor(problems) { super('proof-film honesty gate: ' + problems.length + ' problem' + (problems.length === 1 ? '' : 's') + '\n  - ' + problems.join('\n  - ')); this.name = 'HonestyError'; this.problems = problems; } }
 
 export const blank = (v) => typeof v !== 'string' || !v.trim();   // a source or method is a string: a blank, whitespace-only or non-string value (0, null, a number) counts as missing

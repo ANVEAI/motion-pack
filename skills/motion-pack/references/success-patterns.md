@@ -1,8 +1,8 @@
 # What makes these launch and motion films work: hooks, sound, motion, storyboard, climax, CTA
 
-These patterns come from the founder's 10 shared references (13–14 Oct 2026) plus the 15-launch study in `docs/research/launch-films-2026.md`. Section 8 adds round 3: 25 more references studied on 14 Oct 2026 (`docs/research/reference-round3-2026-10.md`). Section 9 adds rounds 4–5: 29 more, graded with `tools/refstudy.py grade` (`docs/research/reference-round45-2026-10.md`).
+These patterns come from the founder's 10 shared references (13–14 Oct 2026) plus the 15-launch study in `docs/evidence/launch-films-2026.md`. Section 8 adds round 3: 25 more references studied on 14 Oct 2026 (`docs/evidence/reference-round3-2026-10.md`). Section 9 adds rounds 4–5: 29 more, graded with `tools/refstudy.py grade` (`docs/evidence/reference-round45-2026-10.md`).
 
-**No names in this file.** The accounts and brands behind these numbers are named, linked and hedged in `docs/research/` only; here you get tiers, counts and measured figures. Everything below is an observation about what the studied pieces did. It is not a finding about what caused their reach.
+**No names in this file.** The accounts and brands behind these numbers are named, linked and hedged in `docs/evidence/` only; here you get tiers, counts and measured figures. Everything below is an observation about what the studied pieces did. It is not a finding about what caused their reach.
 
 **Evidence tiers:**
 - **Proven reach:** one comedy mockumentary, 742K views and 1.3K bookmarks.
@@ -12,7 +12,7 @@ These patterns come from the founder's 10 shared references (13–14 Oct 2026) p
 
 Craft-only references teach technique, not reach.
 
-**Studies:** `docs/research/reference-*-2026-10.md`, each with source links, what to learn, what not to copy and pack coverage. How to run a new one: `reference-intake.md`.
+**Studies:** `docs/evidence/reference-*-2026-10.md`, each with source links, what to learn, what not to copy and pack coverage. How to run a new one: `reference-intake.md`.
 
 **How the measurements were made:** `tools/refstudy.py`.
 - Cut counts are inflated on glitch or dither pieces.
@@ -118,7 +118,7 @@ Craft-only references teach technique, not reach.
 
 ## 8. Round 3 (25 references, 14 Oct 2026)
 
-Per-piece studies with source links: `docs/research/reference-round3-2026-10.md`. Reach is judged against followers; bookmarks are the "save to learn" signal.
+Per-piece studies with source links: `docs/evidence/reference-round3-2026-10.md`. Reach is judged against followers; bookmarks are the "save to learn" signal.
 
 **Evidence tiers for this batch:**
 
@@ -166,7 +166,7 @@ Per-piece studies with source links: `docs/research/reference-round3-2026-10.md`
 
 ## 9. Rounds 4–5 (29 references, 14 Oct 2026)
 
-Per-piece studies, source links and tiers: `docs/research/reference-round45-2026-10.md`. Graded with `tools/refstudy.py grade` (`reference-intake.md`); the rules reproduce the hand grades.
+Per-piece studies, source links and tiers: `docs/evidence/reference-round45-2026-10.md`. Graded with `tools/refstudy.py grade` (`reference-intake.md`); the rules reproduce the hand grades.
 
 **Evidence tiers for this batch:** A 11 (2 claim-driven: provocative post text, like rate under 0.4%), **A− 2** (saves-strong: ≥ 1.3% bookmarks with less reach), B 4 (a low like rate for the reach, an inference and not evidence of paid reach; one at 4,018× its followers), B′ 1, **R 4** (account-size reach: millions of views below 1× followers; it proves the account, not the format), C 7. Four of the five best-saved pieces are proof-led.
 
@@ -217,7 +217,7 @@ Per-piece studies, source links and tiers: `docs/research/reference-round45-2026
 
 ## 10. Round 6 (2 references, 14 Oct 2026)
 
-Per-piece studies, source links and tiers: `docs/research/reference-round6-2026-10.md`. Graded with `tools/refstudy.py grade`.
+Per-piece studies, source links and tiers: `docs/evidence/reference-round6-2026-10.md`. Graded with `tools/refstudy.py grade`.
 
 **Evidence tiers for this batch:** **C 1** (below follower reach, saves under the 1.3% line: a craft reference), **B 1** (boosted-looking: an inference from the like rate, 0.015%, and a reach of 191x the followers; nothing shows that any reach was paid for). Neither is proof that its shape works; the numbers below are starting values from one film each.
 

@@ -1,4 +1,4 @@
-/* TEMPLATE talking-head: a human/talking-head edit from an INPUT MP4 + its word transcript (docs/research/edit.md 7.2):
+/* TEMPLATE talking-head: a human/talking-head edit from an INPUT MP4 + its word transcript (docs/evidence/edit.md 7.2):
    1 cut silences > 0.5 s (th.autocut, keep a breath)  2 captions 2-4 words, active word highlighted (cap.chunk / cap.impact)
    3 B-roll slots (35-50% coverage, picture leads the line by 150 ms, first B-roll >= 2 s in)  4 punch-ins 1.12 on emphasis words,
    max 1 per 4 s, alternate framing 1.0 / 1.15 / 1.0 / 1.25 on each jump cut (disguises the cut)  5 lower third  6 SFX  (layer order fixed).

@@ -26,7 +26,7 @@ cutgen story shapes), then the shots grouped by label: shots[].sec, a string sho
 "problem", "chapter-b" -> "chapter"). Contiguous shots with one label make one section.
 
 It reads plans only (no browser, no render, stdlib only). The pattern numbers are tunable defaults with evidence grades; the reasoning and sources
-are in docs/research/launch-video-patterns.md. A low score is a prompt to look, not a verdict on taste.
+are in docs/evidence/launch-video-patterns.md. A low score is a prompt to look, not a verdict on taste.
 Exit: 0 = score >= --min (default: the pattern's pass_score), 1 = below, 2 = usage / unreadable plan / unknown pattern."""
 import argparse
 import glob

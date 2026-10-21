@@ -1,6 +1,6 @@
 {
  "schema": "motion-pack/cuts@1",
- "note": "Cut-pattern library (data). cuts/cutgen.py turns a BPM + a pattern into frame-exact cut points. Beat positions are in beats from the start of each cycle (4/4 assumed: 1 bar = 4 beats). Numbers are house starting values [H] from docs/research/edit.md sections 2.3, 2.5, 3.3, 6.1, 7.2 and docs/research/sound.md 4.10 / bundle.short_film: tune by retention data, never treat as platform facts.",
+ "note": "Cut-pattern library (data). cuts/cutgen.py turns a BPM + a pattern into frame-exact cut points. Beat positions are in beats from the start of each cycle (4/4 assumed: 1 bar = 4 beats). Numbers are house starting values [H] from docs/evidence/edit.md sections 2.3, 2.5, 3.3, 6.1, 7.2 and docs/evidence/sound.md 4.10 / bundle.short_film: tune by retention data, never treat as platform facts.",
  "beat": {
   "every_beat":     {"cycle_beats": 1, "cuts": [0], "use": "drop / chorus montage, 120-150 BPM gives 0.4-0.5 s shots", "energy": 4},
   "every_2":        {"cycle_beats": 2, "cuts": [0], "use": "default beat edit, readable shots", "energy": 3},
@@ -24,7 +24,7 @@
  "split": {
   "J":          {"audio_lead_ms": 400, "range_ms": [200, 800], "crossfade_ms": 80, "ambience_bridge_ms": 1500, "use": "next scene's audio starts before its picture: anticipation, scene bridges, interviews"},
   "L":          {"audio_tail_ms": 600, "range_ms": [200, 1200], "crossfade_ms": 80, "ambience_bridge_ms": 1500, "use": "previous audio lingers over new picture: reaction shots, dialogue overlap"},
-  "film_J":     {"audio_lead_frames": [12, 24], "audio_lead_ms": 600, "crossfade_ms": 120, "use": "short-film scene change: sound leads the cut (docs/research/sound.md bundle.short_film)"},
+  "film_J":     {"audio_lead_frames": [12, 24], "audio_lead_ms": 600, "crossfade_ms": 120, "use": "short-film scene change: sound leads the cut (docs/evidence/sound.md bundle.short_film)"},
   "broll_lead": {"audio_lead_ms": -150, "crossfade_ms": 0, "use": "talking-head B-roll: the PICTURE leads the VO line by 150 ms (micro J, inverted)"}
  },
  "talking_head": {
@@ -116,7 +116,7 @@
                            "pivot_sfx": "sfx/hit/sub_drop", "pivot_gain_db": 0.0, "value_sfx": "sfx/ui/pop", "command_sfx": "sfx/ui/typing_burst", "url_sfx": "sfx/ui/success",
                            "defaults": {"sentence": "Launch day breaks the same thing:", "accent": "Handoffs.", "problem": ["Plans get lost", "Notes drift apart", "Dates slip"], "lead": "Introducing", "brand": "Brand A Notes",
                                         "value": ["Your plan stays in one place", "Your plan stays yours", "Your plan stays open anywhere"], "command": "//start a plan", "url": "brand-a.example/start"},
-                           "use": "a CONTINUOUS typographic film (zero cuts, synced by motion events): a sentence typed with an accent-word punchline, a three-beat problem ladder (2-2.5 s a beat, the diagram worse each beat), a 1.5-2 s audio gap (the bed thins to a hum, then true silence; plan.audio.quiet kind gap) that starts inside the last beat and ends ON the pivot frame, where colour, bass and the brand line arrive together (a sub hit on the frame, the bed back on it, the ribbon and colour a few frames after), a three-beat value ladder, a typed command CTA with the address, and a quiet hold of at least 2 s (kind hold). One tier-B reference (an inference from its like rate; nothing shows reach was paid for), treated as craft (docs/research/reference-round6-2026-10.md)"},
+                           "use": "a CONTINUOUS typographic film (zero cuts, synced by motion events): a sentence typed with an accent-word punchline, a three-beat problem ladder (2-2.5 s a beat, the diagram worse each beat), a 1.5-2 s audio gap (the bed thins to a hum, then true silence; plan.audio.quiet kind gap) that starts inside the last beat and ends ON the pivot frame, where colour, bass and the brand line arrive together (a sub hit on the frame, the bed back on it, the ribbon and colour a few frames after), a three-beat value ladder, a typed command CTA with the address, and a quiet hold of at least 2 s (kind hold). One tier-B reference (an inference from its like rate; nothing shows reach was paid for), treated as craft (docs/evidence/reference-round6-2026-10.md)"},
   "abReplay":             {"clip_range_s": [2.0, 15.0], "gap_frames": 0, "flip_share": 0.42, "flip_share_range": [0.35, 0.6], "flip_kinds": ["chip", "wipe", "slider"],
                            "tol_db": 1.0, "tol_db_max": 2.0, "max_gain_db": 12.0, "xfade_ms": 0, "novelty_prominence": 2.5, "flip_tol_frames": 1, "flip_warn_frames": 2,
                            "flip_sfx": "sfx/ui/toggle_on", "flip_gain_db": -3.0,

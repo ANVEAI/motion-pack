@@ -125,7 +125,7 @@ It loads with `local_files_only=True` and `HF_HUB_OFFLINE=1`. Without all three,
 - **Planned quiet and modes (round 4/5, 14 Oct 2026, synthetic signals plus the trailer bed).**
   - A fixture with a planned 6 s end-card hold passes `ears/structure`; the same file without the marker warns of dead air; an 11 s hold warns that it is over the 9 s maximum (`ears/tests`).
   - `music/bed_trailer_arc`, mixed through `music/mixer.py` to −14.03 LUFS-I (true peak −1.5 dBTP): with its gap and hold marked, structure passes; `ears` finds the 3 s valley at 24.0–27.0 s and the crescendo at 27.0 s, the marker times, and reports the ending as a quiet hold. Unmarked, it warns of dead air at 24.0–27.0 s and 32.5–35.5 s. The loudness range stays a warning (15.9 LU whole file, 13.5 LU without the planned regions): the act-1 drone is about 16 LU under the wall by design.
-  - The mode `continuous` is tested on lavfi clips with known flashes (events measured by `tools/refstudy.py`, then scored against the clicks). It has not been run on real reference films. On the pack's own local demos the continuous mode's chance level reads 35-64% at 2.7-5 onsets a second (`docs/research/reference-round45-2026-10.md`), which is why it reports it.
+  - The mode `continuous` is tested on lavfi clips with known flashes (events measured by `tools/refstudy.py`, then scored against the clicks). It has not been run on real reference films. On the pack's own local demos the continuous mode's chance level reads 35-64% at 2.7-5 onsets a second (`docs/evidence/reference-round45-2026-10.md`), which is why it reports it.
 
 ## Limits
 

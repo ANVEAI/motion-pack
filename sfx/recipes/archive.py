@@ -1,5 +1,5 @@
 """Archive / heritage sounds (2026-10-14, round-3 reference study): a film projector loop for archive openings and a typewriter line for all-caps
-credit and archive cards, plus the projected hologram beam for beam / hologram overlays. Motivated by docs/research/reference-round3-2026-10.md
+credit and archive cards, plus the projected hologram beam for beam / hologram overlays. Motivated by docs/evidence/reference-round3-2026-10.md
 (craft only: every sound here is owned synthesis, no samples). Starting values; audition before a hero use."""
 import numpy as np
 from mpaudio import dsp

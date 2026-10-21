@@ -1,6 +1,6 @@
 """motion-pack / sfx / mpaudio / sweeteners.py : transition kind -> sound cue(s). The audio half of 'every motion component comes with sound'.
 sweeten(kind, frame, duration_frames, energy, direction) returns cue dicts {id, frame, tier, gain_db, over_bed_db} where `frame` is the VISUAL frame the sound's anchor must
-serve (the mixer adds the one-frame rule). Table is data (sweeteners.json is generated from it, so a JS planner can read it too). Placement notes follow docs/research/sound.md 4.10:
+serve (the mixer adds the one-frame rule). Table is data (sweeteners.json is generated from it, so a JS planner can read it too). Placement notes follow docs/evidence/sound.md 4.10:
 whoosh anchors at the blur midpoint; riser-type sweeteners end on the first frame of the next scene; hard cuts get a tick so they are not sterile."""
 import json
 import os

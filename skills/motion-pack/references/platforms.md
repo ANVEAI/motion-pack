@@ -1,6 +1,6 @@
 # Platforms: aspect, length, safe zones, brand cue, loudness
 
-The code source is `templates/_shared/plan.mjs PLATFORMS` and `type/safezones.js`. The research is in `docs/research/edit.md` section 8 and `docs/research/sound.md` sections 5.2 and 5.3.
+The code source is `templates/_shared/plan.mjs PLATFORMS` and `type/safezones.js`. The research is in `docs/evidence/edit.md` section 8 and `docs/evidence/sound.md` sections 5.2 and 5.3.
 
 | preset | aspect | length target | safe zone (top / bottom / side) | hook text by | brandCueBy (s) | loudness | notes |
 |---|---|---|---|---|---|---|---|
@@ -20,7 +20,7 @@ Machine-readable limits and CTA windows with their sources: `patterns/lengths.js
 
 The safe rectangle is `x 65..960`, `y 269..1248`. That means top 269 px, bottom 672 px and right 120 px are reserved. `type/safezones.js` uses `conservative`, and every platform row there is flagged `verify: true`.
 
-`docs/research/visual.md` section 9 gives a looser alternative: x 60..960, y 220..1500. Sources conflict, so check the current platform UI before final export.
+`docs/evidence/visual.md` section 9 gives a looser alternative: x 60..960, y 220..1500. Sources conflict, so check the current platform UI before final export.
 
 ## Loudness facts
 
@@ -32,7 +32,7 @@ The safe rectangle is `x 65..960`, `y 269..1248`. That means top 269 px, bottom 
 
 The house master is -14 LUFS-I, TP <= -1.5 dBTP on the WAV, and AAC probes <= -1.0. HyperFrames lowers the whole track if the AAC is over -1 dBTP.
 
-Not yet tested empirically: upload a -14 and a -10 clip privately and compare the in-app level (`docs/research/sound.md` section 5.3).
+Not yet tested empirically: upload a -14 and a -10 clip privately and compare the in-app level (`docs/evidence/sound.md` section 5.3).
 
 ## Pace per format (`cuts/patterns.json pace`) [H]
 

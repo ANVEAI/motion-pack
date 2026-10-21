@@ -28,7 +28,7 @@ All four are permissive, so they stay. One sheet was removed instead: `lab/c-vec
 sample file whose licence is not stated, so it is no longer in the repository (the measurements stay in `lab/c-vector/RESULTS.md` section 5).
 `lab/provenance.json` lists every committed lab image and the sets above that it shows, and `tools/tests/test_licences.py` fails if an image has no row
 there, if a set has no notice here and in `licenses/`, or if its licence is not permissive. The rule for new images: a render that shows third-party artwork goes under `lab/` (or
-`docs/research/`), its set is listed here with its notice in `licenses/`, and it is never described as CC0. Apple Color Emoji, CC BY-SA sets (OpenMoji) and
+`docs/evidence/`), its set is listed here with its notice in `licenses/`, and it is never described as CC0. Apple Color Emoji, CC BY-SA sets (OpenMoji) and
 anything without a stated licence are refused outright: do not render them into a committed image. The lab sheets are measurement evidence; the
 pack's own parts that appear in them (the type, covers and 3D scene) stay CC0 as parts, but a sheet that mixes them is licensed as a whole by its most
 restrictive input.
@@ -58,7 +58,7 @@ restrictive input.
 | ARRI LogC3 (EI 800), Sony S-Log3 / S-Gamut3.Cine, Panasonic V-Log / V-Gamut | log decode curves and gamut matrices in `layers/tools/log_cubes.py` (`layers/looks/log.*-to-709.cube`), typed from the makers' published white papers. No maker LUT file was read or converted. | published formulae; the names are trademarks of their owners, used to say which camera log the cube expects |
 | Khronos PBR Neutral tone mapper | the tone map in `log_cubes.py` (`neutral.rolloff-709.cube`), re-implemented from the published description | Apache-2.0 reference implementation (KhronosGroup/ToneMapping) |
 | ITU-R BS.1770-4, EBU R128 | K-weighting coefficients and gating in `sfx/mpaudio/meter.py` | standards documents |
-| Walter Murch, edit-grammar and platform research | the rules, thresholds and checklists cited in `docs/research/` | cited sources; every claim carries a source and a confidence tag |
+| Walter Murch, edit-grammar and platform research | the rules, thresholds and checklists cited in `docs/evidence/` | cited sources; every claim carries a source and a confidence tag |
 
 ## 4. Optional sets fetched by `scripts/fetch-external.sh` (never committed as files; their renders appear in the lab sheets, section 1b)
 

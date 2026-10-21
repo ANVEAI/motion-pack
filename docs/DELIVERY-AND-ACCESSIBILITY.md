@@ -28,7 +28,7 @@ python3 tools/captions/export.py --plan out/plan.json --burn out/film.mp4       
 python3 tools/captions/validate.py out/captions/captions.en.vtt --frame 1920x1080
 ```
 
-**The rules.** Sources are in `docs/research/launch-video-patterns.md` (reading-speed table):
+**The rules.** Sources are in `docs/evidence/launch-video-patterns.md` (reading-speed table):
 
 | rule | value | grade |
 |---|---|---|

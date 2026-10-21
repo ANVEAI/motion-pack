@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """motion-pack / cuts / trailer.py: the trailer cut plan (2026-10-16, film lane). Stdlib only, deterministic, JSON out.
 
-The craft (docs/research/film-trailer-craft.md, house starting values, tune by eye): a trailer's cut rate ACCELERATES act by act, every cut sits on the
+The craft (docs/evidence/film-trailer-craft.md, house starting values, tune by eye): a trailer's cut rate ACCELERATES act by act, every cut sits on the
 music's grid, the stakes-rising hits (braams) land on bar downbeats, and the fastest stretch stops dead into a short silence before the title hit.
 
   rate(act, u)        beats per shot at the normalised time u (0..1) inside an act: act1 holds (8 beats), act2 4 -> 2, act3 2 -> 1 -> 0.5 (8th notes at the end)

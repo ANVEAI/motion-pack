@@ -1,5 +1,5 @@
 {
- "doc": "Evidence tiers for tools/refstudy.py (grade). Percentages are of views. Rules run in this order: D (no reach data), B (boosted-looking), A (proven organic), A- (saves-strong), B' (solid for a big account), R (account-size reach), else C. Set from the round 3 and round 4/5 intakes (docs/research/reference-round45-2026-10.md); override per run with --tiers <file> or per study with meta.json tier_override {tier, why}.",
+ "doc": "Evidence tiers for tools/refstudy.py (grade). Percentages are of views. Rules run in this order: D (no reach data), B (boosted-looking), A (proven organic), A- (saves-strong), B' (solid for a big account), R (account-size reach), else C. Set from the round 3 and round 4/5 intakes (docs/evidence/reference-round45-2026-10.md); override per run with --tiers <file> or per study with meta.json tier_override {tier, why}.",
  "labels": {"A": "proven organic", "A-": "saves-strong", "B": "boosted-looking", "B'": "solid for a big account", "R": "account-size reach", "C": "weak or neutral", "D": "no reach data"},
  "boosted": {"like_max_pct": 0.05, "vf_min": 100.0, "vf_like_max_pct": 0.15},
  "A": {"vf_min": 1.5, "bm_min_pct": 1.5, "like_min_pct": 0.2},

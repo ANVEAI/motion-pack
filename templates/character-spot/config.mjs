@@ -1,4 +1,4 @@
-/* TEMPLATE character-spot: a mime-style wordless character spot, 15-20 s (docs/research/edit.md 10: one gag, one feature, wordless,
+/* TEMPLATE character-spot: a mime-style wordless character spot, 15-20 s (docs/evidence/edit.md 10: one gag, one feature, wordless,
    capped emotions, neutral white stage, payoff = expectation reversal, then one text line + a sonic sting). We borrow the GRAMMAR only:
    the character is our own worker (objects/characters), never a likeness of an existing campaign character.
    Demo gag (placeholder brand "Orbit", fictional): the worker reaches for coffee, tips it, the spill kills the laptop; despair; the

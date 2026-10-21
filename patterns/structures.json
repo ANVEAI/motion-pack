@@ -1,6 +1,6 @@
 {
  "schema": "motion-pack/patterns/structures@1",
- "note": "Beat sheets per genre as percent of runtime, with target ASL (average shot length = runtime / shots), on-screen text ceilings, music intensity 0-1 (0 = no music, 1 = the loudest, densest moment of the piece) and the sound-design role of each section. Every number is a tunable default with an evidence grade; no platform publishes beat percentages. The sources, the hedging and the named examples are in docs/research/launch-video-patterns.md (the `evidence` anchor of each structure). Sections may overlap where sources disagree (a reveal inside the demo); `required: false` sections are scored only when present. tools/structure_check.py scores an out/plan.json against one of these.",
+ "note": "Beat sheets per genre as percent of runtime, with target ASL (average shot length = runtime / shots), on-screen text ceilings, music intensity 0-1 (0 = no music, 1 = the loudest, densest moment of the piece) and the sound-design role of each section. Every number is a tunable default with an evidence grade; no platform publishes beat percentages. The sources, the hedging and the named examples are in docs/evidence/launch-video-patterns.md (the `evidence` anchor of each structure). Sections may overlap where sources disagree (a reveal inside the demo); `required: false` sections are scored only when present. tools/structure_check.py scores an out/plan.json against one of these.",
  "grades": {
   "platform": "published by the platform",
   "study": "a measured study",
@@ -25,7 +25,7 @@
    "one_word_frames": 9
   },
   "grade": "platform",
-  "evidence": "docs/research/launch-video-patterns.md#text"
+  "evidence": "docs/evidence/launch-video-patterns.md#text"
  },
  "template_map": {
   "ad": [
@@ -198,7 +198,7 @@
    ],
    "tolerance_pct": 8,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#ads",
+   "evidence": "docs/evidence/launch-video-patterns.md#ads",
    "hook": {
     "text_required": true,
     "text_by_s": 0.3,
@@ -332,7 +332,7 @@
    ],
    "tolerance_pct": 8,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#ads",
+   "evidence": "docs/evidence/launch-video-patterns.md#ads",
    "hook": {
     "text_required": true,
     "text_by_s": 0.3,
@@ -472,7 +472,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#saas-launch",
+   "evidence": "docs/evidence/launch-video-patterns.md#saas-launch",
    "hook": {
     "text_required": true,
     "text_by_s": 0.3,
@@ -646,7 +646,7 @@
    "change_every_s_max": 3.5,
    "tolerance_pct": 10,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#feature-drop",
+   "evidence": "docs/evidence/launch-video-patterns.md#feature-drop",
    "hook": {
     "text_required": false,
     "text_by_s": 0.3,
@@ -770,7 +770,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#explainer",
+   "evidence": "docs/evidence/launch-video-patterns.md#explainer",
    "hook": {
     "text_required": true,
     "text_by_s": 0.5,
@@ -912,7 +912,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "inference",
-   "evidence": "docs/research/launch-video-patterns.md#hardware-reveal",
+   "evidence": "docs/evidence/launch-video-patterns.md#hardware-reveal",
    "hook": {
     "text_required": false,
     "text_by_s": 0.3,
@@ -1096,7 +1096,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "inference",
-   "evidence": "docs/research/launch-video-patterns.md#teaser",
+   "evidence": "docs/evidence/launch-video-patterns.md#teaser",
    "hook": {
     "text_required": false,
     "text_by_s": 0.3,
@@ -1221,7 +1221,7 @@
    ],
    "tolerance_pct": 8,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#trailer",
+   "evidence": "docs/evidence/launch-video-patterns.md#trailer",
    "hook": {
     "text_required": false,
     "text_by_s": 0.3,
@@ -1399,7 +1399,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "inference",
-   "evidence": "docs/research/launch-video-patterns.md#title-sequence",
+   "evidence": "docs/evidence/launch-video-patterns.md#title-sequence",
    "hook": {
     "text_required": false,
     "text_by_s": 0.3,
@@ -1490,7 +1490,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#tutorial",
+   "evidence": "docs/evidence/launch-video-patterns.md#tutorial",
    "hook": {
     "text_required": true,
     "text_by_s": 0.5,
@@ -1617,7 +1617,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "inference",
-   "evidence": "docs/research/launch-video-patterns.md#vlog",
+   "evidence": "docs/evidence/launch-video-patterns.md#vlog",
    "hook": {
     "text_required": false,
     "text_by_s": 0.5,
@@ -1767,7 +1767,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#podcast-clip",
+   "evidence": "docs/evidence/launch-video-patterns.md#podcast-clip",
    "hook": {
     "text_required": true,
     "text_by_s": 0.3,
@@ -1879,7 +1879,7 @@
    ],
    "tolerance_pct": 12,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#founder-story",
+   "evidence": "docs/evidence/launch-video-patterns.md#founder-story",
    "hook": {
     "text_required": false,
     "text_by_s": 0.5,
@@ -2039,7 +2039,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#short-film",
+   "evidence": "docs/evidence/launch-video-patterns.md#short-film",
    "hook": {
     "text_required": false,
     "text_by_s": 0.5,
@@ -2186,7 +2186,7 @@
    ],
    "tolerance_pct": 8,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#character-spot",
+   "evidence": "docs/evidence/launch-video-patterns.md#character-spot",
    "hook": {
     "text_required": false,
     "text_by_s": 0.3,
@@ -2317,7 +2317,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "inference",
-   "evidence": "docs/research/launch-video-patterns.md#documentary-launch",
+   "evidence": "docs/evidence/launch-video-patterns.md#documentary-launch",
    "hook": {
     "text_required": false,
     "text_by_s": 0.5,
@@ -2468,7 +2468,7 @@
    "change_every_s_max": 3.5,
    "tolerance_pct": 10,
    "grade": "inference",
-   "evidence": "docs/research/launch-video-patterns.md#proof-film",
+   "evidence": "docs/evidence/launch-video-patterns.md#proof-film",
    "hook": {
     "text_required": true,
     "text_by_s": 0.3,
@@ -2631,7 +2631,7 @@
    ],
    "tolerance_pct": 10,
    "grade": "practitioner",
-   "evidence": "docs/research/launch-video-patterns.md#beat-edit",
+   "evidence": "docs/evidence/launch-video-patterns.md#beat-edit",
    "hook": {
     "text_required": false,
     "text_by_s": 0.3,
@@ -2722,7 +2722,7 @@
    "change_every_s_max": 3.5,
    "tolerance_pct": 10,
    "grade": "inference",
-   "evidence": "docs/research/explainer-data-patterns.md#data-story",
+   "evidence": "docs/evidence/explainer-data-patterns.md#data-story",
    "hook": {
     "text_required": true,
     "text_by_s": 0.5,
@@ -2848,7 +2848,7 @@
    "change_every_s_max": 3.5,
    "tolerance_pct": 10,
    "grade": "inference",
-   "evidence": "docs/research/explainer-data-patterns.md#process-howto",
+   "evidence": "docs/evidence/explainer-data-patterns.md#process-howto",
    "hook": {
     "text_required": true,
     "text_by_s": 0.5,
