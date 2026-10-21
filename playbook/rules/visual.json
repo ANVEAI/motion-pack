@@ -1,0 +1,1104 @@
+[
+  {
+    "id": "visual.accent_fixed_meaning",
+    "title": "One accent colour with one meaning",
+    "statement": "A film uses one accent colour, and each accent keeps one fixed meaning (for example one colour always means 'fixed', another always 'changing').",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "accent_colours": 1
+    },
+    "grade": "measured-A",
+    "evidence": "10 of 16 round-7 films use one accent, including the 3 tier-A product films; round-8 film 02 (tier A) uses blue only; the 1.8M-view launch keeps lime for 'fixed' and blue-violet for 'changing'.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Craft playbook, item 7 (Visuals)"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Film 02 section, 7. VISUALS"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Cross-film craft playbook, item 8"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "visual.banding_grain",
+    "title": "Grain over smooth dark gradients",
+    "statement": "Put grain of at least 0.02 over soft blurs, vignettes and dark mesh gradients (luma about 25-110), or dither before the encode, so 8-bit steps stay under 4% of sampled frames.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film",
+        "podcast-clip",
+        "short-film",
+        "talking-head",
+        "trailer",
+        "tutorial"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "grain_min": 0.02,
+      "banding_warn_share": 0.04,
+      "banding_fail_share": 0.2,
+      "risk_luma": [
+        25,
+        110
+      ]
+    },
+    "grade": "measured",
+    "evidence": "own measurement: an 8-bit step is 1.1% luminance at luma 215 but 4.8% at luma 50 after an x264 encode.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/gotchas.md",
+        "locator": "Environment > Banding is a dark-midtone problem; Layers > meshGradient bands"
+      },
+      {
+        "doc": "skills/motion-pack/references/critic.md",
+        "locator": "Common defects: bands"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.banding"
+      },
+      {
+        "doc": "eyes/README.md",
+        "locator": "notable findings; Synthetic proof"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "7.1 F12 dither; 3.6 fx/grain"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Update 19 Oct table; Failures 3"
+      },
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "Known weak spots > eyes, banding"
+      },
+      {
+        "doc": "docs/lane-notes/hardware.md",
+        "locator": "Render findings (16-17 Oct, L1)"
+      },
+      {
+        "doc": "docs/lane-notes/film.md",
+        "locator": "Render findings (16-17 Oct)"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/banding",
+      "default": "layers meshGradient grain 0.04",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Merged: Delivered frames show no 8-bit staircases (warn at 4% of a frame, fail when frames at 20% or more are a quarter of samples); smooth gradients carry grain of at least 0.02 amplitude and TPDF dither of plus or minus 1 LSB as the last step. [measured; thresholds calibrated on pack renders (2% Weber visibility keeps bright demos clean, still flags dark soft ones on 8 of 12 and 9 of 12 frames); synthetic test: a posterised ramp fails, the same ramp with grain passes.] | Banding is a dark-midtone problem (roughly luma 25-110); a 10-bit master re-encoded to 8 bit by the platform can band after delivery. layers/finisher.js lintStack also warns 'dither off and no grain'. | Merged: Dark gradient plates carry grain (>= 0.02) or encode below CRF 23; eyes/banding warns at 4% and fails at 20% of sampled frames. [measured; 19 Oct run: banding failed on 24 of 44 renders (12 templates at both aspects), e.g. 12/12 sampled frames on a device teaser and 10/12 on a vlog.] | The check catches it; no template sets grain or a lower CRF by default, so the fix is prose-only. The 0.02 grain floor is the source eyes/manifest.json cites (gotchas)."
+  },
+  {
+    "id": "visual.character_comedy_clean",
+    "title": "Character comedy looks clean",
+    "statement": "Character comedy and kids' spots use a bright saturated grade with no grain, no dust and a vignette of at most 0.06.",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "chat-skit"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "grain_amount": 0,
+      "vignette_max": 0.06,
+      "bloom_amount": 0.15
+    },
+    "grade": "craft",
+    "evidence": "art-direction judgement in frame-design and the mime-style recipe in the visual research; the finish preset ships these values.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Looks and grain (by pack id)"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "8. Recipes, mime-style spot"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "layers/presets/finish.js FINISH_PRESETS['bright-playful'] (grain none, vignette 0.06, bloom 0.15)",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "visual.colour_on_pivot",
+    "title": "Withhold colour until the pivot",
+    "statement": "Keep the problem section black-and-white and bring the first colour in on the pivot frame, together with the returning bass and the brand line.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "turn"
+    },
+    "params": {
+      "first_colour_at": "pivot frame"
+    },
+    "grade": "craft",
+    "evidence": "One round-6 film graded tier B: the problem stays monochrome and the first colour (a rising ribbon) arrives with the bass on the brand line.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "Film B shape, steps 3-4, lines 41-45"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "layers/background.auroraRibbon"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "The ribbon part exists; nothing checks that earlier frames are monochrome."
+  },
+  {
+    "id": "visual.concrete_artefacts",
+    "title": "Concrete objects, not abstract AI imagery",
+    "statement": "Show objects the story already has (a stamped page, a bill, a sent message, a lamp switched off), never node graphs, glowing threads, orbiting cards, floating UI or holograms.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "Abstract AI imagery is named as a cause in a rejected launch film and as the 'AI slop' failure in the rubric's failure table.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 9"
+      },
+      {
+        "doc": "skills/story-script/references/rubric.md",
+        "locator": "Failure to fix"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Launch film, Goes wrong when"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "visual.declare_planned_black",
+    "title": "Declare planned black in the plan",
+    "statement": "Any planned black (e.g. the silence before a trailer title) is declared as a hold or dip in the plan; undeclared, eyes/frames fails it.",
+    "scope": {
+      "formats": [
+        "short-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "reveal"
+    },
+    "params": {
+      "measured_black_frames": 11
+    },
+    "grade": "measured",
+    "evidence": "The 15 s trailer cut failed eyes/frames on 11 black frames at 13.1 s; trailers and the short film failed 'frames' in 6 more renders.",
+    "sources": [
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Update 19 Oct table (trailer rows)"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/frames",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "cuts/trailer/silenceBeforeHit allows black picture; the plan must say so."
+  },
+  {
+    "id": "visual.effect_budget",
+    "title": "Two stylised effects per shot",
+    "statement": "At most 2 stylised effects are active in a shot and one hero light effect (flare, god rays, glint); stacked spikes (chroma + leak + flash + shake) occur only on a designated hit frame, at most 1 per 2 s.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "stylised_fx_per_shot_max": 2,
+      "hero_light_effects_per_shot_max": 1,
+      "stacked_spike_min_gap_s": 2
+    },
+    "grade": "house",
+    "evidence": "binding compositing rule set in the pack's visual research (starting values, not yet tuned against renders).",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "7.2 Rules (binding), rule 6"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Hierarchy: one hero per frame"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "visual.end_card_layout",
+    "title": "End card: logo, line, action",
+    "statement": "An end card holds an unaltered logo, one line with exactly one accent word, one URL or action, and fine print; in 9:16 the stack sits between y 269 and 1248 with the URL above the bottom 35%.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "end"
+    },
+    "params": {
+      "accent_words": 1,
+      "tall_stack_y_px": [
+        269,
+        1248
+      ],
+      "url_above_bottom_frac": 0.35
+    },
+    "grade": "house",
+    "evidence": "pack end-card rule; the ad and character-spot templates render one *word* of the line in the accent.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "4. End cards"
+      },
+      {
+        "doc": "skills/frame-design/references/design-json.md",
+        "locator": "Fields: frames.end_card"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "templates/ad config.mjs brand.cta; templates/character-spot config.mjs brand.line",
+      "part": "templates/ad"
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "The logo is never recoloured, stretched or given effects (brand layer above grain, no fx)."
+  },
+  {
+    "id": "visual.founder_with_composited_ui",
+    "title": "Composite the UI around the presenter",
+    "statement": "In a founder-on-camera launch, the product appears as composited glass panels in the room around a locked shot, with at most 2 hard cuts in 80 s.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "talking-head"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "body"
+    },
+    "params": {
+      "hard_cuts_max": 2,
+      "length_s": 82
+    },
+    "grade": "measured-A",
+    "evidence": "Round-8 film 02 (tier A, 5.5x) has 2 hard cuts in 82 s; all UI is composited glass on one continuous take.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Film 02 section, 2 and 6"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 12"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "ui.glassPanel"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "n = 1."
+  },
+  {
+    "id": "visual.glass_fades_by_blur",
+    "title": "Fade glass by blur, not opacity",
+    "statement": "A frosted panel fades by its own blur and tint, never by opacity < 1, a filter, a mask or a blend mode on an ancestor, any of which stops the backdrop blur.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "measured",
+    "evidence": "r78 lane: tested in real headless capture; a test pins the ancestor-opacity failure; in canvas or still SVG export the backdrop mode draws no blur.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/r78.md",
+        "locator": "How each part follows its spec (ui.glassPanel); Needed item 4 (gotchas)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "ui.glassPanel"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Use plate mode outside a DOM host."
+  },
+  {
+    "id": "visual.hero_alone_bokeh",
+    "title": "Show the photoreal hero alone",
+    "statement": "Show a photoreal 3D hero alone on a defocused background; drop any prop that renders below the hero's realism.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "reveal"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "owner review: the hero read as photoreal, while the procedural props around it (desk, mug, laptop) did not.",
+    "sources": [
+      {
+        "doc": "private:memory/film-brief-2026-10-12",
+        "locator": "Follow-ups; How to apply, line 5"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "eyes/composition checks one hero per frame, not prop realism."
+  },
+  {
+    "id": "visual.layer_stack_order",
+    "title": "Type after grade, grain over type",
+    "statement": "Composite optics (lens, chroma, bloom, halation, leaks) before the grade and vignette, story type after the grade and steady, dust and grain over the type, the brand layer above grain at exact hex with no effects, then bars, then dither last.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "order": "plate > optics > grade > vignette > story type > dust > grain > brand > bars > dither",
+      "brand_hex_tolerance": 1
+    },
+    "grade": "house",
+    "evidence": "pack stack contract implemented in the finisher; brand pixels must probe at exact hex plus or minus 1 after the whole chain.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "7.1 The stack"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Looks and grain (by pack id)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "layers/finisher"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Type is never under bloom, halation or chroma unless it is in-world (a sign). Weave applies to the plate only."
+  },
+  {
+    "id": "visual.mark_in_world",
+    "title": "Composite the mark into a real scene",
+    "statement": "Show the logo or UI composited onto a surface in a real scene (window, billboard, screen) rather than as a bumper on a flat field.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "reveal"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "A craft-only concept ad puts its mark on a train window; a saves-strong round-3 brand film puts its system on a billboard with a passer-by; a SaaS breakdown overlays UI cards on live action.",
+    "sources": [
+      {
+        "doc": "docs/evidence/INDEX.md#ref-concept-ad",
+        "locator": "What to learn 5"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 138-160"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-app-builder-launch",
+        "locator": "What to learn 4"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "layout.mockupInContext"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "visual.no_everything_fades_in",
+    "title": "One entrance verb, some by cut",
+    "statement": "Give each element one entrance verb (mask, slide, scale) and let some arrive by cut; everything fading in is a banned default that needs a written reason.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "house banned default.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "Banned defaults"
+      },
+      {
+        "doc": "skills/motion-pack/references/critic.md",
+        "locator": "2. Score it > Motion"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Critic Motion row: eases with intent (snap, settle, glide, land), no linear drift. Same banned-defaults list: a centred title on a gradient, glow on UI, decorative corner labels."
+  },
+  {
+    "id": "visual.no_letterbox_vertical",
+    "title": "Never letterbox a vertical frame",
+    "statement": "Never letterbox 9:16; bars appear only when the plan asks for them, and unplanned bars warn at 2% of a side and fail at 15% of the frame.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "bar_warn_frac": 0.02,
+      "bar_fail_frac": 0.15
+    },
+    "grade": "house",
+    "evidence": "pack format rule (letterboxing 9:16 wastes pixels); eyes flags persistent near-black edge bars not named in the plan.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "3.11 fx/format"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.composition"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/composition",
+      "default": null,
+      "part": "layers/bars"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Letterbox heights for 16:9 at 1920x1080: 2.39:1 = 138 px each, 2.00:1 = 60 px, 1.85:1 = 21 px; bars sit above grain."
+  },
+  {
+    "id": "visual.one_accent_colour",
+    "title": "One accent, at most 10% area",
+    "statement": "Use one saturated accent hue, covering at most 10% of the frame area, alongside at most 3 base hues; state colours (success, warning) are the only extra hues and still need 3:1 against their background.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "accent_hues": 1,
+      "accent_area_frac_max": 0.1,
+      "base_hues_max": 3,
+      "state_colour_contrast_min": 3.0
+    },
+    "grade": "house",
+    "evidence": "pack colour-discipline rule from frame-design and the 3D premium-look rules.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Palette: roles, contrast, discipline"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "6.1 Premium, not toy rules, rule 4"
+      },
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "5. Palette recipes by tone cell"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+        "locator": "The method, step 2"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-creator-platform-launch",
+        "locator": "What to learn 2"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-concept-ad",
+        "locator": "What to learn 4"
+      },
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "films 01, 03, 04 VISUALS"
+      }
+    ],
+    "enforce": {
+      "check": "skills/frame-design/scripts/contrast.py",
+      "default": "design.json palette.accent",
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "contrast.py checks the 3:1 state-colour pairs; nothing measures accent area, so the 10% cap is prose-only. | Merged: Use one display face, one UI face and one accent colour, and apply the accent to every source (duotones, pills, logo, one word tint) so mixed media reads as one film. [craft; A practitioner house rule plus two craft-only films (a manifesto using one accent across archive, grid, type and logo; a concept ad with one brand colour).] | A demo inside the film may use its own client palette, kept apart from the frame's palette (a SaaS breakdown, reach unverified). | Merged: Keep every frame in one colour world (one field colour plus one accent) and let the product's own screens supply the variety. [measured-A; 3 of 3 tier-A video films: pale blue with one blue accent and one warm note; black and white with one blue glyph; one cobalt gradient with one lilac note.]"
+  },
+  {
+    "id": "visual.one_grade_per_piece",
+    "title": "One grade per piece",
+    "statement": "A piece uses one grade or one LUT (never both stacked); at most 2 grades by scene, joined by a 12-frame crossfade; log footage goes through a log-to-709 LUT first.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "grades_per_piece": 1,
+      "grades_per_piece_by_scene_max": 2,
+      "grade_crossfade_frames": 12
+    },
+    "grade": "house",
+    "evidence": "pack look rule; the grade is a closed-form CDL function emitted as a 33^3 cube, so no downloaded LUT pack is needed.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Looks and grain (by pack id)"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "3.13 fx/grade"
+      },
+      {
+        "doc": "docs/evidence/expansion-visual.md",
+        "locator": "6. LUTs"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "design.json look.grade / look.lut",
+      "part": "layers/grade.emitters"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "frame-design says one grade per piece; visual.md allows 2 per piece by scene with a 12-frame crossfade. No lint counts grades."
+  },
+  {
+    "id": "visual.one_hero_per_frame",
+    "title": "One hero per key frame",
+    "statement": "Every key frame names one hero (plus one support and texture); no second focal point holds 80% or more of the hero's saliency on more than 30% of key frames.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "competitor_mass_ratio_max": 0.8,
+      "competing_key_frames_warn_frac": 0.3,
+      "key_frames_sampled": 12
+    },
+    "grade": "house",
+    "evidence": "pack art-direction rule; the eyes saliency proxy warns when a competing blob reaches 80% of the strongest on 30% of 12 key frames.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Hierarchy: one hero per frame"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.composition"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/composition",
+      "default": "design.json frames.hero_by_shot",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The check is a proxy: it counts competing focal points but does not know which one is the hero, and text counts as a focal point."
+  },
+  {
+    "id": "visual.one_of_each_finish",
+    "title": "One bloom, vignette, grain",
+    "statement": "Each frame carries exactly one bloom, one vignette and one grain; a plate that already bakes one sets plate.baked and the finisher skips it.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "bloom_max": 1,
+      "vignette_max": 1,
+      "grain_max": 1
+    },
+    "grade": "house",
+    "evidence": "binding compositing rule; layers/finisher.js lintStack and layers/overlay.js lintOverlayStack warn on doubled grain, vignette or bloom.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "7.2 Rules (binding), rule 1"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Looks and grain (by pack id)"
+      }
+    ],
+    "enforce": {
+      "check": "layers/finisher.js lintStack; layers/overlay.js lintOverlayStack",
+      "default": null,
+      "part": "layers/finisher"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "The lints exist as library functions but are not wired into mp check or any template build (grep finds no caller)."
+  },
+  {
+    "id": "visual.palette_measured_not_trusted",
+    "title": "Measure every palette, defaults too",
+    "statement": "Run the WCAG checker on every palette, including template defaults and published palettes, and fix every failing pair before the build.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "open_palettes_failing_aa": "155 of 161",
+      "template_default_state_colour_ratio": 1.72
+    },
+    "grade": "measured",
+    "evidence": "155 of 161 palettes in a popular open collection failed AA on at least one text pair; a shipped template's default success colour measured 1.72:1 on its own stage.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Palette: roles, contrast, discipline"
+      }
+    ],
+    "enforce": {
+      "check": "skills/frame-design/scripts/contrast.py",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "contrast.py moves only CIELAB lightness of the failing foreground and prints the nearest passing hex. The colour-blind pass (a11y/colour-blind) belongs to the same QA step."
+  },
+  {
+    "id": "visual.product_as_actor",
+    "title": "The product acts first",
+    "statement": "The product's first appearance is UI acting on itself (a field typing, a window drawing, a card swapping), with no explainer card before it.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop",
+        "screen-life"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "reveal"
+    },
+    "params": {},
+    "grade": "measured-A",
+    "evidence": "6 of 8 round-8 films, including tier-A films 02, 07, 08 and 09 (the last three small samples).",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 1"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "visual.product_hero_frame_share",
+    "title": "Product hero at 36-46% width",
+    "statement": "A product hero fills about 36-46% of the frame width on a long lens (18-22 degree field of view), with quiet negative space where the type will sit; move the product, not the type.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "hardware-teaser",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "reveal"
+    },
+    "params": {
+      "hero_width_frac": [
+        0.36,
+        0.46
+      ],
+      "fov_deg": [
+        18,
+        22
+      ]
+    },
+    "grade": "house",
+    "evidence": "house default from product-shot reviews of rendered hardware; adjust by eye.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "6. Product and hero shots"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "6.1 Premium, not toy rules"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "visual.md: wide lenses over 35 degrees read game or toy unless intentional."
+  },
+  {
+    "id": "visual.real_ui_composited",
+    "title": "Composite real UI, never generate",
+    "statement": "Never let an image or video model draw UI, text, logos or clock faces: generate the scene with a flat #00FF00 screen, detect its 4 corners, perspective-warp the real screenshot onto it, remove spill, and label it as real screens in a generated setting.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film",
+        "saas-feature-drop",
+        "screen-life"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "chroma_key_hex": "#00FF00",
+      "corner_points": 4
+    },
+    "grade": "house",
+    "evidence": "observed in production renders: image models returned real interface labels as near-words; the pack rule followed.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "7. Real screenshots in generated scenes"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Never let an image model redraw UI or text"
+      },
+      {
+        "doc": "skills/motion-stack/references/learnings.md",
+        "locator": "Honesty that survives editing"
+      },
+      {
+        "doc": "skills/motion-pack/references/gotchas.md",
+        "locator": "Environment > Image models garble UI"
+      },
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "3. rule 3; 4. Anti-patterns"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "VIRALITY checklist > Thumbnail and title"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "layout.cornerPin"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Do not mention green objects in the prompt; keep raw scenes so a re-composite costs nothing. Invented numbers on a demo screen are changed in the product (demo data), not blurred. | Merged: Show real product screens composited into generated scenes, or a labelled placeholder; never let an image model redraw UI or text, and verify every on-screen AI answer. [house; image models garble UI text (own experience); in one 2024 hardware launch, wrong answers on screen were the focus of press coverage.] | Invented UI is a banned default."
+  },
+  {
+    "id": "visual.safe_zone_every_text_box",
+    "title": "Keep every text box in safe zone",
+    "statement": "Every text box, including placeholder tags, speaker tags, watermarks and end titles, sits inside the platform safe rectangle (tall: top 0.14, bottom 0.35, sides 0.06 of the frame).",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "tall_top": 0.14,
+      "tall_bottom": 0.35,
+      "tall_side": 0.06,
+      "measured_miss_px": [
+        11,
+        196
+      ]
+    },
+    "grade": "measured",
+    "evidence": "19 Oct run: 20 of 44 renders put a tag, caption or title outside the safe area; misses measured 11-23 px (placeholder tag), 14 px (detail line), 30-196 px (speaker tag + caption row), and an end title touching the left edge.",
+    "sources": [
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "Known weak spots > eyes, readability and safe zones"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Results 16-17 Oct (L1, L2, L5) + Update 19 Oct table"
+      },
+      {
+        "doc": "docs/lane-notes/editable.md",
+        "locator": "Render findings, last bullet"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/safezones",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "storyboard/safe-zone catches it before the build. Wide frames use the eyes spec fractions 0.05/0.08/0.05."
+  },
+  {
+    "id": "visual.tall_ui_zoom_to_region",
+    "title": "Zoom tall UI to readable regions",
+    "statement": "On 9:16 each product window zooms to its readable region; a whole-screen view (a payoff split, a wide builder) stays too small, and captions must not sit over the windows.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "body"
+    },
+    "params": {},
+    "grade": "measured",
+    "evidence": "Saas lane stills: whole-screen 9:16 views read small; explainer captions sat over the windows; 9:16 renders failed eyes/readability on 19 Oct.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/saas.md",
+        "locator": "What is weaker than I would like"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Update 19 Oct table (saas rows)"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability",
+      "default": "templates/saas-launch/scenes.mjs LY.tall (zoom-to-region rects)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "A centre-reframed 16:9 plate also loses its sides on 9:16 (editable lane); a per-aspect source is not in the schema yet."
+  },
+  {
+    "id": "visual.text_contrast_floor",
+    "title": "Text contrast at least 4.5:1",
+    "statement": "On-screen text measures at least 4.5:1 against the pixels behind it after the grade (3.0-4.5 warns, under 3.0 fails); large text and UI graphics need at least 3:1.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "text_contrast_pass": 4.5,
+      "text_contrast_fail_below": 3.0,
+      "large_or_ui_contrast_min": 3.0,
+      "large_text_px_min": 24
+    },
+    "grade": "house",
+    "evidence": "WCAG 2.x 1.4.3 / 1.4.11 minimums adopted as floors for video; eyes measures the decoded backdrop at its 5th and 95th percentile.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "4. Contrast: the maths and the video cases"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.readability"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "4.2 Type rules"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Without the plan's fg colour eyes estimates the text colour and caps a contrast failure at a warning. Thin weights need more than the minimum."
+  },
+  {
+    "id": "visual.text_over_footage_worst_frame",
+    "title": "Measure captions on worst frames",
+    "statement": "Text over footage is measured against the lightest and the darkest frames it crosses, not the average; when it fails, add a solid box or pill, a 40-60% scrim, or an outline stroke of about 8% of font size plus a hard shadow.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "podcast-clip",
+        "talking-head",
+        "ugc"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "scrim_opacity": [
+        0.4,
+        0.6
+      ],
+      "stroke_frac_of_font": 0.08
+    },
+    "grade": "craft",
+    "evidence": "practitioner fix order in the pack's type-and-colour reference; caption styles ship strokes of 0.03-0.07 em.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "4. Contrast: the maths and the video cases"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Palette: roles, contrast, discipline"
+      }
+    ],
+    "enforce": {
+      "check": "a11y/caption-contrast",
+      "default": "type/captions.js CAPTION_STYLES stroke",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "docs/research/visual.md 4.2 gives stroke 6% of font size or a 12 px shadow at 60% black; the frame-design reference gives about 8%. The 8% value is kept (later, matches the impact caption style 0.07)."
+  },
+  {
+    "id": "visual.two_worlds",
+    "title": "Two worlds: story warm, product white",
+    "statement": "A story-led launch film splits into warm low-key footage for the story and near-white pages with black sentence-case type for the product.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "story_near_black_share": 0.28,
+      "product_white_share": 0.44
+    },
+    "grade": "measured-A",
+    "evidence": "Measured palette shares of the tier-A* hero (distribution-assisted): near-black 28% across the sheet, near-white pages 44%; round-8 film 03 (boosted-looking) uses the same warm-human / cold-software split.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 1: hero, 7. Visuals"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Film 03 section, 7. VISUALS"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  }
+]

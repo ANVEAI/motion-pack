@@ -1,0 +1,957 @@
+[
+  {
+    "id": "type.accent_word_swap",
+    "title": "Swap one accent word in place",
+    "statement": "Keep a fixed sentence and swap only its last word or number in place in the accent colour, or land a typed sentence on a one-word accent answer.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "swapped_words": 1
+    },
+    "grade": "craft",
+    "evidence": "Four round-3 pieces (one tier A) swap an accent word; a tier-B round-6 film lands a typed sentence on a one-word accent answer.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "Pack coverage line 542"
+      },
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "Film B shape step 1, line 39"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "type.accentSwap"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "type.caption_standard",
+    "title": "Captions: 42 chars, 2 lines, 20 cps",
+    "statement": "Captions keep <= 42 characters per line, <= 2 lines and <= 20 characters/s (17 for kids) with 2-frame gaps; a burned 9:16 track at 64 px re-breaks to 23 characters; faster speech is condensed by hand.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "chars_per_line_max": 42,
+      "lines_max": 2,
+      "cps_max": 20,
+      "cps_max_kids": 17,
+      "gap_frames": 2,
+      "tall_burn_chars": 23,
+      "tall_burn_px": 64,
+      "measured_cold_open_cps": [
+        31,
+        41
+      ]
+    },
+    "grade": "house",
+    "evidence": "Standards table of the access lane; a multi-voice cold open measured 31-41 cps (0.8 s per voice) and fails honestly.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/access.md",
+        "locator": "Shared-file edits NEEDED item 2-3; Findings for other lanes; RECIPE D"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "QA checklist > Legibility; RECIPE D"
+      }
+    ],
+    "enforce": {
+      "check": "tools/captions/validate.py",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "plan.chunkCaptions (<= 4 words, <= 22 chars) is the stricter burned-caption chunker for short-form. | Merged: Subtitle files keep at most 42 characters a line, 2 lines, 20 cps (17 for kids) and 5/6 s to 7 s per event; burned-in kinetic captions keep at most 18 characters a line and 2 lines, with the active word exactly the spoken word. [house; house caption limits.] | plan.chunkCaptions defaults to <= 4 words / <= 22 chars, lead 2 frames; RECIPE H asks for 2-4 word captions at 64-80 px on 9:16; structure_check cps_max 17."
+  },
+  {
+    "id": "type.caption_style",
+    "title": "Captions: 2 lines, 18 chars",
+    "statement": "Vertical captions are 64-80 px at 1080, at most 2 lines of at most 18 characters, 2-4 words per chunk, with the active word highlighted being exactly the spoken word; 16:9 captions are at least 40 px.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "podcast-clip",
+        "talking-head",
+        "ugc"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "caption_px_tall": [
+        64,
+        80
+      ],
+      "caption_px_wide_min": 40,
+      "lines_max": 2,
+      "chars_per_line_max": 18,
+      "words_per_chunk": [
+        2,
+        4
+      ]
+    },
+    "grade": "house",
+    "evidence": "pack caption rules coded in lintCaptionStyle and lintCaptions; eyes applies the caption floor and 80 px cap.",
+    "sources": [
+      {
+        "doc": "type/safezones.js",
+        "locator": "lintCaptionStyle"
+      },
+      {
+        "doc": "type/README.md",
+        "locator": "Rules baked in"
+      },
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "3. Size and timing table"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability; type/captions.js lintCaptions (called in templates/_shared/human/edit.mjs)",
+      "default": "templates/talking-head config.mjs captions.maxWords 3, maxChars 15",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Conflict: templates/_shared/plan.mjs chunkCaptions defaults to maxChars 22 per chunk, which can exceed 18 characters on one line; the talking-head template is stricter (3 words, 15 chars)."
+  },
+  {
+    "id": "type.captions_every_sentence",
+    "title": "Caption every spoken sentence",
+    "statement": "Every spoken sentence has a caption so the video works on mute; burn captions in for X and LinkedIn, which autoplay muted.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "talking-head"
+      ],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "house rule R14; sound-on is dominant on YouTube (95%, second-hand) but feeds autoplay muted.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "2. Hold > Mute-proof"
+      },
+      {
+        "doc": "skills/motion-pack/references/platforms.md",
+        "locator": "x.video, linkedin.video rows"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Film 03 section, 5. VOICEOVER"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 3"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "tools/captions/validate.py validates a caption track; nothing checks that every spoken sentence has one. | lint_shotlist only warns on a missing sound_off sentence; burn with tools/captions/export.py --burn (no libass in many ffmpeg builds). | Merged: Every spoken phrase is burned in as a caption (lower-third box) so a VO film plays on mute. [measured; Round-8 film 03 (boosted-looking, 1.86M views) captions every phrase; the tier-A founder film instead relies on UI text.]"
+  },
+  {
+    "id": "type.emphasis_scale_max_1_05",
+    "title": "Cap caption emphasis scale at 1.05",
+    "statement": "An emphasised caption word scales <= 1.05 while word gaps come from unscaled widths; at 1.12 it eats the 0.28 em gap and two words fuse.",
+    "scope": {
+      "formats": [
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "emph_scale_max": 1.05,
+      "measured_bad_scale": 1.12,
+      "word_gap_em": 0.28
+    },
+    "grade": "measured",
+    "evidence": "A vlog sheet showed two caption words fused at scale 1.12; the template now overrides to 1.05.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/human.md",
+        "locator": "Findings outside this lane, captions bullet"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "templates/vlog-personal/config.mjs captions.override.emphScale 1.05",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "The real fix (gap from the scaled width) belongs in type/dom.js; other templates still use the 1.12 style default."
+  },
+  {
+    "id": "type.exit_faster_than_entrance",
+    "title": "Exits 30% faster than entrances",
+    "statement": "Type entrances decelerate and exits accelerate, with exits about 30% shorter than entrances (e.g. lower third in 10-18 f, out 8-10 f).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "exit_shorter_frac": 0.3,
+      "lower_third_in_frames": [
+        10,
+        18
+      ],
+      "lower_third_out_frames": [
+        8,
+        10
+      ]
+    },
+    "grade": "house",
+    "evidence": "type-module rule baked into the preset and gfx durations.",
+    "sources": [
+      {
+        "doc": "type/README.md",
+        "locator": "Rules baked in"
+      },
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "3. Size and timing table"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "4.2 Type rules"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "type/presets.js PRESETS durations; type/gfx/editorial.js inF/outF",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "lintType does not test exit speed; the presets set it."
+  },
+  {
+    "id": "type.floors_by_role_aspect",
+    "title": "Type size floors per role",
+    "statement": "At the 1080 reference (shorter side) text is at least: read line 48 px wide / 56 px tall, headline 96, caption 40 / 64 (max 80 tall), label and end-card fine print 28 / 30, lower third 44 / 48, in-world 28; and at least 9 px when rendered on a 360 px wide phone.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "read_px_wide": 48,
+      "read_px_tall": 56,
+      "headline_px": 96,
+      "caption_px_wide": 40,
+      "caption_px_tall": [
+        64,
+        80
+      ],
+      "label_px_wide": 28,
+      "label_px_tall": 30,
+      "lowerthird_px_wide": 44,
+      "lowerthird_px_tall": 48,
+      "inworld_px": 28,
+      "phone_width_px": 360,
+      "phone_min_px": 9
+    },
+    "grade": "house",
+    "evidence": "house defaults set after reviewers could not read smaller text on a phone; eyes and a11y/text-size fail text below the floor.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "3. Size and timing table"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.readability floors_px_1080"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "4.2 Type rules"
+      },
+      {
+        "doc": "skills/motion-pack/references/critic.md",
+        "locator": "2. Score it > Phone readability"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "QA checklist > Eyes, Legibility"
+      },
+      {
+        "doc": "docs/lane-notes/saas.md",
+        "locator": "Render findings (16-17 Oct, L4)"
+      },
+      {
+        "doc": "docs/lane-notes/access.md",
+        "locator": "Findings for other lanes, first bullet"
+      },
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "Known weak spots > eyes, readability and safe zones"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability; a11y/text-size",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Under 12 px on a 360 px phone is a note (the size a tested 16:9 table needed). Measurement needs plan.texts with fontPx. | Merged: Text meets the floors at 1080 (read 48 px wide / 56 px tall, headline 96, caption 40/64, label 28/30) and reads on a 360 px wide still at >= 9 px with contrast >= 4.5:1. [house; house floors; WCAG contrast.] | Also tools/a11y_check.py text-size. Real UI at scale 1 is too small on 16:9: use scale 1.3-1.6. | Merged: Headlines are >= 96 px on wide frames, reading text >= 48 px wide / 56 px tall at the 1080 reference, and no text renders under 9 px on a 360 px phone. [measured; Feature-drop headlines measured 76-92 px with a tag at 8.2 px on a 360 px phone (eyes, both runs); two device templates set reading text at 44 px on 16:9 (a11y_check fail).] | a11y/text-size checks the plan before the render. The fix for the feature drop moves its window layout, so it stayed open."
+  },
+  {
+    "id": "type.honesty_label_size",
+    "title": "Honesty labels readable, 2 s",
+    "statement": "Honesty labels are a designed component: mono family, at least 28 px (16:9) or 30 px (9:16), at least 4.5:1, inside the safe area, on screen at least 2 s, in a constant position across shots and never over the hero.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "label_px_wide": 28,
+      "label_px_tall": 30,
+      "label_contrast_min": 4.5,
+      "label_min_s": 2.0
+    },
+    "grade": "house",
+    "evidence": "pack honesty-label style; eyes fails a label under 2 s and the storyboard checks the hold.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "5. Honesty labels"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.readability label_min_s"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability; storyboard/label-hold",
+      "default": "design.json frames.labels.min_on_screen_s",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Keep one label vocabulary across a series."
+  },
+  {
+    "id": "type.key_word_accent",
+    "title": "Accent the one key word",
+    "statement": "Use 1-2 short lines per card and mark the key word in each line with the single accent colour or a highlight chip.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "lines_per_card": [
+        1,
+        2
+      ],
+      "accented_words_per_line": 1
+    },
+    "grade": "measured-A",
+    "evidence": "2 of 3 tier-A films: an accent-colour word per line in one; a highlight chip behind key words in the other.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "film 01 and film 04 MOTION GRAPHICS"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "type.lower_third_spec",
+    "title": "Lower third: name, title, 2.5-4 s",
+    "statement": "A lower third shows name and title only, sits inside the platform safe rect, stays on screen about 2.5-4 s, and uses the accent on one element only.",
+    "scope": {
+      "formats": [
+        "documentary",
+        "podcast-clip",
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "on_screen_s": [
+        2.5,
+        4.0
+      ],
+      "accent_elements": 1,
+      "name_px_wide": [
+        44,
+        56
+      ],
+      "name_px_tall": [
+        48,
+        60
+      ]
+    },
+    "grade": "house",
+    "evidence": "pack special-frame rule; the lower-third parts default to 3 s (news bar 4 s).",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "3. Lower thirds"
+      },
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "3. Size and timing table"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "4.1 Presets, lower-third"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability (lowerthird floor)",
+      "default": "design.json frames.lower_third",
+      "part": "lowerThird.cleanBar"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "docs/research/visual.md gives a hold of at least 60 f (2 s) with bar wipe 10 f, name slide 12 f offset 4 f, out 8 f; frame-design's 2.5-4 s is kept."
+  },
+  {
+    "id": "type.name_super_one_detail",
+    "title": "Give each name super one personal detail",
+    "statement": "In a multi-voice documentary, hold names until the lead, and give each later name super one personal detail beyond the role.",
+    "scope": {
+      "formats": [
+        "documentary",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "details_per_super": 1
+    },
+    "grade": "craft",
+    "evidence": "One tier-A round-4 launch documentary (153 s, 3.23x).",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 4 (9), line 32"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "lowerThird.docSuper"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "type.no_redundant_on_screen_text",
+    "title": "Signal, do not repeat the voice",
+    "statement": "Explainers and tutorials put keyword callouts and step cards on screen, not sentences that repeat the narration.",
+    "scope": {
+      "formats": [
+        "data-story",
+        "explainer",
+        "tutorial"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "redundancy_tests_negative": "16/16",
+      "redundancy_median_d": 0.86,
+      "signalling_tests_positive": "24/28",
+      "signalling_d": 0.41
+    },
+    "grade": "measured",
+    "evidence": "A multimedia-learning handbook review: on-screen text duplicating narration hurt learning in 16 of 16 tests (median d = 0.86); signalling helped in 24 of 28 (d = 0.41).",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 9; 4. On-screen text density"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Accessibility captions are separate and still required for mute viewing."
+  },
+  {
+    "id": "type.no_text_box_overlap",
+    "title": "Never let two text boxes overlap",
+    "statement": "No two on-screen text boxes overlap on any frame; the caption row keeps its own band and lower thirds and speaker tags sit above it.",
+    "scope": {
+      "formats": [
+        "founder-story",
+        "hardware-teaser",
+        "launch-film",
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "overlap_px_max": 0
+    },
+    "grade": "measured",
+    "evidence": "Contact sheets of the 19 Oct run showed 5 collisions: a caption row over a lower third at 2.95 and 3.46 s, captions over a speaker tag on most talking frames, a label under a spec number at 19.2 s, port labels overlapping at 34.8 s, a feature line over the watermark at 9.2 s.",
+    "sources": [
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Update 19 Oct, Failures 2 and 4"
+      },
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "Known weak spots > Label collisions seen on the sheets"
+      },
+      {
+        "doc": "docs/lane-notes/human.md",
+        "locator": "Render findings (16-17 Oct)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "eyes/safezones tests each box against the safe rect, not boxes against each other; found only by looking at sheets."
+  },
+  {
+    "id": "type.one_kinetic_style",
+    "title": "One kinetic type style",
+    "statement": "A piece uses one kinetic-type tone family, two at most, chosen from the tone cell (calm-soft, calm-sharp, kinetic-soft, kinetic-sharp, neutral).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "kinetic_tone_families_max": 2
+    },
+    "grade": "house",
+    "evidence": "type-module rule coded in lintPiece; presets are tagged with the same tone cells frame-design picks.",
+    "sources": [
+      {
+        "doc": "type/README.md",
+        "locator": "Rules baked in"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Tone cell and motion personality"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "4.2 Type rules"
+      }
+    ],
+    "enforce": {
+      "check": "type/presets.js lintPiece",
+      "default": "design.json tone.cell, motion.type_presets",
+      "part": "type/maskRise"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "lintPiece is a library lint, called only by templates/demo-l7/make.mjs; no build gate runs it."
+  },
+  {
+    "id": "type.phrases_2_to_5_words",
+    "title": "Speak in 2-5 word phrases",
+    "statement": "A wordless film carries its whole argument in on-screen phrases of 2-5 words, one phrase per beat.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "hardware-teaser",
+        "saas-feature-drop",
+        "screen-life"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "phrase_words": [
+        2,
+        5
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "All 6 wordless round-8 films do this (4 of them tier A on small samples); the round-7 hardware film's supers are 2-3 words.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 3"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Beat tables: the four tier-A films (film 04)"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "eyes/readability caps a read at 6 words; the 2-word floor is not checked."
+  },
+  {
+    "id": "type.read_line_max_words",
+    "title": "Six words per read line",
+    "statement": "Each shot carries one read line of at most 6 words; a hook line at most 7 words; a poster or cover at most 4.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "read_max_words": 6,
+      "hook_max_words": 7,
+      "poster_max_words": 4
+    },
+    "grade": "house",
+    "evidence": "pack type rules checked by eyes on the plan's texts and by the story linter on the shot list.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Type: free, licensed, real weights"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.readability"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability; lint_shotlist.hook_max_words",
+      "default": "design.json type.max_words_per_line",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "type.reading_time_hold",
+    "title": "Hold text long enough to read",
+    "statement": "Hold each line for max(0.5 s, 0.35 s + 0.28 s per word), keep reading speed at or under 3.5 words per second, and show every line fully formed for at least 9 frames.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "hold_base_s": 0.35,
+      "hold_per_word_s": 0.28,
+      "hold_min_s": 0.5,
+      "words_per_s_max": 3.5,
+      "fully_formed_frames_min": 9
+    },
+    "grade": "house",
+    "evidence": "type-module rules; eyes fails text on screen for less than the formula (warns from 80%), lintType flags holds under 9 f.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "3. Size and timing table"
+      },
+      {
+        "doc": "type/README.md",
+        "locator": "Rules baked in (lintType, lintPiece, lintCaptions)"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.readability"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "QA checklist > Legibility"
+      },
+      {
+        "doc": "docs/lane-notes/research.md",
+        "locator": "Notes for other lanes"
+      },
+      {
+        "doc": "docs/lane-notes/human.md",
+        "locator": "Update 6d401c2 > Structure scores (tutorial row)"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability; a11y/reading-time; structure_check.check_text",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Captions that follow the voice only warn, never fail. | Merged: Non-speech on-screen text runs at most 3.5 words/s and holds at least max(0.5 s, 0.35 s + 0.28 s per word); the beat-sheet floor max(0.83 s, 0.3 s per word) also applies and the longer hold wins. Kinetic type holds each line fully formed for at least 9 frames and uses at most two tone families. [house; house reading formula shared by eyes, frame-design and story-script.] | Also lint_shotlist (hold 0.35+0.28/word) and structure_check.check_text (floor max(0.833, 0.3 s/word)). check_text one_word_frames 9 covers the formed hold; judge legibility on the hold frame, not mid mask-rise. | Merged: Every text holds at least max(0.833 s, 0.3 s per word) and reads at <= 17 characters/s; a 4-5 word super needs 1.5 s, not 1.03 s. [measured; Plan scores: name supers held 1.03 s for 4-5 words; three ad proof lines read over 17 cps (fix: hold 2.0-2.3 s or cut to 4-5 words); tutorial step cards rose to 1.0 s after reading at 3.5 words/s.] | eyes/readability and lint_shotlist use 0.35 s + 0.28 s per word (min 0.5 s): a second formula for the same rule; the two disagree slightly on short lines."
+  },
+  {
+    "id": "type.real_weights_only",
+    "title": "Only weights the family ships",
+    "statement": "Use open-licence (OFL) families, at most 2 per piece (one display, one text), request only weights the family ships, and pin variable fonts to an exact weight; no faux bold or faux italic.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "families_per_piece_max": 2,
+      "faux_styles_allowed": 0
+    },
+    "grade": "craft",
+    "evidence": "type practice in frame-design: synthetic faux-bold from a missing weight reads as a generated-design tell.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Type: free, licensed, real weights"
+      },
+      {
+        "doc": "skills/frame-design/references/type-and-color.md",
+        "locator": "1. Open-licence families; 2. Pairing rules"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "design.json type.display / type.text (license field)",
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Also tighten display type -0.02 to -0.035 em at 96 px and up, open mono labels +0.02 em; test every glyph (currency, diacritics) before locking a family."
+  },
+  {
+    "id": "type.scale_contrast",
+    "title": "Alternate tiny and frame-filling type",
+    "statement": "Use scale contrast as rhythm: small type alternates with type that fills the frame, with the small size never below the label floor (28 px wide / 30 px tall at 1080).",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "teaser"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "small_type_pct_height_ref": [
+        2,
+        3
+      ],
+      "label_floor_px_wide": 28,
+      "label_floor_px_tall": 30
+    },
+    "grade": "craft",
+    "evidence": "A craft-only round manifesto film alternates type at 2-3% of frame height with frame-filling type; saves-strong round-3 films end on giant cropped titles or marks.",
+    "sources": [
+      {
+        "doc": "docs/evidence/INDEX.md#ref-creator-platform-launch",
+        "locator": "What to learn 4, line 30"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 17-38 and 138-160"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "2-3% of 1080 (22-32 px) is under the read floor of 48 px wide; only labels may go that small, so eyes/readability fails body copy at the reference's size."
+  },
+  {
+    "id": "type.sentence_across_shots",
+    "title": "One word per shot hook",
+    "statement": "A 4-5 word hook sentence is spread one word per shot across changing plates in the first 4 s, the last word larger.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "words": [
+        4,
+        5
+      ],
+      "shot_s": [
+        0.6,
+        1.4
+      ],
+      "span_s": 4
+    },
+    "grade": "measured-A",
+    "evidence": "Round-7 film 16 (tier A, likes 2.22%, bookmarks 2.20%, the round's strongest rates) opens this way over 4 textures.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Beat tables: the four tier-A films (film 16)"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Pack gaps"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "type.sentenceAcrossShots"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "n = 1."
+  },
+  {
+    "id": "type.typed_text_hold_after",
+    "title": "Hold typed text after it lands",
+    "statement": "Text that types on holds >= 2.2 s after its last character; without that hold, typed slugs read at 18 characters/s, over the 17 cps ceiling.",
+    "scope": {
+      "formats": [
+        "short-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "hold_after_typeon_s": 2.2,
+      "measured_cps": 18,
+      "cps_max": 17
+    },
+    "grade": "measured",
+    "evidence": "The short-film scene slugs read at 18 chars/s before the 2.2 s hold was added (plan score 44 -> 78 with the beat fixes).",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/film.md",
+        "locator": "Integration (xp-integrate, 16 Oct) table, short-film row"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_text",
+      "default": "templates/short-film config (slug hold 2.2 s)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "type.typing_is_the_clock",
+    "title": "Type key text with a caret",
+    "statement": "Key on-screen text is typed with a visible caret, not faded, so each word is a visible event a sound can land on.",
+    "scope": {
+      "formats": [
+        "saas-feature-drop",
+        "screen-life"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "body"
+    },
+    "params": {},
+    "grade": "measured-A",
+    "evidence": "Typed text drives time in 5 of 8 round-8 films, including 3 tier-A small-sample films (07, 08, 09).",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 2"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "type/typewriter"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Small samples."
+  },
+  {
+    "id": "type.word_is_the_scene",
+    "title": "Make one big word the scene",
+    "statement": "Make one big word the scene with the UI small beneath it, and change the word by scramble, decode or wheel roll as a visible event for sound to hit.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "words_per_beat": 1
+    },
+    "grade": "measured-A",
+    "evidence": "2 of 3 tier-A films: one huge word per beat with UI cards in front of its lower half; one or two short lines per card in the other.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "cross-film playbook item 3; film 03 MOTION GRAPHICS"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "type/scramble"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  }
+]

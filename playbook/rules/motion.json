@@ -1,0 +1,820 @@
+[
+  {
+    "id": "motion.bake_simulation",
+    "title": "Bake simulations, closed-form springs",
+    "statement": "Physics, cloth, particles with velocity and fluids are simulated once at a fixed 1/60 s step into a per-frame table that the render reads; springs use the closed-form solution, never a per-frame step.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "sim_step_s": 0.016667
+    },
+    "grade": "house",
+    "evidence": "pack determinism contract; the closed-form spring classes give identical values in forward and shuffled seek order in the type-module tests.",
+    "sources": [
+      {
+        "doc": "skills/motion-stack/references/determinism.md",
+        "locator": "Things that break the rule: Simulation, Springs"
+      },
+      {
+        "doc": "type/README.md",
+        "locator": "UI kit and closed-form springs"
+      }
+    ],
+    "enforce": {
+      "check": "skills/motion-stack/scripts/seekcheck.mjs",
+      "default": "type/ease.js spring / springTrack (SPRING classes)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Re-simulating from 0 on every seek also works but costs O(t) per frame."
+  },
+  {
+    "id": "motion.camera_still_on_impacts",
+    "title": "Lock the camera on impacts",
+    "statement": "The camera does not move during a key action (drop, slam, snap, stamp): within those windows it stays under 0.8 deg/s orbit, 0.15 units/s distance and 0.8 deg/s roll; camera travel between zones takes at least 1 s.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "max_deg_per_s": 0.8,
+      "max_dist_per_s": 0.15,
+      "max_roll_deg_per_s": 0.8,
+      "zone_travel_min_s": 1.0
+    },
+    "grade": "house",
+    "evidence": "rule carried from earlier 3D film builds; cam3d.lintCameraMoves reports violations and cam3d.lock freezes the camera over given windows.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "5. Camera-move presets, Rules"
+      },
+      {
+        "doc": "skills/frame-design/references/design-json.md",
+        "locator": "Fields: motion.camera_still_on_impacts"
+      }
+    ],
+    "enforce": {
+      "check": "camera/cam3d.js lintCameraMoves",
+      "default": "design.json motion.camera_still_on_impacts",
+      "part": "cam3d.lock"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "lintCameraMoves is a library lint exercised in camera tests; no build gate calls it."
+  },
+  {
+    "id": "motion.cut_synchronous_fx",
+    "title": "Cut effects peak on the cut",
+    "statement": "Cut-synchronous effects (leak flash, chroma hit, bloom pulse) peak on the cut frame with about a 1-frame attack and 8-frame decay, and the next shot starts clean; at most one energy spike per beat.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "launch-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "attack_frames": 1,
+      "decay_frames": 8,
+      "spikes_per_beat_max": 1
+    },
+    "grade": "house",
+    "evidence": "binding compositing rule plus the shared envelope helper; on a 120 BPM grid the research allows a spike every 2nd beat in verses and every beat only in a drop.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "7.2 rule 7; 3.15 fx/envelope; 3.8 fx/leaks"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "type/ease.js env (attack, decay)",
+      "part": "layers/leaks"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "motion.declared_audio_only",
+    "title": "Declare audio; never play it live",
+    "statement": "Sound reaches the render only as declared audio (an audio element with an id and a start time) or an offline master mix; live-playback audio never reaches the MP4.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "declared_cue_error_ms": 0.04,
+      "offline_master_drift_lu": 0.1
+    },
+    "grade": "measured",
+    "evidence": "Measured: a live-playback audio library produced no audio stream; a declared tag placed a 500 ms cue at 500.04 ms; the offline master held -14.1 LUFS through AAC within 0.1 LU.",
+    "sources": [
+      {
+        "doc": "skills/motion-stack/references/output-tools.md",
+        "locator": "Audio: declare it, or mix it offline"
+      },
+      {
+        "doc": "skills/motion-stack/references/verdicts.md",
+        "locator": "d-output D4a-D4c"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "music/mixer.py (offline master WAV)",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "An id-less audio tag renders silent."
+  },
+  {
+    "id": "motion.flash_limit",
+    "title": "At most 3 flashes per second",
+    "statement": "No more than 3 general or red flashes in any 1 s window (opposing luminance changes of 10% or more over 25% of the frame, darker side under 0.80).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "flashes_per_s_max": 3,
+      "luminance_delta": 0.1,
+      "area_min_frac": 0.25,
+      "darker_max": 0.8
+    },
+    "grade": "house",
+    "evidence": "WCAG 2.3.1 adopted as a pack rule; eyes synthetic tests: a 4 Hz full-frame strobe fails, 2-3 Hz passes.",
+    "sources": [
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.flashes"
+      },
+      {
+        "doc": "eyes/README.md",
+        "locator": "The checks; Synthetic proof"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Hierarchy: one hero per frame"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "QA checklist > Flash safety"
+      },
+      {
+        "doc": "skills/motion-pack/references/gotchas.md",
+        "locator": "Environment > Flash safety counts opposing luminance changes"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/flashes; a11y/flash-plan",
+      "default": "design.json look.flash_max_per_s",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "An approximation of WCAG 2.3.1 (consecutive-frame changes, whole-frame area); not a broadcast Harding test. | Merged: No more than 3 general or red flashes per second (pairs of 10% relative-luminance changes over a quarter of the screen); space flash onsets at least 0.34 s apart. [house; published accessibility standard (WCAG 2.3.1).] | Also tools/a11y_check.py a11y/flash-plan. Use peak 0.7 for anything broadcast-adjacent."
+  },
+  {
+    "id": "motion.glitch_on_hit_only",
+    "title": "Glitch only on hits",
+    "statement": "Glitches trigger only on a beat or cut, last 4-8 frames, and occur at most once per 2 s; never run continuously.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "glitch_frames": [
+        4,
+        8
+      ],
+      "glitch_min_gap_s": 2
+    },
+    "grade": "craft",
+    "evidence": "effect-budget practice in the visual research; tone-cell guidance limits glitch to drops.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "3.12 fx/retro and fx/glitch"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Tone cell and motion personality"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "type/glitchSplit"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Slice displacement 8-60 px, RGB split about 6 px."
+  },
+  {
+    "id": "motion.handheld_closed_form",
+    "title": "Handheld is a sum of sines",
+    "statement": "Handheld shake is a closed-form sum of seeded sines of t: slow position plus or minus 5 px at 0.37/0.83/1.31 Hz, micro plus or minus 0.8 px at 7.1/9.3 Hz, roll plus or minus 0.25 deg, scaled by level subtle 0.4, doc 1.0, action 2.5.",
+    "scope": {
+      "formats": [
+        "documentary",
+        "short-film",
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "slow_px": 5,
+      "slow_hz": [
+        0.37,
+        0.83,
+        1.31
+      ],
+      "micro_px": 0.8,
+      "micro_hz": [
+        7.1,
+        9.3
+      ],
+      "roll_deg": 0.25,
+      "level_subtle": 0.4,
+      "level_doc": 1.0,
+      "level_action": 2.5
+    },
+    "grade": "craft",
+    "evidence": "researched starting values, implemented in camera parts; determinism of the formula is tested.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "5. Camera-move presets, handheld"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "camera/cam3d.js HANDHELD_LEVELS",
+      "part": "cam3d.handheld"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Never noise stepped per frame; weave on film looks is 0.15% of W at 1-3 Hz and applies to the plate only."
+  },
+  {
+    "id": "motion.house_easing",
+    "title": "Use the house easing set",
+    "statement": "Animate with the named house eases: enter (0.16,1,0.3,1), hero (0.22,1,0.36,1), exit (0.7,0,0.84,0), move (0.65,0,0.35,1), pop (0.34,1.56,0.64,1).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "enter": "0.16,1,0.3,1",
+      "hero": "0.22,1,0.36,1",
+      "exit": "0.7,0,0.84,0",
+      "move": "0.65,0,0.35,1",
+      "pop": "0.34,1.56,0.64,1"
+    },
+    "grade": "house",
+    "evidence": "canonical easing table carried from earlier production films into the pack's ease modules.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "4. Kinetic type presets; 1.3 shared motion library"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "type/ease.js E (identical copies in layers/ and camera/)",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "motion.loop_seam",
+    "title": "Design the loop through frame 0",
+    "statement": "A loop is designed, not cut: the last motion runs through frame 0, frame N equals frame 0, and the decoded seam difference (frame N-1 to 0) stays within 1.5x its neighbours plus 0.05.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "character-spot",
+        "proof-clip",
+        "reel"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "web",
+        "x"
+      ],
+      "section": "end"
+    },
+    "params": {
+      "seam_ratio_max": 1.5,
+      "seam_abs_tol": 0.05,
+      "audio_seam_warn_db": 6
+    },
+    "grade": "measured",
+    "evidence": "3 measured builds passed, e.g. decoded seam 0.811 against neighbours 0.752-0.787.",
+    "sources": [
+      {
+        "doc": "skills/spec-to-loop/SKILL.md",
+        "locator": "7. QA checklist"
+      },
+      {
+        "doc": "skills/spec-to-loop/references/spec-anatomy.md",
+        "locator": "What makes a spec good, item 4"
+      },
+      {
+        "doc": "skills/spec-to-loop/references/learnings.md",
+        "locator": "1. What done measured like"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "9. Loopable ending"
+      },
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "4. End cards"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "3. Share and replay > Loop QA"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "RECIPE B step 6"
+      }
+    ],
+    "enforce": {
+      "check": "skills/spec-to-loop/scripts/check_loop.py; ears/structure",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Wrap the frame index mod the loop before converting to time, make noise travel a circle, add 1e-6 before every floor, and snap switched-on states back before the seam. ears/structure warns on a loop seam level or spectral step over 6 dB. | Merged: A loopable piece's last frame equals its first in state or composition, verified with a first/last-frame seam test; the end card becomes a small tag at about 0.8 opacity outside the bottom 35%. [craft; retention heuristic in the visual research (to be checked against real retention curves); the loop checker measures the seam.] | check_loop.py runs for spec-to-loop builds; other templates are not seam-checked. | Merged: Design shorts to loop (state-return, reveal-to-hook or ping-pong) with first-vs-last frame SSIM >= 0.92, audio RMS delta at the seam < 3 dB and a 120 ms audio crossfade. [house; platform spec: since 2025-03-31 Shorts counts a view on every start or replay [S]; the seam thresholds are house [H].] | skills/spec-to-loop/scripts/check_loop.py tests the seam against neighbouring frame diffs (seam <= 1.5 x max neighbour + 0.05), not SSIM 0.92; critic_pack reports loop_seam_psnr_db."
+  },
+  {
+    "id": "motion.mask_hidden_before_start",
+    "title": "Clip masked rises to their start",
+    "statement": "A masked line or character rise is clipped to its start time; shown before its start, the 1.12 em mask leaks the top 0.26 em of the glyphs.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "mask_height_em": 1.12,
+      "rise_start_em": 0.6,
+      "leak_em": 0.26
+    },
+    "grade": "measured",
+    "evidence": "Access lane found the leak in both renderers and the Lottie export; compositions hide it only because the clip starts at the entrance.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/access.md",
+        "locator": "Findings for other lanes, maskRise bullet"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Related: mid-rise headline frames (about 3 per headline) can show stray punctuation of words still under their mask (saas lane, Weaker)."
+  },
+  {
+    "id": "motion.media_identity_check",
+    "title": "Barcode-check sourced media frames",
+    "statement": "For anything with its own timeline (video, Lottie, sprite sheets, baked tables), burn a frame-index barcode or counter into the source and read it back at sampled frames; let the renderer own media playback.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "wrong_frame_samples": "11 of 24"
+    },
+    "grade": "measured",
+    "evidence": "in pack tests a video seeked with currentTime = N/fps showed the previous frame on 11 of 24 samples while still passing all three determinism gates.",
+    "sources": [
+      {
+        "doc": "skills/motion-stack/references/determinism.md",
+        "locator": "Repeatable is not the same as right"
+      },
+      {
+        "doc": "skills/motion-stack/references/output-tools.md",
+        "locator": "Video layers inside a composition"
+      },
+      {
+        "doc": "skills/motion-stack/references/verdicts.md",
+        "locator": "covers, encoding, video, audio (d-output) D3a-D3c"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Repeatable is not the same as right: the seek gates prove purity, not correctness. | Merged: Content with a source timeline (video, Lottie, baked tables) also needs a frame-identity check such as a burned-in frame-index barcode, because a plain video element seeked to N/fps showed the wrong frame on 11 of 24 samples while passing G1-G3. [measured; Measured on 13 Oct 2026: renderer-owned video 300/300 frames exact; a hand-seeked video element one frame early on 11 of 24.] | Let the renderer own the video element; if you must drive it yourself, seek to (N + 0.5) / fps."
+  },
+  {
+    "id": "motion.one_container_morphs",
+    "title": "Morph one container instead of cutting",
+    "statement": "Let one container change shape and meaning through the film (bar to circle to ball to bubble) instead of cutting; type-led films did this with 0-1 cuts.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "cuts_max": 1
+    },
+    "grade": "measured-A",
+    "evidence": "2 tier-A films used 0 cuts in 35 s and 1 cut in 15.5 s; the third tier-A film scaled and slid its prompt box but cut 6 times.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "cross-film playbook item 2; film 01 MOTION GRAPHICS"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "ui.stateMorph"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Joins were blur-out, zoom through a screen (transitions/zoomThrough) and a growing circular mask (transitions/iris)."
+  },
+  {
+    "id": "motion.one_signature_move",
+    "title": "One signature camera move",
+    "statement": "Use one signature camera move per film (a dolly zoom of about 2.4 s, fov 20 to 55, or a whip), and never mix handheld with a locked-off studio look in one piece.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "short-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "signature_moves_per_film": 1,
+      "dolly_zoom_s": 2.4,
+      "dolly_zoom_fov_deg": [
+        20,
+        55
+      ]
+    },
+    "grade": "craft",
+    "evidence": "camera practice in the visual research; dolly zoom keeps subject width via dist = D0 tan(fov0/2) / tan(fov/2).",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "5. Camera-move presets"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cam3d.dollyZoom"
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "The move exists as a part; nothing counts signature moves."
+  },
+  {
+    "id": "motion.overshoot_cap",
+    "title": "Cap overshoot at 7%",
+    "statement": "House motion overshoots at most 7%, settles in 3 bounces, anticipates 3-5 frames and delays secondary parts 2-4 frames; bigger springs are for playful (kinetic-soft) pieces only.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "overshoot_max": 0.07,
+      "settle_bounces": 3,
+      "anticipation_frames": [
+        3,
+        5
+      ],
+      "secondary_delay_frames": [
+        2,
+        4
+      ]
+    },
+    "grade": "house",
+    "evidence": "pack motion-character rule for props and characters; recorded in design.json motion.overshoot_max.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "6.1 Premium, not toy rules, rule 7; 4.1 elastic-pop"
+      },
+      {
+        "doc": "skills/frame-design/references/design-json.md",
+        "locator": "Fields: motion.overshoot_max"
+      },
+      {
+        "doc": "type/README.md",
+        "locator": "UI kit and closed-form springs"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "design.json motion.overshoot_max",
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Conflicts inside the pack: the spring class 'headline' overshoots 9.5% and 'mascot' 31%; elasticPop (zeta 0.38) is about 24% in visual.md but 27% in type/README.md. No lint enforces the 7% cap."
+  },
+  {
+    "id": "motion.pin_versions",
+    "title": "Pin render libraries; upgrades are projects",
+    "statement": "Pin every rendering library's version per project and treat an upgrade as its own project (re-run the gates, re-grade), because moving three.js r160 to r186 darkened every lit surface by about 7/255.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "lit_surface_shift_8bit": 7
+    },
+    "grade": "measured",
+    "evidence": "Measured in the 3D lane of the 13 Oct 2026 bake-off (a +7.3% exposure re-grade would be needed after the bump).",
+    "sources": [
+      {
+        "doc": "skills/motion-stack/SKILL.md",
+        "locator": "The 21 repos at a glance; Workflow step 1"
+      },
+      {
+        "doc": "skills/motion-stack/references/verdicts.md",
+        "locator": "3D, post, physics (a-3d) A3-three186, A3c"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "motion.preload_before_ready",
+    "title": "Preload everything before ready",
+    "statement": "Fonts (document.fonts.ready), images, models and HDRIs load before the page signals ready; nothing is fetched at seek time, and rendering uses a fixed pixel size with device scale factor 1.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "fetch_at_seek_allowed": 0,
+      "device_scale_factor": 1
+    },
+    "grade": "house",
+    "evidence": "pack determinism contract; lazy loads and font swaps fail the same_twice and cold_equals_warm gates.",
+    "sources": [
+      {
+        "doc": "skills/motion-stack/references/determinism.md",
+        "locator": "Things that break the rule: Assets loaded lazily; Layout; Responsive breakpoints"
+      }
+    ],
+    "enforce": {
+      "check": "skills/motion-stack/scripts/seekcheck.mjs",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Text measured before fonts load lays out wrongly; give each animated property one owner timeline."
+  },
+  {
+    "id": "motion.punch_in_cadence",
+    "title": "Punch in 1.08-1.15 at sentences",
+    "statement": "Talking-head punch-ins scale 1.00 to 1.08 or 1.15 in 6 frames (ease-out expo) on sentence boundaries, re-centred on the face, never two identical framings in a row, and at least 4 s apart.",
+    "scope": {
+      "formats": [
+        "podcast-clip",
+        "talking-head",
+        "ugc"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "punch_scales": [
+        1.0,
+        1.08,
+        1.0,
+        1.15
+      ],
+      "punch_frames": 6,
+      "punch_min_gap_s": 4
+    },
+    "grade": "craft",
+    "evidence": "practitioner retention heuristic in the visual research (marked to tune against real retention curves); coded as cam2d.punchCadence with lintPunchCadence.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "9. Retention and virality; 5. punchIn"
+      }
+    ],
+    "enforce": {
+      "check": "camera/cam2d.js lintPunchCadence",
+      "default": null,
+      "part": "cam2d.punchCadence"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "visual.md asks for any visible change every 2.5-3.5 s; lintPunchCadence demands 4 s between punch-ins, so other interrupts (cuts, graphics) must fill the gaps."
+  },
+  {
+    "id": "motion.pure_function_of_t",
+    "title": "Every frame is f(t)",
+    "statement": "Every pixel at time t is a pure function of t: seek(t) twice, forward/reverse/shuffled orders, and a cold seek to frame N all give identical pixels; a mismatch above about 60 dB PSNR is GPU noise, a real state bug measures 15-40 dB.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "gpu_noise_psnr_db_min": 60,
+      "state_bug_psnr_db": [
+        15,
+        40
+      ],
+      "gates": "same_twice, order_independent, cold_equals_warm"
+    },
+    "grade": "measured",
+    "evidence": "seek-test harness runs on the pack's library bake-off; preview-loop repaints measured 8-23 dB mismatches.",
+    "sources": [
+      {
+        "doc": "skills/motion-stack/references/determinism.md",
+        "locator": "The one rule"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "11. Verification protocol"
+      },
+      {
+        "doc": "skills/motion-stack/SKILL.md",
+        "locator": "The rule everything follows; Workflow step 3"
+      },
+      {
+        "doc": "skills/motion-stack/references/verdicts.md",
+        "locator": "header"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "QA checklist > Determinism"
+      },
+      {
+        "doc": "skills/motion-pack/references/gotchas.md",
+        "locator": "3D objects > Seek-safe objects; Environment > A cached plan hides a random number"
+      },
+      {
+        "doc": "templates/proof-film/README.md",
+        "locator": "Measured, determinism bullet"
+      },
+      {
+        "doc": "docs/lane-notes/saas.md",
+        "locator": "Verified, determinism bullet"
+      }
+    ],
+    "enforce": {
+      "check": "skills/motion-stack/scripts/seekcheck.mjs",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Seek renderers may render frame 90 before frame 12 or one frame per worker; anything depending on wall clock or prior frames stutters or differs between renders. | Merged: Every pixel at time t is a pure function of t: the same frame twice, any seek order and a cold seek must match (gates G1-G3), where mismatches above 60 dB PSNR are GPU noise and below are state errors. [measured; 75 variants of 20 libraries measured across 5 lanes on 13-14 Oct 2026; clocks, rAF loops, live stepping and unseeded randomness failed the gates.] | Passing G1-G3 proves repeatability, not correctness; render through the real pipeline (G4) and look at stills from the delivered file. | Merged: Every part renders from t alone (no Date, no Math.random, no live springs, no caches that differ across processes), and determinism is proved on png-sequence frames (identical, or >= 60 dB where blurs add GPU noise), never by comparing MP4s. [house; house rule; own measurement: two default MP4 renders differ at about 44-50 dB from encoder noise though page frames are identical.] | Also tools/tests/xproc-hash.test.mjs (two fresh processes) and critic_pack det/report. GSAP needs force3D false and one warm pass; load fonts and images before the first frame. | Merged: A double render or seek test passes when every differing frame is >= 60 dB PSNR (GPU noise); the proof demo's worst frames measured 88.8-105.7 dB. [measured; Proof demo double png-sequence render of 1128 frames: worst PSNR 88.8 dB (16:9) and 91.0 dB (9:16), at most 2/255 per pixel; seek gates 96.4-105.7 dB.] | seekcheck prints 'FAIL (noise only, >= 60 dB)' for GPU blur noise; treat that as a pass for this bar."
+  },
+  {
+    "id": "motion.seeded_random",
+    "title": "Seeded randomness, never clock",
+    "statement": "No Math.random, Date.now, performance.now, animation-frame deltas or timeout choreography: every random value is a seeded hash of (seed, frame or particle id, i), indexed by id and never by frame order.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "wall_clock_calls_allowed": 0,
+      "unseeded_random_calls_allowed": 0
+    },
+    "grade": "house",
+    "evidence": "pack determinism contract; order-dependence shows up as a failed order_independent gate.",
+    "sources": [
+      {
+        "doc": "skills/motion-stack/references/determinism.md",
+        "locator": "Things that break the rule"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "0. decision 6; 7.2 rule 3"
+      }
+    ],
+    "enforce": {
+      "check": "skills/motion-stack/scripts/seekcheck.mjs",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Seeded PRNGs named: mulberry32, sfc32, PCG hash."
+  },
+  {
+    "id": "motion.spring_classes",
+    "title": "Move by motion class",
+    "statement": "Animate with closed-form stacked springs by class: UI snaps with about 1% overshoot, panels settle, the camera glides with none, headlines land hard (about 9%) and hold, mascots bounce.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "ui_overshoot_pct": 1,
+      "headline_overshoot_pct": 9,
+      "camera_overshoot_pct": 0
+    },
+    "grade": "craft",
+    "evidence": "Practitioner method from a round method article; overshoot values are the pack's implementation.",
+    "sources": [
+      {
+        "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+        "locator": "The method, step 6, lines 35-36"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "type/ease.js SPRING (ui, panel, camera, headline, mascot)",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "motion.whip_pan_spec",
+    "title": "Whip pan: 7 f, cut mid",
+    "statement": "A whip pan swings about 70 degrees over 7 frames with about 2 degrees of roll, hides the cut at peak velocity (the middle frame), and pairs with a chroma hit of about 10 px and a whoosh peaking on the cut.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "whip_frames": 7,
+      "whip_deg": 70,
+      "whip_roll_deg": 2,
+      "chroma_hit_px": 10
+    },
+    "grade": "craft",
+    "evidence": "researched starting values in the visual research, implemented as the whip parts (not tuned against references).",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "5. Camera-move presets, whipPan; 3.5 fx/chroma"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cam3d.whipPan"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "2D twin: cam2d.whip2d (dx 1.2, roll 1.5 deg)."
+  }
+]
