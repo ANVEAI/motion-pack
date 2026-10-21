@@ -5,11 +5,14 @@
     python3 tools/playbook_lint.py --list                # every check id, its default grade and params (tools/playbook_checks.py)
 
 A render is read with its neighbours: <render>.plan.json, <render>.ears.json, <render>.eyes.json and <render>.probe.json (a cached
-{width, height, duration}; else ffprobe, else the eyes report). Missing ears / eyes reports are measured here (ears/listen.py, eyes/look.py,
+{width, height, duration}; else ffprobe, else the eyes report). An ears / eyes report is reused only when it was measured on this render
+(keyed on the render's sha256 in <render>.reports.json, or newer than the render when it has no key); missing or stale reports are measured here (ears/listen.py, eyes/look.py,
 through MP_RENDER_PREFIX when set) unless --no-measure. The table: rule, grade, verdict (PASS / WARN / FAIL / INFO / N/A), measured value,
 fix hint, then a score and the rules the format applies that no check enforces (defaults, parts, prose-only gaps). The honesty floor
 (lint.honesty.todo, .claims, .banned_words) runs on every lint, whatever the format names. Inputs the extra checks read (shotlist.json,
-design.json, a caption track, <render>.study.json, the composition folder) are found next to the target or given as flags. Exit 1 on any FAIL."""
+design.json, a caption track, <render>.study.json, the composition folder) are found next to the target or given as flags. A film that follows a style
+(plan.style or plan.playbook.style, from mp plan --style) also runs the checks its signature features name (tools/playbook_checks_style.py: palette, type,
+transitions, sound), and lists the features to look at by hand. Exit 1 on any FAIL."""
 import argparse
 import glob
 import json
@@ -39,6 +42,8 @@ def _by_id(rep):
 def probe(mp4, eyes=None):
     base = mp4[:-4]
     pj = _j(base + '.probe.json')
+    if pj and os.path.exists(mp4) and os.path.getmtime(base + '.probe.json') < os.path.getmtime(mp4):
+        pj = None   # cached for an older render at this path
     if pj:
         return pj
     if os.path.exists(mp4):
@@ -52,6 +57,35 @@ def probe(mp4, eyes=None):
     return None
 
 
+def render_key(mp4):
+    """what a saved ears / eyes report is keyed on: the render's sha256 (a re-render at the same path is a new key)"""
+    import hashlib
+    h = hashlib.sha256()
+    with open(mp4, 'rb') as f:
+        for b in iter(lambda: f.read(1 << 20), b''):
+            h.update(b)
+    return h.hexdigest()
+
+
+def _stamp_path(mp4):
+    return mp4[:-4] + '.reports.json'
+
+
+def fresh_report(mp4, tool):
+    """the saved <render>.<tool>.json when it was measured on THIS render, else None. A report is fresh when the stamp file (<render>.reports.json,
+    written by measure()) holds the render's current sha256 for that tool; a report with no stamp entry is fresh only when it is newer than the render
+    (mp check writes reports after the render). A stale report is never reused: mp lint used to read the eyes / ears of an older render at the same path."""
+    rep = mp4[:-4] + '.%s.json' % tool
+    if not os.path.exists(rep):
+        return None
+    if not os.path.exists(mp4):
+        return _j(rep)   # measurements without the render (a copied report): nothing to compare against
+    stamp = _j(_stamp_path(mp4)) or {}
+    if tool in stamp:
+        return _j(rep) if stamp[tool] == render_key(mp4) and os.path.getmtime(rep) >= os.path.getmtime(mp4) - 1e-6 else None
+    return _j(rep) if os.path.getmtime(rep) >= os.path.getmtime(mp4) else None
+
+
 def measure(mp4, tool, plan_path):
     """run ears or eyes on a render when its report is missing (the same call as mp check)"""
     script = {'ears': 'ears/listen.py', 'eyes': 'eyes/look.py'}[tool]
@@ -59,7 +93,13 @@ def measure(mp4, tool, plan_path):
     pre = os.environ.get('MP_RENDER_PREFIX', '').split()
     cmd = pre + [sys.executable, os.path.join(L.PACK, script), mp4] + (['--plan', plan_path] if plan_path else []) + ['--json', base + '.%s.json' % tool, '--md', base + '.%s.md' % tool, '--quiet']
     subprocess.run(cmd, capture_output=True, text=True)
-    return _j(base + '.%s.json' % tool)
+    rep = _j(base + '.%s.json' % tool)
+    if rep is not None:   # key the report on the render it measured
+        stamp = _j(_stamp_path(mp4)) or {}
+        stamp[tool] = render_key(mp4)
+        with open(_stamp_path(mp4), 'w', encoding='utf-8') as f:
+            json.dump(stamp, f, indent=1)
+    return rep
 
 
 def load_target(path, do_measure=True):
@@ -74,7 +114,7 @@ def load_target(path, do_measure=True):
     base = path[:-4]
     plan_path = base + '.plan.json' if os.path.exists(base + '.plan.json') else None
     plan = _j(plan_path) if plan_path else None
-    ears, eyes = _j(base + '.ears.json'), _j(base + '.eyes.json')
+    ears, eyes = fresh_report(path, 'ears'), fresh_report(path, 'eyes')   # a report saved for an older render at this path is not reused
     if not os.path.exists(path) and not (ears or eyes or plan):
         raise ValueError('no render and no measurements at %s' % path)
     if do_measure and os.path.exists(path):

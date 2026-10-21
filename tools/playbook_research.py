@@ -43,25 +43,92 @@ def _has(text, phrase):
     return re.search(r'(?<![a-z0-9])%s(?![a-z0-9])' % re.escape(phrase.lower()), text) is not None
 
 
+# words that say little about the format: a "film", a "hype" reel, a "brand" or "music" are in almost every brief, so they count a quarter of a keyword
+WEAK = {'film', 'films', 'series', 'hype', 'video', 'videos', 'edit', 'reel', 'reels', 'brand', 'music', 'season', 'coming', 'tour', 'story', 'people', 'ship'}
+# a negated phrase is not a signal: "no voice-over", "not a book-a-demo", "without music", "never a trailer" (the negator to the next punctuation, 5 words at most)
+NEG_RX = re.compile(r"(?<![a-z0-9])(?:no|not(?: an?)?|without|never|nor|avoid|don'?t (?:want|use|need)|isn'?t(?: an?)?)\s+((?:[a-z0-9-]+\s*){1,5})")
+# brief fields (markdown "**Field:** text" or "Field: text" lines): which carry signals and how
+FIELD_RX = re.compile(r'^\s*[-*]?\s*\**\s*([A-Za-z][A-Za-z /-]{1,30}?)\s*:?\**\s*:\s*(.*)$')
+META = ('tone', 'brand', 'style', 'look', 'voice', 'music', 'sound', 'constraints', 'notes', 'references', 'deliverables', 'format notes')
+AUDIENCE = ('who', 'audience', 'for whom', 'viewers', 'target')
+# who watches, mapped to the formats made for them (weighted above words like "film" or "hype")
+AUDIENCE_FORMATS = {
+    'business': (r'partners?|firms?|founders?|builders?|teams?|buyers?|customers?|clients?|developers?|engineers?|managers?|b2b|enterprises?|ctos?|ceos?|professionals?|accountants?|lawyers?|operators?',
+                 ('launch-film', 'saas-feature-drop', 'proof-clip', 'explainer', 'screen-life')),
+    'entertainment': (r'fans?|gamers?|readers?|moviegoers?|audiences? of|kids|music lovers|followers',
+                      ('trailer', 'beat-edit', 'character-spot', 'short-film', 'chat-skit')),
+}
+
+
+def _negate(t):
+    """the text with every negated phrase blanked: "no voice-over" and "not a book a demo" are not signals"""
+    return NEG_RX.sub(lambda m: ' ' * len(m.group(0)), t)
+
+
+def brief_fields(text):
+    """split a brief into (signal text, goal text, audience text, platform text): field lines about tone, brand, sound or notes are meta and carry no format
+    signal; the audience line says who watches (AUDIENCE_FORMATS), not what the film is; a brief with no fields is all signal text"""
+    sig, goal, aud, plat, found = [], [], [], [], False
+    text = re.sub(r'<!--.*?-->', ' ', text or '', flags=re.S)   # comments are notes about the brief, not the brief
+    for line in text.split('\n'):
+        m = FIELD_RX.match(line)
+        if not m:
+            sig.append(line)
+            continue
+        key, body = m.group(1).strip().lower(), m.group(2).lstrip('* ')
+        found = True
+        if key.startswith('goal') or key in ('objective', 'purpose', 'aim'):
+            goal.append(body); sig.append(body)
+        elif any(key.startswith(a) for a in AUDIENCE):
+            aud.append(body)
+        elif key.startswith('platform') or key in ('channels', 'where'):
+            plat.append(body)
+        elif any(key.startswith(x) for x in META):
+            continue
+        else:
+            sig.append(body)
+    return '\n'.join(sig), '\n'.join(goal), '\n'.join(aud), '\n'.join(plat), found
+
+
 def classify(text, formats, goal=None, platform=None, length=None):
-    """-> [(score, fid, why[])] best first. Pure."""
-    t = (text or '').lower()
+    """-> [(score, fid, why[])] best first. Pure.
+    Signals: keywords and product types +2 each (WEAK words +0.5), from the brief minus negated phrases and meta fields (tone, brand, sound, notes);
+    goals: --goal, else the goals named in the brief's Goal field (the first named is primary, +4; the others +2), else any goal word (+3);
+    audience: a business or entertainment audience in the Who / Audience field +3 for the formats made for it; platform +1; a length in range +1."""
+    sig, gtext, aud, ptext, fielded = brief_fields(text)
+    t, gt, at = _negate(sig.lower()), _negate(gtext.lower()), _negate(aud.lower())
+    named = sorted(((m.start(), g) for g in GOALS for m in [re.search(r'(?<![a-z0-9])%s' % g, gt)] if m)) if gt else []
+    goals_found = [goal] if goal else [g for _, g in named]
+    aud_class = [k for k, (rx, _) in AUDIENCE_FORMATS.items() if re.search(r'(?<![a-z0-9])(?:%s)(?![a-z0-9])' % rx, at)]
     out = []
     for fid, fm in formats.items():
         s = fm.get('signals') or {}
         why, sc = [], 0.0
         for k in s.get('keywords') or []:
             if _has(t, k):
-                sc += 2
-                why.append('keyword "%s"' % k)
+                w = 0.5 if k.lower() in WEAK else 2
+                sc += w
+                why.append('keyword "%s"%s' % (k, ' (weak)' if w < 2 else ''))
         for k in s.get('product_types') or []:
             if _has(t, k):
-                sc += 2
-                why.append('product "%s"' % k)
-        g = [x for x in s.get('goals') or [] if x == goal or (not goal and _has(t, x))]
-        if g:
-            sc += 3
-            why.append('goal %s' % g[0])
+                w = 0.5 if k.lower() in WEAK else 2
+                sc += w
+                why.append('product "%s"%s' % (k, ' (weak)' if w < 2 else ''))
+        fg = s.get('goals') or []
+        if goals_found:
+            for i, g in enumerate(goals_found):
+                if g in fg:
+                    sc += 4 if i == 0 else 2
+                    why.append('goal %s%s' % (g, '' if i == 0 else ' (second)'))
+        else:
+            g = [x for x in fg if _has(t, x)]
+            if g:
+                sc += 3
+                why.append('goal %s' % g[0])
+        for k in aud_class:
+            if fid in AUDIENCE_FORMATS[k][1]:
+                sc += 3
+                why.append('audience %s' % k)
         if platform and platform in (s.get('platforms') or []):
             sc += 1
             why.append('platform %s' % platform)

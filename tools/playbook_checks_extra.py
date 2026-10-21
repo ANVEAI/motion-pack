@@ -60,8 +60,9 @@ def _shot_lint(ctx, p):
         over['poster_max_words'] = p['poster_max_words']
     if p.get('same_scale_run_max') is not None:
         over['same_scale_run'] = p['same_scale_run_max']
-    if p.get('turn_window_pct'):
-        over['turn_window'] = [p['turn_window_pct'][0] / 100.0, p['turn_window_pct'][1] / 100.0]
+    if p.get('turn_window_pct'):   # playbook_lib.rule_params already turned a percent range ([30, 80]) into fractions: divide only what is still in percent
+        tw = [float(x) for x in p['turn_window_pct']]
+        over['turn_window'] = [x / 100.0 for x in tw] if max(tw) > 1 else tw
     doc = dict(ctx.shotlist)
     doc['lint'] = dict(doc.get('lint') or {}, **over)
     with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False) as f:
