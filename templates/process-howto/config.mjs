@@ -71,7 +71,7 @@ export function buildPlan(C0) {
   const T = +(typeof C.length === 'number' ? C.length : Math.max(ck.at + (C.tailS ?? 7), vo ? words.at(-1).oe + 1.5 : 0)).toFixed(4);
   const items = [], top = [], texts = [], events = [], slots = [];
   /* hook + the persistent timeline */
-  top.push({ id: 'title.hookCard', at: 0, dur: Math.max(2.5, steps[0].at - 0.4), params: { line: C.text.hook, kicker: C.brand.name, pos: L.hookPos, accent: C.brand.accent, size: L.hookSize } }); texts.push({ text: C.text.hook, a: 0, b: steps[0].at - 0.4, role: 'hook' });
+  top.push({ id: 'title.hookCard', at: 0, dur: Math.max(2.5, steps[0].at - 0.4), params: { line: C.text.hook, kicker: C.brand.name, pos: L.hookPos, accent: C.brand.paper, bg: C.brand.ink, size: L.hookSize } }); texts.push({ text: C.text.hook, a: 0, b: steps[0].at - 0.4, role: 'hook' });
   const active = [...steps.map((s) => [r3(s.at), s.i]), [r3(done), steps.length]];
   items.push({ id: 'process.steps', at: 0, dur: r3(res.at - 0.5), params: { steps: steps.map((s) => ({ title: s.title, icon: s.icon || 'dot' })), active, layout: L.layout, box: box(L.steps), accent: C.brand.accent, ink: C.brand.ink, size: L.size, stagger: 0.5 } });
   events.push(0, ...steps.map((_, i) => i * 0.5), ...active.map((a) => a[0]));

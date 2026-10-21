@@ -749,7 +749,8 @@
      "line": "Are people borrowing books again?",
      "kicker": "Orbit Data Desk",
      "pos": "tc",
-     "accent": "#4A18ED",
+     "accent": "#F5F2EA",
+     "bg": "#16151B",
      "size": 0.78
     }
    },

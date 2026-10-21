@@ -193,7 +193,8 @@
      "line": "Repot a plant in four steps",
      "kicker": "Orbit How-To",
      "pos": "tc",
-     "accent": "#2F6B3A",
+     "accent": "#F4F1E8",
+     "bg": "#16151B",
      "size": 0.9
     }
    },

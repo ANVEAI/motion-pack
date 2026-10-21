@@ -81,7 +81,7 @@ const FORMAT = {   // box = [x, y, w, h] as fractions of the safe rect (pulled i
   wide: { W: 1920, H: 1080, platform: 'x.video', zone: 'wideTitle', pitch: [1920, 0], box: { scatter: [0, 0, 1, 1], trace: [0, 0, 1, 1], table: [0, 0, 1, 0.76] }, tableScale: 1.4, calloutOffset: [-200, 110] },
   tall: { W: 1080, H: 1920, platform: 'reels.organic', zone: 'conservative', pitch: [0, 1920], box: { scatter: [0, 0, 1, 1], trace: [0, 0, 1, 1], table: [0, 0, 1, 0.72] }, tableScale: 1.12, calloutOffset: [-380, -60] },   // 'conservative' 9:16 union: x 65-960, y 269-1248
 };
-const boxFor = (fm, push, key, reserve = 0) => { const S = safeInset(fm.zone, fm.W, fm.H, push), r = fm.box[key]; return [(S.x0 + r[0] * S.w) / fm.W, (S.y0 + r[1] * S.h) / fm.H, (r[2] * S.w) / fm.W, (r[3] * S.h - reserve) / fm.H]; };   // reserve: px kept free at the bottom of the box (the ILLUSTRATIVE pill sits there)
+const boxFor = (fm, push, key, reserve = 0) => { const S = safeInset(fm.zone, fm.W, fm.H, push, fm.platform), r = fm.box[key]; return [(S.x0 + r[0] * S.w) / fm.W, (S.y0 + r[1] * S.h) / fm.H, (r[2] * S.w) / fm.W, (r[3] * S.h - reserve) / fm.H]; };   // reserve: px kept free at the bottom of the box (the ILLUSTRATIVE pill sits there)
 const pillRoom = (fm, ill) => (ill ? pillH(fm.H > fm.W) + 18 : 0);
 export const STAGE_KINDS = (C) => (C.cutdown === 'clip' ? ['claim', 'builder', 'numbers', 'end'] : ['claim', 'name', 'setting', 'builder', ...(C.builder.kind === 'table' ? [] : ['h2h']), 'numbers', 'cards', 'end']);
 /* cutdown 'clip': the playbook proof-clip format (13-20 s): the claim, the ONE builder, the number, a short hold; no name, method card, head-to-head or cards (the method still

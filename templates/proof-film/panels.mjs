@@ -11,6 +11,7 @@
    modules by relative paths that exist in both layouts. */
 import { E, clamp, seg, FONT, MONO, f2, text, measure, ctxFor } from '../../type/gfx/core.js';
 import { safeRect } from '../../type/safezones.js';
+import { PLATFORMS } from '../_shared/plan.mjs';
 import { spring } from '../../type/ease.js';
 import { KIT } from '../../type/gfx/ui.js';
 import { renderInner, fmtUnit } from '../../type/gfx/index.js';
@@ -20,12 +21,16 @@ const { rect, softShadow, shadowDef, op } = KIT;
 
 /* ---------- layout + palette ---------- */
 /* the platform safe rect, pulled in by the camera's dwell push: a point at x lands at W/2 + s * (x - W/2) after a push of s, so the content may only use the part of the safe rect that still fits then */
-export function safeInset(zone, W, H, push = 0) {
-  const S = safeRect(zone, W, H), s = 1 + push, x0 = W / 2 + (S.x0 - W / 2) / s, x1 = W / 2 + (S.x1 - W / 2) / s, y0 = H / 2 + (S.y0 - H / 2) / s, y1 = H / 2 + (S.y1 - H / 2) / s;
-  return { x0, y0, x1, y1, w: x1 - x0, h: y1 - y0, scale: S.scale };
+/* platform: a preset of templates/_shared/plan.mjs PLATFORMS; its safe fractions are intersected with the zone (x.video keeps the bottom 8% for the player's controls,
+   stricter than wideTitle's 5%: the ILLUSTRATIVE pill sat 32 px inside the controls before, eyes/safezones caught it on the proof-clip render) */
+export function safeInset(zone, W, H, push = 0, platform = null) {
+  const R = safeRect(zone, W, H), P = platform && PLATFORMS[platform] ? PLATFORMS[platform].safe : null;
+  const S = P ? { x0: Math.max(R.x0, P.side * W), x1: Math.min(R.x1, W - P.side * W), y0: Math.max(R.y0, P.top * H), y1: Math.min(R.y1, H - P.bottom * H) } : R;
+  const s = 1 + push, x0 = W / 2 + (S.x0 - W / 2) / s, x1 = W / 2 + (S.x1 - W / 2) / s, y0 = H / 2 + (S.y0 - H / 2) / s, y1 = H / 2 + (S.y1 - H / 2) / s;
+  return { x0, y0, x1, y1, w: x1 - x0, h: y1 - y0, scale: R.scale };
 }
 export function layout(plan) {
-  const { W, H } = plan, S = safeInset(plan.safeZone, W, H, plan.camera.push), ctx = { ...ctxFor(W, H, plan.safeZone, 1), safe: S }, u = Math.min(W, H) / 1080, B = plan.brand;
+  const { W, H } = plan, S = safeInset(plan.safeZone, W, H, plan.camera.push, plan.platform), ctx = { ...ctxFor(W, H, plan.safeZone, 1), safe: S }, u = Math.min(W, H) / 1080, B = plan.brand;
   const T = { ink: B.ink, muted: B.muted, accent: B.accent, paper: B.paper, panel: '#FFFFFF', line: '#E3E0E7', faint: '#C8C5CE', chip: '#F0EEF4' };
   return { W, H, u, ctx, S, T, tall: H > W, plan, cx: (S.x0 + S.x1) / 2, cy: (S.y0 + S.y1) / 2 };
 }

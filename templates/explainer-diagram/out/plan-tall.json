@@ -554,7 +554,8 @@
      "line": "How does a letter cross a country?",
      "kicker": "Orbit Explains",
      "pos": "tc",
-     "accent": "#4A18ED",
+     "accent": "#F5F2EA",
+     "bg": "#16151B",
      "size": 0.82
     }
    },

@@ -85,7 +85,7 @@ export function buildPlan(C0) {
   const tk = beats.find((b) => b.kind === 'takeaway'), T = +(typeof C.length === 'number' ? C.length : Math.max(tk ? tk.at + (C.tailS ?? 7) : 0, vo ? words.at(-1).oe + 1.5 : 0)).toFixed(4);
   const items = [], top = [], texts = [], events = [], claims = [...C.claims], until = (b) => (b.until != null ? at({ t: b.until, word: b.untilWord }) : T);
   for (const b of beats) {
-    if (b.kind === 'hook') { top.push({ id: 'title.hookCard', at: b.at, dur: b.dur ?? 4, params: { line: C.text.hook, kicker: C.brand.name, pos: L.hookPos, accent: C.brand.accent, size: L.hookSize } }); texts.push({ text: C.text.hook, a: b.at, b: b.at + (b.dur ?? 4), role: 'hook' }); }
+    if (b.kind === 'hook') { top.push({ id: 'title.hookCard', at: b.at, dur: b.dur ?? 4, params: { line: C.text.hook, kicker: C.brand.name, pos: L.hookPos, accent: C.brand.paper, bg: C.brand.ink, size: L.hookSize } }); texts.push({ text: C.text.hook, a: b.at, b: b.at + (b.dur ?? 4), role: 'hook' }); }
     else if (b.kind === 'chart') { const d = ds[b.chart.data], p = chartParams(b.chart, ds, C, L, box(L.chart)), dur = r3(until(b) - b.at - 0.3), it = { id: 'chart.story', at: b.at, dur, params: p }; items.push(it);
       for (const q of p.show || []) events.push(b.at + q[0]); for (const q of p.hl || []) events.push(b.at + q[0]); events.push(b.at, b.at + 0.9);
       p.series.forEach((s) => claims.push(claimOf(`${p.title} (${s.name})`, s.values, d, C, d.unit)));
