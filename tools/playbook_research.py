@@ -225,12 +225,13 @@ def study_ctx(st, plan=None, plan_path=None, aspect=None, fm=None):
     return K.Ctx(plan, ears, None, {'duration': dur}, aspect, fm, plan_path, study=st)
 
 
-METRICS = (('lufs', lambda s, p: (s.get('loudness') or {}).get('integrated_lufs'), 0.8, 'LU', 'master to the exemplar loudness'),
-           ('quiet_open_db', lambda s, p: (s.get('quiet') or {}).get('open_2s_vs_body_db'), 3.0, 'dB', 'open quieter: the bed comes in after 1-2 s'),
-           ('quiet_tail_db', lambda s, p: (s.get('quiet') or {}).get('tail_2s_vs_body_db'), 4.0, 'dB', 'end on a quiet hold under the end card'),
-           ('cuts_per_min', lambda s, p: (s.get('edit') or {}).get('cuts_per_min'), 6.0, '/min', 'match the cut cadence (shorter or longer shots)'),
-           ('bass_entry_pct', lambda s, p: ((p or {}).get('audio') or {}).get('bass_entry_s', None) and p['audio']['bass_entry_s'] / float(p.get('seconds') or 1), 0.08, '', 'move the bass entry'),
-           ('end_shape', lambda s, p: (s.get('quiet') or {}).get('end_shape'), None, '', 'change the ending shape'))
+METRICS = (('lufs', lambda s, p: (s.get('loudness') or {}).get('integrated_lufs'), 0.8, 'LU', ('', 'master to %g LUFS-I (the house target, not the reference\'s level)')),
+           ('quiet_open_db', lambda s, p: (s.get('quiet') or {}).get('open_2s_vs_body_db'), 3.0, 'dB', ('the open is quieter than the exemplar\'s: let a word or the bed through', 'open quieter: the bed comes in after 1-2 s')),
+           ('quiet_tail_db', lambda s, p: (s.get('quiet') or {}).get('tail_2s_vs_body_db'), 4.0, 'dB', ('', 'end on a quiet hold under the end card')),
+           ('cuts_per_min', lambda s, p: (s.get('edit') or {}).get('cuts_per_min'), 6.0, '/min', ('cut less often', 'cut more often (shorter shots)')),
+           ('bass_entry_pct', lambda s, p: ((p or {}).get('audio') or {}).get('bass_entry_s', None) and p['audio']['bass_entry_s'] / float(p.get('seconds') or 1), 0.08, '', ('let the bass enter later', 'let the bass enter earlier')),
+           ('end_shape', lambda s, p: (s.get('quiet') or {}).get('end_shape'), None, '', ('', 'change the ending shape')))
+QUIET_FLOOR_DB = -20.0   # an open or a tail this far under the body reads as silence: -30 and -60 are the same choice
 
 
 SHAPES = {'quiet-hold': {'quiet hold', 'decay', 'quiet-hold'}, 'sting': {'slam', 'sustained sub', 'sting'}, 'slam': {'slam', 'sting'}}
@@ -243,8 +244,11 @@ def gaps(st, plan, fm):
         return []
     e = ex[0]
     out = []
-    for key, get, tol, unit, fix in METRICS:
+    house = (fm.get('sound_shape') or {}).get('master_lufs')
+    for key, get, tol, unit, (fix_low, fix_high) in METRICS:
         want, ours = e.get(key), get(st, plan)
+        if key == 'lufs' and house is not None:
+            want = house                                 # rule delivery.master_house_not_reference: compare with the house master, never the reference's level
         if want is None:
             continue
         if ours is None:
@@ -252,11 +256,16 @@ def gaps(st, plan, fm):
             continue
         if key == 'end_shape':
             ok = SHAPES.get(str(want), {str(want)}) >= {str(ours)} or str(ours) == str(want)
+        elif key in ('quiet_open_db', 'quiet_tail_db') and ours <= QUIET_FLOOR_DB and want <= QUIET_FLOOR_DB:
+            ok = True                                    # both read as silence
         elif key == 'quiet_tail_db':
             ok = ours <= want + tol                     # a deeper quiet tail is still a quiet tail
         else:
             ok = abs(ours - want) <= tol
-        out.append({'metric': key, 'ours': ours, 'exemplar': want, 'label': e['label'], 'verdict': 'close' if ok else 'gap', 'fix': '' if ok else fix})
+        fix = '' if ok else (fix_low if isinstance(ours, (int, float)) and isinstance(want, (int, float)) and ours < want and fix_low else fix_high)
+        if '%g' in fix:
+            fix = fix % want
+        out.append({'metric': key, 'ours': ours, 'exemplar': want, 'label': e['label'], 'verdict': 'close' if ok else 'gap', 'fix': fix})
     return out
 
 

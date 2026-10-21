@@ -38,7 +38,7 @@ const LF = { format: 'launch-film', length: 35, quiet_open: { s: 1.5, db: -9 }, 
 /* proof-clip on proof-film: the clip cut */
 { const mk = await build('proof-film', { version: 1, template: 'proof-film', aspects: ['16:9'], length: 15, playbook: { format: 'proof-clip', length: 16.5, quiet_open: false, tail: 'slam', end_hold_s: 1.8, first_sound_frame_max: 3 } }), p = mk();
   check('proof-clip/proof-film: length 15 builds the clip cut (13-20 s: claim, builder, numbers, end)', p.seconds >= 13 && p.seconds <= 20 && p.shots.map((s) => s.id).join() === 'claim,builder,numbers,end', `${p.seconds} ${p.shots.map((s) => s.id)}`);
-  check('... quiet_open false: the template\'s own quiet open is taken out and a sound lands on frame 0', !p.audio.quiet.some((q) => q.kind === 'open') && p.cues.some((c) => c.t <= 0.1) && !lintPlan(p, false).length, JSON.stringify(p.audio.quiet)); }
+  check('... quiet_open false: the template\'s own quiet open is taken out and a sound lands on frame 0', !p.audio.quiet.some((q) => q.kind === 'open') && p.cues.some((c) => c.t <= 0.1) && gain(p.bedAutomation, 15) === 0 && !lintPlan(p, false).length, JSON.stringify(p.bedAutomation)); }
 { const mk = await build('proof-film', { version: 1, template: 'proof-film', aspects: ['16:9'], length: 15, playbook: { format: 'x', first_sound_frame_max: 3 } }), p = mk();
   check('... with no quiet_open given, the template\'s own planned open counts (no frame-0 swish added)', p.audio.quiet.some((q) => q.kind === 'open') && !p.cues.some((c) => c.why === 'playbook: a sound on frame 0')); }
 

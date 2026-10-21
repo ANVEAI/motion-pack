@@ -40,7 +40,10 @@ export function applyPlaybook(plan, pb) {
   /* quiet open (false: the format wants sound from frame 0, so a template's own planned open is taken out) */
   let q1 = 0;
   if (pb.quiet_open === false && plan.audio.quiet.some((x) => x.kind === 'open')) {
-    plan.audio.quiet = plan.audio.quiet.filter((x) => x.kind !== 'open'); applied.push("the template's quiet open taken out: the format wants sound from frame 0");
+    const q = Math.max(...plan.audio.quiet.filter((x) => x.kind === 'open').map((x) => x.t[1]));
+    plan.audio.quiet = plan.audio.quiet.filter((x) => x.kind !== 'open');
+    if (plan.bedAutomation && plan.bedAutomation.length) plan.bedAutomation = [{ frame: 0, gain_db: 0 }, ...plan.bedAutomation.filter((p) => p.frame >= F(q + 0.6))];   // the bed's own open dip (and its ramp) goes too
+    applied.push("the template's quiet open taken out (its bed dip too): the format wants sound from frame 0");
   }
   const ownOpen = plan.audio.quiet.find((x) => x.kind === 'open' && x.t[0] <= 0.05);
   if (ownOpen && !(pb.quiet_open && pb.quiet_open.s > 0)) q1 = ownOpen.t[1];   // the template's own planned open counts as the open
