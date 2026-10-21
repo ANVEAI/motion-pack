@@ -29,6 +29,7 @@ export const DEFAULTS = {
   'plan.hook.text': 'a hook text slot from 0.12 s, inside hook_text_by_s, with the hook beat word limit',
   'plan.end.hold': 'the end beat is a hold (shots[].hold) of at least end_hold_s',
   'plan.claims': 'claims: a TODO claim with a TODO source (every digit on screen needs one)',
+  'plan.audio.first_sound': 'cues: a placeholder sound on frame 0 when the format has no quiet open (first sound by frame 3)',
   'plan.audio.mixer': 'audio.mixer: the music/mixer.py settings the rules ask for (params and rule ids), applied when the template mixes',
   'plan.template': 'playbook.template.carries: the rules the format template already carries in its own defaults (type/ease.js, plan.mjs PLATFORMS, ctas.json, ...)',
 };
@@ -101,6 +102,8 @@ export function makePlan(fm, rules, o, tpl) {
     const mx = b.text.max_words ?? tp.max_words_per_line, fit = Math.max(0, Math.floor((s.dur - a - tp.read_base_s) / tp.read_per_word_s + 1e-9));   // words this slot can hold at the reading speed
     texts.push({ id: `${b.id}.text`, text: todo(b.id, `${b.purpose} (at most ${nword(Math.min(mx, fit))} words)`), t: [r3(s.start + a), r3(s.start + s.dur)], role: hook ? 'headline' : b.id === 'end' ? 'cta' : 'line', maxWords: Math.min(mx, fit),
       ...(fit < mx ? { why: `playbook: at ${L} s this slot reads ${fit} words, under the beat's ${mx} (${tp.read_base_s} s + ${tp.read_per_word_s} s a word)` } : {}), ...(b.text.field ? { field: b.text.field } : {}) }); });
+  /* first sound by frame 3 when the format has no quiet open: a soft placeholder cue on frame 0, replaced by the hook's own sound (the template's cues win) */
+  const cues = []; if (!audio.quiet.some((x) => x.kind === 'open')) { used('plan.audio.first_sound'); cues.push({ t: 0, id: 'sfx/whoosh/swish_xs', why: 'playbook: a sound on frames 0-3 (replace with the hook\'s own sound)' }); }
   used('plan.claims');
   const claims = [{ text: 'TODO(claims): one entry per claim the film makes; delete this entry when it makes none', source: 'TODO(claims): where it comes from (a document, a measurement, a URL)' }];
   /* the project.json for the template */
@@ -125,7 +128,7 @@ export function makePlan(fm, rules, o, tpl) {
   return {
     '//': `mp plan skeleton for the ${fm.id} format. Fill every TODO (story-script writes the words, frame-design the look), then: mp lint plan.json. plan.project is the same film for ${tpl.id}.`,
     template: tpl.id, fps, seconds: r3(N / fps), aspect, W, H, platform, safe: platform ? PL.PLATFORMS[platform].safe : null,
-    length: L, shots, structure: { sections: shots.map((s) => ({ name: s.id, t: [s.start, r6(s.start + s.dur)] })) }, texts, cues: [], claims, audio,
+    length: L, shots, structure: { sections: shots.map((s) => ({ name: s.id, t: [s.start, r6(s.start + s.dur)] })) }, texts, cues, claims, audio,
     type: { max_words_per_line: tp.max_words_per_line, read_base_s: tp.read_base_s, read_per_word_s: tp.read_per_word_s, hook_text_by_s: tp.hook_text_by_s },
     playbook: { format: fm.id, title: fm.title, length: L, aspect, rules: ruleIds(fm), defaults: applied, sound_shape: fm.sound_shape || {}, hooks: fm.hooks || [], end_shapes: fm.end_shapes || [],
       post: fm.post || null, beats: beats.map((b) => ({ id: b.id, at: b.at, purpose: b.purpose, rules: b.rules || [] })), recommended_parts: fm.recommended_parts || {},

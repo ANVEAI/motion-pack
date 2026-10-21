@@ -54,6 +54,18 @@
   ],
   "proof-film": [
    {
+    "seconds": [
+     0,
+     25
+    ],
+    "pattern": null,
+    "why": "the proof-clip cut (13-20 s: claim, builder, number, hold) is one claim proved by one graphic, not the proof film's beat sheet; the playbook proof-clip format's beats and rules judge it (mp lint)"
+   },
+   {
+    "seconds": [
+     25,
+     600
+    ],
     "pattern": "proof-film",
     "why": "launch-playbook L8"
    }
