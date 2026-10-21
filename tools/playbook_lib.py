@@ -81,11 +81,20 @@ def beat_of_rule(fm, rid):
 SHAPE_KEYS = ('quiet_open_db', 'quiet_open_s', 'bass_entry_pct', 'name_silence_s', 'tail')
 
 
+def norm_params(p):
+    """a *_pct range written in percent ([23, 52]) becomes fractions ([0.23, 0.52]); the checks and mp plan read fractions"""
+    out = dict(p)
+    for k, v in p.items():
+        if k.endswith('_pct') and isinstance(v, list) and len(v) == 2 and all(isinstance(x, (int, float)) for x in v) and max(v) > 1:
+            out[k] = [v[0] / 100.0, v[1] / 100.0]
+    return out
+
+
 def rule_params(rule, fm=None, defaults=None):
     """the numbers a check reads: the check's defaults <- the rule's params <- the format's sound_shape (a format specialises a rule)
     <- the beat's text.max_words when the rule sits on a beat"""
     p = dict(defaults or {})
-    p.update(rule.get('params') or {})
+    p.update(norm_params(rule.get('params') or {}))
     if fm:
         for k, v in (fm.get('sound_shape') or {}).items():
             if k in p or k in SHAPE_KEYS:
@@ -94,7 +103,7 @@ def rule_params(rule, fm=None, defaults=None):
         b = beat_of_rule(fm, rule.get('id'))
         if b and (b.get('text') or {}).get('max_words') is not None:
             p['beat_max_words'] = b['text']['max_words']
-    return p
+    return norm_params(p)
 
 
 def closest_format(formats, seconds=None, signals_text=None):

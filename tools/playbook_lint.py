@@ -213,7 +213,14 @@ def main(argv=None):
     if fid and fid not in formats:
         print('mp lint: no format "%s" (formats: %s)' % (fid, ', '.join(formats) or 'none yet'), file=sys.stderr)
         return 2
+    tpl = (plan or {}).get('template')
+    by_tpl = [k for k, f in formats.items() if os.path.basename(f.get('template', '')) == tpl] if tpl else []
+    if not fid and len(by_tpl) == 1:
+        fid = by_tpl[0]                                                          # the one format built on this template
+        print('mp lint: format %s (the one format on template %s; --format overrides)' % (fid, tpl), file=sys.stderr)
     fm = formats.get(fid) if fid else None
+    if not fm and rules:                                                         # no format: the rules that apply to every format, or to a format on this template
+        rules = {k: r for k, r in rules.items() if not (r.get('scope') or {}).get('formats') or set(r['scope']['formats']) & set(by_tpl)}
     ctx = K.Ctx(plan, _by_id(ears), _by_id(eyes), pr, aspect, fm, plan_path, **find_inputs(a.target, plan, a.shotlist, a.design, a.captions, a.page, a.study))
     res = lint(ctx, rules, fm, a.all_checks or not rules)
     res['target'] = a.target

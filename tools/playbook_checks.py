@@ -141,6 +141,9 @@ def name_silence(ctx, p):
     val = 'planned %.2f s at %.2f s' % (b - a, a)
     if not _rng(b - a, lo, hi):
         return 'fail', val, 'the silence under the name lasts %g-%g s' % (lo, hi)
+    at, T = p.get('at_pct'), _seconds(ctx)
+    if at and T and not _rng(a / T, at[0] - 0.02, at[1] + 0.02):
+        return 'fail', val + ' (%.0f%% of the runtime)' % (100 * a / T), 'land the name at %.0f-%.0f%% of the runtime' % (100 * at[0], 100 * at[1])
     rows = (ctx.em('ears', 'structure') or {}).get('quiet')
     if rows is not None:
         hit = [r for r in rows if min(b, r['t'][1]) - max(a, r['t'][0]) > 0]
@@ -150,21 +153,33 @@ def name_silence(ctx, p):
     return 'pass', val, ''
 
 
+SHAPE_OK = {'quiet-hold': ('quiet hold', 'decay'), 'decay': ('decay', 'quiet hold'), 'sting': ('slam', 'sustained sub'), 'slam': ('slam', 'sustained sub'),
+            'sonic-logo': ('slam', 'sustained sub', 'decay'), 'sustained-sub': ('sustained sub',)}
+
+
 def tail(ctx, p):
-    want = p.get('tail', 'quiet-hold')
+    """the end shape: p.tail may list alternatives ('slam | decay'); quiet-hold / decay also pass on ears' quiet tail; tail_db_max caps the last 2 s"""
+    wants = [w.strip() for w in str(p.get('tail', 'quiet-hold')).split('|') if w.strip()]
+    known = [w for w in wants if w in SHAPE_OK]
+    if not known:
+        return 'na', 'end shape %s is judged by hand (or by lint.motion.loop_seam)' % ' | '.join(wants), ''
+    cap = p.get('tail_db_max')
     qs = (ctx.em('ears', 'structure') or {}).get('quiet_shape')
     if qs:
-        val = 'end shape %s, last 2 s %+.1f dB vs the body' % (qs.get('end_shape'), qs.get('tail_2s_vs_body_db', 0))
-        ok = qs.get('quiet_tail') if want == 'quiet-hold' else qs.get('end_shape') in ('slam', 'sustained sub') if want in ('sting', 'slam') else qs.get('end_shape') == want
-        return ('pass' if ok else 'fail'), val, '' if ok else 'end on a %s (plan.audio.quiet kind hold over the end card; the bed falls away)' % want
+        shape, t2 = qs.get('end_shape'), qs.get('tail_2s_vs_body_db', 0)
+        val = 'end shape %s, last 2 s %+.1f dB vs the body' % (shape, t2)
+        ok = any(shape in SHAPE_OK[w] or (w in ('quiet-hold', 'decay') and qs.get('quiet_tail')) for w in known)
+        if ok and cap is not None and any(w in ('quiet-hold', 'decay') for w in known) and shape not in ('slam', 'sustained sub') and t2 > cap + 1e-6:
+            return 'fail', val, 'the tail must fall at least %g dB under the body' % -cap
+        return ('pass' if ok else 'fail'), val, '' if ok else 'end on a %s (plan.audio.quiet kind hold over the end card; the bed falls away)' % ' or '.join(known)
     if ctx.plan is None:
         return 'na', '', ''
     T = _seconds(ctx) or 0
-    if want == 'quiet-hold':
-        ok = any(q['t'][1] >= T - 0.05 for q in _quiet(ctx, 'hold'))
-        return ('pass' if ok else 'fail'), 'planned hold' if ok else 'no quiet hold at the end', '' if ok else 'add plan.audio.quiet kind hold over the end card'
-    ok = (ctx.plan.get('audio') or {}).get('tail') == want or any(c >= T - 2 for c in (ctx.tl or {}).get('cues', []))
-    return ('pass' if ok else 'fail'), 'tail %s' % (ctx.plan.get('audio') or {}).get('tail'), '' if ok else 'end on a %s' % want
+    planned = (ctx.plan.get('audio') or {}).get('tail')
+    if any(w in ('quiet-hold', 'decay') for w in known) and (any(q['t'][1] >= T - 0.05 for q in _quiet(ctx, 'hold')) or planned in known):
+        return 'pass', 'planned %s' % (planned or 'hold'), ''
+    ok = planned in known or (any(w in ('sting', 'slam', 'sonic-logo') for w in known) and any(c >= T - 2 for c in (ctx.tl or {}).get('cues', [])))
+    return ('pass' if ok else 'fail'), 'tail %s' % planned, '' if ok else 'end on a %s' % ' or '.join(known)
 
 
 def first_sound(ctx, p):
@@ -224,7 +239,8 @@ def hook_frame0(ctx, p):
 
 
 def hook_text_by(ctx, p):
-    by = p['hook_text_by_s']
+    tall = (ctx.aspect or '') in ('9:16', '4:5')
+    by = p.get('text_by_s_tall' if tall else 'text_by_s_wide') or p['hook_text_by_s']   # a rule may set the deadline per aspect
     m = ctx.em('eyes', 'readability')
     t = (m or {}).get('hook_text_start_s')
     if t is None:
@@ -299,7 +315,7 @@ def length(ctx, p):
 
 
 def end_hold(ctx, p):
-    need = p['end_hold_s'][0] if isinstance(p['end_hold_s'], list) else p['end_hold_s']
+    need = p.get('min_hold_s') or (p['end_hold_s'][0] if isinstance(p['end_hold_s'], list) else p['end_hold_s'])   # min_hold_s: the rules' spelling
     fr = ctx.em('eyes', 'frames')
     held = [r['t'][1] - r['t'][0] for r in (fr or {}).get('frozen_runs', []) if r.get('end_card')]
     v = max(held) if held else None

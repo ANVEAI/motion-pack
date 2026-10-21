@@ -41,9 +41,11 @@ const r3 = (x) => +x.toFixed(3), r6 = (x) => +x.toFixed(6);   // r6: whole-frame
 
 export function ruleIds(fm) { const ids = [...(fm.rules || [])]; for (const b of fm.beats || []) ids.push(...(b.rules || [])); ids.push(...((fm.post || {}).rules || [])); return [...new Set(ids)]; }
 /* params for one plan default: BASE <- every applied rule that names it <- the format's sound shape */
+/* a *_pct range written in percent ([23, 52]) becomes fractions, as tools/playbook_lib.py norm_params does */
+const normPct = (o) => Object.fromEntries(Object.entries(o || {}).map(([k, v]) => [k, /_pct$/.test(k) && Array.isArray(v) && v.length === 2 && v.every(Number.isFinite) && Math.max(...v) > 1 ? v.map((x) => x / 100) : v]));
 export function paramsFor(id, fm, rules) {
-  const p = { ...BASE }; for (const rid of ruleIds(fm)) { const r = rules[rid]; if (r && r.enforce && r.enforce.default === id) Object.assign(p, r.params || {}); }
-  return Object.assign(p, fm.sound_shape || {});
+  const p = { ...BASE }; for (const rid of ruleIds(fm)) { const r = rules[rid]; if (r && r.enforce && r.enforce.default === id) Object.assign(p, normPct(r.params)); }
+  return Object.assign(p, normPct(fm.sound_shape));
 }
 export function platformFor(aspect, wanted) {
   const shape = P.ASPECT_SHAPE[aspect], want = wanted && (PL.PLATFORMS[wanted] ? wanted : PLATFORM_ALIAS[wanted]);
@@ -84,8 +86,8 @@ export function makePlan(fm, rules, o, tpl) {
   const ni = byEvent('name_silence', /^(name|title|brand)$/);
   if (ni >= 0) { const q = used('plan.audio.name_silence'), a = shots[ni].start, d = Math.min(mid(q.name_silence_s), shots[ni].dur); audio.quiet.push({ t: [a, r3(a + d)], kind: 'gap', role: 'name', why: `playbook: ${q.name_silence_s[0]}-${q.name_silence_s[1]} s of silence under the name` }); }
   /* tail */
-  { const q = used('plan.audio.tail'), last = shots.at(-1); audio.tail = q.tail;
-    if (q.tail === 'quiet-hold') audio.quiet.push({ t: [last.start, r3(L)], kind: 'hold', why: 'playbook: end card on a quiet hold' }); }
+  { const q = used('plan.audio.tail'), last = shots.at(-1), t0 = String(q.tail).split('|')[0].trim(); audio.tail = t0;   // 'slam | decay': the first is the default
+    if (t0 === 'quiet-hold' || t0 === 'decay') audio.quiet.push({ t: [last.start, r3(L)], kind: 'hold', why: `playbook: end card on a ${t0 === 'decay' ? 'decaying' : 'quiet'} hold` }); }
   { const q = used('plan.audio.master'); audio.master = { lufs: q.lufs, true_peak_dbtp: q.true_peak_max_dbtp }; }
   const named = (d) => ruleIds(fm).filter((r) => rules[r] && rules[r].enforce && rules[r].enforce.default === d);
   if (named('plan.audio.mixer').length) { used('plan.audio.mixer'); audio.mixer = { tool: 'music/mixer.py', rules: named('plan.audio.mixer'), params: Object.fromEntries(named('plan.audio.mixer').map((r) => [r, rules[r].params || {}])) }; }

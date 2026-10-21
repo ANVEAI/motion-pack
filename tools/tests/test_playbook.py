@@ -257,11 +257,13 @@ def test_lint_the_real_v040_saas_launch_render():
     assert v['(check) lint.sound.name_silence']['verdict'] == 'WARN'          # the template plans no silence under the name
     assert v['(check) lint.eyes.readability']['verdict'] == 'FAIL' and v['(check) lint.eyes.frames']['verdict'] == 'FAIL'
     assert v['(check) lint.delivery.size']['verdict'] == 'PASS' and v['(check) lint.honesty.todo']['verdict'] == 'PASS'
-    assert res['counts']['FAIL'] == 3 and 0 < res['score'] < 100
+    assert v['(check) lint.mix.cues']['verdict'] == 'FAIL' and 'R9' in v['(check) lint.mix.cues']['value']   # the same toast id 3+ times in 8 events (mixer lint_cues)
+    assert res['counts']['FAIL'] == 4 and 0 < res['score'] < 100
     r = mp('lint', RENDER, '--playbook', FX, '--no-measure', '--json')
     assert r.returncode == 1, r.stderr
     j = json.loads(r.stdout)
-    assert j['format'] is None and {x['rule'] for x in j['rows'] if not x['rule'].startswith('(check)')} == {'sound.quiet_open', 'hook.text_early', 'delivery.master_loudness'}
+    assert j['format'] == 'launch-film' and {x['rule'] for x in j['rows'] if not x['rule'].startswith('(check)')} == {'sound.quiet_open', 'hook.text_early', 'delivery.master_loudness'}
+    assert 'the one format on template saas-launch' in r.stderr                  # inferred from the plan's template
     assert {x['check'] for x in j['rows'] if x['rule'].startswith('(check)')} == set(PL.ALWAYS)     # the honesty floor runs on every lint
 
 
