@@ -1,0 +1,270 @@
+#!/usr/bin/env python3
+"""motion-pack / tools / playbook_build.py: validate the playbook and generate its index.
+
+    python3 tools/playbook_build.py                 # validate, then write playbook/README.md (and docs/evidence/INDEX.md when docs/evidence exists)
+    python3 tools/playbook_build.py --check         # validate, and exit 1 when a generated file is stale (CI)
+    python3 tools/playbook_build.py --playbook DIR  # another playbook folder (the tests use tools/tests/fixtures/playbook)
+
+VALIDATES every rule (playbook/rules/<area>.json, arrays) against playbook/schema/rule.schema.json and every format (playbook/formats/<id>.json)
+against format.schema.json (jsonschema, Draft 2020-12), then: rule ids are unique and start with their file's area; the area is one of the twelve;
+status matches enforce (enforced has a check, default a plan default, part a part id; prose-only has none; candidate only in playbook/inbox);
+every enforce.check is a registered check (tools/playbook_checks.py), every enforce.default a plan default (tools/playbook_plan.mjs --defaults),
+every part id and recommended part resolves (tools/check_ids.py families, or a type/gfx id); conflicts_with ids exist; a source that names a
+repo file exists; a format's id matches its file, its template exists, its rules and beat rules exist, its beats start at 0, end at 1 and do not
+overlap, its lead aspect is one of its aspects, its hooks exist in patterns/hooks.json. Candidates in playbook/inbox/*.json are schema-checked.
+Exit 0 = valid (and current with --check), 1 = a problem, 2 = usage."""
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import playbook_lib as L  # noqa: E402
+
+PACK = L.PACK
+SCHEMA_DIR = os.path.join(PACK, 'playbook', 'schema')
+
+
+def _schema(name):
+    with open(os.path.join(SCHEMA_DIR, name), encoding='utf-8') as f:
+        return json.load(f)
+
+
+def _validator(name):
+    import jsonschema
+    return jsonschema.Draft202012Validator(_schema(name))
+
+
+def defaults_registry():
+    r = subprocess.run(['node', os.path.join(HERE, 'playbook_plan.mjs'), '--defaults'], capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError('node tools/playbook_plan.mjs --defaults failed: %s' % r.stderr.strip()[-200:])
+    return json.loads(r.stdout)
+
+
+_CI = None
+
+
+def part_ok(pid):
+    """a pack id resolves: one of check_ids.py's families (quoted, as in code), or a type/gfx part id (ui.appWindow)"""
+    global _CI
+    if _CI is None:
+        import check_ids as CI
+        _CI = CI
+    for kind, rx in _CI.RX:
+        hit = rx.findall("'%s'" % pid)
+        if hit and hit[0] == pid:
+            return bool(_CI.ok(kind, pid))
+    return pid in _CI.GFX
+
+
+def _rel(p):
+    return os.path.relpath(p, PACK) if p.startswith(PACK) else p
+
+
+def validate(pb, checks=None, defaults=None):
+    """-> (problems [str], rules [(file, rule)], formats {id: fm}, inbox [(file, rule)])"""
+    import playbook_checks as K
+    checks = set(K.CHECKS) if checks is None else checks
+    defaults = set(defaults_registry()) if defaults is None else defaults
+    rv, fv = _validator('rule.schema.json'), _validator('format.schema.json')
+    probs, rules, ids = [], L.load_rules(pb), {}
+    for f, r in rules:
+        where = '%s: %s' % (_rel(f), r.get('id', '?') if isinstance(r, dict) else '?')
+        for e in sorted(rv.iter_errors(r), key=lambda e: list(e.path)):
+            probs.append('%s: %s%s' % (where, '.'.join(map(str, e.path)) + ': ' if e.path else '', e.message))
+        if not isinstance(r, dict) or 'id' not in r:
+            continue
+        area = os.path.basename(f)[:-5]
+        if area not in L.AREAS:
+            probs.append('%s: the file area "%s" is not one of %s' % (where, area, ', '.join(L.AREAS)))
+        if not r['id'].startswith(area + '.'):
+            probs.append('%s: the id must start with "%s." (its file)' % (where, area))
+        if r['id'] in ids:
+            probs.append('%s: duplicate id (also in %s)' % (where, _rel(ids[r['id']])))
+        ids[r['id']] = f
+        probs += rule_problems(where, r, checks, defaults, inbox=False)
+    for f, r in rules:
+        for c in (r.get('conflicts_with') or []) if isinstance(r, dict) else []:
+            if c not in ids:
+                probs.append('%s: %s: conflicts_with names an unknown rule %s' % (_rel(f), r.get('id'), c))
+    inbox = L.load_rules(pb, 'inbox')
+    for f, r in inbox:
+        for e in rv.iter_errors(r):
+            probs.append('%s: %s: %s' % (_rel(f), r.get('id', '?') if isinstance(r, dict) else '?', e.message))
+    formats = L.load_formats(pb)
+    hooks = {h['id'] for h in json.load(open(os.path.join(PACK, 'patterns', 'hooks.json'), encoding='utf-8'))['hooks']}
+    for fid, fm in formats.items():
+        where = _rel(fm['_file'])
+        body = {k: v for k, v in fm.items() if k != '_file'}
+        for e in sorted(fv.iter_errors(body), key=lambda e: list(e.path)):
+            probs.append('%s: %s%s' % (where, '.'.join(map(str, e.path)) + ': ' if e.path else '', e.message))
+        probs += format_problems(where, fid, fm, ids, hooks)
+    return probs, rules, formats, inbox
+
+
+def rule_problems(where, r, checks, defaults, inbox):
+    out, en, st = [], r.get('enforce') or {}, r.get('status')
+    if st == 'candidate' and not inbox:
+        out.append('%s: status candidate belongs in playbook/inbox (mp rules promote publishes it)' % where)
+    if st == 'enforced' and not en.get('check'):
+        out.append('%s: status enforced needs enforce.check' % where)
+    if st == 'default' and not en.get('default'):
+        out.append('%s: status default needs enforce.default' % where)
+    if st == 'part' and not en.get('part'):
+        out.append('%s: status part needs enforce.part' % where)
+    if st == 'prose-only' and any(en.get(k) for k in ('check', 'default', 'part')):
+        out.append('%s: status prose-only, but enforce names %s: set the status it earns' % (where, ', '.join(k for k in ('check', 'default', 'part') if en.get(k))))
+    if en.get('check') and en['check'] not in checks:
+        out.append('%s: enforce.check %s is not a registered check (python3 tools/playbook_lint.py --list)' % (where, en['check']))
+    if en.get('default') and en['default'] not in defaults:
+        out.append('%s: enforce.default %s is not a plan default (node tools/playbook_plan.mjs --defaults)' % (where, en['default']))
+    if en.get('part') and not part_ok(en['part']):
+        out.append('%s: enforce.part %s does not resolve to a pack id' % (where, en['part']))
+    if r.get('grade') != 'house' and not r.get('sources'):
+        out.append('%s: a %s rule needs at least one source' % (where, r.get('grade')))
+    for s in r.get('sources') or []:
+        d = s.get('doc', '')
+        if re.match(r'^[\w.-]+(/[\w.-]+)+\.(md|json)$', d) and not os.path.exists(os.path.join(PACK, d)):
+            out.append('%s: source %s does not exist' % (where, d))
+    return out
+
+
+def format_problems(where, fid, fm, ids, hooks):
+    out = []
+    if fid != os.path.basename(fm['_file'])[:-5]:
+        out.append('%s: id "%s" does not match the file name' % (where, fid))
+    t = fm.get('template', '')
+    if t and not os.path.exists(os.path.join(PACK, t, 'config.mjs')):
+        out.append('%s: template %s has no config.mjs' % (where, t))
+    for rid in L.format_rule_ids(fm):
+        if rid not in ids:
+            out.append('%s: rule %s is not in the playbook' % (where, rid))
+    beats = sorted(fm.get('beats') or [], key=lambda b: b['at'][0])
+    if beats:
+        if abs(beats[0]['at'][0]) > 1e-9 or abs(beats[-1]['at'][1] - 1) > 1e-9:
+            out.append('%s: the beats must cover 0..1 (first starts %s, last ends %s)' % (where, beats[0]['at'][0], beats[-1]['at'][1]))
+        for a, b in zip(beats, beats[1:]):
+            if b['at'][0] < a['at'][1] - 1e-9:
+                out.append('%s: beats %s and %s overlap' % (where, a['id'], b['id']))
+        for b in beats:
+            if not b['at'][0] < b['at'][1]:
+                out.append('%s: beat %s ends before it starts' % (where, b['id']))
+        if len({b['id'] for b in beats}) != len(beats):
+            out.append('%s: repeated beat id' % where)
+    if fm.get('lead_aspect') and fm.get('lead_aspect') not in (fm.get('aspects') or []):
+        out.append('%s: lead_aspect %s is not in aspects' % (where, fm.get('lead_aspect')))
+    lo, hi = (fm.get('length_s') or [0, 0])[:2]
+    if lo > hi:
+        out.append('%s: length_s is reversed' % where)
+    for h in fm.get('hooks') or []:
+        if h not in hooks:
+            out.append('%s: hook %s is not in patterns/hooks.json' % (where, h))
+    beat_ids = {b['id'] for b in beats} | {'all'}
+    for b, parts in (fm.get('recommended_parts') or {}).items():
+        if b not in beat_ids:
+            out.append('%s: recommended_parts names an unknown beat %s' % (where, b))
+        for pid in parts:
+            if not part_ok(pid):
+                out.append('%s: recommended part %s does not resolve' % (where, pid))
+    for ex in fm.get('exemplars') or []:
+        for s in ex.get('sources') or []:
+            d = s.get('doc', '')
+            if re.match(r'^[\w.-]+(/[\w.-]+)+\.(md|json)$', d) and not os.path.exists(os.path.join(PACK, d)):
+                out.append('%s: exemplar %s: source %s does not exist' % (where, ex.get('label'), d))
+    return out
+
+
+# ---------------------------------------------------------------- generated files
+
+def readme(pb, rules, formats, inbox):
+    rs = [r for _, r in rules if isinstance(r, dict) and 'id' in r]
+    cnt = lambda key, vals: ', '.join('%d %s' % (sum(1 for r in rs if r.get(key) == v), v) for v in vals)
+    out = ['# The playbook', '', '<!-- generated by tools/playbook_build.py from playbook/rules and playbook/formats: do not edit by hand -->', '',
+           'Every learning the pack has made, as an atomic, graded rule, and the formats that bundle them. A film starts from `mp brief` or `mp plan <format>`,',
+           'which write the learnings in as defaults, and ends with `mp lint`, which shows which learnings it kept and which it broke.', '',
+           '```bash', 'mp formats                                  # the formats, one line each', 'mp brief "one-line idea" --goal launch     # pick the format, write research-pack.md, then the plan',
+           'mp plan launch-film --length 35 --aspect 16:9   # a plan.json skeleton with the defaults and TODOs', 'mp lint plan.json                           # or a render: mp lint renders/<file>.mp4',
+           'mp rules --gaps                             # prose-only rules: the backlog', '```', '',
+           '**Grades:** measured-A (measured on tier A/A- references), measured (any tier), craft (seen, not tied to reach), house (a pack rule), inferred (a reading, never a fact).',
+           'A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a WARN, inferred is information only.', '',
+           '**Status:** enforced (a check), default (`mp plan` writes it in), part (a pack id implements it), prose-only (a known gap).', '',
+           '**%d rules** (%s; %s) and **%d formats**%s.' % (len(rs), cnt('status', ('enforced', 'default', 'part', 'prose-only')), cnt('grade', L.GRADES), len(formats),
+                                                          ', %d candidates in playbook/inbox' % len(inbox) if inbox else ''), '']
+    if formats:
+        out += ['## Formats', '', '| format | length | aspects | template | beats | rules | use when |', '|---|---|---|---|---|---|---|']
+        for fid, fm in sorted(formats.items()):
+            out.append('| `%s` | %g-%g s | %s | `%s` | %d | %d | %s |' % (fid, fm['length_s'][0], fm['length_s'][1], ' '.join(fm.get('aspects', [])), fm.get('template', ''),
+                                                               len(fm.get('beats', [])), len(L.format_rule_ids(fm)), fm.get('use_when', '').replace('|', '/')))
+        out.append('')
+    by = {}
+    for r in rs:
+        by.setdefault(r['id'].split('.')[0], []).append(r)
+    if by:
+        out += ['## Rules by area', '']
+    for area in L.AREAS:
+        if area not in by:
+            continue
+        out += ['### %s' % area, '', '| rule | grade | status | enforced by | statement |', '|---|---|---|---|---|']
+        for r in sorted(by[area], key=lambda r: r['id']):
+            en = r.get('enforce') or {}
+            how = ' '.join('`%s`' % x for x in (en.get('check'), en.get('default'), en.get('part')) if x) or '-'
+            out.append('| `%s` | %s | %s | %s | %s |' % (r['id'], r.get('grade'), r.get('status'), how, r.get('statement', '').replace('|', '/').replace('\n', ' ')))
+        out.append('')
+    out += ['Schemas: `playbook/schema/rule.schema.json`, `playbook/schema/format.schema.json`. Checks: `python3 tools/playbook_lint.py --list`. Plan defaults: `node tools/playbook_plan.mjs --defaults`.', '']
+    return '\n'.join(out)
+
+
+def evidence_index(rules, formats):
+    ev = os.path.join(PACK, 'docs', 'evidence')
+    cites = {}
+    for _, r in rules:
+        for s in (r.get('sources') or []) if isinstance(r, dict) else []:
+            cites.setdefault(s.get('doc', ''), []).append(r.get('id'))
+    out = ['# Evidence', '', '<!-- generated by tools/playbook_build.py: do not edit by hand -->', '',
+           'The research behind the playbook, moved here unchanged. Each document lists the rules that cite it; a document no rule cites is still a backlog of learnings to extract.', '',
+           '| document | title | rules citing it |', '|---|---|---|']
+    for f in sorted(os.listdir(ev)):
+        if not f.endswith('.md') or f == 'INDEX.md':
+            continue
+        title = next((ln.lstrip('# ').strip() for ln in open(os.path.join(ev, f), encoding='utf-8') if ln.startswith('#')), f)
+        rel = 'docs/evidence/' + f
+        c = sorted(set(cites.get(rel, [])))
+        out.append('| [%s](%s) | %s | %s |' % (f, f, title.replace('|', '/'), ', '.join('`%s`' % x for x in c) or '-'))
+    return '\n'.join(out) + '\n'
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
+    ap.add_argument('--check', action='store_true')
+    ap.add_argument('--playbook')
+    a = ap.parse_args(argv)
+    pb = L.playbook_dir(a.playbook)
+    probs, rules, formats, inbox = validate(pb)
+    for p in probs:
+        print('PROBLEM ' + p)
+    gen = {os.path.join(pb, 'README.md'): readme(pb, rules, formats, inbox)}
+    if os.path.isdir(os.path.join(PACK, 'docs', 'evidence')) and pb == L.playbook_dir(None):
+        gen[os.path.join(PACK, 'docs', 'evidence', 'INDEX.md')] = evidence_index(rules, formats)
+    stale = []
+    for path, text in gen.items():
+        old = open(path, encoding='utf-8').read() if os.path.exists(path) else None
+        if old != text:
+            if a.check:
+                stale.append(_rel(path))
+            else:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(text)
+    for s in stale:
+        print('STALE ' + s + ' (run python3 tools/playbook_build.py)')
+    n = sum(1 for _, r in rules if isinstance(r, dict))
+    print('playbook %s: %d rules, %d formats, %d candidates, %d problems%s' % (_rel(pb), n, len(formats), len(inbox), len(probs), ', %d stale' % len(stale) if stale else ''))
+    return 1 if probs or stale else 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

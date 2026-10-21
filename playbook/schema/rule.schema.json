@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ANVEAI/motion-pack/playbook/schema/rule.schema.json",
+  "title": "motion-pack playbook rule",
+  "description": "One atomic, graded learning. playbook/rules/<area>.json holds an array of these (the id starts with the area). A rule is ENFORCED (enforce.check names a tools/playbook_checks.py check), a DEFAULT (enforce.default names a plan default that `mp plan` writes in), a PART (enforce.part is a pack id that implements it) or PROSE-ONLY (a known gap). status 'candidate' lives only in playbook/inbox/ (mp study writes it; mp rules promote publishes it). Validated by tools/playbook_build.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": { "^//": {} },
+  "required": ["id", "title", "statement", "grade", "evidence", "sources", "enforce", "status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z]+\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$", "description": "<area>.<name>, e.g. sound.quiet_open" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "statement": { "type": "string", "minLength": 1, "description": "the rule in one or two sentences, numbers included" },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formats": { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "format ids; empty or missing = every format" },
+        "platforms": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "section": { "type": ["string", "null"], "description": "the beat or section it applies to (hook, name, end, ...)" }
+      }
+    },
+    "params": { "type": "object", "description": "the numbers the check and the plan default read, e.g. {\"quiet_open_db\": [-11, -7]}" },
+    "grade": { "enum": ["measured-A", "measured", "craft", "house", "inferred"], "description": "measured-A: measured on tier A/A- references; measured: any tier; craft: seen, not tied to reach; house: a pack rule; inferred: a reading, never a fact" },
+    "evidence": { "type": "string", "minLength": 1, "description": "what was measured or seen, brand-free (a tier-A launch film (round 7), never the account)" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["doc"],
+        "properties": { "doc": { "type": "string", "minLength": 1 }, "locator": { "type": "string" } }
+      }
+    },
+    "enforce": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check", "default", "part"],
+      "properties": {
+        "check": { "type": ["string", "null"], "pattern": "^lint\\.[a-z0-9_.]+$" },
+        "default": { "type": ["string", "null"], "pattern": "^plan\\.[a-z0-9_.]+$" },
+        "part": { "type": ["string", "null"], "minLength": 1 }
+      }
+    },
+    "status": { "enum": ["enforced", "default", "part", "prose-only", "candidate"] },
+    "conflicts_with": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "notes": { "type": "string" },
+    "promoted_to": { "type": "string", "description": "inbox only: the rule id this candidate became (mp rules promote)" }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ANVEAI/motion-pack/playbook/schema/format.schema.json",
+  "title": "motion-pack playbook format",
+  "description": "A ready skeleton that bundles rules: playbook/formats/<id>.json. Beat `at` values are fractions of the runtime, so `mp plan <format> --length N` scales the skeleton. `signals` let `mp brief` pick the format, `exemplars` are brand-free measured reference skeletons and `recommended_parts` the pack ids that serve each beat. Validated by tools/playbook_build.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": { "^//": {} },
+  "required": ["id", "title", "use_when", "length_s", "aspects", "lead_aspect", "template", "beats", "rules"],
+  "$defs": {
+    "range": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+    "aspect": { "enum": ["16:9", "9:16", "1:1", "4:5"] },
+    "source": { "type": "object", "required": ["doc"], "properties": { "doc": { "type": "string", "minLength": 1 }, "locator": { "type": "string" } }, "additionalProperties": false }
+  },
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "title": { "type": "string", "minLength": 1 },
+    "use_when": { "type": "string", "minLength": 1 },
+    "length_s": { "$ref": "#/$defs/range" },
+    "aspects": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/aspect" } },
+    "lead_aspect": { "$ref": "#/$defs/aspect" },
+    "template": { "type": "string", "pattern": "^templates/[a-z0-9][a-z0-9-]*$" },
+    "beats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "patternProperties": { "^//": {} },
+        "required": ["id", "at", "purpose"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
+          "at": { "$ref": "#/$defs/range" },
+          "purpose": { "type": "string", "minLength": 1 },
+          "required": { "type": "boolean" },
+          "text": {
+            "type": "object",
+            "properties": {
+              "max_words": { "type": "integer", "minimum": 0 },
+              "field": { "type": "string", "pattern": "^(text|brand)\\.[a-zA-Z0-9_.]+$", "description": "optional: the project.json field of the format's template that carries this beat's copy" }
+            }
+          },
+          "sound": {
+            "type": "object",
+            "properties": { "level": { "type": "string" }, "events": { "type": "array", "items": { "type": "string" } } }
+          },
+          "rules": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+        }
+      }
+    },
+    "sound_shape": {
+      "type": "object",
+      "properties": {
+        "quiet_open_db": { "$ref": "#/$defs/range" },
+        "quiet_open_s": { "$ref": "#/$defs/range" },
+        "bass_entry_pct": { "$ref": "#/$defs/range" },
+        "name_silence_s": { "$ref": "#/$defs/range" },
+        "tail": { "type": "string" }
+      }
+    },
+    "hooks": { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "hook ids of patterns/hooks.json" },
+    "end_shapes": { "type": "array", "items": { "type": "string" } },
+    "post": {
+      "type": "object",
+      "properties": { "pattern": { "type": "string" }, "rules": { "type": "array", "items": { "type": "string" } } }
+    },
+    "rules": { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "every rule id that applies to the whole film (beat rules add to these)" },
+    "signals": {
+      "type": "object",
+      "description": "what in a brief points at this format (mp brief)",
+      "properties": {
+        "keywords": { "type": "array", "items": { "type": "string" } },
+        "product_types": { "type": "array", "items": { "type": "string" } },
+        "goals": { "type": "array", "items": { "enum": ["awareness", "launch", "explain", "sell", "proof", "entertain", "teach", "recruit"] } },
+        "platforms": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "exemplars": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "description": "a brand-free measured reference skeleton, e.g. 'tier-A launch film, 34 s'",
+        "required": ["label", "length_s", "grade"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string", "minLength": 1 },
+          "length_s": { "type": "number", "minimum": 0 },
+          "grade": { "enum": ["measured-A", "measured", "craft", "house", "inferred"] },
+          "beats": {
+            "type": "array",
+            "items": { "type": "object", "required": ["at", "purpose"], "properties": { "at": { "$ref": "#/$defs/range" }, "purpose": { "type": "string" }, "text": { "type": "string" }, "sound": { "type": "string" } } }
+          },
+          "lufs": { "type": "number" },
+          "quiet_open_db": { "type": ["number", "null"] },
+          "quiet_tail_db": { "type": ["number", "null"] },
+          "cuts_per_min": { "type": ["number", "null"] },
+          "bass_entry_pct": { "type": ["number", "null"] },
+          "end_shape": { "type": ["string", "null"] },
+          "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "recommended_parts": {
+      "type": "object",
+      "description": "beat id (or 'all') -> pack ids (transitions/, type/, gfx ids, sfx/, music/, layers/) that serve that beat; tools/playbook_build.py resolves each through tools/check_ids.py",
+      "additionalProperties": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+    }
+  }
+}

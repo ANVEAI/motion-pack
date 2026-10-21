@@ -1,0 +1,16 @@
+[
+  {
+    "id": "sound.quiet_open",
+    "title": "Open quiet",
+    "statement": "FIXTURE. The first 1-2 s sit 7-11 dB below the body, over a moving frame 0 with a word on screen.",
+    "scope": { "formats": ["launch-film"], "platforms": ["x", "shorts", "reels"], "section": "hook" },
+    "params": { "quiet_open_db": [-11, -7], "quiet_open_s": [1, 2] },
+    "grade": "measured-A",
+    "evidence": "fixture for tools/tests: tier-A launch films in a reference round open quiet",
+    "sources": [ { "doc": "docs/research/launch-video-patterns.md", "locator": "hooks" } ],
+    "enforce": { "check": "lint.sound.quiet_open", "default": "plan.audio.quiet_open", "part": null },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "fixture only: the real rule lives in playbook/rules/sound.json"
+  }
+]

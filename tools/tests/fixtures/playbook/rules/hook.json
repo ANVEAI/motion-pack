@@ -1,0 +1,14 @@
+[
+  {
+    "id": "hook.text_early",
+    "title": "Hook text inside 2 s",
+    "statement": "FIXTURE. When the hook uses words, the first words are on screen inside 2 s.",
+    "scope": { "section": "hook" },
+    "params": { "hook_text_by_s": 2.0 },
+    "grade": "craft",
+    "evidence": "fixture for tools/tests",
+    "sources": [ { "doc": "patterns/hooks.json", "locator": "universal.hook_text" } ],
+    "enforce": { "check": "lint.hook.text_by", "default": "plan.hook.text", "part": "type/wordStagger" },
+    "status": "enforced"
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "//": "FIXTURE for tools/tests (tools/playbook_build.py, mp plan, mp lint, mp brief). The real format lives in playbook/formats/launch-film.json.",
+  "id": "launch-film",
+  "title": "Launch film (hero)",
+  "use_when": "A product launch hero for X or a site: one problem, one turn, the product as the turn, a quiet name.",
+  "length_s": [30, 38],
+  "aspects": ["16:9", "9:16"],
+  "lead_aspect": "16:9",
+  "template": "templates/saas-launch",
+  "beats": [
+    { "id": "hook", "at": [0, 0.08], "purpose": "the stake on frame 0, already moving", "required": true,
+      "text": { "max_words": 6, "field": "text.headline" }, "sound": { "level": "quiet", "events": ["first_hit_after_1s"] }, "rules": ["sound.quiet_open", "hook.text_early"] },
+    { "id": "problem", "at": [0.08, 0.3], "purpose": "the problem in three short beats", "required": true, "text": { "max_words": 5 }, "sound": { "level": "body" } },
+    { "id": "turn", "at": [0.3, 0.45], "purpose": "the product as the turn; the bass enters", "required": true, "text": { "max_words": 4 }, "sound": { "level": "body", "events": ["bass_entry"] } },
+    { "id": "proof", "at": [0.45, 0.75], "purpose": "what it does, shown in the real UI", "required": true, "text": { "max_words": 6 } },
+    { "id": "name", "at": [0.75, 0.88], "purpose": "the name, under silence", "required": true, "text": { "max_words": 3, "field": "text.subhead" }, "sound": { "level": "silence", "events": ["name_silence"] } },
+    { "id": "end", "at": [0.88, 1], "purpose": "end card on a quiet hold: the URL and one call to action", "required": true, "text": { "max_words": 5, "field": "text.cta" }, "sound": { "level": "quiet", "events": ["quiet_hold"] } }
+  ],
+  "sound_shape": { "quiet_open_db": [-11, -7], "quiet_open_s": [1, 2], "bass_entry_pct": [0.2, 0.35], "name_silence_s": [1.0, 1.5], "tail": "quiet-hold" },
+  "hooks": ["problem-agitate", "claim-or-question", "payoff-first"],
+  "end_shapes": ["quiet-hold", "sting"],
+  "post": { "pattern": "hero + numbered proof clips, link in the first reply", "rules": [] },
+  "rules": ["delivery.master_loudness"],
+  "signals": {
+    "keywords": ["launch", "launching", "introducing", "announce", "hero", "release", "v1", "ship"],
+    "product_types": ["saas", "app", "software", "tool", "platform"],
+    "goals": ["launch", "awareness"],
+    "platforms": ["x", "site", "youtube"]
+  },
+  "exemplars": [
+    { "id": "fixture-launch-34", "label": "FIXTURE: a launch film, 34 s", "length_s": 34, "grade": "measured",
+      "beats": [ { "at": [0, 0.06], "purpose": "stake", "text": "a short question", "sound": "quiet room tone" }, { "at": [0.88, 1], "purpose": "end card", "text": "url", "sound": "quiet hold" } ],
+      "lufs": -14.1, "quiet_open_db": -9.0, "quiet_tail_db": -17.0, "cuts_per_min": 20, "bass_entry_pct": 0.3, "end_shape": "quiet-hold",
+      "sources": [ { "doc": "docs/research/launch-films-2026.md", "locator": "fixture" } ] }
+  ],
+  "recommended_parts": {
+    "hook": ["type/wordStagger", "ui.notifyStack"],
+    "turn": ["transitions/whip", "sfx/whoosh/swish_s"],
+    "proof": ["ui.appWindow"],
+    "all": ["music/bed_corporate_bright_loop8"]
+  }
+}

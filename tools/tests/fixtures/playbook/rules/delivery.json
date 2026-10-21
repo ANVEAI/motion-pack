@@ -1,0 +1,13 @@
+[
+  {
+    "id": "delivery.master_loudness",
+    "title": "Master at -14 LUFS",
+    "statement": "FIXTURE. The delivered file measures -14 LUFS-I within 0.5 LU.",
+    "params": { "lufs": -14, "lufs_tol": 0.5 },
+    "grade": "house",
+    "evidence": "fixture for tools/tests: the pack master spec",
+    "sources": [],
+    "enforce": { "check": "lint.master.loudness", "default": "plan.audio.master", "part": null },
+    "status": "enforced"
+  }
+]
