@@ -44,6 +44,9 @@ export const lintTransitions = (shots) => shots.filter((s) => { const tx = s.tx 
 export const lintFailures = (L) => [...((L && L.claimsWithoutSource) || []).map((t) => `lint.proof: "${t}" has a digit and no source (add { source } to the claim, or take the number out)`),
   ...((L && L.unmotivatedTransitions) || []).map((id) => `lint.tx: the transition into shot "${id}" has no reason (set a Murch reason such as EMOTION, STORY, RHYTHM, ENERGY, REVEAL, PLACE, or make it a hard cut)`)];
 
+/* words demo copy must not use (mp check, mp lint): say placeholder, demo data, render or example instead */
+export const BANNED_DEMO_WORDS = ['in development', 'planned', 'illustration'];
+
 /* SFX for a transition id (edit.md 2: each transition has a paired synthesised sound). Ids exist in sfx/mpaudio (snd.<cat>.<name>). */
 export const TX_SFX = {
   'transitions/cut': null, 'transitions/whip': 'sfx/whoosh/whip_pan', 'transitions/smash': 'sfx/tx/smash_cut', 'transitions/flash': 'sfx/tx/shutter_flash',

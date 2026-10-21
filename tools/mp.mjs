@@ -9,6 +9,13 @@
      mp check [--dir D]                               ids (check_ids), honesty (project + plan lint + banned demo words + name denylist), eyes, ears, contact sheet per render
      mp brand <logo.svg|png> [--dir D] [--write]      palette candidates from your logo, contrast-checked (frame-design contrast.py), a suggested accent / ink / paper
      mp doctor                                        node, python + venv, ffmpeg, Chrome on the GPU, puppeteer-core, sound libraries, disk
+   The playbook (playbook/: the learnings as graded rules and formats; every one takes --playbook DIR):
+     mp formats [--json]                              the formats, one line each (playbook/formats)
+     mp brief <brief.md|"idea"> [--goal G] [--platform P] [--format F] [--length N] [--out D]   pick the format, write research-pack.md/.json, then mp plan
+     mp plan <format> [--length N] [--aspect A] [--platform P] [--research R] [--out plan.json] [--project-out project.json]   a plan.json skeleton with the defaults and TODOs
+     mp lint <plan.json|render.mp4> [--format F] [--json] [--all-checks]   every enforceable rule: PASS / WARN / FAIL with value and fix, a score; exit 1 on a FAIL
+     mp study <video.mp4|x-url|study.json> [--format F] [--ours|--reference] [--slug S]   refstudy + lint: our render's gaps vs the exemplars, or candidate rules in playbook/inbox
+     mp rules [--area A] [--status S] [--gaps] [--format F] · mp rules promote <inbox.json> [--id C] [--as area.name] [--grade G]   browse the rules, publish candidates
    Every command exits 0 when fine, 1 when a check fails, 2 on a usage or project error (the message names the field and the fix). */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { spawnSync } from 'node:child_process'; import { pathToFileURL, fileURLToPath } from 'node:url';
 
@@ -159,7 +166,7 @@ function sheet(mp4) {   // stills late in each shot (the type has settled), from
 }
 
 /* ---------- check ---------- */
-const BANNED = ['in development', 'planned', 'illustration'];   // BRIEF: demo copy says placeholder / demo data / render / example instead
+const { BANNED_DEMO_WORDS: BANNED } = await import(pathToFileURL(path.join(TPL, '_shared', 'plan.mjs')).href);   // BRIEF: demo copy says placeholder / demo data / render / example instead
 async function cmdCheck(argv) {
   const dir = findDir(argv), file = projectFile(dir), lines = [], fail = (s) => { lines.push('FAIL ' + s); }, ok = (s) => lines.push('ok   ' + s), warn = (s) => lines.push('warn ' + s);
   let project; try { ({ project } = P.loadProject(file)); ok('project.json validates (schema, files, digits have sourced claims)'); } catch (e) { if (!(e instanceof P.ProjectError)) throw e; fail('project.json:\n       ' + e.problems.join('\n       ')); }
@@ -222,8 +229,14 @@ async function cmdDoctor() {
   process.exit(rows.every((r) => r[0]) ? 0 : 1);
 }
 
+/* ---------- the playbook: formats, rules, brief, study and lint are python (tools/playbook*.py), plan is node (it reads the template) ---------- */
+const pyTool = (script, args) => () => process.exit(run(PY, [path.join(PACK, 'tools', script), ...args]).status ?? 2);
+const nodeTool = (script, args) => () => process.exit(run('node', [path.join(PACK, 'tools', script), ...args]).status ?? 2);
+
 const [cmd, ...rest] = process.argv.slice(2);
-const CMDS = { list: cmdList, new: cmdNew, set: cmdSet, build: cmdBuild, render: cmdRender, check: cmdCheck, brand: cmdBrand, doctor: cmdDoctor };
-if (!CMDS[cmd]) { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1, 11).join('\n').replace(/^\/\* /, '   ')); process.exit(cmd && !['help', '--help', '-h'].includes(cmd) ? 2 : 0); }
+const CMDS = { list: cmdList, new: cmdNew, set: cmdSet, build: cmdBuild, render: cmdRender, check: cmdCheck, brand: cmdBrand, doctor: cmdDoctor,
+  formats: pyTool('playbook.py', ['formats', ...rest]), rules: pyTool('playbook.py', ['rules', ...rest]), lint: pyTool('playbook_lint.py', rest),
+  brief: pyTool('playbook_research.py', ['brief', ...rest]), study: pyTool('playbook_research.py', ['study', ...rest]), plan: nodeTool('playbook_plan.mjs', rest) };
+if (!CMDS[cmd]) { const head = fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n'); console.log(head.slice(1, head.findIndex((l) => l.includes('*/')) + 1).join('\n').replace(/^\/\* /, '   ').replace(/ \*\/$/, '')); process.exit(cmd && !['help', '--help', '-h'].includes(cmd) ? 2 : 0); }
 STRICT = rest.includes('--strict');
 try { await CMDS[cmd](rest); } catch (e) { if (e instanceof P.ProjectError) die(e.message); throw e; }

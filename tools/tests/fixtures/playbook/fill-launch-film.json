@@ -1,0 +1,16 @@
+{
+  "//": "copy that fills every TODO marker of `mp plan launch-film` (keyed by the marker label, TODO(<label>)); tools/tests/playbook-plan.test.mjs and test_playbook.py. Orbit is a fictional placeholder brand.",
+  "hook": "Requests land *everywhere*.",
+  "problem": "Copy. Paste. Chase.",
+  "turn": "Meet *Orbit*.",
+  "proof": "Every request, routed.",
+  "name": "Orbit",
+  "end": "Start free at orbit.example",
+  "brand.name": "Orbit",
+  "brand.url": "orbit.example",
+  "brand.cta": "Start free",
+  "text.features": "One shortcut, *anywhere*.",
+  "text.proof": "Routed in the private *beta*.",
+  "text.fine": "Orbit is fictional · placeholder UI · demo data",
+  "claims": null
+}
