@@ -1,0 +1,645 @@
+{
+  "id": "trailer",
+  "title": "Trailer (three-act, title, date)",
+  "use_when": "A film, series, game or big release trailer: world, turn, wall montage, silence, title, button, date. Tone and escalation over explanation.",
+  "length_s": [
+    60,
+    150
+  ],
+  "//length": "Corpus mean 122.8 s over 6,926 trailers; a voluntary 150 s cap; 30 s and 15 s cut-downs from the same plan.",
+  "aspects": [
+    "16:9",
+    "9:16"
+  ],
+  "lead_aspect": "16:9",
+  "template": "templates/trailer",
+  "signals": {
+    "keywords": [
+      "trailer",
+      "teaser trailer",
+      "film",
+      "series",
+      "season",
+      "game",
+      "premiere",
+      "coming",
+      "release date",
+      "movie"
+    ],
+    "product_types": [
+      "film",
+      "series",
+      "game",
+      "event",
+      "book"
+    ],
+    "goals": [
+      "awareness",
+      "launch",
+      "entertain"
+    ],
+    "platforms": [
+      "youtube",
+      "x",
+      "reels"
+    ]
+  },
+  "beats": [
+    {
+      "id": "coldopen",
+      "at": [
+        0,
+        0.1
+      ],
+      "purpose": "near-silent: one line of dialogue or one image alone; one hit out of it",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "quiet",
+        "events": [
+          "one_hit_out"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "sound.quiet_open",
+        "hook.first_change_by_frame6"
+      ]
+    },
+    {
+      "id": "act1",
+      "at": [
+        0.1,
+        0.3
+      ],
+      "purpose": "the world: holds of 6-8 beats a shot, sparse drone, copy cards on soft whooshes",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "low",
+        "events": [
+          "drone"
+        ]
+      },
+      "rules": [
+        "pacing.trailer_accelerate",
+        "story.trailer_arc"
+      ]
+    },
+    {
+      "id": "act2",
+      "at": [
+        0.3,
+        0.65
+      ],
+      "purpose": "the turn: shots halve to 4 -> 2 beats, percussion enters, a braam every other bar; a pull-out or silence before the key line",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "rising",
+        "events": [
+          "braam_every_2_bars"
+        ]
+      },
+      "rules": [
+        "pacing.trailer_accelerate",
+        "sound.hit_hierarchy_spacing",
+        "sound.no_doubled_score_hits"
+      ]
+    },
+    {
+      "id": "act3",
+      "at": [
+        0.65,
+        0.88
+      ],
+      "purpose": "the wall: 2 -> 1 -> half-beat shots (2-4 cuts/s at 120 BPM), riser to hit, sub impacts on cuts to black",
+      "required": true,
+      "text": {
+        "max_words": 3
+      },
+      "sound": {
+        "level": "full",
+        "events": [
+          "braam_every_bar",
+          "riser_ends_frame_before_hit"
+        ]
+      },
+      "rules": [
+        "pacing.trailer_accelerate",
+        "sound.riser_ends_frame_before_hit",
+        "motion.flash_limit"
+      ]
+    },
+    {
+      "id": "silence_title",
+      "at": [
+        0.88,
+        0.94
+      ],
+      "purpose": "the wall stops dead; 1-3 s of declared silence (a faint ring at most), then the title on the hit",
+      "required": true,
+      "text": {
+        "max_words": 3
+      },
+      "sound": {
+        "level": "silence_then_hit",
+        "events": [
+          "hit_silence_hit"
+        ]
+      },
+      "rules": [
+        "sound.trailer_hit_silence_hit",
+        "visual.declare_planned_black",
+        "sound.planned_quiet_maxima"
+      ]
+    },
+    {
+      "id": "button",
+      "at": [
+        0.94,
+        0.97
+      ],
+      "purpose": "one last line or gag over near-silence",
+      "required": false,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "near_silent",
+        "events": [
+          "sting_button"
+        ]
+      },
+      "rules": []
+    },
+    {
+      "id": "date",
+      "at": [
+        0.97,
+        1.0
+      ],
+      "purpose": "the release card and billing block; a quiet tail or one low hit",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "quiet",
+        "events": [
+          "quiet_tail"
+        ]
+      },
+      "rules": [
+        "story.cta_window",
+        "honesty.real_deadline_only"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_db": [
+      -25,
+      -15
+    ],
+    "quiet_open_s": [
+      1,
+      2
+    ],
+    "title_silence_s": [
+      1,
+      3
+    ],
+    "tail": "quiet-hold",
+    "tail_db": -35,
+    "bass_share": [
+      0.5,
+      0.61
+    ],
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_trailer_arc",
+      "music/bed_trailer_drama",
+      "music/bed_trailer_thriller",
+      "music/bed_trailer_scifi"
+    ],
+    "mode": "music"
+  },
+  "hooks": [
+    "cold-open",
+    "in-medias-res",
+    "provocative-line"
+  ],
+  "end_shapes": [
+    "quiet-hold",
+    "sting"
+  ],
+  "post": {
+    "pattern": "Native upload of the full cut; a 30 s and a 15 s cut-down from the same plan; the date in the first line.",
+    "rules": [
+      "story.cutdown_trailer_order",
+      "platform.native_upload_x",
+      "distribution.first_line_archetype"
+    ]
+  },
+  "recommended_parts": {
+    "coldopen": [
+      "card.production",
+      "sfx/trailer/boom_hit",
+      "sfx/amb/room_tone"
+    ],
+    "act1": [
+      "title.trailerThin",
+      "sfx/trailer/drone_dark_loop",
+      "sfx/trailer/whoosh_by",
+      "cuts/trailer/accelerate3Act"
+    ],
+    "act2": [
+      "title.trailerSlab",
+      "sfx/trailer/braam_short",
+      "sfx/trailer/reverse_swell_2s"
+    ],
+    "act3": [
+      "transitions/flash",
+      "transitions/cut",
+      "sfx/trailer/riser_4s",
+      "sfx/trailer/metal_hit",
+      "cuts/sections/build_accelerate"
+    ],
+    "silence_title": [
+      "title.trailerGlow",
+      "sfx/trailer/hit_silence_hit",
+      "sfx/trailer/ring_tinnitus",
+      "sfx/trailer/hit_title",
+      "cuts/trailer/hitSilenceHit"
+    ],
+    "button": [
+      "sfx/trailer/sting_button"
+    ],
+    "date": [
+      "card.releaseDate",
+      "credits.billingBlock"
+    ],
+    "all": [
+      "music/bed_trailer_arc",
+      "music/bed_trailer_drama",
+      "music/bed_trailer_thriller",
+      "music/bed_trailer_scifi"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "tr-feature-150",
+      "label": "public feature trailer, 150 s, 34 cuts",
+      "grade": "measured",
+      "tier": "R (12.5M views, 0.43x)",
+      "length_s": 150,
+      "aspect": "16:9",
+      "cuts": 34,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.3
+          ],
+          "purpose": "quiet dialogue",
+          "text": "",
+          "sound": "open -20 dB"
+        },
+        {
+          "at": [
+            0.3,
+            0.55
+          ],
+          "purpose": "title cards",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.55,
+            0.75
+          ],
+          "purpose": "wall montage (about 1 cut/s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.75,
+            0.8
+          ],
+          "purpose": "one line over near-silence",
+          "text": "",
+          "sound": "bed 30 dB+ down"
+        },
+        {
+          "at": [
+            0.8,
+            0.9
+          ],
+          "purpose": "crescendo",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.9,
+            1.0
+          ],
+          "purpose": "hard stop, title, date",
+          "text": "",
+          "sound": "tail -35 dB, decay"
+        }
+      ],
+      "lufs": -14.2,
+      "quiet_open_db": -20,
+      "tail": "decay",
+      "cut_cadence": "34 cuts, ~4.4 s average",
+      "bass_share": 0.61,
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 52"
+        },
+        {
+          "doc": "docs/evidence/film-trailer-craft.md",
+          "locator": "section 1"
+        },
+        {
+          "doc": "cuts/patterns.json",
+          "locator": "story.trailerArc"
+        }
+      ],
+      "quiet_tail_db": -35,
+      "cuts_per_min": 13.6
+    },
+    {
+      "id": "tr-house-120bpm",
+      "label": "house full trailer cut at 120 BPM",
+      "grade": "craft",
+      "tier": "house plan (FTC section 2)",
+      "length_s": 65,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.12
+          ],
+          "purpose": "cold open, 2 shots (8 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.12,
+            0.18
+          ],
+          "purpose": "production card (4 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.18,
+            0.31
+          ],
+          "purpose": "world (8 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.31,
+            0.49
+          ],
+          "purpose": "inciting beat + act-2 montage (12 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.49,
+            0.68
+          ],
+          "purpose": "act-3 wall (12 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.68,
+            0.71
+          ],
+          "purpose": "silence (2 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.71,
+            0.75
+          ],
+          "purpose": "title (3 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.75,
+            1.0
+          ],
+          "purpose": "button, credit block, release card (4 s each)",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "docs/evidence/film-trailer-craft.md",
+          "locator": "section 2"
+        }
+      ],
+      "notes": "Seconds are the house plan; fractions computed over ~65 s."
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.quote_needs_source",
+    "honesty.real_deadline_only",
+    "honesty.references_craft_not_copy",
+    "hook.first_change_by_frame6",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.no_offer_as_hook",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.cut_synchronous_fx",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.glitch_on_hit_only",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.one_signature_move",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.bass_share_by_role",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.phrase_cuts",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.continuous_ok",
+    "pacing.cut_density_by_section",
+    "pacing.length_scales_content",
+    "pacing.new_thing_every_2_4s",
+    "pacing.same_scale_run",
+    "pacing.section_asl_curve",
+    "pacing.tier_a_length_bimodal",
+    "pacing.trailer_accelerate",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.master_16x9_relayout",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.dropout_before_reveal",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.level_end_anchored_by_body",
+    "sound.limiter_budget",
+    "sound.no_dead_air",
+    "sound.no_doubled_score_hits",
+    "sound.not_flat",
+    "sound.phone_check",
+    "sound.planned_quiet_maxima",
+    "sound.pre_hit_vacuum",
+    "sound.pre_sting_silence",
+    "sound.quiet_open",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.speech_over_music",
+    "sound.split_edits",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.sync_rule_by_mode",
+    "sound.trailer_hit_silence_hit",
+    "sound.transition_paired_sfx",
+    "story.cta_window",
+    "story.cutdown_trailer_order",
+    "story.refrain_card",
+    "story.sound_off_sentence",
+    "story.trailer_arc",
+    "story.trailer_energy_arc",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "type.typed_text_hold_after",
+    "visual.accent_fixed_meaning",
+    "visual.banding_grain",
+    "visual.concrete_artefacts",
+    "visual.declare_planned_black",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: trailer) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

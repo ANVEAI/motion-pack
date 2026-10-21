@@ -1,0 +1,494 @@
+{
+  "id": "documentary",
+  "title": "Documentary launch (multi-voice)",
+  "use_when": "A people-led launch: several voices in their own words, the lead introduced late with one personal detail, chapters, the product as the thing they built, availability at the end.",
+  "length_s": [
+    107,
+    185
+  ],
+  "//length": "Tier-A people-led documentaries ran 107-185 s; the template demo compresses the shape to 29 s.",
+  "aspects": [
+    "16:9"
+  ],
+  "lead_aspect": "16:9",
+  "template": "templates/multi-voice-doc",
+  "signals": {
+    "keywords": [
+      "team",
+      "documentary",
+      "behind the scenes",
+      "people",
+      "voices",
+      "interview",
+      "story of",
+      "journey",
+      "company"
+    ],
+    "product_types": [
+      "model",
+      "platform",
+      "company",
+      "research"
+    ],
+    "goals": [
+      "launch",
+      "awareness",
+      "recruit"
+    ],
+    "platforms": [
+      "youtube",
+      "x",
+      "linkedin"
+    ]
+  },
+  "beats": [
+    {
+      "id": "voices",
+      "at": [
+        0,
+        0.05
+      ],
+      "purpose": "4-6 different faces in cuts of 0.5-1.3 s inside the first 6 s, each mid-sentence, audio leading every cut, no name or product",
+      "required": true,
+      "text": {
+        "max_words": 0
+      },
+      "sound": {
+        "level": "voices",
+        "events": [
+          "audio_leads_each_cut"
+        ]
+      },
+      "rules": [
+        "story.five_faces_cold_open",
+        "hook.first_sound_by_frame3",
+        "sound.split_edits"
+      ]
+    },
+    {
+      "id": "lead",
+      "at": [
+        0.05,
+        0.15
+      ],
+      "purpose": "the lead and their name super with one personal detail beyond the role",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "voice",
+        "events": []
+      },
+      "rules": [
+        "type.name_super_one_detail",
+        "type.lower_third_spec"
+      ]
+    },
+    {
+      "id": "chapters",
+      "at": [
+        0.15,
+        0.7
+      ],
+      "purpose": "chapters of the work in their voices; the bed under speech ducked 9 dB or more",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "voice_bed",
+        "events": [
+          "duck_9db"
+        ]
+      },
+      "rules": [
+        "sound.duck_depth",
+        "sound.speech_over_music",
+        "type.captions_every_sentence",
+        "pacing.asl_voice_led"
+      ]
+    },
+    {
+      "id": "proof",
+      "at": [
+        0.7,
+        0.85
+      ],
+      "purpose": "one sourced proof; transcript bubbles anchored to the speaker are an option",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "voice_bed",
+        "events": []
+      },
+      "rules": [
+        "honesty.digit_needs_source",
+        "honesty.verbatim_quote_gate"
+      ]
+    },
+    {
+      "id": "availability",
+      "at": [
+        0.85,
+        0.95
+      ],
+      "purpose": "where and when it is available",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "bed_rises",
+        "events": []
+      },
+      "rules": [
+        "story.cta_window"
+      ]
+    },
+    {
+      "id": "close",
+      "at": [
+        0.95,
+        1.0
+      ],
+      "purpose": "a closing line and the mark; decay",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "decay",
+        "events": [
+          "decay"
+        ]
+      },
+      "rules": [
+        "sound.decay_tail",
+        "pacing.end_card_hold"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_db": [
+      -12,
+      -6
+    ],
+    "tail": "decay",
+    "tail_db": -20,
+    "bass_share": [
+      0.15,
+      0.36
+    ],
+    "lufs_reference_note": "references ran -17 to -19 LUFS; master to -14",
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_documentary_marimba_loop8",
+      "music/bed_ambient_pad_loop8",
+      "music/bed_acoustic_folk_pluck_loop8"
+    ],
+    "mode": "vo"
+  },
+  "hooks": [
+    "in-medias-res",
+    "founder-to-camera",
+    "cold-open"
+  ],
+  "end_shapes": [
+    "decay",
+    "slam"
+  ],
+  "post": {
+    "pattern": "Single native post; the full film on YouTube with chapters.",
+    "rules": [
+      "platform.native_upload_x",
+      "distribution.single_post_founder"
+    ]
+  },
+  "recommended_parts": {
+    "voices": [
+      "caption.speakerTag",
+      "cuts/story/voicesColdOpen",
+      "cuts/split/J"
+    ],
+    "lead": [
+      "lowerThird.docSuper"
+    ],
+    "chapters": [
+      "title.chapterCard",
+      "cuts/split/L"
+    ],
+    "proof": [
+      "caption.pullQuote",
+      "counter.statCard"
+    ],
+    "availability": [
+      "title.endScreen"
+    ],
+    "all": [
+      "music/bed_documentary_marimba_loop8",
+      "music/bed_ambient_pad_loop8",
+      "music/bed_acoustic_folk_pluck_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "doc-faces-153",
+      "label": "tier-A team documentary, 153 s, 42 cuts",
+      "grade": "measured-A",
+      "tier": "A (3.23x)",
+      "length_s": 153,
+      "aspect": "16:9",
+      "cuts": 42,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.03
+          ],
+          "purpose": "five faces in five seconds before any name",
+          "text": "",
+          "sound": "audio leads each cut"
+        },
+        {
+          "at": [
+            0.03,
+            0.15
+          ],
+          "purpose": "the lead, name super with one personal detail",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.15,
+            0.9
+          ],
+          "purpose": "chapters in their voices",
+          "text": "",
+          "sound": "VO-led"
+        },
+        {
+          "at": [
+            0.9,
+            1.0
+          ],
+          "purpose": "availability and close",
+          "text": "",
+          "sound": "decay, tail -20 dB"
+        }
+      ],
+      "lufs": -17.4,
+      "quiet_open_db": -9,
+      "tail": "decay",
+      "cut_cadence": "42 cuts; sync 40% (VO mode)",
+      "bass_share": 0.18,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 32"
+        },
+        {
+          "doc": "cuts/patterns.json",
+          "locator": "story.voicesColdOpen"
+        }
+      ],
+      "quiet_tail_db": -20,
+      "cuts_per_min": 16.5
+    },
+    {
+      "id": "doc-ring-185",
+      "label": "tier-A voice-ring founder update, 185 s, 51 cuts",
+      "grade": "measured-A",
+      "tier": "A (1.94x, 0.38% bookmarks)",
+      "length_s": 185,
+      "aspect": "16:9",
+      "cuts": 51,
+      "beats": [
+        {
+          "at": [
+            0,
+            1.0
+          ],
+          "purpose": "transcript bubbles anchored to the speaker in the scene",
+          "text": "bubbles",
+          "sound": "open +6 dB; slam end"
+        }
+      ],
+      "lufs": -18.6,
+      "quiet_open_db": 6,
+      "tail": "slam",
+      "bass_share": 0.36,
+      "end_shape": "slam",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 54"
+        }
+      ],
+      "quiet_tail_db": -3,
+      "cuts_per_min": 16.5
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.single_post_founder",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.references_craft_not_copy",
+    "honesty.verbatim_quote_gate",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.no_offer_as_hook",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.handheld_closed_form",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.bass_share_by_role",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.asl_voice_led",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.new_thing_every_2_4s",
+    "pacing.section_asl_curve",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.decay_tail",
+    "sound.duck_depth",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.phone_check",
+    "sound.pre_hit_vacuum",
+    "sound.quiet_hold_ending",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.room_tone_under_cuts",
+    "sound.speech_over_music",
+    "sound.split_edits",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.transition_paired_sfx",
+    "sound.vo_wpm",
+    "story.cta_window",
+    "story.five_faces_cold_open",
+    "story.sound_off_sentence",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.captions_every_sentence",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.lower_third_spec",
+    "type.name_super_one_detail",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "visual.accent_fixed_meaning",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: documentary) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

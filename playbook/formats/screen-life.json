@@ -1,0 +1,600 @@
+{
+  "id": "screen-life",
+  "title": "Screen-life (the story on one screen)",
+  "use_when": "A story told entirely on a desktop or phone screen: typing, deleting, a message arriving, the product as proof on the same screen. Short UI loops (12-13 s) or story shorts (40-50 s).",
+  "length_s": [
+    12,
+    50
+  ],
+  "//length": "Tier-A UI loops 12.6-12.8 s (3.2 s units); the pack-built screen-life story ran 44.5-47.7 s.",
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1"
+  ],
+  "lead_aspect": "9:16",
+  "template": "templates/saas-feature-drop",
+  "//template": "No screen-life template exists; saas-feature-drop (UI windows, cursor, typed text) is the closest.",
+  "signals": {
+    "keywords": [
+      "screen",
+      "desktop",
+      "laptop",
+      "typing",
+      "message",
+      "notification",
+      "inbox",
+      "screen-life",
+      "phone screen",
+      "dm"
+    ],
+    "product_types": [
+      "saas",
+      "app",
+      "ai tool",
+      "security",
+      "productivity"
+    ],
+    "goals": [
+      "awareness",
+      "explain",
+      "entertain"
+    ],
+    "platforms": [
+      "reels",
+      "shorts",
+      "x"
+    ]
+  },
+  "beats": [
+    {
+      "id": "hook",
+      "at": [
+        0,
+        0.12
+      ],
+      "purpose": "a typed pain line on frame 0 with a visible caret; sound on by 0.25 s, one key sound per keystroke",
+      "required": true,
+      "text": {
+        "max_words": 7
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "key_per_keystroke"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "type.typing_is_the_clock",
+        "hook.text_by_0_3s",
+        "sound.one_sound_per_ui_action"
+      ]
+    },
+    {
+      "id": "setup",
+      "at": [
+        0.12,
+        0.43
+      ],
+      "purpose": "the world on the screen: windows, a notification, the stake (a person waiting, a file, a deadline)",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "drop_out_before_new_unit"
+        ]
+      },
+      "rules": [
+        "story.protagonist_with_stake",
+        "pacing.new_state_every_3s",
+        "visual.tall_ui_zoom_to_region"
+      ]
+    },
+    {
+      "id": "turn",
+      "at": [
+        0.43,
+        0.6
+      ],
+      "purpose": "the turn on screen: a typed answer deleted, a message not sent, a choice; silence or a dip before it",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "dip",
+        "events": [
+          "silence_before_turn"
+        ]
+      },
+      "rules": [
+        "story.one_turn_in_window",
+        "sound.silence_before_turn",
+        "sound.silence_cues_action"
+      ]
+    },
+    {
+      "id": "proof",
+      "at": [
+        0.6,
+        0.85
+      ],
+      "purpose": "the proof on the same screen (a log, a table, a result), real or labelled; one new state per 3 s unit on a downbeat",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "hit_on_new_state"
+        ]
+      },
+      "rules": [
+        "honesty.placeholder_labelled_in_frame",
+        "visual.real_ui_composited",
+        "honesty.never_invent_assets",
+        "story.payoff_pays_stake"
+      ]
+    },
+    {
+      "id": "end",
+      "at": [
+        0.85,
+        1.0
+      ],
+      "purpose": "the end line on black or the screen settling; the honesty label repeated; quiet tail or slam",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "decay",
+        "events": []
+      },
+      "rules": [
+        "pacing.end_card_hold",
+        "honesty.label_hold_2s",
+        "delivery.ceiling_for_dense_clicks"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_note": "key sounds from frame 0; a foley-only open needs pre-music cues lifted over room tone",
+    "unit_s": [
+      3.0,
+      3.2
+    ],
+    "tail": "decay | slam",
+    "master_ceiling_dbtp": -2.0,
+    "master_ceiling_note": "click-dense typing mixes need a -2.0 to -3.0 dBTP ceiling to read <= -1.0 after AAC (delivery.ceiling_for_dense_clicks)",
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_suspense_tick_loop8",
+      "music/bed_lofi_warm_loop8",
+      "music/bed_tech_pulse_loop8"
+    ],
+    "mode": "continuous"
+  },
+  "hooks": [
+    "in-medias-res",
+    "curiosity-gap",
+    "problem-agitate"
+  ],
+  "end_shapes": [
+    "decay",
+    "slam",
+    "quiet-hold"
+  ],
+  "post": {
+    "pattern": "Single post; caption line 1 the stake; title stake-first; AI and demo labels set per platform.",
+    "rules": [
+      "distribution.caption_stake_first_125",
+      "distribution.title_stake_first",
+      "platform.ai_label_instagram_on",
+      "platform.ai_disclosure_in_text"
+    ]
+  },
+  "recommended_parts": {
+    "hook": [
+      "type/typewriter",
+      "ui.promptBar",
+      "device.laptop",
+      "sfx/ui/type_key",
+      "sfx/device/keyboard_mech_soft"
+    ],
+    "setup": [
+      "ui.appWindow",
+      "social.notification",
+      "ui.cursorJourney",
+      "sfx/device/notify_soft",
+      "sfx/ui/click",
+      "cam2d.punchCadence"
+    ],
+    "turn": [
+      "sfx/ui/toggle_off",
+      "sfx/device/message_sent"
+    ],
+    "proof": [
+      "ui.dataTable",
+      "ui.stateChip",
+      "callout.uiHighlight",
+      "sfx/ui/success"
+    ],
+    "end": [
+      "title.endScreen"
+    ],
+    "all": [
+      "music/bed_suspense_tick_loop8",
+      "music/bed_lofi_warm_loop8",
+      "music/bed_tech_pulse_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "sl-loop-13",
+      "label": "tier-A wordless UI loop, 12.8 s",
+      "grade": "measured-A",
+      "tier": "A small sample",
+      "length_s": 12.8,
+      "aspect": "16:9",
+      "cuts": 2,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.12
+          ],
+          "purpose": "typed pain line",
+          "text": "typed",
+          "sound": "sound at 0.25 s, open -0.2 dB"
+        },
+        {
+          "at": [
+            0.12,
+            0.18
+          ],
+          "purpose": "double cut + light streak into the logo",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.18,
+            0.43
+          ],
+          "purpose": "promise on glowing keys",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.43,
+            0.55
+          ],
+          "purpose": "window rises",
+          "text": "",
+          "sound": "drop-out before each new feature"
+        },
+        {
+          "at": [
+            0.55,
+            0.82
+          ],
+          "purpose": "feature unit 1: icon pop, streak, label, window runs",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.82,
+            1.0
+          ],
+          "purpose": "feature unit 2",
+          "text": "",
+          "sound": "slam"
+        }
+      ],
+      "quiet_open_db": -0.2,
+      "tail": "slam",
+      "cut_cadence": "feature unit ~3 s",
+      "bass_share": 0.81,
+      "end_shape": "slam",
+      "sources": [
+        {
+          "doc": "private:research/reference-round8-2026-10.md",
+          "locator": "07. film section"
+        }
+      ],
+      "cuts_per_min": 9.4
+    },
+    {
+      "id": "sl-square-13",
+      "label": "tier-A square UI loop, 12.6 s, no cuts",
+      "grade": "measured-A",
+      "tier": "A small sample",
+      "length_s": 12.6,
+      "aspect": "1:1",
+      "cuts": 0,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.2
+          ],
+          "purpose": "bar builds",
+          "text": "",
+          "sound": "open -4.4 dB"
+        },
+        {
+          "at": [
+            0.2,
+            0.21
+          ],
+          "purpose": "dip before typing",
+          "text": "",
+          "sound": "-49 dB"
+        },
+        {
+          "at": [
+            0.21,
+            0.79
+          ],
+          "purpose": "new state on downbeat hits at 26%, 51%, 77% (a 3.2 s two-bar unit)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.79,
+            1.0
+          ],
+          "purpose": "end line on black, fade",
+          "text": "line",
+          "sound": "tail -22.1 dB"
+        }
+      ],
+      "quiet_open_db": -4.4,
+      "tail": "decay",
+      "cut_cadence": "0 cuts; a new state every 3.2 s",
+      "bass_share": 0.61,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/reference-round8-2026-10.md",
+          "locator": "09. film section"
+        }
+      ],
+      "quiet_tail_db": -22.1,
+      "cuts_per_min": 0.0
+    },
+    {
+      "id": "sl-story-48",
+      "label": "pack-built screen-life story short, 47.7 s",
+      "grade": "measured",
+      "tier": "own build (not graded for reach)",
+      "length_s": 47.7,
+      "aspect": "9:16",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.15
+          ],
+          "purpose": "typing with seeded jitter; one cue per key",
+          "text": "typed",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.15,
+            0.45
+          ],
+          "purpose": "a colleague asks a hard question in chat",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.45,
+            0.6
+          ],
+          "purpose": "the protagonist types \"No.\" and deletes it",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.6,
+            0.9
+          ],
+          "purpose": "the proof arrives as a screenshot of a real log, labelled",
+          "text": "label",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.9,
+            1.0
+          ],
+          "purpose": "end line",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:memory/screenlife-short-2026-10-16",
+          "locator": "method and gotchas"
+        }
+      ],
+      "notes": "Gotchas measured: two-colour text needs each colour span measured for contrast; typing clicks pushed the AAC probe to -1.01 dBTP at a -1.5 ceiling, so master at -2.0; 28 px labels at 16:9 fail the 9 px phone floor; never show a feature the product does not have."
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.ceiling_for_dense_clicks",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.ai_work_as_states",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.placeholder_labelled_in_frame",
+    "honesty.post_copy_sourced",
+    "honesty.references_craft_not_copy",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.no_offer_as_hook",
+    "hook.text_by_0_3s",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.new_state_every_3s",
+    "pacing.new_thing_every_2_4s",
+    "pacing.section_asl_curve",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.one_sound_per_ui_action",
+    "sound.phone_check",
+    "sound.pre_hit_vacuum",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.silence_before_turn",
+    "sound.silence_cues_action",
+    "sound.speech_over_music",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.transition_paired_sfx",
+    "story.command_burst",
+    "story.cta_window",
+    "story.one_turn_in_window",
+    "story.pain_in_familiar_tool",
+    "story.payoff_pays_stake",
+    "story.protagonist_with_stake",
+    "story.sound_off_sentence",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.one_kinetic_style",
+    "type.phrases_2_to_5_words",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "type.typing_is_the_clock",
+    "visual.accent_fixed_meaning",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.product_as_actor",
+    "visual.real_ui_composited",
+    "visual.safe_zone_every_text_box",
+    "visual.tall_ui_zoom_to_region",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: screen-life) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

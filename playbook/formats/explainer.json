@@ -1,0 +1,648 @@
+{
+  "id": "explainer",
+  "title": "Explainer (question, wrong model, reframe, proof, so-what)",
+  "use_when": "How something works or why it matters: one idea, one diagram built step by step, a voice or type leading, one real example.",
+  "length_s": [
+    30,
+    90
+  ],
+  "//length": "The pattern runs 30-600 s; short-form explainers 30-90 s; long ones re-hook around minutes 3 and 6.",
+  "aspects": [
+    "16:9",
+    "9:16"
+  ],
+  "lead_aspect": "16:9",
+  "template": "templates/explainer-diagram",
+  "signals": {
+    "keywords": [
+      "how it works",
+      "explain",
+      "why",
+      "what is",
+      "under the hood",
+      "diagram",
+      "walkthrough",
+      "architecture",
+      "concept"
+    ],
+    "product_types": [
+      "technology",
+      "science",
+      "api",
+      "model",
+      "process",
+      "finance"
+    ],
+    "goals": [
+      "explain",
+      "teach",
+      "awareness"
+    ],
+    "platforms": [
+      "youtube",
+      "linkedin",
+      "x"
+    ]
+  },
+  "beats": [
+    {
+      "id": "question",
+      "at": [
+        0,
+        0.1
+      ],
+      "purpose": "the question the viewer has, over a diagram already drawing; never a definition; a planned quiet open is fine",
+      "required": true,
+      "text": {
+        "max_words": 7
+      },
+      "sound": {
+        "level": "quiet",
+        "events": [
+          "one_sound_on_question"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "hook.text_by_0_3s",
+        "hook.first_sound_by_frame3",
+        "sound.quiet_open",
+        "story.explainer_beats"
+      ]
+    },
+    {
+      "id": "wrongmodel",
+      "at": [
+        0.1,
+        0.3
+      ],
+      "purpose": "the simple wrong model the viewer holds, shown first",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "low",
+        "events": [
+          "diagram_ticks"
+        ]
+      },
+      "rules": [
+        "story.explainer_wrong_model_first",
+        "type.no_redundant_on_screen_text"
+      ]
+    },
+    {
+      "id": "reframe",
+      "at": [
+        0.3,
+        0.65
+      ],
+      "purpose": "the right model on one canvas, one node per named idea (dim the rest), one step per sentence inside speech gaps every 3-6 s; one dive into the hardest box; a complication (\"but...\") at 40-50%",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "step_in_speech_gap",
+          "soft_hit_on_reframe"
+        ]
+      },
+      "rules": [
+        "story.diagram_in_vo_gaps",
+        "story.explainer_complication",
+        "pacing.asl_voice_led",
+        "pacing.continuous_ok",
+        "sound.duck_depth",
+        "sound.speech_over_music",
+        "sound.vo_wpm",
+        "type.captions_every_sentence"
+      ]
+    },
+    {
+      "id": "proof",
+      "at": [
+        0.65,
+        0.85
+      ],
+      "purpose": "one real example traced through the model; every number sourced in frame",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "one_hit_on_example"
+        ]
+      },
+      "rules": [
+        "honesty.digit_needs_source",
+        "honesty.chart_source_in_frame",
+        "honesty.chart_zero_baseline",
+        "story.one_running_example"
+      ]
+    },
+    {
+      "id": "sowhat",
+      "at": [
+        0.85,
+        1.0
+      ],
+      "purpose": "what to do now, one line; the end card held 2-9 s on a declared quiet hold",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "quiet_hold",
+        "events": [
+          "quiet_hold"
+        ]
+      },
+      "rules": [
+        "sound.quiet_hold_ending",
+        "pacing.end_card_hold",
+        "story.cta_window",
+        "sound.planned_quiet_maxima"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_db": [
+      -39,
+      -9
+    ],
+    "quiet_open_s": [
+      1,
+      2
+    ],
+    "tail": "quiet-hold",
+    "tail_hold_s": [
+      2,
+      9
+    ],
+    "bass_share": [
+      0.2,
+      0.36
+    ],
+    "vo_wpm": [
+      110,
+      175
+    ],
+    "duck_db_min": 9,
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_corporate_bright_explainer60",
+      "music/bed_documentary_marimba_loop8",
+      "music/bed_ambient_pad_loop8"
+    ],
+    "mode": "vo"
+  },
+  "hooks": [
+    "claim-or-question",
+    "curiosity-gap",
+    "problem-agitate"
+  ],
+  "end_shapes": [
+    "quiet-hold"
+  ],
+  "post": {
+    "pattern": "Single post; a chaptered long cut on YouTube, the 30 s cut-down (question, reframe, so-what) for feeds.",
+    "rules": [
+      "story.cutdown_launch_order",
+      "distribution.title_stake_first",
+      "platform.burn_captions_muted"
+    ]
+  },
+  "recommended_parts": {
+    "question": [
+      "type/maskRise",
+      "title.hookCard",
+      "diagram.flow",
+      "sfx/ui/highlight_draw"
+    ],
+    "wrongmodel": [
+      "diagram.graph",
+      "layout.degradingDiagram",
+      "sfx/ui/tick"
+    ],
+    "reframe": [
+      "diagram.flow",
+      "callout.highlightBox",
+      "callout.connectorLabel",
+      "sfx/ui/tick",
+      "sfx/hit/soft",
+      "cuts/story/diagramWalkthrough",
+      "cam2d.scaleDive",
+      "cam2d.push2d"
+    ],
+    "proof": [
+      "chart.bar",
+      "chart.sourceFooter",
+      "counter.hero",
+      "sfx/hit/soft"
+    ],
+    "sowhat": [
+      "title.takeaway",
+      "cuts/sections/breath_out"
+    ],
+    "all": [
+      "music/bed_corporate_bright_explainer60",
+      "music/bed_documentary_marimba_loop8",
+      "music/bed_ambient_pad_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "ex-diagram-80",
+      "label": "tier-A diagram explainer, 80 s, zero cuts",
+      "grade": "measured-A",
+      "tier": "A (3.31x, 1.00% bookmarks)",
+      "length_s": 80,
+      "aspect": "16:9",
+      "cuts": 0,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.05
+          ],
+          "purpose": "question over the first node",
+          "text": "",
+          "sound": "open -39 dB (planned quiet)"
+        },
+        {
+          "at": [
+            0.05,
+            0.89
+          ],
+          "purpose": "one diagram grows; a step in a VO gap about every 4 s (14 gaps of 0.3-0.5 s); a wrong branch turns red",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.89,
+            1.0
+          ],
+          "purpose": "9 s silent end-card hold",
+          "text": "",
+          "sound": "tail -64 dB, quiet hold"
+        }
+      ],
+      "lufs": -16.2,
+      "quiet_open_db": -39,
+      "tail": "quiet-hold",
+      "cut_cadence": "0 cuts; a step every ~4 s",
+      "bass_share": 0.24,
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 64"
+        },
+        {
+          "doc": "cuts/patterns.json",
+          "locator": "story.diagramWalkthrough"
+        }
+      ],
+      "quiet_tail_db": -64,
+      "cuts_per_min": 0.0
+    },
+    {
+      "id": "ex-science-20",
+      "label": "saves-strong science explainer, 20 s",
+      "grade": "measured-A",
+      "tier": "saves-strong (0.41x, 3.1% bookmarks)",
+      "length_s": 20,
+      "aspect": "9:16",
+      "cuts": 1,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.15
+          ],
+          "purpose": "the claim",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.175,
+            0.45
+          ],
+          "purpose": "mechanism (powers-of-ten dive)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.45,
+            0.65
+          ],
+          "purpose": "heat",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.65,
+            0.85
+          ],
+          "purpose": "consequence",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.85,
+            1.0
+          ],
+          "purpose": "title",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "lufs": -22.5,
+      "bass_share": 0.22,
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round3-2026-10.md",
+          "locator": "lines 17-38"
+        }
+      ],
+      "vo_wpm": 163,
+      "notes": "Master was -22.5 LUFS (too quiet): master to -14.",
+      "cuts_per_min": 3.0
+    },
+    {
+      "id": "ex-pivot-30",
+      "label": "typographic problem-pivot, 30 s square, zero cuts (craft)",
+      "grade": "craft",
+      "tier": "B (boosted-looking): craft only",
+      "length_s": 30,
+      "aspect": "1:1",
+      "cuts": 0,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.15
+          ],
+          "purpose": "sentence + accent word",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.15,
+            0.4
+          ],
+          "purpose": "problem ladder: 3 rungs of 2-2.5 s, black-and-white",
+          "text": "2 words per rung",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.4,
+            0.47
+          ],
+          "purpose": "gap: faint hum then ~1 s true silence",
+          "text": "",
+          "sound": "silence"
+        },
+        {
+          "at": [
+            0.47,
+            0.58
+          ],
+          "purpose": "brand line; bass and first colour return together",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.58,
+            0.85
+          ],
+          "purpose": "value ladder 3 x ~2.2 s; command pill + address",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.93,
+            1.0
+          ],
+          "purpose": "quiet hold >= 2 s",
+          "text": "",
+          "sound": "tail -73.7 dB"
+        }
+      ],
+      "lufs": -11,
+      "tail": "quiet-hold",
+      "bass_share": 0.58,
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round6-2026-10.md",
+          "locator": "lines 34-46"
+        },
+        {
+          "doc": "cuts/patterns.json",
+          "locator": "story.problemPivot"
+        }
+      ],
+      "quiet_tail_db": -73.7,
+      "cuts_per_min": 0.0
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.no_spoken_cta_builders",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.chart_source_in_frame",
+    "honesty.chart_zero_baseline",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_once_per_frame",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.placeholder_labelled_in_frame",
+    "honesty.post_copy_sourced",
+    "honesty.references_craft_not_copy",
+    "hook.first_change_by_frame6",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.no_offer_as_hook",
+    "hook.payoff_first_rewind",
+    "hook.text_by_0_3s",
+    "hook.three_variants_one_body",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.bass_share_by_role",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.asl_voice_led",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.new_thing_every_2_4s",
+    "pacing.section_asl_curve",
+    "pacing.static_hold_max",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.dropout_before_reveal",
+    "sound.duck_depth",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.no_dead_air",
+    "sound.no_renderer_lowering",
+    "sound.not_flat",
+    "sound.phone_check",
+    "sound.planned_quiet_maxima",
+    "sound.pre_hit_vacuum",
+    "sound.quiet_hold_ending",
+    "sound.quiet_open",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.speech_over_music",
+    "sound.split_edits",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.transition_paired_sfx",
+    "sound.vo_wpm",
+    "story.cta_window",
+    "story.cutdown_launch_order",
+    "story.degrading_problem_ladder",
+    "story.diagram_in_vo_gaps",
+    "story.explainer_beats",
+    "story.explainer_complication",
+    "story.explainer_wrong_model_first",
+    "story.fidelity_ladder",
+    "story.one_problem_one_solution",
+    "story.one_running_example",
+    "story.one_turn_in_window",
+    "story.problem_pivot_shape",
+    "story.query_ladder",
+    "story.sound_off_sentence",
+    "story.through_line_not_vignettes",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.caption_style",
+    "type.captions_every_sentence",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.key_word_accent",
+    "type.no_redundant_on_screen_text",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "visual.accent_fixed_meaning",
+    "visual.colour_on_pivot",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.real_ui_composited",
+    "visual.safe_zone_every_text_box",
+    "visual.tall_ui_zoom_to_region",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: explainer, data-story) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}
