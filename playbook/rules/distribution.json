@@ -1,0 +1,1571 @@
+[
+  {
+    "id": "distribution.audience_finish_prompt",
+    "title": "Ask the audience to finish it",
+    "statement": "Some posts ask the audience to finish one part of the work (pick the music, name it, caption it) instead of announcing.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "observed_top_views": 13173,
+      "observed_bm_pct": 2.4,
+      "observed_median_views": 517
+    },
+    "grade": "craft",
+    "evidence": "one creator's top post was a pick-the-music ask (13,173 views, 319 bookmarks) against a 517 median; a brand's name-someone prompts drew up to 905 comments.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "freelance launch-video creators; company brands (incumbents)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.caption_stake_first_125",
+    "title": "Stake in the first 125 characters",
+    "statement": "Line 1 of an Instagram caption carries the stake inside the first 125 characters (2,200 max), and each platform gets its own caption rather than one pasted everywhere.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "visible_chars": 125,
+      "caption_max_chars": 2200,
+      "linkedin_max_chars": 3000,
+      "x_max_chars": 280
+    },
+    "grade": "house",
+    "evidence": "Platform truncation spec (about 125 characters before 'more') applied as a pack copy rule.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Copy per platform"
+      },
+      {
+        "doc": "skills/social-video/references/copy.md",
+        "locator": "Instagram; LinkedIn; X"
+      },
+      {
+        "doc": "private:memory/channel-analytics-2026-10-16",
+        "locator": "Instagram, last 30 days; How to apply, last line"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "X counts every link as 23 characters. | Merged: Line 1 of the caption names a concrete money, client or deadline stake that a viewer would forward to someone. [inferred; own channel: 5 interactions and zero shares on 2,288 Reels views in 30 days; the caption fix is untested.] | skills/social-video/SKILL.md asks for the stake in the first 125 characters (prose); lint_shotlist.send_line warns on a missing send line in the script, not the caption."
+  },
+  {
+    "id": "distribution.cover_max_4_words",
+    "title": "Covers: 4 words, readable at 120 px",
+    "statement": "A cover or poster frame carries at most 4 words and one subject, reads at 120 px wide, uses real type (never image-model text), and keeps words and subject centred for the 3:4 profile-grid crop.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "poster_max_words": 4,
+      "readable_at_width_px": 120,
+      "grid_crop": "3:4",
+      "youtube_thumbnail_px": "1280x720"
+    },
+    "grade": "house",
+    "evidence": "Pack cover rule; the 3:4 grid crop and the 1280x720 thumbnail are platform specs.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Covers and thumbnails"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "DEFAULTS poster_max_words"
+      },
+      {
+        "doc": "patterns/hooks.json",
+        "locator": "universal.hook_text"
+      },
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "1. Covers and thumbnails"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Covers and thumbnails"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.poster_max_words",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Only the word count is checked; upload a custom thumbnail for every YouTube video (search, channel grid and suggested views depend on it). | Merged: A cover or thumbnail has one subject and at most 4 words that still read when the cover is scaled to 120 px wide; YouTube thumbnails are 1280x720 and vertical covers 1080x1920 with subject and words centred. [house; pack cover rule; the story linter enforces the 4-word poster limit.] | Profile grids crop vertical covers (to 3:4 on Instagram at the time of writing), so keep the subject central. The 120 px read test itself is manual."
+  },
+  {
+    "id": "distribution.cta_one_verb",
+    "title": "CTA: one verb, one destination",
+    "statement": "A CTA states one verb and one destination in the viewer's words, with urgency only if true and no 'free', '100%' or 'guaranteed' unless literally true and approved.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "end"
+    },
+    "params": {
+      "verbs": 1,
+      "destinations": 1
+    },
+    "grade": "house",
+    "evidence": "Pack wording rules; a CTA asking for two things is a listed ad failure.",
+    "sources": [
+      {
+        "doc": "patterns/ctas.json",
+        "locator": "wording.rules"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Ad, Goes wrong when"
+      },
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Honesty in copy"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "patterns/ctas.json wording.rules",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "On a launch platform that bans vote requests, ask the viewer to try it, never to vote (ctas.json launch.film)."
+  },
+  {
+    "id": "distribution.cta_timing",
+    "title": "Soft CTA at 60-70%, hard CTA last",
+    "statement": "Put a soft CTA at 60-70% of the runtime and the hard CTA end card in the last 2.5 s (2.0 s on a 15 s ad); on a loop, replace the end card with a small tag at 0.8 opacity outside the bottom 35%.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "end"
+    },
+    "params": {
+      "soft_cta_share": [
+        0.6,
+        0.7
+      ],
+      "hard_cta_last_s": 2.5,
+      "hard_cta_last_s_15s_ad": 2.0,
+      "loop_tag_opacity": 0.8
+    },
+    "grade": "house",
+    "evidence": "house default [H].",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "4. CTA"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "patterns/ctas.json",
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "structure_check.check_cta covers only the end-card window (story.cta_window); nothing checks the soft CTA at 60-70%. | Use urgency only if true; use the platform's CTA button for the link."
+  },
+  {
+    "id": "distribution.day2_is_fresh",
+    "title": "Treat day 2 as a fresh test",
+    "statement": "Every post after launch day is graded as a fresh test with no carry-over reach expected.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "measured",
+    "evidence": "After the 1.84M-view hero, day-2 posts drew 423-2,792 views, back at the account's 0.5-11K baseline.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Social strategy > Day 2"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "What drove the reach"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.expected_follower_multiple",
+    "title": "Expect 1-10x followers",
+    "statement": "Plan for 1-10x the account's followers in views: tier-A references span 1.2-52x (median 5.5x), and 340x happened only with a launch-hour network.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "expect_views_per_follower": [
+        1,
+        10
+      ],
+      "tier_a_range": [
+        1.18,
+        52
+      ],
+      "tier_a_median": 5.5,
+      "networked_outlier": 340
+    },
+    "grade": "measured-A",
+    "evidence": "Tier-A films of rounds 7-8 ran 1.18x to 52x (median 5.5x of 9); the distribution-assisted 1.8M-view hero ran 340x.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Summary table"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Counts and reception"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Reception"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "How to apply"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "The range is measured; the 1-10x planning band is our reading of it."
+  },
+  {
+    "id": "distribution.film_to_chat_ratio",
+    "title": "One film for every two chats",
+    "statement": "Post at least 1 story film for every 2 chat-skits, and cap chat uploads at 3-4 a week on YouTube with no near-duplicates.",
+    "scope": {
+      "formats": [
+        "chat-skit",
+        "short-film"
+      ],
+      "platforms": [
+        "reels",
+        "shorts"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "films_to_chats": "1:2",
+      "chat_uploads_per_week": [
+        3,
+        4
+      ]
+    },
+    "grade": "house",
+    "evidence": "team rule from own Shorts analytics: chat median 4 views vs film median 44, and 16 of 23 chat uploads got almost no feed exposure.",
+    "sources": [
+      {
+        "doc": "private:memory/channel-analytics-2026-10-16",
+        "locator": "YouTube, last 28 days; How to apply"
+      },
+      {
+        "doc": "private:memory/channel-analytics-2026-10-16",
+        "locator": "YouTube and Instagram sections"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Merged: Prefer story films to chat-skits: on Shorts, films had a median of 44 views vs 4 for chats (11x), with 17-29% of film viewers staying. [measured; own channel, 28 days, 1,002 views: 23 chat uploads (16 with almost no feed exposure) against a smaller set of films; on Reels one solo film got 390 views.] | Small, young channel; film count not recorded in the source."
+  },
+  {
+    "id": "distribution.first_line_archetype",
+    "title": "Open post text with a known archetype",
+    "statement": "Open the post text with one of five first-line archetypes: 'Introducing X.', a three-word title, a stake or opinion, a specific sourced number, or a prompt or question.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "archetypes": "introducing|three_word_title|stake|sourced_number|prompt"
+    },
+    "grade": "craft",
+    "evidence": "five recurring first-line patterns across 26 accounts; the introduce line alone appeared on 7; hashtags appeared on under 1% of posts.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "3. First lines; hashtags"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "A number in post text needs a source; plan.lintClaims only covers on-screen digits."
+  },
+  {
+    "id": "distribution.fix_hook_before_volume",
+    "title": "Fix the hook before adding volume",
+    "statement": "Before adding volume, check views per post on the last 10 posts and fix in order: the first 2 s, then format and length, then topic, then covers and copy; re-cut a flop's opening instead of reposting it.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "posts_to_check": 10,
+      "hook_window_s": 2
+    },
+    "grade": "measured",
+    "evidence": "The maker's own automated accounts published hundreds of videos at single-digit views per post (own analytics, one account set).",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Measure, then fix the right thing"
+      },
+      {
+        "doc": "skills/social-video/references/measure.md",
+        "locator": "The diagnosis ladder"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "7. Cadence and distribution"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "VIRALITY checklist > Distribution"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Replays count as views on Shorts and Reels, so judge the hook by the 3 s hold, swipe-away or skip rate and average view duration, not views. Single-digit views on every post is the account rung: stop automation and stacking first. | Merged: Post at one steady slot rather than bursts, log hook rate (3 s views / impressions), average view duration, completion and sends per variant, and fix the hook and format before posting more of a format that gets almost no views. [house; house experience, not research.] | Drafting is the agent's job; publishing is always the user's action."
+  },
+  {
+    "id": "distribution.fixed_series_slot",
+    "title": "Run a series in a fixed slot",
+    "statement": "Run a series in one fixed daily slot with one fixed caption template so the feed and audience learn the format.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "slots_per_day": 1
+    },
+    "grade": "craft",
+    "evidence": "seen on 5 of 26 accounts; the best had median views at 5.1x followers (321 followers), the highest ratio of the 26. That the template caused the reach is a reading.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "4. Playbooks, item 4 (the format series)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Copy a caption number only if you can prove it."
+  },
+  {
+    "id": "distribution.hashtag_counts",
+    "title": "Few hashtags, per platform",
+    "statement": "Use 3 hashtags on Instagram, up to 3 in a YouTube description, 3-5 on LinkedIn and TikTok, and 0-1 on X.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "instagram": 3,
+      "youtube_max": 3,
+      "linkedin": [
+        3,
+        5
+      ],
+      "tiktok": [
+        3,
+        5
+      ],
+      "x": [
+        0,
+        1
+      ]
+    },
+    "grade": "house",
+    "evidence": "Pack defaults inside platform caps (Instagram caps per post; YouTube shows the first three above the title).",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Copy per platform, Hashtags"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Where links and hashtags go"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Hashtags are labels, not the reach lever for short video."
+  },
+  {
+    "id": "distribution.hero_plus_numbered_thread",
+    "title": "Hero then numbered proof clips",
+    "statement": "A launch posts one hero film, then one numbered proof clip per claim about 2 minutes apart in one sitting, and ends with a text post carrying the availability link.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "proof-clip",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "posts": 7,
+      "spacing_min": 2,
+      "proof_clips": 4
+    },
+    "grade": "measured",
+    "evidence": "A 7-post launch thread in 10 minutes: hero 1.84M views (tier A*, distribution-assisted); its 4 numbered clips 95-109K each (17.6-20.2x) falling smoothly, the shape of thread readers (tier B by rule).",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Social strategy > The sequence"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Evidence tiers"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "What drove the reach"
+      },
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "4. The five repeatable playbooks, item 1"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "distribution.no_batch_posting",
+      "distribution.post_spacing",
+      "distribution.single_post_founder"
+    ],
+    "notes": "Resolved 21 Oct: thread vs single post is chosen by the launch: a product with 3+ separable claims posts hero + numbered proof clips in one sitting (link in the first or last reply); a founder posting one free or open tool posts once with the link inline at the end. Spacing rules apply to top-level posts only, not to replies inside the thread. | The clips worked as proof for readers already in the thread, not as reach drivers. No thread kit exists in the social-video skill yet. | Merged: On launch, post the film, then a numbered reply thread of 3-5 single-feature clips of 10-20 s each, 1-2 min apart, with the link in the first or last reply. [craft; the launch-stack skeleton was seen on 6 of 26 studied accounts (one account twice); on one, thread items drew about 100K views each against a 2.7K organic median, but its launch like rate (0.2%) leaves paid reach open.] | Known conflict: thread vs single spaced posts. Resolution (inferred, untested): spacing rules govern top-level posts; numbered replies under one launch post are one feed item. Round 9 instead suggests one capability per separate short post for a small account."
+  },
+  {
+    "id": "distribution.hook_variant_test",
+    "title": "Test three hooks on one body",
+    "statement": "Render three hook variants on one body and keep the one with the best measured 3 s hold and average view duration, instead of a predicted virality score.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "youtube"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "variants": 3,
+      "platform_creatives_per_group": [
+        3,
+        5
+      ]
+    },
+    "grade": "house",
+    "evidence": "Platform spec: one platform advises 3-5 creatives per ad group and another judges thumbnail tests on watch-time share; vendors' virality scores are predictions.",
+    "sources": [
+      {
+        "doc": "docs/evidence/pack-gap-analysis.md",
+        "locator": "Ranked, item 3"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "lint_shotlist only checks that three variants exist (hook.three_variants_one_body); keeping the winner by measured 3 s hold is a manual step. | The three variants are enforced; the measurement loop (social-video log) is not."
+  },
+  {
+    "id": "distribution.hour1_people_not_pods",
+    "title": "Tell real people before the hour",
+    "statement": "Before posting, tell real people personally so genuine quote posts can land in the first 70 minutes; never pay, script or pod them.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "window_min": 70,
+      "quotes_in_window_share": 0.69
+    },
+    "grade": "inferred",
+    "evidence": "In the 1.8M-view launch from a 5.4K-follower account, 37 of 54 loaded quotes landed within 70 minutes with 1.49M views between them (measured); that the wave caused the reach is inference, and payment is unknown.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Social strategy > Quotes and reposts"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Why it spread"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "What drove the reach"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "The top amplifier wore the company's own affiliate badge; investors and a partner pre-post (22 min early) also took part."
+  },
+  {
+    "id": "distribution.judge_by_saves",
+    "title": "Judge posts by saves, not views",
+    "statement": "Read a post's result by its bookmark rate (saves-strong at 1.3% or more) and, for proven organic, 1.5x+ followers with 1.5%+ bookmarks and 0.2%+ likes, not by raw views.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "a_minus_bm_min_pct": 1.3,
+      "a_vf_min": 1.5,
+      "a_bm_min_pct": 1.5,
+      "a_like_min_pct": 0.2
+    },
+    "grade": "measured",
+    "evidence": "A round-3 launch with a celebrity gained 40% more views than its sibling with the same bookmarks; the best-saved round-3 piece reached 3.8% bookmarks at 1.9x.",
+    "sources": [
+      {
+        "doc": "tools/refstudy_tiers.json",
+        "locator": "A, A-"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 283-302 and 492-510"
+      },
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "Honest limits; Counts and reception"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Craft playbook, item 7 and Counts"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Reception"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "How to apply"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "tools/refstudy.py grade applies these rates to reference studies only; nothing reads our own posts yet. | Merged: Grade a post as strong only at views per follower >= 1.5 or bookmarks >= 1.5% of views, with a like rate >= 0.2%; never on one big view count. [house; the pack's tier rule; in round 9 two tier-A posts sat on the knife edge at 1.51% and 1.60% bookmarks.] | refstudy grade assigns the tier; it does not fail a build. | Merged: Judge each post at 48 h on bookmark and like rate per view, with bookmarks of 1.3% or more as the strong signal, never on raw views. [measured-A; Tier-A films ran 0.13-2.20% bookmarks and 0.26-2.22% likes; the 1.8M-view hero had more bookmarks than likes (0.23% vs 0.20%).] | tools/refstudy.py grade applies the tier rules (A- = bookmark rate 1.3%+), but no pack check runs on our own posts."
+  },
+  {
+    "id": "distribution.launch_window_utc",
+    "title": "Launch between 12:30 and 16:00 UTC",
+    "statement": "Post launch films between 12:30 and 16:00 UTC.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "launch_window_utc": [
+        "12:30",
+        "16:00"
+      ]
+    },
+    "grade": "craft",
+    "evidence": "9 of 10 timed reference launches landed in this window (the 10th at 08:58 UTC); it reflects who was studied, not a tested optimum.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "Notes on the table, launch timing"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Thursday clustering in the sample is a collection artefact; no weekday rule."
+  },
+  {
+    "id": "distribution.lead_with_usable_today",
+    "title": "Lead with something usable today",
+    "statement": "The post leads with something people can use today (a free or open tool) and its link.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "measured-A",
+    "evidence": "The two founder tier-A posts of round 7 were free or open tools with a link (bookmarks 0.89% and 2.20%).",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Cross-post patterns > Founder-voice vs company posts"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.link_in_first_comment",
+    "title": "Link in the first comment",
+    "statement": "Put the one UTM link in the X first reply, the LinkedIn first comment, the YouTube description or pinned comment, and the Instagram or TikTok bio; never in an X or LinkedIn post body or an Instagram caption.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "links_per_post": 1
+    },
+    "grade": "craft",
+    "evidence": "Practitioner belief that body links cut reach on X and LinkedIn (not published); Instagram caption links are not clickable (platform spec).",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Copy per platform, First comment or reply"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Where links and hashtags go"
+      },
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "1. Comparison table, link placement; 5. Where the link goes"
+      },
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "02, a link posted as a reply"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Resolved 21 Oct: thread vs single post is chosen by the launch: a product with 3+ separable claims posts hero + numbered proof clips in one sitting (link in the first or last reply); a founder posting one free or open tool posts once with the link inline at the end. Spacing rules apply to top-level posts only, not to replies inside the thread. | Merged: Keep the link out of the X post body and put it in the first self-reply within 2 min (seen up to 15 min). [craft; 15 of 26 studied accounts place links only in a reply, 4 only in the body; a 478-follower account reached 5.7x views per follower with its form link in a reply. The reach penalty for body links is practitioner belief, not verified.] | skills/social-video/SKILL.md (First comment or reply) already says this as prose; no code sets it."
+  },
+  {
+    "id": "distribution.link_inline_end",
+    "title": "Link inline at the end",
+    "statement": "The link sits inline at the end of the post text, or in the thread's last post, not only in a reply.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "measured-A",
+    "evidence": "Round 7: 3 posts carry the link inline at the end (2 of them tier A); the only 'link in the reply' post is boosted-looking; the 1.8M-view launch put the link in its last, text-only post.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Cross-post patterns > How the text reads"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Social strategy > The sequence"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Resolved 21 Oct: thread vs single post is chosen by the launch: a product with 3+ separable claims posts hero + numbered proof clips in one sitting (link in the first or last reply); a founder posting one free or open tool posts once with the link inline at the end. Spacing rules apply to top-level posts only, not to replies inside the thread. | The common 'link in first reply' practice has n = 1 here (tier B): untested, not disproven."
+  },
+  {
+    "id": "distribution.loop_short_tag",
+    "title": "Looping Short: tag, not card",
+    "statement": "On a looping Short replace the end card with a small tag at 0.8 opacity outside the bottom 35%, so the seam stays clean.",
+    "scope": {
+      "formats": [
+        "reel"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "end"
+    },
+    "params": {
+      "tag_opacity": 0.8,
+      "bottom_band_pct": 35
+    },
+    "grade": "house",
+    "evidence": "Pack default; on platforms that count replays as views a seamless loop is worth views directly.",
+    "sources": [
+      {
+        "doc": "patterns/ctas.json",
+        "locator": "ctas.loop.short"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Reel or hook test, Loops"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "patterns/ctas.json ctas.loop.short",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "Loop kinds: state-return (last frame equals first), reveal-to-hook, ping-pong."
+  },
+  {
+    "id": "distribution.low_volume_when_unseen",
+    "title": "Post less when nobody is seeing it",
+    "statement": "When median views per post are under about 20, cut to 1-2 originals a day and spend the freed time on manual replies.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "median_views_threshold": 20,
+      "originals_per_day": [
+        1,
+        2
+      ]
+    },
+    "grade": "inferred",
+    "evidence": "one studied account posting 8 a day had a 14.5-view median; a 13-a-day rewritten-news account earned about 250 views per post.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "5. Starting point and one-time setup, item 4; investor account notes"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Matches skills/social-video/references/measure.md rung 1 (prose)."
+  },
+  {
+    "id": "distribution.newsjack_then_launch",
+    "title": "Teardown first, then launch within a week",
+    "statement": "Publish a genuinely useful teardown of a big move in your category, then launch into that attention within 7 days.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "launch_within_days": 7
+    },
+    "grade": "craft",
+    "evidence": "one founder: a 412,511-view teardown with 4,501 bookmarks (1.09%), then a 1.86M-view launch 7 days later; n = 1.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "4. Playbooks, item 3 (newsjack, then launch)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Volume newsjacking without a useful angle did not work on another account (about 250 views each)."
+  },
+  {
+    "id": "distribution.next_day_new_angle",
+    "title": "Re-angle the launch, then post BTS",
+    "statement": "On day +1 quote-post your own launch with a new angle (a partner, a changelog, a use), and post a behind-the-scenes of making the film 3-4 days after launch.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "new_angle_day": 1,
+      "bts_day": [
+        3,
+        4
+      ]
+    },
+    "grade": "craft",
+    "evidence": "one account ran this on two launches a month apart; another quote-posted its launch with a full changelog 23 min after launch; in launch week executives also quoted outside reviewers instead of repeating claims.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "3. Recycling a launch video; per-account notes, video-to-sound startup and big-tech executives"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.no_batch_posting",
+    "title": "Never batch-post videos on one platform",
+    "statement": "Post at most 1 video per platform per hour; a batch of 5 Reels posted in 9 minutes decayed 112, 124, 52, 17, 7 views, while one film posted alone the same month got 390.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "max_posts_per_platform_per_hour": 1,
+      "observed_batch_posts": 5,
+      "observed_batch_window_min": 9,
+      "observed_batch_views": "112,124,52,17,7",
+      "observed_solo_views": 390
+    },
+    "grade": "measured",
+    "evidence": "own channel analytics over 30 days: one 5-post batch against one solo post (n = 1 each), small account.",
+    "sources": [
+      {
+        "doc": "private:memory/channel-analytics-2026-10-16",
+        "locator": "Instagram, last 30 days; How to apply"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "distribution.hero_plus_numbered_thread"
+    ],
+    "notes": "skills/social-video/SKILL.md 'Scheduling vs posting everywhere at once' already says never two in the same hour (prose). Whether numbered replies under one launch post count as a batch is untested."
+  },
+  {
+    "id": "distribution.no_spoken_cta_builders",
+    "title": "Builder films end on URL, no spoken ask",
+    "statement": "For builder audiences end on a URL, repo or typed install command on the end card with no spoken CTA, and keep the price and the argument in the post copy.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film",
+        "proof-clip"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "end"
+    },
+    "params": {},
+    "grade": "measured-A",
+    "evidence": "round 4/5: no tier-A explainer had a spoken CTA; a URL or repo end card was the tier-A norm.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "9. CTA and end; 6. CTA and end"
+      },
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "3. rules 10-11"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "One launched product's price moved after its film; keep a non-final price out of the film."
+  },
+  {
+    "id": "distribution.numbered_clip_copy",
+    "title": "Number each clip post by problem",
+    "statement": "Each thread clip post starts with its number and the problem's name, then a one-line claim, a paragraph on the old workaround and its cost, and a fix paragraph ending in the user's benefit.",
+    "scope": {
+      "formats": [
+        "proof-clip"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "All 4 clip posts of a 1.8M-view launch thread follow this copy shape (tier B by rule, read as C).",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Social strategy > The sequence"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.one_change_per_test",
+    "title": "One change per test, rule first",
+    "statement": "Change one thing per test, write the pass rule before posting, keep the body identical when testing hooks, and log before and after for every change to a live post or profile.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "post"
+    },
+    "params": {
+      "changes_per_test": 1
+    },
+    "grade": "house",
+    "evidence": "Pack experiment protocol.",
+    "sources": [
+      {
+        "doc": "skills/social-video/references/measure.md",
+        "locator": "Experiment log"
+      },
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Measure, then fix the right thing"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.post_spacing",
+    "title": "Space same-platform posts 4 hours apart",
+    "statement": "Leave at least 4 h between two top-level posts on the same platform.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "min_gap_h": 4
+    },
+    "grade": "house",
+    "evidence": "team rule set after the measured batch decay (5 posts in 9 min fell to 7 views); the 4 h value itself was not A/B tested.",
+    "sources": [
+      {
+        "doc": "private:memory/channel-analytics-2026-10-16",
+        "locator": "How to apply, line 1"
+      },
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Scheduling vs posting everywhere at once"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Cross-posting rules, rule 4"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "distribution.hero_plus_numbered_thread"
+    ],
+    "notes": "Resolved 21 Oct: 4 h between top-level posts on one platform (the measured batch decay supports the stricter value); 2 h is the floor during a release; thread replies are exempt. | skills/social-video/SKILL.md allows 2 h and up to 2 posts per platform per day during a release; this source sets 4 h. A very large brand account in the X study posted 24 times on launch day (one video per hour, link in first reply); that is the opposite pattern and was not shown to work for small accounts. | Merged: During a release post at least 2 h apart on one platform, at most 2 new posts per platform per day, never two in the same hour, in a fixed daily slot inside the audience's waking hours. [house; Pack default; stacked posts compete for the same small test audience.] | Posting everywhere at once only helps if someone answers comments on every platform in the first hour."
+  },
+  {
+    "id": "distribution.read_windows",
+    "title": "Read numbers at 24 h and 72 h",
+    "statement": "Read a post's numbers at 24 h, 72 h and (for long-form) 7 d, never at 1 h; under a few hundred views treat percentages as noise and use the muted and recall tests with 5 people.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "read_at_h": [
+        24,
+        72
+      ],
+      "longform_read_at_d": 7,
+      "never_before_h": 1,
+      "test_people": 5
+    },
+    "grade": "house",
+    "evidence": "Pack measurement protocol; platforms publish ranking inputs but no thresholds.",
+    "sources": [
+      {
+        "doc": "skills/social-video/references/measure.md",
+        "locator": "Reading windows"
+      },
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Measure, then fix the right thing"
+      },
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "Honest limits; cross-film playbook item 11; tooling gaps"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Merged: Do not grade or cite a post under 24 h old; re-pull at 24 h and 72 h and record its age beside the tier. [measured; round 9: a post graded C at 40 min grew from 662 to 867 views during the session; another grew 3,685 to 3,813; ages ranged 40 min to 44 h.] | refstudy has no age_h or 'too young' flag yet (listed as a tooling gap). skills/social-video/references/measure.md already reads at 24 h and 72 h (prose)."
+  },
+  {
+    "id": "distribution.reply_by_hand_one_voice",
+    "title": "Reply by hand in one voice",
+    "statement": "Genuine replies get hand-written answers in one consistent voice over the first 36 hours.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "window_h": 36
+    },
+    "grade": "craft",
+    "evidence": "The 1.8M-view launch replied to about 65 of 440 replies over a day and a half in one playful voice.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Social strategy > Replies"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.reply_within_first_hour",
+    "title": "Answer every reply in the first hour",
+    "statement": "Stay after posting and answer every reply within 60 min, aiming for under 15 min, literally and including 'not yet' answers.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "reply_target_min": 15,
+      "reply_max_min": 60
+    },
+    "grade": "craft",
+    "evidence": "4 founder accounts replied in 1-50 min (one 8 min to 2 h with plain 'not yet' answers); fast repliers show more replies per view, but cause and effect cannot be separated.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "3. Reply speed and style"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "skills/social-video/SKILL.md says X is better posted live by a person who stays to reply (prose)."
+  },
+  {
+    "id": "distribution.self_repost_next_peak",
+    "title": "Self-repost the launch once",
+    "statement": "Self-repost the launch post once, about 8 h after posting, for the next time-zone peak.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "repost_after_h": 8,
+      "reposts": 1
+    },
+    "grade": "craft",
+    "evidence": "5 of 26 accounts self-repost launches, one at 3-4 time-zone peaks; the 8 h value is a plan choice.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "3. Recycling a launch video; 5. Launch day, step 5"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.send_line",
+    "title": "End on a send line",
+    "statement": "End the caption or the video on a send line ('send this to ...') that names a specific person, and never ask for a keyword comment.",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "chat-skit",
+        "reel"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "end"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Pack rule; sendability is rubric criterion 11 and rung 4 of the diagnosis ladder.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Copy per platform, Send line"
+      },
+      {
+        "doc": "patterns/ctas.json",
+        "locator": "wording.rules"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "SEND_FORMATS; no send_line WARN"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "3. Share and replay"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.send_line",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "WARN only, and only for reel, chat-skit and character-spot. | Merged: Put one send-worthy beat in the final third that names an audience ('send this to...'). [craft; direction consistent across practitioner sources; the 'sends worth 3-5x likes' multiplier is single-vendor [U] and unverified.] | lint_shotlist warns only."
+  },
+  {
+    "id": "distribution.single_post_founder",
+    "title": "Single post for a founder's tool",
+    "statement": "A founder posting their own free or open tool uses one single post with the film and the link inline at the end, not a thread.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "posts": 1
+    },
+    "grade": "measured-A",
+    "evidence": "Round 7: 14 single posts and 2 thread starts (both tier C); the 2 founder tier-A posts are single posts with the link inline at the end.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Cross-post patterns > How the text reads"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Cross-post patterns > Founder-voice vs company posts"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "distribution.hero_plus_numbered_thread"
+    ],
+    "notes": "Resolved 21 Oct: thread vs single post is chosen by the launch: a product with 3+ separable claims posts hero + numbered proof clips in one sitting (link in the first or last reply); a founder posting one free or open tool posts once with the link inline at the end. Spacing rules apply to top-level posts only, not to replies inside the thread."
+  },
+  {
+    "id": "distribution.teaser_day_before",
+    "title": "Tease the launch the day before",
+    "statement": "Post a one-line teaser at T-1 day (optionally with a 5 s frame); small founder accounts can ramp 3-5 days of work-in-progress posts first.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "teaser_days_before": 1,
+      "teaser_frame_s": 5,
+      "ramp_days": [
+        3,
+        5
+      ]
+    },
+    "grade": "craft",
+    "evidence": "T-1 teasers seen on 3 launch accounts (one teaser 25K views, launch 286,633 next day; the link between them is a reading); a 4-day ramp seen on one founder account.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "4. Playbooks 1 and 2; per-account notes, company brands (startups)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.title_stake_first",
+    "title": "Titles: stake first, 50 characters",
+    "statement": "Titles run about 50 characters or fewer (100 max on YouTube), lead with the stake or the payoff in searchable words, and never open with the product name, a series label or all caps.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "title_chars_max": 50,
+      "youtube_title_hard_max_chars": 100
+    },
+    "grade": "house",
+    "evidence": "Pack copy default; titles matter most for search, channel pages and suggested videos, not the feed.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Copy per platform, Title"
+      },
+      {
+        "doc": "skills/social-video/references/copy.md",
+        "locator": "YouTube; Titles: patterns that keep the promise"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "distribution.utility_over_volume",
+    "title": "One useful post beats many rewrites",
+    "statement": "Prefer one useful post that names real people (a list, a teardown) over high-volume rewrites: rewritten news earned about 250 views each while useful lists reached 4,300-18,400.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "rewrite_median_views": 250,
+      "list_views": [
+        4300,
+        18400
+      ]
+    },
+    "grade": "measured",
+    "evidence": "one account, 199 own posts: median 304 views; 5 of its top 6 own posts were list posts.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "recheck section, where 'millions' appears"
+      },
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "per-account notes, investor / VC"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "n = 1 account; named people have a reason to share, which is the inferred mechanism."
+  },
+  {
+    "id": "distribution.utm_convention",
+    "title": "One UTM convention everywhere",
+    "statement": "Tag every off-site link utm_source=<platform>, utm_medium=<surface>, utm_campaign=<series-or-release>, utm_content=<video-slug>[-a|-b|-c], lowercase and hyphenated, with a separate utm_source for AI-assistant referrals and no UTMs on links inside your own site.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "utm_source_values": "youtube|instagram|x|linkedin|tiktok",
+      "utm_medium_values": "shorts|longform|reels|post|first_comment|pinned_comment|bio",
+      "hook_variant_suffix": "-a|-b|-c"
+    },
+    "grade": "house",
+    "evidence": "Pack analytics convention; internal UTMs waste crawl and double-count.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Copy per platform, UTM convention"
+      },
+      {
+        "doc": "skills/social-video/references/copy.md",
+        "locator": "UTM builder"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  }
+]

@@ -1,0 +1,876 @@
+[
+  {
+    "id": "honesty.ai_work_as_states",
+    "title": "Show invisible work as visible states",
+    "statement": "Show AI or background work as a visible checklist or progress UI with named steps ticking, not as a spinner or a jump to the result.",
+    "scope": {
+      "formats": [
+        "saas-feature-drop",
+        "saas-launch",
+        "screen-life"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "A SaaS breakdown (reach unverified) and a saves-strong round-3 launch ('planning N parts' status) show work as ticking steps.",
+    "sources": [
+      {
+        "doc": "docs/evidence/INDEX.md#ref-app-builder-launch",
+        "locator": "What to learn 3"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 427-449"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "ui.checklist"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "honesty.audition_before_hero_use",
+    "title": "Audition synthesised sound before hero use",
+    "statement": "Synthesised sounds and scores that pass measurement are still heard once by a person on a phone before a hero use.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "measured_new_sounds": 55,
+      "measured_qa_fails": 0
+    },
+    "grade": "house",
+    "evidence": "55 new sounds and 4 trailer scores passed sfx/music QA with 0 fails; none was auditioned by a person.",
+    "sources": [
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "Known weak spots > Not heard by a person"
+      },
+      {
+        "doc": "templates/proof-film/README.md",
+        "locator": "Honest limits"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "honesty.boosted_not_evidence",
+    "title": "Do not count boosted-looking reach",
+    "statement": "Treat a reference as format evidence only if it is not boosted-looking (likes below 0.05% of views, or 100x+ followers with likes at or below 0.15%) and not claim-driven (10x+ followers with likes under 0.4%) without saying so.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "boosted_like_max_pct": 0.05,
+      "boosted_vf_min": 100,
+      "boosted_vf_like_max_pct": 0.15,
+      "claim_vf_min": 10,
+      "claim_like_max_pct": 0.4
+    },
+    "grade": "house",
+    "evidence": "The grading rules reproduce the hand grades for all 29 round-4/5 pieces; the 66M-view round-6 film and two 6-9M round-3 launches grade boosted-looking (an inference from rates, not proof of paid reach).",
+    "sources": [
+      {
+        "doc": "tools/refstudy_tiers.json",
+        "locator": "boosted, claim_driven"
+      },
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Field key, line 8"
+      },
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "Evidence tiers"
+      },
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "Shorthand (dark-post pattern); 4. Seen but not to copy"
+      }
+    ],
+    "enforce": {
+      "check": "tools/refstudy.py grade",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Merged: Treat a reference with a like rate <= 0.05% (or v/f >= 100 at <= 0.15% likes) as boosted-looking and never as craft or reach evidence; such posts gained their accounts no followers. [inferred; 5 dark-post-pattern references (0.95M-5.65M views, like rates 0.015-0.12%, absent from their timelines, replies arriving weeks later); the three small-account cases sat at 220, 457 and 631 followers. Paid reach is a reading; no label was seen.] | refstudy.grade labels these tier B automatically. Buying reach for a pack video is out by house rule."
+  },
+  {
+    "id": "honesty.chart_source_in_frame",
+    "title": "Source and method on every chart",
+    "statement": "Every chart frame carries its source and method (and a DEMO DATA pill for demo data), and every on-screen number comes from the dataset file, never typed into copy.",
+    "scope": {
+      "formats": [
+        "data-story",
+        "explainer"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Newsroom convention of a source line on every chart, made unconditional by the pack.",
+    "sources": [
+      {
+        "doc": "docs/evidence/explainer-data-patterns.md",
+        "locator": "What data stories tend to do; Honest axes and sources, 4-5"
+      }
+    ],
+    "enforce": {
+      "check": "templates/_explain/honesty.mjs datasetProblems",
+      "default": null,
+      "part": "templates/data-story"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The gate refuses a blank or generic source, a missing method, a method that repeats the source and footer: false; it checks form, not truth."
+  },
+  {
+    "id": "honesty.chart_zero_baseline",
+    "title": "Bars start at zero; label truncation",
+    "statement": "Bar and area charts start at zero, a truncated line or scatter axis says so in frame, every number has a unit, and a chart has one axis.",
+    "scope": {
+      "formats": [
+        "data-story",
+        "explainer",
+        "proof-clip"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {
+      "bar_area_ymin": 0,
+      "axes_max": 1
+    },
+    "grade": "house",
+    "evidence": "Widely taught charting rules (textbooks and newsroom style guides) turned into build failures.",
+    "sources": [
+      {
+        "doc": "docs/evidence/explainer-data-patterns.md",
+        "locator": "Honest axes and sources, 1-3 and 6"
+      },
+      {
+        "doc": "docs/lane-notes/explainer.md",
+        "locator": "How the brief maps to the code (honest axes); Tests"
+      }
+    ],
+    "enforce": {
+      "check": "templates/_explain/honesty.mjs chartProblems",
+      "default": null,
+      "part": "templates/data-story"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The gate exits 2 before staging. The one-axis rule is a part constraint, not a check. | Merged: Every dataset names a source and a different method; bars and areas start at zero; a line or scatter axis above zero carries a 'truncated' label; every chart names its unit and prints the source footer on every chart frame. [house; Explainer lane gate; make.mjs exits 2 on 8 tested cases.] | The gate checks the form of the evidence, not its truth."
+  },
+  {
+    "id": "honesty.compressed_demo_label",
+    "title": "Label sped-up or assembled demos",
+    "statement": "A sped-up or assembled demo says so in frame ('time-lapse: 12 min shown in 20 s'), a real-time run may say 'real time', and no on-screen clock implies speed while the product works.",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "launch-film",
+        "proof-clip",
+        "saas-feature-drop",
+        "short-film",
+        "tutorial"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "Press case: a widely covered 2023 model demo was later acknowledged as assembled from stills and prompts; community discussion treated live demos as the strongest evidence.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 13; 6.3 AI product launches"
+      },
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 10; Gotchas"
+      },
+      {
+        "doc": "skills/story-script/references/example.md",
+        "locator": "Example 2, Notes for frame-design"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "story-script freezes on-screen clocks; no check reads a compression label. | Merged: Freeze any on-screen clock or timer while the product works unless the elapsed time is proven, because a running clock implies a speed claim. [craft; Production gotcha from the short-film examples; no measurement.]"
+  },
+  {
+    "id": "honesty.concept_piece_labelled",
+    "title": "Concept pieces for yourself, labelled",
+    "statement": "Make concept pieces for your own product and label them 'concept'; do not post unsolicited spec work for a tagged third party.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "inferred",
+    "evidence": "2 tier-A films were unsolicited pieces for tagged third parties at 0.31x and 10.96x views per follower; nothing shows the tag did the work, and a named third party carries trademark risk.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "cross-film playbook item 9; apply section, item 5"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "mp.check.names would catch studied names in shipped files, not a tag in post text."
+  },
+  {
+    "id": "honesty.digit_needs_source",
+    "title": "Every on-screen number needs a source",
+    "statement": "Every on-screen digit or numeric claim carries a specific source or an honesty label in frame; generic sources are refused and the build fails.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "House rule: proof must be real (no invented stats, quotes or reviews).",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "4. Ad structure (Proof must be real); 6.2 R16"
+      },
+      {
+        "doc": "docs/evidence/explainer-data-patterns.md",
+        "locator": "Honest axes and sources, 5"
+      },
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Honesty inside the story"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "on-screen digits need a sourced claim or an honesty label"
+      },
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 5 (20), line 57"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 40-61, 283-302, 366-384"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "Hard rules 6"
+      },
+      {
+        "doc": "skills/motion-pack/references/gotchas.md",
+        "locator": "Proof film > A number is more than the digits 0-9"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Craft playbook, item 7 (Visuals)"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Per-film craft: the other 12 films (film 11)"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Why it spread"
+      }
+    ],
+    "enforce": {
+      "check": "plan.lintClaims",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Also lint_shotlist (on-screen digits need a sourced claim or honesty label, FAIL). Checks the form of a source, not its truth. | Merged: Every digit in a super or end card needs a claim with a specific source or an honesty label in the same shot; generic sources ('internal benchmark', 'our data') are refused. [house; Pack honesty rule; no invented numbers, quotes, reviews, customers or logos.] | Merged: Every on-screen digit (counters, prices against a rival, scores, star counts) carries a specific source or an honesty label; generic sources are refused. [house; A round-5 price reveal against a rival needed a source and graded tier B; round-3 films step counters and scores across scenes.] | Also failed by lint_shotlist (digits need a sourced claim or honesty label). | Merged: Any claim containing a number (any script, currency or percent sign, or number word) carries a specific source; blank, filler or generic sources such as 'internal benchmark' stop the build. [house; house honesty gate; it checks the form of a source, not its truth.] | Also lint_shotlist (on-screen digits) and the proof-film honesty.mjs gate, which also requires a method and refuses numbers in prose, brand, axis units or the VO transcript. | Merged: Every on-screen number carries a specific source or an in-frame 'example' label held at least 2 s. [house; 1 round-7 film labels its numbers 'example'; a boosted-looking film's large view count and the 1.8M-view hero's user-count line carry no source.] | Also lint_shotlist on-screen digits (FAIL) and storyboard/label-hold (>= 2 s)."
+  },
+  {
+    "id": "honesty.label_hold_2s",
+    "title": "Honesty labels small, held 2 s",
+    "statement": "Each honesty label is small, specific and inside the safe area, held at least 2 s, one per shot that needs it, with the fine print repeated on the end card.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "label_min_on_screen_s": 2,
+      "labels_per_shot_max": 1
+    },
+    "grade": "house",
+    "evidence": "Both case-study favourites kept labels in frame without breaking the story; a rejected film used labels so often it read like a compliance file.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 5; Honesty inside the story"
+      },
+      {
+        "doc": "skills/story-script/references/rubric.md",
+        "locator": "Failure to fix, Labels kill the mood; Case study items 1 and 4"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "Hard rules 6; Production gates 3; RECIPE U step 1"
+      },
+      {
+        "doc": "skills/motion-pack/references/cloud-audio.md",
+        "locator": "Honesty"
+      }
+    ],
+    "enforce": {
+      "check": "storyboard/label-hold; eyes/readability",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Merged: Label any placeholder, concept render or synthetic voice where a viewer could mistake it for real, with the label on screen for at least 2 s in a row; never fake a person, voice or recording. [house; house honesty rule.] | Synthetic speech keeps its TTS badge on the whole time (part caption.speakerTag); null media slots render labelled placeholders. Disclose AI music and synthetic voices in post copy and platform AI labels; never imitate or clone a real voice without written consent (references/cloud-audio.md Honesty)."
+  },
+  {
+    "id": "honesty.label_once_per_frame",
+    "title": "Print each honesty label once",
+    "statement": "Each honesty or demo-data label prints once per frame; a source footer that repeats its demo-data line reads as a glitch.",
+    "scope": {
+      "formats": [
+        "data-story"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "label_copies_per_frame": 1
+    },
+    "grade": "measured",
+    "evidence": "The data-story render repeated its demo-data footer line at 60 s (19 Oct sheet).",
+    "sources": [
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "Known weak spots > Label collisions"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Update 19 Oct, Failures 4"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "honesty.label_vocabulary_claims_in_copy",
+    "title": "Fixed label words; claims in copy",
+    "statement": "Use the fixed label vocabulary ('Illustration', 'demo figures', 'demo data', 'fictional', 'in development', 'planned feature', 'screens recreated', '3D render') and keep product claims in captions and descriptions, not in the film.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Pack vocabulary used in the case-study favourites ('demo figures', 'fictional chatbot · demo data').",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Honesty inside the story"
+      },
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Hard rules, rule 5"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Resolved 21 Oct: CONFLICT WITH A CHECK: mp check (tools/mp.mjs BANNED) fails project copy containing \"in development\", \"planned\" or \"illustration\", which are also honesty-label words here. The check targets demo copy; it should exempt text marked as a label. | Conflict with code: mp.check.banned_words (tools/mp.mjs BANNED) FAILs project copy containing 'in development', 'planned' or 'illustration' and asks for 'placeholder', 'demo data', 'render' or 'example' instead; the two vocabularies need reconciling."
+  },
+  {
+    "id": "honesty.literal_first_lines",
+    "title": "Hooks must be literally true",
+    "statement": "Every hook and post first line is literally true; no AI-bait claims.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "one studied account's two top hooks contradict each other, so at least one is false; it is listed as seen but not to copy.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "freelance launch-video creators; 4. Seen but not to copy"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "plan.lintClaims covers on-screen digits only."
+  },
+  {
+    "id": "honesty.never_invent_assets",
+    "title": "Never invent screens or metrics",
+    "statement": "Never invent product screens or metrics: if a real asset is missing, stop and ask, or render a labelled placeholder.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "The HARD LINE of a round practitioner brief; the market comparison notes the pack renders labelled placeholders where others use stock.",
+    "sources": [
+      {
+        "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+        "locator": "The method, steps 3-4"
+      },
+      {
+        "doc": "docs/evidence/pack-gap-analysis.md",
+        "locator": "comparison row 'Stock footage library'"
+      }
+    ],
+    "enforce": {
+      "check": "plan.lintClaims",
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "plan.lintClaims covers invented digits only; invented screens are not detectable."
+  },
+  {
+    "id": "honesty.no_digits_in_plates",
+    "title": "Keep unsourced digits out of plates",
+    "statement": "Placeholder plates and footage carry no unsourced digits either; a plate's on-screen counter showed digits in an ad's problem slot, which the copy lint cannot see.",
+    "scope": {
+      "formats": [
+        "ad-15"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "measured",
+    "evidence": "The editable demo ad used a pack plate whose counter showed digits (partly visible in 16:9); the plate was swapped.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/editable.md",
+        "locator": "PENDING, item 1"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "plan.lintClaims and project.mjs honesty check digits in text fields only, not pixels."
+  },
+  {
+    "id": "honesty.no_real_person_footage",
+    "title": "No unlicensed real-person footage",
+    "statement": "Use no archival or real-person footage you do not hold rights to; build the montage from your own type, UI and renders.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "the one round-9 film built on archival people and spaceflight footage is not reusable; the pack rule is no real-person footage.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "film 05 VISUALS; apply section, item 3"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "honesty.placeholder_labelled_in_frame",
+    "title": "Label every placeholder in frame",
+    "statement": "A null media slot renders a labelled placeholder card, and demo numbers, prices and footage keep an in-frame label (placeholder data, indicative price, fictional film) on screen >= 2 s.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "label_hold_s_min": 2
+    },
+    "grade": "house",
+    "evidence": "Every lane's demo carries labels (render · demo specs, placeholder UI, PLACEHOLDER PHOTO); proof-demo tests fail on a removed, late or 17 px pill.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/editable.md",
+        "locator": "Proposed SKILL.md text (honesty)"
+      },
+      {
+        "doc": "docs/lane-notes/hardware.md",
+        "locator": "Honesty notes"
+      },
+      {
+        "doc": "templates/proof-film/README.md",
+        "locator": "Measured, test bullet"
+      },
+      {
+        "doc": "docs/evidence/saas-video-craft-2026-10.md",
+        "locator": "What the studied software films share; Pack practice"
+      },
+      {
+        "doc": "docs/evidence/launch-films-2026.md",
+        "locator": "C. Production case"
+      }
+    ],
+    "enforce": {
+      "check": "storyboard/label-hold",
+      "default": "templates/_shared/project.mjs honesty (null slot -> labelled placeholder)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The honesty label in the proof demo is 28 px (30 px on 9:16). | Merged: Mock or generated UI carries a 'placeholder UI / demo data' label in frame until real screens replace it, and image models never draw UI. [craft; One production write-up builds UI only from a closed palette of real frames (the agent 'cannot invent UI'); the in-frame label is pack practice.]"
+  },
+  {
+    "id": "honesty.post_copy_sourced",
+    "title": "Post copy: sourced figures, true status",
+    "statement": "Every figure in post copy has a source the user can show, status words match reality ('runs today', 'in build', 'planned', 'in development', 'demo data', 'illustration'), and platform behaviour is tagged as published, practitioner belief or own measurement.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Pack hard rule for publishing copy.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Hard rules, rule 2; Honesty in copy"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Basis tags"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "plan.lintClaims covers the render plan, not post/ copy."
+  },
+  {
+    "id": "honesty.product_does_its_job",
+    "title": "Show the product doing its job",
+    "statement": "A product film shows the product doing its job in frame (a required section at 78-90% of a hardware film), and any AI answer shown on screen is checked before release.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film",
+        "proof-clip"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {
+      "hardware_job_pct": [
+        78,
+        90
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Press coverage of two AI-hardware launches focused on wrong on-screen answers and a product never visibly doing its job; our reading, not a cause.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-films-2026.md",
+        "locator": "B. AI hardware, 2023-2025, including the failures"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "6.4 Device and hardware keynote reveals"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_timing",
+      "default": "patterns/structures.json structures.hardware-reveal.sections.job",
+      "part": "templates/hardware-reveal"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Only the presence of the job section is checked; answer checking is prose-only. Also: never open on 'done with X' and then demo on X (press criticism of one keynote)."
+  },
+  {
+    "id": "honesty.quote_needs_source",
+    "title": "Quote cards only with a source",
+    "statement": "Quote, review and pedigree cards ('from the makers of') appear only with a named real source or work; no invented reviews or stars.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "proof-clip",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "House honesty rule from the film lane.",
+    "sources": [
+      {
+        "doc": "docs/evidence/film-trailer-craft.md",
+        "locator": "5. Type conventions"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "The film doc says the quote card renders a red 'needs a source' card when the source is blank and the pedigree card prints a placeholder label; I did not confirm the part id resolves, so it is not named here."
+  },
+  {
+    "id": "honesty.real_deadline_only",
+    "title": "Real deadlines and offers only",
+    "statement": "End on a concrete call to act (a date pill, a prize) only when the date and offer are real and approved; never invent one.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "end"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "the one round-9 film that ended on a dated call (a real contest) made its post a call to act; round-8 films ended on holds.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "cross-film playbook item 10"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "plan.lintClaims only checks that a digit has a source; whether a date or offer is real cannot be checked. | plan.lintClaims fails on-screen digits without a specific source, which covers dates and prize amounts; it cannot tell whether the offer is approved."
+  },
+  {
+    "id": "honesty.references_craft_not_copy",
+    "title": "Learn the method, never the reference",
+    "statement": "Apply a reference's method (frame-keyed numbers, lighting, timing, measured sound) to your own film; never rebuild its words, brand, footage, music or exact sequence; a literal replica is allowed only as a labelled throwaway spike.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "a literal rebuild of two shared references cost hours of agent time and was rejected; every reference study opens with a craft-only rule.",
+    "sources": [
+      {
+        "doc": "private:memory/references-are-craft-not-copy.md",
+        "locator": "Why; How to apply"
+      },
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "Use"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+        "locator": "The method, step 4"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "line 11"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "tools/check_names.py blocks studied names only; copying a sequence, words or music is not checked. | tools/check_names.py only catches studied brand and account names; copied sequences are not detected. | Merged: From a reference take only the grammar (frames every 0.5 s into a style guide: hex palette, type, shot lengths, transitions, camera, grain), never its subjects, logos, copy or exact sequence. [craft; A round practitioner method; every study doc in this set states craft-only use.] | check_names only catches studied brand or account names, not copied sequences."
+  },
+  {
+    "id": "honesty.same_input_progress",
+    "title": "Show progress on the same input",
+    "statement": "Show a version-to-version improvement by running the same prompt or input through each version side by side.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "proof-clip"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {
+      "versions": 3
+    },
+    "grade": "craft",
+    "evidence": "One round-4 creator film graded B' (solid for a big account) runs one prompt across three model generations.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 4 (9), line 36"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "honesty.synthetic_voice_label",
+    "title": "Label a synthetic voice while it speaks",
+    "statement": "When a synthetic voice carries on a presenter's line, keep an 'AI voice' label and speaker tag on screen in every frame it speaks, from a consented, documented clone.",
+    "scope": {
+      "formats": [
+        "saas-launch",
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "label": "AI voice",
+      "label_min_s": 2
+    },
+    "grade": "house",
+    "evidence": "A round-3 tier-B (boosted-looking) launch hands a founder's line to a cloned voice, tagging captions.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 492-510, Pack coverage line 548"
+      }
+    ],
+    "enforce": {
+      "check": "storyboard/label-hold",
+      "default": null,
+      "part": "cuts/story/voiceHandoff"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "honesty.verbatim_quote_gate",
+    "title": "Quote only verbatim transcript runs",
+    "statement": "A pull quote, or a hook line pulled to the open, is a verbatim run of the transcript, or the build stops.",
+    "scope": {
+      "formats": [
+        "founder-story",
+        "podcast-clip",
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Human lane gate; the podcast hook line uses the same gate and lifted that plan's score 54 -> 100.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/human.md",
+        "locator": "What is new (founder-story); Update 6d401c2 (podcast-clip row)"
+      }
+    ],
+    "enforce": {
+      "check": "templates/_shared/human/core.mjs quoteCheck",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  }
+]

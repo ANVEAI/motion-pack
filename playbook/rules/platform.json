@@ -1,0 +1,762 @@
+[
+  {
+    "id": "platform.ai_disclosure_in_text",
+    "title": "Disclose AI in text on X, LinkedIn",
+    "statement": "On X and LinkedIn, which have no reliable per-post AI switch, state provenance in the post text (e.g. '3D animation rendered in code', 'AI-assisted illustrations, demo figures'), match the video's fine print, and never strip or forge provenance metadata.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Pack rule filling a platform gap (no per-post switch at the time of writing).",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "AI-content disclosure"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "AI-content disclosure: X and LinkedIn; File metadata"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Generated people also get a line in the end-card fine print (story-script, Honesty inside the story)."
+  },
+  {
+    "id": "platform.ai_label_instagram_on",
+    "title": "Instagram AI label always on",
+    "statement": "Switch Instagram's AI label on for every video the pipeline makes and confirm the switch reads on before Share, because it defaults off.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "default_state": "off",
+      "required_state": "on"
+    },
+    "grade": "house",
+    "evidence": "Platform spec asks for labels on photoreal or realistic altered media; switching it on for all pipeline output is a pack rule.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "AI-content disclosure"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "AI-content disclosure: what each switch means"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Inferred, not proven: accounts that auto-posted hundreds of videos got an account-level AI badge and very low reach; the posting pattern is the likely cause, not honest per-post labels."
+  },
+  {
+    "id": "platform.ai_label_tiktok",
+    "title": "TikTok AI setting on when generated",
+    "statement": "Set TikTok's AI-generated content option on whenever generated imagery, voices or photoreal renders appear, and on when unsure.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "tiktok"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Platform spec requires labels on realistic AI content and may label from content credentials; the 'when unsure, on' default is a pack rule.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "AI-content disclosure"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "AI-content disclosure: what each switch means"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "platform.ai_label_youtube",
+    "title": "YouTube synthetic label: photoreal only",
+    "statement": "Answer YouTube's altered-or-synthetic question Yes when any shot is photoreal generated or rendered content that could pass as real (a product that does not exist yet, a generated person, a realistic scene) and No for stylised CG, animation and motion graphics.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "shorts",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "photoreal_shots_for_yes_min": 1
+    },
+    "grade": "house",
+    "evidence": "Platform spec (realistic content needs disclosure, animation is exempt, the label does not limit reach) applied as a pack rule.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "AI-content disclosure"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "AI-content disclosure: what each switch means"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "platform.burn_captions_muted",
+    "title": "Burn captions for muted autoplay",
+    "statement": "Burn captions into X and LinkedIn uploads, which autoplay muted, and upload the SRT or VTT as the caption file where the platform takes one.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Platform behaviour (muted autoplay) plus a pack delivery rule.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Upload copies under a size cap"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Specs, X and LinkedIn notes"
+      },
+      {
+        "doc": "docs/lane-notes/access.md",
+        "locator": "Shared-file edits NEEDED item 4; RECIPE D step 2"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "tools/captions/export.py --burn makes the burned copy on request; nothing applies it per platform automatically. | Merged: Copies for X and LinkedIn carry burned-in captions; YouTube gets the SRT or VTT as a caption file. [house; Access lane delivery recipe.] | tools/captions/export.py --burn does it on request; nothing makes it the default per platform."
+  },
+  {
+    "id": "platform.length_targets",
+    "title": "Fit length to the platform",
+    "statement": "Organic shorts run 15-35 s, ads 15-30 s plus a 6 s bumper, X 20-45 s, LinkedIn 30-60 s and web heroes 20-45 s.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "web",
+        "x",
+        "youtube"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "organic_short_s": [
+        15,
+        35
+      ],
+      "ad_s": [
+        15,
+        30
+      ],
+      "bumper_s": 6,
+      "x_s": [
+        20,
+        45
+      ],
+      "linkedin_s": [
+        30,
+        60
+      ],
+      "web_s": [
+        20,
+        45
+      ]
+    },
+    "grade": "house",
+    "evidence": "house preset table; the 15-35 s Shorts ideal is listed as an unverified number in the virality evidence notes.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/platforms.md",
+        "locator": "preset table"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "Unverified numbers"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "patterns/lengths.json",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [
+      "pacing.tier_a_length_bimodal"
+    ],
+    "notes": "Launch films override this: L1 1:30-2:30, L9 1:45-3:00."
+  },
+  {
+    "id": "platform.linkedin_spec",
+    "title": "LinkedIn: H.264 MP4, aim 30-60 s",
+    "statement": "LinkedIn takes 16:9, 1:1 or 4:5 (aspect 1:2.4 to 2.4:1) as MP4 with H.264 and AAC, 3 s to 15 min, aim 30-60 s organic and 15-30 s for ads.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "min_s": 3,
+      "max_s": 900,
+      "aim_s": [
+        30,
+        60
+      ],
+      "ad_aim_s": [
+        15,
+        30
+      ]
+    },
+    "grade": "house",
+    "evidence": "Platform spec for the ad aim and limits; the organic aim is a pack default.",
+    "sources": [
+      {
+        "doc": "patterns/lengths.json",
+        "locator": "platforms.linkedin.organic; platforms.linkedin.ad"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Specs"
+      }
+    ],
+    "enforce": {
+      "check": "mp.check.size",
+      "default": "tools/deliver.py PRESETS['linkedin']",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "platform.master_16x9_relayout",
+    "title": "Master 16:9, re-layout never crop",
+    "statement": "Master the launch post at 16:9 and make 9:16 and 1:1 by re-layout, never by crop or letterbox, plus a 6 s cut-down.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "launch-film",
+        "trailer"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "cutdown_s": 6
+    },
+    "grade": "measured",
+    "evidence": "launch study: every film in one 2026 launch wave was 16:9 on X; re-layout is a house rule.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "3. rule 12"
+      },
+      {
+        "doc": "skills/motion-pack/references/platforms.md",
+        "locator": "Export set"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "templates --set aspect=9:16 (tall/ re-layout)",
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "eyes/composition catches unrequested bars (visual.no_letterbox_vertical) but not a crop, and nothing checks which aspect leads. | eyes/composition flags unrequested bars and wrong aspect; 9:16 film looks are re-laid out, never letterboxed."
+  },
+  {
+    "id": "platform.native_upload_x",
+    "title": "Upload video natively to X",
+    "statement": "Upload launch and feature videos natively to X; use a YouTube link only for long-form episodes.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "every reference launch video (17 posts) was a native X upload; YouTube links appeared only for long-form interviews on 2 accounts.",
+    "sources": [
+      {
+        "doc": "private:research/x-channel-strategies-2026-10.md",
+        "locator": "Notes on the table, native video"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "On X, launch films ran 28-80 s and feature clips 9-30 s; skills/social-video/SKILL.md aims 20-45 s for X."
+  },
+  {
+    "id": "platform.reels_tiktok_spec",
+    "title": "Reels and TikTok: 9:16, 15-35 s",
+    "statement": "Instagram Reels and TikTok take 9:16 at 1080x1920, aim 15-35 s; Reels run up to 180 s, and TikTok publishes no ideal length and shows each account's limit at upload.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "tiktok"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "aspect": "9:16",
+      "width_px": 1080,
+      "height_px": 1920,
+      "reels_max_s": 180,
+      "aim_s": [
+        15,
+        35
+      ]
+    },
+    "grade": "house",
+    "evidence": "Reels 180 s from press reports of a platform change; the aim is a pack default.",
+    "sources": [
+      {
+        "doc": "patterns/lengths.json",
+        "locator": "platforms.instagram.reels; platforms.tiktok.organic"
+      },
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Platform specs"
+      }
+    ],
+    "enforce": {
+      "check": "mp.check.size",
+      "default": "tools/deliver.py PRESETS['reels'], PRESETS['tiktok']",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "references/platforms.md tags Reels up to 3 min as [pub]; patterns/lengths.json grades it practitioner because the help page did not render."
+  },
+  {
+    "id": "platform.relayout_not_crop",
+    "title": "Re-layout each aspect, never crop",
+    "statement": "Author the lead aspect natively and generate 16:9, 9:16 and 1:1 from per-aspect layout constants (positions, sizes, camera distance, lens shift), never by cropping or hand-editing the derived file, then check stills from each delivered file.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "aspects": "16:9, 9:16, 1:1 on request"
+    },
+    "grade": "house",
+    "evidence": "pack re-layout rule; eyes fails a delivered file whose aspect the platform does not take.",
+    "sources": [
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "9. Re-layout between aspects"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Grid and safe zones"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "7.2 rule 9; 9. Aspect set"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+        "locator": "The method, step 8, line 55"
+      },
+      {
+        "doc": "docs/evidence/pack-gap-analysis.md",
+        "locator": "What the market sells; comparison row 'Aspect versions'"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/composition (aspect only)",
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "16:9 to 9:16: pull back or reframe and stack type vertically; 9:16 to 16:9: fill the width with scene, never empty side panels; 1:1: centre the hero, keep the bottom 10% clear. The aspect check does not prove the layout was re-authored. | Merged: Make every aspect from one timeline by re-layout: vertical gets bigger type and fewer elements, square gets tighter holds, wide gets more spatial context. [craft; Practitioner method from a round method article; market complaints include resizing that crops important content.] | mp.check.size only checks WxH against the aspect; nothing checks that content was re-laid out rather than cropped."
+  },
+  {
+    "id": "platform.shorts_length_12_15",
+    "title": "Cut short skits to 12-15 s",
+    "statement": "Cut chat-skits and story shorts for Shorts to 12-15 s.",
+    "scope": {
+      "formats": [
+        "chat-skit",
+        "short-film"
+      ],
+      "platforms": [
+        "shorts"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "length_s": [
+        12,
+        15
+      ]
+    },
+    "grade": "house",
+    "evidence": "team rule from own Shorts: every top Short lost half its viewers between 4 and 8 s and 83% swiped away; the 12-15 s value was not A/B tested.",
+    "sources": [
+      {
+        "doc": "private:memory/channel-analytics-2026-10-16",
+        "locator": "YouTube, last 28 days; How to apply"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Disagrees with patterns/lengths.json youtube.shorts aim_s [15, 35] (house) and skills/story-script/SKILL.md chat-skit 10-40 s; this rule is narrower and evidence-led for skits on a small channel."
+  },
+  {
+    "id": "platform.shorts_spec",
+    "title": "Shorts: 9:16, aim 15-35 s",
+    "statement": "YouTube Shorts take 9:16 at 1080x1920, up to 180 s, aim 15-35 s; a Short over 60 s with a copyright claim on its music is blocked.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "shorts"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "aspect": "9:16",
+      "width_px": 1080,
+      "height_px": 1920,
+      "max_s": 180,
+      "aim_s": [
+        15,
+        35
+      ],
+      "copyright_block_over_s": 60
+    },
+    "grade": "house",
+    "evidence": "Platform spec for the 180 s limit and the 60 s copyright block (help page accessed 2026-10-16); the 15-35 s aim is a pack default.",
+    "sources": [
+      {
+        "doc": "patterns/lengths.json",
+        "locator": "platforms.youtube.shorts"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Specs"
+      }
+    ],
+    "enforce": {
+      "check": "mp.check.size",
+      "default": "tools/deliver.py PRESETS['shorts']",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "mp.check.size enforces WxH against the aspect; length is not checked. Replays count as views since 31 Mar 2025."
+  },
+  {
+    "id": "platform.vertical_safe_rect",
+    "title": "Vertical text in the safe rect",
+    "statement": "In 9:16 at 1080x1920, text and logos stay inside the conservative rect: 269 px from the top, 672 px from the bottom, 65 px left, 120 px right (x 65-960, y 269-1248).",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "top_px": 269,
+      "bottom_px": 672,
+      "left_px": 65,
+      "right_px": 120,
+      "ref_px": "1080x1920"
+    },
+    "grade": "house",
+    "evidence": "union (max per side) of two conflicting, unverified research estimates of platform UI; eyes fails any plan text box outside it.",
+    "sources": [
+      {
+        "doc": "type/safezones.js",
+        "locator": "header comment; SAFE.conservative"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.platforms.safezones"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Grid and safe zones"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "9. Safe zones"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Safe zones for vertical video"
+      },
+      {
+        "doc": "patterns/ctas.json",
+        "locator": "ctas, the Reels safe-zone row"
+      },
+      {
+        "doc": "skills/motion-pack/references/platforms.md",
+        "locator": "9:16 safe rectangle"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "VIRALITY checklist > Platform fit"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.safezones; spec.platforms.presets"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/safezones",
+      "default": "type/safezones.js SAFE.conservative (eyes default for 9:16)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Conflict: visual.md gives top 220 / bottom 420 / right 120 / left 60 (now the reels row); another research note gives 14% / 35% / 6%. Per-platform rows (tiktok 150/480/60/140, reels 220/420/60/120, shorts 140/380/60/120, ytAd 200/500/60/120, metaStory 250/340/60/60) are working estimates flagged verify: check the live apps before a paid campaign. | Merged: On a 1080x1920 frame keep faces, words and CTAs out of the top 269 px, bottom 672 px, left 65 px and right 120 px, and never burn a CTA into the bottom 35% where the platform's own button sits. [house; Conservative union of conflicting sources, every per-platform row flagged 'verify'; the bottom-35% band is a platform ad spec.] | eyes/safezones and plan.PLATFORMS use side 0.06 (65 px) on both sides; the 120 px right margin of type/safezones.js 'conservative' is not checked. | Merged: On 1080x1920 keep text and CTAs inside x 65-960 and y 269-1248 (top 14%, bottom 35% reserved), and on wide frames inside 5% top, 8% bottom, 5% sides. [house; conservative union of two conflicting sources (platform UI estimates, flagged verify).] | Looser alternative x 60-960, y 220-1500 in the research. eyes uses symmetric side 0.06 (right edge ~1015) while the conservative rect reserves 120 px on the right. | Merged: In a vertical frame, faces and key text stay out of the bottom 35% (and the top 14%), where captions, titles and feed buttons sit. [house; pack framing rule; eyes flags persistent text-like edge blocks 15% (warn) or 50% (fail) outside the safe rectangle.] | eyes cannot see faces: only text-like edges and plan boxes are checked; face placement is prose-only."
+  },
+  {
+    "id": "platform.wide_square_safe",
+    "title": "Wide 5% title-safe, square 6/10%",
+    "statement": "In 16:9 keep text inside 5% title-safe (96 px sides, 54 px top and bottom at 1920x1080; 3.5% action-safe), and in 1:1 inside top 6%, bottom 10%, sides 6%.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "web",
+        "x",
+        "youtube"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "wide_title_side_px": 96,
+      "wide_title_topbottom_px": 54,
+      "wide_action_frac": 0.035,
+      "square_top_frac": 0.06,
+      "square_bottom_frac": 0.1,
+      "square_side_frac": 0.06
+    },
+    "grade": "house",
+    "evidence": "broadcast title-safe convention for 16:9; the square row is the pack's platform preset estimate.",
+    "sources": [
+      {
+        "doc": "type/safezones.js",
+        "locator": "SAFE.wideTitle, SAFE.wideAction"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Grid and safe zones"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.platforms.presets linkedin.video"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/safezones",
+      "default": "eyes default_by_aspect (16:9 wideTitle, 1:1 linkedin.video)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "16:9 grid: 12 columns, 96 px margins, 24 px gutters; 1:1 grid 6 columns."
+  },
+  {
+    "id": "platform.x_landscape_ok",
+    "title": "Landscape is fine on X",
+    "statement": "On X a 16:9 master is fine: deliver landscape unless the format is a square loop.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "aspect": "16:9"
+    },
+    "grade": "measured-A",
+    "evidence": "8 of 9 tier-A video references on X across rounds 7-8 are landscape (one about 1.72:1); one small-sample square loop; the tier-A* launch hero is 16:9.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Summary table"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Sources"
+      }
+    ],
+    "enforce": {
+      "check": "mp.check.size",
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "mp.check.size only checks WxH against the planned aspect, not the choice."
+  },
+  {
+    "id": "platform.x_name_early_or_end",
+    "title": "Name by 1 s or at the end",
+    "statement": "On X the brand name shows by 1 s, or is held back to the end card; both shapes appear in tier-A films.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "name_by_s": 1.0
+    },
+    "grade": "measured-A",
+    "evidence": "Two tier-A round-7 films name the product by 1 s; a third holds it to the end card (35.6 s of 37.8 s); a tier-A founder film (round 8) shows no logo until the last 2 s.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Cross-post patterns > Hooks in the first 2 s"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 12"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "plan.PLATFORMS brandCueBy x 7 s and the saas-launch brand_by_s 10 would flag the end-card variant."
+  },
+  {
+    "id": "platform.x_spec",
+    "title": "X: 20-45 s, 140 s cap",
+    "statement": "X takes 9:16 or 16:9 (16:9 for cinematic pieces), aim 20-45 s; accounts without a paid tier cap a video at 140 s and 512 MB.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "max_s": 140,
+      "max_mb": 512,
+      "aim_s": [
+        20,
+        45
+      ]
+    },
+    "grade": "house",
+    "evidence": "Platform limit read from a search summary of the help page (fetch blocked); the aim is a pack default.",
+    "sources": [
+      {
+        "doc": "patterns/lengths.json",
+        "locator": "platforms.x.free"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Specs"
+      }
+    ],
+    "enforce": {
+      "check": "mp.check.size",
+      "default": "tools/deliver.py PRESETS['x']",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "patterns/lengths.json grades the 140 s limit practitioner; references/platforms.md tags it [pub]."
+  }
+]

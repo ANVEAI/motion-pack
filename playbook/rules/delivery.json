@@ -1,0 +1,943 @@
+[
+  {
+    "id": "delivery.bt709_in_filter_chain",
+    "title": "Tag BT.709 inside the filter chain",
+    "statement": "BT.709 colour tags are set in the filter chain (setparams) as well as on the output, because ffmpeg 7+ leaves primaries and transfer unset after a scale filter otherwise.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "post"
+    },
+    "params": {
+      "colour_tags": "bt709"
+    },
+    "grade": "measured",
+    "evidence": "Access lane encodes: -color_primaries bt709 alone left primaries and transfer unset after scale.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/access.md",
+        "locator": "Shared-file edits NEEDED, item 6 (gotchas)"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/encode",
+      "default": "tools/deliver.py TAG709",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The same note: the native VP9 decoder drops WebM alpha; decode with libvpx-vp9 (tools/deliver.py --alpha-src)."
+  },
+  {
+    "id": "delivery.ceiling_for_dense_clicks",
+    "title": "Lower the ceiling for click-dense mixes",
+    "statement": "For click-dense UI mixes or bass-heavy beds (about 60% bass), set the master ceiling to -2.5 to -3.0 dBTP, fade the first 40 ms in, and grep the render log for 'lowered' so the renderer's second AAC encode does not drop the whole track.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "proof-clip",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "ceiling_dbtp": [
+        -3.0,
+        -2.5
+      ],
+      "fade_in_ms": 40
+    },
+    "grade": "measured",
+    "evidence": "own renders: track lowered 0.6-2.2 dB at -1.5 to -2.5 dBTP; -3.0 delivered -14.1 to -14.2 LUFS with nothing lowered; a mix starting on a hit dropped 4-5 dB.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/gotchas.md",
+        "locator": "HyperFrames; Proof film; Environment (round 6 render)"
+      }
+    ],
+    "enforce": {
+      "check": "ears/loudness",
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "plan.ceilingDb and plan.fadeInMs are read by templates/_shared/audio.py but not set by default; ears only catches the result."
+  },
+  {
+    "id": "delivery.clean_tail",
+    "title": "End on 0.15 s of digital silence",
+    "statement": "The last 0.15 s of the master is digital zero (near-silent after a lossy decode, skipping 25 ms of codec tail); the first sample is not zero when the video opens on a hit.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "end"
+    },
+    "params": {
+      "tail_s": 0.15,
+      "codec_skip_s": 0.025,
+      "digital_zero_dbfs": -90,
+      "near_zero_dbfs": -60
+    },
+    "grade": "house",
+    "evidence": "Pack rule carried over from an earlier launch film.",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "3. Mixing rules, rule 11; 5.2 House master spec"
+      },
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.loudness"
+      }
+    ],
+    "enforce": {
+      "check": "ears/loudness",
+      "default": "music/mixer.py render (tail_zero_s 0.15)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "delivery.critic_loop",
+    "title": "Score from evidence, fix the worst three",
+    "statement": "Before showing a film, build a 2 fps 6-across contact sheet, a 12-frame strip at the fastest move, 360 px phone frames and a double loop; score hook, phone readability, motion, variety, sound sync and brand 1-10; fix the 3 worst defects and repeat until all are 8 or more.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "sheet_fps": 2,
+      "sheet_cols": 6,
+      "strip_frames": 12,
+      "phone_px": 360,
+      "score_min": 8,
+      "fix_per_pass": 3
+    },
+    "grade": "craft",
+    "evidence": "Practitioner method from a round method article.",
+    "sources": [
+      {
+        "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+        "locator": "The method, step 7, lines 39-46"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "tools/critic_pack.sh",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "critic_pack builds the evidence; the 8/10 bar is a human or agent judgement, not a check."
+  },
+  {
+    "id": "delivery.cue_library_complete",
+    "title": "Render with a complete sound library",
+    "statement": "Render only with a sound library that holds every cue id in the plan; a shared library linked from an older clone lacked all 55 new sounds, and a missing id is reported, never faked.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "measured_missing_sounds": 55
+    },
+    "grade": "measured",
+    "evidence": "The integration clone's symlinked library had none of the 55 new sounds until it built its own (356 sounds, QA 0 fails).",
+    "sources": [
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "0. One-time setup"
+      },
+      {
+        "doc": "private:memory/motion-pack-merge-procedure.md",
+        "locator": "Lessons (16 Oct, XP integration)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "templates/_shared/audio.py reports missing ids as TODO but does not fail the mix; tools/check_ids.py resolves ids against manifests, not WAV files."
+  },
+  {
+    "id": "delivery.deliver_stems",
+    "title": "Deliver stems that sum to the master",
+    "statement": "Every mix exports master.wav plus music, sfx and vo stems that sum exactly to the pre-limiter master, and a no-music version for re-scoring or trending-audio swaps.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Pack mixer contract.",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "3. Mixing rules, rule 13; 7. Virality practice 6"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "House rules"
+      },
+      {
+        "doc": "skills/motion-pack/references/cloud-audio.md",
+        "locator": "The pipeline"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "music/mixer.py render (stems=True, nomusic.wav)",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "delivery.delivered_tp_minus1",
+    "title": "Delivered MP4 at or under -1.0 dBTP",
+    "statement": "The delivered MP4's decoded audio is at most -1.0 dBTP: limit with 4x-oversampled true-peak detection (5 ms look-ahead), then encode two AAC probes and lower the ceiling by the overshoot + 0.15 dB until both pass (up to 8 rounds).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "post"
+    },
+    "params": {
+      "delivered_tp_dbtp": -1.0,
+      "probe_margin_db": 0.15,
+      "max_rounds": 8,
+      "aac_kbps": 256,
+      "oversample": 4,
+      "lookahead_ms": 5
+    },
+    "grade": "measured",
+    "evidence": "Our renders: the HyperFrames render lowered the whole track when the AAC read over -1 dBTP (0.9-2.4 dB on one film, a flat 4.5 dB on another); the AAC encoder overshot about 3 dB on a few transients and a sample-peak limiter at -1.9 dBFS still overshot.",
+    "sources": [
+      {
+        "doc": "private:memory/hyperframes-audio-tp-guard.md",
+        "locator": "whole note"
+      },
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.loudness"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "Honest limits"
+      },
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "5.4 Mastering chain"
+      }
+    ],
+    "enforce": {
+      "check": "ears/loudness",
+      "default": "music/mixer.py render (AAC probes)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Resolved 21 Oct: true peak -1.0 vs -1.5 settled: the 24-bit WAV master is limited to -1.5 dBTP, the decoded delivered MP4 must read <= -1.0 dBTP (AAC adds ~0.5 dB). | Also mp.check.loudness and tools/deliver.py (pack preset tp -1.0). Settled pair with delivery.master_tp_minus1_5."
+  },
+  {
+    "id": "delivery.encode_spec",
+    "title": "Encode H.264 yuv420p faststart, BT.709",
+    "statement": "Deliver H.264 High yuv420p with faststart, a keyframe every 2 s (GOP warn 5 s, fail 10 s), CRF 18-23 (23 for demos) and BT.709 tags set in the filter chain.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "post"
+    },
+    "params": {
+      "gop_s": 2,
+      "gop_warn_s": 5,
+      "gop_fail_s": 10,
+      "crf": [
+        18,
+        23
+      ],
+      "demo_crf": 23,
+      "bpp_min": 0.01
+    },
+    "grade": "house",
+    "evidence": "house delivery spec; the renderer's default CRF 16 gives about 34 MB for 15 s 1080p.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/critic.md",
+        "locator": "Common defects: moov after mdat"
+      },
+      {
+        "doc": "skills/motion-pack/references/gotchas.md",
+        "locator": "HyperFrames > Default quality; Environment > ffmpeg 7+ colour tags"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.encode; spec.composition"
+      },
+      {
+        "doc": "eyes/README.md",
+        "locator": "notable findings"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/encode",
+      "default": "tools/deliver.py presets",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "ffmpeg 7+ needs setparams for bt709 after a scale filter. | Merged: The master is H.264 yuv420p with moov before mdat, bt709 tags on HD, a keyframe interval of at most 5 s (fail over 10 s), at least 0.01 bits per pixel (fail under 0.004), blockiness under 1.75 (fail at 2.5) and a 1080 px short side. [house; pack delivery defaults; pack CRF 23 demos measured 0.008-0.03 bpp and blockiness 1.3-1.9, and two templates shipped without faststart.] | x264's default 250-frame GOP is 8.3 s at 30 fps, over the 5 s house limit. For byte-identical files use x264 -threads 1; for byte-identical stills render with GPU raster disabled (GPU raster varied at 98-111 dB)."
+  },
+  {
+    "id": "delivery.grain_survives_reencode",
+    "title": "Upload grain at 1.5 px",
+    "statement": "Grain meant to survive platform re-encoding uses at least 1.4 px grain size and 1.5x amount (the upload-safe stock: 0.030 amplitude, 1.5 px, mono), and is masked off the top 8% of luma and flat brand fields.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "grain_size_px_min": 1.4,
+      "amount_multiplier": 1.5,
+      "upload_safe_amount": 0.03,
+      "upload_safe_size_px": 1.5,
+      "highlight_mask_luma": [
+        0.92,
+        1.0
+      ]
+    },
+    "grade": "inferred",
+    "evidence": "researched starting value: platform re-encodes are expected to smear 1 px grain; not yet measured on uploaded copies.",
+    "sources": [
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "3.6 fx/grain, Compression survival"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Looks and grain (by pack id)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "layers/presets/stocks.js STOCKS['upload-safe']",
+      "part": "layers/grain"
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "Never put heavy grain on flat brand colour fields or gradients in a CRF-heavy delivery (banding and pumping)."
+  },
+  {
+    "id": "delivery.integrated_minus14",
+    "title": "Master to -14 LUFS-I",
+    "statement": "The social master lands at -14 LUFS-I +-0.5 LU (warn to +-1.5), measured with BS.1770-4 gating; the pack meter and ffmpeg ebur128 agree within 0.1 LU.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "web",
+        "x",
+        "youtube"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "target_lufs": -14,
+      "pass_lu": 0.5,
+      "warn_lu": 1.5,
+      "cross_meter_lu": 0.1
+    },
+    "grade": "house",
+    "evidence": "House number; only one streaming service and YouTube behaviour are documented, the short-form platforms publish no spec (grade D).",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "5.1-5.3 Loudness, peaks and platform targets"
+      },
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.loudness"
+      },
+      {
+        "doc": "ears/README.md",
+        "locator": "The checks (ears/loudness)"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Loudness"
+      },
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Platform specs, Masters for every platform"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "Hard rules 5"
+      },
+      {
+        "doc": "skills/motion-pack/references/platforms.md",
+        "locator": "Loudness facts"
+      }
+    ],
+    "enforce": {
+      "check": "ears/loudness",
+      "default": "music/mixer.py master (lufs -14); plan.PLATFORMS lufs",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Also mp.check.loudness. Unverified claims of -13 to -10 for Reels/TikTok exist; the planned upload test (-14 vs -10 clip) has not been run. | Merged: Deliver one master for every platform at -14 LUFS integrated (±0.5), true peak -1.5 dBTP on the WAV master and at or below -1.0 dBTP decoded from the MP4 (a web hero at -16 LUFS). [house; Platform spec: only YouTube publishes normalisation (loud content turned down toward about -14); the others publish nothing, so one -14 master is the pack default.] | spec-to-loop masters use a -1.2 dBFS limiter ceiling and measured -1.20 to -2.62 dBTP: they pass the -1.0 delivered line but not always the -1.5 master line. | Merged: Master to -14 LUFS-I (+/-0.5) with true peak <= -1.5 dBTP on the WAV and <= -1.0 dBTP decoded from the delivered MP4, LRA <= 10 LU, and the last 0.15 s digital zero. [house; house loudness contract; YouTube normalises toward about -14 (grade B) and other feeds publish no spec (grade D).] | Also mp.check.loudness. References sat at -24.8 to -8.1 LUFS and many clipped: copy neither end. Web hero -16 LUFS; broadcast gets a separate -23 LUFS / -1 dBTP master (EBU R128); LinkedIn LRA <= 7 LU. Measure the delivered MP4, not the WAV."
+  },
+  {
+    "id": "delivery.loop_audio_aac",
+    "title": "Loop length avoids AAC padding",
+    "statement": "Choose a loop length whose sample count is a multiple of 1024 (8 s at 48 kHz) to avoid AAC padding, give the single-loop MP4's audio a 2 ms raised-cosine fade (96 samples) at each end, and leave the two-loop file unfaded.",
+    "scope": {
+      "formats": [
+        "reel"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "aac_frame_samples": 1024,
+      "fade_ms": 2,
+      "fade_samples": 96,
+      "padding_free_loop_s": 8
+    },
+    "grade": "measured",
+    "evidence": "Measured: a 6 s loop padded 768 samples (16 ms) past the video; an 8 s loop (375 x 1024) had none; A/V lag 0 in all builds.",
+    "sources": [
+      {
+        "doc": "skills/spec-to-loop/SKILL.md",
+        "locator": "1. The spec, From a brief; 6. Mux"
+      },
+      {
+        "doc": "skills/spec-to-loop/references/learnings.md",
+        "locator": "Gotchas 11 and 39; Decision 25"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "skills/spec-to-loop/scripts/mux.sh",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "delivery.lra_short_film",
+    "title": "Let short films breathe 10-15 LU",
+    "statement": "A narrative short film master uses 10-15 LU of loudness range.",
+    "scope": {
+      "formats": [
+        "short-film"
+      ],
+      "platforms": [
+        "web",
+        "youtube"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "lra_lu": [
+        10,
+        15
+      ]
+    },
+    "grade": "house",
+    "evidence": "Pack master table for short films.",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "5.2 House master spec; 7. bundle.short_film"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "delivery.lra_short_form"
+    ],
+    "notes": "ears/loudness warns above 10 LU unless quiet regions are planned; for a short film read that warning as expected."
+  },
+  {
+    "id": "delivery.lra_short_form",
+    "title": "Keep short-form LRA at or under 10 LU",
+    "statement": "Short-form social masters keep loudness range at or under 10 LU, measured without planned quiet regions; LinkedIn wants at most 7 LU.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "lra_max_lu": 10,
+      "linkedin_lra_max_lu": 7,
+      "target_short_form_lu": [
+        4,
+        8
+      ],
+      "brand_film_lu": [
+        6,
+        10
+      ]
+    },
+    "grade": "house",
+    "evidence": "House default in ears; the trailer bed warns at 13.5 LU without its planned regions because its act-1 drone sits about 16 LU under the wall by design.",
+    "sources": [
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.loudness"
+      },
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "5.2 House master spec; 5.3 LinkedIn row"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "Trailer arc"
+      }
+    ],
+    "enforce": {
+      "check": "ears/loudness",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "sound.md's master table aims tighter for short-form ads (4-8 LU) and 6-10 LU for brand films; ears enforces the 10 LU ceiling."
+  },
+  {
+    "id": "delivery.master_house_not_reference",
+    "title": "Master to house, not reference",
+    "statement": "Master to -14 LUFS integrated with delivered true peak at or below -1 dBTP, whatever the references measure.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "lufs": -14,
+      "lufs_tol": 0.5,
+      "true_peak_dbtp_max": -1.0,
+      "ref_lufs_range": [
+        -24.8,
+        -9.6
+      ],
+      "ref_lufs_median": -15.1
+    },
+    "grade": "house",
+    "evidence": "Round-4/5 references span -24.8 to -9.6 LUFS (median -15.1) and 8 of 28 peak at or above 0 dBFS; both round-6 films ship at -11 to -12.8 LUFS and one clips.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Counts, line 24"
+      },
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "What round 6 changes 3, line 52"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-creator-platform-launch",
+        "locator": "Not to copy, line 36"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Counts"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 11"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Cross-film craft playbook, item 10"
+      },
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "Measured sound; cross-film playbook item 7"
+      }
+    ],
+    "enforce": {
+      "check": "ears/loudness",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Merged: Deliver at -14 LUFS integrated (+/-0.5) and <= -1.0 dBTP, whatever the references measure. [house; References run -22.5 to -6.9 LUFS; 4 of 15 round-7 and 2 of 8 round-8 films peak at or above 0 dBFS, and the 1.8M-view hero peaks at +0.5 dBFS.] | Also mp.check.loudness. | Merged: Master to -14 LUFS and <= -1 dBTP even when references sit elsewhere: round 9 ranged -22.8 to -14.6 LUFS with peaks at 0.0 and -0.1 dBFS. [house; 4 measured references: median -18.9 LUFS; the quiet pair and the loud pair cannot support a loudness-reach conclusion (4 posts at different ages).] | mp.check.loudness enforces the same target."
+  },
+  {
+    "id": "delivery.master_per_aspect",
+    "title": "Native master per aspect, no watermarks",
+    "statement": "Upload the native master for each aspect (9:16 to Shorts, Reels, TikTok and X; 16:9 to LinkedIn and YouTube long-form; cinematic films also 16:9 on X), never a download from another platform carrying its watermark.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Platform spec for the watermark rule (reposted content with other apps' watermarks is not recommended); the routing is a pack default.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Hard rules, rule 4"
+      },
+      {
+        "doc": "skills/social-video/references/platforms.md",
+        "locator": "Cross-posting rules, rules 1-2"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "mp.check.size verifies each file's WxH matches its aspect tag but not which platform gets which file."
+  },
+  {
+    "id": "delivery.master_tp_minus1_5",
+    "title": "Master WAV at -1.5 dBTP",
+    "statement": "The 24-bit WAV master's 4x-oversampled true peak is at most -1.5 dBTP (0.01 dB tolerance).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "master_tp_dbtp": -1.5,
+      "oversample": 4,
+      "tolerance_db": 0.01
+    },
+    "grade": "house",
+    "evidence": "House ceiling chosen so lossy encodes keep margin under the -1.0 dBTP delivered limit.",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "5.2 House master spec; 5.4 Mastering chain"
+      },
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.loudness"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "Honest limits"
+      }
+    ],
+    "enforce": {
+      "check": "ears/loudness",
+      "default": "music/mixer.py render (ceiling_db -1.5)",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Resolved 21 Oct: true peak -1.0 vs -1.5 settled: the 24-bit WAV master is limited to -1.5 dBTP, the decoded delivered MP4 must read <= -1.0 dBTP (AAC adds ~0.5 dB). | Settled pair with delivery.delivered_tp_minus1: master -1.5, delivered MP4 <= -1.0. Alternative from a streaming service's published spec: -1 dBTP for lossy, -2 dBTP if the master is louder than -14 LUFS."
+  },
+  {
+    "id": "delivery.native_aspects_only",
+    "title": "Render only aspects with a real layout",
+    "statement": "A template renders only the aspects it has a real layout for; any other aspect is marked manual and skipped, never built from the other aspect's page.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "measured",
+    "evidence": "A 9:16-native vlog template wrote its '16x9' file at 1080x1920 from the vertical page (16-17 Oct, line L5).",
+    "sources": [
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Results 16-17 Oct, L5 + Failure 2"
+      },
+      {
+        "doc": "docs/lane-notes/human.md",
+        "locator": "Render findings (16-17 Oct)"
+      }
+    ],
+    "enforce": {
+      "check": "tools/tests/aspect-builds.test.mjs",
+      "default": "config.mjs ASPECTS (native | relayout | manual) read by tools/mp.mjs aspectsFor",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The CI test covers pack templates; for user output mp.check.size is the backstop."
+  },
+  {
+    "id": "delivery.no_clipping_plr",
+    "title": "Keep PLR at 8 LU or more",
+    "statement": "No clipped run (3+ samples at full scale) or decoded over 0 dBFS, and the peak-to-loudness ratio stays at 8 LU or more (under 8 warns as squashed, under 5 fails).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "plr_warn_lu": 8,
+      "plr_fail_lu": 5,
+      "clip_min_run_samples": 3
+    },
+    "grade": "house",
+    "evidence": "House default in ears.",
+    "sources": [
+      {
+        "doc": "ears/README.md",
+        "locator": "The checks (ears/clipping)"
+      },
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.clipping"
+      }
+    ],
+    "enforce": {
+      "check": "ears/clipping",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "delivery.render_aspect_check",
+    "title": "ffprobe every render's size",
+    "statement": "Every render's ffprobed WxH must match its aspect's size (1920x1080 for 16:9, 1080x1920 for 9:16) before it is checked or posted; a mismatched file fails and is renamed .WRONG-SIZE.mp4.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "post"
+    },
+    "params": {
+      "wide_wxh": "1920x1080",
+      "tall_wxh": "1080x1920"
+    },
+    "grade": "measured",
+    "evidence": "own incident: a project render wrote 1920x1080 files named 9x16 and the reverse.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/gotchas.md",
+        "locator": "Environment > mp render wrote 1920x1080 files named -9x16"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "Edit without code step 4"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Results 16-17 Oct, Failures 1-3"
+      },
+      {
+        "doc": "docs/lane-notes/editable.md",
+        "locator": "Render findings (16-17 Oct) and fixes in mp"
+      },
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "v0.4.0 > Fixed: every aspect renders at its own size"
+      },
+      {
+        "doc": "private:memory/render-aspect-check.md",
+        "locator": "How to apply"
+      }
+    ],
+    "enforce": {
+      "check": "mp.check.size",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Also check plan.aspect / W x H of any alternate-aspect plan. | Merged: Every rendered file is ffprobed and its width x height equals its aspect label (16:9 = 1920x1080, 9:16 = 1080x1920) before it is named, posted or reported. [measured; 16-17 Oct render queue: 5 of the first 6 template lines wrote a wrong-size file (4 wrote 1920x1080 named 9x16, 1 wrote 1080x1920 named 16x9); the project path built the wrong size for one aspect in 17 of 24 templates.] | tools/mp-size.mjs renames a wrong file .WRONG-SIZE.mp4; tools/tests/aspect-builds.test.mjs (100 checks) guards the template side in CI. After posting, also read the live player's videoWidth/videoHeight (memory rule; prose-only)."
+  },
+  {
+    "id": "delivery.render_each_aspect_from_fresh_build",
+    "title": "Build then render each aspect in turn",
+    "statement": "Each aspect is rendered immediately after its own build; never point the renderer at a template folder after a multi-aspect build, which leaves the last aspect's page at the root.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "measured",
+    "evidence": "One hand render after a two-aspect build (16 Oct) produced a 1080x1920 file named as 16:9.",
+    "sources": [
+      {
+        "doc": "private:memory/render-aspect-check.md",
+        "locator": "body"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Why mp render, not hand-run hyperframes"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "tools/mp.mjs cmdRender (rebuilds each aspect right before rendering it, names the file by its real WxH)",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "A hand-run render outside mp is still possible; mp.check.size catches the result."
+  },
+  {
+    "id": "delivery.upload_copy_cap",
+    "title": "Upload copy under 9.5 MB",
+    "statement": "When an upload tool caps a file near 10 MB, make a two-pass x264 copy under 9.5 MB that keeps resolution, frame rate and the master's AAC, upload the master by hand if PSNR falls below 44 dB, and never inject a file input or chunk the upload through page scripts.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "post"
+    },
+    "params": {
+      "max_mb": 9.5,
+      "min_psnr_db": 44
+    },
+    "grade": "house",
+    "evidence": "Own tests: a 16 s 1080p CG spot fitted 1.2 MB at 54.6 dB and a 15 s ad 0.6 MB at 47.7 dB; x264 two-pass beat browser H.264 by 1.0-2.5 dB at equal size.",
+    "sources": [
+      {
+        "doc": "skills/social-video/SKILL.md",
+        "locator": "Upload copies under a size cap"
+      },
+      {
+        "doc": "skills/social-video/scripts/upload_copy.py",
+        "locator": "module docstring"
+      },
+      {
+        "doc": "skills/motion-stack/references/output-tools.md",
+        "locator": "Encoding: ffmpeg x264, two-pass, slow, tune animation"
+      }
+    ],
+    "enforce": {
+      "check": "skills/social-video/scripts/upload_copy.py",
+      "default": "upload_copy.py --max-mb 9.5 --min-psnr 44",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "upload_copy.py exits 1 over the cap and 3 under the PSNR floor; use -tune film for camera footage."
+  },
+  {
+    "id": "delivery.verify_on_mp4",
+    "title": "Measure the delivered file, not the WAV",
+    "statement": "Loudness and true peak are verified on the rendered MP4 (decoded), not only on the WAV, because the encode and the renderer's guard can change both.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "post"
+    },
+    "params": {},
+    "grade": "measured",
+    "evidence": "Our renders: a clean -14.02 LUFS / -2.7 dBTP mix came out at -18.5 LUFS after the renderer's guard; a sample-peak limiter at -1.9 dBFS still overshot after AAC.",
+    "sources": [
+      {
+        "doc": "private:memory/hyperframes-audio-tp-guard.md",
+        "locator": "whole note"
+      },
+      {
+        "doc": "ears/README.md",
+        "locator": "Use it (a .wav is judged as a master, anything else as delivered)"
+      },
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "v0.4.0 > Known weak spots > Quiet renders"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Results 16-17 Oct > Update 19 Oct (table + Summary)"
+      }
+    ],
+    "enforce": {
+      "check": "ears/loudness",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "ears judges a .wav as a master (-1.5 dBTP, digital-zero tail) and an MP4 as delivered (-1.0 dBTP, near-silent tail). | Merged: Loudness is measured by decoding the delivered MP4, not the mix WAV: -14 +/- 0.5 LUFS-I and true peak <= -1.0 dBTP, or the file does not ship. [measured; 19 Oct run of 44 template renders: 38 pass; 6 files (3 templates x 2 aspects) delivered at -17.55, -21.46 and -22.75 LUFS-I while two of those mix WAVs read -14.0 and the plan lint passed.] | ears/loudness runs the same gate. The render-queue verdict column used +/- 1 LU; the house gate (ears/manifest.json, mp check) is +/- 0.5 LU, kept here."
+  },
+  {
+    "id": "delivery.web_minus16",
+    "title": "Master web heroes to -16 LUFS",
+    "statement": "A video that autoplays on a web page (hero.web) is mastered to -16 LUFS-I, because the page plays at the listener's volume.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "web"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "target_lufs": -16
+    },
+    "grade": "house",
+    "evidence": "Pack preset.",
+    "sources": [
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.loudness.platforms (hero.web)"
+      },
+      {
+        "doc": "ears/README.md",
+        "locator": "Use it (--target-lufs -16)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "plan.PLATFORMS hero.web lufs -16",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": ""
+  }
+]
