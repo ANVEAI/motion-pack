@@ -64,7 +64,7 @@ export function revealSVG(m, t, env) {
 export function endSVG(e, t, env) {
   const u = t - e.at; if (u < 0) return ''; const B = env.B, s = e.unit ?? 1, ns = 96 * s, k = EASE.pop(cl(u / 0.5)), cx = env.W / 2, cy = e.cy ?? env.H * 0.42;
   let o = revealSVG({ at: e.at, cx, cy, size: 132 * s, nameSize: ns, row: !e.stack }, t, env);
-  const ka = EASE.enter(cl((u - 0.45) / 0.4)), cs = 44 * s, cw = env.measure(B.cta, cs, { weight: 700 }) + 100 * s, chh = 96 * s, cyy = cy + (e.stack ? 250 : 130) * s;
+  const ka = EASE.enter(cl((u - 0.45) / 0.4)), cs = 52 * s, cw = env.measure(B.cta, cs, { weight: 700 }) + 100 * s, chh = 96 * s, cyy = cy + (e.stack ? 250 : 130) * s;
   o += `<g opacity="${f2(ka)}" transform="translate(0 ${f2((1 - ka) * 30 * s)})"><rect x="${f2(cx - cw / 2)}" y="${f2(cyy)}" width="${f2(cw)}" height="${f2(chh)}" rx="${f2(chh / 2)}" fill="${B.accent}"/>` +
     `<text x="${f2(cx)}" y="${f2(cyy + chh / 2 + cs * 0.36)}" font-family="${esc(FONT)}" font-size="${f2(cs)}" font-weight="700" fill="#FFFFFF" text-anchor="middle">${esc(B.cta)}</text></g>`;
   const ku = EASE.enter(cl((u - 0.6) / 0.4)), us = 36 * s;

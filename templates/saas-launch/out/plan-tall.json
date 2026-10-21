@@ -626,7 +626,8 @@
      "w": 880,
      "size": 64,
      "align": "center",
-     "weight": 700
+     "weight": 700,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -656,6 +657,7 @@
      "y": 290,
      "w": 870,
      "size": 76,
+     "role": "read",
      "out": 14.73,
      "outS": 0.22
     },
@@ -666,6 +668,7 @@
      "y": 290,
      "w": 870,
      "size": 76,
+     "role": "read",
      "out": 18.58,
      "outS": 0.22
     },
@@ -676,6 +679,7 @@
      "y": 290,
      "w": 870,
      "size": 76,
+     "role": "read",
      "out": 21.38,
      "outS": 0.22
     },
@@ -686,6 +690,7 @@
      "y": 290,
      "w": 870,
      "size": 76,
+     "role": "read",
      "out": 23.28,
      "outS": 0.22
     },
@@ -696,6 +701,7 @@
      "y": 290,
      "w": 870,
      "size": 76,
+     "role": "read",
      "out": 25.48,
      "outS": 0.22
     },
@@ -705,7 +711,8 @@
      "x": 80,
      "y": 290,
      "w": 870,
-     "size": 76
+     "size": 76,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1377,7 +1384,8 @@
      "x": 80,
      "y": 290,
      "w": 870,
-     "size": 76
+     "size": 76,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1508,7 +1516,8 @@
      "x": 80,
      "y": 290,
      "w": 870,
-     "size": 76
+     "size": 76,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1693,7 +1702,8 @@
      "x": 80,
      "y": 290,
      "w": 870,
-     "size": 76
+     "size": 76,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1789,7 +1799,8 @@
      "x": 80,
      "y": 290,
      "w": 870,
-     "size": 76
+     "size": 76,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1839,7 +1850,8 @@
      "x": 80,
      "y": 290,
      "w": 870,
-     "size": 76
+     "size": 76,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1927,7 +1939,8 @@
      "x": 80,
      "y": 290,
      "w": 870,
-     "size": 76
+     "size": 76,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1978,7 +1991,8 @@
      "x": 80,
      "y": 290,
      "w": 870,
-     "size": 76
+     "size": 76,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -2940,7 +2954,7 @@
     1231
    ],
    "fontPx": 64,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2957,7 +2971,7 @@
     368
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2974,7 +2988,7 @@
     448
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2991,7 +3005,7 @@
     368
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3008,7 +3022,7 @@
     368
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3025,7 +3039,7 @@
     368
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3042,7 +3056,7 @@
     448
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3059,7 +3073,7 @@
     448
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3076,7 +3090,7 @@
     368
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3093,7 +3107,7 @@
     368
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3110,7 +3124,7 @@
     448
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3127,7 +3141,7 @@
     368
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3144,7 +3158,7 @@
     448
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3161,7 +3175,7 @@
     368
    ],
    "fontPx": 76,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -3172,7 +3186,7 @@
     60
    ],
    "box": null,
-   "fontPx": 55,
+   "fontPx": 65,
    "role": "endcard",
    "fg": "#FFFFFF"
   }

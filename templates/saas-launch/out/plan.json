@@ -571,7 +571,8 @@
      "w": 1400,
      "size": 60,
      "align": "center",
-     "weight": 700
+     "weight": 700,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -601,6 +602,7 @@
      "y": 62,
      "w": 1700,
      "size": 72,
+     "role": "read",
      "out": 14.73,
      "outS": 0.22
     },
@@ -611,6 +613,7 @@
      "y": 62,
      "w": 1700,
      "size": 72,
+     "role": "read",
      "out": 18.58,
      "outS": 0.22
     },
@@ -621,6 +624,7 @@
      "y": 62,
      "w": 1700,
      "size": 72,
+     "role": "read",
      "out": 21.38,
      "outS": 0.22
     },
@@ -631,6 +635,7 @@
      "y": 62,
      "w": 1700,
      "size": 72,
+     "role": "read",
      "out": 23.28,
      "outS": 0.22
     },
@@ -641,6 +646,7 @@
      "y": 62,
      "w": 1700,
      "size": 72,
+     "role": "read",
      "out": 25.48,
      "outS": 0.22
     },
@@ -650,7 +656,8 @@
      "x": 110,
      "y": 62,
      "w": 1700,
-     "size": 72
+     "size": 72,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1210,7 +1217,8 @@
      "x": 110,
      "y": 62,
      "w": 1700,
-     "size": 72
+     "size": 72,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1330,7 +1338,8 @@
      "x": 110,
      "y": 62,
      "w": 1700,
-     "size": 72
+     "size": 72,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1485,7 +1494,8 @@
      "x": 110,
      "y": 62,
      "w": 1700,
-     "size": 72
+     "size": 72,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1526,7 +1536,8 @@
      "x": 110,
      "y": 62,
      "w": 1700,
-     "size": 72
+     "size": 72,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1576,7 +1587,8 @@
      "x": 110,
      "y": 62,
      "w": 1700,
-     "size": 72
+     "size": 72,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1659,7 +1671,8 @@
      "x": 110,
      "y": 62,
      "w": 1700,
-     "size": 72
+     "size": 72,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -1710,7 +1723,8 @@
      "x": 110,
      "y": 62,
      "w": 1700,
-     "size": 72
+     "size": 72,
+     "role": "read"
     }
    ],
    "kickers": [],
@@ -2588,7 +2602,7 @@
     665
    ],
    "fontPx": 60,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2605,7 +2619,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2622,7 +2636,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2639,7 +2653,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2656,7 +2670,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2673,7 +2687,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2690,7 +2704,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2707,7 +2721,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2724,7 +2738,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2741,7 +2755,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2758,7 +2772,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2775,7 +2789,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2792,7 +2806,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2809,7 +2823,7 @@
     135
    ],
    "fontPx": 72,
-   "role": "headline",
+   "role": "read",
    "fg": "#14131A"
   },
   {
@@ -2820,7 +2834,7 @@
     60
    ],
    "box": null,
-   "fontPx": 44,
+   "fontPx": 52,
    "role": "endcard",
    "fg": "#FFFFFF"
   }

@@ -175,7 +175,11 @@ def mix_cues(ctx, p):
         return 'na', 'no SFX cues in the plan', ''
     a = ctx.plan.get('audio') if isinstance(ctx.plan.get('audio'), dict) else {}
     iss = mixer.lint_cues(cues, fps=fps, lib=lib, quiet=a.get('quiet'))
-    return ('pass' if not iss else 'fail'), '%d cues, %d issue(s)%s' % (len(cues), len(iss), (': ' + iss[0]) if iss else ''), '' if not iss else 'music/mixer.py lint_cues: respace or swap the cues it names'
+    codes = set(p.get('mixer_rules') or []) or {c for k, c in (('tier', 'R4'), ('phone', 'R12'), ('over_bed', 'R2'), ('round_robin', 'R9'), ('first', 'R10')) if any(x.startswith(k) for x in p)}
+    if codes:   # a rule judges only the mixer lint rules its params speak for (sound.hit_hierarchy_spacing: R4; sound.phone_check: R12); none named: every rule
+        iss = [i for i in iss if i.split(' ', 1)[0] in codes]
+    tag = ' (%s)' % ', '.join(sorted(codes)) if codes else ''
+    return ('pass' if not iss else 'fail'), '%d cues, %d issue(s)%s%s' % (len(cues), len(iss), tag, (': ' + iss[0]) if iss else ''), '' if not iss else 'music/mixer.py lint_cues: respace or swap the cues it names'
 
 
 def mix_qa(ctx, p):

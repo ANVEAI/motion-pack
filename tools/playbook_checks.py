@@ -99,7 +99,9 @@ def quiet_open(ctx, p):
     lo, hi = p['quiet_open_db']
     qs = (ctx.em('ears', 'structure') or {}).get('quiet_shape')
     if qs:
-        v = qs['open_2s_vs_body_db'] if p['quiet_open_s'][1] >= 2 else qs['open_vs_body_db']
+        planned = [x for x in _quiet(ctx, 'open') if x['t'][0] <= 0.05]
+        span = planned[0]['t'][1] - planned[0]['t'][0] if planned else p['quiet_open_s'][1]   # judge the open over its own length: a 1.5 s open is the first second, not two
+        v = qs['open_2s_vs_body_db'] if span >= 2 - 1e-6 else qs['open_vs_body_db']
         val = 'first 2 s %+.1f dB, first 1 s %+.1f dB vs the body' % (qs['open_2s_vs_body_db'], qs['open_vs_body_db'])
         if _rng(v, lo, hi):
             return 'pass', val, ''

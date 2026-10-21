@@ -48,7 +48,7 @@ export function applyPlaybook(plan, pb) {
     const db = pb.quiet_open.db ?? -9; q1 = Math.min(pb.quiet_open.s, T / 4);
     plan.audio.quiet.push({ t: [0, r3(q1)], kind: 'open', db, why: `playbook ${pb.format || ''}: open ${-db} dB under the body` });
     curves.push([{ frame: 0, gain_db: db }, { frame: F(Math.max(one, q1 - 0.25)), gain_db: db }, { frame: F(q1), gain_db: 0 }]);
-    let n = 0; for (const c of plan.cues) if (c.t < q1 - 1e-6 && !c.loopTo) { c.overBedDb = Math.min(c.overBedDb ?? -6, -6); n++; }
+    let n = 0; for (const c of plan.cues) if (c.t < q1 - 1e-6 && !c.loopTo) { c.overBedDb = Math.min(c.overBedDb ?? db - 3, db - 3); n++; }   // ticks under the dipped bed, so the open measures at its depth
     plan.audio.first_hit_s = r3(q1); applied.push(`quiet open 0-${r3(q1)} s at ${db} dB (${n} cue${n === 1 ? '' : 's'} kept as quiet ticks)`);
   }
   /* bass entry */
