@@ -1,0 +1,633 @@
+{
+  "id": "ad",
+  "title": "Ad (15 s / 30 s, paid or organic)",
+  "use_when": "A direct-response or brand ad for feeds and pre-roll: value inside 3 s, the brand inside the action by 5-7 s, one product moment, one proof, a CTA end card.",
+  "length_s": [
+    6,
+    30
+  ],
+  "//length": "15 s and 30 s masters plus a 6 s bumper; 45 s is a stretch.",
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1"
+  ],
+  "lead_aspect": "9:16",
+  "template": "templates/ad",
+  "signals": {
+    "keywords": [
+      "ad",
+      "advert",
+      "commercial",
+      "promo",
+      "pre-roll",
+      "paid",
+      "campaign",
+      "bumper",
+      "15 s",
+      "30 s",
+      "cta"
+    ],
+    "product_types": [
+      "any",
+      "d2c",
+      "app",
+      "saas",
+      "ecommerce"
+    ],
+    "goals": [
+      "sell",
+      "awareness"
+    ],
+    "platforms": [
+      "reels",
+      "tiktok",
+      "youtube",
+      "meta",
+      "shorts"
+    ]
+  },
+  "beats": [
+    {
+      "id": "hook",
+      "at": [
+        0,
+        0.17
+      ],
+      "purpose": "the value in the first 3 s (15 s: hook ends by 2.5 s); at least 3 visual states in the first 5 s; impact on frame 0",
+      "required": true,
+      "text": {
+        "max_words": 7
+      },
+      "sound": {
+        "level": "full",
+        "events": [
+          "impact_frame_0",
+          "whoosh_first_cut"
+        ]
+      },
+      "rules": [
+        "hook.value_by_3s",
+        "pacing.hook_three_states",
+        "hook.frame0_moving",
+        "hook.first_sound_by_frame3",
+        "hook.text_by_0_3s",
+        "hook.no_offer_as_hook"
+      ]
+    },
+    {
+      "id": "problem",
+      "at": [
+        0.17,
+        0.33
+      ],
+      "purpose": "the problem in one shot or two",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "body",
+        "events": []
+      },
+      "rules": [
+        "pacing.asl_hype_ad",
+        "pacing.interrupt_ladder"
+      ]
+    },
+    {
+      "id": "product",
+      "at": [
+        0.33,
+        0.6
+      ],
+      "purpose": "the product inside the action; the brand cue lands by 5 s (TikTok, paid YouTube, feed ads), 6 s (Reels/Shorts) or 7 s (X/LinkedIn); riser into a hit on the reveal",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "full",
+        "events": [
+          "riser_ends_frame_before_reveal",
+          "hit_on_reveal"
+        ]
+      },
+      "rules": [
+        "hook.brand_cue_deadline",
+        "sound.riser_ends_frame_before_hit",
+        "sound.hero_hit_over_bed",
+        "visual.mark_in_world"
+      ]
+    },
+    {
+      "id": "proof",
+      "at": [
+        0.6,
+        0.83
+      ],
+      "purpose": "a real number, real UI or a permitted testimonial only; ticks on proof",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "ticks"
+        ]
+      },
+      "rules": [
+        "honesty.digit_needs_source",
+        "hook.social_proof_sourced",
+        "honesty.quote_needs_source"
+      ]
+    },
+    {
+      "id": "cta",
+      "at": [
+        0.83,
+        1.0
+      ],
+      "purpose": "one verb, one destination; the end card held at least 1.8 s (2.0 s on a 30 s); a sonic logo; the last 0.15 s silent",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "decelerate",
+        "events": [
+          "sonic_logo",
+          "clean_tail"
+        ]
+      },
+      "rules": [
+        "story.cta_window",
+        "pacing.end_card_hold",
+        "distribution.cta_one_verb",
+        "visual.end_card_layout",
+        "delivery.clean_tail"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_note": "impact on frame 0",
+    "tail": "sonic-logo",
+    "bass_share": [
+      0.5,
+      0.61
+    ],
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_tech_pulse_ad30",
+      "music/bed_hype_house_reel15",
+      "music/bed_playful_bounce_hook6"
+    ],
+    "mode": "music"
+  },
+  "hooks": [
+    "payoff-first",
+    "problem-agitate",
+    "pattern-break",
+    "social-proof",
+    "claim-or-question"
+  ],
+  "end_shapes": [
+    "sting",
+    "sonic-logo"
+  ],
+  "post": {
+    "pattern": "Three hook variants on one body; keep the variant with the best measured 3 s hold and average view duration; change one thing per test.",
+    "rules": [
+      "distribution.hook_variant_test",
+      "distribution.one_change_per_test",
+      "hook.three_variants_one_body"
+    ]
+  },
+  "recommended_parts": {
+    "hook": [
+      "title.hookCard",
+      "sfx/hit/punch",
+      "sfx/whoosh/whoosh_m",
+      "cuts/sections/hook_3s"
+    ],
+    "problem": [
+      "transitions/whip",
+      "sfx/whoosh/whip_pan"
+    ],
+    "product": [
+      "layout.mockupInContext",
+      "sfx/riser/noise_1bar",
+      "sfx/hit/cinema"
+    ],
+    "proof": [
+      "counter.statCard",
+      "social.testimonial",
+      "sfx/ui/tick"
+    ],
+    "cta": [
+      "title.endScreen",
+      "music/logo_pattern_ascend_land",
+      "cuts/sections/breath_out"
+    ],
+    "all": [
+      "music/bed_tech_pulse_ad30",
+      "music/bed_hype_house_reel15",
+      "music/bed_playful_bounce_hook6"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "ad-15-house",
+      "label": "practitioner 15 s ad timing",
+      "grade": "craft",
+      "tier": "practitioner (EDIT 4)",
+      "length_s": 15,
+      "aspect": "9:16",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.17
+          ],
+          "purpose": "hook (0-2.5 s)",
+          "text": "",
+          "sound": "impact on frame 0"
+        },
+        {
+          "at": [
+            0.17,
+            0.33
+          ],
+          "purpose": "problem (2.5-5 s)",
+          "text": "",
+          "sound": "whoosh on the first cut"
+        },
+        {
+          "at": [
+            0.33,
+            0.6
+          ],
+          "purpose": "product (5-9 s)",
+          "text": "",
+          "sound": "riser ends one frame before the reveal; cinema hit"
+        },
+        {
+          "at": [
+            0.6,
+            0.83
+          ],
+          "purpose": "proof (9-12.5 s)",
+          "text": "",
+          "sound": "ticks"
+        },
+        {
+          "at": [
+            0.83,
+            1.0
+          ],
+          "purpose": "CTA (12.5-15 s)",
+          "text": "",
+          "sound": "sonic logo; last 0.15 s silent"
+        }
+      ],
+      "cut_cadence": "8-10 shots",
+      "end_shape": "sonic-logo",
+      "sources": [
+        {
+          "doc": "docs/evidence/edit.md",
+          "locator": "section 4"
+        },
+        {
+          "doc": "patterns/structures.json",
+          "locator": "structures.ad-15"
+        }
+      ]
+    },
+    {
+      "id": "ad-30-house",
+      "label": "practitioner 30 s ad timing",
+      "grade": "craft",
+      "tier": "practitioner (EDIT 4)",
+      "length_s": 30,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.1
+          ],
+          "purpose": "hook (0-3 s, value inside)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.1,
+            0.27
+          ],
+          "purpose": "problem (3-8 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.27,
+            0.53
+          ],
+          "purpose": "product (8-16 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.53,
+            0.83
+          ],
+          "purpose": "proof (16-25 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.83,
+            1.0
+          ],
+          "purpose": "CTA (25-30 s)",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "cut_cadence": "14-20 shots",
+      "end_shape": "sonic-logo",
+      "sources": [
+        {
+          "doc": "docs/evidence/edit.md",
+          "locator": "section 4"
+        },
+        {
+          "doc": "patterns/structures.json",
+          "locator": "structures.ad-30"
+        }
+      ]
+    },
+    {
+      "id": "ad-concept-15",
+      "label": "sentence-led concept ad, 15 s (craft)",
+      "grade": "craft",
+      "tier": "craft only (2.6K views, 54 bookmarks)",
+      "length_s": 15,
+      "aspect": "9:16",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.07
+          ],
+          "purpose": "word build",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.07,
+            0.2
+          ],
+          "purpose": "inline card riffle",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.2,
+            0.27
+          ],
+          "purpose": "logo in the world",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.27,
+            0.4
+          ],
+          "purpose": "inline photos + pill word",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.4,
+            0.6
+          ],
+          "purpose": "card rivers",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.6,
+            0.8
+          ],
+          "purpose": "verb triad over a held image",
+          "text": "3 verbs",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.8,
+            1.0
+          ],
+          "purpose": "logo build",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "end_shape": "sting",
+      "sources": [
+        {
+          "doc": "docs/evidence/INDEX.md#ref-concept-ad",
+          "locator": "lines 9-19"
+        }
+      ],
+      "notes": "An unofficial concept piece: label concept work as concept (honesty.concept_piece_labelled)."
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.loop_audio_aac",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.cta_timing",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.loop_short_tag",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.send_line",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_digits_in_plates",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.quote_needs_source",
+    "honesty.real_deadline_only",
+    "honesty.references_craft_not_copy",
+    "hook.brand_cue_deadline",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.no_offer_as_hook",
+    "hook.sentence_builds_small",
+    "hook.social_proof_sourced",
+    "hook.text_by_0_3s",
+    "hook.three_variants_one_body",
+    "hook.value_by_3s",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.house_easing",
+    "motion.loop_seam",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.punch_in_cadence",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.phrase_cuts",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.asl_hype_ad",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.hook_three_states",
+    "pacing.interrupt_ladder",
+    "pacing.new_thing_every_2_4s",
+    "pacing.reaction_hold",
+    "pacing.section_asl_curve",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.master_16x9_relayout",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.dip_before_drop",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.phone_check",
+    "sound.pre_hit_vacuum",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.smash_pre_silence",
+    "sound.speech_over_music",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.sync_rule_by_mode",
+    "sound.transition_paired_sfx",
+    "story.cta_window",
+    "story.cutdown_launch_order",
+    "story.one_turn_in_window",
+    "story.open_loop_and_late_payoff",
+    "story.payoff_pays_stake",
+    "story.protagonist_with_stake",
+    "story.sound_off_sentence",
+    "story.state_list_16s",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.caption_style",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "visual.accent_fixed_meaning",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.mark_in_world",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.product_hero_frame_share",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor",
+    "visual.text_over_footage_worst_frame"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: ad-15, ad-30, ugc, reel) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

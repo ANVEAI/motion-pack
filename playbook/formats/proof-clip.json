@@ -1,0 +1,634 @@
+{
+  "id": "proof-clip",
+  "title": "Proof clip (one claim, wordless)",
+  "use_when": "One claim proved by one physical graphic or one run: before/after on the same footage, one chart, one escalating input ladder. Thread children of a launch, or a stand-alone saves post.",
+  "length_s": [
+    13,
+    20
+  ],
+  "//length": "Thread proof clips ran 12.9-15.0 s; saves-strong silent loops 14.5-16 s; tier-A single-UI ladders run up to 60 s (exemplars).",
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1"
+  ],
+  "lead_aspect": "16:9",
+  "template": "templates/proof-film",
+  "signals": {
+    "keywords": [
+      "proof",
+      "benchmark",
+      "before and after",
+      "vs",
+      "faster",
+      "fixed",
+      "one feature",
+      "show it works",
+      "demo clip",
+      "comparison"
+    ],
+    "product_types": [
+      "saas",
+      "ai tool",
+      "developer tool",
+      "api",
+      "model"
+    ],
+    "goals": [
+      "proof",
+      "launch",
+      "sell"
+    ],
+    "platforms": [
+      "x",
+      "linkedin",
+      "reels",
+      "shorts"
+    ]
+  },
+  "beats": [
+    {
+      "id": "hook",
+      "at": [
+        0,
+        0.1
+      ],
+      "purpose": "the before state named by a corner state chip on frame 0; a \"sound on\" pill outline on frame 0, solid at 0.5 s, gone by 1.5 s",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "sound_on_pill"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "hook.first_change_by_frame6",
+        "hook.sound_on_pill",
+        "story.state_chip_flip_share",
+        "hook.first_sound_by_frame3"
+      ]
+    },
+    {
+      "id": "before",
+      "at": [
+        0.1,
+        0.42
+      ],
+      "purpose": "the problem plays and is audible: one claim, one physical graphic (a lane going flat, blocks merging, a slider)",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "problem_audible"
+        ]
+      },
+      "rules": [
+        "story.proof_clip_one_claim",
+        "sound.mute_open_as_before",
+        "pacing.new_state_every_3s",
+        "honesty.compressed_demo_label"
+      ]
+    },
+    {
+      "id": "flip",
+      "at": [
+        0.42,
+        0.5
+      ],
+      "purpose": "the chip flips (colour flash, new label, tick) and the sound swaps on that exact frame",
+      "required": true,
+      "text": {
+        "max_words": 3
+      },
+      "sound": {
+        "level": "swap",
+        "events": [
+          "swap_on_flip_frame"
+        ]
+      },
+      "rules": [
+        "story.ab_replay",
+        "story.state_chip_flip_share",
+        "sound.hit_on_f_plus_1"
+      ]
+    },
+    {
+      "id": "after",
+      "at": [
+        0.5,
+        0.88
+      ],
+      "purpose": "the same footage replayed with the fix, level-matched to the before within 1 dB so only the claim changes",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "halves_within_1db"
+        ]
+      },
+      "rules": [
+        "story.ab_replay",
+        "honesty.same_input_progress",
+        "honesty.digit_needs_source"
+      ]
+    },
+    {
+      "id": "end",
+      "at": [
+        0.88,
+        1.0
+      ],
+      "purpose": "a genre payoff (a story beat or a genre title card) or a hard stop on the fixed state; never a CTA card",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "slam_or_decay",
+        "events": [
+          "slam_or_decay_-26db"
+        ]
+      },
+      "rules": [
+        "story.proof_clip_genre_end",
+        "delivery.clean_tail"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_note": "no quiet open: the problem must be audible from frame 0 (or a true-silence \"before\" under a mute chip, sound.mute_open_as_before)",
+    "flip_pct": [
+      0.4,
+      0.45
+    ],
+    "halves_match_db": 1.0,
+    "tail": "slam | decay",
+    "tail_db_decay": -26,
+    "bass_share": [
+      0.2,
+      0.36
+    ],
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_suspense_tick_loop8",
+      "music/bed_tech_pulse_loop8",
+      "music/bed_ambient_pad_loop8"
+    ],
+    "mode": "continuous",
+    "silent_loop_ok_s": 16
+  },
+  "hooks": [
+    "payoff-first",
+    "claim-or-question",
+    "live-demo",
+    "pattern-break"
+  ],
+  "end_shapes": [
+    "slam",
+    "decay",
+    "genre-card",
+    "silent-loop"
+  ],
+  "post": {
+    "pattern": "Thread child posted about 2 min after the hero: \"N.\" + the problem name, a one-line claim, a paragraph on the old workaround and its cost, a fix paragraph ending in the benefit. Stand-alone: one saves post; judge by bookmarks at 48 h.",
+    "rules": [
+      "distribution.numbered_clip_copy",
+      "distribution.hero_plus_numbered_thread",
+      "distribution.judge_by_saves",
+      "distribution.read_windows"
+    ]
+  },
+  "recommended_parts": {
+    "hook": [
+      "type/blurIn",
+      "ui.stateChip",
+      "caption.soundOnPill",
+      "sfx/ui/toggle_on"
+    ],
+    "before": [
+      "ui.appWindow",
+      "ui.waveform",
+      "ui.costTicker",
+      "sfx/ui/error",
+      "sfx/device/loading_tick"
+    ],
+    "flip": [
+      "transitions/maskReveal",
+      "transitions/lumaWipe",
+      "ui.approvalSlider",
+      "ui.beforeAfterSplit",
+      "sfx/ui/success",
+      "sfx/tx/mask_reveal",
+      "cuts/story/abReplay"
+    ],
+    "after": [
+      "process.beforeAfter",
+      "chart.sourceFooter"
+    ],
+    "end": [
+      "card.scene",
+      "sfx/stinger/cut_to_black"
+    ],
+    "all": [
+      "music/bed_suspense_tick_loop8",
+      "music/bed_tech_pulse_loop8",
+      "music/bed_ambient_pad_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "pc-flip-15",
+      "label": "wordless one-claim proof clip, 15.0 s (thread child)",
+      "grade": "measured",
+      "tier": "B by rule, read as C (thread children)",
+      "length_s": 15.0,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.1
+          ],
+          "purpose": "before-state chip on frame 0; sound-on pill 0-1.5 s",
+          "text": "chip",
+          "sound": "no quiet open"
+        },
+        {
+          "at": [
+            0.1,
+            0.43
+          ],
+          "purpose": "before state plays (problem audible)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.43,
+            0.5
+          ],
+          "purpose": "flip: chip flash; sound swaps on the flip frame",
+          "text": "new label",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.5,
+            1.0
+          ],
+          "purpose": "after: same footage replayed, level-matched",
+          "text": "",
+          "sound": "halves -21.2 vs -22.1 dB; hard stop"
+        }
+      ],
+      "quiet_open_db": 1.4,
+      "tail": "slam",
+      "end_shape": "slam",
+      "sources": [
+        {
+          "doc": "private:research/launch-virality-study-2026-10",
+          "locator": "Film 2; Cross-film craft playbook items 1-5, 9"
+        }
+      ],
+      "notes": "Views fell smoothly 109K -> 95K across the thread: readers scrolling, not new reach. Use as craft, not reach evidence."
+    },
+    {
+      "id": "pc-scatter-36",
+      "label": "tier-A one-chart proof, 36 s",
+      "grade": "measured-A",
+      "tier": "A (8.53x, 1.23% bookmarks)",
+      "length_s": 36,
+      "aspect": "16:9",
+      "cuts": 4,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.15
+          ],
+          "purpose": "the claim over the chart frame",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.15,
+            0.85
+          ],
+          "purpose": "one chart: a frontier line and one starred, sourced hero point",
+          "text": "source on screen",
+          "sound": "open -2 dB"
+        },
+        {
+          "at": [
+            0.85,
+            1.0
+          ],
+          "purpose": "hold on the starred point",
+          "text": "",
+          "sound": "decay, tail -10 dB"
+        }
+      ],
+      "lufs": -12.0,
+      "quiet_open_db": -2,
+      "tail": "decay",
+      "bass_share": 0.36,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 49"
+        }
+      ],
+      "quiet_tail_db": -10,
+      "cuts_per_min": 6.7
+    },
+    {
+      "id": "pc-queryladder-60",
+      "label": "tier-A query ladder, 60 s",
+      "grade": "measured-A",
+      "tier": "A (3.98x, 1.66% bookmarks)",
+      "length_s": 60,
+      "aspect": "16:9",
+      "cuts": 9,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.1
+          ],
+          "purpose": "one UI, the first input",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.1,
+            0.85
+          ],
+          "purpose": "five escalating inputs, one VO line each (4-7 s per rung)",
+          "text": "",
+          "sound": "open -19 dB"
+        },
+        {
+          "at": [
+            0.85,
+            1.0
+          ],
+          "purpose": "pull back with benefit chips",
+          "text": "",
+          "sound": "slam"
+        }
+      ],
+      "lufs": -14.2,
+      "quiet_open_db": -19,
+      "tail": "slam",
+      "bass_share": 0.24,
+      "end_shape": "slam",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 33"
+        }
+      ],
+      "quiet_tail_db": -1,
+      "cuts_per_min": 9.0
+    },
+    {
+      "id": "pc-silentloop-16",
+      "label": "saves-strong silent loop, 16 s",
+      "grade": "measured-A",
+      "tier": "A- (0.4x, 1.31% bookmarks)",
+      "length_s": 16,
+      "aspect": "16:9",
+      "cuts": 0,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.3
+          ],
+          "purpose": "prompt typed",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.3,
+            0.8
+          ],
+          "purpose": "working state; the table builds under a one-line finding",
+          "text": "one line",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.8,
+            1.0
+          ],
+          "purpose": "loops back to the prompt",
+          "text": "",
+          "sound": "no audio track"
+        }
+      ],
+      "tail": "loop",
+      "end_shape": "silent-loop",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 58"
+        }
+      ],
+      "notes": "sound.silent_loop_ok: a <= 16 s saves loop may ship without audio; the hook-sound and loudness checks are then N/A.",
+      "cuts_per_min": 0.0
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.ceiling_for_dense_clicks",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hero_plus_numbered_thread",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.no_spoken_cta_builders",
+    "distribution.numbered_clip_copy",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.chart_zero_baseline",
+    "honesty.compressed_demo_label",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.product_does_its_job",
+    "honesty.quote_needs_source",
+    "honesty.references_craft_not_copy",
+    "honesty.same_input_progress",
+    "hook.first_change_by_frame6",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.interrupted_cliche",
+    "hook.no_offer_as_hook",
+    "hook.sound_on_pill",
+    "hook.text_by_0_3s",
+    "hook.three_variants_one_body",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.house_easing",
+    "motion.loop_seam",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.bass_share_by_role",
+    "music.late_drop_on_turn",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.continuous_ok",
+    "pacing.new_state_every_3s",
+    "pacing.new_thing_every_2_4s",
+    "pacing.section_asl_curve",
+    "pacing.static_hold_max",
+    "pacing.sub_second_beats",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.dropout_before_reveal",
+    "sound.duck_depth",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.mute_open_as_before",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.one_sound_per_ui_action",
+    "sound.phone_check",
+    "sound.planned_quiet_maxima",
+    "sound.pre_hit_vacuum",
+    "sound.quiet_hold_ending",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.silent_loop_ok",
+    "sound.speech_over_music",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.transition_paired_sfx",
+    "story.ab_replay",
+    "story.cta_window",
+    "story.no_voiceover_type_carries",
+    "story.one_chart_argument",
+    "story.open_loop_and_late_payoff",
+    "story.proof_clip_genre_end",
+    "story.proof_clip_one_claim",
+    "story.proof_film_beats",
+    "story.sound_off_sentence",
+    "story.state_chip_flip_share",
+    "story.typed_request_to_result",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "visual.accent_fixed_meaning",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: proof-clip) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

@@ -1,0 +1,566 @@
+{
+  "id": "character-spot",
+  "title": "Character spot (wordless, one gag, one feature)",
+  "use_when": "A wordless cartoon or mime spot: one situation, one product benefit, at most 6 emotions on a neutral stage, a twist on a smash, a reaction hold, one end line.",
+  "length_s": [
+    12,
+    32
+  ],
+  "//length": "15 s and 30 s versions; a 6 s cut-down exists.",
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1"
+  ],
+  "lead_aspect": "9:16",
+  "template": "templates/character-spot",
+  "signals": {
+    "keywords": [
+      "cartoon",
+      "mascot",
+      "character",
+      "mime",
+      "wordless",
+      "funny",
+      "gag",
+      "animated spot",
+      "kids"
+    ],
+    "product_types": [
+      "consumer app",
+      "brand",
+      "household product",
+      "kids"
+    ],
+    "goals": [
+      "entertain",
+      "awareness",
+      "sell"
+    ],
+    "platforms": [
+      "reels",
+      "shorts",
+      "tiktok",
+      "youtube"
+    ]
+  },
+  "beats": [
+    {
+      "id": "hook",
+      "at": [
+        0,
+        0.13
+      ],
+      "purpose": "the premise visible in 0-2 s; a cartoon sound on the premise, word-free babble",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "cartoon_sound_on_premise"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "hook.first_change_by_frame6",
+        "story.one_gag_one_feature",
+        "visual.character_comedy_clean"
+      ]
+    },
+    {
+      "id": "setup",
+      "at": [
+        0.13,
+        0.33
+      ],
+      "purpose": "the format and the want; foley on every contact",
+      "required": true,
+      "text": {
+        "max_words": 0
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "foley_per_contact"
+        ]
+      },
+      "rules": [
+        "pacing.asl_character_spot",
+        "pacing.same_scale_run"
+      ]
+    },
+    {
+      "id": "escalation",
+      "at": [
+        0.33,
+        0.6
+      ],
+      "purpose": "escalating attempts; a freeze before the twist; drone then true silence over a 0.5 s freeze",
+      "required": true,
+      "text": {
+        "max_words": 0
+      },
+      "sound": {
+        "level": "rising_then_silence",
+        "events": [
+          "freeze_then_silence"
+        ]
+      },
+      "rules": [
+        "sound.silence_before_turn",
+        "story.character_spot_15s_beats"
+      ]
+    },
+    {
+      "id": "twist",
+      "at": [
+        0.6,
+        0.73
+      ],
+      "purpose": "the reversal on a smash cut: 200 ms silence before, the hit on cut + 1 frame, 12 dB of contrast",
+      "required": true,
+      "text": {
+        "max_words": 0
+      },
+      "sound": {
+        "level": "smash",
+        "events": [
+          "smash_hit_f_plus_1"
+        ]
+      },
+      "rules": [
+        "sound.smash_pre_silence",
+        "story.one_turn_in_window",
+        "sound.hit_on_f_plus_1"
+      ]
+    },
+    {
+      "id": "reaction",
+      "at": [
+        0.73,
+        0.8
+      ],
+      "purpose": "a 1.5 s reaction close-up; one emotion sound",
+      "required": true,
+      "text": {
+        "max_words": 0
+      },
+      "sound": {
+        "level": "dry",
+        "events": [
+          "one_emotion_sound"
+        ]
+      },
+      "rules": [
+        "pacing.reaction_hold"
+      ]
+    },
+    {
+      "id": "message",
+      "at": [
+        0.8,
+        1.0
+      ],
+      "purpose": "the end line and brand; a stinger; held 1.8 s or more",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "stinger"
+        ]
+      },
+      "rules": [
+        "story.cta_window",
+        "pacing.end_card_hold",
+        "distribution.send_line"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "turn_silence_s": [
+      0.2,
+      0.4
+    ],
+    "smash_pre_silence_ms": 200,
+    "tail": "sting",
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_comedy_pizzicato_loop8",
+      "music/bed_playful_bounce_loop8",
+      "music/bed_chiptune_8bit_loop8"
+    ],
+    "mode": "music"
+  },
+  "hooks": [
+    "pattern-break",
+    "in-medias-res",
+    "payoff-first"
+  ],
+  "end_shapes": [
+    "sting"
+  ],
+  "post": {
+    "pattern": "Single post with a send line naming a person; caption line 1 the situation.",
+    "rules": [
+      "distribution.send_line",
+      "distribution.caption_stake_first_125"
+    ]
+  },
+  "recommended_parts": {
+    "hook": [
+      "fx.emotion.question",
+      "sfx/cartoon/boing",
+      "sfx/voice/mumble",
+      "layers/finish.bright-playful"
+    ],
+    "setup": [
+      "sfx/cartoon/tiptoe",
+      "sfx/foley/footstep_wood"
+    ],
+    "escalation": [
+      "fx.emotion.sweat",
+      "sfx/cartoon/slide_whistle_up",
+      "sfx/tx/freeze_hit"
+    ],
+    "twist": [
+      "fx.impact.speedLines",
+      "sfx/tx/smash_cut",
+      "sfx/cartoon/surprise_sting",
+      "cuts/smash"
+    ],
+    "reaction": [
+      "fx.emotion.heartBurst",
+      "sfx/voice/wow"
+    ],
+    "message": [
+      "title.endScreen",
+      "music/bed_comedy_pizzicato_sting"
+    ],
+    "all": [
+      "music/bed_comedy_pizzicato_loop8",
+      "music/bed_playful_bounce_loop8",
+      "music/bed_chiptune_8bit_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "cs-house-15s",
+      "label": "house 15 s character spot (seconds table)",
+      "grade": "craft",
+      "tier": "practitioner grammar (EDIT 10)",
+      "length_s": 15,
+      "aspect": "9:16",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.13
+          ],
+          "purpose": "premise visible (0-2 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.13,
+            0.33
+          ],
+          "purpose": "setup (2-5 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.33,
+            0.6
+          ],
+          "purpose": "escalation (5-9 s), freeze before the twist",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.6,
+            0.73
+          ],
+          "purpose": "twist on a smash (9-11 s)",
+          "text": "",
+          "sound": "200 ms silence, hit on cut + 1"
+        },
+        {
+          "at": [
+            0.73,
+            0.8
+          ],
+          "purpose": "reaction hold (11-12 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.8,
+            1.0
+          ],
+          "purpose": "message + brand (12-15 s)",
+          "text": "",
+          "sound": "stinger"
+        }
+      ],
+      "end_shape": "sting",
+      "sources": [
+        {
+          "doc": "docs/evidence/edit.md",
+          "locator": "10.1-10.2"
+        },
+        {
+          "doc": "patterns/structures.json",
+          "locator": "structures.character-spot"
+        }
+      ]
+    },
+    {
+      "id": "cs-house-30s",
+      "label": "house 30 s character spot (seconds table)",
+      "grade": "craft",
+      "tier": "practitioner grammar (EDIT 10)",
+      "length_s": 30,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.1
+          ],
+          "purpose": "premise (0-3 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.1,
+            0.3
+          ],
+          "purpose": "setup (3-9 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.3,
+            0.6
+          ],
+          "purpose": "escalation (9-18 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.6,
+            0.73
+          ],
+          "purpose": "twist (18-22 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.73,
+            0.8
+          ],
+          "purpose": "reaction (22-24 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.8,
+            1.0
+          ],
+          "purpose": "message (24-30 s)",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "cut_cadence": "2-3 s per shot, 8-12 shots per 30 s",
+      "end_shape": "sting",
+      "sources": [
+        {
+          "doc": "docs/evidence/edit.md",
+          "locator": "10.1-10.2"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.send_line",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.compressed_demo_label",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.references_craft_not_copy",
+    "hook.first_change_by_frame6",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.hold_the_twist",
+    "hook.interrupted_cliche",
+    "hook.no_offer_as_hook",
+    "hook.three_variants_one_body",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.house_easing",
+    "motion.loop_seam",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.asl_character_spot",
+    "pacing.asl_hype_ad",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.new_thing_every_2_4s",
+    "pacing.reaction_hold",
+    "pacing.same_scale_run",
+    "pacing.section_asl_curve",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.master_ends_in_tp_limiter",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.phone_check",
+    "sound.pre_hit_vacuum",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.silence_before_turn",
+    "sound.smash_pre_silence",
+    "sound.speech_over_music",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.transition_paired_sfx",
+    "story.character_spot_15s_beats",
+    "story.cta_window",
+    "story.one_gag_one_feature",
+    "story.one_turn_in_window",
+    "story.open_loop_and_late_payoff",
+    "story.payoff_after_turn",
+    "story.payoff_pays_stake",
+    "story.product_quiet_turn",
+    "story.protagonist_with_stake",
+    "story.sound_off_sentence",
+    "story.subtract_on_rejection",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "visual.accent_fixed_meaning",
+    "visual.character_comedy_clean",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: character-spot) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

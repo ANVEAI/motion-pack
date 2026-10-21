@@ -1,0 +1,517 @@
+{
+  "id": "talking-head",
+  "title": "Talking head (retention edit)",
+  "use_when": "A person speaking to camera: a founder update, a tip, a clip from a talk. Cut per sentence, captions on every line, B-roll per idea, punch-ins on key claims.",
+  "length_s": [
+    20,
+    90
+  ],
+  "//length": "Founder films on X and LinkedIn 60-90 s; feed clips 20-60 s.",
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1"
+  ],
+  "lead_aspect": "9:16",
+  "template": "templates/talking-head",
+  "signals": {
+    "keywords": [
+      "founder",
+      "talk",
+      "to camera",
+      "interview",
+      "tip",
+      "update",
+      "vlog",
+      "podcast",
+      "speaker",
+      "webinar clip"
+    ],
+    "product_types": [
+      "any",
+      "personal brand",
+      "b2b"
+    ],
+    "goals": [
+      "awareness",
+      "explain",
+      "teach",
+      "launch"
+    ],
+    "platforms": [
+      "linkedin",
+      "x",
+      "reels",
+      "shorts"
+    ]
+  },
+  "beats": [
+    {
+      "id": "hook",
+      "at": [
+        0,
+        0.1
+      ],
+      "purpose": "the sharpest line first, mid-sentence on frame 0; key phrase as large captions; no music for the first 8-12 s of a founder film",
+      "required": true,
+      "text": {
+        "max_words": 7
+      },
+      "sound": {
+        "level": "voice",
+        "events": [
+          "voice_frame_0"
+        ]
+      },
+      "rules": [
+        "hook.speak_from_frame0_on_camera",
+        "hook.first_sound_by_frame3",
+        "pacing.founder_open",
+        "honesty.verbatim_quote_gate",
+        "type.caption_style"
+      ]
+    },
+    {
+      "id": "context",
+      "at": [
+        0.1,
+        0.25
+      ],
+      "purpose": "the setup or the question being answered; a lower third (name and role only)",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "voice_low_bed",
+        "events": [
+          "duck_9db"
+        ]
+      },
+      "rules": [
+        "type.lower_third_spec",
+        "sound.duck_depth",
+        "sound.speech_over_music"
+      ]
+    },
+    {
+      "id": "body",
+      "at": [
+        0.25,
+        0.85
+      ],
+      "purpose": "cut per sentence or clause (2.5-5 s), silences over 0.5 s cut with a 120 ms breath kept; B-roll covers 35-50% in 1.2-3 s inserts that lead the line by 150 ms; a punch-in at most once per 4 s",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "voice",
+        "events": [
+          "broll_leads_150ms",
+          "punch_in_max_1_per_4s"
+        ]
+      },
+      "rules": [
+        "pacing.asl_talking_head",
+        "pacing.talking_head_cut_rules",
+        "motion.punch_in_cadence",
+        "sound.talking_head_sfx_under_voice",
+        "sound.room_tone_under_cuts",
+        "type.captions_every_sentence",
+        "type.no_text_box_overlap",
+        "sound.vo_wpm"
+      ]
+    },
+    {
+      "id": "button",
+      "at": [
+        0.85,
+        1.0
+      ],
+      "purpose": "the punchline lands dry, a 450 ms face hold, then the ask or URL",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "dry",
+        "events": [
+          "beat_hold_450ms"
+        ]
+      },
+      "rules": [
+        "pacing.end_card_hold",
+        "distribution.no_spoken_cta_builders"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_note": "voice from frame 0",
+    "duck_db_min": 9,
+    "speech_over_music_db": 10,
+    "vo_wpm": [
+      110,
+      175
+    ],
+    "tail": "dry | quiet-hold",
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_lofi_warm_loop8",
+      "music/bed_ambient_pad_loop8",
+      "music/bed_documentary_marimba_loop8"
+    ],
+    "mode": "vo"
+  },
+  "hooks": [
+    "founder-to-camera",
+    "provocative-line",
+    "claim-or-question",
+    "in-medias-res"
+  ],
+  "end_shapes": [
+    "quiet-hold",
+    "dry"
+  ],
+  "post": {
+    "pattern": "Native upload with burned captions on X and LinkedIn; the claim and the link in the post copy, not spoken.",
+    "rules": [
+      "platform.burn_captions_muted",
+      "distribution.link_in_first_comment",
+      "distribution.no_spoken_cta_builders"
+    ]
+  },
+  "recommended_parts": {
+    "hook": [
+      "caption.oneWordSlam",
+      "caption.speakerTag",
+      "cuts/talking_head/punch_in"
+    ],
+    "context": [
+      "lowerThird.cleanBar",
+      "cuts/talking_head/autocut"
+    ],
+    "body": [
+      "sfx/amb/room_tone",
+      "sfx/ui/pop",
+      "cuts/talking_head/autocut",
+      "cuts/talking_head/reframe_alternate",
+      "cuts/split/broll_lead",
+      "cuts/talking_head/punch_in",
+      "cam2d.punchCadence"
+    ],
+    "button": [
+      "title.endScreen",
+      "cuts/talking_head/beat_hold"
+    ],
+    "all": [
+      "music/bed_lofi_warm_loop8",
+      "music/bed_ambient_pad_loop8",
+      "music/bed_documentary_marimba_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "th-founder-82",
+      "label": "tier-A founder on camera with composited UI, 82.1 s",
+      "grade": "measured-A",
+      "tier": "A (5.5x)",
+      "length_s": 82.1,
+      "aspect": "16:9",
+      "cuts": 2,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.17
+          ],
+          "purpose": "presenter mid-sentence on frame 0; a glass pane resolves by 0.5 s",
+          "text": "",
+          "sound": "speech from 0.0 s"
+        },
+        {
+          "at": [
+            0.17,
+            0.66
+          ],
+          "purpose": "turn, then a first-person demo in 4 steps",
+          "text": "",
+          "sound": "UI events inside speech, 178 wpm"
+        },
+        {
+          "at": [
+            0.66,
+            0.89
+          ],
+          "purpose": "proof, belief and vision lines",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.89,
+            1.0
+          ],
+          "purpose": "launch line; cursors assemble the mark",
+          "text": "",
+          "sound": "1.2 s silence under the card"
+        }
+      ],
+      "quiet_open_db": 0.2,
+      "tail": "decay",
+      "cut_cadence": "2 hard cuts in 82 s",
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "private:research/reference-round8-2026-10.md",
+          "locator": "02. film section"
+        }
+      ],
+      "vo_wpm": 178,
+      "quiet_tail_db": -28.7,
+      "cuts_per_min": 1.5
+    },
+    {
+      "id": "th-oneTake-80",
+      "label": "founder to camera, one take with giant words, 80 s (craft)",
+      "grade": "craft",
+      "tier": "claim-driven (283x, 0.27% likes): craft only",
+      "length_s": 80,
+      "aspect": "16:9",
+      "cuts": 0,
+      "beats": [
+        {
+          "at": [
+            0,
+            1.0
+          ],
+          "purpose": "one take; giant words and explanatory overlays; the speaker shrinks to picture-in-picture during diagrams",
+          "text": "giant words",
+          "sound": "188 wpm"
+        }
+      ],
+      "lufs": -15.6,
+      "end_shape": "dry",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round3-2026-10.md",
+          "locator": "lines 469-490"
+        }
+      ],
+      "vo_wpm": 188,
+      "cuts_per_min": 0.0
+    },
+    {
+      "id": "th-offer-12",
+      "label": "single locked shot with an offer, 12.1 s (ad-native, not a recipe)",
+      "grade": "inferred",
+      "tier": "B (boosted-looking, 1,344x at 0.015% likes)",
+      "length_s": 12.1,
+      "aspect": "16:9",
+      "cuts": 1,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.21
+          ],
+          "purpose": "direct address from 0.0 s, captions from 0.5 s, the offer said by 2.5 s",
+          "text": "captions",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.21,
+            1.0
+          ],
+          "purpose": "one locked shot, one cut at the end",
+          "text": "",
+          "sound": "tail -0.9 dB"
+        }
+      ],
+      "quiet_open_db": -4.2,
+      "end_shape": "dry",
+      "sources": [
+        {
+          "doc": "private:research/reference-round7-2026-10.md",
+          "locator": "Per-film craft: the other 12 films (film 14)"
+        }
+      ],
+      "vo_wpm": 105,
+      "notes": "The reach came from the boosted-looking shape, not the craft (hook.no_offer_as_hook).",
+      "quiet_tail_db": -0.9,
+      "cuts_per_min": 5.0
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.no_spoken_cta_builders",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.references_craft_not_copy",
+    "honesty.synthetic_voice_label",
+    "honesty.verbatim_quote_gate",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.no_offer_as_hook",
+    "hook.speak_from_frame0_on_camera",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.handheld_closed_form",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.punch_in_cadence",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.asl_hype_ad",
+    "pacing.asl_talking_head",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.founder_open",
+    "pacing.interrupt_ladder",
+    "pacing.match_pattern_length",
+    "pacing.new_thing_every_2_4s",
+    "pacing.section_asl_curve",
+    "pacing.talking_head_cut_rules",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.duck_depth",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.phone_check",
+    "sound.pre_hit_vacuum",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.room_tone_under_cuts",
+    "sound.silence_before_turn",
+    "sound.smash_pre_silence",
+    "sound.speech_over_music",
+    "sound.split_edits",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.talking_head_sfx_under_voice",
+    "sound.transition_paired_sfx",
+    "sound.vo_wpm",
+    "story.cta_window",
+    "story.podcast_line_first",
+    "story.sound_off_sentence",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.caption_style",
+    "type.captions_every_sentence",
+    "type.emphasis_scale_max_1_05",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.lower_third_spec",
+    "type.no_text_box_overlap",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "visual.accent_fixed_meaning",
+    "visual.banding_grain",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.founder_with_composited_ui",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor",
+    "visual.text_over_footage_worst_frame"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: talking-head, vlog, podcast-clip, founder-story) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

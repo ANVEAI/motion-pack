@@ -1,0 +1,1142 @@
+{
+  "id": "launch-film",
+  "title": "Launch film (hero)",
+  "use_when": "A product or release gets one hero film: a stake or claim, one turn, the product acting, one sourced proof, the name, the URL. Type-led or VO-led; a founder on camera is a variant (see exemplars).",
+  "length_s": [
+    30,
+    38
+  ],
+  "//length": "Tier-A startup product films ran 30-38 s (3 of 4, round 7); people-led documentaries run 107-185 s (use the documentary format); nothing tier-A sat between 60 and 100 s.",
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1"
+  ],
+  "lead_aspect": "16:9",
+  "template": "templates/saas-launch",
+  "signals": {
+    "keywords": [
+      "launch",
+      "introducing",
+      "announce",
+      "release",
+      "now available",
+      "out today",
+      "hero film",
+      "product video",
+      "v1",
+      "v2",
+      "ship"
+    ],
+    "product_types": [
+      "saas",
+      "ai tool",
+      "app",
+      "developer tool",
+      "platform",
+      "api",
+      "open-source tool"
+    ],
+    "goals": [
+      "launch",
+      "awareness"
+    ],
+    "platforms": [
+      "x",
+      "linkedin",
+      "youtube",
+      "web"
+    ]
+  },
+  "beats": [
+    {
+      "id": "hook",
+      "at": [
+        0,
+        0.06
+      ],
+      "purpose": "the stake or claim on frame 0, already moving; one calm field, 1-3 words on frame 0, the full line by 1-2 s",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "quiet",
+        "events": [
+          "first_sound_by_0.25s",
+          "text_by_1s"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "hook.first_change_by_frame6",
+        "hook.frame0_subject_contrast",
+        "sound.quiet_open",
+        "hook.text_by_0_3s",
+        "hook.type_line_on_calm_field",
+        "type.read_line_max_words",
+        "hook.three_variants_one_body"
+      ]
+    },
+    {
+      "id": "problem",
+      "at": [
+        0.06,
+        0.25
+      ],
+      "purpose": "the pain as one concrete scene inside a tool the viewer already uses; UI ticks and texture only, no kick or bass",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "thin",
+        "events": [
+          "one_sound_per_ui_action",
+          "no_bass"
+        ]
+      },
+      "rules": [
+        "story.pain_in_familiar_tool",
+        "music.late_drop_on_turn",
+        "sound.one_sound_per_ui_action",
+        "story.degrading_problem_ladder",
+        "story.one_problem_one_solution",
+        "pacing.static_hold_max"
+      ]
+    },
+    {
+      "id": "turn",
+      "at": [
+        0.25,
+        0.3
+      ],
+      "purpose": "one turn line (a question or reframe) at about 30%; 0.3-0.5 s of true silence before it; the bass enters on it",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "gap_then_full",
+        "events": [
+          "silence_0.3-0.5s_before",
+          "bass_entry"
+        ]
+      },
+      "rules": [
+        "story.one_turn_in_window",
+        "story.turn_at_30pct",
+        "sound.silence_before_turn",
+        "music.late_bass_entry",
+        "story.speech_gap_before_drop",
+        "sound.dip_before_drop"
+      ]
+    },
+    {
+      "id": "reveal",
+      "at": [
+        0.3,
+        0.38
+      ],
+      "purpose": "the product appears acting on itself (a field typing, a window drawing), then the name builds",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "full",
+        "events": [
+          "hero_hit_on_name",
+          "riser_ends_frame_before"
+        ]
+      },
+      "rules": [
+        "visual.product_as_actor",
+        "hook.real_product_early",
+        "sound.hero_hit_over_bed",
+        "sound.riser_ends_frame_before_hit",
+        "story.product_quiet_turn",
+        "sound.hit_on_f_plus_1"
+      ]
+    },
+    {
+      "id": "demo",
+      "at": [
+        0.38,
+        0.72
+      ],
+      "purpose": "4-7 chapters of 3-5 s: a 2-5 word label with one accent word beside real UI doing that job; a state change on the grid every 1.1-1.9 s",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "full",
+        "events": [
+          "one_sound_per_ui_action",
+          "state_change_on_grid"
+        ]
+      },
+      "rules": [
+        "story.chapter_label_ui",
+        "story.verb_chapter_cards",
+        "type.key_word_accent",
+        "pacing.state_change_every_1_2s",
+        "sound.one_sound_per_ui_action",
+        "visual.real_ui_composited",
+        "type.typing_is_the_clock",
+        "honesty.placeholder_labelled_in_frame",
+        "story.one_running_example",
+        "visual.one_accent_colour"
+      ]
+    },
+    {
+      "id": "proof",
+      "at": [
+        0.72,
+        0.85
+      ],
+      "purpose": "exactly one defensible, sourced number or result; the loudest moment lands on the result state, not the logo",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "pulled_back",
+        "events": [
+          "one_soft_hit_on_number"
+        ]
+      },
+      "rules": [
+        "honesty.digit_needs_source",
+        "story.launch_one_defensible_number",
+        "sound.loudest_on_state_change",
+        "honesty.label_hold_2s",
+        "type.reading_time_hold"
+      ]
+    },
+    {
+      "id": "name",
+      "at": [
+        0.85,
+        0.89
+      ],
+      "purpose": "the name alone: the bed drops to about -50 dB for 1.0-1.5 s under it, then returns for the tagline",
+      "required": true,
+      "text": {
+        "max_words": 3
+      },
+      "sound": {
+        "level": "silence",
+        "events": [
+          "bed_dip_-50db_1.5s"
+        ]
+      },
+      "rules": [
+        "sound.silence_under_name",
+        "sound.planned_quiet_maxima"
+      ]
+    },
+    {
+      "id": "end",
+      "at": [
+        0.89,
+        1.0
+      ],
+      "purpose": "tagline (one accent word), URL or one verb; held 3 s or more; the sound decays 2-4 s under the card",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "decay",
+        "events": [
+          "decay_tail_2-4s"
+        ]
+      },
+      "rules": [
+        "pacing.end_card_hold",
+        "visual.end_card_layout",
+        "sound.decay_tail",
+        "story.cta_window",
+        "distribution.cta_one_verb",
+        "distribution.no_spoken_cta_builders",
+        "delivery.clean_tail"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_db": [
+      -11,
+      -7
+    ],
+    "quiet_open_s": [
+      1,
+      2
+    ],
+    "sound_enter_by_s": 0.25,
+    "bass_entry_pct": [
+      0.23,
+      0.35
+    ],
+    "bass_entry_note": "measured 23-52% in tier-A music-led films (median ~24%); default 0.30, on the turn line",
+    "turn_silence_s": [
+      0.3,
+      0.5
+    ],
+    "name_silence_s": [
+      1.0,
+      1.5
+    ],
+    "name_silence_db": -50,
+    "name_at_pct": [
+      0.85,
+      0.89
+    ],
+    "tail": "decay",
+    "tail_s": [
+      2,
+      4
+    ],
+    "tail_db_max": -25,
+    "bass_share": [
+      0.27,
+      0.47
+    ],
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_tech_pulse_loop8",
+      "music/bed_uplift_corporate_loop8",
+      "music/bed_anthem_build_loop8",
+      "music/bed_ambient_pad_loop8"
+    ],
+    "mode": "music"
+  },
+  "hooks": [
+    "claim-or-question",
+    "payoff-first",
+    "promise",
+    "problem-agitate",
+    "founder-to-camera",
+    "in-medias-res"
+  ],
+  "end_shapes": [
+    "decay",
+    "quiet-hold",
+    "sting"
+  ],
+  "post": {
+    "pattern": "3+ separable claims: hero film, then one numbered proof clip per claim about 2 min apart in one sitting, link in the first or last reply. One free or open tool from a founder: one single post, link inline at the end. Post 12:30-16:00 UTC; tell real people first; reply by hand for 36 h.",
+    "rules": [
+      "distribution.hero_plus_numbered_thread",
+      "distribution.single_post_founder",
+      "distribution.link_in_first_comment",
+      "distribution.link_inline_end",
+      "distribution.launch_window_utc",
+      "distribution.hour1_people_not_pods",
+      "distribution.first_line_archetype",
+      "distribution.reply_by_hand_one_voice",
+      "distribution.next_day_new_angle",
+      "distribution.teaser_day_before",
+      "distribution.expected_follower_multiple",
+      "distribution.judge_by_saves",
+      "distribution.numbered_clip_copy",
+      "platform.x_landscape_ok",
+      "platform.native_upload_x"
+    ]
+  },
+  "recommended_parts": {
+    "hook": [
+      "type/maskRise",
+      "type/typewriter",
+      "ui.promptBar",
+      "type.sentenceAcrossShots",
+      "sfx/ui/type_key",
+      "sfx/sizzle/grain",
+      "layers/background.meshGradient",
+      "layers/grain.upload-safe",
+      "cuts/story/sentenceLed"
+    ],
+    "problem": [
+      "transitions/blurCross",
+      "transitions/cut",
+      "layout.degradingDiagram",
+      "ui.appWindow",
+      "ui.cursorJourney",
+      "sfx/ui/tick",
+      "sfx/ui/error",
+      "sfx/ui/click",
+      "cuts/story/lateDrop"
+    ],
+    "turn": [
+      "transitions/whip",
+      "transitions/maskReveal",
+      "sfx/hit/sub_drop",
+      "sfx/riser/noise_1bar",
+      "sfx/lift/inhale",
+      "cuts/story/lateDrop"
+    ],
+    "reveal": [
+      "transitions/maskReveal",
+      "type/trackingCollapse",
+      "layout.iconMergeLockup",
+      "ui.glassPanel",
+      "sfx/stinger/reveal",
+      "sfx/riser/noise_1bar"
+    ],
+    "demo": [
+      "transitions/push",
+      "transitions/cut",
+      "type/typewriter",
+      "type/wordStagger",
+      "title.verbCard",
+      "ui.cursorJourney",
+      "ui.stateMorph",
+      "type.accentSwap",
+      "ui.agentActivity",
+      "sfx/ui/click",
+      "sfx/ui/success",
+      "sfx/ui/typing_burst",
+      "sfx/whoosh/swish_s",
+      "cuts/story/verbLadder"
+    ],
+    "proof": [
+      "counter.statCard",
+      "chart.sourceFooter",
+      "counter.countUp",
+      "sfx/hit/soft",
+      "sfx/ui/count_run"
+    ],
+    "name": [
+      "sfx/logo/two_note",
+      "music/logo_pattern_two_note"
+    ],
+    "end": [
+      "title.endScreen",
+      "sfx/logo/fifth_lift",
+      "cuts/sections/breath_out"
+    ],
+    "all": [
+      "music/bed_tech_pulse_loop8",
+      "music/bed_uplift_corporate_loop8",
+      "music/bed_anthem_build_loop8",
+      "music/bed_ambient_pad_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "lf-typeled-35",
+      "label": "tier-A type-led launch film, 34.9 s, zero cuts",
+      "grade": "measured-A",
+      "tier": "A (knife edge, young post)",
+      "length_s": 34.9,
+      "aspect": "3:2",
+      "cuts": 0,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.06
+          ],
+          "purpose": "type hook on a pale field",
+          "text": "2-3 words, line 2 by 1 s",
+          "sound": "sound on, no quiet open (-2.4 dB)"
+        },
+        {
+          "at": [
+            0.06,
+            0.2
+          ],
+          "purpose": "blur into the product world",
+          "text": "",
+          "sound": "gated bed, tick per UI event"
+        },
+        {
+          "at": [
+            0.2,
+            0.23
+          ],
+          "purpose": "two-word claim card",
+          "text": "2 words",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.26,
+            0.54
+          ],
+          "purpose": "chat demo, then a typed follow-up in a bar",
+          "text": "typed",
+          "sound": "4.7 onsets/s"
+        },
+        {
+          "at": [
+            0.57,
+            0.66
+          ],
+          "purpose": "imperative line + one container morphs",
+          "text": "",
+          "sound": "hits on two-beat steps (1.07 s)"
+        },
+        {
+          "at": [
+            0.69,
+            0.83
+          ],
+          "purpose": "second chat, circular-mask reveal",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.86,
+            0.89
+          ],
+          "purpose": "three-word tagline",
+          "text": "3 words",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.92,
+            1.0
+          ],
+          "purpose": "mark hold",
+          "text": "",
+          "sound": "3 s decay to -50 dBFS"
+        }
+      ],
+      "lufs": -14.6,
+      "quiet_open_db": -2.4,
+      "tail": "decay",
+      "cut_cadence": "0 cuts; state change every ~1.07 s (two beats at 112 BPM)",
+      "bass_share": 0.55,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/reference-round9-2026-10.md",
+          "locator": "film 01"
+        }
+      ],
+      "notes": "Type-led films may skip the quiet open (sound.loud_open_type_led). Master peaked 0.0 dBFS: do not copy the level.",
+      "quiet_tail_db": -11.1,
+      "cuts_per_min": 0.0
+    },
+    {
+      "id": "lf-vofeature-38",
+      "label": "tier-A VO-led UI launch film, 37.8 s",
+      "grade": "measured-A",
+      "tier": "A (8.6x followers, bookmarks 0.89%)",
+      "length_s": 37.8,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.03
+          ],
+          "purpose": "one accent word on white",
+          "text": "1 word",
+          "sound": "near-silence 0.05-0.35 s, VO at 0.35 s"
+        },
+        {
+          "at": [
+            0.03,
+            0.11
+          ],
+          "purpose": "name + logo chip, 3-word category line typed with the VO",
+          "text": "3 words",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.11,
+            0.16
+          ],
+          "purpose": "app window rises",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.16,
+            0.71
+          ],
+          "purpose": "6 chapters of 3-5 s: 2-3 word label left (accent word), UI right",
+          "text": "2-3 words per chapter",
+          "sound": "light bright bed"
+        },
+        {
+          "at": [
+            0.71,
+            0.85
+          ],
+          "purpose": "feature run, 3 quick screens",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.85,
+            0.89
+          ],
+          "purpose": "VO says the name alone",
+          "text": "name",
+          "sound": "bed drops to about -50 dB for 1.5 s"
+        },
+        {
+          "at": [
+            0.89,
+            0.95
+          ],
+          "purpose": "logo + 6-word tagline",
+          "text": "6 words",
+          "sound": "bed back"
+        },
+        {
+          "at": [
+            0.95,
+            1.0
+          ],
+          "purpose": "\"try free\" line",
+          "text": "",
+          "sound": "quiet fade tail"
+        }
+      ],
+      "quiet_open_db": -10.7,
+      "tail": "decay",
+      "cut_cadence": "chapter every 3-5 s",
+      "bass_share": 0.27,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/reference-round7-2026-10.md",
+          "locator": "Beat tables: the four tier-A films (film 07)"
+        }
+      ],
+      "vo_wpm": 131,
+      "quiet_tail_db": -27.7
+    },
+    {
+      "id": "lf-storyhero-73",
+      "label": "tier-A* story-led hero with VO, 73.2 s (distribution-assisted)",
+      "grade": "measured-A",
+      "tier": "A* (340x with a launch-hour quote wave)",
+      "length_s": 73.2,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.03
+          ],
+          "purpose": "frontal portrait, direct gaze, VO on frame 0; title animates behind the subject at 1 s",
+          "text": "title word",
+          "sound": "about 6 dB under the body"
+        },
+        {
+          "at": [
+            0.03,
+            0.26
+          ],
+          "purpose": "contradiction ladder: the voice states the sane rule, the picture shows the absurd opposite; rungs 4 s -> 1 s",
+          "text": "fragments",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.26,
+            0.35
+          ],
+          "purpose": "viewer stand-in; the turn question at 31%",
+          "text": "question",
+          "sound": "0.4 s true silence before the turn"
+        },
+        {
+          "at": [
+            0.35,
+            0.46
+          ],
+          "purpose": "whip into the second world; mark, name builds, role line",
+          "text": "name",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.46,
+            0.66
+          ],
+          "purpose": "UI demo; dip to about -55 dB at 56% into the key line",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.66,
+            0.85
+          ],
+          "purpose": "claims (unverified social proof in the reference: never copy)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.85,
+            0.98
+          ],
+          "purpose": "tagline couplet, name + \"out today\"",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.98,
+            1.0
+          ],
+          "purpose": "black",
+          "text": "",
+          "sound": "decay to -65 dB on 1.7 s of black"
+        }
+      ],
+      "lufs": -17.3,
+      "quiet_open_db": -6,
+      "tail": "decay",
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/launch-virality-study-2026-10",
+          "locator": "Film 1: hero; Cross-film craft playbook items 2, 6, 7, 8"
+        }
+      ],
+      "vo_wpm": 142,
+      "notes": "Reach came with a launch-hour network (37 of 54 quotes within 70 min); day-2 posts fell back to baseline. Craft worth reusing: the title behind the subject, the contradiction ladder, the silence before the turn.",
+      "quiet_tail_db": -65
+    },
+    {
+      "id": "lf-founder-82",
+      "label": "tier-A founder on camera with composited UI, 82.1 s",
+      "grade": "measured-A",
+      "tier": "A (5.5x)",
+      "length_s": 82.1,
+      "aspect": "16:9",
+      "cuts": 2,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.17
+          ],
+          "purpose": "presenter mid-sentence on frame 0, glass pane resolves by 0.5 s",
+          "text": "",
+          "sound": "speech from 0.0 s, no quiet open (+0.2 dB)"
+        },
+        {
+          "at": [
+            0.17,
+            0.23
+          ],
+          "purpose": "the turn line; flare wipe between UI states",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.23,
+            0.66
+          ],
+          "purpose": "first-person demo in 4 steps",
+          "text": "",
+          "sound": "UI events inside speech"
+        },
+        {
+          "at": [
+            0.66,
+            0.77
+          ],
+          "purpose": "social proof + belief line",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.78,
+            0.89
+          ],
+          "purpose": "vision line, locked shot, no UI",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.89,
+            0.97
+          ],
+          "purpose": "launch line, white wipe",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.97,
+            1.0
+          ],
+          "purpose": "cursors assemble the mark, logo + domain",
+          "text": "",
+          "sound": "1.2 s silence under the end card"
+        }
+      ],
+      "quiet_open_db": 0.2,
+      "tail": "decay",
+      "cut_cadence": "2 hard cuts in 82 s",
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/reference-round8-2026-10.md",
+          "locator": "02. film section; Cross-film craft playbook item 12"
+        }
+      ],
+      "vo_wpm": 178,
+      "notes": "Founder variant: hook.speak_from_frame0_on_camera and visual.founder_with_composited_ui replace the quiet open.",
+      "quiet_tail_db": -28.7,
+      "cuts_per_min": 1.5
+    },
+    {
+      "id": "lf-method-64",
+      "label": "tier-A method film with a late drop, 64 s",
+      "grade": "measured-A",
+      "tier": "A (1.9x, 3.3% likes, 3.8% bookmarks)",
+      "length_s": 64,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.25
+          ],
+          "purpose": "the problem",
+          "text": "",
+          "sound": "UI ticks only"
+        },
+        {
+          "at": [
+            0.25,
+            0.27
+          ],
+          "purpose": "the turn line",
+          "text": "",
+          "sound": "the beat drops at 25%"
+        },
+        {
+          "at": [
+            0.27,
+            0.63
+          ],
+          "purpose": "the method",
+          "text": " ",
+          "sound": "60 BPM bed"
+        },
+        {
+          "at": [
+            0.63,
+            0.81
+          ],
+          "purpose": "proof (self-check scores)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.81,
+            1.0
+          ],
+          "purpose": "end",
+          "text": "",
+          "sound": "sustained sub under the end"
+        }
+      ],
+      "lufs": -14.6,
+      "cut_cadence": "cut sync 61%",
+      "bass_entry_pct": 0.25,
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round3-2026-10.md",
+          "locator": "lines 283-302"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.ceiling_for_dense_clicks",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hero_plus_numbered_thread",
+    "distribution.hook_variant_test",
+    "distribution.hour1_people_not_pods",
+    "distribution.judge_by_saves",
+    "distribution.launch_window_utc",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.newsjack_then_launch",
+    "distribution.next_day_new_angle",
+    "distribution.no_batch_posting",
+    "distribution.no_spoken_cta_builders",
+    "distribution.numbered_clip_copy",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.self_repost_next_peak",
+    "distribution.single_post_founder",
+    "distribution.teaser_day_before",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.ai_work_as_states",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.compressed_demo_label",
+    "honesty.concept_piece_labelled",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.placeholder_labelled_in_frame",
+    "honesty.post_copy_sourced",
+    "honesty.product_does_its_job",
+    "honesty.quote_needs_source",
+    "honesty.real_deadline_only",
+    "honesty.references_craft_not_copy",
+    "honesty.same_input_progress",
+    "honesty.synthetic_voice_label",
+    "honesty.verbatim_quote_gate",
+    "hook.brand_cue_deadline",
+    "hook.feed_flash_forward",
+    "hook.first_change_by_frame6",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.frame0_subject_contrast",
+    "hook.hardware_shown_by_4s",
+    "hook.hold_the_twist",
+    "hook.interrupted_cliche",
+    "hook.no_offer_as_hook",
+    "hook.real_product_early",
+    "hook.sentence_builds_small",
+    "hook.social_proof_sourced",
+    "hook.sound_on_pill",
+    "hook.speak_from_frame0_on_camera",
+    "hook.text_by_0_3s",
+    "hook.three_variants_one_body",
+    "hook.title_behind_subject",
+    "hook.type_line_on_calm_field",
+    "hook.value_by_3s",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.cut_synchronous_fx",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.one_container_morphs",
+    "motion.one_signature_move",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.bass_share_by_role",
+    "music.bass_share_product_film",
+    "music.dark_open_12db_under_drop",
+    "music.late_bass_entry",
+    "music.late_drop_on_turn",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.phrase_cuts",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.accelerando_montage",
+    "pacing.asl_hype_ad",
+    "pacing.continuous_ok",
+    "pacing.cut_density_by_section",
+    "pacing.end_card_hold",
+    "pacing.founder_open",
+    "pacing.front_loaded_cuts",
+    "pacing.hook_three_states",
+    "pacing.interrupt_ladder",
+    "pacing.length_30_38",
+    "pacing.match_pattern_length",
+    "pacing.new_thing_every_2_4s",
+    "pacing.reveal_shots_1_5_to_3_5s",
+    "pacing.same_scale_run",
+    "pacing.section_asl_curve",
+    "pacing.state_change_every_1_2s",
+    "pacing.static_hold_max",
+    "pacing.style_ladder",
+    "pacing.sub_second_beats",
+    "pacing.talking_head_cut_rules",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.master_16x9_relayout",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_name_early_or_end",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.decay_tail",
+    "sound.dip_before_drop",
+    "sound.dropout_before_reveal",
+    "sound.gate_bed_on_cuts",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.loud_open_type_led",
+    "sound.loudest_on_state_change",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.one_reveal_hit",
+    "sound.one_sound_per_ui_action",
+    "sound.phone_check",
+    "sound.picture_leads_sound",
+    "sound.planned_quiet_maxima",
+    "sound.pre_hit_vacuum",
+    "sound.pre_sting_silence",
+    "sound.quiet_open",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.silence_before_turn",
+    "sound.silence_under_name",
+    "sound.smash_pre_silence",
+    "sound.speech_over_music",
+    "sound.split_edits",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.sync_rule_by_mode",
+    "sound.transition_paired_sfx",
+    "story.chapter_label_ui",
+    "story.climax_in_world",
+    "story.contradiction_ladder",
+    "story.cta_window",
+    "story.cutdown_launch_order",
+    "story.degrading_problem_ladder",
+    "story.fidelity_ladder",
+    "story.five_faces_cold_open",
+    "story.launch_one_defensible_number",
+    "story.no_voiceover_type_carries",
+    "story.one_problem_one_solution",
+    "story.one_running_example",
+    "story.one_turn_in_window",
+    "story.open_loop_and_late_payoff",
+    "story.pain_in_familiar_tool",
+    "story.payoff_after_turn",
+    "story.payoff_pays_stake",
+    "story.problem_pivot_shape",
+    "story.product_quiet_turn",
+    "story.protagonist_with_stake",
+    "story.query_ladder",
+    "story.refrain_card",
+    "story.sound_off_sentence",
+    "story.speech_gap_before_drop",
+    "story.subtract_on_rejection",
+    "story.through_line_not_vignettes",
+    "story.turn_at_30pct",
+    "story.typed_request_to_result",
+    "story.verb_chapter_cards",
+    "story.vo_script_shape",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.captions_every_sentence",
+    "type.exit_faster_than_entrance",
+    "type.floors_by_role_aspect",
+    "type.honesty_label_size",
+    "type.key_word_accent",
+    "type.name_super_one_detail",
+    "type.no_text_box_overlap",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "type.scale_contrast",
+    "type.sentence_across_shots",
+    "type.typing_is_the_clock",
+    "type.word_is_the_scene",
+    "visual.accent_fixed_meaning",
+    "visual.banding_grain",
+    "visual.colour_on_pivot",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.founder_with_composited_ui",
+    "visual.glass_fades_by_blur",
+    "visual.hero_alone_bokeh",
+    "visual.layer_stack_order",
+    "visual.mark_in_world",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_accent_colour",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.product_as_actor",
+    "visual.product_hero_frame_share",
+    "visual.real_ui_composited",
+    "visual.safe_zone_every_text_box",
+    "visual.tall_ui_zoom_to_region",
+    "visual.text_contrast_floor",
+    "visual.two_worlds"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: launch-film, saas-launch, founder-story) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

@@ -1,0 +1,594 @@
+{
+  "id": "beat-edit",
+  "title": "Beat edit (music-led montage)",
+  "use_when": "A montage cut to a track: a reel, a portfolio, a tool tour on music, a style ladder. The track is the clock.",
+  "length_s": [
+    8,
+    40
+  ],
+  "//length": "Tier-A beat montages 10.3 s and 37.8 s; a 20 s teaser with the drop at half time.",
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1"
+  ],
+  "lead_aspect": "9:16",
+  "template": "templates/beat-edit",
+  "signals": {
+    "keywords": [
+      "montage",
+      "reel",
+      "music video",
+      "beat",
+      "edit",
+      "portfolio",
+      "showreel",
+      "hype",
+      "sizzle",
+      "tour"
+    ],
+    "product_types": [
+      "creative tool",
+      "agency",
+      "portfolio",
+      "brand",
+      "music"
+    ],
+    "goals": [
+      "awareness",
+      "entertain"
+    ],
+    "platforms": [
+      "reels",
+      "shorts",
+      "tiktok",
+      "x"
+    ]
+  },
+  "beats": [
+    {
+      "id": "intro",
+      "at": [
+        0,
+        0.15
+      ],
+      "purpose": "the track and the first image land together; a short question or one-word-per-shot sentence; loud from frame 0 is fine",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "full_or_quiet",
+        "events": [
+          "audible_frames_0_3"
+        ]
+      },
+      "rules": [
+        "hook.first_sound_by_frame3",
+        "hook.frame0_moving",
+        "type.sentence_across_shots",
+        "sound.loud_open_type_led"
+      ]
+    },
+    {
+      "id": "build",
+      "at": [
+        0.15,
+        0.5
+      ],
+      "purpose": "accelerating: every bar -> every 2 beats -> every beat -> eighths (1-2 bars max); the riser ends one frame before the drop",
+      "required": true,
+      "text": {
+        "max_words": 3
+      },
+      "sound": {
+        "level": "building",
+        "events": [
+          "riser_whole_bars"
+        ]
+      },
+      "rules": [
+        "pacing.asl_beat_edit",
+        "pacing.accelerando_montage",
+        "sound.riser_ends_frame_before_hit",
+        "music.phrase_cuts"
+      ]
+    },
+    {
+      "id": "drop",
+      "at": [
+        0.5,
+        0.85
+      ],
+      "purpose": "double time: one cut per beat (0.4-1.0 s), hits on the grid only, at most 2 longer holds; a near-silent dip of 0.1-0.5 s right before the drop",
+      "required": true,
+      "text": {
+        "max_words": 2
+      },
+      "sound": {
+        "level": "full",
+        "events": [
+          "dip_before_drop",
+          "cut_per_beat"
+        ]
+      },
+      "rules": [
+        "pacing.sub_second_beats",
+        "sound.dip_before_drop",
+        "sound.sync_rule_by_mode",
+        "sound.sync_above_chance",
+        "pacing.style_ladder",
+        "motion.flash_limit"
+      ]
+    },
+    {
+      "id": "out",
+      "at": [
+        0.85,
+        1.0
+      ],
+      "purpose": "breathe out; a loop seam back to frame 0, or an end hit / slam with a URL card",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "decay_or_slam",
+        "events": [
+          "end_hit"
+        ]
+      },
+      "rules": [
+        "motion.loop_seam",
+        "pacing.end_card_hold"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_note": "loud from frame 0 is normal (open -0.3 dB measured)",
+    "bass_entry_pct": [
+      0.45,
+      0.55
+    ],
+    "tail": "slam | decay | loop",
+    "bass_share": [
+      0.46,
+      0.75
+    ],
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "onset_share_min": 0.6,
+    "beds": [
+      "music/bed_hype_house_loop8",
+      "music/bed_trap_half_loop8",
+      "music/bed_dnb_170_loop8",
+      "music/bed_hype_house_reel15"
+    ],
+    "mode": "music"
+  },
+  "hooks": [
+    "pattern-break",
+    "payoff-first",
+    "curiosity-gap"
+  ],
+  "end_shapes": [
+    "slam",
+    "decay",
+    "loop"
+  ],
+  "post": {
+    "pattern": "One line (\"point of view\" or the stake); a fixed series slot if it is a series; judge by saves and views per follower.",
+    "rules": [
+      "distribution.fixed_series_slot",
+      "distribution.judge_by_saves",
+      "distribution.no_batch_posting"
+    ]
+  },
+  "recommended_parts": {
+    "intro": [
+      "type/scaleSlam",
+      "type.sentenceAcrossShots",
+      "cuts/beat/every_2"
+    ],
+    "build": [
+      "sfx/riser/noise_2bar",
+      "sfx/riser/supersaw_2bar",
+      "cuts/sections/build_accelerate"
+    ],
+    "drop": [
+      "transitions/cut",
+      "transitions/scalePunch",
+      "transitions/flash",
+      "sfx/tx/scale_punch",
+      "cuts/sections/drop_doubletime",
+      "cuts/beat/every_beat",
+      "cuts/story/styleLadder"
+    ],
+    "out": [
+      "title.endScreen",
+      "sfx/hit/punch",
+      "cuts/sections/breath_out"
+    ],
+    "all": [
+      "music/bed_hype_house_loop8",
+      "music/bed_trap_half_loop8",
+      "music/bed_dnb_170_loop8",
+      "music/bed_hype_house_reel15"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "be-reel-10",
+      "label": "tier-A client-reel montage, 10.3 s",
+      "grade": "measured-A",
+      "tier": "A small sample (likes 3.75%)",
+      "length_s": 10.3,
+      "aspect": "16:9",
+      "cuts": 14,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.08
+          ],
+          "purpose": "short question split around a photo card stack that fans at 0.5 s",
+          "text": "question",
+          "sound": "loud from frame 0, bass slam at 0.1 s"
+        },
+        {
+          "at": [
+            0.08,
+            0.28
+          ],
+          "purpose": "one cut per beat (0.535 s at 112 BPM)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.28,
+            0.29
+          ],
+          "purpose": "drop-out on a cut",
+          "text": "",
+          "sound": "-30 dB"
+        },
+        {
+          "at": [
+            0.29,
+            0.69
+          ],
+          "purpose": "cuts per beat, 2 holds of 1.05 and 1.57 s",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.69,
+            0.7
+          ],
+          "purpose": "drop-out on a cut",
+          "text": "",
+          "sound": "-33 dB"
+        },
+        {
+          "at": [
+            0.7,
+            1.0
+          ],
+          "purpose": "final hit at 93%",
+          "text": "",
+          "sound": "slam"
+        }
+      ],
+      "lufs": -6.9,
+      "quiet_open_db": -0.3,
+      "tail": "slam",
+      "cut_cadence": "0.535 s per cut; cuts ~64 ms before onsets",
+      "bass_share": 0.75,
+      "end_shape": "slam",
+      "sources": [
+        {
+          "doc": "private:research/reference-round8-2026-10.md",
+          "locator": "06. film section"
+        }
+      ],
+      "notes": "Master -6.9 LUFS and clipped: never copy.",
+      "cuts_per_min": 81.6
+    },
+    {
+      "id": "be-tour-38",
+      "label": "tier-A music-led type and UI tour, 37.8 s",
+      "grade": "measured-A",
+      "tier": "A (5.8x; likes 2.22%, bookmarks 2.20%)",
+      "length_s": 37.8,
+      "aspect": "16:9",
+      "cuts": 16,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.13
+          ],
+          "purpose": "4-5 word sentence, one word per shot over macro plates; last word larger",
+          "text": "4-5 words",
+          "sound": "bed on frame 0, quiet open -7.4 dB"
+        },
+        {
+          "at": [
+            0.13,
+            0.22
+          ],
+          "purpose": "prompt box with travelling glow; glitch texture",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.22,
+            0.52
+          ],
+          "purpose": "chapter cards + style ladder (4 looks in 2.5 s)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.52,
+            0.53
+          ],
+          "purpose": "dip, then the bass drops at 52%",
+          "text": "",
+          "sound": "-38 dB dip"
+        },
+        {
+          "at": [
+            0.53,
+            0.9
+          ],
+          "purpose": "proof: tools working, swatch hits every 2 s",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.9,
+            1.0
+          ],
+          "purpose": "blur into logo, URL card",
+          "text": "",
+          "sound": "fade to -45.6 dB over 2 s"
+        }
+      ],
+      "quiet_open_db": -7.4,
+      "tail": "decay",
+      "cut_cadence": "16 cuts; sync near chance (z 1.1)",
+      "bass_entry_pct": 0.52,
+      "bass_share": 0.46,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/reference-round7-2026-10.md",
+          "locator": "Beat tables: the four tier-A films (film 16)"
+        }
+      ],
+      "quiet_tail_db": -45.6,
+      "cuts_per_min": 25.4
+    },
+    {
+      "id": "be-teaser-20",
+      "label": "tier-A music-video tool teaser, 20 s",
+      "grade": "measured-A",
+      "tier": "A (7.91x)",
+      "length_s": 20,
+      "aspect": "16:9",
+      "cuts": 15,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.5
+          ],
+          "purpose": "prompt slam; one word per 0.5 s, background flips per word",
+          "text": "1 word per 0.5 s",
+          "sound": "open -3 dB"
+        },
+        {
+          "at": [
+            0.5,
+            0.5
+          ],
+          "purpose": "drop at half time",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.5,
+            1.0
+          ],
+          "purpose": "montage on the beat",
+          "text": "",
+          "sound": "slam (+1 dB)"
+        }
+      ],
+      "lufs": -13.7,
+      "quiet_open_db": -3,
+      "tail": "slam",
+      "cut_cadence": "sync 60%",
+      "bass_entry_pct": 0.5,
+      "bass_share": 0.58,
+      "end_shape": "slam",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 35"
+        }
+      ],
+      "quiet_tail_db": 1,
+      "cuts_per_min": 45.0
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.references_craft_not_copy",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.no_offer_as_hook",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.cut_synchronous_fx",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.glitch_on_hit_only",
+    "motion.house_easing",
+    "motion.loop_seam",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.bass_share_by_role",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.phrase_cuts",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.accelerando_montage",
+    "pacing.asl_beat_edit",
+    "pacing.asl_hype_ad",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.new_thing_every_2_4s",
+    "pacing.section_asl_curve",
+    "pacing.style_ladder",
+    "pacing.sub_second_beats",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.dip_before_drop",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.loud_open_type_led",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.phone_check",
+    "sound.picture_leads_sound",
+    "sound.pre_hit_vacuum",
+    "sound.quiet_open",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.slam_end_hardware",
+    "sound.speech_over_music",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.sync_rule_by_mode",
+    "sound.transition_paired_sfx",
+    "story.cta_window",
+    "story.open_loop_and_late_payoff",
+    "story.sound_off_sentence",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.one_kinetic_style",
+    "type.phrases_2_to_5_words",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "type.sentence_across_shots",
+    "visual.accent_fixed_meaning",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor",
+    "visual.text_over_footage_worst_frame"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: beat-edit) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

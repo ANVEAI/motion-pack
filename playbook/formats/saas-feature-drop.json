@@ -1,0 +1,753 @@
+{
+  "id": "saas-feature-drop",
+  "title": "SaaS feature drop (one feature, one film)",
+  "use_when": "A changelog or \"new in\" film for one feature of an existing product: the feature already working, its chapters, one use case, the name, the action.",
+  "length_s": [
+    15,
+    40
+  ],
+  "//length": "Saves-strong plug-in tours ran 15.5-20 s; a tier-A VO-led feature film 37.8 s; release reels 45-90 s are a stretch case.",
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1"
+  ],
+  "lead_aspect": "16:9",
+  "template": "templates/saas-feature-drop",
+  "signals": {
+    "keywords": [
+      "new feature",
+      "changelog",
+      "now in",
+      "update",
+      "just shipped",
+      "feature",
+      "integration",
+      "plug-in",
+      "extension",
+      "release notes"
+    ],
+    "product_types": [
+      "saas",
+      "plug-in",
+      "browser extension",
+      "app",
+      "developer tool"
+    ],
+    "goals": [
+      "launch",
+      "sell",
+      "explain"
+    ],
+    "platforms": [
+      "x",
+      "linkedin",
+      "youtube",
+      "reels"
+    ]
+  },
+  "beats": [
+    {
+      "id": "intro",
+      "at": [
+        0,
+        0.15
+      ],
+      "purpose": "the feature already working on frame 0 (payoff-first) or the first UI action on frames 0-3; the name and a 3-word category line typed",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "quiet_or_ui",
+        "events": [
+          "first_ui_action_frames_0_3"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "hook.first_sound_by_frame3",
+        "hook.payoff_first_rewind",
+        "hook.real_product_early",
+        "hook.brand_cue_deadline",
+        "hook.text_by_0_3s"
+      ]
+    },
+    {
+      "id": "demo",
+      "at": [
+        0.15,
+        0.7
+      ],
+      "purpose": "chapters of 3-5 s, each a 2-3 word label with one accent word beside the UI doing that job; one sound per UI action; a new state every 2-4 s",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "one_sound_per_ui_action"
+        ]
+      },
+      "rules": [
+        "story.chapter_label_ui",
+        "sound.one_sound_per_ui_action",
+        "pacing.new_state_every_3s",
+        "pacing.static_hold_max",
+        "visual.real_ui_composited",
+        "visual.tall_ui_zoom_to_region",
+        "type.key_word_accent",
+        "honesty.ai_work_as_states",
+        "honesty.placeholder_labelled_in_frame",
+        "sound.silence_cues_action"
+      ]
+    },
+    {
+      "id": "usecases",
+      "at": [
+        0.7,
+        0.85
+      ],
+      "purpose": "2-3 quick uses, cards swapping text in place about every 1.5 s",
+      "required": false,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "body",
+        "events": [
+          "tick_per_card"
+        ]
+      },
+      "rules": [
+        "type.accent_word_swap",
+        "pacing.interrupt_ladder"
+      ]
+    },
+    {
+      "id": "name",
+      "at": [
+        0.85,
+        0.89
+      ],
+      "purpose": "the name alone with the bed dropped to about -50 dB for 1-1.5 s",
+      "required": true,
+      "text": {
+        "max_words": 3
+      },
+      "sound": {
+        "level": "silence",
+        "events": [
+          "bed_dip_-50db"
+        ]
+      },
+      "rules": [
+        "sound.silence_under_name"
+      ]
+    },
+    {
+      "id": "outro",
+      "at": [
+        0.89,
+        1.0
+      ],
+      "purpose": "logo + tagline, one action line (\"try it\" / URL); a soft hit on the lockup then a quiet tail",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "decay",
+        "events": [
+          "soft_lockup_hit",
+          "quiet_tail"
+        ]
+      },
+      "rules": [
+        "pacing.end_card_hold",
+        "story.cta_window",
+        "visual.end_card_layout",
+        "distribution.cta_one_verb",
+        "sound.decay_tail"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_db": [
+      -11,
+      -7
+    ],
+    "quiet_open_s": [
+      0.3,
+      1.0
+    ],
+    "name_silence_s": [
+      1.0,
+      1.5
+    ],
+    "name_silence_db": -50,
+    "tail": "decay",
+    "tail_db_max": -25,
+    "bass_share": [
+      0.2,
+      0.36
+    ],
+    "bass_share_note": "a VO-led feature film sits in the proof range (27% measured); a wordless UI tour may run 50-60% (brand-launch range)",
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_corporate_bright_loop8",
+      "music/bed_tech_pulse_loop8",
+      "music/bed_lofi_warm_loop8"
+    ],
+    "mode": "continuous",
+    "vo_wpm": [
+      110,
+      175
+    ]
+  },
+  "hooks": [
+    "payoff-first",
+    "live-demo",
+    "promise",
+    "claim-or-question"
+  ],
+  "end_shapes": [
+    "decay",
+    "quiet-hold"
+  ],
+  "post": {
+    "pattern": "Founder single post in the first person with concrete counts, link inline at the end; or one numbered clip inside a launch thread.",
+    "rules": [
+      "distribution.single_post_founder",
+      "distribution.link_inline_end",
+      "distribution.numbered_clip_copy",
+      "distribution.judge_by_saves"
+    ]
+  },
+  "recommended_parts": {
+    "intro": [
+      "type/typewriter",
+      "ui.promptBar",
+      "ui.appWindow",
+      "title.hookCard",
+      "sfx/ui/type_key",
+      "sfx/ui/click",
+      "cuts/sections/hook_3s"
+    ],
+    "demo": [
+      "transitions/push",
+      "transitions/cut",
+      "transitions/zoomThrough",
+      "title.chapterCard",
+      "ui.cursorJourney",
+      "ui.tabPillNav",
+      "ui.checklist",
+      "ui.stateMorph",
+      "callout.uiHighlight",
+      "sfx/ui/click",
+      "sfx/ui/success",
+      "sfx/ui/agent_working",
+      "sfx/ui/swipe_ding",
+      "sfx/whoosh/swish_xs"
+    ],
+    "usecases": [
+      "type.accentSwap",
+      "ui.notifyStack",
+      "sfx/ui/tick",
+      "sfx/ui/pop"
+    ],
+    "name": [
+      "sfx/logo/two_note"
+    ],
+    "outro": [
+      "title.endScreen",
+      "sfx/hit/soft",
+      "cuts/sections/breath_out"
+    ],
+    "all": [
+      "music/bed_corporate_bright_loop8",
+      "music/bed_tech_pulse_loop8",
+      "music/bed_lofi_warm_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "fd-vo-38",
+      "label": "tier-A VO-led UI motion graphics, 37.8 s",
+      "grade": "measured-A",
+      "tier": "A (8.6x, bookmarks 0.89%)",
+      "length_s": 37.8,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.05
+          ],
+          "purpose": "one accent word on white, then name + logo chip",
+          "text": "1 word",
+          "sound": "silence 0.05-0.35 s, VO at 0.35 s"
+        },
+        {
+          "at": [
+            0.05,
+            0.16
+          ],
+          "purpose": "3-word category line typed with the VO; app window rises",
+          "text": "3 words",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.16,
+            0.71
+          ],
+          "purpose": "6 chapters of 3-5 s, label left, UI right",
+          "text": "2-3 words",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.71,
+            0.85
+          ],
+          "purpose": "feature run, 3 quick screens",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.85,
+            0.89
+          ],
+          "purpose": "VO says the name alone",
+          "text": "",
+          "sound": "bed about -50 dB for 1.5 s"
+        },
+        {
+          "at": [
+            0.89,
+            1.0
+          ],
+          "purpose": "logo + tagline; \"try free\"",
+          "text": "6 words",
+          "sound": "quiet fade tail"
+        }
+      ],
+      "quiet_open_db": -10.7,
+      "tail": "decay",
+      "bass_share": 0.27,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/reference-round7-2026-10.md",
+          "locator": "Beat tables: the four tier-A films (film 07)"
+        }
+      ],
+      "vo_wpm": 131,
+      "quiet_tail_db": -27.7
+    },
+    {
+      "id": "fd-tabtour-20",
+      "label": "saves-strong plug-in tab-pill tour, 20 s",
+      "grade": "measured-A",
+      "tier": "saves-strong (2.6x, 1.4% bookmarks)",
+      "length_s": 20,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.15
+          ],
+          "purpose": "the pain",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.15,
+            0.5
+          ],
+          "purpose": "tab-pill tour",
+          "text": "pill labels",
+          "sound": "hits on an even ~1.5 s grid"
+        },
+        {
+          "at": [
+            0.5,
+            0.6
+          ],
+          "purpose": "variant",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.6,
+            0.75
+          ],
+          "purpose": "counter proof",
+          "text": "number",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.75,
+            1.0
+          ],
+          "purpose": "CTA",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "lufs": -14.2,
+      "cut_cadence": "hits every ~1.5 s",
+      "bass_share": 0.57,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round3-2026-10.md",
+          "locator": "lines 40-61"
+        }
+      ],
+      "notes": "No VO. Peak +1.6 dBFS in the reference: master to -1.5 dBTP."
+    },
+    {
+      "id": "fd-loop-27",
+      "label": "wordless automation loop, 27.1 s (contrast case)",
+      "grade": "measured",
+      "tier": "C",
+      "length_s": 27.1,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.07
+          ],
+          "purpose": "\"Introducing\" title card (weak open)",
+          "text": "1 word",
+          "sound": "no quiet open, hit at 0.93 s"
+        },
+        {
+          "at": [
+            0.07,
+            0.34
+          ],
+          "purpose": "input card, typing with variable chips, press",
+          "text": "",
+          "sound": "silences 0.3-1.0 s before each press"
+        },
+        {
+          "at": [
+            0.34,
+            0.63
+          ],
+          "purpose": "wait state, then the result on a phone",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.63,
+            0.81
+          ],
+          "purpose": "cards swap text every 1.5 s",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.81,
+            1.0
+          ],
+          "purpose": "CTA pill grows from a dot; logo draws on",
+          "text": "",
+          "sound": "decay"
+        }
+      ],
+      "quiet_open_db": 3.4,
+      "tail": "decay",
+      "bass_share": 0.55,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/reference-round8-2026-10.md",
+          "locator": "05. film section"
+        }
+      ],
+      "notes": "Opening on a title card is the banned frame-0 shape; keep it as the counter-example."
+    },
+    {
+      "id": "fd-statelist-16",
+      "label": "practitioner 16 s state list",
+      "grade": "craft",
+      "tier": "n/a (practitioner method)",
+      "length_s": 16,
+      "aspect": "9:16",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.125
+          ],
+          "purpose": "hook",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.125,
+            0.31
+          ],
+          "purpose": "problem",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.31,
+            0.56
+          ],
+          "purpose": "reveal through a real interaction",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.56,
+            0.81
+          ],
+          "purpose": "proof",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.81,
+            1.0
+          ],
+          "purpose": "readable CTA",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "sources": [
+        {
+          "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+          "locator": "lines 26-33"
+        }
+      ],
+      "notes": "Each beat gets an entry state, an exit state and a sound; state changes on beats, big moments on downbeats."
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.ceiling_for_dense_clicks",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.cta_timing",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hero_plus_numbered_thread",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.launch_window_utc",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.numbered_clip_copy",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.single_post_founder",
+    "distribution.teaser_day_before",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.ai_work_as_states",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.compressed_demo_label",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.placeholder_labelled_in_frame",
+    "honesty.post_copy_sourced",
+    "honesty.references_craft_not_copy",
+    "hook.brand_cue_deadline",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.frame0_subject_contrast",
+    "hook.no_offer_as_hook",
+    "hook.payoff_first_rewind",
+    "hook.real_product_early",
+    "hook.social_proof_sourced",
+    "hook.text_by_0_3s",
+    "hook.type_line_on_calm_field",
+    "hook.value_by_3s",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.one_container_morphs",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.bass_share_by_role",
+    "music.bass_share_product_film",
+    "music.late_bass_entry",
+    "music.late_drop_on_turn",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.interrupt_ladder",
+    "pacing.length_30_38",
+    "pacing.new_state_every_3s",
+    "pacing.new_thing_every_2_4s",
+    "pacing.section_asl_curve",
+    "pacing.state_change_every_1_2s",
+    "pacing.static_hold_max",
+    "pacing.tier_a_length_bimodal",
+    "pacing.tour_chapter_cadence",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_name_early_or_end",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.decay_tail",
+    "sound.dip_before_drop",
+    "sound.gate_bed_on_cuts",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.loud_open_type_led",
+    "sound.loudest_on_state_change",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.one_sound_per_ui_action",
+    "sound.phone_check",
+    "sound.picture_leads_sound",
+    "sound.pre_hit_vacuum",
+    "sound.quiet_open",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.silence_cues_action",
+    "sound.silence_under_name",
+    "sound.speech_over_music",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.transition_paired_sfx",
+    "story.ab_replay",
+    "story.chapter_label_ui",
+    "story.command_burst",
+    "story.cta_window",
+    "story.cutdown_launch_order",
+    "story.no_voiceover_type_carries",
+    "story.one_problem_one_solution",
+    "story.one_running_example",
+    "story.pain_in_familiar_tool",
+    "story.query_ladder",
+    "story.sound_off_sentence",
+    "story.state_list_16s",
+    "story.through_line_not_vignettes",
+    "story.typed_request_to_result",
+    "story.verb_chapter_cards",
+    "story.vo_script_shape",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.exit_faster_than_entrance",
+    "type.floors_by_role_aspect",
+    "type.honesty_label_size",
+    "type.key_word_accent",
+    "type.one_kinetic_style",
+    "type.phrases_2_to_5_words",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "type.typing_is_the_clock",
+    "type.word_is_the_scene",
+    "visual.accent_fixed_meaning",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_accent_colour",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.product_as_actor",
+    "visual.product_hero_frame_share",
+    "visual.real_ui_composited",
+    "visual.safe_zone_every_text_box",
+    "visual.tall_ui_zoom_to_region",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: saas-feature-drop) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

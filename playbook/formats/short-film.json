@@ -1,0 +1,692 @@
+{
+  "id": "short-film",
+  "title": "Short film (protagonist, stake, quiet turn)",
+  "use_when": "A story film: one named person with a concrete stake, one obstacle, the product (if any) as the quiet turn, a payoff that pays off the stake, an honesty label in frame.",
+  "length_s": [
+    45,
+    180
+  ],
+  "//length": "The pattern runs 45-600 s; under 5 min carries one beat of change; feed cuts 12-15 s open on a 1.5-2.5 s flash-forward.",
+  "aspects": [
+    "16:9",
+    "9:16"
+  ],
+  "lead_aspect": "16:9",
+  "template": "templates/short-film",
+  "signals": {
+    "keywords": [
+      "story",
+      "short film",
+      "character",
+      "drama",
+      "day in the life",
+      "narrative",
+      "scene",
+      "office story",
+      "ad film"
+    ],
+    "product_types": [
+      "any",
+      "brand",
+      "b2b"
+    ],
+    "goals": [
+      "entertain",
+      "awareness"
+    ],
+    "platforms": [
+      "youtube",
+      "shorts",
+      "reels",
+      "x"
+    ]
+  },
+  "beats": [
+    {
+      "id": "coldopen",
+      "at": [
+        0,
+        0.08
+      ],
+      "purpose": "an image that asks a question; room tone and one diegetic sound",
+      "required": true,
+      "text": {
+        "max_words": 7
+      },
+      "sound": {
+        "level": "room_tone",
+        "events": [
+          "one_diegetic_sound"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "hook.feed_flash_forward",
+        "sound.ambience_floor",
+        "story.short_film_one_shift"
+      ]
+    },
+    {
+      "id": "want",
+      "at": [
+        0.08,
+        0.24
+      ],
+      "purpose": "the world and the want; the stake on screen by the end of this beat; the score waits",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "room_tone",
+        "events": [
+          "room_tone_under_scene"
+        ]
+      },
+      "rules": [
+        "story.protagonist_with_stake",
+        "story.through_line_not_vignettes",
+        "visual.concrete_artefacts",
+        "pacing.asl_short_film"
+      ]
+    },
+    {
+      "id": "obstacle",
+      "at": [
+        0.24,
+        0.5
+      ],
+      "purpose": "one obstacle only; foley on every contact; tension in the room tone",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "tense",
+        "events": [
+          "foley_per_contact"
+        ]
+      },
+      "rules": [
+        "story.one_problem_one_solution",
+        "pacing.same_scale_run",
+        "sound.split_edits"
+      ]
+    },
+    {
+      "id": "turn",
+      "at": [
+        0.5,
+        0.6
+      ],
+      "purpose": "the turn at 50-60%: 200-400 ms of silence before it; the product arrives quietly and never explains itself",
+      "required": true,
+      "text": {
+        "max_words": 5
+      },
+      "sound": {
+        "level": "silence_then_score",
+        "events": [
+          "silence_200-400ms",
+          "score_on_emotion"
+        ]
+      },
+      "rules": [
+        "story.short_film_turn_window",
+        "sound.silence_before_turn",
+        "story.product_quiet_turn",
+        "story.one_turn_in_window"
+      ]
+    },
+    {
+      "id": "consequence",
+      "at": [
+        0.6,
+        0.84
+      ],
+      "purpose": "the score carries the reaction; hold each emotional shot until it lands, then 6-12 frames longer",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "score",
+        "events": [
+          "score_carries"
+        ]
+      },
+      "rules": [
+        "pacing.asl_short_film",
+        "pacing.reaction_hold"
+      ]
+    },
+    {
+      "id": "resolution",
+      "at": [
+        0.84,
+        0.94
+      ],
+      "purpose": "the payoff pays off the opening stake visibly (the bill reads zero, the chair is filled), never a cheer or a logo",
+      "required": true,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "score_resolves",
+        "events": []
+      },
+      "rules": [
+        "story.payoff_pays_stake",
+        "story.payoff_after_turn",
+        "honesty.label_hold_2s"
+      ]
+    },
+    {
+      "id": "tag",
+      "at": [
+        0.94,
+        1.0
+      ],
+      "purpose": "a tag or credit of at most 6 s; dip to black into credits; a quiet tail",
+      "required": false,
+      "text": {
+        "max_words": 6
+      },
+      "sound": {
+        "level": "quiet",
+        "events": [
+          "quiet_tail"
+        ]
+      },
+      "rules": [
+        "delivery.lra_short_film"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "room_tone_lufs": -48,
+    "turn_silence_s": [
+      0.2,
+      0.4
+    ],
+    "score_enters": "on emotion (scene two), not on action",
+    "tail": "quiet-hold",
+    "lra_lu": [
+      10,
+      15
+    ],
+    "lra_note": "conflicts with the 10 LU short-form ceiling: declare the film as short-film so ears uses the long-form range",
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_cinematic_drone_loop8",
+      "music/bed_acoustic_folk_pluck_loop8",
+      "music/bed_ambient_pad_loop8"
+    ],
+    "mode": "vo"
+  },
+  "hooks": [
+    "cold-open",
+    "in-medias-res",
+    "curiosity-gap"
+  ],
+  "end_shapes": [
+    "quiet-hold"
+  ],
+  "post": {
+    "pattern": "A 12-15 s feed cut with a flash-forward hook plus the full film; caption line 1 the stake; films beat chats on Shorts (median 44 vs 4 views).",
+    "rules": [
+      "distribution.film_to_chat_ratio",
+      "distribution.caption_stake_first_125",
+      "platform.ai_label_youtube",
+      "platform.ai_label_instagram_on"
+    ]
+  },
+  "recommended_parts": {
+    "coldopen": [
+      "sfx/amb/room_tone",
+      "sfx/amb/office",
+      "layers/look.film-drama",
+      "layers/grain.film35"
+    ],
+    "want": [
+      "sfx/foley/pen_click",
+      "sfx/foley/chair_creak",
+      "cuts/split/film_J"
+    ],
+    "obstacle": [
+      "sfx/amb/tension_drone",
+      "sfx/device/phone_buzz",
+      "cuts/split/J",
+      "cuts/split/L"
+    ],
+    "turn": [
+      "sfx/hw/led_on",
+      "sfx/lift/inhale"
+    ],
+    "consequence": [
+      "music/bed_cinematic_drone_cine30"
+    ],
+    "tag": [
+      "transitions/dip",
+      "credits.roll"
+    ],
+    "all": [
+      "music/bed_cinematic_drone_loop8",
+      "music/bed_acoustic_folk_pluck_loop8",
+      "music/bed_ambient_pad_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "sf-house-fav",
+      "label": "house short-film shape (founder favourites)",
+      "grade": "house",
+      "tier": "house (owner taste, two posted films)",
+      "length_s": 64,
+      "aspect": "9:16",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.24
+          ],
+          "purpose": "a named person with a concrete stake (a bill, a client, a deadline)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.24,
+            0.5
+          ],
+          "purpose": "the obstacle",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.5,
+            0.6
+          ],
+          "purpose": "the product arrives as a quiet turn (left on a shelf, a light comes on)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.6,
+            0.94
+          ],
+          "purpose": "the payoff pays off the stake (the bill reads zero; the boss nods)",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.94,
+            1.0
+          ],
+          "purpose": "honesty label in frame (fictional, demo figures)",
+          "text": "label",
+          "sound": ""
+        }
+      ],
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "private:memory/founder-favourite-films",
+          "locator": "favourite shapes"
+        },
+        {
+          "doc": "private:memory/film-brief-2026-10-12",
+          "locator": "one scene = one problem + one solution"
+        }
+      ]
+    },
+    {
+      "id": "sf-3min",
+      "label": "practitioner 3-minute short film beat sheet",
+      "grade": "craft",
+      "tier": "practitioner (EDIT 9)",
+      "length_s": 180,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.08
+          ],
+          "purpose": "cold open image",
+          "text": "",
+          "sound": "room tone"
+        },
+        {
+          "at": [
+            0.08,
+            0.25
+          ],
+          "purpose": "world and want",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.25,
+            0.5
+          ],
+          "purpose": "obstacle",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.5,
+            0.6
+          ],
+          "purpose": "turn",
+          "text": "",
+          "sound": "200-400 ms silence before"
+        },
+        {
+          "at": [
+            0.6,
+            0.85
+          ],
+          "purpose": "consequence",
+          "text": "",
+          "sound": "score"
+        },
+        {
+          "at": [
+            0.85,
+            0.95
+          ],
+          "purpose": "resolution image",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.95,
+            1.0
+          ],
+          "purpose": "tag",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "cut_cadence": "4-8 s per shot",
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "docs/evidence/edit.md",
+          "locator": "9 tpl.film.3min"
+        },
+        {
+          "doc": "patterns/structures.json",
+          "locator": "structures.short-film"
+        }
+      ]
+    },
+    {
+      "id": "sf-silencebefore-38",
+      "label": "proof clip that plays as a short film, 37.7 s (silence as the before)",
+      "grade": "measured",
+      "tier": "thread child (craft)",
+      "length_s": 37.7,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.08
+          ],
+          "purpose": "mute open under a mute chip",
+          "text": "chip",
+          "sound": "-117 dB true silence"
+        },
+        {
+          "at": [
+            0.08,
+            0.32
+          ],
+          "purpose": "first sound + chip flip; UI lane",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.32,
+            0.51
+          ],
+          "purpose": "the film plays clean",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.51,
+            0.55
+          ],
+          "purpose": "pre-hit vacuum",
+          "text": "",
+          "sound": "near-silence 1.6 s"
+        },
+        {
+          "at": [
+            0.67,
+            0.73
+          ],
+          "purpose": "second vacuum",
+          "text": "",
+          "sound": "2.3 s"
+        },
+        {
+          "at": [
+            0.73,
+            0.95
+          ],
+          "purpose": "climax",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.95,
+            1.0
+          ],
+          "purpose": "decay",
+          "text": "",
+          "sound": ""
+        }
+      ],
+      "tail": "decay",
+      "cut_cadence": "median shot 0.83 s",
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "private:research/launch-virality-study-2026-10",
+          "locator": "Film 4 (variant)"
+        }
+      ],
+      "notes": "A mute open of 2.9 s breaks the 2 s planned-quiet cap; declare it as kind \"gap\" or keep it under 2 s."
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_film",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.film_to_chat_ratio",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.compressed_demo_label",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.references_craft_not_copy",
+    "hook.feed_flash_forward",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.hold_the_twist",
+    "hook.no_offer_as_hook",
+    "hook.twist_by_5s",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.handheld_closed_form",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.one_signature_move",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.asl_hype_ad",
+    "pacing.asl_short_film",
+    "pacing.continuous_ok",
+    "pacing.new_thing_every_2_4s",
+    "pacing.reaction_hold",
+    "pacing.same_scale_run",
+    "pacing.section_asl_curve",
+    "pacing.static_hold_max",
+    "pacing.sub_second_beats",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_length_12_15",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.dropout_before_reveal",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.master_ends_in_tp_limiter",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.phone_check",
+    "sound.pre_hit_vacuum",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.room_tone_under_cuts",
+    "sound.silence_before_turn",
+    "sound.smash_pre_silence",
+    "sound.speech_over_music",
+    "sound.split_edits",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.transition_paired_sfx",
+    "story.cta_window",
+    "story.one_problem_one_solution",
+    "story.one_turn_in_window",
+    "story.open_loop_and_late_payoff",
+    "story.payoff_after_turn",
+    "story.payoff_pays_stake",
+    "story.product_quiet_turn",
+    "story.protagonist_with_stake",
+    "story.short_film_one_shift",
+    "story.short_film_turn_window",
+    "story.sound_off_sentence",
+    "story.subtract_on_rejection",
+    "story.through_line_not_vignettes",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.one_kinetic_style",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "type.typed_text_hold_after",
+    "visual.accent_fixed_meaning",
+    "visual.banding_grain",
+    "visual.concrete_artefacts",
+    "visual.declare_planned_black",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.layer_stack_order",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: short-film) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

@@ -1,0 +1,635 @@
+{
+  "id": "hardware-teaser",
+  "title": "Hardware teaser (device, wordless)",
+  "use_when": "A device or physical product is teased before or at launch: light on an edge, details, one reveal, the name, a date. Tone over plot, one music cue.",
+  "length_s": [
+    6,
+    30
+  ],
+  "//length": "House teaser 6-15 s (1:1 or 9:16); the one tier-A hardware film was 30 s; teasers in general 15-60 s.",
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1"
+  ],
+  "lead_aspect": "16:9",
+  "template": "templates/hardware-teaser",
+  "signals": {
+    "keywords": [
+      "device",
+      "hardware",
+      "gadget",
+      "teaser",
+      "coming soon",
+      "pre-order",
+      "reveal",
+      "unboxing",
+      "wearable",
+      "box"
+    ],
+    "product_types": [
+      "hardware",
+      "device",
+      "consumer electronics",
+      "appliance",
+      "wearable"
+    ],
+    "goals": [
+      "awareness",
+      "launch"
+    ],
+    "platforms": [
+      "x",
+      "reels",
+      "shorts",
+      "youtube"
+    ]
+  },
+  "beats": [
+    {
+      "id": "hook",
+      "at": [
+        0,
+        0.15
+      ],
+      "purpose": "light already moving on an edge at frame 0 (a band or edge sweep), or the product within 0-4 s; never a still silhouette for 1 s",
+      "required": true,
+      "text": {
+        "max_words": 2
+      },
+      "sound": {
+        "level": "quiet",
+        "events": [
+          "light_sweep_+11db_by_1s"
+        ]
+      },
+      "rules": [
+        "hook.frame0_moving",
+        "hook.first_change_by_frame6",
+        "hook.hardware_shown_by_4s",
+        "sound.quiet_open",
+        "visual.hero_alone_bokeh"
+      ]
+    },
+    {
+      "id": "build",
+      "at": [
+        0.15,
+        0.7
+      ],
+      "purpose": "macro details, one per cut (0.7-1.3 s); 2-3 word supers; the bass enters on a cut at about 25%",
+      "required": true,
+      "text": {
+        "max_words": 3
+      },
+      "sound": {
+        "level": "building",
+        "events": [
+          "bass_entry_on_cut",
+          "tick_per_detail",
+          "riser"
+        ]
+      },
+      "rules": [
+        "music.late_bass_entry",
+        "type.phrases_2_to_5_words",
+        "sound.riser_ends_frame_before_hit",
+        "motion.camera_still_on_impacts",
+        "visual.product_hero_frame_share"
+      ]
+    },
+    {
+      "id": "peak",
+      "at": [
+        0.7,
+        0.8
+      ],
+      "purpose": "the reveal or peak: a silent beat, then one sub hit on the first full-product frame",
+      "required": false,
+      "text": {
+        "max_words": 0
+      },
+      "sound": {
+        "level": "gap_then_hit",
+        "events": [
+          "one_sub_hit"
+        ]
+      },
+      "rules": [
+        "sound.one_reveal_hit",
+        "sound.dropout_before_reveal",
+        "music.dark_open_12db_under_drop"
+      ]
+    },
+    {
+      "id": "title",
+      "at": [
+        0.8,
+        0.92
+      ],
+      "purpose": "the name (and \"and\" + a second product if any) on a flat brand-colour field, shape-mask wipe in",
+      "required": true,
+      "text": {
+        "max_words": 3
+      },
+      "sound": {
+        "level": "full",
+        "events": [
+          "sting_on_title"
+        ]
+      },
+      "rules": [
+        "visual.mark_in_world",
+        "sound.hero_hit_over_bed"
+      ]
+    },
+    {
+      "id": "date",
+      "at": [
+        0.92,
+        1.0
+      ],
+      "purpose": "the date or availability; slam to the last frame or a quiet tail",
+      "required": true,
+      "text": {
+        "max_words": 4
+      },
+      "sound": {
+        "level": "slam_or_tail",
+        "events": [
+          "slam_end"
+        ]
+      },
+      "rules": [
+        "sound.slam_end_hardware",
+        "pacing.end_card_hold",
+        "honesty.real_deadline_only"
+      ]
+    }
+  ],
+  "sound_shape": {
+    "quiet_open_db": [
+      -11,
+      -7
+    ],
+    "quiet_open_s": [
+      0.5,
+      2
+    ],
+    "bass_entry_pct": [
+      0.2,
+      0.3
+    ],
+    "reveal_hit": "one sub hit",
+    "tail": "slam",
+    "bass_share": [
+      0.4,
+      0.61
+    ],
+    "master_lufs": -14,
+    "master_tp_wav_dbtp": -1.5,
+    "delivered_tp_dbtp": -1.0,
+    "beds": [
+      "music/bed_cinematic_drone_loop8",
+      "music/bed_suspense_pulse_loop8",
+      "music/bed_deep_house_loop8"
+    ],
+    "mode": "music"
+  },
+  "hooks": [
+    "light-from-dark",
+    "cold-open",
+    "pattern-break"
+  ],
+  "end_shapes": [
+    "slam",
+    "quiet-hold",
+    "sting"
+  ],
+  "post": {
+    "pattern": "One-line teaser the day before (optionally a 5 s frame); the teaser carries the withholding so the launch film can open on the product. Single post, \"Introducing X\" first line.",
+    "rules": [
+      "distribution.teaser_day_before",
+      "distribution.first_line_archetype",
+      "distribution.launch_window_utc"
+    ]
+  },
+  "recommended_parts": {
+    "hook": [
+      "hw.edgeGlint",
+      "sfx/hw/light_sweep",
+      "sfx/hw/hum_loop",
+      "layers/finish.premium-product",
+      "layers/overlay.vignette",
+      "cam3d.pushSlow"
+    ],
+    "build": [
+      "hw.specCallout",
+      "hw.dimensionLine",
+      "sfx/hw/click_detent",
+      "sfx/riser/noise_2bar",
+      "sfx/hw/parts_seat",
+      "cuts/sections/build_accelerate",
+      "cam3d.orbit",
+      "cam3d.dollyZoom"
+    ],
+    "peak": [
+      "transitions/maskReveal",
+      "sfx/hw/sub_hit",
+      "sfx/hit/sub_drop"
+    ],
+    "title": [
+      "transitions/maskReveal",
+      "type/scaleSlam",
+      "sfx/hit/brand_field_slam",
+      "layers/overlay.brandField"
+    ],
+    "date": [
+      "hw.dateCard",
+      "card.releaseDate",
+      "sfx/stinger/bump"
+    ],
+    "all": [
+      "music/bed_cinematic_drone_loop8",
+      "music/bed_suspense_pulse_loop8",
+      "music/bed_deep_house_loop8"
+    ]
+  },
+  "exemplars": [
+    {
+      "id": "hw-wordless-30",
+      "label": "tier-A* wordless live-action hardware teaser, 30 s",
+      "grade": "measured-A",
+      "tier": "A* (claim-driven, 52x)",
+      "length_s": 30.0,
+      "aspect": "16:9",
+      "cuts": 15,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.1
+          ],
+          "purpose": "brand wordmark over moving lifestyle footage",
+          "text": "wordmark",
+          "sound": "-31 dB at frame 0, -17 dB by 0.5 s"
+        },
+        {
+          "at": [
+            0.1,
+            0.17
+          ],
+          "purpose": "\"Introducing\" super, device close-up",
+          "text": "1 word",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.17,
+            0.25
+          ],
+          "purpose": "product 1 name, lower-left",
+          "text": "name",
+          "sound": "thin bed, soft hits"
+        },
+        {
+          "at": [
+            0.25,
+            0.39
+          ],
+          "purpose": "product 2 (\"and\" + name)",
+          "text": "name",
+          "sound": "bass enters on the cut at 25%"
+        },
+        {
+          "at": [
+            0.39,
+            0.62
+          ],
+          "purpose": "feature run: 4 supers of 2-3 words, cuts every 0.7-1.3 s",
+          "text": "2-3 words",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.62,
+            0.87
+          ],
+          "purpose": "life, not specs; 2 benefit lines",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.87,
+            0.9
+          ],
+          "purpose": "brand-colour shape-mask wipe",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.9,
+            1.0
+          ],
+          "purpose": "flat brand-colour end card, logo",
+          "text": "",
+          "sound": "slam (+1.0 dB vs body)"
+        }
+      ],
+      "lufs": -9.5,
+      "quiet_open_db": -8.5,
+      "tail": "slam",
+      "cut_cadence": "15 cuts in 30 s; sync near chance",
+      "bass_entry_pct": 0.25,
+      "bass_share": 0.47,
+      "end_shape": "slam",
+      "sources": [
+        {
+          "doc": "private:research/reference-round7-2026-10.md",
+          "locator": "Beat tables: the four tier-A films (film 04)"
+        }
+      ],
+      "notes": "Master was -9.5 LUFS / +0.6 dBTP: never copy; master to -14 / -1.5.",
+      "cuts_per_min": 30.0
+    },
+    {
+      "id": "hw-bundle-10",
+      "label": "tier-A bundle announcement, 10 s, no cuts",
+      "grade": "measured-A",
+      "tier": "A (2.59x)",
+      "length_s": 10,
+      "aspect": "16:9",
+      "cuts": 0,
+      "beats": [
+        {
+          "at": [
+            0,
+            0.4
+          ],
+          "purpose": "outline tiles draw on",
+          "text": "",
+          "sound": ""
+        },
+        {
+          "at": [
+            0.4,
+            0.8
+          ],
+          "purpose": "tiles fill on hits",
+          "text": "",
+          "sound": "hits on the beat"
+        },
+        {
+          "at": [
+            0.8,
+            1.0
+          ],
+          "purpose": "collapse into one name",
+          "text": "name",
+          "sound": "decay"
+        }
+      ],
+      "lufs": -14.4,
+      "quiet_open_db": -5,
+      "tail": "decay",
+      "bass_share": 0.32,
+      "end_shape": "decay",
+      "sources": [
+        {
+          "doc": "docs/evidence/reference-round45-2026-10.md",
+          "locator": "line 53"
+        }
+      ],
+      "quiet_tail_db": -9,
+      "cuts_per_min": 0.0
+    },
+    {
+      "id": "hw-house-reveal",
+      "label": "house hardware reveal sound shape (studied hardware films)",
+      "grade": "measured",
+      "tier": "studied hardware spots (LF26 B)",
+      "length_s": 57,
+      "aspect": "16:9",
+      "beats": [
+        {
+          "at": [
+            0,
+            0.06
+          ],
+          "purpose": "dark open, light on an edge",
+          "text": "",
+          "sound": "sub swell or single tone, never silence on frame 0"
+        },
+        {
+          "at": [
+            0.06,
+            0.23
+          ],
+          "purpose": "macro tease",
+          "text": "",
+          "sound": "tick per detail, riser"
+        },
+        {
+          "at": [
+            0.23,
+            0.25
+          ],
+          "purpose": "the reveal at 13 s",
+          "text": "",
+          "sound": "+8 dB hit on the reveal"
+        },
+        {
+          "at": [
+            0.25,
+            1.0
+          ],
+          "purpose": "transform, specs, job, end card",
+          "text": "",
+          "sound": "music falls to silence or a sonic logo"
+        }
+      ],
+      "end_shape": "quiet-hold",
+      "sources": [
+        {
+          "doc": "docs/evidence/launch-films-2026.md",
+          "locator": "B"
+        },
+        {
+          "doc": "patterns/structures.json",
+          "locator": "structures.hardware-reveal"
+        }
+      ],
+      "notes": "Other studied hardware films: a +11.6 dB hit at 1 s; a 5 s music dropout before a +20 dB return."
+    }
+  ],
+  "rules": [
+    "delivery.bt709_in_filter_chain",
+    "delivery.clean_tail",
+    "delivery.critic_loop",
+    "delivery.cue_library_complete",
+    "delivery.deliver_stems",
+    "delivery.delivered_tp_minus1",
+    "delivery.encode_spec",
+    "delivery.grain_survives_reencode",
+    "delivery.integrated_minus14",
+    "delivery.lra_short_form",
+    "delivery.master_house_not_reference",
+    "delivery.master_per_aspect",
+    "delivery.master_tp_minus1_5",
+    "delivery.native_aspects_only",
+    "delivery.no_clipping_plr",
+    "delivery.render_aspect_check",
+    "delivery.render_each_aspect_from_fresh_build",
+    "delivery.upload_copy_cap",
+    "delivery.verify_on_mp4",
+    "delivery.web_minus16",
+    "distribution.audience_finish_prompt",
+    "distribution.caption_stake_first_125",
+    "distribution.cover_max_4_words",
+    "distribution.cta_one_verb",
+    "distribution.day2_is_fresh",
+    "distribution.expected_follower_multiple",
+    "distribution.first_line_archetype",
+    "distribution.fix_hook_before_volume",
+    "distribution.fixed_series_slot",
+    "distribution.hashtag_counts",
+    "distribution.hook_variant_test",
+    "distribution.judge_by_saves",
+    "distribution.launch_window_utc",
+    "distribution.lead_with_usable_today",
+    "distribution.link_in_first_comment",
+    "distribution.link_inline_end",
+    "distribution.low_volume_when_unseen",
+    "distribution.no_batch_posting",
+    "distribution.one_change_per_test",
+    "distribution.post_spacing",
+    "distribution.read_windows",
+    "distribution.reply_by_hand_one_voice",
+    "distribution.reply_within_first_hour",
+    "distribution.teaser_day_before",
+    "distribution.title_stake_first",
+    "distribution.utility_over_volume",
+    "distribution.utm_convention",
+    "honesty.audition_before_hero_use",
+    "honesty.boosted_not_evidence",
+    "honesty.digit_needs_source",
+    "honesty.label_hold_2s",
+    "honesty.label_vocabulary_claims_in_copy",
+    "honesty.literal_first_lines",
+    "honesty.never_invent_assets",
+    "honesty.no_real_person_footage",
+    "honesty.post_copy_sourced",
+    "honesty.product_does_its_job",
+    "honesty.real_deadline_only",
+    "honesty.references_craft_not_copy",
+    "hook.first_change_by_frame6",
+    "hook.first_sound_by_frame3",
+    "hook.frame0_moving",
+    "hook.hardware_shown_by_4s",
+    "hook.no_offer_as_hook",
+    "hook.text_by_0_3s",
+    "motion.bake_simulation",
+    "motion.camera_still_on_impacts",
+    "motion.declared_audio_only",
+    "motion.flash_limit",
+    "motion.house_easing",
+    "motion.mask_hidden_before_start",
+    "motion.media_identity_check",
+    "motion.overshoot_cap",
+    "motion.pin_versions",
+    "motion.preload_before_ready",
+    "motion.pure_function_of_t",
+    "motion.seeded_random",
+    "motion.spring_classes",
+    "motion.whip_pan_spec",
+    "music.bass_share_by_role",
+    "music.bass_share_product_film",
+    "music.dark_open_12db_under_drop",
+    "music.late_bass_entry",
+    "music.no_raw_ai_bed",
+    "music.no_third_party_beds",
+    "music.phone_bass_cap",
+    "music.tempo_snap_frames",
+    "music.voice_bed_level",
+    "pacing.accelerando_montage",
+    "pacing.continuous_ok",
+    "pacing.end_card_hold",
+    "pacing.length_30_38",
+    "pacing.new_thing_every_2_4s",
+    "pacing.section_asl_curve",
+    "pacing.tier_a_length_bimodal",
+    "pacing.transition_needs_reason",
+    "platform.ai_disclosure_in_text",
+    "platform.ai_label_instagram_on",
+    "platform.ai_label_tiktok",
+    "platform.ai_label_youtube",
+    "platform.burn_captions_muted",
+    "platform.length_targets",
+    "platform.linkedin_spec",
+    "platform.native_upload_x",
+    "platform.reels_tiktok_spec",
+    "platform.relayout_not_crop",
+    "platform.shorts_spec",
+    "platform.vertical_safe_rect",
+    "platform.wide_square_safe",
+    "platform.x_landscape_ok",
+    "platform.x_name_early_or_end",
+    "platform.x_spec",
+    "sound.ambience_floor",
+    "sound.dropout_before_reveal",
+    "sound.hero_hit_over_bed",
+    "sound.hit_hierarchy_spacing",
+    "sound.hit_on_f_plus_1",
+    "sound.inhale_before_word",
+    "sound.limiter_budget",
+    "sound.no_dead_air",
+    "sound.not_flat",
+    "sound.one_reveal_hit",
+    "sound.phone_check",
+    "sound.pre_hit_vacuum",
+    "sound.quiet_open",
+    "sound.repetition_round_robin",
+    "sound.riser_ends_frame_before_hit",
+    "sound.slam_end_hardware",
+    "sound.speech_over_music",
+    "sound.support_cues_over_bed",
+    "sound.sync_above_chance",
+    "sound.trailer_hit_silence_hit",
+    "sound.transition_paired_sfx",
+    "story.cta_window",
+    "story.cutdown_launch_order",
+    "story.sound_off_sentence",
+    "type.accent_word_swap",
+    "type.caption_standard",
+    "type.exit_faster_than_entrance",
+    "type.honesty_label_size",
+    "type.no_text_box_overlap",
+    "type.one_kinetic_style",
+    "type.phrases_2_to_5_words",
+    "type.read_line_max_words",
+    "type.reading_time_hold",
+    "type.real_weights_only",
+    "type.scale_contrast",
+    "visual.accent_fixed_meaning",
+    "visual.banding_grain",
+    "visual.concrete_artefacts",
+    "visual.effect_budget",
+    "visual.end_card_layout",
+    "visual.glass_fades_by_blur",
+    "visual.hero_alone_bokeh",
+    "visual.layer_stack_order",
+    "visual.mark_in_world",
+    "visual.no_everything_fades_in",
+    "visual.no_letterbox_vertical",
+    "visual.one_grade_per_piece",
+    "visual.one_hero_per_frame",
+    "visual.one_of_each_finish",
+    "visual.palette_measured_not_trusted",
+    "visual.product_hero_frame_share",
+    "visual.safe_zone_every_text_box",
+    "visual.text_contrast_floor"
+  ],
+  "//rules": "Every rule scoped to this format (or an alias: hardware-teaser, teaser) plus every universal rule (empty scope.formats); beats list the rules that decide that beat."
+}

@@ -1,0 +1,1505 @@
+[
+  {
+    "id": "pacing.accelerando_montage",
+    "title": "Accelerate cuts into the climax",
+    "statement": "Build a montage with shot lengths halving 1 s, 0.5 s, 0.25 s, 0.125 s into a mosaic or reveal, then a ~1 s near-silence dip.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "launch-film",
+        "teaser"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "shot_s_sequence": [
+        1.0,
+        0.5,
+        0.25,
+        0.125
+      ],
+      "dip_after_s": 1.0
+    },
+    "grade": "measured-A",
+    "evidence": "One tier-A round-3 launch film (2.0x, 3% likes, 1.9% bookmarks, 60 real cuts, sync 83%) accelerates exactly so; a tier-C teaser accelerates to 0.125 s under a riser into a calm card at 3.5 s.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 245-267 and 328-346"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/sections/build_accelerate"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "pacing.asl_beat_edit",
+    "title": "Cut beat edits every 1-2 beats",
+    "statement": "A music-led beat edit cuts every 1-2 beats (0.4-1.0 s at 120-150 BPM), every 4 beats in verses, 30-60 shots per 30 s, and every drop cut sits on the grid.",
+    "scope": {
+      "formats": [
+        "beat-edit"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "asl_beats": [
+        1,
+        2
+      ],
+      "verse_asl_beats": 4,
+      "asl_s_at_120_150bpm": [
+        0.4,
+        1.0
+      ],
+      "shots_per_30s": [
+        30,
+        60
+      ]
+    },
+    "grade": "house",
+    "evidence": "House default informed by practitioner ranges ([H] over [P] in the edit research); no measured beat-edit corpus.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "6.1 Pace targets by format"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "pace.beat_edit; beat.every_beat / every_2"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.beat-edit (drop asl_s 0.3-1.0, sfx_role 'hits on the grid only')"
+      }
+    ],
+    "enforce": {
+      "check": "lint.eyes.pacing",
+      "default": null,
+      "part": "cuts/pace/beat_edit"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: cuts/patterns.json pace.beat_edit (a pack default outside mp plan). | The 'eighths' pattern is a 1-2 bar burst only, never sustained (flash safety)."
+  },
+  {
+    "id": "pacing.asl_character_spot",
+    "title": "Hold character spots 2-3 s, react 1.5 s",
+    "statement": "A wordless character spot runs 2-3 s per shot (8-12 shots per 30 s) and holds the reaction close-up 1.5 s after the twist.",
+    "scope": {
+      "formats": [
+        "character-spot"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "asl_s": [
+        2.0,
+        3.0
+      ],
+      "reaction_hold_s": 1.5,
+      "shots_per_30s": [
+        8,
+        12
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Mime-style spot grammar from trade-press accounts of one long-running wordless campaign plus house timing ([H]).",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "6.1 Pace targets by format; 10.2 Structure and timing"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "pace.mime_spot"
+      }
+    ],
+    "enforce": {
+      "check": "lint.eyes.pacing",
+      "default": null,
+      "part": "templates/character-spot"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: cuts/patterns.json pace.mime_spot (a pack default outside mp plan). | patterns/structures.json character-spot uses asl_s 1.5-3.0 overall and 1.0-2.0 in the twist."
+  },
+  {
+    "id": "pacing.asl_hype_ad",
+    "title": "Cut hype ads at 1.2-2.0 s ASL",
+    "statement": "A hype ad or launch sizzle averages 1.2-2.0 s per shot (15-24 shots per 30 s), with one held hero reveal of 3-4 s allowed.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "beat-edit",
+        "character-spot",
+        "launch-film",
+        "short-film",
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "asl_s": [
+        1.2,
+        2.0
+      ],
+      "shots_per_30s": [
+        15,
+        24
+      ],
+      "hero_hold_s": [
+        3,
+        4
+      ]
+    },
+    "grade": "measured",
+    "evidence": "Two studies (summaries): TV commercial shots averaged under 2 s by 1991, and a 2026 preprint measured about 1.2 s per shot over AI-made social ads (17.9 s, 15.2 shots); the 1.2-2.0 band is the house reconciliation.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "6.1 Pace targets by format; 4. Ad structure (Rules)"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 7; 3. Pace"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "pace.hype_ad"
+      },
+      {
+        "doc": "skills/motion-pack/references/platforms.md",
+        "locator": "Pace per format"
+      },
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "9. Rounds 4-5 > Pacing"
+      }
+    ],
+    "enforce": {
+      "check": "lint.eyes.pacing",
+      "default": null,
+      "part": "cuts/pace/hype_ad"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: cuts/patterns.json pace.hype_ad (a pack default outside mp plan). | patterns/structures.json uses 0.8-2.0 s for ad-15 and 1.0-2.2 s for ad-30 (the research band is 0.8-2.2 s). plan.lintPace (ASL <= 2.5 s, longest <= 4.5 s, hold exempt) is reported, not enforced. The hero-hold allowance comes from edit.md section 4 ([H]). | Merged: Average shot length follows the format: hype ad or launch 1.2-2.0 s, talking head 2.5-5 s, mime spot 2-3 s with 1.5 s reaction holds, short film 4-8 s, beat edit 1-2 beats. [house; house pace table [H]; rounds 4/5 measured a median shot of about 2.8 s and four speeds (montage 0.46-0.87 s, product 1.1-2 s, documentary 3-4.4 s, continuous).] | structure_check.check_pace applies per-section asl_s from patterns/structures.json; plan.lintPace (ASL <= 2.5, longest <= 4.5) is reported, not enforced."
+  },
+  {
+    "id": "pacing.asl_short_film",
+    "title": "Hold short-film shots 4-8 s",
+    "statement": "A short film averages 4-8 s per shot (4-8 shots per 30 s), holding each emotional shot until the emotion lands and then 6-12 frames longer.",
+    "scope": {
+      "formats": [
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "asl_s": [
+        4.0,
+        8.0
+      ],
+      "shots_per_30s": [
+        4,
+        8
+      ],
+      "extra_hold_frames": [
+        6,
+        12
+      ]
+    },
+    "grade": "measured",
+    "evidence": "A 210-film study measured mean shot length at 4.3 s for popular films of 1990-2015 (7.0 s for 1960-85); the 4-8 s band and the extra-hold rule are house craft.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "3. Pace (popular films, 210 titles)"
+      },
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "6.1 Pace targets by format; 9. Short-film grammar"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "pace.short_film"
+      }
+    ],
+    "enforce": {
+      "check": "lint.eyes.pacing",
+      "default": null,
+      "part": "cuts/pace/short_film"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: cuts/patterns.json pace.short_film (a pack default outside mp plan). | patterns/structures.json short-film uses asl_s 3.0-8.0. The extra-hold rule is prose-only."
+  },
+  {
+    "id": "pacing.asl_talking_head",
+    "title": "Cut talking heads every 2.5-5 s",
+    "statement": "A retention-edited talking head cuts per sentence or clause at 2.5-5 s per shot (6-12 shots per 30 s), with a punch-in at most once per 4 s.",
+    "scope": {
+      "formats": [
+        "podcast-clip",
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "asl_s": [
+        2.5,
+        5.0
+      ],
+      "shots_per_30s": [
+        6,
+        12
+      ],
+      "punch_in_min_gap_s": 4.0,
+      "punch_in_scale": 1.12
+    },
+    "grade": "craft",
+    "evidence": "Practitioner editing guides (several blogs, not measured); numbers are starting points to test against retention graphs.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "6.1 Pace targets by format; 7.2 Talking-head and human edit grammar"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "pace.talking_head; talking_head.punch_in"
+      }
+    ],
+    "enforce": {
+      "check": "lint.eyes.pacing",
+      "default": null,
+      "part": "cuts/talking_head/punch_in"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: cuts/patterns.json pace.talking_head (a pack default outside mp plan). | podcast-clip structure allows 2.0-8.0 s overall. Punch-in spacing is a part param, not checked."
+  },
+  {
+    "id": "pacing.asl_voice_led",
+    "title": "Hold voice-led shots 3-10 s",
+    "statement": "Under a voice (explainer, tutorial, data story), shots hold about 3-10 s and the visible change is carried by a cursor, a drawing, a node or a camera move rather than by cuts.",
+    "scope": {
+      "formats": [
+        "data-story",
+        "explainer",
+        "tutorial"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "explainer_asl_s": [
+        2.5,
+        6.0
+      ],
+      "tutorial_asl_s": [
+        3.0,
+        10.0
+      ],
+      "data_story_asl_s": [
+        3.0,
+        12.0
+      ]
+    },
+    "grade": "inferred",
+    "evidence": "Our synthesis of practitioner descriptions; no measured ASL for these genres exists in the sources.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "3. Pace, Curves by category (tutorial / explainer)"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.explainer / tutorial / data-story asl_s"
+      },
+      {
+        "doc": "docs/lane-notes/saas.md",
+        "locator": "Integration (xp-integrate, 16 Oct), saas-explainer beats"
+      }
+    ],
+    "enforce": {
+      "check": "lint.structure.score",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: patterns/structures.json structures.explainer.asl_s (a pack default outside mp plan). | Continuous one-canvas films are scored on change_every_s_max (3.5 s) instead of ASL. | Merged: Explainer scenes run 2.5-6 s; an 8-12 s screen-tour scene scores pace 0.27 because in-scene cursor and zoom moves are not counted as shots. [measured; The saas-explainer plan scored pace 0.27 at both aspects with 8-12 s scenes.] | Open question for the checker: continuous-mode films count motion events, screen tours count shots; a long scene with dense in-scene moves may read better than its score."
+  },
+  {
+    "id": "pacing.continuous_ok",
+    "title": "Allow zero-cut films",
+    "statement": "A film may run on 0-4 hard cuts if something changes on screen at least every 3.5 s; score it by motion events, not by ASL.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "cuts_max": 4,
+      "change_every_s_max": 3.5
+    },
+    "grade": "measured-A",
+    "evidence": "7 of 29 round-4/5 pieces have at most 4 cuts and 5 of those 7 are tier A or A-; round 6 makes it 8 of 31.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Counts, line 26"
+      },
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "What round 6 changes 4, line 53"
+      }
+    ],
+    "enforce": {
+      "check": "lint.structure.score",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "plan.lintPace (ASL <= 2.5 s) would report these films; it is reported, not enforced. A round-3 zero-cut film reached only 0.12x, so continuity is not sufficient alone (our reading)."
+  },
+  {
+    "id": "pacing.cut_density_by_section",
+    "title": "Cut dense on proof, calm on claims",
+    "statement": "Cut densely where proof is shown and not at all while a claim is said: about 11 cuts in 15 s of montage, 0 cuts in the 21 s claim section.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "montage_cuts_per_s": 0.73,
+      "claim_section_cuts": 0
+    },
+    "grade": "craft",
+    "evidence": "one manifesto film (tier C, too young to grade) shows the split; one tier-A film cut only when content changed (6 cuts, 13 per min).",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "cross-film playbook item 5; film 05 storyboard"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "structure_check.check_pace checks ASL per section, not this split."
+  },
+  {
+    "id": "pacing.end_card_hold",
+    "title": "Hold the end card 1.8 s minimum",
+    "statement": "The end card holds at least 1.8 s after its last motion settles (2.0 s for a 30 s ad, 3.0 s for a launch, proof or data film, a 5 s end screen for a tutorial) and no more than 4.5 s on short-form.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "character-spot",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "end"
+    },
+    "params": {
+      "min_hold_s": 1.8,
+      "ad30_min_hold_s": 2.0,
+      "launch_min_hold_s": 3.0,
+      "tutorial_min_hold_s": 5.0,
+      "short_form_max_s": 4.5
+    },
+    "grade": "house",
+    "evidence": "House defaults; no measured study of CTA timing in short-form was found.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.6 CTA placement"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "7. Lengths and CTAs (house rules)"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.<pattern>.cta.min_hold_s"
+      },
+      {
+        "doc": "patterns/ctas.json",
+        "locator": "ctas.ad.endcard; ctas.launch.film"
+      },
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Beat sheets by length"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "DEFAULTS end_hold_s"
+      },
+      {
+        "doc": "skills/frame-design/references/frames.md",
+        "locator": "4. End cards"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.readability endcard_hold_s; spec.frames endcard_hold_max_s"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "4. CTA"
+      },
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "3. rule 10"
+      },
+      {
+        "doc": "docs/lane-notes/human.md",
+        "locator": "Update 6d401c2 > Structure scores"
+      }
+    ],
+    "enforce": {
+      "check": "lint.end.hold",
+      "default": "plan.end.hold",
+      "part": "cuts/sections/breath_out"
+    },
+    "status": "enforced",
+    "conflicts_with": [
+      "pacing.match_pattern_length",
+      "sound.quiet_hold_ending"
+    ],
+    "notes": "Set today by: patterns/structures.json structures.<pattern>.cta.min_hold_s (a pack default outside mp plan). | Resolved 21 Oct: minimum 1.8 s after the motion settles (3.0 s when fine print or a URL must be read); on picture at most 4.5 s (eyes/frames) unless the plan declares a quiet hold, which may run to 9 s (ears/structure). Launch films that hold 3-10 s use the declared hold. | lint_shotlist.end_hold_s (1.8 s) and eyes/frames (endcard hold <= 4.5 s) also check it; eyes/readability asks 3-4.5 s for an endcard, stricter than the 1.8 s floor. Decelerate into the card (breath_out); on a loop replace the card with a small tag. | Merged: The end card holds at least 1.8 s after its motion settles and at most 4.5 s, starting at 80-92% of a 15-30 s ad. [house; Pack default for ad end cards; the launch-film window is a practitioner range.] | patterns/ctas.json launch.film holds the end card 3-10 s (practitioner), above eyes/frames endcard_hold_max_s 4.5; a YouTube end screen needs the last 5-20 s of a video of 25 s or more. | Merged: Hold the end card at least 1.8 s after its motion settles, and 3-4.5 s when fine print must be read. [house; pack defaults; the story linter checks 1.8 s and eyes reads a final freeze of up to 4.5 s as an end card.] | Two tiers, not a conflict: 1.8 s for a line and logo, 3-4.5 s with fine print. On a loop, replace the end card with a small tag at about 0.8 opacity outside the bottom 35%. | Merged: The end card is minimal (wordmark, URL, one verb) and holds at least 1.8 s after motion settles; launch films hold it 3-10 s. [house; house CTA default; launch study end cards held 3-10 s (one wordmark held 10 s).] | Conflict: eyes/frames and eyes/readability cap an endcard hold at 3-4.5 s, while launch end cards run to 10 s and quiet holds to 9 s; structure_check.check_cta has min_hold_s. | Merged: An end card holds 3-4.5 s with few enough words to read in that time; a 2.3 s end card read at 2.9 words/s. [measured; Plan scores: a podcast-clip end card at 2.3 s (2.9 words/s) was lengthened; a founder end line was cut to 4 words; the course end hold set to 3.0 s.] | Conflict: the long-form tutorial and vlog beat sheets pushed end holds to 5.4 s and over 5 s, above the eyes end-card ceiling of 4.5 s (eyes/frames)."
+  },
+  {
+    "id": "pacing.founder_open",
+    "title": "Open founder films on one quiet take",
+    "statement": "A founder film opens on the person to camera for the first 8-12 s with the voice alone: no music and few or no cuts (hook ASL 3-12 s), the sharpest sentence inside 15 s, music entering only after the opening statement.",
+    "scope": {
+      "formats": [
+        "founder-story",
+        "launch-film"
+      ],
+      "platforms": [
+        "linkedin",
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "open_s": [
+        8,
+        12
+      ],
+      "hook_asl_s": [
+        3,
+        12
+      ],
+      "hook_music_level": 0,
+      "sharpest_line_by_s": 15
+    },
+    "grade": "craft",
+    "evidence": "One founder-launch guide (practitioner, metrics unsourced) describes no music and no cuts over the opening and calls over-cutting 'nervous'; two cited founder films held 12 s without music and about 30 s with almost no cuts.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 14; 6.12 Founder launch videos"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.founder-story.sections.hook"
+      }
+    ],
+    "enforce": {
+      "check": "lint.structure.score",
+      "default": null,
+      "part": "templates/founder-story"
+    },
+    "status": "enforced",
+    "conflicts_with": [
+      "pacing.hook_three_states"
+    ],
+    "notes": "Set today by: patterns/structures.json structures.founder-story.sections.hook (asl_s 3-12, music 0.0) (a pack default outside mp plan). | The music level is a pattern default, not checked. Founder and agency-polish norms are two presets, not one."
+  },
+  {
+    "id": "pacing.front_loaded_cuts",
+    "title": "Cut fast early, then hold",
+    "statement": "The first 9 s cut fast (about 7 cuts in 6 s, 0.5-1 s each) and the rest of the film holds long.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "early_cuts": 7,
+      "early_window_s": 6,
+      "early_shot_s": [
+        0.5,
+        1.0
+      ],
+      "fast_until_s": 9
+    },
+    "grade": "measured",
+    "evidence": "Round-8 film 03 (boosted-looking, 1.86M views) has 7 of its 21 cuts between 3 and 9 s, then long holds.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Film 03 section, 2. STORYBOARD"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Why film 03 reached what it reached"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Tier B by rule; reach cause unknown."
+  },
+  {
+    "id": "pacing.hook_three_states",
+    "title": "Show three visual states in 5 s",
+    "statement": "An ad shows at least 3 shots or 3 distinct visual states in its first 5 s.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "launch-film"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "youtube"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "min_states": 3,
+      "window_s": 5
+    },
+    "grade": "house",
+    "evidence": "Platform spec: a platform's published ad-creative playbook (read second-hand) asks for multiple shots in the first 5 s.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.2 The hook (paid YouTube paragraph); 6.2 R3"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "sections.hook_3s"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/sections/hook_3s"
+    },
+    "status": "part",
+    "conflicts_with": [
+      "pacing.founder_open"
+    ],
+    "notes": "Not for founder-led films, which open on one take (see pacing.founder_open)."
+  },
+  {
+    "id": "pacing.interrupt_ladder",
+    "title": "Ration interrupts by a three-level ladder",
+    "statement": "Space pattern interrupts at about 2.5 s (minor), 5 s (medium) and 9 s (major) with 25% jitter, never two majors within 1.5 s, at most one major per 6 s, and flag fatigue when the mean level rises over 4 consecutive 5 s windows.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "launch-film",
+        "podcast-clip",
+        "talking-head"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "body"
+    },
+    "params": {
+      "minor_every_s": 2.5,
+      "medium_every_s": 5.0,
+      "major_every_s": 9.0,
+      "jitter": 0.25,
+      "major_min_gap_s": 6.0,
+      "major_pair_min_gap_s": 1.5,
+      "fatigue_window_s": 5.0,
+      "fatigue_rising_windows": 4
+    },
+    "grade": "house",
+    "evidence": "House defaults reconciling practitioner 'every 2-4 s' and 'every 3-5 s' claims and the warning that constant interrupts become the pattern.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.3 Pattern interrupts: the interrupt ladder"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "interrupts"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "2. Hold > The interrupt ladder"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/interrupts"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Set today by: cuts/patterns.json interrupts (a pack default outside mp plan). | Levels: 1 punch-in / caption emphasis / new angle / scale punch; 2 B-roll, text card, whip, zoom-out, colour field; 3 smash, glitch, flash + music drop, format switch. cuts/cutgen.py lint_interrupts checks generated ladders only; no check reads a finished plan. edit.md 6.1 gives hype-ad cadence as minor 1.5 s, medium 4 s. | Merged: Schedule interrupts at about 2.5 s (minor), 5 s (medium) and 9 s (major, >= 6 s apart, never two within 1.5 s) with 25% jitter, and never let four consecutive 5 s windows each escalate. [house; house reconciliation [H] of a practitioner 3-5 s [P] and a vendor 2-4 s [U] cadence.] | lint-interrupts exits 1; the template plan lint does not run it unless a template calls lint_interrupts."
+  },
+  {
+    "id": "pacing.length_30_38",
+    "title": "Keep startup product films 30-38 s",
+    "statement": "A startup product film runs 30-38 s.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "length_s": [
+        30,
+        38
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "3 of 4 tier-A round-7 films run 30.0-37.8 s; big-company films (median 80 s) graded C on reach.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Cross-post patterns > Length"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Cross-post patterns > Big company vs startup"
+      }
+    ],
+    "enforce": {
+      "check": "lint.pacing.length",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Person-led films run longer and still graded well: a tier-A founder film (round 8) is 82 s and the tier-A* story hero is 73 s. structure_check length windows are wider (saas-launch 30-120 s)."
+  },
+  {
+    "id": "pacing.length_scales_content",
+    "title": "Scale content to the labelled length",
+    "statement": "A length setting scales the content: a labelled cut lands within its length and fills it; a '15 s' cut at 80-84 BPM ran 19.6 s, and a 60 s title sequence ran out of names at 34 s and held.",
+    "scope": {
+      "formats": [
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "measured_15s_cut_s": 19.6,
+      "slow_bpm": [
+        80,
+        84
+      ],
+      "measured_names_fill_s": 34,
+      "label_s": 60,
+      "measured_score": 66
+    },
+    "grade": "measured",
+    "evidence": "Built plans: the 15 s trailer cut of the slow scores kept beat-length silence, ring and tail (19.6 s); the 60 s title sequence scored 66 because per-name time does not stretch.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/film.md",
+        "locator": "What is weaker; Integration (title-sequence bullet)"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Known before rendering"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "structure_check flags the held title sequence (66 < 70); nothing checks a cut's runtime against its label, so the rule as a whole is prose-only."
+  },
+  {
+    "id": "pacing.match_pattern_length",
+    "title": "Score against a length-matched beat sheet",
+    "statement": "Score a plan only against a beat sheet whose length range contains its runtime; a 20-31 s Short scored against a 45-1800 s pattern misplaces the sign-off (73% vs 95-100%), and beats are never stretched to game the score.",
+    "scope": {
+      "formats": [
+        "founder-story",
+        "podcast-clip",
+        "talking-head",
+        "tutorial"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "measured_runtime_s": [
+        20,
+        31
+      ],
+      "pattern_range_s": [
+        45,
+        1800
+      ],
+      "measured_signoff_pct": 73,
+      "pattern_signoff_pct": [
+        95,
+        100
+      ]
+    },
+    "grade": "measured",
+    "evidence": "Five footage demos of 20-31 s scored against 45-1800 s patterns: a vlog CTA scored 0.4, a founder ask sat at 71% vs 88%+; the length misfit barely moved the score.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/human.md",
+        "locator": "Update 6d401c2 > Where the pattern does not fit"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "pacing.end_card_hold"
+    ],
+    "notes": "structure_check reports length, but its falloff is relative to the pattern's upper bound, so a short film barely loses points."
+  },
+  {
+    "id": "pacing.new_state_every_3s",
+    "title": "New state on a 3 s unit",
+    "statement": "A UI-loop film introduces a new state on a fixed unit of about 3 s (within 2-5 s), for example icon pop, light streak, label, window.",
+    "scope": {
+      "formats": [
+        "saas-feature-drop",
+        "screen-life"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "body"
+    },
+    "params": {
+      "unit_s": [
+        3.0,
+        3.2
+      ],
+      "unit_range_s": [
+        2,
+        5
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "Round-8 films 07 and 09 (tier A, small samples) repeat a unit every 3 s and 3.2 s; films 04 and 05 (tier C) every 3-4 s and 4-5 s; the tier-A VO film of round 7 uses 3-5 s chapters.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 4"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Beat tables: the four tier-A films (film 07)"
+      }
+    ],
+    "enforce": {
+      "check": "lint.structure.score",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [
+      "pacing.new_thing_every_2_4s",
+      "pacing.state_change_every_1_2s",
+      "pacing.sub_second_beats"
+    ],
+    "notes": "Resolved 21 Oct: novelty cadence is set by format: type-led launch films ~1.1-1.9 s (on the grid), hooks/gag ladders/beat montages 0.5-1.0 s, UI-loop and proof films 2-4 s (unit ~3 s), voice-led explainers 3-6 s per step; the 3.5 s static-hold ceiling (pacing.static_hold_max) applies to all. | check_pace uses change_every_s_max 3.5 for continuous films, so a 4-5 s unit fails. The 2-5 s novelty and the ~1 s beats are resolved by format, not by one number."
+  },
+  {
+    "id": "pacing.new_thing_every_2_4s",
+    "title": "Change something every 2-4 s",
+    "statement": "Put something new on screen every 2-4 s; a static hold beyond 3.5 s warns.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "change_every_s": [
+        2,
+        4
+      ],
+      "static_hold_warn_s": 3.5
+    },
+    "grade": "craft",
+    "evidence": "A practitioner house rule from a round method article; consistent with the pack's continuous-film pace rule.",
+    "sources": [
+      {
+        "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+        "locator": "The method, step 2, lines 10-16"
+      }
+    ],
+    "enforce": {
+      "check": "lint.eyes.pacing",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [
+      "pacing.new_state_every_3s",
+      "pacing.state_change_every_1_2s",
+      "pacing.sub_second_beats"
+    ],
+    "notes": "Resolved 21 Oct: novelty cadence is set by format: type-led launch films ~1.1-1.9 s (on the grid), hooks/gag ladders/beat montages 0.5-1.0 s, UI-loop and proof films 2-4 s (unit ~3 s), voice-led explainers 3-6 s per step; the 3.5 s static-hold ceiling (pacing.static_hold_max) applies to all."
+  },
+  {
+    "id": "pacing.reaction_hold",
+    "title": "Hold the reaction about 1.5 s",
+    "statement": "Hold a reaction shot about 1.5 s after the turn or payoff, and at least 0.5 s after every key action.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "character-spot",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "reveal"
+    },
+    "params": {
+      "reaction_hold_s": 1.5,
+      "key_action_hold_min_s": 0.5
+    },
+    "grade": "craft",
+    "evidence": "Production timing laws for wordless spots and short films ('the face does the work'); not tied to reach.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Beat sheets by length"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Character spot, Timing laws"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "cuts/patterns.json pace.mime_spot.reaction_hold_s holds the number but eyes/pacing does not read it. | eyes/pacing checks the 1.5 s reaction hold only under the mime_spot pace (cuts/patterns.json pace.mime_spot.reaction_hold_s); the 0.5 s key-action hold is prose-only."
+  },
+  {
+    "id": "pacing.reveal_shots_1_5_to_3_5s",
+    "title": "Cut reveal-film shots at 1.5-3.5 s",
+    "statement": "A device reveal film keeps shots at 1.5-3.5 s; 6-8 s shots score 72 and need insert shots.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "asl_s": [
+        1.5,
+        3.5
+      ],
+      "measured_shot_s": [
+        6,
+        8
+      ],
+      "measured_score": 72
+    },
+    "grade": "measured",
+    "evidence": "The hardware-reveal template scored 72 on structure_check at both aspects because its 6-8 s shots ran long.",
+    "sources": [
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "Known weak spots > Structure scores"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Known before rendering"
+      }
+    ],
+    "enforce": {
+      "check": "lint.structure.score",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "pacing.same_scale_run",
+    "title": "No more than 3 same-scale shots",
+    "statement": "No more than 3 shots of the same scale run in a row; move wide to tight as emotion rises and break the pattern on the turn.",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "launch-film",
+        "short-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "same_scale_run_max": 3
+    },
+    "grade": "craft",
+    "evidence": "Short-film craft convention (lecture notes and blogs) encoded as a house lint.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "9. Short-film grammar (shot-scale ladder)"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "RECIPE F step 2"
+      },
+      {
+        "doc": "skills/motion-pack/references/critic.md",
+        "locator": "2. Score it > Variety"
+      }
+    ],
+    "enforce": {
+      "check": "lint.shotlist.same_scale_run",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Merged: Climb the scale ladder (wide, medium, close, insert) as emotion rises, break the pattern on the turn, and never put more than 3 same-scale shots in a row. [house; house recipe rule [H].] | Linter warns, does not fail."
+  },
+  {
+    "id": "pacing.section_asl_curve",
+    "title": "Pace per section, not one rate",
+    "statement": "Set a shot-length target per section: shots shorten through the setup, are shortest at the climax, and lengthen again for the reveal hold and the end card (ad-15: hook 0.6-1.6 s, product 1.2-3.5 s, end card 1.8-3.0 s).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "ad15_hook_asl_s": [
+        0.6,
+        1.6
+      ],
+      "ad15_product_asl_s": [
+        1.2,
+        3.5
+      ],
+      "ad15_cta_asl_s": [
+        1.8,
+        3.0
+      ]
+    },
+    "grade": "measured",
+    "evidence": "A 210-film study found the within-film shape (long prologue shots, negative-exponential shortening through the setup, shortest in the climax, longer in the epilogue); measured on features and applied to short formats by analogy.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 6; 3. Pace (within-film shape)"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.ad-15.sections[].asl_s"
+      }
+    ],
+    "enforce": {
+      "check": "lint.structure.score",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: patterns/structures.json structures.<pattern>.sections[].asl_s (a pack default outside mp plan). | Short-form hooks invert the feature-film prologue: the hook is fast (three visual states in 3 s), not long."
+  },
+  {
+    "id": "pacing.state_change_every_1_2s",
+    "title": "Change state on a 1-2 s grid",
+    "statement": "In a type-led launch film, land a visual state change on the musical grid every 1.1-1.9 s (two beats at about 112 BPM, one bar at about 170 BPM).",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "state_change_interval_s": [
+        1.07,
+        1.9
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "3 tier-A films: top hits on exact two-beat steps of 1.07 s; five hits on a 1.416 s grid; ten hits 1.4-1.9 s apart. Cut-to-onset sync read near chance in all four films.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "films 01, 03, 04 MUSIC and SOUND DESIGN"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "pacing.new_state_every_3s",
+      "pacing.new_thing_every_2_4s",
+      "pacing.sub_second_beats"
+    ],
+    "notes": "Resolved 21 Oct: novelty cadence is set by format: type-led launch films ~1.1-1.9 s (on the grid), hooks/gag ladders/beat montages 0.5-1.0 s, UI-loop and proof films 2-4 s (unit ~3 s), voice-led explainers 3-6 s per step; the 3.5 s static-hold ceiling (pacing.static_hold_max) applies to all. | Known conflict: other sources set a 2-4 s novelty interval. Resolve by format: about 1-2 s hits for 15-35 s type-led launch films; 2-4 s for slower story and explainer formats. plan.beatGrid snaps BPM to whole frames but does not set the interval."
+  },
+  {
+    "id": "pacing.static_hold_max",
+    "title": "Change something every 3.5 s",
+    "statement": "In short-form something visible changes at least every 3.5 s; a static hold warns at 3.5 s and fails at 7 s unless the plan marks it as a hold.",
+    "scope": {
+      "formats": [
+        "data-story",
+        "explainer",
+        "proof-clip",
+        "short-film"
+      ],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "change_every_s_max": 3.5,
+      "static_warn_s": 3.5,
+      "static_fail_s": 7.0
+    },
+    "grade": "house",
+    "evidence": "House rule reconciling practitioner advice to change the visual every 2-5 s at attention-loss points.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "1. Governing principles, 4; 6.2 lint.pace R4"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "3. Pace, Curves by category (feature drop)"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "2. Hold > Structure > Static limit"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "VIRALITY checklist > Hold; RECIPE E step 1"
+      },
+      {
+        "doc": "docs/lane-notes/research.md",
+        "locator": "Notes for other lanes"
+      },
+      {
+        "doc": "docs/lane-notes/film.md",
+        "locator": "Integration, 'short-film' bullet"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Update 19 Oct table"
+      }
+    ],
+    "enforce": {
+      "check": "lint.eyes.pacing",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: patterns/structures.json structures.saas-feature-drop.change_every_s_max (a pack default outside mp plan). | structure_check.check_pace scores continuous films (proof-film, saas-feature-drop, data-story, process-howto) against change_every_s_max 3.5 s from plan.audio.events. | Merged: Something visible or audible changes at least every 3.5 s; a static hold warns at 3.5 s and fails at 7 s unless the plan marks it as a hold. [house; house default R4 [H].] | Explainer recipe: no gap over 3.5 s outside a planned hold. Critic Variety row asks for a visible change every 2-4 s. | Merged: Something visible lands at least every 3.5 s outside a declared hold; in one-canvas films each camera beat, node or highlight is the event. [measured; The proof demo had three 4.0-4.3 s stretches with no event; short-film placeholder plates left 4.4-5.5 s gaps (pace 0); explainer and data renders failed eyes 'frames' / 'pacing' on 19 Oct.] | eyes/pacing (static hold warn 3.5 s, fail 7 s) catches it on the render."
+  },
+  {
+    "id": "pacing.style_ladder",
+    "title": "Show range with a style ladder",
+    "statement": "To show range, one held subject swaps its look on the beat: about 4 looks in 2.5 s (0.5 s each) inside a product film, or one style per 8 s section in a music video.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "proof"
+    },
+    "params": {
+      "style_s_in_film": 0.5,
+      "looks_in_film": 4,
+      "style_s_music_video": 8.0
+    },
+    "grade": "measured-A",
+    "evidence": "Two tier-A round-7 films: one swaps 4 looks in 2.5 s; the 176 s music video changes era every 8 s on an exact grid.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Craft playbook, item 2 (Storyboarding)"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Beat tables: the four tier-A films (films 10 and 16)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/story/styleLadder"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "The part covers 0.5-1.0 s styles; the 8 s music-video grid is outside it."
+  },
+  {
+    "id": "pacing.sub_second_beats",
+    "title": "Cut every 0.5-1 s in montages",
+    "statement": "Hooks, gag ladders, action runs and beat montages cut every 0.5-1.0 s, one cut per beat, with at most 2 longer holds.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "launch-film",
+        "proof-clip",
+        "short-film"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "x"
+      ],
+      "section": "body"
+    },
+    "params": {
+      "shot_s": [
+        0.5,
+        1.0
+      ],
+      "long_holds_max": 2
+    },
+    "grade": "measured-A",
+    "evidence": "Round-8 film 06 (tier A, small sample) cuts every 0.535 s on the beat with 2 holds; a tier-A round-7 film runs 0.5 s style swaps; the tier-A* hero's ladder shrinks to about 1 s; a proof short film has median shot 0.83 s.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Film 06 section"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Beat tables: the four tier-A films (film 16)"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 5, 6. Motion graphics"
+      }
+    ],
+    "enforce": {
+      "check": "lint.eyes.pacing",
+      "default": null,
+      "part": "cuts/beat/every_beat"
+    },
+    "status": "enforced",
+    "conflicts_with": [
+      "pacing.new_state_every_3s",
+      "pacing.new_thing_every_2_4s",
+      "pacing.state_change_every_1_2s"
+    ],
+    "notes": "Resolved 21 Oct: novelty cadence is set by format: type-led launch films ~1.1-1.9 s (on the grid), hooks/gag ladders/beat montages 0.5-1.0 s, UI-loop and proof films 2-4 s (unit ~3 s), voice-led explainers 3-6 s per step; the 3.5 s static-hold ceiling (pacing.static_hold_max) applies to all. | eyes/pacing hype_ad ASL 1.2-2.0 s is slower than this; beat_edit (1-2 beats) matches."
+  },
+  {
+    "id": "pacing.talking_head_cut_rules",
+    "title": "Talking head: autocut, B-roll lead, punch-ins",
+    "statement": "Talking-head edits cut silences over 0.5 s keeping a 120 ms breath, cover 35-50% with B-roll inserts of 1.2-3 s that lead the line by 150 ms, and hold the face 450 ms after a punchline before cutting, and punch in to 1.12 on emphasis at most once per 4 s, alternating framing anchored on the eyes on every jump cut.",
+    "scope": {
+      "formats": [
+        "founder-story",
+        "podcast-clip",
+        "talking-head"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "silence_min_ms": 500,
+      "breath_keep_ms": 120,
+      "broll_coverage": [
+        0.35,
+        0.5
+      ],
+      "broll_insert_s": [
+        1.2,
+        3
+      ],
+      "broll_lead_ms": 150,
+      "beat_hold_ms": 450,
+      "punch_in_scale": 1.12,
+      "punch_in_min_gap_s": 4
+    },
+    "grade": "house",
+    "evidence": "house talking-head defaults.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "RECIPE H steps 2-3"
+      },
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "7.2 Talking-head and human edit grammar (B-roll cadence)"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "split.broll_lead"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "templates/talking-head"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Set today by: cuts/patterns.json talking_head.autocut, split.broll_lead, talking_head.beat_hold; plan.autocut; cuts/patterns.json talking_head.punch_in (a pack default outside mp plan). | Multi-voice docs: speaker changes in the breath between lines, never inside a word; B-roll cuts inside sentences on purpose. Crash zooms count as punch-ins. | Merged: Talking-head B-roll starts 150 ms before the VO line it illustrates, not before 2.0 s into the piece, in 1.2-3.0 s inserts covering 35-50% of runtime. [craft; Practitioner talking-head guides (heavy edits run B-roll for roughly half the runtime); offsets are house.] | Prefer specific B-roll (the exact action described) over generic."
+  },
+  {
+    "id": "pacing.tier_a_length_bimodal",
+    "title": "Avoid the 60-100 s dead zone",
+    "statement": "Plan craft and proof pieces at 10-60 s or people-led documentaries at 107-185 s; tier-A references had nothing between 60 and 100 s.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "craft_len_s": [
+        10,
+        60
+      ],
+      "doc_len_s": [
+        107,
+        185
+      ],
+      "gap_s": [
+        60,
+        100
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "round 4/5: tier A was bimodal in length across 13 A/A- pieces.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "9. Rounds 4-5 > Pacing"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "platform.length_targets"
+    ],
+    "notes": "Launch archetypes L3 (45-90 s) and L4 (45-60 s) sit partly in the gap; they come from the separate launch study."
+  },
+  {
+    "id": "pacing.tour_chapter_cadence",
+    "title": "Pace a tour in even chapters",
+    "statement": "A product or world tour can change chapter on a metronomic 6 s cadence (every 2 bars) so it reads as a tour.",
+    "scope": {
+      "formats": [
+        "saas-feature-drop",
+        "tutorial"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "chapter_s": 6,
+      "bars_per_chapter": 2
+    },
+    "grade": "measured-A",
+    "evidence": "One A- (saves-strong, 1.47% bookmarks) round-4 capture film, 59 s, 21 cuts.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 4 (9), line 40"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "pacing.trailer_accelerate",
+    "title": "Accelerate trailer cuts act by act",
+    "statement": "A trailer's beats per shot fall 8 -> 6 in act 1, 4 -> 2 in act 2 and 2 -> 1 -> 0.5 in act 3 on a half-beat grid (about 0.25, 0.6-0.7 and 2-4 cuts/s at 120 BPM), and the fastest stretch stops dead into the silence.",
+    "scope": {
+      "formats": [
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "act1_beats_per_shot": [
+        8,
+        6
+      ],
+      "act2_beats_per_shot": [
+        4,
+        2
+      ],
+      "act3_beats_per_shot": [
+        2,
+        1,
+        0.5
+      ],
+      "quantum_beats": 0.5,
+      "act1_asl_s": [
+        2.0,
+        4.0
+      ],
+      "act2_asl_s": [
+        1.0,
+        2.0
+      ],
+      "act3_asl_s": [
+        0.4,
+        1.2
+      ],
+      "braam_every_bars_act2": 2,
+      "braam_every_bars_act3": 1
+    },
+    "grade": "craft",
+    "evidence": "Trailer-editor practice (shots mostly 1-2 s, some under 1 s) and a 130-trailer study showing ASL falling over 60 years; the beat ladder is house.",
+    "sources": [
+      {
+        "doc": "docs/evidence/film-trailer-craft.md",
+        "locator": "3. Cut rate against time"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "trailer.accelerate3Act"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "3. Pace, Curves by category (trailer)"
+      }
+    ],
+    "enforce": {
+      "check": "lint.structure.score",
+      "default": null,
+      "part": "cuts/trailer/accelerate3Act"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Set today by: patterns/structures.json structures.trailer.sections[].asl_s (a pack default outside mp plan). | check_pace scores the per-act ASL bands (act1 2-4, act2 1-2, act3 0.4-1.2); the beat ladder itself is generated by cuts/trailer_plan.py and templates/trailer. White flash frames at most one per two bars."
+  },
+  {
+    "id": "pacing.transition_needs_reason",
+    "title": "Hard cut unless a reason exists",
+    "statement": "Default to the hard cut (about 90% of cuts in an ad or documentary); every non-cut transition carries a reason from the cut hierarchy (emotion, story, rhythm, energy, reveal, place) or the build fails.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "hard_cut_share_min": 0.9,
+      "reasons": "EMOTION|STORY|RHYTHM|ENERGY|REVEAL|PLACE"
+    },
+    "grade": "craft",
+    "evidence": "Every cited transition guide agrees on the hard-cut default; the six-reason priority (emotion, story, rhythm, eye trace, 2D plane, 3D space) comes from summaries of an editing textbook.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "1. Governing principles, 1-2; 2.1 Hard cut"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "Hard rules 3"
+      }
+    ],
+    "enforce": {
+      "check": "lint.shotlist.transition_reason",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "plan.lintTransitions also fails a non-cut transition without txReason. The 90% share is not checked. When reasons conflict, sacrifice from the bottom of the hierarchy (3D space first, emotion last). | Merged: Cut hard by default; every non-cut transition carries a written reason (emotion, story, rhythm, energy, reveal, place) or the build stops. [house; house rule.] | make.mjs exits 2; lint_shotlist also fails transitions without a reason. Short films: dissolve about 1000 ms for time passing, J/L splits for scene bridges."
+  }
+]
