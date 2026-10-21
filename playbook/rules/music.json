@@ -1,0 +1,463 @@
+[
+  {
+    "id": "music.bass_share_by_role",
+    "title": "Pick the bed's bass share by role",
+    "statement": "Energy under 150 Hz in the bed matches the role: proof and explainer 20-36%, hype and trailer 50-61%, brand launch 50-60%, VO documentary 15-34%.",
+    "scope": {
+      "formats": [
+        "beat-edit",
+        "data-story",
+        "documentary",
+        "explainer",
+        "hardware-teaser",
+        "launch-film",
+        "proof-clip",
+        "saas-feature-drop",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "proof_explainer": [
+        0.2,
+        0.36
+      ],
+      "hype_trailer": [
+        0.5,
+        0.61
+      ],
+      "brand_launch": [
+        0.5,
+        0.6
+      ],
+      "vo_doc": [
+        0.15,
+        0.34
+      ],
+      "band_hz": 150
+    },
+    "grade": "measured",
+    "evidence": "round 4/5 measured 28 references (median 33%); round 6 two films at 55% and 58%; round 3's 52-87% was the hype case.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "5. Sound levels"
+      },
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "9. Bass share by role; 10. Round 6"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "Bed bass share by role"
+      },
+      {
+        "doc": "ears/README.md",
+        "locator": "Brand-launch beds are bass-led by design"
+      },
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.bass_share_by_role"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "Bed bass share by role; Trailer arc"
+      },
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "What round 6 changes 2, line 51"
+      },
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Counts line 24; What changed line 92"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "ears/compare measures it against the role range from plan.audio.role but reports it as info only, never warn; promote it to a warn to enforce. | Most pack beds are 48-70% bass; only a few sit in the proof range. | Merged: A typographic or UI brand-launch film's bed keeps 50-60% of its energy under 150 Hz; if a voice sits on it, compare against the proof range (20-36%) instead. [craft; Two round-6 brand-launch films at 55 and 58%, one of them tier B: a thin base, read as craft.] | Information-only in ears/compare; on such a bed read an ears/tone boomy note as information when no voice sits on it. Overlaps music.bass_share_proof for saas-feature-drop: voice decides which range applies. | Merged: A hype or trailer bed keeps 50-61% of its energy under 150 Hz. [measured; Three trailer-style references measured 58, 61 and 55%; the pack's trailer bed measures 58%.] | ears/compare reports it as information only. An earlier round's 52-87% was the hype case, not a default. | Merged: A proof or explainer bed (numbers and voice on top) keeps 20-36% of its energy under 150 Hz. [measured-A; Six tier-A pieces measured 21, 24, 24, 31, 32 and 36%.] | ears/compare (--role proof|explainer) reports inside/above/below as information, not a warn, so status stays prose-only. Most pack beds measure above this range (48-70%); a lean bed that still sounds corporate is a library gap. | Merged: A voice-over documentary bed keeps 15-34% of its energy under 150 Hz. [measured; Three VO documentaries measured 18, 15 and 33%.] | Information-only in ears/compare. | Merged: A wordless brand-launch bed puts 50-60% of its energy below 150 Hz. [measured; Two round-6 films measured 55% and 58%, one tier C and one tier B: a thin base.] | ears labels this row 'round 6 references, craft only'. | Merged: Choose the bed so energy below 150 Hz is 20-36% for proof and explainer, 50-61% for hype and trailer, and 15-34% for VO documentaries. [measured; Ranges measured across all 28 round-4/5 pieces with audio (median 33%); tier-A pieces fall inside their role (explainers 24%, a hype teaser 58%).] | Round 3's 52-87% was the hype case, not a default."
+  },
+  {
+    "id": "music.bass_share_product_film",
+    "title": "Keep bass share at 27-47%",
+    "statement": "A music-led product launch film keeps the bed's bass share (energy below 150 Hz) at 27-47%.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "bass_share": [
+        0.27,
+        0.47
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "The tier-A round-7 films sit at 27-47% bass share; round-8 films span 27-81% (median 53%) with only small-sample tier-A ones above 60%.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Craft playbook, item 3 (Music)"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Counts and reception"
+      }
+    ],
+    "enforce": {
+      "check": "ears/compare",
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "ears/compare checks role ranges that disagree: brand_launch 0.50-0.60, hype 0.50-0.61, proof 0.20-0.36. This range sits between proof and brand_launch."
+  },
+  {
+    "id": "music.bed_under_voice_level",
+    "title": "Sit the bed -22 to -26 LUFS-S",
+    "statement": "Under a voice the music bed sits at -22 to -26 LUFS-S; with a hero hit and voice sharing the track it sits about -20 LUFS-S (so +4.5 dB hits fit under -14 LUFS-I); alone it can run about -15 LUFS-S.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "under_voice_lufs_s": [
+        -26,
+        -22
+      ],
+      "with_hits_lufs_s": -20,
+      "solo_lufs_s": -15
+    },
+    "grade": "house",
+    "evidence": "Pack mix targets; not measured on references.",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "6. Dialogue table (Music bed); 8.2 Mix of the bed; 8.4"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "music.dark_open_12db_under_drop",
+    "title": "Sit the dark open 12 dB under",
+    "statement": "In a reveal score the dark open sits about 12 dB under the drop, and the drop lands on the reveal bar at every cut length.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "dark_open_below_drop_db": 12
+    },
+    "grade": "measured",
+    "evidence": "ears on the bare reveal score: dark open about 12 dB under the drop; tone, clipping, sync, structure, repetition and stereo pass.",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/hardware.md",
+        "locator": "Measured"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "music/reveal.py render_reveal (score composed per cut from the template sections)",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "Do not swap in a loop bed: the dark open and the drop are the shape."
+  },
+  {
+    "id": "music.late_bass_entry",
+    "title": "Bring the bass in late",
+    "statement": "In a music-led product film the bed stays thin (no bass) until 23-52% of the runtime, and the bass enters on a cut or on the result frame.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "body"
+    },
+    "params": {
+      "bass_entry_pct": [
+        23,
+        52
+      ],
+      "bass_entry_median_pct_all": 24,
+      "bass_entry_pct_all": [
+        9,
+        52
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "6 music-led round-7 films bring the bass in late at 9-52% (median about 24%); the 3 tier-A ones at 23%, 25% and 52%, the other 3 are tier C.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Craft playbook, item 3 (Music)"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Beat tables: the four tier-A films"
+      }
+    ],
+    "enforce": {
+      "check": "ears/structure",
+      "default": null,
+      "part": "cuts/story/lateDrop"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "cuts/story/lateDrop defaults drop_share 0.25 (range 0.1-0.6); ears/structure only flags a drop after late_drop_share 0.75, so the 23-52% window itself is not checked."
+  },
+  {
+    "id": "music.late_drop_on_turn",
+    "title": "Drop the beat late, on the turn",
+    "statement": "Run the problem on UI ticks and texture only (no kick, no bass) for 10-60% of the runtime, then land the beat on the first frame of the turn line or product name, after an optional 0.5-1 s speech gap or a riser ending one frame before.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "proof-clip",
+        "saas-feature-drop",
+        "saas-launch"
+      ],
+      "platforms": [],
+      "section": "turn"
+    },
+    "params": {
+      "drop_at_share": [
+        0.1,
+        0.6
+      ],
+      "pre_drop_gap_s": [
+        0.5,
+        1
+      ]
+    },
+    "grade": "measured",
+    "evidence": "round 3: 6 of 25 pieces; the two tier-A ones dropped at 25% and 58% (3.8% bookmarks; 1.55x reach).",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "3. rule 13"
+      },
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "8. Round 3 > Late drop"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "story.lateDrop"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 162-182, 283-302, Pack coverage line 539"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/story/lateDrop"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "ears/structure carries late_drop_share 0.75 (a drop step of 3 dB); it is not a pass/fail on this window. | Merged: A late-drop film plays the problem near-silent on UI ticks and texture for 10-60% of runtime (default 25%, at least 1.5 s), with an optional 0.5-1 s speech gap, then drops the beat exactly on the first frame of the turn line or product name. [measured-A; Round-3 references: 2 tier-A pieces (6 in all) held the beat back until the turn line.] | ears/structure late_drop_share 0.75 is a separate flag on the drop position; before the drop: no kick, no bass, no melody. | Merged: Run the problem on UI ticks and texture only (no kick, bass or melody), then drop the beat on the first frame of the turn line or product name at 10-60% of the runtime. [measured-A; 6 of 25 round-3 pieces use it; the two tier-A/A- ones drop at 25% of 64 s (16 s) and 58% of 29.5 s (17 s).] | ears/structure flags drops later than late_drop_share 0.75; the 10-60% window itself is the part's default."
+  },
+  {
+    "id": "music.no_raw_ai_bed",
+    "title": "Never use AI music raw",
+    "statement": "A cloud-generated music bed is never used raw: it arrives around -24 LUFS with 0 dBFS peaks and goes through the mixer, which normalises, ducks and masters to -14 LUFS / -1.5 dBTP.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "raw_lufs": -24,
+      "raw_peak_dbfs": 0
+    },
+    "grade": "measured",
+    "evidence": "Measured on our own cloud-model takes (14 Oct): one take + one voice line + one hit mixed to -14.1 LUFS-I / -1.5 dBTP.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/cloud-audio.md",
+        "locator": "Rules that came from testing; The pipeline"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "music/mixer.py (bed normalise + master)",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "music.no_third_party_beds",
+    "title": "Never bed on third-party music",
+    "statement": "No third-party music is used as a bed (no raw CC0 loops either); third-party SFX are layered or processed, never a lone raw hero one-shot, and every import carries an ORIGIN.txt.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "Content-ID safety policy from licence research: open stock music can be fingerprinted after upload and claim every video using it.",
+    "sources": [
+      {
+        "doc": "docs/evidence/expansion-audio.md",
+        "locator": "3. Content ID: how we keep it safe; 1.3; 1.6"
+      }
+    ],
+    "enforce": {
+      "check": "sfx/tools/check_origin.py",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "check_origin.py refuses imports without ORIGIN.txt (exit 2); the bed rule itself is policy only. A platform's own audio library is usable only in files that ship on that platform alone."
+  },
+  {
+    "id": "music.phone_bass_cap",
+    "title": "Cap sub-bass share at 70 percent",
+    "statement": "Do not ship a bed with more than 70% of its energy below 150 Hz without a phone-speaker check.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "bass_share_max": 0.7,
+      "bass_cutoff_hz": 150
+    },
+    "grade": "inferred",
+    "evidence": "one tier-A film's bed was 87% below 150 Hz (brightness 183 Hz); that it reads as near silence on a phone is a band-share inference, not a listening test.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "film 04 MUSIC; cross-film playbook item 8; tooling gaps (phone check)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "ears/compare measures the bass share and reports it as info (plan.audio.role); nothing warns at 70%. | ears/compare flags bass share against plan.audio.role ranges (hype/trailer 0.50-0.61, proof/explainer 0.20-0.36) only when a role is given; a dedicated phone-speaker check is proposed, not built."
+  },
+  {
+    "id": "music.phrase_cuts",
+    "title": "Change scenes on phrases",
+    "statement": "Cuts fall on beats, scene changes on 2-, 4- or 8-beat phrases, and the biggest visual on the drop.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "beat-edit",
+        "launch-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "scene_change_phrase_beats": [
+        2,
+        4,
+        8
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Beat-sync editing practice.",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "8.1 Phrase rule"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "Beds (sidecars carry bar/beat/drop frames)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/sections/build_accelerate"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "music.tempo_snap_frames",
+    "title": "Snap tempo to whole frames",
+    "statement": "Pick the BPM so one beat is a whole number of frames: n = round(fps x 60 / BPM), BPM = fps x 60 / n (error under about 3% for n >= 12; e.g. 30 fps: 128 -> 128.57, 140 -> 138.46, 110 -> 112.5).",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "frames_per_beat": "integer",
+      "max_error_pct": 3,
+      "min_frames_per_beat": 12
+    },
+    "grade": "house",
+    "evidence": "Pack grid rule; every pack bed's beat events land on whole frames (music QA).",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "8.1 Tempo and grid math"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "Components (grid.py); Tempo snap table"
+      }
+    ],
+    "enforce": {
+      "check": "music/qa.py (beat events on whole frames)",
+      "default": "music/grid.py snap_bpm; plan.beatGrid",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "music/qa.py checks the library beds, not a user's film, so status is default rather than enforced."
+  }
+]
