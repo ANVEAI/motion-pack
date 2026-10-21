@@ -106,7 +106,7 @@ def test_load_target_measures_again_when_the_report_is_stale(tmp_path, monkeypat
 
 # ---------------------------------------------------------------- mp brief: negation, meta lines, goal and audience weight
 
-BRIEF = os.path.join(HERE, 'fixtures', 'briefs', 'pre-launch-office-suite.md')
+BRIEF = os.path.join(HERE, 'fixtures', 'briefs', 'pre-launch-clinic-app.md')
 
 
 def test_the_pre_launch_brief_picks_launch_film():

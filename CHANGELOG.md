@@ -2,9 +2,37 @@
 
 Each release's notes are also on the [Releases page](https://github.com/ANVEAI/motion-pack/releases). The counts below come from `python3 tools/count.py` at each tag.
 
-## v0.6.0 (unreleased, branch v06): styles, any-folder install, prompt gallery
+## v0.6.0 (21 Oct 2026): styles, any-folder install, prompt gallery
 
 A format says what happens when; a **style** now says what it looks and sounds like. The catalog grows to **<!--n:catalog_total-->1163<!--/n-->** components (10 styles and 14 format films join it).
+
+### The ten styles at a glance
+
+| style | tier | what it is | demo on the release |
+|---|---|---|---|
+| `soft-clay` | **hero** | stop-motion clay on `templates/style-scene`: a figure on 2s, squash and stretch, a soft key and a warm lamp | 13.5 s, 16:9 + 9:16 |
+| `documentary-grain` | **hero** | observational 16 mm at night: handheld drift, rack focus, a mono lower third, an archival card, gate and grain | 13.5 s, 16:9 + 9:16 |
+| `neon-night` | **hero** | rain on glass: neon rim light, passing light streaks, a slow push-in, bloom, a synthwave bed | 13.5 s, 16:9 + 9:16 |
+| `paper-cut` | **hero** | a cut-paper diorama: layered planes with drop shadows, boil on twelves, page-peel cuts | 13.5 s, 16:9 + 9:16 |
+| `editorial-print` | starter skin | serif headlines on warm newsprint, one red, a halftone tooth (on `templates/ad`) | 10.2 s, 16:9 |
+| `swiss-grid` | starter skin | black sans on white, one signal red, hard cuts on the beat | 10.2 s, 16:9 |
+| `chrome-product` | starter skin | graphite stage, silver type, an ice-blue glint | 10.2 s, 16:9 |
+| `blueprint` | starter skin | mono type on drafting blue, signal yellow, outlines that fill in | 10.2 s, 16:9 |
+| `retro-crt` | starter skin | phosphor green mono type, an amber accent, scanlines, tape wobble, chiptune | 10.2 s, 16:9 |
+| `kinetic-poster` | starter skin | giant black type slammed on signal yellow, one cobalt, whips on the beat | 10.2 s, 16:9 |
+
+A **hero** style is a scene with its own film craft (camera, timing, light), encoded as numbers that `lint.style.craft` checks. A **starter skin** recolours and retypes an existing template (palette, type, transitions, overlays, sound) and is labelled starter everywhere.
+
+### Counts at this tag (`tools/count.py`)
+
+| | v0.5.0 | v0.6.0 |
+|---|---|---|
+| catalog components | 1132 | 1163 |
+| genre templates (+ part demos) | 24 (+ 12) | 25 (+ 12): `style-scene` is new |
+| three.js objects | 44 | 50 |
+| playbook rules / `mp lint` checks | 338 / 64 | 338 / 69 (the style checks) |
+| formats / styles / gallery prompts | 14 / - / - | 14 / 10 (4 hero, 6 starter) / 29 |
+| sound effects / music pieces | 356 / 69 | 356 / 69 (unchanged since v0.4.0) |
 
 ### New: the STYLE layer (`playbook/styles/`)
 
@@ -31,7 +59,13 @@ A format says what happens when; a **style** now says what it looks and sounds l
 ### New: works from any folder
 
 - `skills/motion-pack/scripts/find-pack.sh` finds the pack: `MOTION_PACK_HOME`, the clone the skill sits in, `~/.motion-pack/<version>`, else `mp init`.
-- `mp init` downloads the tagged release tarball (`motion-pack-v<version>.tar.gz`) and `SHA256SUMS`, checks the sha256 and unpacks into `~/.motion-pack/<version>`. **Release step:** `scripts/release-tarball.sh v0.6.0` makes the tarball and its SHA256SUMS line; attach both to the release.
+- **How `mp init` works** (`tools/pack_home.mjs`):
+  1. It downloads `motion-pack-v<version>.tar.gz` and `SHA256SUMS` from the GitHub release of that tag.
+  2. It refuses a tarball that `SHA256SUMS` does not list or whose sha256 differs, and an archive with an absolute or `..` member.
+  3. It unpacks next to the target and renames into `~/.motion-pack/<version>` only when every check passed. `--force` replaces an existing copy.
+  4. `MP_RELEASE_BASE` points it at a mirror or a local folder.
+- The tarball is a `git archive` of the tag, so it holds no WAV masters: run `python3 sfx/build_library.py` and `python3 music/build_music.py` once inside the unpacked pack, or unzip the release's WAV zips there.
+- **Release step:** `scripts/release-tarball.sh v0.6.0` makes the tarball and its SHA256SUMS line from the tag; attach both to the release.
 
 ### New: prompt gallery and catalog tabs
 
@@ -39,13 +73,25 @@ A format says what happens when; a **style** now says what it looks and sounds l
 - The catalog opens on **Styles** and **Films** tabs, each item with its preview and a copy button for its prompt.
 - `README.md` now opens with moving films and a "copy this prompt" quick start; `README.zh-CN.md` translates the top and summarises the rest.
 
-### Fixes found by the v14 film
+### Pipeline fixes
 
-- eyes reads two-colour lines (plan `fgAlt`); ears keeps a planned quiet before the final sting (merged from `film-v14`).
+- eyes reads two-colour lines (plan `fgAlt`); ears keeps a planned quiet before the final sting.
 - The turn-window check no longer divides the percent range by 100 twice.
 - `mp lint` no longer reuses eyes / ears reports of an older render at the same path (keyed on the render's sha256).
-- `mp brief` ignores negated phrases and meta lines, weights the goal and audience over words like film or hype, and counts a named format; a brand-free copy of the v14 brief is a regression fixture (launch-film, not trailer).
+- `mp brief` ignores negated phrases and meta lines, weights the goal and audience over words like film or hype, and counts a named format; a fictional brief with the same traps is a regression fixture (launch-film, not trailer).
 - `tools/count.py --write` no longer undoes the README table when README.md also carries inline markers.
+
+### Known gaps
+
+- **Only four styles are scenes.** The six starter skins restyle `templates/ad` and do not change camera, timing or light; they are labelled starter.
+- **The hero scenes tell one story.** `templates/style-scene` stages the shared night-reading-room story with a placeholder title; your own subject needs your own plates or objects.
+- **Six release demos are upload copies.** `documentary-grain` (16:9 and 9:16), `paper-cut` (16:9 and 9:16), `editorial-print` and `retro-crt` were re-encoded to fit the 25 MB asset limit (two-pass x264 at 12-14 Mbps, the audio copied). The CRF-18 masters are larger and not attached, and grain and paper texture soften in the copies. The other demos are the masters.
+- **Lint warnings on the demos (0 FAIL, but WARN):**
+  - The encode warnings (keyframe interval, BT.709 tags) appear on 11 of the 14 lint reports, so they come from the `mp render` encode defaults.
+  - Most hero renders also warn on frame-0 motion, the first change by frame 6, a new thing every 2-4 s, and the riser and hit timing.
+  - Scores: 92.8-96.2 for the hero renders, 96.3-100 for the starter demos.
+- **Carried over from v0.5.0:** 134 of the 338 rules are prose-only; bass entry is checked from the plan only; `refstudy` counts 0 cuts across soft transitions; most genre templates are not tuned against a playbook block.
+- **`mp init` needs v0.6.0 or later:** earlier releases have no tarball. It downloads about 160 MB.
 
 ## v0.5.0 (21 Oct 2026): the playbook
 
