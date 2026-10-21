@@ -9,9 +9,14 @@
     {
       "name": "motion-pack",
       "source": "./",
-      "description": "Deterministic motion-production pack: transitions, cuts, synthesised SFX and music, layers, kinetic type, camera, 3D objects, Blender plates, baked physics and genre templates, with six skills (motion-pack, motion-stack, story-script, frame-design, social-video, spec-to-loop).",
+      "description": "Deterministic motion-production pack: transitions, cuts, synthesised SFX and music, layers, kinetic type, camera, 3D objects, Blender plates, baked physics, genre templates and ten named visual styles, with six skills (motion-pack, motion-stack, story-script, frame-design, social-video, spec-to-loop). Works from any folder (mp init).",
       "category": "media",
-      "tags": ["video", "motion-graphics", "sound-design", "hyperframes"]
+      "tags": [
+        "video",
+        "motion-graphics",
+        "sound-design",
+        "hyperframes"
+      ]
     }
   ]
 }

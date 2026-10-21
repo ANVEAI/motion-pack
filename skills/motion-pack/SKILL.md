@@ -4,7 +4,7 @@ description: Make finished, platform-ready videos with an AI agent from motion-p
 license: MIT
 compatibility: Node 22+ with npx (HyperFrames 0.8.142 renders the compositions), ffmpeg, Python 3.11 in a venv with `pip install -r requirements.txt` (numpy, scipy, numba, soundfile, Pillow, matplotlib, jsonschema, pytest; 3.10 to 3.12 install the pins, 3.13+ cannot), Chrome or Chromium; the three.js templates and GPU tests also need `npm i --no-save puppeteer-core` and a hardware GPU; Blender 5.2 only for photoreal plates. Works in Claude Code and in any agent that reads Agent Skills.
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   author: ANVE (anveai.com)
   repository: https://github.com/ANVEAI/motion-pack
 ---
@@ -15,10 +15,16 @@ Every part in the pack is code and a pure function of time `t`, so a frame rende
 
 ## Find the pack
 
-This skill ships inside the motion-pack repository at `skills/motion-pack/`.
-- **Pack root:** the repository root, two folders above this skill's base directory. Installed as a Claude Code plugin, that is the plugin root.
-- **If the skill was copied somewhere on its own:** look for a folder that contains `catalog/index.html` and `playbook/`. Otherwise ask the user, or clone https://github.com/ANVEAI/motion-pack.
-- **The CLI:** `tools/mp` (link it onto PATH: `ln -s "$PWD/tools/mp" ~/.local/bin/mp`). `mp doctor` checks the machine. Every path below is relative to the pack root.
+The user can be in any folder; the pack lives in one place and their project folders live where they work. Run this first and use the `PACK` it prints:
+
+```bash
+sh <this skill's folder>/scripts/find-pack.sh      # prints PACK=<folder>
+```
+
+It looks, in order, at `MOTION_PACK_HOME`; the clone this skill sits in (a git checkout, never the plugin cache); `~/.motion-pack/<version>`; and otherwise runs `mp init`, which downloads that release's tarball from GitHub into `~/.motion-pack/<version>` and checks it against the release's `SHA256SUMS` before unpacking. Then:
+- **The CLI:** `"$PACK/tools/mp"` (or link it onto PATH: `ln -s "$PACK/tools/mp" ~/.local/bin/mp`). `mp` itself resolves the pack the same way, so a linked shim works from any folder. `mp doctor` checks the machine.
+- **First film on a fresh pack:** build the sound libraries once (`python3 "$PACK/sfx/build_library.py" && python3 "$PACK/music/build_music.py"`).
+- Every path below is relative to `PACK`. Projects go in the user's folder (`mp new <template> ./film`), never inside the pack.
 
 ## When to use
 
@@ -62,11 +68,18 @@ To choose by hand, `mp formats` lists them (length range, aspects, template, whe
 
 No format fits? Work from the decision tree and recipes in `references/recipes.md`, then still run `mp lint` (it falls back to every registered check).
 
+### 1b. Pick a style: `mp styles`
+
+A format says what happens when; a **style** says what it looks and sounds like, and the two are independent. `mp styles` lists the named styles (`playbook/styles/`: palette measured by contrast.py, type, motion personality, transitions by reason, overlay stack, bed and sounds, signature features); `mp styles <id>` prints one with its copy-ready prompt. When the user names a look ("blueprint", "neon", "like a magazine"), pass `--style <id>` to `mp brief` or `mp plan`; otherwise skip it and art-direct with frame-design. The style never changes the story or the beats.
+
 ### 2. The plan: `mp plan`
 
 ```bash
 mp plan launch-film --length 35 --aspect 16:9 --out plan.json --project-out project.json
+mp plan ad --style blueprint --length 10 --out plan.json --project-out project.json   # the same, with a named style laid over it
 ```
+
+With `--style`, `plan.style` holds the style and what it set: the brand palette, fonts and bed in `project.json`, and, where the template's CONFIG has the block, its type presets, sounds, overlay stack and one transition per REASON as `overrides`. `plan.style.not_applied` names what the template has no slot for (art-direct those by hand). `mp lint` then checks the style's signature features (`lint.style.palette`, `.type`, `.transitions`, `.sound`) and lists the ones to look at by hand.
 
 `plan.json` is in the plan shape the templates, `structure_check`, eyes and ears already read. It carries the beats scaled to `--length` on whole frames, the sound shape (`plan.audio.quiet`: the quiet open, the silence under the name, the end-card hold; `bass_entry_s`; `first_hit_s`; the master target), the type limits (each text slot's word limit, cut to what its time can be read in), `plan.playbook` (format, rule ids, the defaults written in, the research pack) and `plan.project`: the same film as a `project.json` for the format's template, at the template length nearest yours. **It never writes copy:** every line is a `TODO(<beat>)` marker, and `mp lint` fails while one is left.
 
@@ -76,7 +89,7 @@ Read `research-pack.md` first, then write the logline, stake, beats and lines in
 
 ### 4. Art direction: frame-design
 
-Palette (contrast-checked), type, safe zones and the special frames, with the frame-design skill. `mp brand logo.svg --write` sets accent, ink and paper from a logo.
+Palette (contrast-checked), type, safe zones and the special frames, with the frame-design skill (start from `plan.style` when the plan has one). `mp brand logo.svg --write` sets accent, ink and paper from a logo.
 
 ### 5. Render: `mp render`
 
