@@ -145,6 +145,8 @@ jobs:
         run: node tools/tests/playbook-plan.test.mjs
       - name: "the plugin works from any folder (pack resolution MOTION_PACK_HOME / this copy / ~/.motion-pack/<version>, mp init against a fake release with checksum, mismatch and unsafe-archive refusals, find-pack.sh from a temp folder; node + tar, no network)"
         run: node tools/tests/pack-home.test.mjs
+      - name: "hero style craft is pure (objects/lib/scene-craft.js: stop motion on 2s, handheld, rack focus, rain, light streaks, paper boil, page peel, squash; seek order, two processes, ranges; node, no browser)"
+        run: node tools/tests/scene-craft.test.mjs
       - name: "a template follows its format's sound shape (templates/_shared/playbook.mjs on saas-launch, proof-film and explainer-diagram through their own build path; node, no browser)"
         run: node tools/tests/playbook-apply.test.mjs
       - name: "lint check mutation proof (each playbook lint check, the extra checks that wrap the shotlist, design, caption, mixer and honesty gates, and the grade-to-severity rule fail their test when broken)"

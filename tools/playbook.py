@@ -45,7 +45,9 @@ def cmd_styles(a):
             print(json.dumps({k: v for k, v in st.items() if k != '_file'}, indent=1, ensure_ascii=False))
             return 0
         p, t, snd, d = st['palette'], st['type'], st['sound'], st.get('demo') or {}
-        print('%s (%s): %s' % (st['title'], st['title_zh'], st['line_zh'] if a.zh else st['line']))
+        print('%s (%s), %s: %s' % (st['title'], st['title_zh'], 'a hero style (its own scene and craft)' if st.get('tier') == 'hero' else 'a starter skin (look and sound over any format)', st['line_zh'] if a.zh else st['line']))
+        if st.get('craft'):
+            print('craft    %s' % ', '.join('%s %s' % (k, v['value'] if isinstance(v, dict) else v) for k, v in st['craft'].items()))
         print('\nprompt (copy this):\n  %s\n' % (st['prompt_zh'] if a.zh else st['prompt']))
         print('palette  paper %s · ink %s · accent %s · muted %s  (ink %s:1, accent %s:1, contrast.py)' % (p['paper'], p['ink'], p['accent'], p['muted'],
               (p.get('contrast') or {}).get('ink_on_paper'), (p.get('contrast') or {}).get('accent_on_paper')))
@@ -60,7 +62,7 @@ def cmd_styles(a):
             print('  - %s  [%s]' % (sf['text'], sf['check']))
         print('formats  %s' % ', '.join(st['formats']))
         print('demo     %s' % ('%s s %s, %s (%s)' % (d.get('seconds'), d.get('aspect'), d.get('preview'), d.get('made_by', '')) if d.get('status') == 'rendered' else 'pending'))
-        print('\nnext: mp plan %s --style %s --out plan.json --project-out project.json' % ((st['formats'] or ['ad'])[0], st['id']))
+        print('\nnext: mp plan %s --style %s%s --out plan.json --project-out project.json' % ((st['formats'] or ['ad'])[0], st['id'], ' --template style-scene' if st.get('tier') == 'hero' else ''))
         return 0
     if a.json:
         print(json.dumps([{k: v for k, v in st.items() if k != '_file'} for st in styles.values()], indent=1, ensure_ascii=False))
@@ -68,9 +70,11 @@ def cmd_styles(a):
     if not styles:
         print('no styles yet in %s/styles' % os.path.relpath(L.playbook_dir(a.playbook)))
         return 1
-    for sid, st in sorted(styles.items()):
+    order = sorted(styles.items(), key=lambda kv: (kv[1].get('tier') != 'hero', kv[0]))   # the heroes first
+    for sid, st in order:
         p = st['palette']
-        print('%-18s %-18s %s %s %s  %-14s %s' % (sid, st['title_zh'] if a.zh else st['title'], p['paper'], p['ink'], p['accent'], st['type']['display'], st['line_zh'] if a.zh else st['line']))
+        tier = ('主打风格' if a.zh else 'hero') if st.get('tier') == 'hero' else ('入门皮肤' if a.zh else 'starter skin')
+        print('%-18s %-13s %-18s %s %s %s  %-14s %s' % (sid, tier, st['title_zh'] if a.zh else st['title'], p['paper'], p['ink'], p['accent'], st['type']['display'], st['line_zh'] if a.zh else st['line']))
     print('next: mp styles <id> (the prompt and the parts)   or   mp plan <format> --style <id>')
     return 0
 

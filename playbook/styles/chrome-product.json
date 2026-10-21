@@ -1,5 +1,6 @@
 {
  "id": "chrome-product",
+ "tier": "starter",
  "title": "Chrome Product",
  "title_zh": "铬金属产品",
  "line": "Graphite stage, silver type, an ice-blue glint: the premium product reveal.",

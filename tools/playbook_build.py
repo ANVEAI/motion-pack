@@ -147,6 +147,13 @@ def style_problems(where, sid, st, formats, checks, styles):
         pv = demo.get('preview')
         if pv and os.path.exists(os.path.join(PACK, pv)) and os.path.getsize(os.path.join(PACK, pv)) > PREVIEW_MAX:
             out.append('%s: demo.preview %s is over 2 MB' % (where, pv))
+    if st.get('tier') == 'hero':   # a hero is a film language: craft numbers, a world, and its demo on the scene template that takes them
+        if not st.get('craft') or not st.get('world'):
+            out.append('%s: a hero style needs craft and world (templates/style-scene)' % where)
+        if (st.get('demo') or {}).get('template') != 'templates/style-scene':
+            out.append('%s: a hero style demo is made with templates/style-scene' % where)
+        if not any(f.get('check') == 'lint.style.craft' for f in st.get('signature_features') or []):
+            out.append('%s: a hero style names lint.style.craft in its signature' % where)
     for t in (st.get('apply') or {}):
         if not os.path.exists(os.path.join(PACK, t, 'config.mjs')):
             out.append('%s: apply names %s, which has no config.mjs' % (where, t))
@@ -385,11 +392,12 @@ def readme(pb, rules, formats, inbox, styles=None):
     if styles:
         out += ['## Styles', '', 'A format says what happens when; a style says what it looks and sounds like. `mp styles` lists them, `mp plan <format> --style <id>` lays one over a format,',
                 'and `mp lint` checks the measurable signature features (palette, type, transitions, sound). Schema: `playbook/schema/style.schema.json`.', '',
-                '| style | what it is | palette (paper / ink / accent) | type | bed | demo |', '|---|---|---|---|---|---|']
-        for sid, st in sorted(styles.items()):
+                'Hero styles are full film languages (a scene, craft numbers checked by `lint.style.craft`, a demo made with `templates/style-scene`); starter skins lay a look and a sound over any format.', '',
+                '| style | tier | what it is | palette (paper / ink / accent) | type | bed | demo |', '|---|---|---|---|---|---|---|']
+        for sid, st in sorted(styles.items(), key=lambda kv: (kv[1].get('tier') != 'hero', kv[0])):
             p, d = st.get('palette') or {}, st.get('demo') or {}
             demo = '[%s s %s](../%s)' % (d.get('seconds'), d.get('aspect'), d['preview']) if d.get('status') == 'rendered' and d.get('preview') else 'pending'
-            out.append('| `%s` %s | %s | `%s` / `%s` / `%s` | %s | `%s` | %s |' % (sid, st.get('title_zh', ''), st.get('line', '').replace('|', '/'), p.get('paper'), p.get('ink'), p.get('accent'),
+            out.append('| `%s` %s | %s | %s | `%s` / `%s` / `%s` | %s | `%s` | %s |' % (sid, st.get('title_zh', ''), 'hero' if st.get('tier') == 'hero' else 'starter skin', st.get('line', '').replace('|', '/'), p.get('paper'), p.get('ink'), p.get('accent'),
                                                              (st.get('type') or {}).get('display'), (st.get('sound') or {}).get('bed'), demo))
         out.append('')
     by = {}

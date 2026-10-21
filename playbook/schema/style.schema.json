@@ -10,6 +10,7 @@
   },
   "required": [
     "id",
+    "tier",
     "title",
     "title_zh",
     "line",
@@ -539,7 +540,7 @@
         "seconds": {
           "type": "number",
           "minimum": 8,
-          "maximum": 12
+          "maximum": 15
         },
         "aspect": {
           "enum": [
@@ -574,11 +575,70 @@
         "made_by": {
           "type": "string",
           "description": "who made the demo (model and agent), rounds and time: honesty.showcase labels"
+        },
+        "tall_preview": {
+          "type": "string",
+          "description": "the committed 9:16 preview (MP4 under 2 MB)"
+        },
+        "sheet": {
+          "type": "string",
+          "description": "the contact sheet of the delivered 16:9 demo (release assets)"
         }
       }
     },
     "honesty": {
       "type": "string"
+    },
+    "tier": {
+      "enum": [
+        "hero",
+        "starter"
+      ],
+      "description": "hero: a full film language with its own scene, craft numbers and a demo film made with templates/style-scene; starter: a skin (palette, type, transitions, layers, sound) laid over any format"
+    },
+    "craft": {
+      "type": "object",
+      "description": "hero styles: the film craft as numbers a template with a CONFIG.craft block takes (mp plan --style writes `value`), recorded in the plan (plan.scene.craft) and checked by lint.style.craft: a plain value must match exactly, {value, min, max} must land in the range",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value"
+            ],
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              },
+              "what": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "world": {
+      "enum": [
+        "clay",
+        "doc",
+        "neon",
+        "paper"
+      ],
+      "description": "hero styles: the world of templates/style-scene (objects/lib/night.js WORLDS)"
     }
   }
 }

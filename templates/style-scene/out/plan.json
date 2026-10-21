@@ -1,0 +1,359 @@
+{
+ "template": "style-scene",
+ "fps": 30,
+ "seconds": 13.5,
+ "music": "music/bed_lofi_warm_loop8",
+ "shots": [
+  {
+   "id": "hook",
+   "dur": 1.8,
+   "cam": {
+    "fov": 22,
+    "elev": [
+     12,
+     11
+    ],
+    "az": [
+     -16,
+     -12
+    ],
+    "dist": [
+     7.6,
+     7.2
+    ],
+    "target": [
+     -0.1,
+     0.9,
+     0
+    ],
+    "tall": {
+     "dist": [
+      13.5,
+      13
+     ]
+    }
+   },
+   "sec": "hook",
+   "start": 0
+  },
+  {
+   "id": "setup",
+   "dur": 2.6,
+   "cam": {
+    "fov": 22,
+    "elev": [
+     14,
+     14
+    ],
+    "az": [
+     -8,
+     -4
+    ],
+    "dist": [
+     4.6,
+     4.3
+    ],
+    "target": [
+     -0.75,
+     0.82,
+     0.05
+    ],
+    "tall": {
+     "dist": [
+      8.2,
+      7.8
+     ]
+    }
+   },
+   "sec": "setup",
+   "tx": "transitions/cut",
+   "txReason": "STORY: establishing -> the reach",
+   "start": 1.8
+  },
+  {
+   "id": "escalation",
+   "dur": 3.6,
+   "cam": {
+    "fov": 22,
+    "elev": [
+     34,
+     36
+    ],
+    "az": [
+     6,
+     10
+    ],
+    "dist": [
+     3.2,
+     2.9
+    ],
+    "target": [
+     -0.05,
+     0.62,
+     0.05
+    ],
+    "tall": {
+     "dist": [
+      5.6,
+      5.2
+     ]
+    }
+   },
+   "sec": "escalation",
+   "tx": "transitions/cut",
+   "txReason": "STORY: the light lands on the book",
+   "start": 4.4
+  },
+  {
+   "id": "twist",
+   "dur": 1.8,
+   "cam": {
+    "fov": 22,
+    "elev": [
+     9,
+     9
+    ],
+    "az": [
+     24,
+     20
+    ],
+    "dist": [
+     4.2,
+     4
+    ],
+    "target": [
+     -0.75,
+     0.85,
+     0.2
+    ],
+    "tall": {
+     "dist": [
+      7.2,
+      6.9
+     ]
+    }
+   },
+   "sec": "twist",
+   "tx": "transitions/cut",
+   "txReason": "EMOTION: the delight",
+   "start": 8
+  },
+  {
+   "id": "reaction",
+   "dur": 1.1,
+   "cam": {
+    "fov": 22,
+    "elev": [
+     6,
+     6
+    ],
+    "az": [
+     34,
+     32
+    ],
+    "dist": [
+     2.7,
+     2.6
+    ],
+    "target": [
+     -1.05,
+     0.95,
+     0.3
+    ],
+    "tall": {
+     "dist": [
+      4.8,
+      4.6
+     ]
+    }
+   },
+   "sec": "reaction",
+   "tx": "transitions/cut",
+   "txReason": "EMOTION: the face",
+   "start": 9.8
+  },
+  {
+   "id": "message",
+   "dur": 2.6,
+   "cam": {
+    "fov": 22,
+    "elev": [
+     14,
+     16
+    ],
+    "az": [
+     -6,
+     -2
+    ],
+    "dist": [
+     9.8,
+     10.6
+    ],
+    "target": [
+     0.1,
+     0.9,
+     0
+    ],
+    "tall": {
+     "dist": [
+      16,
+      17
+     ]
+    }
+   },
+   "sec": "message",
+   "tx": "transitions/cut",
+   "txReason": "RHYTHM: settle on the title",
+   "start": 10.9,
+   "hold": true
+  }
+ ],
+ "cues": [
+  {
+   "id": "sfx/amb/room_tone",
+   "t": 0,
+   "gainDb": -22,
+   "loopTo": 13.5,
+   "why": "the room under the scene (sound first)"
+  },
+  {
+   "id": "sfx/lift/inhale",
+   "t": 1.4,
+   "gainDb": -10,
+   "why": "the figure wakes"
+  },
+  {
+   "id": "sfx/ui/pop",
+   "t": 3.05,
+   "gainDb": -4,
+   "why": "the tap on the lamp"
+  },
+  {
+   "id": "sfx/hw/power_on",
+   "t": 3.12,
+   "gainDb": -4,
+   "why": "the lamp comes on (the turn)"
+  },
+  {
+   "id": "sfx/paper/flip",
+   "t": 4.85,
+   "gainDb": -6,
+   "why": "the book falls open"
+  },
+  {
+   "id": "sfx/paper/rustle",
+   "t": 6,
+   "gainDb": -10,
+   "why": "pages run"
+  },
+  {
+   "id": "sfx/paper/rustle",
+   "t": 6.55,
+   "gainDb": -10,
+   "why": "pages run"
+  },
+  {
+   "id": "sfx/paper/rustle",
+   "t": 7.1,
+   "gainDb": -10,
+   "why": "pages run"
+  },
+  {
+   "id": "sfx/cartoon/boing",
+   "t": 8.9,
+   "gainDb": -6,
+   "why": "delight (the landing)"
+  },
+  {
+   "id": "sfx/logo/fifth_lift",
+   "t": 11.25,
+   "gainDb": -2,
+   "why": "the sting on the title"
+  }
+ ],
+ "texts": [
+  {
+   "id": "title",
+   "text": "Night Library",
+   "t": [
+    11.2,
+    13.5
+   ],
+   "role": "headline",
+   "fontPx": 120
+  },
+  {
+   "id": "line",
+   "text": "Read after dark.",
+   "t": [
+    11.45,
+    13.5
+   ],
+   "role": "line",
+   "fontPx": 52
+  }
+ ],
+ "claims": [],
+ "scene": {
+  "world": "clay",
+  "craft": {
+   "stepFps": 0,
+   "squash": 0,
+   "handheld": 0,
+   "rackFocus": false,
+   "push": 0,
+   "rain": false,
+   "streaks": 0,
+   "paperLayers": 0,
+   "boilPx": 0,
+   "grain": 0.02,
+   "bloom": 0.85,
+   "vignette": 0.1,
+   "dof": 60,
+   "gate": 0,
+   "lowerThird": false,
+   "archival": false
+  },
+  "cuts": [
+   {
+    "at": 1.8,
+    "tx": "transitions/cut",
+    "drawn": "transitions/cut"
+   },
+   {
+    "at": 4.4,
+    "tx": "transitions/cut",
+    "drawn": "transitions/cut"
+   },
+   {
+    "at": 8,
+    "tx": "transitions/cut",
+    "drawn": "transitions/cut"
+   },
+   {
+    "at": 9.8,
+    "tx": "transitions/cut",
+    "drawn": "transitions/cut"
+   },
+   {
+    "at": 10.9,
+    "tx": "transitions/cut",
+    "drawn": "transitions/cut"
+   }
+  ]
+ },
+ "paceRule": {
+  "aslMax": 3.8,
+  "longMax": 3.8
+ },
+ "lint": {
+  "claimsWithoutSource": [],
+  "unmotivatedTransitions": [],
+  "pace": {
+   "shots": 6,
+   "asl": 2.25,
+   "longest": 3.6,
+   "pass": true
+  }
+ }
+}

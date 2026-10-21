@@ -3,7 +3,7 @@
 <h1 align="center">motion-pack</h1>
 
 <p align="center"><b>告诉你的编程智能体想要什么样的片子，直接拿到带音乐、音效和字幕的成片 MP4。</b><br>
-<!--n:playbook_styles-->10<!--/n--> 种命名风格 · <!--n:playbook_formats-->14<!--/n--> 种片型 · <!--n:catalog_total-->1156<!--/n--> 个开源组件 · 每一帧都只由时间决定 · 代码 MIT，音效与配乐 CC0</p>
+<!--n:playbook_styles-->10<!--/n--> 种命名风格 · <!--n:playbook_formats-->14<!--/n--> 种片型 · <!--n:catalog_total-->1163<!--/n--> 个开源组件 · 每一帧都只由时间决定 · 代码 MIT，音效与配乐 CC0</p>
 
 <p align="center">
   <a href="https://anveai.github.io/motion-pack/catalog/#styles"><b>▶ 观看风格样片</b></a> ·

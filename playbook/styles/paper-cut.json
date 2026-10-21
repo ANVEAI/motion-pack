@@ -1,12 +1,13 @@
 {
  "id": "paper-cut",
+ "tier": "hero",
  "title": "Paper Cut",
  "title_zh": "剪纸拼贴",
- "line": "Craft paper and cardboard, a deep teal, bouncy type and page peels: made by hand.",
- "line_zh": "牛皮纸与瓦楞纸，一抹深青，弹跳字效与翻页转场：手作感。",
- "prompt": "Paper cut style: kraft paper ground with a cardboard tooth, dark brown ink and one deep teal, bouncy pop-in type, page-peel and swipe-up transitions, a light folk pluck bed with paper rustles, pops and a stamp.",
- "prompt_zh": "剪纸拼贴风格：牛皮纸底加瓦楞纹理，深棕墨色与一抹深青，弹跳出现的字效，翻页与上滑转场，轻快的民谣拨弦配乐，配纸张沙沙声、弹出声与盖章声。",
- "essence": "Everything looks cut, stuck and lifted by hand: warm paper, honest texture and a little bounce. It is friendly, not childish.",
+ "line": "A cut-paper diorama: layered planes with drop shadows, boil on twelves, page-peel cuts and kraft colours.",
+ "line_zh": "剪纸立体布景：分层纸片与投影、每秒十二次的抖动、翻页转场与牛皮纸配色。",
+ "prompt": "Paper cut style: a cut-paper diorama of layered planes at real depths, crisp drop shadows from one front key, boil on twelves and animation on 12s, page-peel cuts, kraft colours with fibre, a folk pluck bed with paper sounds.",
+ "prompt_zh": "剪纸风格：分层纸片按真实纵深排列的立体布景，单一前方主光投下清晰阴影，每秒十二次抖动、一拍十二帧动画，翻页转场，带纤维的牛皮纸配色，民谣拨弦配乐与纸张音效。",
+ "essence": "Everything is cut, layered and lit like a paper theatre: planes at real depths, hard little shadows, a world that boils because hands placed it. Friendly and crafted, never flat clip art.",
  "not": [
   {
    "style": "editorial-print",
@@ -64,9 +65,9 @@
  "transitions": {
   "by_reason": {
    "EMOTION": "transitions/pagePeel",
-   "ENERGY": "transitions/swipeUp",
    "STORY": "transitions/pagePeel",
-   "RHYTHM": "transitions/swipeUp"
+   "RHYTHM": "transitions/pagePeel",
+   "ENERGY": "transitions/swipeUp"
   },
   "banned": [
    "transitions/glitch",
@@ -119,23 +120,27 @@
  },
  "signature_features": [
   {
-   "text": "kraft ground with dark brown ink at 11:1 and a teal accent at 4:1 (contrast.py)",
-   "check": "lint.style.palette"
+   "text": "layered cut-paper planes at their own depths, with real drop shadows on the wall",
+   "check": "lint.style.craft"
   },
   {
-   "text": "page peels and swipe-ups only",
+   "text": "a boil of 0.8-2.5 px on twelves, animated on 12s",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "page-peel transitions on the cuts (the cut happens under the page)",
    "check": "lint.style.transitions"
   },
   {
-   "text": "elastic pop-in type with a small overshoot",
-   "check": "lint.style.type"
+   "text": "kraft-paper colours with fibre; dark brown ink at 11:1, teal at 4:1 (contrast.py)",
+   "check": "lint.style.palette"
   },
   {
    "text": "a folk pluck bed under paper sounds",
    "check": "lint.style.sound"
   },
   {
-   "text": "the cardboard and paper tooth reads at phone size",
+   "text": "one crisp front key: every layer casts a hard-edged shadow",
    "check": "review"
   }
  ],
@@ -160,6 +165,7 @@
   ]
  },
  "formats": [
+  "character-spot",
   "ad",
   "launch-film",
   "saas-feature-drop",
@@ -167,6 +173,7 @@
   "explainer"
  ],
  "recipes": [
+  "templates/style-scene",
   "templates/ad",
   "transitions/pagePeel",
   "transitions/swipeUp",
@@ -184,24 +191,76 @@
   "layers/grain",
   "layers/grain.film16",
   "cam2d.dutch2d",
-  "cam2d.punchIn2d"
+  "cam2d.punchIn2d",
+  "objects/night-set",
+  "objects/lamp",
+  "objects/book",
+  "objects/worker",
+  "objects/mug",
+  "objects/paper-layers",
+  "objects/page-peel",
+  "sfx/amb/room_tone",
+  "sfx/plastic/click",
+  "sfx/cartoon/pop_eye"
  ],
  "apply": {
   "templates/ad": {
    "plates": false
+  },
+  "templates/style-scene": {
+   "world": "paper",
+   "sfx.bed": "sfx/amb/room_tone",
+   "sfx.wake": "sfx/paper/rustle",
+   "sfx.tap": "sfx/paper/flip",
+   "sfx.on": "sfx/plastic/click",
+   "sfx.open": "sfx/paper/card_riffle",
+   "sfx.flutter": "sfx/paper/rustle",
+   "sfx.delight": "sfx/cartoon/pop_eye",
+   "sfx.sting": "sfx/logo/fifth_lift"
   }
  },
  "demo": {
-  "format": "ad",
-  "template": "templates/ad",
-  "seconds": 10,
+  "format": "character-spot",
+  "template": "templates/style-scene",
+  "seconds": 13.5,
   "aspect": "16:9",
-  "status": "rendered",
+  "status": "pending",
   "preview": "media/styles/paper-cut.mp4",
+  "tall_preview": "media/styles/paper-cut-9x16.mp4",
   "poster": "media/styles/paper-cut.jpg",
-  "release_asset": "motion-pack-style-paper-cut-v0.6.0.mp4",
-  "lint": "mp lint 96.3/100, 51 PASS, 5 WARN, 0 FAIL, 0 INFO, 13 N/A",
-  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint, on 21 Oct 2026; 1 to 4 agent re-renders per style (fixes found by mp lint and the contact sheets), 0 human rounds; the same placeholder copy in every style"
+  "release_asset": "motion-pack-style-paper-cut-v0.6.0.mp4"
  },
- "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+ "honesty": "The demo is one run of the shared tiny story (a night reading room, a lamp, a book; the title is a labelled placeholder) in this style. The same prompt makes a different film on every run.",
+ "world": "paper",
+ "craft": {
+  "paperLayers": {
+   "value": 4,
+   "min": 3,
+   "max": 4,
+   "what": "cut-paper layers behind the window"
+  },
+  "boilPx": {
+   "value": 1.5,
+   "min": 0.8,
+   "max": 2.5,
+   "what": "boil of every layer and the frame, pixels at 1080p"
+  },
+  "stepFps": 12,
+  "dof": 0,
+  "grain": {
+   "value": 0.03,
+   "min": 0,
+   "max": 0.05
+  },
+  "bloom": {
+   "value": 0.5,
+   "min": 0.2,
+   "max": 0.8
+  },
+  "vignette": {
+   "value": 0.12,
+   "min": 0.05,
+   "max": 0.2
+  }
+ }
 }

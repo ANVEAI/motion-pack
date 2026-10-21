@@ -1,12 +1,13 @@
 {
  "id": "neon-night",
+ "tier": "hero",
  "title": "Neon Night",
  "title_zh": "霓虹之夜",
- "line": "Night city glow: light type on deep indigo, a magenta accent, bokeh and a synthwave bed.",
- "line_zh": "夜城光晕：深靛蓝上的亮色字，洋红点缀，散景光斑，合成器浪潮配乐。",
- "prompt": "Neon night style: light type on deep indigo, one hot magenta accent, soft glow pools and drifting bokeh, staggered letters and a slam, light-leak and zoom-through transitions, a synthwave bed with sci-fi whooshes and a stab on the reveal.",
- "prompt_zh": "霓虹之夜风格：深靛蓝底上的亮色字，一抹热洋红，柔和光晕与漂移散景，逐字错落与重击字效，漏光与穿越缩放转场，合成器浪潮配乐，揭晓处配科幻呼啸与重音。",
- "essence": "A city after dark: deep ground, light that blooms around the words, and a bed that drives. The glow is atmosphere around the type, never on the type.",
+ "line": "Rain on glass at night: neon rim light, passing light streaks, a slow push-in, bloom and a synthwave bed.",
+ "line_zh": "雨夜玻璃：霓虹轮廓光、掠过的光带、缓慢推近、辉光与合成器浪潮配乐。",
+ "prompt": "Neon night style: the scene through rain running down glass, magenta and cyan rim light, passing light streaks, a slow push-in on every shot, heavy bloom on the practicals, light-leak cuts, a synthwave bed over the rain.",
+ "prompt_zh": "霓虹之夜风格：隔着流淌雨水的玻璃看场景，洋红与青色轮廓光，掠过的光带，每个镜头缓慢推近，实景光源强辉光，漏光转场，雨声之上的合成器浪潮配乐。",
+ "essence": "A city night seen through wet glass: cool neon around the edges, one warm light inside, and a camera that leans in slowly. The glow is atmosphere around the subject, never on the words.",
  "not": [
   {
    "style": "retro-crt",
@@ -64,9 +65,9 @@
  "transitions": {
   "by_reason": {
    "EMOTION": "transitions/lightLeak",
-   "ENERGY": "transitions/zoomThrough",
-   "STORY": "transitions/blurCross",
-   "RHYTHM": "transitions/flash"
+   "STORY": "transitions/cut",
+   "RHYTHM": "transitions/lightLeak",
+   "ENERGY": "transitions/zoomThrough"
   },
   "banned": [
    "transitions/pagePeel",
@@ -139,23 +140,31 @@
  },
  "signature_features": [
   {
-   "text": "light ink on a deep indigo ground at 17:1, magenta at 6:1 (contrast.py)",
+   "text": "the room seen through rain on glass, with light streaks passing in it",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "a slow push-in on every shot (8-20 percent of the distance)",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "bloom 1.2-2.2 on the practicals: the lamp, the neon city, the streaks",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "light ink on deep indigo at 17:1, magenta at 6:1 (contrast.py)",
    "check": "lint.style.palette"
   },
   {
-   "text": "light leaks, zoom-throughs, blur crosses and flashes between sections",
+   "text": "light-leak flashes on the emotional cuts",
    "check": "lint.style.transitions"
   },
   {
-   "text": "a synthwave bed with sci-fi whooshes",
+   "text": "a synthwave bed over the rain",
    "check": "lint.style.sound"
   },
   {
-   "text": "staggered letters and a slam on the name",
-   "check": "lint.style.type"
-  },
-  {
-   "text": "glow pools and bokeh sit behind the words, never on them",
+   "text": "magenta and cyan rim light; warm only from the lamp",
    "check": "review"
   }
  ],
@@ -180,6 +189,7 @@
   ]
  },
  "formats": [
+  "character-spot",
   "ad",
   "launch-film",
   "saas-feature-drop",
@@ -187,6 +197,7 @@
   "explainer"
  ],
  "recipes": [
+  "templates/style-scene",
   "templates/ad",
   "transitions/blurCross",
   "transitions/flash",
@@ -208,24 +219,84 @@
   "layers/look.neon-night",
   "layers/grain.digital-soft",
   "cam2d.crashZoom",
-  "cam2d.breathe2d"
+  "cam2d.breathe2d",
+  "objects/night-set",
+  "objects/lamp",
+  "objects/book",
+  "objects/worker",
+  "objects/mug",
+  "objects/rain-glass",
+  "sfx/amb/rain",
+  "sfx/lift/inhale",
+  "sfx/ui/click",
+  "sfx/hw/power_on",
+  "sfx/paper/flip",
+  "sfx/paper/rustle",
+  "sfx/ui/success_chime",
+  "transitions/cut"
  ],
  "apply": {
   "templates/ad": {
    "plates": false
+  },
+  "templates/style-scene": {
+   "world": "neon",
+   "sfx.bed": "sfx/amb/rain",
+   "sfx.wake": "sfx/lift/inhale",
+   "sfx.tap": "sfx/ui/click",
+   "sfx.on": "sfx/hw/power_on",
+   "sfx.open": "sfx/paper/flip",
+   "sfx.flutter": "sfx/paper/rustle",
+   "sfx.delight": "sfx/ui/success_chime",
+   "sfx.sting": "sfx/logo/ascend_land"
   }
  },
  "demo": {
-  "format": "ad",
-  "template": "templates/ad",
-  "seconds": 10,
+  "format": "character-spot",
+  "template": "templates/style-scene",
+  "seconds": 13.5,
   "aspect": "16:9",
-  "status": "rendered",
+  "status": "pending",
   "preview": "media/styles/neon-night.mp4",
+  "tall_preview": "media/styles/neon-night-9x16.mp4",
   "poster": "media/styles/neon-night.jpg",
-  "release_asset": "motion-pack-style-neon-night-v0.6.0.mp4",
-  "lint": "mp lint 96.3/100, 51 PASS, 5 WARN, 0 FAIL, 0 INFO, 13 N/A",
-  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint, on 21 Oct 2026; 1 to 4 agent re-renders per style (fixes found by mp lint and the contact sheets), 0 human rounds; the same placeholder copy in every style"
+  "release_asset": "motion-pack-style-neon-night-v0.6.0.mp4"
  },
- "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+ "honesty": "The demo is one run of the shared tiny story (a night reading room, a lamp, a book; the title is a labelled placeholder) in this style. The same prompt makes a different film on every run.",
+ "world": "neon",
+ "craft": {
+  "rain": true,
+  "streaks": {
+   "value": 7,
+   "min": 4,
+   "max": 10
+  },
+  "push": {
+   "value": 0.12,
+   "min": 0.08,
+   "max": 0.2,
+   "what": "slow push-in per shot"
+  },
+  "bloom": {
+   "value": 1.6,
+   "min": 1.2,
+   "max": 2.2
+  },
+  "stepFps": 0,
+  "grain": {
+   "value": 0.03,
+   "min": 0,
+   "max": 0.05
+  },
+  "vignette": {
+   "value": 0.3,
+   "min": 0.15,
+   "max": 0.4
+  },
+  "dof": {
+   "value": 50,
+   "min": 20,
+   "max": 90
+  }
+ }
 }

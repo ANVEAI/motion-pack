@@ -25,8 +25,10 @@ import * as HWS from './lib/studio-hw.js';       // dark studio + rim / top / sw
 import * as HWM from './lib/hwmedia.js';         // your own GLB / OBJ, or a photo as a 2.5D plate
 import * as HWD from './lib/hwdata.js';          // the device layout as pure data (anchors for callouts)
 import * as HWE from './lib/explode.js';         // the exploded-view choreographer (pure)
+import * as NIGHT from './lib/night.js';          // v0.6 hero style scenes: the night reading room, lamp, book, rain glass, cut-paper layers, page peel
+import * as CRAFT from './lib/scene-craft.js';    // v0.6: the style craft as pure functions of time (stepTime, handheld, rainDrops, paperJitter, peel, ...)
 
-export const O = { ...SET, ...BOX, ...CHROME, ...PAPER, ...READ, ...METER, ...PANELS, ...DEV, ...MATS, ...DOME, ...LOGO, ...FLAT, ...MASCOT, ...WORKER, ...POSES, ...HW, ...HWB, ...HWX, ...HWS, ...HWM, ...HWD, ...HWE };
+export const O = { ...SET, ...BOX, ...CHROME, ...PAPER, ...READ, ...METER, ...PANELS, ...DEV, ...MATS, ...DOME, ...LOGO, ...FLAT, ...MASCOT, ...WORKER, ...POSES, ...HW, ...HWB, ...HWX, ...HWS, ...HWM, ...HWD, ...HWE, ...NIGHT, CRAFT };
 
 const r = (build, tags, state, doc) => ({ build, tags, state, doc });
 export const REGISTRY = {
@@ -74,6 +76,13 @@ export const REGISTRY = {
   'objects/xray': r((ctx, p, o) => HWX.makeXray(ctx, o.root || p, o), ['hardware', 'xray', 'wireframe', 'transition', 'scan', 'new'], 'set(k) 0 wire .. 1 solid', 'NEW x-ray / wireframe-to-solid sweep for any object (edges + clipping plane + glowing scan band)'),
   'objects/hw-studio': r((ctx, _p, o) => ({ studio: HWS.makeDarkStudio(ctx, o), rig: HWS.makeHwRig(ctx, o) }), ['hardware', 'studio', 'light', 'rim', 'sweep', 'dark', 'new'], 'rig.update(n, slot, {rim, top, key, edge, sweep})', 'NEW dark product studio + rim / top / sweep rig (edge-light silhouette, travelling strip)'),
   'objects/model': r((ctx, p, o) => HWM.loadModel(ctx, p, o.url, o), ['hardware', 'model', 'glb', 'gltf', 'obj', 'your-product', 'new'], 'async; applyExplode(offs), pose(p, yaw, s)', 'NEW load YOUR model (GLB / glTF / OBJ): centred, stood on the floor, sized; top-level children become explode parts'),
+  /* v0.6 hero style scenes (templates/style-scene): one night reading room in four worlds; the craft is pure (objects/lib/scene-craft.js, node-tested) */
+  'objects/night-set': r((ctx, p, o) => NIGHT.makeNightSet(ctx, p, o), ['set', 'room', 'night', 'window', 'style', 'clay', 'paper', 'neon', 'documentary', 'new'], 'static; lights {hemi, moon, extra}', 'NEW night reading room in four worlds (clay, doc, neon, paper): floor, wall with a window onto a night sky, desk, rug, moonlight key'),
+  'objects/lamp': r((ctx, p, o) => NIGHT.makeLamp(ctx, p, o), ['prop', 'lamp', 'light', 'bloom', 'squash-stretch', 'new'], 'set({on, squash}), pose(p, yaw)', 'NEW desk lamp: arm, cone shade, a bulb that blooms, a warm spot pool with shadows; squash keeps volume (the clay tap)'),
+  'objects/book': r((ctx, p, o) => NIGHT.makeBook(ctx, p, o), ['prop', 'book', 'paper', 'open', 'pages', 'new'], 'set({open, flip}), pose(p, yaw)', 'NEW book: a board that swings open on the spine, a page block, loose pages that run one after another'),
+  'objects/rain-glass': r((ctx, p, o) => NIGHT.makeRainGlass(ctx, p, o), ['glass', 'rain', 'weather', 'neon', 'light-streaks', 'new'], 'update(t)', 'NEW rain on a window pane: drops that stick and run with trails, passing light streaks behind (pure f(t))'),
+  'objects/paper-layers': r((ctx, p, o) => NIGHT.makePaperLayers(ctx, p, o), ['paper', 'cut-out', 'diorama', 'parallax', 'boil', 'shadow', 'new'], 'update(t, {px, deg, boilFps})', 'NEW cut-paper layers (hills, skyline, trees, clouds, curtain, star) at their own depths, real drop shadows, boil on twelves'),
+  'objects/page-peel': r((ctx, _p, o) => NIGHT.makePagePeel(ctx, o), ['transition', 'paper', 'page-peel', 'curl', 'camera', 'new'], 'fit(dist), set(k)', 'NEW page-peel transition sheet on the camera: unrolls over the frame (k 0.5 covers it) and peels off, an inextensible curl'),
   'objects/photo-25d': r((ctx, p, o) => HWM.makePhotoParallax(ctx, p, o), ['hardware', 'photo', 'parallax', '2.5d', 'your-product', 'new'], 'async; pose(p, yaw)', 'NEW one product photo as a displaced 2.5D plate (your depth map, or alpha + a soft bulge); keep orbits small'),
 };
 export function create(ctx, parent, id, params = {}) { const e = REGISTRY[id]; if (!e) throw new Error('objects: unknown id ' + id + ' (have ' + Object.keys(REGISTRY).join(', ') + ')'); return e.build(ctx, parent, params); }

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>motion-pack style-scene template</title>
+<link rel="icon" href="data:,">
+<style>html,body{margin:0;padding:0;background:#111;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+/* style-scene: the night reading room told in one style's film language (CONFIG.world + CONFIG.craft; see config.mjs).
+   URL: ?aspect=wide|tall &scale=0.5 &config=out/config.resolved.json. Render: bash ../_shared/render3d.sh . scene.html wide */
+import { runScene, U, THREE } from './objects/kit/studio-lite.js';
+import { O } from './objects/index.js';
+import { stageConfig, cutShots } from './objects/stage.js';
+import { WORLDS, makeNightSet, makeLamp, makeBook, makeRainGlass, makePaperLayers, makePagePeel } from './objects/lib/night.js';
+import { stepTime, handheld, rackFocus, impactSquash, paperJitter } from './objects/lib/scene-craft.js';
+import { CONFIG as C0, buildPlan } from './config.mjs';
+const CFG = new URLSearchParams(location.search).get('config'), C = CFG ? await (await fetch(CFG)).json() : C0;
+const { E, seg, clamp, lerp, clickLevel } = U, PLAN = buildPlan(C), EV = C.events, L = C.layout, K = C.craft, WK = { ...WORLDS[C.world], ...(C.colors || {}) };
+window.CONFIG = stageConfig({ name: C.name, seconds: PLAN.seconds, fps: C.fps, colors: { backdrop: WK.bg }, lights: { key: { kelvin: 6500 } },
+  grade: { exposure: WK.exposure, bloom: K.bloom, grain: K.grain, vignette: K.vignette, dofK: K.dof, dofMax: K.dof ? 4.5 : 0 }, qaFrames: [20, 100, 160, 260, 360] });
+window.__PLAN = PLAN;
+const SHOTS = PLAN.shots.map((s) => ({ t: s.start, ...s.cam })), AT = Object.fromEntries(PLAN.shots.map((s) => [s.id, s.start]));
+const CUTS = PLAN.scene.cuts.map((c) => c.at), CUT_OF = (id) => PLAN.scene.cuts.filter((c) => c.drawn === id).map((c) => c.at);   // each cut is drawn by its transition id
+const st = {}, TS = (t) => (K.stepFps ? stepTime(t, K.stepFps) : t);   // stop motion: every pose, prop and camera move samples the stepped time
+
+/* the figure's performance: asleep at the desk, wakes, reaches up, taps the lamp on, leans to the book, delighted hop, cheer */
+function performance() {
+  const P = O.POSES, look = O.look, k = [];
+  k.push([0, { ...P.sleepy, yaw: 0.55 }, 'soft'], [EV.wake - 0.1, { ...P.sleepy, yaw: 0.55 }, 'soft'], [EV.wake + 0.35, { ...P.wakeAntic, yaw: 0.6 }, 'soft'],
+    [EV.reach - 0.25, O.emote({ ...look(0.85, 0.35, 0.3), lean: 0.05 }, 'curious'), 'soft'], [EV.tap - 0.05, { ...P.reachR, yaw: 0.95, aRu: 1.45, lean: 0.12 }, 'enter'],
+    [EV.tap + 0.2, { ...P.reachR, yaw: 0.95, aRu: 1.3, lean: 0.1 }, 'soft'], [EV.on + 0.45, O.emote({ ...P.startle, yaw: 0.8 }, 'surprised'), 'enter'],
+    [EV.lean, O.emote({ ...P.curious, yaw: 0.75, lean: 0.22 }, 'happy'), 'soft'], [EV.flip[1], O.emote({ ...P.curious, yaw: 0.7, lean: 0.25 }, 'happy'), 'soft'],
+    [EV.delight - 0.1, { ...P.cheerAntic, yaw: 0.45 }, 'soft'], [EV.delight + 0.25, O.emote({ ...P.delight, yaw: 0.35 }, 'happy'), 'enter']);
+  k.push(...O.ACTS.cheer(EV.cheer).map(([t, p, e]) => [t, { ...p, yaw: 0.3 }, e]), [PLAN.seconds, O.emote({ ...P.relief, yaw: 0.25 }, 'happy'), 'soft']);
+  return { color: WK.figure, clay: C.world === 'clay' ? { roughness: 0.85 } : C.world === 'paper' ? { roughness: 1, sss: 0.05 } : false, keys: O.keysOf(k),
+    blinks: O.blinkTimes(EV.wake + 0.4, PLAN.seconds, 7), path: [{ t: 0, at: L.worker }, { hop: 1, start: EV.hop[0], end: EV.hop[1], to: L.worker, n: 1, h: 0.16 }] };
+}
+const ROOM = [   // cut-paper pieces inside the room (paper world): curtains either side of the window and hanging stars, each throwing a drop shadow on the wall
+  { shape: 'curtain', color: '#e0614f', x: -0.38, y: 1.6, z: -1.5, w: 0.42, h: 1.35, seed: 1 }, { shape: 'curtain', color: '#e0614f', x: 1.48, y: 1.6, z: -1.5, w: 0.42, h: 1.35, seed: 2 },
+  { shape: 'star', color: '#f2c14e', x: -1.6, y: 2.2, z: -1.42, w: 0.22, h: 0.22, seed: 3 }, { shape: 'star', color: '#f2c14e', x: -2.2, y: 1.75, z: -1.42, w: 0.15, h: 0.15, seed: 4 }, { shape: 'star', color: '#fbf3e1', x: 2.1, y: 2.05, z: -1.42, w: 0.18, h: 0.18, seed: 5 },
+];
+const LAYERS = [   // cut-paper layers seen through the window (paper world): far to near, each its own depth, boil and cast shadow
+  { shape: 'clouds', color: '#3d6680', x: 0.55, y: 1.95, z: -2.35, w: 2.6, h: 0.5, seed: 5 },
+  { shape: 'hills', color: '#2a5468', x: 0.55, y: 1.15, z: -2.2, w: 3.0, h: 0.75, seed: 2 },
+  { shape: 'skyline', color: '#1d3f52', x: 0.55, y: 1.12, z: -2.0, w: 2.6, h: 0.9, seed: 9 },
+  { shape: 'trees', color: '#163444', x: 0.55, y: 1.08, z: -1.82, w: 2.4, h: 0.55, seed: 4 },
+];
+
+runScene({
+  async build(ctx) {
+    const G = ctx.scene;
+    st.set = makeNightSet(ctx, G, { world: C.world, colors: C.colors });
+    const top = st.set.top, mat = WK.mat;
+    st.lamp = makeLamp(ctx, G, { body: WK.lampBody, light: WK.lampLight, mat, cd: WK.lampCd }).pose([L.lamp[0], top, L.lamp[1]], -0.35);
+    st.book = makeBook(ctx, G, { cover: WK.book, pages: WK.pages, mat }).pose([L.book[0], top, L.book[1]], 0.18);
+    st.mug = O.makeMug(ctx, G, { scale: 0.55, color: WK.mug }); st.mug.pose([L.mug[0], top, L.mug[1]], -0.8); st.mug.set({ fill: 0.8 });
+    st.worker = O.makeWorker(ctx, G, performance(), () => 0, null);
+    if (K.rain) st.rain = makeRainGlass(ctx, G, { w: 7.5, h: 4.2, n: 420, streaks: Math.max(1, K.streaks) }).pose([-3.6, -0.6, 1.7], 0);
+    if (K.paperLayers) st.paper = makePaperLayers(ctx, G, { layers: [...LAYERS.slice(0, K.paperLayers), ...ROOM] });
+    if (CUT_OF('transitions/pagePeel').length) st.peel = makePagePeel(ctx, { color: '#f4ead2', back: '#e2cfa8' });
+    ctx.probes = { worker: st.worker.probes.worker, lamp: st.lamp.probes.lamp, book: st.book.probes.book };
+  },
+  update(ctx, t, n) {
+    const s = TS(t), on = s < EV.on ? 0 : clickLevel(Math.floor(s * 30 + 1e-6), Math.round(EV.on * 30));   // the lamp clicks on with the kit's 3-frame flicker
+    st.lamp.set({ on, squash: K.squash ? impactSquash(s, EV.tap, K.squash) : 0 });
+    st.set.lights.hemi.intensity = WK.amb * (1 + 0.6 * on);                                   // the warm light lifts the room a little
+    st.book.set({ open: seg(s, EV.open[0], EV.open[1]), flip: seg(s, EV.flip[0], EV.flip[1]) });
+    st.mug.set({ fill: 0.8, slosh: O.mugSlosh(s - EV.hop[1], 0.03) });
+    st.worker.update(s);
+    if (st.rain) { st.rain.update(s); st.rain.group.visible = t < AT.escalation; }
+    if (st.paper) st.paper.update(s, { px: K.boilPx, deg: 0.2 });
+  },
+  preRender(ctx, t) {   // after the camera rig: the page-peel sheet sits just past the near plane of this frame's camera
+    if (!st.peel) return; let k = -1; for (const c of CUT_OF('transitions/pagePeel')) if (Math.abs(t - c) < 0.3) k = 0.5 + (t - c) / 0.6;
+    st.peel.fit(ctx.camera.near * 1.2); st.peel.set(k < 0 ? 0 : k); ctx.camera.updateMatrixWorld(true);
+  },
+  camera(ctx, t) {
+    const s = TS(t), c = cutShots(ctx, s, SHOTS), i = SHOTS.reduce((a, x, j) => (x.t <= t + 1e-9 ? j : a), 0), t0 = SHOTS[i].t, t1 = SHOTS[i + 1] ? SHOTS[i + 1].t : PLAN.seconds;
+    if (K.push) c.dist *= 1 - K.push * E.lin(seg(s, t0, t1));                                  // the slow push-in, linear over the shot (neon)
+    if (K.handheld) { const h = handheld(t, { amp: K.handheld, seed: 7 + i, settle: seg(t, t0, t0 + 1.2) }); c.az += h.az; c.elev += h.elev; c.target = [c.target[0] + h.tx, c.target[1] + h.ty, c.target[2]]; }
+    if (K.boilPx) { const [dx, dy] = paperJitter(t, 99, { px: K.boilPx * 0.6, deg: 0 }); c.screen = [c.screen[0] + dx, c.screen[1] + dy]; }   // the whole frame boils a little (cut-paper stop motion)
+    return c;
+  },
+  focus(ctx, t) {
+    const s = TS(t), sh = SHOTS.reduce((a, x) => (x.t <= t + 1e-9 ? x : a), SHOTS[0]);
+    if (!K.rackFocus) return sh.target;
+    const lamp = [L.lamp[0] + 0.25, st.set.top + 0.45, L.lamp[1]], book = [L.book[0] + 0.15, st.set.top + 0.05, L.book[1]], face = [L.worker[0], 1.0, L.worker[1]];
+    if (sh.t === AT.escalation) { const k = E.soft(seg(s, AT.escalation + 0.4, AT.escalation + 1.4)); return [0, 1, 2].map((j) => lerp(lamp[j], book[j], k)); }   // pull lamp -> book
+    if (sh.t === AT.twist || sh.t === AT.reaction) { const k = E.soft(seg(s, sh.t + 0.1, sh.t + 0.8)); return [0, 1, 2].map((j) => lerp(book[j], face[j], k)); }  // book -> face
+    return sh.target;
+  },
+  drawType(ctx, g, t) {
+    const W = ctx.W, H = ctx.H, tall = ctx.aspect === 'tall', u = Math.min(W, H) / 1080, B = C.brand;
+    // cut treatments drawn over the frame: a dip toward black (documentary), a light-leak flash (neon)
+    for (const c of CUT_OF('transitions/dip-to-black')) { const d = Math.abs(t - c); if (d < 0.14) { g.fillStyle = `rgba(6,5,4,${(0.8 * (1 - d / 0.14)).toFixed(3)})`; g.fillRect(0, 0, W, H); } }
+    for (const c of CUT_OF('transitions/lightLeak')) { const d = Math.abs(t - c);
+      if (d < 0.22) { const a = 0.9 * (1 - d / 0.22), gr = g.createRadialGradient(W * 0.85, H * 0.2, 0, W * 0.85, H * 0.2, W * 0.75);
+        gr.addColorStop(0, `rgba(255,120,220,${(0.55 * a).toFixed(3)})`); gr.addColorStop(0.5, `rgba(120,80,255,${(0.25 * a).toFixed(3)})`); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H); } }
+    // documentary: the archival card cut in over the twist, a mono lower third over the setup, the film gate
+    if (K.archival && t >= AT.twist + 0.15 && t < AT.twist + 1.35) {
+      g.fillStyle = '#d9cdb2'; g.fillRect(0, 0, W, H); const r = U.mulberry32(Math.floor(t * 12) + 3); g.fillStyle = 'rgba(70,52,30,0.07)'; for (let i = 0; i < 500; i++) g.fillRect(r() * W, r() * H, 2 + r() * 4, 1);
+      const cw = Math.min(W * 0.62, H * 1.1), ch = cw * 0.6, x0 = (W - cw) / 2 + ((r() - 0.5) * 2) * u, y0 = (H - ch) / 2 + ((r() - 0.5) * 2) * u;
+      g.fillStyle = '#f2ead6'; g.shadowColor = 'rgba(0,0,0,0.35)'; g.shadowBlur = 18 * u; g.fillRect(x0, y0, cw, ch); g.shadowBlur = 0;
+      g.strokeStyle = 'rgba(200,60,50,0.55)'; g.lineWidth = 2 * u; g.beginPath(); g.moveTo(x0, y0 + ch * 0.26); g.lineTo(x0 + cw, y0 + ch * 0.26); g.stroke();
+      g.fillStyle = '#2a241c'; g.textAlign = 'left'; g.textBaseline = 'alphabetic'; const lines = C.copy.archival, fs = cw * 0.075, typed = seg(t, AT.twist + 0.2, AT.twist + 0.9);
+      lines.forEach((ln, i) => { g.font = `600 ${(i ? fs * 0.62 : fs)}px "IBM Plex Mono"`; const nch = Math.floor(ln.length * clamp(typed * lines.length - i)); g.fillText(ln.slice(0, i === 0 ? ln.length : nch), x0 + cw * 0.07, y0 + ch * (i === 0 ? 0.2 : 0.45 + 0.2 * (i - 1))); });
+    }
+    if (K.lowerThird) { const a = Math.min(E.soft(seg(t, AT.setup + 0.3, AT.setup + 0.6)), 1 - E.soft(seg(t, AT.escalation - 0.4, AT.escalation - 0.1)));
+      if (a > 0) { const fs = 30 * u * (tall ? 1.25 : 1), x = tall ? W * 0.08 : W * 0.07, y = tall ? H * 0.74 : H * 0.84; g.globalAlpha = a; g.font = `600 ${fs}px "IBM Plex Mono"`;
+        const tw = g.measureText(C.copy.lowerThird).width; g.fillStyle = 'rgba(14,11,8,0.72)'; g.fillRect(x - fs * 0.6, y - fs * 1.25, tw + fs * 1.2, fs * 1.75);
+        g.fillStyle = '#e0a43a'; g.fillRect(x - fs * 0.6, y - fs * 1.25, fs * 0.18, fs * 1.75); g.fillStyle = '#eee6d3'; g.textAlign = 'left'; g.fillText(C.copy.lowerThird, x, y); g.globalAlpha = 1; } }
+    if (K.gate) { const R = K.gate * H; g.fillStyle = '#050403'; g.beginPath(); g.rect(0, 0, W, H); g.roundRect(0, 0, W, H, R); g.fill('evenodd'); }   // the film gate: rounded corners, never bars
+    // the title on the message beat, in the style's type
+    const t0 = AT.message + 0.3; if (t < t0) return;
+    const a = E.soft(seg(t, t0, t0 + 10 / 30)), fs = (tall ? 112 : 104) * u, y = tall ? H * 0.27 : H * 0.2, mono = B.font === 'IBM Plex Mono' || C.world === 'doc';
+    g.globalAlpha = a; g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.font = `${mono ? 600 : 800} ${fs}px "${mono ? 'IBM Plex Mono' : 'Manrope'}"`;
+    if (C.world === 'paper') { const tw = g.measureText(B.name).width; g.save(); g.translate(W / 2, y - fs * 0.35); g.rotate(-0.025); g.fillStyle = 'rgba(0,0,0,0.28)'; g.fillRect(-tw / 2 - fs * 0.45 + 8 * u, -fs * 0.8 + 10 * u, tw + fs * 0.9, fs * 2.05); g.fillStyle = B.paper; g.fillRect(-tw / 2 - fs * 0.45, -fs * 0.8, tw + fs * 0.9, fs * 2.05); g.restore(); }
+    if (C.world === 'clay') { const tw = g.measureText(B.name).width; g.fillStyle = 'rgba(255,250,244,0.88)'; const px = fs * 0.5, rr = fs * 0.7; g.beginPath(); g.roundRect(W / 2 - tw / 2 - px, y - fs * 1.05, tw + 2 * px, fs * 1.95, rr); g.fill(); }
+    if (C.world === 'neon') { g.shadowColor = B.accent; g.shadowBlur = 28 * u; }
+    g.fillStyle = C.world === 'neon' || C.world === 'doc' ? '#f4f1ff' : B.ink; g.fillText(B.name, W / 2, y + (1 - a) * 12 * u); g.shadowBlur = 0;
+    const parts = B.line.split('*'), ls = fs * 0.42; g.font = `${mono ? 600 : 700} ${ls}px "${mono ? 'IBM Plex Mono' : 'Manrope'}"`; let w = 0; parts.forEach((p) => (w += g.measureText(p).width));
+    let x = W / 2 - w / 2; g.textAlign = 'left'; parts.forEach((p, i) => { g.fillStyle = i % 2 ? B.accent : (C.world === 'neon' || C.world === 'doc' ? '#e8e2f6' : B.ink); g.fillText(p, x, y + fs * 0.62); x += g.measureText(p).width; });
+    g.globalAlpha = 1;
+  },
+  subframes(n) { if (K.stepFps) return 1; const t = n / 30; return st.worker.fast(n) || Math.abs(t - EV.tap) < 0.3 || (t > EV.hop[0] - 0.1 && t < EV.hop[1] + 0.2) ? 8 : 4; },
+});
+</script>
+</body>
+</html>

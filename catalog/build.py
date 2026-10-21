@@ -150,6 +150,7 @@ for mod in ('layers', 'type', 'camera'):
 src = open(os.path.join(PACK, 'objects', 'index.js')).read()
 hero = {n: rel(os.path.join(PACK, f'objects/qa/hero-{n}/f0100.png')) for n in ('laptop', 'phone', 'mug')}
 hero.update({n: rel(os.path.join(PACK, 'objects/qa/dome-r1/f0110.png')) for n in ('glass-dome', 'icon-orbit', 'clay')})
+hero.update({n: rel(os.path.join(PACK, f'objects/qa/night/{n}.jpg')) for n in ('night-set', 'lamp', 'book', 'rain-glass', 'paper-layers', 'page-peel')})   # v0.6 hero-scene parts: stills from the style-scene QA renders
 hero.update({'mascot2d': rel(os.path.join(PACK, 'objects/qa/mascot2d/poses.png')), 'logo-extrude': rel(os.path.join(PACK, 'objects/qa/r3-r1/f0075.png'))})
 for m in re.finditer(r"'(objects/[a-z0-9-]+)': r\(.*?\[([^\]]*)\], '([^']*)', '([^']*)'\)", src):
     oid, tags, state, doc = m.group(1), [x.strip(" '") for x in m.group(2).split(',')], m.group(3), m.group(4)
@@ -218,6 +219,7 @@ TPL.update({   # xp-explainer (2026-10-16): explainer templates (MP4s and sheets
     'explainer-diagram': ('How-it-works explainer, 16:9 + 9:16 re-layout (question over a diagram already drawing, the wrong model, the mechanism built node by node with a moving camera, a zoom INTO one node, one item traced, recap, takeaway; JSON or DSL diagrams, deterministic layered layout, optional VO word sync)', 'out/explainer-diagram.mp4', 'out/sheet.jpg'),
     'data-story': ('Data-journalism short, 16:9 + 9:16 re-layout (honest axes enforced: zero baselines, labelled truncation, units, a source footer on every chart frame; the number that matters, annotation leaders, scrolly breakdown, hex-tile map, lakh / crore or international formatting; build fails without source + method)', 'out/data-story.mp4', 'out/sheet.jpg'),
     'process-howto': ('Numbered how-to, 16:9 + 9:16 re-layout (steps on a timeline with owned icons, tip cards, before / after with your photos, a checklist end card)', 'out/process-howto.mp4', 'out/sheet.jpg')})
+TPL.update({'style-scene': ('Hero style scene 13.5 s (one night reading room in a style\'s own film language: clay on 2s, documentary handheld + rack focus, neon rain on glass, paper-cut layers + page peels; CONFIG.world + CONFIG.craft)', 'out/style-scene-wide.mp4', 'out/sheet.jpg')})   # v0.6 hero styles (the demo MP4s are media/styles/<id>.mp4)
 TPL.update({   # xp-saas (2026-10-16): the SaaS genre templates (MP4s and sheets are rendered locally, not committed)
     'saas-launch': ('SaaS launch film 45/60/75 s, 16:9 + 9:16 re-layout (pain on frame 0, problem beats, reveal, cursor-journey UI tour, feature trio, works with, before / after payoff, sourced proof, pricing, end card; placeholder Acme Flow screens)', 'out/saas-launch-60.mp4', 'out/sheet.jpg'),
     'saas-feature-drop': ('SaaS feature drop / changelog 15/20/30 s, 16:9 + 9:16 (NEW kicker, before, after with a shortcut chip, before / after split, the shortcut, CTA)', 'out/saas-feature-drop-20.mp4', 'out/sheet.jpg'),
@@ -238,16 +240,17 @@ import playbook_lib as _PL
 _PB = _PL.playbook_dir(None)
 _STY, _FMT = _PL.load_styles(_PB), _PL.load_formats(_PB)
 _PROMPTS = json.load(open(os.path.join(_PB, 'prompts.json'), encoding='utf-8'))['prompts'] if os.path.exists(os.path.join(_PB, 'prompts.json')) else []
-for sid, st in sorted(_STY.items()):
-    d, p = st.get('demo') or {}, st['palette']
-    add('styles', 'styles/' + sid, st['title'], ['style', st['motion']['personality'], st['type']['display']] + st.get('formats', []), desc=st['line'],
+for sid, st in sorted(_STY.items(), key=lambda kv: (kv[1].get('tier') != 'hero', kv[0])):   # the heroes first
+    d, p, hero = st.get('demo') or {}, st['palette'], st.get('tier') == 'hero'
+    add('styles', 'styles/' + sid, st['title'] + ('' if hero else ' (starter skin)'), ['style', 'hero' if hero else 'starter-skin', st['motion']['personality'], st['type']['display']] + st.get('formats', []), desc=('Hero style: ' if hero else 'Starter skin: ') + st['line'],
         video=rel(os.path.join(PACK, d['preview'])) if d.get('status') == 'rendered' and d.get('preview') else None,
         thumb=rel(os.path.join(PACK, d['poster'])) if d.get('status') == 'rendered' and d.get('poster') and not d.get('preview') else None,
         params={'palette': {k: p[k] for k in ('paper', 'ink', 'accent', 'muted')}, 'contrast (contrast.py)': p.get('contrast'), 'type': '%s / %s %s, %s case' % (st['type']['display'], st['type']['text'], st['type']['weight'], st['type']['case']),
                 'type presets': st['type']['presets'], 'motion': '%s, ease %s, overshoot <= %s' % (st['motion']['personality'], st['motion']['ease'], st['motion']['overshoot_max']),
                 'transitions by reason': st['transitions']['by_reason'], 'never': st['transitions']['banned'], 'layers': [l['kind'] for l in st['layers']], 'bed': st['sound']['bed']},
         pairs={'parts': st['recipes'], 'signature (mp lint)': ['%s [%s]' % (f['text'], f['check']) for f in st['signature_features']], 'formats': st.get('formats', [])},
-        meta={'title (zh)': st.get('title_zh'), 'demo': ('%s s %s, %s' % (d.get('seconds'), d.get('aspect'), d.get('lint', ''))) if d.get('status') == 'rendered' else 'pending',
+        meta={'tier': 'hero (its own scene and craft)' if hero else 'starter skin (a look over any format)', 'craft': ', '.join('%s %s' % (k, v['value'] if isinstance(v, dict) else v) for k, v in (st.get('craft') or {}).items()) or None,
+              '9:16 demo': rel(os.path.join(PACK, d['tall_preview'])) if d.get('status') == 'rendered' and d.get('tall_preview') else None, 'title (zh)': st.get('title_zh'), 'demo': ('%s s %s, %s' % (d.get('seconds'), d.get('aspect'), d.get('lint', ''))) if d.get('status') == 'rendered' else 'pending',
               'made by': d.get('made_by'), 'cli': 'mp styles %s · mp plan <format> --style %s' % (sid, sid)},
         use=st['essence'], avoid='; '.join('not %s: %s' % (n['style'], n['difference']) for n in st['not']), file='playbook/styles/%s.json' % sid, prompt=st['prompt'], prompt_zh=st.get('prompt_zh'))
 FILMS = {'launch-film': 'media/films/launch-film.mp4', 'proof-clip': 'media/films/proof-clip.mp4', 'explainer': 'media/films/explainer.mp4'}   # v0.5 proof renders (placeholder brands), small previews

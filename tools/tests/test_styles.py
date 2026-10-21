@@ -155,3 +155,55 @@ def test_every_gallery_prompt_plans_with_its_style(tmp_path, p):
     assert r.returncode == 0, r.stdout + r.stderr
     plan = json.load(open(tmp_path / 'plan.json'))
     assert plan['style']['id'] == p['style'] and plan['aspect'] == p['aspect'] and plan['style']['applied']
+
+
+HEROES = sorted(s for s, st in STYLES.items() if st.get('tier') == 'hero')
+
+
+def test_four_heroes_and_six_starter_skins():
+    assert HEROES == ['documentary-grain', 'neon-night', 'paper-cut', 'soft-clay'], HEROES
+    assert all(STYLES[s].get('tier') == 'starter' for s in STYLES if s not in HEROES)
+    out = mp('styles').stdout.split('\n')
+    assert all(' hero ' in l for l in out[:4]) and sum('starter skin' in l for l in out) == 6, out[:6]
+
+
+@pytest.mark.parametrize('sid', HEROES)
+def test_a_hero_style_plans_its_craft_onto_the_scene_template(tmp_path, sid):
+    st = STYLES[sid]
+    r = mp('plan', 'character-spot', '--style', sid, '--template', 'style-scene', '--length', '13.5', '--aspect', '16:9', '--out', str(tmp_path / 'plan.json'), '--project-out', str(tmp_path / 'project.json'))
+    assert r.returncode == 0, r.stdout + r.stderr
+    proj = json.load(open(tmp_path / 'project.json'))
+    ov = proj['overrides']['style-scene']
+    assert ov['world'] == st['world'] and all(('craft.' + k) in ov for k in st['craft'])
+    proj['brand']['name'] = 'Night Library'
+    proj['text'] = {'end': 'Read after *dark*.'}
+    pf = tmp_path / 'filled.json'
+    json.dump(proj, open(pf, 'w'))
+    js = ("import('%s/templates/_shared/project.mjs').then(async (P) => { const m = await import('%s/templates/style-scene/config.mjs');"
+          " const { project } = P.loadProject(%s); const r = P.applyProject(m.CONFIG, m.PROJECT_MAP, project, { template: 'style-scene', aspect: '16:9', ASPECTS: m.ASPECTS });"
+          " console.log(JSON.stringify(m.buildPlan(r.config))); })") % (PACK, PACK, json.dumps(str(pf)))
+    r = subprocess.run(['node', '-e', js], capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    tp = json.loads(r.stdout)
+    assert tp['scene']['world'] == st['world'] and all(c['drawn'] == c['tx'] for c in tp['scene']['cuts']), tp['scene']['cuts']   # every cut is one the scene draws
+    tp['playbook'] = {'style': sid}
+    ctx = K.Ctx(plan=tp, project=proj)
+    for cid in ('lint.style.craft', 'lint.style.palette', 'lint.style.transitions', 'lint.style.sound', 'lint.style.type'):
+        v = K.run_check(cid, ctx, {})
+        assert v[0] in ('pass', 'na'), (sid, cid, v)
+    assert K.run_check('lint.style.craft', ctx, {})[0] == 'pass'
+
+
+def test_the_craft_check_fails_when_the_film_drops_the_craft():
+    st = STYLES['soft-clay']
+    good = {k: (v['value'] if isinstance(v, dict) else v) for k, v in st['craft'].items()}
+    ok = K.Ctx(plan={'playbook': {'style': 'soft-clay'}, 'scene': {'world': 'clay', 'craft': good}})
+    assert K.run_check('lint.style.craft', ok, {})[0] == 'pass'
+    for change in ({'stepFps': 0}, {'squash': 0.5}, {'squash': 0}):
+        bad = K.Ctx(plan={'playbook': {'style': 'soft-clay'}, 'scene': {'world': 'clay', 'craft': {**good, **change}}})
+        assert K.run_check('lint.style.craft', bad, {})[0] == 'fail', change
+    wrong_world = K.Ctx(plan={'playbook': {'style': 'soft-clay'}, 'scene': {'world': 'neon', 'craft': good}})
+    assert K.run_check('lint.style.craft', wrong_world, {})[0] == 'fail'
+    starter = K.Ctx(plan={'playbook': {'style': 'blueprint'}, 'scene': {'world': 'clay', 'craft': good}})
+    assert K.run_check('lint.style.craft', starter, {})[0] == 'na'
+    assert K.severity('fail', K.CHECKS['lint.style.craft']['grade']) == 'FAIL'

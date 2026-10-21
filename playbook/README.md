@@ -44,18 +44,20 @@ A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a W
 A format says what happens when; a style says what it looks and sounds like. `mp styles` lists them, `mp plan <format> --style <id>` lays one over a format,
 and `mp lint` checks the measurable signature features (palette, type, transitions, sound). Schema: `playbook/schema/style.schema.json`.
 
-| style | what it is | palette (paper / ink / accent) | type | bed | demo |
-|---|---|---|---|---|---|
-| `blueprint` 蓝图 | A technical drawing: mono type on drafting blue, signal yellow, outlines that fill in. | `#0E2A5A` / `#EAF2FF` / `#FFD23F` | IBM Plex Mono | `music/bed_tech_pulse_loop8` | [10 s 16:9](../media/styles/blueprint.mp4) |
-| `chrome-product` 铬金属产品 | Graphite stage, silver type, an ice-blue glint: the premium product reveal. | `#1A1C21` / `#ECEFF3` / `#9BD8FF` | Manrope | `music/bed_cinematic_drone_loop8` | [10 s 16:9](../media/styles/chrome-product.mp4) |
-| `documentary-grain` 纪录片颗粒 | 16 mm warmth: cream type on dark umber, amber accent, film grain, dust and warm light leaks. | `#17150F` / `#EEE6D3` / `#E0A43A` | IBM Plex Mono | `music/bed_ambient_pad_loop8` | [10 s 16:9](../media/styles/documentary-grain.mp4) |
-| `editorial-print` 编辑印刷 | A magazine spread that moves: serif headlines on warm newsprint, one red, a halftone tooth. | `#F3EEE3` / `#1A1A1A` / `#C8102E` | STIX Two Text | `music/bed_documentary_marimba_loop8` | [10 s 16:9](../media/styles/editorial-print.mp4) |
-| `kinetic-poster` 动态海报 | A loud poster: giant black type slammed on signal yellow, one cobalt, whips on the beat. | `#FFE600` / `#0A0A0A` / `#1C2FD9` | Manrope | `music/bed_hype_house_loop8` | [10 s 16:9](../media/styles/kinetic-poster.mp4) |
-| `neon-night` 霓虹之夜 | Night city glow: light type on deep indigo, a magenta accent, bokeh and a synthwave bed. | `#0B0A1F` / `#F4F1FF` / `#FF3EC8` | Manrope | `music/bed_synthwave_loop8` | [10 s 16:9](../media/styles/neon-night.mp4) |
-| `paper-cut` 剪纸拼贴 | Craft paper and cardboard, a deep teal, bouncy type and page peels: made by hand. | `#F2E3C6` / `#3A2618` / `#1F7A6E` | Manrope | `music/bed_acoustic_folk_pluck_loop8` | [10 s 16:9](../media/styles/paper-cut.mp4) |
-| `retro-crt` 复古显像管 | An old terminal: phosphor green mono type, an amber accent, scanlines, tape wobble and chiptune. | `#071008` / `#9DFF9D` / `#FFB000` | IBM Plex Mono | `music/bed_chiptune_8bit_loop8` | [10 s 16:9](../media/styles/retro-crt.mp4) |
-| `soft-clay` 柔软黏土 | Rounded 3D clay under studio light: lilac ground, friendly purple, a bouncy lo-fi bed. | `#F1ECF7` / `#2B2340` / `#6A4BD6` | Manrope | `music/bed_lofi_warm_loop8` | [10 s 16:9](../media/styles/soft-clay.mp4) |
-| `swiss-grid` 瑞士网格 | Black sans on white, one signal red, hard cuts on the beat: information as design. | `#FFFFFF` / `#0A0A0A` / `#E2001A` | Manrope | `music/bed_tech_pulse_loop8` | [10 s 16:9](../media/styles/swiss-grid.mp4) |
+Hero styles are full film languages (a scene, craft numbers checked by `lint.style.craft`, a demo made with `templates/style-scene`); starter skins lay a look and a sound over any format.
+
+| style | tier | what it is | palette (paper / ink / accent) | type | bed | demo |
+|---|---|---|---|---|---|---|
+| `documentary-grain` 纪录片颗粒 | hero | Observational 16 mm at night: handheld drift, rack focus, a mono lower third, an archival card, gate and grain. | `#17150F` / `#EEE6D3` / `#E0A43A` | IBM Plex Mono | `music/bed_ambient_pad_loop8` | pending |
+| `neon-night` 霓虹之夜 | hero | Rain on glass at night: neon rim light, passing light streaks, a slow push-in, bloom and a synthwave bed. | `#0B0A1F` / `#F4F1FF` / `#FF3EC8` | Manrope | `music/bed_synthwave_loop8` | pending |
+| `paper-cut` 剪纸拼贴 | hero | A cut-paper diorama: layered planes with drop shadows, boil on twelves, page-peel cuts and kraft colours. | `#F2E3C6` / `#3A2618` / `#1F7A6E` | Manrope | `music/bed_acoustic_folk_pluck_loop8` | pending |
+| `soft-clay` 柔软黏土 | hero | Stop-motion clay at night: a lilac room, a figure on 2s, squash and stretch, a soft key and a warm lamp. | `#F1ECF7` / `#2B2340` / `#6A4BD6` | Manrope | `music/bed_lofi_warm_loop8` | pending |
+| `blueprint` 蓝图 | starter skin | A technical drawing: mono type on drafting blue, signal yellow, outlines that fill in. | `#0E2A5A` / `#EAF2FF` / `#FFD23F` | IBM Plex Mono | `music/bed_tech_pulse_loop8` | [10 s 16:9](../media/styles/blueprint.mp4) |
+| `chrome-product` 铬金属产品 | starter skin | Graphite stage, silver type, an ice-blue glint: the premium product reveal. | `#1A1C21` / `#ECEFF3` / `#9BD8FF` | Manrope | `music/bed_cinematic_drone_loop8` | [10 s 16:9](../media/styles/chrome-product.mp4) |
+| `editorial-print` 编辑印刷 | starter skin | A magazine spread that moves: serif headlines on warm newsprint, one red, a halftone tooth. | `#F3EEE3` / `#1A1A1A` / `#C8102E` | STIX Two Text | `music/bed_documentary_marimba_loop8` | [10 s 16:9](../media/styles/editorial-print.mp4) |
+| `kinetic-poster` 动态海报 | starter skin | A loud poster: giant black type slammed on signal yellow, one cobalt, whips on the beat. | `#FFE600` / `#0A0A0A` / `#1C2FD9` | Manrope | `music/bed_hype_house_loop8` | [10 s 16:9](../media/styles/kinetic-poster.mp4) |
+| `retro-crt` 复古显像管 | starter skin | An old terminal: phosphor green mono type, an amber accent, scanlines, tape wobble and chiptune. | `#071008` / `#9DFF9D` / `#FFB000` | IBM Plex Mono | `music/bed_chiptune_8bit_loop8` | [10 s 16:9](../media/styles/retro-crt.mp4) |
+| `swiss-grid` 瑞士网格 | starter skin | Black sans on white, one signal red, hard cuts on the beat: information as design. | `#FFFFFF` / `#0A0A0A` / `#E2001A` | Manrope | `music/bed_tech_pulse_loop8` | [10 s 16:9](../media/styles/swiss-grid.mp4) |
 
 ## Rules by area
 

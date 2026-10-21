@@ -1,12 +1,13 @@
 {
  "id": "soft-clay",
+ "tier": "hero",
  "title": "Soft Clay",
  "title_zh": "柔软黏土",
- "line": "Rounded 3D clay under studio light: lilac ground, friendly purple, a bouncy lo-fi bed.",
- "line_zh": "棚拍光下的圆润黏土 3D：淡紫底，友好的紫色，弹跳的低保真配乐。",
- "prompt": "Soft clay style: rounded 3D clay figures and props on a pale lilac studio set, dark plum ink and one friendly purple, soft bokeh, elastic pop-in type, gentle dissolves and swipe-ups, a warm lo-fi bed with pops and a boing.",
- "prompt_zh": "柔软黏土风格：淡紫色棚景中圆润的 3D 黏土人物与道具，深梅色文字与一抹友好的紫色，柔和散景，弹性出现的字效，轻柔叠化与上滑转场，温暖的低保真配乐，配弹出声与弹簧声。",
- "essence": "Toy-like and warm: soft rounded forms in even studio light, a friendly colour and motion that bounces a little. The pack renders the clay set in 3D; the type sits beside it.",
+ "line": "Stop-motion clay at night: a lilac room, a figure on 2s, squash and stretch, a soft key and a warm lamp.",
+ "line_zh": "夜晚的定格黏土：淡紫房间，一拍二的小人，挤压与拉伸，柔和主光与暖色台灯。",
+ "prompt": "Soft clay style: a stop-motion clay world animated on 2s, squash and stretch on every tap and landing, a soft moonlight key and a warm lamp pool, lilac set, plum ink, hard cuts, a lo-fi bed with pops and a boing.",
+ "prompt_zh": "柔软黏土风格：一拍二的定格黏土世界，每次轻点和落地都有挤压拉伸，柔和月光主光与暖色台灯光池，淡紫布景、深梅色文字、硬切，低保真配乐配弹出声与弹簧声。",
+ "essence": "A tiny clay world shot frame by frame: poses held on 2s, soft bodies that squash when they land, one soft key and one warm practical. It feels handmade and warm, never glossy.",
  "not": [
   {
    "style": "paper-cut",
@@ -63,10 +64,10 @@
  },
  "transitions": {
   "by_reason": {
-   "EMOTION": "transitions/dissolve",
-   "ENERGY": "transitions/swipeUp",
-   "STORY": "transitions/dissolve",
-   "RHYTHM": "transitions/swipeUp"
+   "EMOTION": "transitions/cut",
+   "STORY": "transitions/cut",
+   "RHYTHM": "transitions/cut",
+   "ENERGY": "transitions/swipeUp"
   },
   "banned": [
    "transitions/glitch",
@@ -124,24 +125,28 @@
  },
  "signature_features": [
   {
+   "text": "animated on 2s: every pose, prop and camera move held 2 frames (stepFps 15), no motion blur",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "squash and stretch of 0.12-0.32 on the tap and the landing, volume kept",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "a soft key: moonlight through the window with a wide shadow radius, a warm lamp pool; clay materials only",
+   "check": "review"
+  },
+  {
    "text": "dark plum ink on lilac at 12:1, purple at 5:1 (contrast.py)",
    "check": "lint.style.palette"
   },
   {
-   "text": "rounded 3D clay plates from the pack (no flat clip art)",
-   "check": "review"
-  },
-  {
-   "text": "dissolves and swipe-ups only",
+   "text": "hard cuts between locked-off shots with a gentle push (under 8 percent)",
    "check": "lint.style.transitions"
   },
   {
    "text": "a warm lo-fi bed with pops and a boing",
    "check": "lint.style.sound"
-  },
-  {
-   "text": "elastic pop-in type",
-   "check": "lint.style.type"
   }
  ],
  "change_tiers": {
@@ -165,6 +170,7 @@
   ]
  },
  "formats": [
+  "character-spot",
   "ad",
   "launch-film",
   "saas-feature-drop",
@@ -172,6 +178,7 @@
   "explainer"
  ],
  "recipes": [
+  "templates/style-scene",
   "templates/ad",
   "transitions/dissolve",
   "transitions/swipeUp",
@@ -190,7 +197,19 @@
   "layers/look.pastel",
   "layers/grain.clean",
   "cam3d.orbit",
-  "cam3d.pushSlow"
+  "cam3d.pushSlow",
+  "objects/night-set",
+  "objects/lamp",
+  "objects/book",
+  "objects/worker",
+  "objects/mug",
+  "objects/clay",
+  "sfx/amb/room_tone",
+  "sfx/lift/inhale",
+  "sfx/hw/power_on",
+  "sfx/paper/flip",
+  "sfx/paper/rustle",
+  "transitions/cut"
  ],
  "apply": {
   "templates/ad": {
@@ -201,19 +220,66 @@
    "product.media": "plate-devices.mp4",
    "product.mediaStart": 1.4,
    "product.label": "the clay desk (pack render)"
+  },
+  "templates/style-scene": {
+   "world": "clay",
+   "sfx.bed": "sfx/amb/room_tone",
+   "sfx.wake": "sfx/lift/inhale",
+   "sfx.tap": "sfx/ui/pop",
+   "sfx.on": "sfx/hw/power_on",
+   "sfx.open": "sfx/paper/flip",
+   "sfx.flutter": "sfx/paper/rustle",
+   "sfx.delight": "sfx/cartoon/boing",
+   "sfx.sting": "sfx/logo/fifth_lift"
   }
  },
  "demo": {
-  "format": "ad",
-  "template": "templates/ad",
-  "seconds": 10,
+  "format": "character-spot",
+  "template": "templates/style-scene",
+  "seconds": 13.5,
   "aspect": "16:9",
-  "status": "rendered",
+  "status": "pending",
   "preview": "media/styles/soft-clay.mp4",
+  "tall_preview": "media/styles/soft-clay-9x16.mp4",
   "poster": "media/styles/soft-clay.jpg",
-  "release_asset": "motion-pack-style-soft-clay-v0.6.0.mp4",
-  "lint": "mp lint 97.0/100, 52 PASS, 4 WARN, 0 FAIL, 0 INFO, 13 N/A",
-  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint, on 21 Oct 2026; 1 to 4 agent re-renders per style (fixes found by mp lint and the contact sheets), 0 human rounds; the same placeholder copy in every style"
+  "release_asset": "motion-pack-style-soft-clay-v0.6.0.mp4"
  },
- "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+ "honesty": "The demo is one run of the shared tiny story (a night reading room, a lamp, a book; the title is a labelled placeholder) in this style. The same prompt makes a different film on every run.",
+ "world": "clay",
+ "craft": {
+  "stepFps": 15,
+  "squash": {
+   "value": 0.22,
+   "min": 0.12,
+   "max": 0.32,
+   "what": "peak squash of the tap and the landing"
+  },
+  "push": {
+   "value": 0.04,
+   "min": 0,
+   "max": 0.08
+  },
+  "handheld": 0,
+  "rackFocus": false,
+  "grain": {
+   "value": 0.015,
+   "min": 0,
+   "max": 0.03
+  },
+  "bloom": {
+   "value": 0.9,
+   "min": 0.7,
+   "max": 1.2
+  },
+  "dof": {
+   "value": 40,
+   "min": 20,
+   "max": 60
+  },
+  "vignette": {
+   "value": 0.12,
+   "min": 0.05,
+   "max": 0.2
+  }
+ }
 }

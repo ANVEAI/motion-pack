@@ -1,5 +1,6 @@
 {
  "id": "blueprint",
+ "tier": "starter",
  "title": "Blueprint",
  "title_zh": "蓝图",
  "line": "A technical drawing: mono type on drafting blue, signal yellow, outlines that fill in.",

@@ -4,7 +4,7 @@ Each release's notes are also on the [Releases page](https://github.com/ANVEAI/m
 
 ## v0.6.0 (unreleased, branch v06): styles, any-folder install, prompt gallery
 
-A format says what happens when; a **style** now says what it looks and sounds like. The catalog grows to **<!--n:catalog_total-->1156<!--/n-->** components (10 styles and 14 format films join it).
+A format says what happens when; a **style** now says what it looks and sounds like. The catalog grows to **<!--n:catalog_total-->1163<!--/n-->** components (10 styles and 14 format films join it).
 
 ### New: the STYLE layer (`playbook/styles/`)
 

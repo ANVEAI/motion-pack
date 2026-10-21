@@ -42,7 +42,7 @@ Make a 10-second 16:9 ad for <your product> in the Swiss Grid style: a hook line
 Make a 15-second 9:16 promo ad for <your product> in the Neon Night style: a glowing hook, the problem, the reveal on a synth hit, one proof line and a CTA end card. Music and sound effects.
 ```
 
-[preview: the Neon Night demo](../media/styles/neon-night.mp4) · `mp plan ad --style neon-night --length 15 --aspect 9:16` · 190 characters
+preview pending (the Neon Night demo is not rendered yet) · `mp plan ad --style neon-night --length 15 --aspect 9:16` · 190 characters
 
 ### Ad × Kinetic Poster, 10 s 1:1
 
@@ -58,7 +58,7 @@ Make a 10-second 1:1 ad for <your product> in the Kinetic Poster style: one loud
 Make a 15-second 16:9 ad for <your product> in the Paper Cut style: a friendly hook, the problem, the product reveal with a stamp, one proof line and a CTA end card. Folk music and paper sounds.
 ```
 
-[preview: the Paper Cut demo](../media/styles/paper-cut.mp4) · `mp plan ad --style paper-cut --length 15 --aspect 16:9` · 194 characters
+preview pending (the Paper Cut demo is not rendered yet) · `mp plan ad --style paper-cut --length 15 --aspect 16:9` · 194 characters
 
 ### Ad × Retro CRT, 10 s 16:9
 
@@ -74,7 +74,7 @@ Make a 10-second 16:9 ad for <your product> in the Retro CRT style: a typed-out 
 Make a 15-second 16:9 ad for <your product> in the Soft Clay style: the clay cast on frame 0 with the hook, the problem, the clay desk on the reveal, one proof line and a CTA. Lo-fi bed.
 ```
 
-[preview: the Soft Clay demo](../media/styles/soft-clay.mp4) · `mp plan ad --style soft-clay --length 15 --aspect 16:9` · 186 characters
+preview pending (the Soft Clay demo is not rendered yet) · `mp plan ad --style soft-clay --length 15 --aspect 16:9` · 186 characters
 
 ### Ad × Chrome Product, 15 s 16:9
 
@@ -110,7 +110,7 @@ Make a 35-second 16:9 launch film introducing <your product> in the Blueprint st
 Make a 35-second 9:16 launch film announcing <your product> in the Neon Night style: a hook in the first second, the problem, the reveal on the drop, three features and a CTA end card.
 ```
 
-[preview: the Neon Night demo](../media/styles/neon-night.mp4) · `mp plan launch-film --style neon-night --length 35 --aspect 9:16` · 184 characters
+preview pending (the Neon Night demo is not rendered yet) · `mp plan launch-film --style neon-night --length 35 --aspect 9:16` · 184 characters
 
 ### Launch film × Swiss Grid, 35 s 16:9
 
@@ -126,7 +126,7 @@ Make a 35-second 16:9 launch film announcing <your product> in the Swiss Grid st
 Make a 35-second 16:9 launch film introducing <your product> in the Documentary Grain style: a real stake on frame 0, the turn, the product as the answer, and a quiet end card. Ambient bed.
 ```
 
-[preview: the Documentary Grain demo](../media/styles/documentary-grain.mp4) · `mp plan launch-film --style documentary-grain --length 35 --aspect 16:9` · 189 characters
+preview pending (the Documentary Grain demo is not rendered yet) · `mp plan launch-film --style documentary-grain --length 35 --aspect 16:9` · 189 characters
 
 ## SaaS feature drop (one feature, one film) (`saas-feature-drop`)
 
@@ -146,7 +146,7 @@ Make a 20-second 16:9 new feature video for <your product> in the Swiss Grid sty
 Make a 15-second 9:16 changelog clip for the new feature in <your product> in the Neon Night style: the old way, the new feature, its shortcut and a CTA end card. Synthwave bed.
 ```
 
-[preview: the Neon Night demo](../media/styles/neon-night.mp4) · `mp plan saas-feature-drop --style neon-night --length 15 --aspect 9:16` · 177 characters
+preview pending (the Neon Night demo is not rendered yet) · `mp plan saas-feature-drop --style neon-night --length 15 --aspect 9:16` · 177 characters
 
 ### SaaS feature drop × Editorial Print, 20 s 16:9
 
@@ -218,7 +218,7 @@ Make a 45-second 16:9 explainer on how <your product> works in the Editorial Pri
 Make a 40-second 9:16 explainer on how <your product> works in the Paper Cut style: the question, the wrong model, the mechanism built from paper layers, a recap and the takeaway.
 ```
 
-[preview: the Paper Cut demo](../media/styles/paper-cut.mp4) · `mp plan explainer --style paper-cut --length 40 --aspect 9:16` · 179 characters
+preview pending (the Paper Cut demo is not rendered yet) · `mp plan explainer --style paper-cut --length 40 --aspect 9:16` · 179 characters
 
 ### Explainer × Documentary Grain, 60 s 16:9
 
@@ -226,7 +226,7 @@ Make a 40-second 9:16 explainer on how <your product> works in the Paper Cut sty
 Make a 60-second 16:9 explainer on why <your product> exists in the Documentary Grain style: the question, what people get wrong, how it works, one real example, and the takeaway.
 ```
 
-[preview: the Documentary Grain demo](../media/styles/documentary-grain.mp4) · `mp plan explainer --style documentary-grain --length 60 --aspect 16:9` · 179 characters
+preview pending (the Documentary Grain demo is not rendered yet) · `mp plan explainer --style documentary-grain --length 60 --aspect 16:9` · 179 characters
 
 ## The style prompts
 
@@ -236,11 +236,11 @@ Each style also has its own prompt (`mp styles <id>` prints it, with the Chinese
 |---|---|
 | `blueprint` | Blueprint style: mono type on drafting blue, pale blue-white ink and one signal yellow, fine ruled lines, outline-then-fill and typewriter type, slices and mask reveals, a tech pulse bed with pen clicks and a scan sweep. |
 | `chrome-product` | Chrome product style: graphite stage, silver-white type with an ice-blue accent, a brushed-metal sheen and one star glint, tracking that collapses, zoom-through and luma-wipe transitions, a cinematic drone with a light sweep and a metallic hit. |
-| `documentary-grain` | Documentary grain style: cream type on dark umber, one amber accent, 16 mm grain, light dust and warm light leaks, typewriter and mask-rise type, dissolves and dips, a calm ambient pad with a projector hum and typewriter keys. |
+| `documentary-grain` | Documentary grain style: observational 16 mm at night, handheld drift that settles, rack focus from the lamp to the book to the face, a mono lower third, a typed archival card, film gate and grain, dips to black, ambient bed. |
 | `editorial-print` | Editorial print style: serif headlines on warm newsprint, near-black ink and one red accent, a light halftone and paper tooth, mask-rise type, calm wipes and pushes, a marimba bed with paper flips. No glow, no neon. |
 | `kinetic-poster` | Kinetic poster style: giant heavy black type slammed onto signal yellow, one cobalt accent, scale-slam and weight-morph type with a small overshoot, whip and scale-punch transitions, a hype house bed with punches and a kick on every card. |
-| `neon-night` | Neon night style: light type on deep indigo, one hot magenta accent, soft glow pools and drifting bokeh, staggered letters and a slam, light-leak and zoom-through transitions, a synthwave bed with sci-fi whooshes and a stab on the reveal. |
-| `paper-cut` | Paper cut style: kraft paper ground with a cardboard tooth, dark brown ink and one deep teal, bouncy pop-in type, page-peel and swipe-up transitions, a light folk pluck bed with paper rustles, pops and a stamp. |
+| `neon-night` | Neon night style: the scene through rain running down glass, magenta and cyan rim light, passing light streaks, a slow push-in on every shot, heavy bloom on the practicals, light-leak cuts, a synthwave bed over the rain. |
+| `paper-cut` | Paper cut style: a cut-paper diorama of layered planes at real depths, crisp drop shadows from one front key, boil on twelves and animation on 12s, page-peel cuts, kraft colours with fibre, a folk pluck bed with paper sounds. |
 | `retro-crt` | Retro CRT style: phosphor-green mono type on black, one amber accent, scanlines with a light tape wobble and glow, glitch-split and typewriter type, static and glitch cuts, a chiptune bed with key clicks and a glitch stutter. |
-| `soft-clay` | Soft clay style: rounded 3D clay figures and props on a pale lilac studio set, dark plum ink and one friendly purple, soft bokeh, elastic pop-in type, gentle dissolves and swipe-ups, a warm lo-fi bed with pops and a boing. |
+| `soft-clay` | Soft clay style: a stop-motion clay world animated on 2s, squash and stretch on every tap and landing, a soft moonlight key and a warm lamp pool, lilac set, plum ink, hard cuts, a lo-fi bed with pops and a boing. |
 | `swiss-grid` | Swiss grid style: heavy black sans on pure white, one signal red for the key word, flush-left lines, letters that rise crisp, hard cuts and straight pushes on the beat, a clean tech pulse bed with ticks. No textures. |

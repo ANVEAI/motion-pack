@@ -1,5 +1,6 @@
 {
  "id": "retro-crt",
+ "tier": "starter",
  "title": "Retro CRT",
  "title_zh": "复古显像管",
  "line": "An old terminal: phosphor green mono type, an amber accent, scanlines, tape wobble and chiptune.",

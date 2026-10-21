@@ -8,6 +8,8 @@ plan.playbook.style through project.json "playbook"). `mp lint` then runs the ch
   lint.style.type          the display family is the style's, and every type preset the plan's shots use is one of the style's presets
   lint.style.transitions   no transition the style bans; every transition is one the style names (by_reason) or a hard cut
   lint.style.sound         the bed is the style's bed or one of its alternates
+  lint.style.craft         hero styles: the film craft the template recorded (plan.scene.craft, or the plan's CONFIG overrides craft.*) matches the style's
+                           craft numbers: a plain value exactly, {value, min, max} inside the range; and the world (plan.scene.world) is the style's
 Each returns N/A when the film has no style, or when the input it reads is absent (never a pass)."""
 import json
 import os
@@ -163,7 +165,44 @@ def sound(ctx, p):
     return 'warn', '%s is not the %s bed' % (norm(bed), st['id']), 'use %s' % ' or '.join(ok)
 
 
+def _craft_used(ctx):
+    plan = ctx.plan or {}
+    sc = plan.get('scene') if isinstance(plan.get('scene'), dict) else None
+    if sc and isinstance(sc.get('craft'), dict):
+        return dict(sc['craft']), sc.get('world')
+    ov = _overrides(ctx)
+    used = {k[6:]: v for k, v in ov.items() if k.startswith('craft.')}
+    return (used or None), ov.get('world')
+
+
+def craft(ctx, p):
+    st = style_of(ctx)
+    if not st or not st.get('craft'):
+        return 'na', '', ''
+    used, world = _craft_used(ctx)
+    if used is None:
+        return 'na', 'the plan records no craft (a template without CONFIG.craft)', 'render the style with templates/style-scene, or art-direct the craft by hand'
+    bad = []
+    for k, want in st['craft'].items():
+        got = used.get(k)
+        if isinstance(want, dict):
+            lo, hi = want.get('min', want['value']), want.get('max', want['value'])
+            if not isinstance(got, (int, float)) or isinstance(got, bool) or not lo - 1e-9 <= got <= hi + 1e-9:
+                bad.append('%s %s (want %g-%g)' % (k, got, lo, hi))
+        elif isinstance(want, bool):
+            if bool(got) != want:
+                bad.append('%s %s (want %s)' % (k, got, want))
+        elif not isinstance(got, (int, float)) or abs(got - want) > 1e-9:
+            bad.append('%s %s (want %s)' % (k, got, want))
+    if st.get('world') and world and world != st['world']:
+        bad.append('world %s (want %s)' % (world, st['world']))
+    if bad:
+        return 'fail', '; '.join(bad)[:120], 'the %s craft: %s' % (st['id'], ', '.join('%s %s' % (k, v['value'] if isinstance(v, dict) else v) for k, v in st['craft'].items()))
+    return 'pass', '%d craft numbers in range%s' % (len(st['craft']), ', world %s' % world if world else ''), ''
+
+
 K.CHECKS['lint.style.palette'] = K.C(palette, 'house', {}, 'the brand colours are the style palette, or a change that passes contrast.py (playbook/styles)')
 K.CHECKS['lint.style.type'] = K.C(type_, 'craft', {}, 'the display family and every type preset are the style\'s (playbook/styles)')
 K.CHECKS['lint.style.transitions'] = K.C(transitions, 'house', {}, 'no transition the style bans; the rest are the style\'s or hard cuts (playbook/styles)')
 K.CHECKS['lint.style.sound'] = K.C(sound, 'craft', {}, 'the bed is the style bed or one of its alternates (playbook/styles)')
+K.CHECKS['lint.style.craft'] = K.C(craft, 'house', {}, 'hero styles: the film craft in the plan (step rate, squash, handheld, rack focus, push, rain, layers, boil, grade) is the style\'s (playbook/styles)')

@@ -195,6 +195,12 @@
     "pattern": "short-film",
     "why": "RECIPE T short film: each shot names its beat in CONFIG (coldopen, want, obstacle, turn, consequence, resolution), the credits are the tag (plan.structure)"
    }
+  ],
+  "style-scene": [
+   {
+    "pattern": "character-spot",
+    "why": "the hero style scene tells the character-spot beats (hook, setup, escalation, twist, reaction, message) in one style"
+   }
   ]
  },
  "structures": {

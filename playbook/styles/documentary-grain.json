@@ -1,12 +1,13 @@
 {
  "id": "documentary-grain",
+ "tier": "hero",
  "title": "Documentary Grain",
  "title_zh": "纪录片颗粒",
- "line": "16 mm warmth: cream type on dark umber, amber accent, film grain, dust and warm light leaks.",
- "line_zh": "16 毫米胶片的温度：深棕底上的米色字，琥珀点缀，胶片颗粒、灰尘与暖色漏光。",
- "prompt": "Documentary grain style: cream type on dark umber, one amber accent, 16 mm grain, light dust and warm light leaks, typewriter and mask-rise type, dissolves and dips, a calm ambient pad with a projector hum and typewriter keys.",
- "prompt_zh": "纪录片颗粒风格：深棕底上的米色文字，一抹琥珀色，16 毫米胶片颗粒、轻微灰尘与暖色漏光，打字机与遮罩上升字效，叠化与淡入淡出，平静的氛围垫音，配放映机嗡声与打字机按键声。",
- "essence": "It feels found and true: warm film texture, quiet type that types itself out and slow dissolves. The texture is a frame around the words, not noise over them.",
+ "line": "Observational 16 mm at night: handheld drift, rack focus, a mono lower third, an archival card, gate and grain.",
+ "line_zh": "夜晚的 16 毫米观察式纪录片：手持漂移、焦点转移、等宽下方字幕、档案卡片、片门与颗粒。",
+ "prompt": "Documentary grain style: observational 16 mm at night, handheld drift that settles, rack focus from the lamp to the book to the face, a mono lower third, a typed archival card, film gate and grain, dips to black, ambient bed.",
+ "prompt_zh": "纪录片颗粒风格：夜晚的 16 毫米观察式拍摄，手持漂移后稳定，焦点从台灯转到书再到人脸，等宽下方字幕，打字档案卡，片门与颗粒，淡入黑场，氛围底音。",
+ "essence": "It feels found and true: a camera held by a person, focus that searches and lands, a practical lamp as the only warm light, and the graphics of a field film. The texture frames the moment; it never decorates it.",
  "not": [
   {
    "style": "editorial-print",
@@ -63,10 +64,10 @@
  },
  "transitions": {
   "by_reason": {
-   "EMOTION": "transitions/dissolve",
-   "ENERGY": "transitions/filmBurn",
-   "STORY": "transitions/dissolve",
-   "RHYTHM": "transitions/dip-to-black"
+   "EMOTION": "transitions/dip-to-black",
+   "STORY": "transitions/cut",
+   "RHYTHM": "transitions/dip-to-black",
+   "ENERGY": "transitions/filmBurn"
   },
   "banned": [
    "transitions/glitch",
@@ -120,23 +121,31 @@
  },
  "signature_features": [
   {
+   "text": "handheld drift (amplitude 0.6-1.6) that settles once the operator finds the frame",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "rack focus lamp -> book -> face",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "a mono lower third over the setup and a typed archival card cut in",
+   "check": "lint.style.craft"
+  },
+  {
+   "text": "16 mm grain 0.06-0.14, a rounded film gate, dips toward black on the emotional cuts",
+   "check": "lint.style.craft"
+  },
+  {
    "text": "cream ink on dark umber at 14:1, amber at 8:1 (contrast.py)",
    "check": "lint.style.palette"
   },
   {
-   "text": "a mono typewriter face for every headline",
-   "check": "lint.style.type"
-  },
-  {
-   "text": "dissolves, film burns and dips only",
-   "check": "lint.style.transitions"
-  },
-  {
-   "text": "an ambient bed with projector and typewriter sounds",
+   "text": "an ambient bed with projector hum and practical foley",
    "check": "lint.style.sound"
   },
   {
-   "text": "grain, dust and leaks visible but never over the words; no black gate or bars",
+   "text": "the practical lamp is the only warm source; the room falls off to dark",
    "check": "review"
   }
  ],
@@ -161,6 +170,7 @@
   ]
  },
  "formats": [
+  "character-spot",
   "ad",
   "launch-film",
   "saas-feature-drop",
@@ -168,6 +178,7 @@
   "explainer"
  ],
  "recipes": [
+  "templates/style-scene",
   "templates/ad",
   "transitions/dip-to-black",
   "transitions/dissolve",
@@ -187,24 +198,84 @@
   "layers/look.film-documentary",
   "layers/grain.film16",
   "cam2d.kenBurns",
-  "cam2d.handheld2d"
+  "cam2d.handheld2d",
+  "objects/night-set",
+  "objects/lamp",
+  "objects/book",
+  "objects/worker",
+  "objects/mug",
+  "sfx/cloth/flap",
+  "sfx/plastic/switch",
+  "sfx/hw/click_latch",
+  "sfx/foley/book_thud",
+  "sfx/paper/rustle",
+  "sfx/foley/chair_creak",
+  "transitions/cut"
  ],
  "apply": {
   "templates/ad": {
    "plates": false
+  },
+  "templates/style-scene": {
+   "world": "doc",
+   "sfx.bed": "sfx/amb/projector",
+   "sfx.wake": "sfx/cloth/flap",
+   "sfx.tap": "sfx/plastic/switch",
+   "sfx.on": "sfx/hw/click_latch",
+   "sfx.open": "sfx/foley/book_thud",
+   "sfx.flutter": "sfx/paper/rustle",
+   "sfx.delight": "sfx/foley/chair_creak",
+   "sfx.sting": "sfx/logo/pulse_pad"
   }
  },
  "demo": {
-  "format": "ad",
-  "template": "templates/ad",
-  "seconds": 10,
+  "format": "character-spot",
+  "template": "templates/style-scene",
+  "seconds": 13.5,
   "aspect": "16:9",
-  "status": "rendered",
+  "status": "pending",
   "preview": "media/styles/documentary-grain.mp4",
+  "tall_preview": "media/styles/documentary-grain-9x16.mp4",
   "poster": "media/styles/documentary-grain.jpg",
-  "release_asset": "motion-pack-style-documentary-grain-v0.6.0.mp4",
-  "lint": "mp lint 99.0/100, 54 PASS, 2 WARN, 0 FAIL, 0 INFO, 13 N/A",
-  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint, on 21 Oct 2026; 1 to 4 agent re-renders per style (fixes found by mp lint and the contact sheets), 0 human rounds; the same placeholder copy in every style"
+  "release_asset": "motion-pack-style-documentary-grain-v0.6.0.mp4"
  },
- "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+ "honesty": "The demo is one run of the shared tiny story (a night reading room, a lamp, a book; the title is a labelled placeholder) in this style. The same prompt makes a different film on every run.",
+ "world": "doc",
+ "craft": {
+  "handheld": {
+   "value": 1.0,
+   "min": 0.6,
+   "max": 1.6,
+   "what": "handheld drift amplitude"
+  },
+  "rackFocus": true,
+  "grain": {
+   "value": 0.09,
+   "min": 0.06,
+   "max": 0.14
+  },
+  "vignette": {
+   "value": 0.28,
+   "min": 0.18,
+   "max": 0.4
+  },
+  "gate": {
+   "value": 0.05,
+   "min": 0.03,
+   "max": 0.08
+  },
+  "lowerThird": true,
+  "archival": true,
+  "stepFps": 0,
+  "dof": {
+   "value": 90,
+   "min": 60,
+   "max": 140
+  },
+  "bloom": {
+   "value": 0.6,
+   "min": 0.3,
+   "max": 0.9
+  }
+ }
 }

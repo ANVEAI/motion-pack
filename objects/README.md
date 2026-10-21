@@ -58,6 +58,14 @@ Reusable three.js props, set pieces and <!--n:objects_characters-->2<!--/n--> ch
 | objects/hw-studio | hardware studio rim sweep dark **new** | `makeDarkStudio(ctx)` + `makeHwRig(ctx).update(n, slot, {rim, top, key, edge, sweep})` | new |
 | objects/model | hardware your-product glb obj **new** | `await loadModel(ctx, p, url, {size, axis, yaw})`: `applyExplode(offs)`, `pose()` | new |
 | objects/photo-25d | hardware photo parallax **new** | `await makePhotoParallax(ctx, p, {src, depth, w})` | new |
+| objects/night-set | the hero style scenes' reading room **new** | `makeNightSet(ctx, p, {world: 'clay'|'doc'|'neon'|'paper', colors})` -> `{top, lights: {hemi, moon, extra}, window}` | static |
+| objects/lamp | desk lamp with a blooming bulb and a warm spot pool **new** | `makeLamp(ctx, p, {body, light, mat, cd, scale})` | `set({on, squash})`, `pose(p, yaw)` |
+| objects/book | book that opens and runs its pages **new** | `makeBook(ctx, p, {cover, pages, mat})` | `set({open, flip})`, `pose(p, yaw)` |
+| objects/rain-glass | rain on a pane with light streaks behind it **new** | `makeRainGlass(ctx, p, {w, h, n, streaks, colors})` | `update(t)` (pure: `scene-craft.js rainDrops / lightStreaks`) |
+| objects/paper-layers | cut-paper layers with drop shadows and boil **new** | `makePaperLayers(ctx, p, {layers: [{shape, color, x, y, z, w, h}]})` | `update(t, {px, deg, boilFps})` |
+| objects/page-peel | page-peel transition sheet on the camera **new** | `makePagePeel(ctx, {color, back, rad, angle})` | `fit(dist)`, `set(k)` (0.5 covers the frame) |
+
+The craft behind them is `objects/lib/scene-craft.js` (no three.js): `stepTime` (stop motion on 2s), `handheld`, `rackFocus`, `rainDrops`, `lightStreaks`, `paperJitter` (boil on twelves), `peel` / `peelCover` (an inextensible page curl), `squash` / `impactSquash` (volume kept). `node tools/tests/scene-craft.test.mjs` proves each one seek-safe, process-independent and in range.
 
 Character data lives in `characters/poses.js`:
 

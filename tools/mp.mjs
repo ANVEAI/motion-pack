@@ -16,7 +16,7 @@
      mp formats [--json]                              the formats, one line each (playbook/formats)
      mp styles [<id>] [--json] [--zh]                 the named visual styles (playbook/styles); with an id: its copy-ready prompt, palette, type, sound and parts
      mp brief <brief.md|"idea"> [--goal G] [--platform P] [--format F] [--style S] [--length N] [--out D]   pick the format, write research-pack.md/.json, then mp plan
-     mp plan <format> [--style S] [--length N] [--aspect A] [--platform P] [--research R] [--out plan.json] [--project-out project.json]   a plan.json skeleton with the defaults and TODOs; --style lays a style over it
+     mp plan <format> [--style S] [--template T] [--length N] [--aspect A] [--platform P] [--research R] [--out plan.json] [--project-out project.json]   a plan.json skeleton with the defaults and TODOs; --style lays a style over it
      mp lint <plan.json|render.mp4> [--format F] [--json] [--all-checks]   every enforceable rule: PASS / WARN / FAIL with value and fix, a score; exit 1 on a FAIL
      mp study <video.mp4|x-url|study.json> [--format F] [--ours|--reference] [--slug S]   refstudy + lint: our render's gaps vs the exemplars, or candidate rules in playbook/inbox
      mp rules [--area A] [--status S] [--gaps] [--format F] · mp rules promote <inbox.json> [--id C] [--as area.name] [--grade G]   browse the rules, publish candidates
