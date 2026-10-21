@@ -1,0 +1,1055 @@
+[
+  {
+    "id": "hook.brand_cue_deadline",
+    "title": "Brand cue by 5-7 s, inside action",
+    "statement": "The brand appears as a cue inside the action by 5 s on paid YouTube, TikTok and paid in-feed ads, by 6 s on Reels and Shorts and by 7 s on X and LinkedIn, after the hook (>3 s) on organic feeds, and never as a logo card first.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "brand_by_s_paid": 5,
+      "brand_by_s_reels_shorts": 6,
+      "brand_by_s_x_linkedin": 7,
+      "organic_after_s": 3,
+      "saas_founder_brand_by_s": 10
+    },
+    "grade": "house",
+    "evidence": "Platform spec plus platform-commissioned studies: brand-lift began under 1 s in a feed study and brand cues in the first 2 s matched TV-level recall; a skippable-ad analysis found an early brand raised both recall and skipping.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.2 The hook (conflict to resolve by test); 8. Platform presets"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, rows 2-3; 9. Contradictions and gaps (brand timing)"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Ad, Brand cue"
+      },
+      {
+        "doc": "patterns/hooks.json",
+        "locator": "universal.brand"
+      },
+      {
+        "doc": "skills/motion-pack/references/platforms.md",
+        "locator": "preset table, brandCueBy"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "1. Hook > Paid YouTube; Organic"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "templates/_shared/plan.mjs PLATFORMS.brandCueBy",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "Conflict: TikTok-oriented agencies advise minimal branding in the first 5 s; the resolution is a diegetic cue (product in hand, the UI), pulsed in short repeated exposures (a study found pulsing reduced zapping vs one block). structures.json hook.brand_by_s (5, or 10 for saas-launch / founder-story) is not read by check_hook. | Merged: A brand cue lands inside the action (product in frame, UI, brand colour), never as a standalone logo card first, by 5 s on TikTok and paid YouTube or 9:16 feed ads, 6 s on Reels and Shorts, and 7 s on X and LinkedIn. [house; Platform spec for paid YouTube (brand inside 5 s); the organic values are pack defaults.] | templates/ad reports brandCueAt / brandCueOk but does not fail. patterns/hooks.json says 2-5 s for ads; formats.md says organic feeds tolerate the brand after the hook, before about 7 s; TikTok-oriented advice is minimal branding in the first 5 s. | Merged: The brand appears by 5 s on paid YouTube, Meta and TikTok, by 6 s on Reels and Shorts, and by 7 s on X and LinkedIn, after the hook. [house; paid YouTube 5 s from a platform ad guideline (second-hand) [S]; the organic values are a house resolution of a conflict [H].] | templates/ad/config.mjs computes plan.brandCueOk but nothing fails on it."
+  },
+  {
+    "id": "hook.feed_flash_forward",
+    "title": "Flash-forward cold open for feeds",
+    "statement": "A 9:16 feed cut of a slow film opens on a 1.5-2.5 s flash-forward of the conflict, then starts the story.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "short-film"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "flash_forward_s": [
+        1.5,
+        2.5
+      ]
+    },
+    "grade": "craft",
+    "evidence": "A turn arriving at 20 s in a vertical feed is listed as a recurring failure; the flash-forward is the craft fix.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Beat sheets by length; Gotchas"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Short film, Goes wrong when"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "hook.first_change_by_frame6",
+    "title": "Show visible motion by frame 6",
+    "statement": "The first visible change happens by frame 6 (200 ms at 30 fps) and never later than 0.5 s, with at most one camera or layout move in the first 1.0 s.",
+    "scope": {
+      "formats": [
+        "data-story",
+        "explainer",
+        "hardware-teaser",
+        "launch-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "first_change_frame_max": 6,
+      "first_change_s_max": 0.5,
+      "moves_in_first_s_max": 1
+    },
+    "grade": "house",
+    "evidence": "House engineering default ([H]) built on practitioner agreement that the first 1-3 s decide the stay.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.2 The hook: common hard rules"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.frame0"
+      },
+      {
+        "doc": "eyes/README.md",
+        "locator": "notable findings"
+      },
+      {
+        "doc": "docs/evidence/visual.md",
+        "locator": "9. Hook"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Update 19 Oct table; L1 notes"
+      },
+      {
+        "doc": "docs/lane-notes/hardware.md",
+        "locator": "Render findings (16-17 Oct, L1)"
+      },
+      {
+        "doc": "CHANGELOG.md",
+        "locator": "Known weak spots > eyes, frame 0"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "1. Hook (0-3 s)"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "VIRALITY checklist > Hook; Banned defaults"
+      },
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "9. Rounds 4-5 > Hooks"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/frame0",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The one-move limit in the first second is not checked. | Merged: Frame 0 is not black or near-uniform, and the first visible change lands by frame 6 (warn after, fail after 0.5 s). [house; pack hook rule; eyes found the shipped beat-edit template's first change on frame 11 and a demo with a black frame 0.] | visual.md: first text lands by frame 6-9. | Merged: Even a dark tease shows visible motion by frame 6 (<= 0.5 s), e.g. an edge light already moving on frame 0, never a still silhouette for 1 s. [measured; 19 Oct run: eyes/frame0 failed on 12 of 44 renders (7 templates); a device teaser showed nothing moving for its first 1.0 s.] | lint_shotlist also fails a black / fade-in frame 0 at script time. | Merged: Frame 0 is a strong image already in motion with its first visible change by frame 6 (<= 0.5 s); never black, never a logo bumper, never a fade-in; a small product-name super over moving footage inside 2 s is allowed. [craft; practitioner rule [P]; round 4/5: 0 of 29 references opened on a static logo and 7 of 29 (tier A among them) used a small name super over moving footage inside 2 s.] | Also failed by lint_shotlist (frame 0 black/logo/fade-in/title card) and structure_check.check_hook. One studied piece opening on 1.5 s of black had 910 views: an observation, not proof of cause."
+  },
+  {
+    "id": "hook.first_sound_by_frame3",
+    "title": "First sound by frame 3",
+    "statement": "The first audible event lands on frames 0-3, or the plan marks a quiet open of at most 2 s that ends on the first visual event.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "first_sound_frame_max": 3,
+      "quiet_open_max_s": 2.0
+    },
+    "grade": "house",
+    "evidence": "House rule; platforms report sound-on dominance (YouTube 'almost entirely sound-on', platform-commissioned TikTok survey) without a timing number.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "2. Hooks, Frame-0 requirements; 5. Music shape and sound design"
+      },
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Hooks: three variants on one body"
+      },
+      {
+        "doc": "patterns/hooks.json",
+        "locator": "universal.first_sound"
+      },
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "3. Mixing rules, rule 10"
+      },
+      {
+        "doc": "music/README.md",
+        "locator": "House rules enforced or linted (R10)"
+      },
+      {
+        "doc": "ears/README.md",
+        "locator": "What the plan can tell ears"
+      },
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.sync, spec.quiet"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "1. Hook > First sound"
+      },
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "9. Rounds 4-5 > Hooks"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_hook",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "ears/sync also checks an audible event on frames 0-3. | Merged: The first sound event lands on frames 0-3, or 1-2 s later on the first meaningful visual event over a moving frame 0 as a planned quiet open; a music bed fading in is not a sound event. [measured; 13 of 28 round 4/5 references opened with a planned quiet open (measured, mixed tiers).] | Merged: A short-form video has an audible event (a hit, a whoosh already moving, or voice) on frames 0-3, with no lead-in silence and no fade-in beyond a 5 ms de-click, unless a quiet open of at most 2 s is planned in plan.audio.quiet. [house; Pack rule from practitioner short-form heuristics (not measured by us); the planned quiet-open waiver comes from reference rounds where sound enters 1-2 s after a moving frame 0.] | Also checked by structure_check.check_hook (first sound by frame 3 OR planned quiet open <= 2 s). The quiet open must end on the first meaningful event (mixer lint: first cue within 0.25 s of its end). | Merged: The first audible event lands on frames 0-3, or the sound enters 1-2 s later on the first meaningful visual event over a moving frame 0, marked as a planned quiet open (<= 2 s) at least 6 dB under the body. [measured; 13 of 28 round 4/5 references with audio open at least 6 dB under the body for 1-2 s while frame 0 moves, tier A among them; mixed tiers.] | Also ears/sync (audible event frames 0-3), ears/structure (planned open <= 2 s) and music/mixer.py lint R10, which waives frames 0-3 when plan.audio.quiet holds an open that ends on the first cue (+0.25 s)."
+  },
+  {
+    "id": "hook.frame0_moving",
+    "title": "Open frame 0 on the hook, moving",
+    "statement": "Frame 0 is the hook image already in motion: never black, a logo, a title card, a slate, a bumper or a fade-in.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "frame0_banned": "black|logo|fade-in|title card|slate|bumper|blank"
+    },
+    "grade": "house",
+    "evidence": "House rule consistent across platform guidance ('start big', message up front) and practitioner hook advice (remove logo bumpers and slow intros).",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.1 What is solid vs what is guesswork; 3.2 common hard rules"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "2. Hooks, Frame-0 requirements"
+      },
+      {
+        "doc": "patterns/hooks.json",
+        "locator": "universal.frame0"
+      },
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 11; Hooks"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "BAD_OPEN; first and last shot"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.bad_open",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Also structure_check.check_hook (bumper) and eyes/frame0 (not black / uniform). Hardware films open dark but with light already on an edge. | Merged: Frame 0 shows the stake already moving with a first visible change by frame 6 (0.5 s); never black, a logo bumper, a fade-in or a title card, though a small name super over moving footage inside 2 s is fine. [house; patterns/hooks.json grades the universal frame-0 rule 'platform' (platform creative guides); the frame thresholds are pack defaults.] | lint_shotlist FAILs on a black/logo/fade-in/title-card first action; eyes/frame0 measures the first change on the MP4."
+  },
+  {
+    "id": "hook.frame0_subject_contrast",
+    "title": "Frame 0 subject at 3:1",
+    "statement": "Frame 0 holds one readable subject at >= 3:1 contrast against its surround.",
+    "scope": {
+      "formats": [
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "subject_contrast_min": 3.0,
+      "measured_contrast": 1.3
+    },
+    "grade": "measured",
+    "evidence": "A 16:9 feature-drop open measured 1.30:1 and failed eyes/frame0 (16-17 Oct and 19 Oct runs).",
+    "sources": [
+      {
+        "doc": "docs/lane-notes/saas.md",
+        "locator": "Render findings (16-17 Oct, L4)"
+      },
+      {
+        "doc": "private:RENDER-QUEUE.md",
+        "locator": "Results 16-17 Oct, L4"
+      },
+      {
+        "doc": "skills/frame-design/SKILL.md",
+        "locator": "Hierarchy: one hero per frame"
+      },
+      {
+        "doc": "eyes/manifest.json",
+        "locator": "spec.frame0"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/frame0",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Merged: At frame 0 the hero is the brightest or highest-contrast element, measuring at least 3:1 (WCAG ratio, 85th vs 15th luminance percentile around it); under 1.5:1 fails. [house; pack rule (one high-contrast hero, 3:1 for meaningful graphics) measured by eyes on decoded frame 0.] | frame-design also asks for at least one critically sharp edge on the hero in every still; that part is not measured."
+  },
+  {
+    "id": "hook.hardware_shown_by_4s",
+    "title": "Show hardware by 4 s",
+    "statement": "A hardware launch shows the product within 0-4 s, unless a light reveal (an edge or band sweep from darkness, about +11 dB at 1 s) is itself the hook.",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "product_by_s": 4,
+      "light_hit_db": 11.6
+    },
+    "grade": "craft",
+    "evidence": "pattern across the hardware films of the 20-film launch study; one studied film hits +11.6 dB at 1 s on a light sweep.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "3. rule 2; 2. L2 hero sizzle"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "templates/hardware-reveal"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "A teaser (6-15 s) deliberately never shows the product whole (RECIPE HW)."
+  },
+  {
+    "id": "hook.hold_the_twist",
+    "title": "Show the stake, hold the twist",
+    "statement": "Frame 0, the title and the first line show the stake but not the answer; the twist or result stays hidden through the first 1-3 s.",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "chat-skit",
+        "launch-film",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "answer_hidden_s": [
+        1,
+        3
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Hook rule from the story-script craft notes; no reach measurement attached.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Hooks: three variants on one body"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "hook.payoff_first_rewind"
+    ],
+    "notes": "The payoff-first archetype deliberately shows the result on frame 0; use it when the end state itself is the hook, not when the story depends on the twist."
+  },
+  {
+    "id": "hook.interrupted_cliche",
+    "title": "Break a cliche open inside 8 s",
+    "statement": "An interrupted-cliche open plays the cliche for 1.5-8 s (default 3 s), stops it with a hard stop sound, a 300 ms freeze and the music cut on the stop frame, then hard-cuts to the real format already in motion.",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "launch-film",
+        "proof-clip"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "setup_s": 3.0,
+      "setup_range_s": [
+        1.5,
+        8.0
+      ],
+      "freeze_ms": 300,
+      "bed_ramp_ms": 4
+    },
+    "grade": "craft",
+    "evidence": "A pattern seen across the pack's studied films (success-patterns, interrupted cliche), not tied to reach.",
+    "sources": [
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "story.interruptOpen"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "cuts/patterns.json story.interruptOpen",
+      "part": "cuts/story/interruptOpen"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "hook.no_offer_as_hook",
+    "title": "Never lead with an offer or deadline",
+    "statement": "Use an offer only when it is real with honest terms, and never as the hook; discount and deadline framing showed no organic evidence.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {},
+    "grade": "measured",
+    "evidence": "round 4/5: offer-plus-deadline posts appeared only in tier-C or tier-B pieces; round 3: comment gates drove replies, not purchases.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "6. CTA and end; 9. CTA and end"
+      },
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "What changed, line 95; Round 5 line 50"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 304-326 and 492-510"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Merged: Do not use an offer, deadline or comment gate as the hook; use an offer only when real, with honest terms, after the product is shown. [measured; Offer-plus-deadline posts appear only in tier-C or tier-B round-4/5 pieces; a round-3 comment-gated launch with a celebrity gained 40% more views than its sibling but no more bookmarks.] | We do not claim the offer caused the low tier; it simply has no organic evidence."
+  },
+  {
+    "id": "hook.payoff_first_rewind",
+    "title": "Payoff-first: rewind by 1.2 s",
+    "statement": "A payoff-first hook shows the finished result already moving on frame 0 (a slow push or reveal sweep), then rewinds or cuts to the start by about 1.2 s.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "saas-feature-drop",
+        "tutorial"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "rewind_by_s": 1.2
+    },
+    "grade": "craft",
+    "evidence": "Practitioner archetype in patterns/hooks.json, graded 'practitioner'.",
+    "sources": [
+      {
+        "doc": "patterns/hooks.json",
+        "locator": "hooks payoff-first"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "hook.hold_the_twist"
+    ],
+    "notes": "templates/ad/config.mjs accepts hook.archetype 'payoff-first' (its default), but nothing sets or checks the 1.2 s rewind."
+  },
+  {
+    "id": "hook.real_product_early",
+    "title": "Real product on screen by 10 s",
+    "statement": "A software launch shows the real product UI by about 10 s and its name by 15-30% of runtime; the studied films showed first UI at 0, 5, 12 and 16 s, and a feature drop shows the feature on frame 0.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "reveal"
+    },
+    "params": {
+      "first_ui_by_s": 10,
+      "reveal_pct": [
+        15,
+        30
+      ],
+      "observed_first_ui_s": [
+        0,
+        5,
+        12,
+        16
+      ]
+    },
+    "grade": "measured",
+    "evidence": "Frame-sheet measurement of 4 studied software launch films (first UI 0-16 s), plus a practitioner teardown asking for the real product within about 10 s.",
+    "sources": [
+      {
+        "doc": "docs/evidence/saas-video-craft-2026-10.md",
+        "locator": "What the studied software films share"
+      },
+      {
+        "doc": "docs/evidence/launch-films-2026.md",
+        "locator": "C. Software and UI launches celebrated for motion"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 12; 6.1 SaaS product launches"
+      },
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "2. L3 product UI film; 3. rule 3"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_timing",
+      "default": "patterns/structures.json structures.saas-launch.sections.reveal",
+      "part": "templates/saas-launch"
+    },
+    "status": "enforced",
+    "conflicts_with": [
+      "hook.text_by_0_3s"
+    ],
+    "notes": "Engagement in business video peaks in the first 10% whatever the length (vendor dataset), so the outcome shot belongs there. One studied live-action film revealed the product at about 40 s; it is the exception. | Merged: A product UI launch film states its brand or promise by 3 s and shows the first real UI between 0 and 16 s. [measured; launch study: four software films showed first real UI at 0, 5, 12 and 16 s; one states its claim by 3 s, another its headline by 2 s.] | Reception figures in the launch study are observations, not tiered reach."
+  },
+  {
+    "id": "hook.sentence_builds_small",
+    "title": "Build a small sentence word by word",
+    "statement": "A sentence-led open builds small centred type word by word, at most 7 words at no more than 3.5 words/s, one word per half beat, holds the full line 2 beats, then cuts to the result on the next downbeat.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "launch-film",
+        "saas-launch"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "max_words": 7,
+      "max_words_per_s": 3.5,
+      "word_every_beats": 0.5,
+      "full_hold_beats": 2
+    },
+    "grade": "craft",
+    "evidence": "Seen in the 16 s problem section of a tier-A round-3 launch film (1.9x, 3.8% bookmarks), a saves-strong round-3 keynote breakdown and two craft-only concept films; the timing numbers are the part's defaults.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 283-302 and 224-243"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-concept-ad",
+        "locator": "Structure (15 s), line 13"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-app-builder-launch",
+        "locator": "Structure, line 13"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.words_per_sec",
+      "default": null,
+      "part": "cuts/story/sentenceLed"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "hook.social_proof_sourced",
+    "title": "Social proof needs a real source",
+    "statement": "A social-proof hook runs only with a measured number or a permitted quote whose source is on screen; a digit without a source fails.",
+    "scope": {
+      "formats": [
+        "ad-30",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {},
+    "grade": "house",
+    "evidence": "patterns/hooks.json grades the archetype 'platform'; the sourcing requirement is a pack rule.",
+    "sources": [
+      {
+        "doc": "patterns/hooks.json",
+        "locator": "hooks social-proof"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "social-proof needs a claim with a source"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.social_proof; plan.lintClaims",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "hook.sound_on_pill",
+    "title": "Sound-on pill from 0.5 to 1.5 s",
+    "statement": "On a muted-autoplay feed, a frosted 'sound on' pill shows as an outline on frame 0, is solid at 0.5 s and is gone by 1.5 s.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "proof-clip"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "outline_at_frame": 0,
+      "solid_at_s": 0.5,
+      "out_at_s": 1.5
+    },
+    "grade": "measured",
+    "evidence": "All 4 proof clips of a 1.8M-view launch thread use this exact timing (thread children, tier B by rule, read as C); the tier-A* hero gives the same cue as a title behind the subject at 1 s.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Cross-film craft playbook, item 2"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 2 to Film 5, 1. Hook"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "Craft worth reusing"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "caption.soundOnPill"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "One team's four clips: a default to tune, not proven by reach. The part's defaults already match (solidAt 0.5, outAt 1.5)."
+  },
+  {
+    "id": "hook.speak_from_frame0_on_camera",
+    "title": "Presenter may speak on frame 0",
+    "statement": "A founder-on-camera film may start mid-sentence on frame 0 with no quiet open (open within 1 dB of the body), the product UI resolving behind the speaker by 0.5 s and no logo or title until the last 2 s.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "talking-head"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "speech_start_s": 0.0,
+      "open_vs_body_db": 0.2,
+      "ui_resolves_by_s": 0.5,
+      "logo_only_last_s": 2
+    },
+    "grade": "measured-A",
+    "evidence": "Round-8 film 02 (tier A, 5.5x followers, 82 s) speaks from 0.0 s at +0.2 dB against the body; the tier-A* launch hero (private study) also speaks on frame 0 with only the first 0.5 s 6 dB under the body.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Film 02 section, 1. HOOK"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 12"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 1: hero, 1. Hook"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_hook",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [
+      "sound.quiet_open"
+    ],
+    "notes": "check_hook only enforces a sound on frames 0-3 (which this passes); it does not check that the sound is speech or that the logo is held back."
+  },
+  {
+    "id": "hook.text_by_0_3s",
+    "title": "Hook text up by 0.3 s",
+    "statement": "When the hook uses text it is on screen by 0.3 s (0.5 s on wide frames and voice-led explainers, tutorials and data stories) and is at most 7 words (4 for wordless spots, teasers and hardware films).",
+    "scope": {
+      "formats": [
+        "hardware-teaser",
+        "launch-film",
+        "proof-clip",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x",
+        "youtube"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "text_by_s_tall": 0.3,
+      "text_by_s_wide": 0.5,
+      "max_words": 7,
+      "max_words_wordless": 4
+    },
+    "grade": "house",
+    "evidence": "House default ([H]); platform guidance asks for the message up front and text overlays, without a timing number.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.2 The hook: common hard rules"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.<pattern>.hook"
+      },
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "1. Hook > Hook text"
+      },
+      {
+        "doc": "skills/motion-pack/references/platforms.md",
+        "locator": "preset table, hook text by"
+      },
+      {
+        "doc": "patterns/hooks.json",
+        "locator": "universal.hook_text"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "DEFAULTS hook_max_words"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Cross-post patterns > Hooks in the first 2 s"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_hook",
+      "default": "patterns/structures.json structures.<pattern>.hook.text_by_s",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [
+      "hook.real_product_early"
+    ],
+    "notes": "Resolved 21 Oct: 0.3 s (vertical) / 0.5 s (wide) stays the house target the checks use; tier-A launch films land readable text by 1.0 s, which passes as a WARN, not a FAIL. | Also eyes/readability (hook text by 0.3 s tall / 0.5 s wide, max 7 words) and lint_shotlist.hook_max_words. Hook text, VO and picture should say the same idea (layered hook, practitioner). | Merged: Hook text is on screen by 0.3 s (0.5 s on wide frames) with at most 7 words, and the poster frame carries at most 4 words. [house; house default [H]; platforms publish no hook thresholds.] | Also lint_shotlist.hook_max_words / poster_max_words and structure_check.check_hook. Launch beat sheets allow the claim by 2-3 s (L3) and a thesis sentence in 0-5 s (L1). Poster frame: one high-contrast subject readable at 120 px wide; title front-loads the payoff in about 50 characters (virality.md 6). | Merged: Hook text has at most 7 words and is on screen by 0.3 s in a vertical cut (0.5 s in a wide cut). [house; Pack defaults shared by the linter, the reading checks and patterns/hooks.json universal.hook_text.] | Merged: Readable on-screen text is on frame 0 or by 1.0 s, and in VO films the word lands with or before the first spoken word. [measured-A; 9 of 16 round-7 films show text by 1 s, including 3 of the 4 tier-A films (the fourth is a wordless music video); in every VO case the word arrives with or before the voice.] | The pack is stricter than the evidence: pattern hooks use text_by_s 0.3 and eyes/readability wants hook text by 0.3 s tall / 0.5 s wide."
+  },
+  {
+    "id": "hook.three_variants_one_body",
+    "title": "Make three hook variants per body",
+    "statement": "Every brief gets 3 hook variants with distinct archetypes on an identical body, so only the hook differs between them.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "character-spot",
+        "explainer",
+        "launch-film",
+        "proof-clip"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "hook_variants": 3
+    },
+    "grade": "craft",
+    "evidence": "practitioner rule [P]; archetypes listed: payoff-first, pattern-break, claim-or-question, in-medias-res, curiosity-gap, social-proof, problem-agitate.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "1. Hook > Seven archetypes"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "RECIPE A step 5"
+      },
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.2 The hook: seven archetypes; 4. Ad structure (variants)"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "6.8 Shorts, Reels and TikTok retention"
+      },
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Hooks: three variants on one body"
+      },
+      {
+        "doc": "skills/story-script/references/templates.md",
+        "locator": "4. The hook block"
+      },
+      {
+        "doc": "patterns/hooks.json",
+        "locator": "hooks[]"
+      },
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 4 (9) and Round 5 (20) tables, lines 30-65"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.hook_variants",
+      "default": "templates/ad/config.mjs hook.archetype",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "lint_shotlist demands three variants with distinct archetypes; a social-proof hook needs a sourced claim. | Merged: Every brief gets three hook variants with distinct archetypes over an identical body, so a test isolates the hook. [craft; Practitioner advice to test several hooks on the same core content; a platform's ad help asks for 3-5 creatives per ad group that differ a lot.] | A social-proof hook needs a sourced claim (lint_shotlist). | Merged: Write three hook variants with three different archetypes on an identical body, changing only the first 1-3 s. [house; Pack method for hook tests: identical bodies isolate the hook; patterns/hooks.json lists 13 archetypes, 7 of them accepted by the linter.] | WARN unless exactly three, WARN if two share an archetype, FAIL on an archetype outside the seven; the six extra archetypes in hooks.json (live-demo, cold-open, light-from-dark, provocative-line, promise, founder-to-camera) fail the linter today. | Merged: Write three hook variants from three distinct archetypes, because 13 tier-A/A- openers spread over 6 archetypes with none above 3 of 13 (23%). [inferred; Our hand classification of the one-line summaries of the 13 tier-A/A- round-4/5 pieces: in-medias-res 3, claim-or-question 3, payoff-first 3, curiosity-gap 2, pattern-break 1, problem-agitate 1.] | The share is our classification from summaries, not a measured field; the three-variant rule itself is enforced by the story-script linter."
+  },
+  {
+    "id": "hook.title_behind_subject",
+    "title": "Title behind the subject at 1 s",
+    "statement": "Over a held frontal portrait with a direct gaze, the first title word animates in behind the subject (the subject occludes it) at about 1.0 s.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "title_at_s": 1.0
+    },
+    "grade": "measured-A",
+    "evidence": "The tier-A* hero of a 1.8M-view launch (distribution-assisted) does this at 1 s, reading as a sound-on cue; one film.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 1: hero, 1. Hook"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 1: hero, 6. Motion graphics"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "type.behindSubject"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "n = 1; craft default, not a reach-proven rule."
+  },
+  {
+    "id": "hook.twist_by_5s",
+    "title": "Land the twist by 5 seconds",
+    "statement": "On a short skit or story short, land the twist by about 5 s: half the viewers of every top Short were gone between 4 and 8 s.",
+    "scope": {
+      "formats": [
+        "chat-skit",
+        "short-film"
+      ],
+      "platforms": [
+        "reels",
+        "shorts"
+      ],
+      "section": "turn"
+    },
+    "params": {
+      "twist_by_s": 5,
+      "half_lost_window_s": [
+        4,
+        8
+      ],
+      "swipe_away_pct": 83
+    },
+    "grade": "measured",
+    "evidence": "own Shorts channel, 28 days, 1,002 views: every top Short lost half its viewers in 4-8 s; 83% swiped away.",
+    "sources": [
+      {
+        "doc": "private:memory/channel-analytics-2026-10-16",
+        "locator": "YouTube, last 28 days"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "lint_shotlist.turn_window warns outside 0.30-0.80 of runtime (5 s of 15 s = 0.33 passes) but the absolute 5 s is not checked. Conflicts with the 15 s beat sheet in skills/story-script/SKILL.md (turn at 9-11 s)."
+  },
+  {
+    "id": "hook.type_line_on_calm_field",
+    "title": "Open on a short line, calm field",
+    "statement": "In a type-led launch film, frame 0 shows 1-3 words (or a placeholder prompt) on a plain or gradient field, and the full hook line of at most 6 words reads by 1-2 s; no product shot first.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "frame0_words": [
+        1,
+        3
+      ],
+      "hook_words_max": 6,
+      "hook_complete_by_s": [
+        1,
+        2
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "3 of 3 tier-A video films in round 9 open on type or a prompt bar on a calm field (a category sentence; a call to a named audience; a placeholder prompt); the product world arrives at 2-4 s.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "films 01, 03, 04, section 1 HOOK"
+      }
+    ],
+    "enforce": {
+      "check": "eyes/readability",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "eyes/readability enforces hook max 7 words and hook text by 0.3 s tall / 0.5 s wide; structure_check.check_hook adds text_by_s. Tiers were taken on posts 3.5-44 h old, two on the 1.5% bookmark knife edge; re-pull pending."
+  },
+  {
+    "id": "hook.value_by_3s",
+    "title": "State the value inside 3 s",
+    "statement": "The proposition lands in the first 3 s and the hook is complete by 6 s; a 15 s ad's hook ends by 2.5 s (17%) and a 30 s ad's by 3 s (10%).",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "youtube"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "value_by_s": 3,
+      "hook_window_s": 6,
+      "ad15_hook_end_pct": 17,
+      "ad30_hook_end_pct": 10
+    },
+    "grade": "house",
+    "evidence": "Platform spec: a platform's ad guidance says proposition in 3 s, hook in 6 s, and its commissioned analysis credits 90% of ad-recall impact to the first 6 s (method not published).",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 1; 2. Hooks"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.ad-15 / ad-30 sections.hook"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_timing",
+      "default": "patterns/structures.json structures.ad-15.sections.hook",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "A view now counts on start, so judge a hook by 3 s hold and average view duration, not views."
+  }
+]

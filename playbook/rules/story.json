@@ -1,0 +1,2261 @@
+[
+  {
+    "id": "story.ab_replay",
+    "title": "Replay the same clip before and after",
+    "statement": "A before/after replays the same 2-15 s clip twice, both halves level-matched within 1 dB (warn at 2 dB), with the audio swap on the picture's flip frame within 1 frame, the flip at 35-60% of the clip.",
+    "scope": {
+      "formats": [
+        "proof-clip",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "proof"
+    },
+    "params": {
+      "clip_s": [
+        2,
+        15
+      ],
+      "halves_lufs_tol_db": 1.0,
+      "halves_lufs_warn_db": 2.0,
+      "flip_tol_frames": 1,
+      "flip_share": [
+        0.35,
+        0.6
+      ],
+      "flip_share_default": 0.42
+    },
+    "grade": "measured-A",
+    "evidence": "Level match and swap timing were measured on two tier-A reference posts (the study is kept outside the repo and cited in the ears manifest).",
+    "sources": [
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.ab_replay.doc"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "story.abReplay"
+      },
+      {
+        "doc": "ears/manifest.json",
+        "locator": "spec.ab_replay; checks ears/ab_replay"
+      },
+      {
+        "doc": "ears/README.md",
+        "locator": "checks_ab.py"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 2 and Film 4, 4. Sound design"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Cross-film craft playbook, item 5"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "Craft worth reusing"
+      }
+    ],
+    "enforce": {
+      "check": "ears/ab_replay",
+      "default": null,
+      "part": "cuts/story/abReplay"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Not in this lane's research docs; source is the manifest note. Tunable starting values. | Merged: In a before/after audio swap the two halves sit within 1 dB integrated (warn to 2 dB) and the sound changes on the picture's flip frame within 1 frame (a miss over 2 frames fails). [measured-A; Taken from two tier-A reference posts; tunable starting values.] | Merged: The same footage plays before and after with the two halves level-matched within 1 dB, so only the claim changes, switching on the flip frame. [measured; Two proof clips of a 1.8M-view launch thread are level-matched within 1 dB (median -21.2 vs -22.1 dB and -23.8 vs -23.9 dB); thread children, tier B by rule, read as C.] | ears/ab_replay checks halves within 1 dB and the swap on the flip frame +/-1."
+  },
+  {
+    "id": "story.chapter_label_ui",
+    "title": "Chapters of label plus UI",
+    "statement": "A product film is built from 4-7 chapters of 3-5 s, each a 2-5 word label with one accent word beside the UI doing that job.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "body"
+    },
+    "params": {
+      "chapters": [
+        4,
+        7
+      ],
+      "chapter_s": [
+        3,
+        5
+      ],
+      "label_words": [
+        2,
+        5
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "The tier-A VO film of round 7 runs 7 chapters of 3-5 s; label-left/UI-right appears in 5 of 16 and an accent word in a 2-5 word label in 7 of 16.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Craft playbook, items 2 and 6"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Beat tables: the four tier-A films (film 07)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "eyes/pacing warns a static hold at 3.5 s: chapters of 4-5 s need motion inside the UI."
+  },
+  {
+    "id": "story.character_spot_15s_beats",
+    "title": "Character spot: one gag in 15 s",
+    "statement": "A wordless 15 s character spot runs one gag and one feature: premise visible 0-2 s, setup 2-5 s, escalation 5-9 s, twist by smash cut 9-11 s, 1.5 s reaction hold 11-12 s, one message line plus brand 12-15 s.",
+    "scope": {
+      "formats": [
+        "character-spot"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "hook_s": [
+        0,
+        2
+      ],
+      "setup_s": [
+        2,
+        5
+      ],
+      "escalation_s": [
+        5,
+        9
+      ],
+      "twist_s": [
+        9,
+        11
+      ],
+      "reaction_hold_s": 1.5,
+      "message_s": [
+        12,
+        15
+      ],
+      "max_emotions": 6,
+      "max_whips": 1
+    },
+    "grade": "house",
+    "evidence": "house beat sheet [H].",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "RECIPE Z"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_timing",
+      "default": "patterns/structures.json character-spot",
+      "part": "templates/character-spot"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "If it needs two setups, it is two spots."
+  },
+  {
+    "id": "story.climax_in_world",
+    "title": "Make the climax the product in use",
+    "statement": "Put the climax on the product's output used in the world (the made thing doing its job), after the breakdown and proof beats.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "reveal"
+    },
+    "params": {
+      "climax_share": [
+        0.6,
+        0.95
+      ]
+    },
+    "grade": "craft",
+    "evidence": "A saves-strong round-3 launch film (0.46x, 1.6% bookmarks) spends 38-55 s of 59 s on its output used in the world.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 427-449"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "blender/cloudFlight"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "climax_share is that film's 64-93% span widened; one reference."
+  },
+  {
+    "id": "story.command_burst",
+    "title": "Answer each command on the next frame",
+    "statement": "A voice-first demo fires about 16 short spoken commands in about 17 s and answers each with a UI change on the frame after the command's last word ends, with hard cuts between states.",
+    "scope": {
+      "formats": [
+        "saas-feature-drop",
+        "screen-life"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "commands": 16,
+      "burst_s": 17,
+      "response_frame_after_word_end": 1
+    },
+    "grade": "measured",
+    "evidence": "One round-4 tier-A* (claim-driven) design-tool comedy, 72 s, 79 cuts, 43x followers; the claim-driven flag means the reach may be driven by the post text.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 4 (9), line 38"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/story/commandRapidFire"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Graded measured, not measured-A, because the tier carries the claim-driven flag."
+  },
+  {
+    "id": "story.contradiction_ladder",
+    "title": "Contradiction-gag cold open",
+    "statement": "The cold open runs 3-5 rungs where the voice states the sane rule while the picture shows the absurd opposite, rungs shrinking from about 4 s to about 1 s and from full sentences to two-word fragments, then a viewer stand-in before the turn.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "rungs": [
+        3,
+        5
+      ],
+      "rung_s_start": 4,
+      "rung_s_end": 1,
+      "ladder_end_pct": 26
+    },
+    "grade": "measured-A",
+    "evidence": "The tier-A* hero of a 1.8M-view launch (distribution-assisted) runs its ladder 2.2-19 s of 73.2 s, then a stand-in to 25.5 s.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 1: hero, 2. Storyboard and 5. Voice-over"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Cross-film craft playbook, item 7"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "Craft worth reusing"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "n = 1; nothing measures that the gag raises retention. No pack part yet."
+  },
+  {
+    "id": "story.cta_window",
+    "title": "Start the CTA in its window",
+    "statement": "The CTA section starts inside its pattern window (ad-15 80-90%, ad-30 83-92%, launch 82-94%, explainer 82-95%, tutorial end screen 90-98% for 5-20 s, trailer date 94-99%), with an optional soft CTA at 60-70%.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "end"
+    },
+    "params": {
+      "ad15_start_pct": [
+        80,
+        90
+      ],
+      "ad30_start_pct": [
+        83,
+        92
+      ],
+      "saas_launch_start_pct": [
+        82,
+        94
+      ],
+      "explainer_start_pct": [
+        82,
+        95
+      ],
+      "tutorial_start_pct": [
+        90,
+        98
+      ],
+      "trailer_start_pct": [
+        94,
+        99
+      ],
+      "soft_cta_pct": [
+        60,
+        70
+      ],
+      "youtube_end_screen_s": [
+        5,
+        20
+      ]
+    },
+    "grade": "house",
+    "evidence": "Platform spec for YouTube end screens (last 5-20 s of videos >= 25 s) and a hosting vendor's advice to end-place CTAs under 5 min; the windows and the soft CTA are house.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 15; 7. Lengths and CTAs"
+      },
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.6 CTA placement"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.<pattern>.cta.start_pct"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_cta",
+      "default": "patterns/structures.json structures.<pattern>.cta",
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "One CTA, not three, with a specific phrase; urgency only if true. No measured study of short-form CTA timing exists."
+  },
+  {
+    "id": "story.cutdown_launch_order",
+    "title": "Cut-downs keep reveal and CTA",
+    "statement": "Launch cut-downs keep, in order, hook-reveal-demo-CTA at 45 and 30 s, hook-reveal-CTA at 15 s and reveal-CTA at 6 s; ads keep hook-product-proof-CTA at 15 s and product-CTA at 6 s, folding the problem into the hook and dropping proof first.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "hardware-teaser",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok",
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "launch_45_30": "hook,reveal,demo,cta",
+      "launch_15": "hook,reveal,cta",
+      "launch_6": "reveal,cta",
+      "ad30_to_15": "hook,product,proof,cta",
+      "ad_6": "product,cta",
+      "ad15_to_6": "hook,product,cta"
+    },
+    "grade": "inferred",
+    "evidence": "Practitioners ask for 30, 15 and 6 s cut-downs and say a 30-45 s social cut folds the problem into the hook and drops the proof; the section lists are our inference.",
+    "sources": [
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.saas-launch / ad-15 / ad-30 cutdowns, cutdowns_note"
+      },
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "4. Ad structure (bumper 6 s)"
+      },
+      {
+        "doc": "docs/evidence/pack-gap-analysis.md",
+        "locator": "Ranked, item 2"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "patterns/structures.json structures.<pattern>.cutdowns",
+      "part": null
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "edit.md 6 s bumper: hook 0-2 s, product 2-4.5 s, end card 4.5-6 s (includes a hook; structures ad-30 6 s cut drops it). Kept sections are re-timed to their share of the pattern. | Merged: Plan 30, 15 and 6 s cut-downs of every film from one master by keeping listed sections (fold the problem into the hook, drop proof under 45 s). [craft; Launch practitioners ask for 30/15/6 s cut-downs; the per-structure section lists are our inference.] | No renderer re-times the sections yet."
+  },
+  {
+    "id": "story.cutdown_trailer_order",
+    "title": "Trailer cut-downs drop world and button",
+    "statement": "Trailer cut-downs come from the same plan and drop the world beat and the button first: 30 s keeps cold open, production card, inciting beat, acts 2-3, silence, title and date (act bars 2/3/3); 15 s keeps cold open, one wall run, silence, title and date (act bars 1/1/2).",
+    "scope": {
+      "formats": [
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "cut30_keep": "cold,production,incite,act2,act3,silence,title,release",
+      "cut30_act_bars": [
+        2,
+        3,
+        3
+      ],
+      "cut15_keep": "cold,act3,silence,title,release",
+      "cut15_act_bars": [
+        1,
+        1,
+        2
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Trailer cut-down practice as the film lane describes it; house values, no corpus study.",
+    "sources": [
+      {
+        "doc": "docs/evidence/film-trailer-craft.md",
+        "locator": "2. The trailer shape (Cut-downs come from the same plan)"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "trailer.cutdown30 / cutdown15"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "cuts/patterns.json trailer.cutdown15",
+      "part": "cuts/trailer/cutdown15"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Conflict: patterns/structures.json trailer.cutdowns keeps 30 s = coldopen, act3, title, date and 15 s = act3, title, date (no cold open). The cuts plan is better specified (keeps the cold open and the silence). The score is re-rendered for each cut in whole bars per act. cuts/trailer/cutdown30 is the 30 s part."
+  },
+  {
+    "id": "story.degrading_problem_ladder",
+    "title": "Make the problem diagram worse each beat",
+    "statement": "Show the problem as a 3-beat ladder of 2-2.5 s beats, each a two-word caption under one small diagram that gets visibly worse each beat, swapped by a blur-through.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "beats": 3,
+      "beat_s": [
+        2.0,
+        2.5
+      ],
+      "caption_words": 2
+    },
+    "grade": "craft",
+    "evidence": "One round-6 film graded tier B; nothing measures that a degrading diagram raises retention.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "Film B shape step 2, line 40; Honest limits, line 71"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "layout.degradingDiagram"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.diagram_in_vo_gaps",
+    "title": "Advance the diagram in speech gaps",
+    "statement": "In a VO explainer, grow one diagram with no cuts and advance it only inside speech gaps every 3-6 s (gap start + 2 frames); a wrong branch turns red and the red propagates.",
+    "scope": {
+      "formats": [
+        "data-story",
+        "explainer"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "step_every_s": [
+        3,
+        6
+      ],
+      "step_offset_frames": 2,
+      "cuts": 0
+    },
+    "grade": "measured-A",
+    "evidence": "One tier-A round-5 explainer (80 s, 0 cuts, 3.31x, 1.00% bookmarks) leaves a VO gap about every 4 s and advances its diagram in it.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 5 (20), line 64"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "story.diagramWalkthrough"
+      },
+      {
+        "doc": "docs/evidence/explainer-data-patterns.md",
+        "locator": "What 'how it works' explainers tend to do"
+      }
+    ],
+    "enforce": {
+      "check": "cuts/story45.py walkthrough",
+      "default": null,
+      "part": "cuts/story/diagramWalkthrough"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Merged: A voice-led diagram explainer advances one step per sentence, only in a speech gap (at gap start + 2 frames), about every 3-6 s, with no hard cuts, and holds the end card 3-8 s on near-silence. [measured-A; One tier-A reference (round 4/5) had 14 speech gaps of 0.3-0.5 s, about one every 4 s, with the diagram advancing in them; the step and end-hold ranges are house.] | Single reference; tune on renders."
+  },
+  {
+    "id": "story.explainer_beats",
+    "title": "Explainers: question, wrong model, reframe",
+    "statement": "An explainer runs question 0-10%, wrong model 10-30%, reframe 30-65%, proof 65-85% and so-what 85-100%.",
+    "scope": {
+      "formats": [
+        "explainer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "question_pct": [
+        0,
+        10
+      ],
+      "wrongmodel_pct": [
+        10,
+        30
+      ],
+      "reframe_pct": [
+        30,
+        65
+      ],
+      "proof_pct": [
+        65,
+        85
+      ],
+      "sowhat_pct": [
+        85,
+        100
+      ]
+    },
+    "grade": "inferred",
+    "evidence": "Story-script grammar (practitioner) converted to percentages by inference; no source measures beat timings.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "6.10 Explainers"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.explainer"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_timing",
+      "default": "patterns/structures.json structures.explainer.sections",
+      "part": "templates/explainer-diagram"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.explainer_complication",
+    "title": "Re-hook explainers at 40-50%",
+    "statement": "A short explainer re-hooks with a complication ('but...') at 40-50% of runtime; long ones place a re-hook around minutes 3 and 6.",
+    "scope": {
+      "formats": [
+        "data-story",
+        "explainer",
+        "tutorial"
+      ],
+      "platforms": [
+        "youtube"
+      ],
+      "section": "body"
+    },
+    "params": {
+      "complication_pct": [
+        40,
+        50
+      ],
+      "long_rehook_min": [
+        3,
+        6
+      ]
+    },
+    "grade": "inferred",
+    "evidence": "A leaked production document (authenticity partly confirmed) places interesting content at minutes 3 and 6; the short-form 40-50% equivalent is our inference.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "6.10 Explainers (re-hook)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.explainer_wrong_model_first",
+    "title": "Show the wrong model first",
+    "statement": "An explainer shows a simple wrong model before the right one, builds the right one on a single canvas one node per named idea (dimming the rest), dives into at most one box, and traces one example through it as the proof.",
+    "scope": {
+      "formats": [
+        "explainer"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "canvases": 1,
+      "dives_max": 1,
+      "proof_examples": 1,
+      "dive_s": 1.1
+    },
+    "grade": "craft",
+    "evidence": "Common practice in diagram explainers, stated hedged; not measured on our videos.",
+    "sources": [
+      {
+        "doc": "docs/evidence/explainer-data-patterns.md",
+        "locator": "What 'how it works' explainers tend to do"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "templates/explainer-diagram"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "The 1.1 s dive is a house default chosen by eye."
+  },
+  {
+    "id": "story.fidelity_ladder",
+    "title": "Step quality one bar at a time",
+    "statement": "Re-do the same output at a higher parameter one step per bar with a live readout of the parameter and the error, then a 2-3 s dropout, then the same result in a new dimension on the next downbeat.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "steps": [
+        3,
+        6
+      ],
+      "bars_per_step": 1,
+      "dropout_s": [
+        2,
+        3
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "One tier-A round-4 film (60 s, 0 cuts, 3.91x, quiet open -32 dB): fidelity steps per bar with a live error readout, a dropout, then the figure in 3D.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 4 (9), line 34"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/story/fidelityLadder"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.five_faces_cold_open",
+    "title": "Documentary: five faces in five seconds",
+    "statement": "A multi-voice documentary opens on 4-6 faces in about 5 s, each mid-sentence with audio leading every cut, before any name; the lead's name super with one personal detail lands at 5-6 s.",
+    "scope": {
+      "formats": [
+        "documentary",
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "hook"
+    },
+    "params": {
+      "faces": [
+        4,
+        6
+      ],
+      "face_s": [
+        0.5,
+        1.3
+      ],
+      "lead_super_s": [
+        5,
+        6
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "round 4/5: three tier-A people-led pieces at 107-185 s.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "2. L9 multi-voice documentary"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "RECIPE H step 5"
+      },
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 4 (9), line 32"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "story.voicesColdOpen"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "templates/multi-voice-doc",
+      "part": "cuts/story/voicesColdOpen"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Real people who agreed to speak only; never stage a testimonial. | Merged: A documentary-style launch opens on 4-6 different faces in cuts of 0.5-1.3 s inside the first 6 s, with audio leading each cut and no name, title or product before the lead speaker's line. [measured-A; One tier-A round-4 launch film (153 s, 3.23x followers, 42 cuts) shows five faces in five seconds before any name; n = 1.] | Cut lengths and the J lead are the part's defaults, not values measured on the reference."
+  },
+  {
+    "id": "story.launch_one_defensible_number",
+    "title": "Launch films carry one defensible number",
+    "statement": "A launch film carries exactly one hard-number proof (around 1:30 in a 2:00 founder film) with its method published in the post or description.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {
+      "proof_numbers": 1,
+      "proof_at_s_in_120s": 90
+    },
+    "grade": "craft",
+    "evidence": "launch study: every proof number in one 2026 launch wave drew public pushback.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "2. L1 founder keynote; 3. rule 5; 7. checklist"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Sourcing of the number itself is enforced by plan.lintClaims (see honesty.digits_need_source)."
+  },
+  {
+    "id": "story.no_voiceover_type_carries",
+    "title": "No voice-over; type carries it",
+    "statement": "Carry the argument in on-screen type plus music and sound design, with no voice-over.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "proof-clip",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "voiceover": "none"
+    },
+    "grade": "house",
+    "evidence": "owner brief; in round 9, 3 of 4 films have no voice and the fourth's voice (25 words at 83 wpm from 29 s of 50 s) repeats what its type already says.",
+    "sources": [
+      {
+        "doc": "private:memory/film-brief-2026-10-12",
+        "locator": "How to apply, line 1"
+      },
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "film 05 VOICEOVER; cross-film playbook item 4"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.one_chart_argument",
+    "title": "Let one chart be the argument",
+    "statement": "A proof clip can rest on one chart (for example cost vs score) with a frontier line and one starred hero point whose source is on screen.",
+    "scope": {
+      "formats": [
+        "proof-clip"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {
+      "charts": 1,
+      "cuts_max": 4
+    },
+    "grade": "craft",
+    "evidence": "One tier-A round-5 benchmark film (36 s, 4 cuts, 8.53x, 1.23% bookmarks) makes its whole argument with one sourced scatter.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 5 (20), line 49"
+      }
+    ],
+    "enforce": {
+      "check": "plan.lintClaims",
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "The chart part is planned, not built; digits on it still need a source (plan.lintClaims fails without one)."
+  },
+  {
+    "id": "story.one_gag_one_feature",
+    "title": "One gag, one feature per spot",
+    "statement": "A character spot has exactly one situation and one product benefit, wordless, with at most 6 emotions (neutral, happy, sad, surprised, angry, scheming) on a neutral stage; an idea that needs two setups is two spots.",
+    "scope": {
+      "formats": [
+        "character-spot"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "gags": 1,
+      "features": 1,
+      "emotions_max": 6,
+      "text_lines": 1
+    },
+    "grade": "craft",
+    "evidence": "Trade-press accounts of one long-running wordless campaign (simple characters, limited emotions, one situation, the message with the punchline).",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "10.1 The rules ('one gag, one feature')"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "templates/character-spot"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Borrow the grammar only, never characters or designs."
+  },
+  {
+    "id": "story.one_problem_one_solution",
+    "title": "One problem, one solution per scene",
+    "statement": "Each scene carries exactly 1 problem and 1 solution, readable at once; a scene with two problems is split or cut.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "problems_per_scene": 1,
+      "solutions_per_scene": 1
+    },
+    "grade": "house",
+    "evidence": "owner brief written after a 67 s draft with 14 supers and cards everywhere was rejected.",
+    "sources": [
+      {
+        "doc": "private:memory/film-brief-2026-10-12",
+        "locator": "brief and How to apply"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.one_running_example",
+    "title": "Carry one running example throughout",
+    "statement": "Run one example customer or project through every scene so each feature shows its output on the same case, labelled as fictional when it is.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop",
+        "saas-launch"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "examples": 1
+    },
+    "grade": "craft",
+    "evidence": "A round-6 tier-C launch film carries one fictional running example; a breakdown of a SaaS film (reach claim unverified) builds one fictional client brand and lets its artefacts prove the product.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "Film A craft takeaway 2, line 26"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-app-builder-launch",
+        "locator": "What to learn 2 and 5, lines 27-30"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Honesty: a fictional example needs an on-screen label (storyboard/label-hold, 2 s)."
+  },
+  {
+    "id": "story.one_turn_in_window",
+    "title": "Exactly one filmable turn, mid-film",
+    "statement": "A short has exactly one turn, a single filmable verb, placed between 30% and 80% of the runtime (short film 50-60%, wordless character spot about 45%, ad product reveal about 33%).",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "character-spot",
+        "chat-skit",
+        "explainer",
+        "launch-film",
+        "reel",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "turn"
+    },
+    "params": {
+      "turns": 1,
+      "turn_window_pct": [
+        30,
+        80
+      ],
+      "short_film_turn_pct": [
+        50,
+        60
+      ],
+      "character_spot_turn_pct": 45,
+      "ad_reveal_pct": 33
+    },
+    "grade": "craft",
+    "evidence": "Format grammars from production practice say a short has room for one change and two turns read as two films; the 30-80% window is a house linter default.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 1; Formats at a glance"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Short film; Character spot (wordless); Ad"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "DEFAULTS turn_window; turn and payoff block"
+      },
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "9. Short-film grammar (tpl.film.3min); 10.2 Structure and timing"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.short-film / character-spot / explainer sections"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.turn_window",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The linter WARNs outside 30-80% and WARNs when no shot has role turn; it cannot count turns. | Merged: The turn sits between 30% and 80% of runtime: at 50-60% in a short film, at about 60% for a character spot's twist, and the reframe starts at 30% in an explainer. [craft; Short-film and spot craft conventions (practitioner sources) turned into house windows; no measured turn position.] | lint_shotlist warns (not fails) outside 30-80%; structure_check.check_timing scores the per-format section windows."
+  },
+  {
+    "id": "story.open_loop_and_late_payoff",
+    "title": "Open a loop early, pay off late",
+    "statement": "A 20-35 s short opens a loop or why-stay promise at 3-6 s, delivers 2-4 beats with micro-payoffs, and puts the best payoff in the final 20%.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "beat-edit",
+        "character-spot",
+        "launch-film",
+        "proof-clip",
+        "reel",
+        "short-film"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "open_loop_s": [
+        3,
+        6
+      ],
+      "beats": [
+        2,
+        4
+      ],
+      "best_payoff_final_share": 0.2
+    },
+    "grade": "house",
+    "evidence": "house retention structure [H].",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/virality.md",
+        "locator": "2. Hold > Retention structure"
+      },
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "VIRALITY checklist > Hold"
+      },
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "Beat sheets by length"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Reel or hook test; Launch film"
+      },
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "1. The fifteen findings, row 5"
+      },
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "3.4 Retention structure of a 20-35 s short"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "patterns/structures.json",
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [
+      "sound.quiet_hold_ending"
+    ],
+    "notes": "No beat-sheet pattern covers a 20-35 s story short, so structure_check cannot score it. | Also: trim a dead last 1-2 s [P]; the exception is a planned quiet hold. | Merged: Put the best payoff in the final 20% of the runtime and nothing after the button except the brand. [house; Beat-sheet default stated as tunable by eye and by retention data.] | Trim a dead ending: if retention dips at the very end, cut the last 1-2 s. | Merged: Each beat pays off bigger than the last, with a surprise at the open, so the middle never goes flat; put the best payoff in the final 20%. [measured; A 28-ad study using zapping and face tracking found surprise holds attention and the velocity of joy holds viewers (summary); the final-20% placement is a house default.]"
+  },
+  {
+    "id": "story.pain_in_familiar_tool",
+    "title": "Act the pain in a familiar tool",
+    "statement": "Before the product appears, the problem is shown as one concrete scene inside a tool every viewer already uses, and the product then answers that same scene.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop",
+        "screen-life"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "hook"
+    },
+    "params": {
+      "pain_scenes": 1
+    },
+    "grade": "measured-A",
+    "evidence": "Round-8 film 02 (tier A) shows feedback scattering across tools before its review layer; film 03 (boosted-looking) acts a request in a plain chat before naming a product.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Cross-film craft playbook, item 7"
+      },
+      {
+        "doc": "private:research/reference-round8-2026-10.md",
+        "locator": "Why film 03 reached what it reached"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "lint_shotlist only warns when the product appears before the turn; the familiar-tool scene is not checkable. | The linter only warns when the product appears before the turn; it cannot judge the scene's familiarity."
+  },
+  {
+    "id": "story.payoff_after_turn",
+    "title": "Payoff comes after the turn",
+    "statement": "The payoff never lands before the turn (fail), and the product should not appear before the turn in a story-led piece (warn).",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "chat-skit",
+        "launch-film",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "turn"
+    },
+    "params": {},
+    "grade": "craft",
+    "evidence": "Story-script craft encoded as a house lint; the product arrives with the punchline in the studied wordless campaign.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "10. Mime-style / character-spot grammar"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.payoff_before_turn",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.payoff_pays_stake",
+    "title": "Payoff resolves the opening stake",
+    "statement": "The payoff shot comes after the turn and shows the stake from the opening visibly resolved (the bill, the file, the empty chair), never a generic cheer or a logo.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "character-spot",
+        "launch-film",
+        "reel",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "reveal"
+    },
+    "params": {
+      "payoff_after_turn": "required"
+    },
+    "grade": "craft",
+    "evidence": "Both case-study favourites resolved the stake as an object (a bill reading zero, a lamp switched off); a generic cheer scores 0 on the rubric's payoff criterion.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 4"
+      },
+      {
+        "doc": "skills/story-script/references/rubric.md",
+        "locator": "criterion 4; Case study item 4"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "the payoff shot comes before the turn FAIL"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "lint_shotlist fails a payoff before the turn (story.payoff_after_turn); whether the payoff resolves the opening stake is not checked. | The linter FAILs on order only; whether the payoff matches the stake is a rubric judgement."
+  },
+  {
+    "id": "story.podcast_line_first",
+    "title": "Podcast clips open on the sharpest line",
+    "statement": "A podcast clip opens on its sharpest line (0-10%), restores the host question as context (10-25%), plays the payoff (25-85%) and ends on the punchline with a soft 'full episode' pointer (85-100%), in a 25-60 s window.",
+    "scope": {
+      "formats": [
+        "podcast-clip"
+      ],
+      "platforms": [
+        "reels",
+        "shorts",
+        "tiktok"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "hook_pct": [
+        0,
+        10
+      ],
+      "context_pct": [
+        10,
+        25
+      ],
+      "payoff_pct": [
+        25,
+        85
+      ],
+      "button_pct": [
+        85,
+        100
+      ],
+      "clip_window_s": [
+        25,
+        60
+      ]
+    },
+    "grade": "inferred",
+    "evidence": "Clip tools score 25-60 s windows (practitioner); the beat percentages are our inference.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "6.13 Podcast clips"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.podcast-clip"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_timing",
+      "default": "patterns/structures.json structures.podcast-clip.sections",
+      "part": "templates/podcast-clip"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "A Short over 60 s with an active music copyright claim is blocked (platform spec): keep beds out unless owned."
+  },
+  {
+    "id": "story.problem_pivot_shape",
+    "title": "Problem, gap, pivot, value, ask",
+    "statement": "A continuous problem-pivot film runs 3 problem rungs of 2-2.5 s, a 1.5-2 s audio gap, the brand line, 3 value rungs of 1.8-3 s, then the address over a quiet hold of at least 2 s, with zero cuts in about 30 s.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "problem_rungs": 3,
+      "rung_s": [
+        2.0,
+        2.5
+      ],
+      "gap_s": [
+        1.5,
+        2.0
+      ],
+      "value_rungs": 3,
+      "value_rung_s": [
+        1.8,
+        3.0
+      ],
+      "hold_s_min": 2.0,
+      "cuts": 0,
+      "length_s": 30
+    },
+    "grade": "measured",
+    "evidence": "Times read from a 2-per-second contact sheet of one round-6 film graded tier B (boosted-looking), good to about 0.5 s.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "Film B, lines 34-46; Honest limits, lines 67-72"
+      },
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "2. L10 problem-pivot typographic film"
+      },
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "10. Round 6"
+      }
+    ],
+    "enforce": {
+      "check": "cuts/story6.py check_problem_pivot",
+      "default": null,
+      "part": "cuts/story/problemPivot"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "One tier-B film: defaults to tune, not a shape proven by reach. | Merged: A zero-cut problem-pivot film runs a 3-beat problem ladder (2-2.5 s a beat), a 1.5-2 s audio gap with at least 1 s of true silence, a pivot where bass, bed, colour and brand line arrive within about 0.1 s, a value ladder (about 3 s a beat) and a quiet hold of at least 2 s. [craft; round 6: one tier-B (boosted-looking, an inference) and one tier-C reference; reception unproven, starting values only.] | cuts/story6.py check_problem_pivot re-derives the rules from the generated plan."
+  },
+  {
+    "id": "story.product_quiet_turn",
+    "title": "Product arrives as the quiet turn",
+    "statement": "Outside ads, the product first appears at the turn, never speaks, explains or performs, and is named at most once mid-film plus once on the end card.",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "chat-skit",
+        "launch-film",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "turn"
+    },
+    "params": {
+      "product_mentions_midfilm_max": 1,
+      "product_mentions_end_card": 1
+    },
+    "grade": "craft",
+    "evidence": "Both favourite films in the case study used the product as a quiet turn, and the rubric traces the 'feels like an ad' failure to a performing product.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 3"
+      },
+      {
+        "doc": "skills/story-script/references/rubric.md",
+        "locator": "criterion 3; Failure to fix"
+      },
+      {
+        "doc": "skills/story-script/scripts/lint_shotlist.py",
+        "locator": "product before the turn WARN"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.product_before_turn",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "WARN only, and only for shots tagged role product; the mention count is prose-only."
+  },
+  {
+    "id": "story.proof_clip_genre_end",
+    "title": "End a proof on a genre beat",
+    "statement": "A proof clip ends on a genre payoff (a story beat or a genre title card) or a hard stop on the fixed state, never on a CTA card.",
+    "scope": {
+      "formats": [
+        "proof-clip"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "end"
+    },
+    "params": {
+      "cta_card": "none"
+    },
+    "grade": "craft",
+    "evidence": "All 4 proof clips in a 1.8M-view launch thread end on a genre title, a story beat, a held close-up or a hard stop (tier B by rule, read as C).",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Cross-film craft playbook, item 9"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 2 to Film 5, 8. End shape"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.proof_clip_one_claim",
+    "title": "One wordless claim per clip",
+    "statement": "Each proof clip is wordless, 13-15 s long and proves exactly one claim through one physical graphic (a lane going flat, blocks merging, a slider wiping a label).",
+    "scope": {
+      "formats": [
+        "proof-clip"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "length_s": [
+        12.9,
+        15.0
+      ],
+      "claims": 1,
+      "vo": "none"
+    },
+    "grade": "measured",
+    "evidence": "Three of four proof clips in a 1.8M-view launch thread run 12.9-15.0 s, wordless, one claim each; the fourth (37.7 s) is a short film; thread children, tier B by rule.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Cross-film craft playbook, items 1 and 4"
+      },
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Honest limits"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Clips worked as proof for thread readers, not as reach drivers."
+  },
+  {
+    "id": "story.proof_film_beats",
+    "title": "Proof film: claim, method, one building chart",
+    "statement": "A proof film opens on a claim of at most 6 words, shows a method card by 4-8 s, builds one chart or diagram over 8-22 s that advances in 0.3-0.5 s VO gaps about every 4 s, and ends on a URL with a quiet hold and no spoken CTA.",
+    "scope": {
+      "formats": [
+        "proof-clip"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "claim_max_words": 6,
+      "method_card_s": [
+        4,
+        8
+      ],
+      "builder_s": [
+        8,
+        22
+      ],
+      "vo_gap_s": [
+        0.3,
+        0.5
+      ],
+      "vo_gap_every_s": 4,
+      "cuts_max": 4
+    },
+    "grade": "measured-A",
+    "evidence": "round 4/5: the proof shape was tier A on reach and saves (benchmark scatter 8.5x followers, 1.23% saves; diagram explainer 3.3x, 1.0%); four of the five best-saved pieces were proof-led.",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "1. L8; 2. L8 proof film"
+      },
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "9. Rounds 4-5 > I. Proof film"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "templates/proof-film/config.mjs",
+      "part": "templates/proof-film"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "The VO path is cuts/story/diagramWalkthrough."
+  },
+  {
+    "id": "story.protagonist_with_stake",
+    "title": "One protagonist with a concrete stake",
+    "statement": "The film follows one protagonist whose concrete stake (money, a client, a deadline, a secret, a promise, pride) is shown on screen by the end of the setup beat (5 s in a 15 s cut, 9 s in a 30 s cut), never stated abstractly.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "ad-30",
+        "character-spot",
+        "chat-skit",
+        "launch-film",
+        "reel",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "protagonists": 1,
+      "stake_shown_by_s_at_15s": 5,
+      "stake_shown_by_s_at_30s": 9
+    },
+    "grade": "craft",
+    "evidence": "In one maker's launch-film and short-film rounds all 3 rejected drafts lacked a protagonist with a stake and both favourites had one (verdicts, not reach).",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 1; Beat sheets by length"
+      },
+      {
+        "doc": "skills/story-script/references/rubric.md",
+        "locator": "Case study: three rejections and two favourites"
+      },
+      {
+        "doc": "private:memory/founder-favourite-films",
+        "locator": "What the two favourites share"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "lint_shotlist only fails when the top-level stake field is missing; it cannot judge whether the stake is concrete or shown. | Merged: A short film defaults to a named person with a concrete stake (money, a client, confidentiality, a deadline), the product as the quiet turn, and a payoff that pays off that stake. [house; the owner singled out 2 of 3 short films; both shared this shape (plus an honesty label in frame); the third drew no comment.] | lint_shotlist warns on product before the turn and fails a payoff before the turn; it does not check that a stake exists."
+  },
+  {
+    "id": "story.query_ladder",
+    "title": "Escalate inputs on one UI",
+    "statement": "Hold one UI and feed it 4-6 escalating inputs (5 in the reference), one VO line per input, instead of touring many screens.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film",
+        "saas-feature-drop",
+        "saas-launch"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "rungs": [
+        4,
+        6
+      ],
+      "rung_s": [
+        4.0,
+        7.0
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "One tier-A round-4 film (60 s, 9 cuts, 3.98x, 1.66% bookmarks) uses five escalating inputs on one UI.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 4 (9), line 33"
+      },
+      {
+        "doc": "skills/motion-pack/references/launch-playbook.md",
+        "locator": "2. L4 output montage > Query ladder"
+      },
+      {
+        "doc": "skills/motion-pack/references/success-patterns.md",
+        "locator": "9. J. Query ladder"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/story/queryLadder"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "Rung durations are the part's defaults, not measured on the reference. | Merged: An output-montage film can run one UI through 5 escalating inputs, each 4-7 s with one VO line at about 99 wpm, then pull back with benefit chips. [measured-A; one tier-A round 4/5 reference at 1.66% saves, the best-saved in its batch (n=1).] | Single reference."
+  },
+  {
+    "id": "story.refrain_card",
+    "title": "Build a manifesto on a refrain",
+    "statement": "A manifesto film can return to one locked two-word card 3-5 times at an identical position and size, at least 2 s apart.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "returns": [
+        3,
+        5
+      ],
+      "card_words": 2,
+      "min_gap_s": 2
+    },
+    "grade": "craft",
+    "evidence": "one manifesto film returned to its card 5 times in 50 s and split one sentence around a person; it was tier C at 40 min old, so this is craft, not reach.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "film 05 MOTION GRAPHICS; cross-film playbook item 4"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "A refrain part with a too-close-returns lint is proposed, not built."
+  },
+  {
+    "id": "story.short_film_one_shift",
+    "title": "One change per short film",
+    "statement": "A short under 5 min carries one beat of change (under 10 min, one major shift), opens on an image that asks a question, and ends on a tag of at most 6 s.",
+    "scope": {
+      "formats": [
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "shifts_under_5min": 1,
+      "tag_max_s": 6,
+      "coldopen_pct": [
+        0,
+        8
+      ],
+      "tag_pct": [
+        94,
+        100
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Short-film writing guides and lecture notes (practitioner); the percentages are house.",
+    "sources": [
+      {
+        "doc": "docs/evidence/edit.md",
+        "locator": "9. Short-film grammar"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.short-film"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_timing",
+      "default": "patterns/structures.json structures.short-film.sections",
+      "part": "templates/short-film"
+    },
+    "status": "default",
+    "conflicts_with": [],
+    "notes": "check_timing scores section positions; the one-shift and 6 s tag limits are not checked directly."
+  },
+  {
+    "id": "story.short_film_turn_window",
+    "title": "Put the turn at 50-60%",
+    "statement": "A short film runs cold open (0-8%), want, one obstacle, the turn at 50-60% with 200-400 ms of silence before it, consequence, resolution image and a credit tag of at most 6 s.",
+    "scope": {
+      "formats": [
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "turn"
+    },
+    "params": {
+      "cold_open_share": [
+        0,
+        0.08
+      ],
+      "turn_share": [
+        0.5,
+        0.6
+      ],
+      "pre_turn_silence_ms": [
+        200,
+        400
+      ],
+      "credit_tag_max_s": 6
+    },
+    "grade": "house",
+    "evidence": "house recipe structure [H].",
+    "sources": [
+      {
+        "doc": "skills/motion-pack/SKILL.md",
+        "locator": "RECIPE F steps 1 and 4"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.turn_window",
+      "default": null,
+      "part": "templates/film-scene"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "Conflict: lint_shotlist only warns outside 0.30-0.80, wider than the recipe's 50-60%."
+  },
+  {
+    "id": "story.sound_off_sentence",
+    "title": "Pass the one-breath muted test",
+    "statement": "Write one sentence a viewer could say after one muted watch, short enough for one breath; the muted test passes when 3 of 5 people can say what happened.",
+    "scope": {
+      "formats": [],
+      "platforms": [
+        "linkedin",
+        "reels",
+        "shorts",
+        "tiktok",
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "muted_test_pass_of_5": 3,
+      "feature_recall_pass_of_5": 3
+    },
+    "grade": "house",
+    "evidence": "House threshold from the story rubric and the character-spot pre-post tests; no reach data attached.",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The four lines"
+      },
+      {
+        "doc": "skills/story-script/references/rubric.md",
+        "locator": "criterion 5"
+      },
+      {
+        "doc": "skills/story-script/references/formats.md",
+        "locator": "Character spot, Tests before posting"
+      },
+      {
+        "doc": "private:memory/film-brief-2026-10-12",
+        "locator": "How to apply, line 2"
+      },
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "film 01 VOICEOVER"
+      },
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "3. Mixing rules, rule 10; 7. Virality practice 2; 5.3 (X, LinkedIn rows)"
+      }
+    ],
+    "enforce": {
+      "check": "lint_shotlist.sound_off",
+      "default": null,
+      "part": null
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "The linter WARNs only when the sound_off sentence is missing; the 3-of-5 people tests are manual. | Merged: After one watch with the sound off, a viewer can say what the film showed; the plan states that sentence. [house; owner brief (clean, instantly understandable on mute); the 3 tier-A type-led films in round 9 play on mute.] | lint_shotlist warns when the sound_off sentence is missing; it cannot judge whether the sentence is true. | Merged: Picture and captions carry the meaning with the sound off; sound is the second reward, so no claim, punchline or instruction exists only in the audio. [craft; Practitioner heuristic for muted autoplay feeds; not measured by us.] | lint_shotlist only WARNS when the sound_off sentence is missing; it cannot verify the picture."
+  },
+  {
+    "id": "story.speech_gap_before_drop",
+    "title": "Leave a speech gap before the drop",
+    "statement": "When a voice leads into the drop, leave a 0.5-1 s speech gap immediately before the beat enters on the product name.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [],
+      "section": "turn"
+    },
+    "params": {
+      "speech_gap_s": [
+        0.5,
+        1.0
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Two round-3 pieces: one at 12x followers and 1.8% bookmarks (1 s of silence at 7-8 s of 58 s), one tier C at 0.09x (a speech gap before the music enters on the name).",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 115-136 and 512-529"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "cuts/patterns.json story.lateDrop.speech_gap_range_ms",
+      "part": "cuts/story/lateDrop"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.state_chip_flip_share",
+    "title": "Flip a state chip at 40-45%",
+    "statement": "A persistent corner state chip names the before on frame 0 and flips (colour flash, new label, tick) at 40-45% of a 13-15 s proof clip.",
+    "scope": {
+      "formats": [
+        "proof-clip"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "turn"
+    },
+    "params": {
+      "flip_share": [
+        0.4,
+        0.45
+      ],
+      "clip_s": [
+        13,
+        15
+      ]
+    },
+    "grade": "measured",
+    "evidence": "Three proof clips of a 1.8M-view launch thread flip at 6.5/15, 5.5/12.9 and 6.5/14.6 s (thread children, tier B by rule, read as C).",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Cross-film craft playbook, item 3"
+      },
+      {
+        "doc": "private:memory/launch-virality-notes",
+        "locator": "Craft worth reusing"
+      }
+    ],
+    "enforce": {
+      "check": "ears/ab_replay",
+      "default": "cuts/patterns.json story.abReplay flip_share 0.42 (range 0.35-0.6)",
+      "part": "ui.stateChip"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "One team's clips: defaults to tune. When silence is the before, the flip comes at about 3 s instead."
+  },
+  {
+    "id": "story.state_list_16s",
+    "title": "Write what the viewer knows per second",
+    "statement": "For a 16 s film, write a state list: hook 0-2 s, problem 2-5 s, reveal through a real interaction 5-9 s, proof 9-13 s, readable CTA 13-16 s, each beat with an entry state, an exit state and a reason.",
+    "scope": {
+      "formats": [
+        "ad-15",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "hook_s": [
+        0,
+        2
+      ],
+      "problem_s": [
+        2,
+        5
+      ],
+      "reveal_s": [
+        5,
+        9
+      ],
+      "proof_s": [
+        9,
+        13
+      ],
+      "cta_s": [
+        13,
+        16
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Practitioner method from a round method article (204K views, 735 bookmarks); not measured on films.",
+    "sources": [
+      {
+        "doc": "docs/evidence/INDEX.md#ref-one-prompt-method",
+        "locator": "The method, step 5, lines 26-33"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "As fractions 0-12.5/12.5-31/31-56/56-81/81-100%, close to the ad-15 structure pattern (hook 0-17, problem 17-33, product 33-60, proof 60-83, cta 83-100) except a shorter hook."
+  },
+  {
+    "id": "story.subtract_on_rejection",
+    "title": "Subtract to the spine after rejection",
+    "statement": "After a rejected draft, cut back to the spine before adding anything: one scene, one problem, one solution, one on-screen language and no unrequested voice-over.",
+    "scope": {
+      "formats": [
+        "character-spot",
+        "launch-film",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "on_screen_languages_max": 1
+    },
+    "grade": "craft",
+    "evidence": "One launch film grew past 60 s with more than 12 supers, two languages and a voice-over and was rejected; the subtracted version was accepted (1 case).",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 8"
+      },
+      {
+        "doc": "skills/story-script/references/rubric.md",
+        "locator": "Case study item 2"
+      },
+      {
+        "doc": "private:memory/film-brief-2026-10-12",
+        "locator": "Why; How to apply, last line"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Merged: When a cut is rejected, remove elements before adding any; never answer a note with another card, super or scene. [house; a draft grew to 67 s and 14 supers by adding every note and was rejected.] | skills/story-script/SKILL.md rule 8 says the same (prose)."
+  },
+  {
+    "id": "story.through_line_not_vignettes",
+    "title": "Tie beats with one through-line",
+    "statement": "Tie every beat to one person, one place or one clock; a run of problem-to-solution vignettes (five in the case study) reads as a feature parade, not a story.",
+    "scope": {
+      "formats": [
+        "explainer",
+        "launch-film",
+        "saas-feature-drop",
+        "short-film"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "through_lines_min": 1
+    },
+    "grade": "craft",
+    "evidence": "A clean cut built as five problem-to-solution vignettes was rejected for 'no storylining' and fixed with one protagonist and one turn (1 case).",
+    "sources": [
+      {
+        "doc": "skills/story-script/SKILL.md",
+        "locator": "The rules that held up in production, rule 2; Gotchas"
+      },
+      {
+        "doc": "skills/story-script/references/rubric.md",
+        "locator": "Case study item 3"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "Too many features for one through-line: make a series, one feature per episode."
+  },
+  {
+    "id": "story.trailer_arc",
+    "title": "Trailers: three acts, silence, title, date",
+    "statement": "A trailer runs cold open 0-10%, act 1 10-30%, act 2 30-65%, act 3 65-88%, silence then title 88-94%, button 94-97% and date card 97-100%.",
+    "scope": {
+      "formats": [
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "coldopen_pct": [
+        0,
+        10
+      ],
+      "act1_pct": [
+        10,
+        30
+      ],
+      "act2_pct": [
+        30,
+        65
+      ],
+      "act3_pct": [
+        65,
+        88
+      ],
+      "title_pct": [
+        88,
+        94
+      ],
+      "button_pct": [
+        94,
+        97
+      ],
+      "date_pct": [
+        97,
+        100
+      ]
+    },
+    "grade": "craft",
+    "evidence": "Trailer editors and trailer-music houses describe the beat order (practitioner); the percentages are our inference; a 6,926-trailer corpus averages 122.8 s.",
+    "sources": [
+      {
+        "doc": "docs/evidence/launch-video-patterns.md",
+        "locator": "6.5 Movie trailers"
+      },
+      {
+        "doc": "docs/evidence/film-trailer-craft.md",
+        "locator": "2. The trailer shape"
+      },
+      {
+        "doc": "patterns/structures.json",
+        "locator": "structures.trailer"
+      }
+    ],
+    "enforce": {
+      "check": "structure_check.check_timing",
+      "default": "patterns/structures.json structures.trailer.sections",
+      "part": "templates/trailer"
+    },
+    "status": "enforced",
+    "conflicts_with": [],
+    "notes": "cuts/patterns.json story.trailerArc encodes a different shape from one measured reference: dialogue 30%, build 25%, wall 20%, one question line 5% (2-4 s, bed >= 30 dB down), crescendo 10%, end 10%. Both are tunable; trailerArc is better for dialogue-led trailers. A logo or production card never comes before the cold open."
+  },
+  {
+    "id": "story.trailer_energy_arc",
+    "title": "Shape trailers as a dip then crescendo",
+    "statement": "A trailer runs quiet dialogue, title cards, a wall montage, one line over near-silence, a crescendo and a hard stop, at about 30/25/20/5/10/10% of the runtime.",
+    "scope": {
+      "formats": [
+        "trailer"
+      ],
+      "platforms": [],
+      "section": "whole"
+    },
+    "params": {
+      "share_dialogue": 0.3,
+      "share_build": 0.25,
+      "share_wall": 0.2,
+      "share_question": 0.05,
+      "share_crescendo": 0.1,
+      "share_end": 0.1,
+      "question_s": [
+        2,
+        4
+      ]
+    },
+    "grade": "measured",
+    "evidence": "One round-5 feature trailer graded R (reach by account size, 12.5M views at 0.43x); the shares are the part's reading of it.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round45-2026-10.md",
+        "locator": "Round 5 (20), line 52"
+      },
+      {
+        "doc": "cuts/patterns.json",
+        "locator": "story.trailerArc"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": "music/bed_trailer_arc",
+      "part": "cuts/story/trailerArc"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.turn_at_30pct",
+    "title": "Turn at about 30%",
+    "statement": "In a story-led launch hero the turn question lands at about 31% of the runtime and the product name at about 36%.",
+    "scope": {
+      "formats": [
+        "launch-film"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "turn"
+    },
+    "params": {
+      "turn_pct": 31,
+      "name_pct": 36
+    },
+    "grade": "measured-A",
+    "evidence": "The tier-A* hero of a 1.8M-view launch turns at 22.4 s and names the product at 26.5 s of 73.2 s.",
+    "sources": [
+      {
+        "doc": "private:research/launch-virality-study-2026-10",
+        "locator": "Film 1: hero, 2. Storyboard"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": "lint_shotlist.turn_window only warns outside 30-80%, so a turn at 60% passes; nothing checks the ~31% launch-hero position. | lint_shotlist warns outside 0.30-0.80. A tier-A founder film (round 8, film 02) turns at 17-23% and a boosted-looking thesis film (round 8, film 03) names its product at 52%: earlier turns also work for a person-led demo."
+  },
+  {
+    "id": "story.typed_request_to_result",
+    "title": "Type the request, show the result",
+    "statement": "Show a capability as one plain sentence typed into a bar, then the result taking the bar's place.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "proof-clip",
+        "saas-feature-drop"
+      ],
+      "platforms": [],
+      "section": "proof"
+    },
+    "params": {
+      "sentences_per_capability": 1
+    },
+    "grade": "measured-A",
+    "evidence": "3 of 3 tier-A video films in round 9 (round 8: 5 of 8 films).",
+    "sources": [
+      {
+        "doc": "private:research/reference-round9-2026-10.md",
+        "locator": "cross-film playbook item 1"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "ui.promptBar"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": "ui.promptBar is a type/gfx id (not scanned by check_ids). Show only what runs; label anything planned."
+  },
+  {
+    "id": "story.verb_chapter_cards",
+    "title": "Use one-verb chapter cards",
+    "statement": "Spine a feature tour on one giant verb per chapter (at most 6 verbs, one beat each, at least 300 ms), the last verb landing and holding 2 beats before settling into its subtitle.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop",
+        "saas-launch"
+      ],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "max_verbs": 6,
+      "beats_per_verb": 1,
+      "min_hold_ms": 300,
+      "last_hold_beats": 2
+    },
+    "grade": "craft",
+    "evidence": "A round-6 tier-C launch film uses verb chapter cards as its spine; a round-3 tier-C keynote uses serif chapter cards; a craft-only concept ad cycles a verb triad over a held image.",
+    "sources": [
+      {
+        "doc": "docs/evidence/reference-round6-2026-10.md",
+        "locator": "Film A craft takeaway 1, line 25"
+      },
+      {
+        "doc": "docs/evidence/reference-round3-2026-10.md",
+        "locator": "lines 406-425"
+      },
+      {
+        "doc": "docs/evidence/INDEX.md#ref-concept-ad",
+        "locator": "Structure, line 18"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": "cuts/story/verbLadder"
+    },
+    "status": "part",
+    "conflicts_with": [],
+    "notes": ""
+  },
+  {
+    "id": "story.vo_script_shape",
+    "title": "Shape a product VO script",
+    "statement": "A product VO opens in the first 5 s, runs 3-6 feature or step lines of 3-5 s each, then says the name, then a tagline or URL in the last 3-5 s.",
+    "scope": {
+      "formats": [
+        "launch-film",
+        "saas-feature-drop"
+      ],
+      "platforms": [
+        "x"
+      ],
+      "section": "whole"
+    },
+    "params": {
+      "open_by_s": 5,
+      "feature_lines": [
+        3,
+        6
+      ],
+      "line_s": [
+        3,
+        5
+      ],
+      "close_s": [
+        3,
+        5
+      ]
+    },
+    "grade": "measured-A",
+    "evidence": "The shape holds across the product VOs of round 7 (9 VO films); the tier-A VO film says name and category in 6.6 s and runs five feature lines of 4-5 s.",
+    "sources": [
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Craft playbook, item 5 (Voiceover)"
+      },
+      {
+        "doc": "private:research/reference-round7-2026-10.md",
+        "locator": "Tier-A films: the seven areas (film 07)"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
+  }
+]
