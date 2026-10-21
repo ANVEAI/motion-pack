@@ -109,20 +109,23 @@ runScene({
       lines.forEach((ln, i) => { g.font = `600 ${(i ? fs * 0.62 : fs)}px "IBM Plex Mono"`; const nch = Math.floor(ln.length * clamp(typed * lines.length - i)); g.fillText(ln.slice(0, i === 0 ? ln.length : nch), x0 + cw * 0.07, y0 + ch * (i === 0 ? 0.2 : 0.45 + 0.2 * (i - 1))); });
     }
     if (K.lowerThird) { const a = Math.min(E.soft(seg(t, AT.setup + 0.3, AT.setup + 0.6)), 1 - E.soft(seg(t, AT.escalation - 0.4, AT.escalation - 0.1)));
-      if (a > 0) { const fs = 30 * u * (tall ? 1.25 : 1), x = tall ? W * 0.08 : W * 0.07, y = tall ? H * 0.74 : H * 0.84; g.globalAlpha = a; g.font = `600 ${fs}px "IBM Plex Mono"`;
-        const tw = g.measureText(C.copy.lowerThird).width; g.fillStyle = 'rgba(14,11,8,0.72)'; g.fillRect(x - fs * 0.6, y - fs * 1.25, tw + fs * 1.2, fs * 1.75);
-        g.fillStyle = '#e0a43a'; g.fillRect(x - fs * 0.6, y - fs * 1.25, fs * 0.18, fs * 1.75); g.fillStyle = '#eee6d3'; g.textAlign = 'left'; g.fillText(C.copy.lowerThird, x, y); g.globalAlpha = 1; } }
+      // a lower third that reads on a phone, inside the platform safe rect
+      if (a > 0) { const fs = 58 * u, x = tall ? W * 0.14 : W * 0.08, y = tall ? H * 0.62 : H * 0.82; g.globalAlpha = a; g.font = `600 ${fs}px "IBM Plex Mono"`;
+        const lines = tall ? C.copy.lowerThird.split(' · ') : [C.copy.lowerThird], tw = Math.max(...lines.map((l) => g.measureText(l).width)), lh = fs * 1.25, bh = fs * 0.5 + lh * lines.length;   // 9:16: one line per part, so it fits the narrow frame
+        g.fillStyle = 'rgba(14,11,8,0.72)'; g.fillRect(x - fs * 0.6, y - fs * 1.25, tw + fs * 1.2, bh); g.fillStyle = '#e0a43a'; g.fillRect(x - fs * 0.6, y - fs * 1.25, fs * 0.18, bh);
+        g.fillStyle = '#eee6d3'; g.textAlign = 'left'; lines.forEach((l, i) => g.fillText(l, x, y + i * lh)); g.globalAlpha = 1; } }
     if (K.gate) { const R = K.gate * H; g.fillStyle = '#050403'; g.beginPath(); g.rect(0, 0, W, H); g.roundRect(0, 0, W, H, R); g.fill('evenodd'); }   // the film gate: rounded corners, never bars
     // the title on the message beat, in the style's type
     const t0 = AT.message + 0.3; if (t < t0) return;
     const a = E.soft(seg(t, t0, t0 + 10 / 30)), fs = (tall ? 112 : 104) * u, y = tall ? H * 0.27 : H * 0.2, mono = B.font === 'IBM Plex Mono' || C.world === 'doc';
     g.globalAlpha = a; g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.font = `${mono ? 600 : 800} ${fs}px "${mono ? 'IBM Plex Mono' : 'Manrope'}"`;
-    if (C.world === 'paper') { const tw = g.measureText(B.name).width; g.save(); g.translate(W / 2, y - fs * 0.35); g.rotate(-0.025); g.fillStyle = 'rgba(0,0,0,0.28)'; g.fillRect(-tw / 2 - fs * 0.45 + 8 * u, -fs * 0.8 + 10 * u, tw + fs * 0.9, fs * 2.05); g.fillStyle = B.paper; g.fillRect(-tw / 2 - fs * 0.45, -fs * 0.8, tw + fs * 0.9, fs * 2.05); g.restore(); }
-    if (C.world === 'clay') { const tw = g.measureText(B.name).width; g.fillStyle = 'rgba(255,250,244,0.88)'; const px = fs * 0.5, rr = fs * 0.7; g.beginPath(); g.roundRect(W / 2 - tw / 2 - px, y - fs * 1.05, tw + 2 * px, fs * 1.95, rr); g.fill(); }
+    if (C.world === 'paper') { const tw = g.measureText(B.name).width; g.save(); g.translate(W / 2, y - fs * 0.35); g.rotate(-0.025); g.fillStyle = 'rgba(0,0,0,0.28)'; g.fillRect(-tw / 2 - fs * 0.45 + 8 * u, -fs * 0.8 + 10 * u, tw + fs * 0.9, fs * 2.35); g.fillStyle = B.paper; g.fillRect(-tw / 2 - fs * 0.45, -fs * 0.8, tw + fs * 0.9, fs * 2.35); g.restore(); }
+    if (C.world === 'clay') { const tw = g.measureText(B.name).width; g.fillStyle = 'rgba(255,250,244,0.88)'; const px = fs * 0.5, rr = fs * 0.7; g.beginPath(); g.roundRect(W / 2 - tw / 2 - px, y - fs * 1.05, tw + 2 * px, fs * 2.25, rr); g.fill(); }
     if (C.world === 'neon') { g.shadowColor = B.accent; g.shadowBlur = 28 * u; }
     g.fillStyle = C.world === 'neon' || C.world === 'doc' ? '#f4f1ff' : B.ink; g.fillText(B.name, W / 2, y + (1 - a) * 12 * u); g.shadowBlur = 0;
-    const parts = B.line.split('*'), ls = fs * 0.42; g.font = `${mono ? 600 : 700} ${ls}px "${mono ? 'IBM Plex Mono' : 'Manrope'}"`; let w = 0; parts.forEach((p) => (w += g.measureText(p).width));
-    let x = W / 2 - w / 2; g.textAlign = 'left'; parts.forEach((p, i) => { g.fillStyle = i % 2 ? B.accent : (C.world === 'neon' || C.world === 'doc' ? '#e8e2f6' : B.ink); g.fillText(p, x, y + fs * 0.62); x += g.measureText(p).width; });
+    // the end line reads at 56 px or more at the 1080 reference (eyes readability)
+    const parts = B.line.split('*'), ls = Math.max(fs * 0.42, 62 * u); g.font = `${mono ? 600 : 700} ${ls}px "${mono ? 'IBM Plex Mono' : 'Manrope'}"`; let w = 0; parts.forEach((p) => (w += g.measureText(p).width));
+    let x = W / 2 - w / 2; g.textAlign = 'left'; parts.forEach((p, i) => { g.fillStyle = i % 2 ? B.accent : (C.world === 'neon' || C.world === 'doc' ? '#e8e2f6' : B.ink); g.fillText(p, x, y + fs * 0.32 + ls); x += g.measureText(p).width; });
     g.globalAlpha = 1;
   },
   subframes(n) { if (K.stepFps) return 1; const t = n / 30; return st.worker.fast(n) || Math.abs(t - EV.tap) < 0.3 || (t > EV.hop[0] - 0.1 && t < EV.hop[1] + 0.2) ? 8 : 4; },

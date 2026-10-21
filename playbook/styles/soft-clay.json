@@ -238,11 +238,14 @@
   "template": "templates/style-scene",
   "seconds": 13.5,
   "aspect": "16:9",
-  "status": "pending",
+  "status": "rendered",
   "preview": "media/styles/soft-clay.mp4",
   "tall_preview": "media/styles/soft-clay-9x16.mp4",
   "poster": "media/styles/soft-clay.jpg",
-  "release_asset": "motion-pack-style-soft-clay-v0.6.0.mp4"
+  "release_asset": "motion-pack-style-soft-clay-v0.6.0.mp4",
+  "lint": "mp lint --format character-spot: 16:9 94.2/100, 48 PASS, 6 WARN, 0 FAIL, 0 INFO, 15 N/A; 9:16 94.2/100, 48 PASS, 6 WARN, 0 FAIL, 0 INFO, 15 N/A",
+  "sheet": "release assets: style-soft-clay.sheet.jpg",
+  "made_by": "Claude Code (Opus 5.5): mp plan character-spot --style soft-clay --template style-scene, mp new, mp render 16:9 + 9:16 (render-lock, CRF 18), mp lint; 3 render rounds (type size, a documentary frame 0, the 9:16 lower third), 0 human rounds, 21 Oct 2026"
  },
  "honesty": "The demo is one run of the shared tiny story (a night reading room, a lamp, a book; the title is a labelled placeholder) in this style. The same prompt makes a different film on every run.",
  "world": "clay",

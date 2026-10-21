@@ -18,7 +18,7 @@ A wordless cartoon or mime spot: one situation, one product benefit, at most 6 e
 Make a 14-second 16:9 wordless character spot in the Paper Cut style: a cut-paper night room with layered planes, a figure taps a lamp on, page-peel cuts, then the title <your product>. Folk pluck bed.
 ```
 
-preview pending (the Paper Cut demo is not rendered yet) · `mp plan character-spot --style paper-cut --template style-scene --length 13.5 --aspect 16:9` · 201 characters
+[preview: the Paper Cut demo](../media/styles/paper-cut.mp4) · `mp plan character-spot --style paper-cut --template style-scene --length 13.5 --aspect 16:9` · 201 characters
 
 ### Character spot × Neon Night (hero scene), 13.5 s 16:9
 
@@ -26,7 +26,7 @@ preview pending (the Paper Cut demo is not rendered yet) · `mp plan character-s
 Make a 14-second 16:9 wordless character spot in the Neon Night style: through rain on glass, a figure switches on a lamp, light streaks pass, a slow push-in, then the title <your product>. Synthwave bed.
 ```
 
-preview pending (the Neon Night demo is not rendered yet) · `mp plan character-spot --style neon-night --template style-scene --length 13.5 --aspect 16:9` · 204 characters
+[preview: the Neon Night demo](../media/styles/neon-night.mp4) · `mp plan character-spot --style neon-night --template style-scene --length 13.5 --aspect 16:9` · 204 characters
 
 ### Character spot × Documentary Grain (hero scene), 13.5 s 16:9
 
@@ -34,7 +34,7 @@ preview pending (the Neon Night demo is not rendered yet) · `mp plan character-
 Make a 14-second 16:9 wordless character spot in the Documentary Grain style: a handheld night scene, rack focus from a lamp to a book, a lower third, an archival card, then the title <your product>.
 ```
 
-preview pending (the Documentary Grain demo is not rendered yet) · `mp plan character-spot --style documentary-grain --template style-scene --length 13.5 --aspect 16:9` · 199 characters
+[preview: the Documentary Grain demo](../media/styles/documentary-grain.mp4) · `mp plan character-spot --style documentary-grain --template style-scene --length 13.5 --aspect 16:9` · 199 characters
 
 ### Character spot × Soft Clay (hero scene), 13.5 s 16:9
 
@@ -42,7 +42,7 @@ preview pending (the Documentary Grain demo is not rendered yet) · `mp plan cha
 Make a 14-second 16:9 wordless character spot in the Soft Clay style: a sleepy clay figure at a night desk taps a lamp on, a book falls open, delight, then the title <your product>. Lo-fi bed.
 ```
 
-preview pending (the Soft Clay demo is not rendered yet) · `mp plan character-spot --style soft-clay --template style-scene --length 13.5 --aspect 16:9` · 192 characters
+[preview: the Soft Clay demo](../media/styles/soft-clay.mp4) · `mp plan character-spot --style soft-clay --template style-scene --length 13.5 --aspect 16:9` · 192 characters
 
 ## Ad (15 s / 30 s, paid or organic) (`ad`)
 
@@ -78,7 +78,7 @@ Make a 10-second 16:9 ad for <your product> in the Swiss Grid style: a hook line
 Make a 15-second 9:16 promo ad for <your product> in the Neon Night style: a glowing hook, the problem, the reveal on a synth hit, one proof line and a CTA end card. Music and sound effects.
 ```
 
-preview pending (the Neon Night demo is not rendered yet) · `mp plan ad --style neon-night --length 15 --aspect 9:16` · 190 characters
+[preview: the Neon Night demo](../media/styles/neon-night.mp4) · `mp plan ad --style neon-night --length 15 --aspect 9:16` · 190 characters
 
 ### Ad × Kinetic Poster, 10 s 1:1
 
@@ -94,7 +94,7 @@ Make a 10-second 1:1 ad for <your product> in the Kinetic Poster style: one loud
 Make a 15-second 16:9 ad for <your product> in the Paper Cut style: a friendly hook, the problem, the product reveal with a stamp, one proof line and a CTA end card. Folk music and paper sounds.
 ```
 
-preview pending (the Paper Cut demo is not rendered yet) · `mp plan ad --style paper-cut --length 15 --aspect 16:9` · 194 characters
+[preview: the Paper Cut demo](../media/styles/paper-cut.mp4) · `mp plan ad --style paper-cut --length 15 --aspect 16:9` · 194 characters
 
 ### Ad × Retro CRT, 10 s 16:9
 
@@ -110,7 +110,7 @@ Make a 10-second 16:9 ad for <your product> in the Retro CRT style: a typed-out 
 Make a 15-second 16:9 ad for <your product> in the Soft Clay style: the clay cast on frame 0 with the hook, the problem, the clay desk on the reveal, one proof line and a CTA. Lo-fi bed.
 ```
 
-preview pending (the Soft Clay demo is not rendered yet) · `mp plan ad --style soft-clay --length 15 --aspect 16:9` · 186 characters
+[preview: the Soft Clay demo](../media/styles/soft-clay.mp4) · `mp plan ad --style soft-clay --length 15 --aspect 16:9` · 186 characters
 
 ### Ad × Chrome Product, 15 s 16:9
 
@@ -146,7 +146,7 @@ Make a 35-second 16:9 launch film introducing <your product> in the Blueprint st
 Make a 35-second 9:16 launch film announcing <your product> in the Neon Night style: a hook in the first second, the problem, the reveal on the drop, three features and a CTA end card.
 ```
 
-preview pending (the Neon Night demo is not rendered yet) · `mp plan launch-film --style neon-night --length 35 --aspect 9:16` · 184 characters
+[preview: the Neon Night demo](../media/styles/neon-night.mp4) · `mp plan launch-film --style neon-night --length 35 --aspect 9:16` · 184 characters
 
 ### Launch film × Swiss Grid, 35 s 16:9
 
@@ -162,7 +162,7 @@ Make a 35-second 16:9 launch film announcing <your product> in the Swiss Grid st
 Make a 35-second 16:9 launch film introducing <your product> in the Documentary Grain style: a real stake on frame 0, the turn, the product as the answer, and a quiet end card. Ambient bed.
 ```
 
-preview pending (the Documentary Grain demo is not rendered yet) · `mp plan launch-film --style documentary-grain --length 35 --aspect 16:9` · 189 characters
+[preview: the Documentary Grain demo](../media/styles/documentary-grain.mp4) · `mp plan launch-film --style documentary-grain --length 35 --aspect 16:9` · 189 characters
 
 ## SaaS feature drop (one feature, one film) (`saas-feature-drop`)
 
@@ -182,7 +182,7 @@ Make a 20-second 16:9 new feature video for <your product> in the Swiss Grid sty
 Make a 15-second 9:16 changelog clip for the new feature in <your product> in the Neon Night style: the old way, the new feature, its shortcut and a CTA end card. Synthwave bed.
 ```
 
-preview pending (the Neon Night demo is not rendered yet) · `mp plan saas-feature-drop --style neon-night --length 15 --aspect 9:16` · 177 characters
+[preview: the Neon Night demo](../media/styles/neon-night.mp4) · `mp plan saas-feature-drop --style neon-night --length 15 --aspect 9:16` · 177 characters
 
 ### SaaS feature drop × Editorial Print, 20 s 16:9
 
@@ -254,7 +254,7 @@ Make a 45-second 16:9 explainer on how <your product> works in the Editorial Pri
 Make a 40-second 9:16 explainer on how <your product> works in the Paper Cut style: the question, the wrong model, the mechanism built from paper layers, a recap and the takeaway.
 ```
 
-preview pending (the Paper Cut demo is not rendered yet) · `mp plan explainer --style paper-cut --length 40 --aspect 9:16` · 179 characters
+[preview: the Paper Cut demo](../media/styles/paper-cut.mp4) · `mp plan explainer --style paper-cut --length 40 --aspect 9:16` · 179 characters
 
 ### Explainer × Documentary Grain, 60 s 16:9
 
@@ -262,7 +262,7 @@ preview pending (the Paper Cut demo is not rendered yet) · `mp plan explainer -
 Make a 60-second 16:9 explainer on why <your product> exists in the Documentary Grain style: the question, what people get wrong, how it works, one real example, and the takeaway.
 ```
 
-preview pending (the Documentary Grain demo is not rendered yet) · `mp plan explainer --style documentary-grain --length 60 --aspect 16:9` · 179 characters
+[preview: the Documentary Grain demo](../media/styles/documentary-grain.mp4) · `mp plan explainer --style documentary-grain --length 60 --aspect 16:9` · 179 characters
 
 ## The style prompts
 

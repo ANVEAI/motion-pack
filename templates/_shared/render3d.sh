@@ -16,7 +16,7 @@ else LOG="$D/out/render-$A.log"   # the full renderer log (gitignored); the cons
   if node "$SH/../../tools/render.mjs" "$D/$PAGE" "$D/out/$N-$A-picture.mp4" "$SEC" 30 --query "$Q" --crf "$CRF" --min-free-gib 10 > "$LOG" 2>&1; then grep -Ei "gpu|encoded|console|error|warn" "$LOG" | head -5 || true
   else echo "render failed (tools/render.mjs exit $?); last lines of $LOG:" >&2; tail -20 "$LOG" >&2; exit 1; fi; fi
 python3 "$SH/audio.py" "$D/out/plan.json" "$D/out/$N-mix.wav"
-ffmpeg -v error -y -i "$D/out/$N-$A-picture.mp4" -i "$D/out/$N-mix.wav" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest "$D/out/$N-$A.mp4"
+ffmpeg -v error -y -i "$D/out/$N-$A-picture.mp4" -i "$D/out/$N-mix.wav" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart "$D/out/$N-$A.mp4"
 rm -f "$D/out/$N-$A-picture.mp4" "$D/out/$N-$A-picture.frames.json"
 ls -la "$D/out/$N-$A.mp4"
 TS=$(node -e "const p=JSON.parse(require('fs').readFileSync('$D/out/plan.json','utf8'));console.log(p.shots.flatMap(s=>[s.start+0.15,s.start+s.dur*0.6]).map(x=>x.toFixed(2)).join(','))")

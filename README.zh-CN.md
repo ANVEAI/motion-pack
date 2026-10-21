@@ -1,9 +1,9 @@
-<p align="center"><a href="https://anveai.github.io/motion-pack/catalog/#styles"><img src="media/styles/mosaic.gif" alt="同一支 10 秒占位广告，用 motion-pack 的十种风格分别渲染，同时播放" width="100%"></a></p>
+<p align="center"><a href="https://anveai.github.io/motion-pack/catalog/#styles"><img src="media/styles/mosaic.gif" alt="四种主打风格场景同时播放：同一个夜晚阅览室的小故事，分别用柔软黏土、纪录片颗粒、霓虹之夜和剪纸风格讲述" width="100%"></a></p>
 
 <h1 align="center">motion-pack</h1>
 
 <p align="center"><b>告诉你的编程智能体想要什么样的片子，直接拿到带音乐、音效和字幕的成片 MP4。</b><br>
-<!--n:playbook_styles-->10<!--/n--> 种命名风格 · <!--n:playbook_formats-->14<!--/n--> 种片型 · <!--n:catalog_total-->1163<!--/n--> 个开源组件 · 每一帧都只由时间决定 · 代码 MIT，音效与配乐 CC0</p>
+<!--n:playbook_styles_hero-->4<!--/n--> 种主打风格场景 · <!--n:playbook_styles_starter-->6<!--/n--> 种入门皮肤 · <!--n:playbook_formats-->14<!--/n--> 种片型 · <!--n:catalog_total-->1163<!--/n--> 个开源组件 · 每一帧都只由时间决定 · 代码 MIT，音效与配乐 CC0</p>
 
 <p align="center">
   <a href="https://anveai.github.io/motion-pack/catalog/#styles"><b>▶ 观看风格样片</b></a> ·
@@ -19,24 +19,24 @@
   <a href="media/films/explainer.mp4"><img src="media/films/explainer.gif" alt="用讲解片片型做的原理讲解片（占位品牌）" width="32%"></a>
 </p>
 
-<p align="center"><sub>上图：同一支 10 秒占位广告，分别用全部 <!--n:playbook_styles-->10<!--/n--> 种风格渲染。下方：v0.5 验证运行中的发布片、证明片和讲解片（占位品牌、示例数据）。每一支都由智能体用本工具包完成规划、渲染和检查。点击可看 MP4。</sub></p>
+<p align="center"><sub>上图：同一个小故事（夜晚的阅览室、一盏台灯、一本书）用四种主打风格讲述，每种都有自己的电影语言：一拍二的挤压拉伸黏土、手持与焦点转移的纪录片、雨夜玻璃上的霓虹、带翻页转场的剪纸布景。下方：v0.5 验证运行中的发布片、证明片和讲解片（占位品牌、示例数据）。每一支都由智能体用本工具包完成规划、渲染和检查。点击可看 MP4。</sub></p>
 
 ## 复制这段提示词
 
 安装插件（见下文），在任意文件夹打开 Claude Code，粘贴：
 
 ```text
-用 Blueprint（蓝图）风格，为 <你的产品> 做一支 10 秒 16:9 的广告：一句钩子、问题、产品亮相、一句佐证，片尾卡写产品名和行动号召。要有音乐和音效。最后跑一遍检查。
+用 Soft Clay（柔软黏土）风格做一支 14 秒 16:9 的无台词角色短片：夜里趴在书桌前的黏土小人轻点台灯，书本翻开，开心起来，最后出现标题 Night Library。低保真配乐。
 ```
 
 智能体接下来会运行：
 
 ```bash
 sh skills/motion-pack/scripts/find-pack.sh            # PACK=...：MOTION_PACK_HOME、~/.motion-pack/<版本>，或 `mp init`（校验 SHA256）
-mp brief "<你的提示词>" --style blueprint --out work/   # 选片型，写出 research-pack.md、plan.json、project.json
-mp new ad work/film --project work/project.json        # 你的项目文件夹，放在工具包之外
-mp render --dir work/film                              # renders/ad-16x9.mp4 + 联系表 + 响度
-mp lint work/film/renders/ad-16x9.mp4                  # 逐条检查规则和风格特征，直到没有 FAIL
+mp brief "<你的提示词>" --style soft-clay --template style-scene --out work/   # 选片型，写出 research-pack.md、plan.json、project.json
+mp new style-scene work/film --project work/project.json    # 你的项目文件夹，放在工具包之外
+mp render --dir work/film --aspect 16:9,9:16                  # 16:9 与 9:16 成片 + 联系表 + 响度
+mp lint work/film/renders/style-scene-16x9.mp4          # 逐条检查规则、风格特征与技法，直到没有 FAIL
 ```
 
 风格可以换成 <!--n:playbook_styles-->10<!--/n--> 种中的任意一种（`mp styles`，加 `--zh` 显示中文），片型也可以换成发布片、证明片、讲解片或新功能片。[提示词库](docs/prompts.md)里有 <!--n:gallery_prompts-->29<!--/n--> 条经过测试的提示词，每条对应一个片型与风格的组合。同一条提示词每次运行都会做出不同的片子。
@@ -49,20 +49,27 @@ mp lint work/film/renders/ad-16x9.mp4                  # 逐条检查规则和�
 
 ## 风格
 
-| 风格 | 它看起来、听起来是什么样 | 样片 |
+**主打风格**是完整的电影语言：有自己的场景、由 `mp lint` 检查的技法数值（`lint.style.craft`），以及用 `templates/style-scene` 做的 13.5 秒样片（16:9 与 9:16）。
+
+| 主打风格 | 它的电影语言 | 样片 |
+|---|---|---|
+| `documentary-grain` 纪录片颗粒 | 夜晚的 16 毫米观察式纪录片：手持漂移、焦点转移、等宽下方字幕、档案卡片、片门与颗粒。 | [16:9](media/styles/documentary-grain.mp4) · [9:16](media/styles/documentary-grain-9x16.mp4) |
+| `neon-night` 霓虹之夜 | 雨夜玻璃：霓虹轮廓光、掠过的光带、缓慢推近、辉光与合成器浪潮配乐。 | [16:9](media/styles/neon-night.mp4) · [9:16](media/styles/neon-night-9x16.mp4) |
+| `paper-cut` 剪纸拼贴 | 剪纸立体布景：分层纸片与投影、每秒十二次的抖动、翻页转场与牛皮纸配色。 | [16:9](media/styles/paper-cut.mp4) · [9:16](media/styles/paper-cut-9x16.mp4) |
+| `soft-clay` 柔软黏土 | 夜晚的定格黏土：淡紫房间，一拍二的小人，挤压与拉伸，柔和主光与暖色台灯。 | [16:9](media/styles/soft-clay.mp4) · [9:16](media/styles/soft-clay-9x16.mp4) |
+
+**入门皮肤**把调色板、字体、转场、成片图层和声音叠加到任意片型上（样片是一支 10 秒的占位广告）。
+
+| 入门皮肤 | 它看起来、听起来是什么样 | 样片 |
 |---|---|---|
 | `blueprint` 蓝图 | 一张技术图纸：制图蓝上的等宽字，信号黄，先描边再填色。 | [10 秒 MP4](media/styles/blueprint.mp4) |
 | `chrome-product` 铬金属产品 | 石墨色舞台，银色文字，冰蓝光芒：高端产品揭晓。 | [10 秒 MP4](media/styles/chrome-product.mp4) |
-| `documentary-grain` 纪录片颗粒 | 16 毫米胶片的温度：深棕底上的米色字，琥珀点缀，胶片颗粒、灰尘与暖色漏光。 | [10 秒 MP4](media/styles/documentary-grain.mp4) |
 | `editorial-print` 编辑印刷 | 会动的杂志版面：暖色新闻纸上的衬线大标题，一抹红，网点质感。 | [10 秒 MP4](media/styles/editorial-print.mp4) |
 | `kinetic-poster` 动态海报 | 一张响亮的海报：信号黄上猛砸的巨大黑字，一抹钴蓝，踩点甩镜。 | [10 秒 MP4](media/styles/kinetic-poster.mp4) |
-| `neon-night` 霓虹之夜 | 夜城光晕：深靛蓝上的亮色字，洋红点缀，散景光斑，合成器浪潮配乐。 | [10 秒 MP4](media/styles/neon-night.mp4) |
-| `paper-cut` 剪纸拼贴 | 牛皮纸与瓦楞纸，一抹深青，弹跳字效与翻页转场：手作感。 | [10 秒 MP4](media/styles/paper-cut.mp4) |
 | `retro-crt` 复古显像管 | 一台老终端：荧光绿等宽字，琥珀点缀，扫描线、磁带抖动与芯片音乐。 | [10 秒 MP4](media/styles/retro-crt.mp4) |
-| `soft-clay` 柔软黏土 | 棚拍光下的圆润黏土 3D：淡紫底，友好的紫色，弹跳的低保真配乐。 | [10 秒 MP4](media/styles/soft-clay.mp4) |
 | `swiss-grid` 瑞士网格 | 白底黑色无衬线字，一抹信号红，踩点硬切：信息即设计。 | [10 秒 MP4](media/styles/swiss-grid.mp4) |
 
-`mp styles <id>` 会打印该风格的提示词、调色板（已做对比度检查）、字体、运动方式、转场、声音和所用组件；`mp plan <片型> --style <id>` 把风格叠加到任意片型上。完整表格见 [`playbook/README.md`](playbook/README.md#styles)。
+`mp styles <id>` 会打印该风格的提示词、调色板（已做对比度检查）、字体、运动、转场、声音、技法和所用组件；`mp plan <片型> --style <id>` 把风格叠加到任意片型上（主打风格的场景加 `--template style-scene`）。完整表格见 [`playbook/README.md`](playbook/README.md#styles)。
 
 ## 安装
 

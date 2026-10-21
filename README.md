@@ -1,9 +1,9 @@
-<p align="center"><a href="https://anveai.github.io/motion-pack/catalog/#styles"><img src="media/styles/mosaic.gif" alt="One ten-second placeholder ad rendered in each of the ten motion-pack styles, playing at once" width="100%"></a></p>
+<p align="center"><a href="https://anveai.github.io/motion-pack/catalog/#styles"><img src="media/styles/mosaic.gif" alt="The four hero style scenes playing at once: the same tiny night-reading-room story in soft clay, documentary grain, neon night and paper cut" width="100%"></a></p>
 
 <h1 align="center">motion-pack</h1>
 
 <p align="center"><b>Tell your coding agent what film you want. Get a finished MP4 with music, sound and captions.</b><br>
-<!--n:playbook_styles-->10<!--/n--> named styles · <!--n:playbook_formats-->14<!--/n--> formats · <!--n:catalog_total-->1163<!--/n--> open parts · every frame a pure function of time · MIT code, CC0 sound and music</p>
+<!--n:playbook_styles_hero-->4<!--/n--> hero style scenes · <!--n:playbook_styles_starter-->6<!--/n--> starter skins · <!--n:playbook_formats-->14<!--/n--> formats · <!--n:catalog_total-->1163<!--/n--> open parts · every frame a pure function of time · MIT code, CC0 sound and music</p>
 
 <p align="center">
   <a href="https://anveai.github.io/motion-pack/catalog/#styles"><b>▶ Watch the styles</b></a> ·
@@ -19,24 +19,24 @@
   <a href="media/films/explainer.mp4"><img src="media/films/explainer.gif" alt="A how-it-works explainer made with the explainer format (placeholder brand)" width="32%"></a>
 </p>
 
-<p align="center"><sub>Above: the same 10-second placeholder ad in all <!--n:playbook_styles-->10<!--/n--> styles. Below it: a launch film, a proof clip and an explainer from the v0.5 proof runs (placeholder brands, example data). Each one was planned, rendered and linted by an agent with this pack. Click for the MP4.</sub></p>
+<p align="center"><sub>Above: one tiny story (a night reading room, a lamp, a book) in the four hero styles, each with its own film language: clay on 2s with squash and stretch, documentary handheld with rack focus, neon rain on glass, a cut-paper diorama with page peels. Below it: a launch film, a proof clip and an explainer from the v0.5 proof runs (placeholder brands, example data). Each one was planned, rendered and linted by an agent with this pack. Click for the MP4.</sub></p>
 
 ## Copy this prompt
 
 Install the plugin (below), open Claude Code in any folder, and paste:
 
 ```text
-Make a 10-second 16:9 ad for <your product> in the Blueprint style: a hook line, the problem, the product reveal, one proof line and an end card with the name and a CTA. Music and sound. Then lint it.
+Make a 14-second 16:9 wordless character spot in the Soft Clay style: a sleepy clay figure at a night desk taps a lamp on, a book falls open, delight, then the title Night Library. Lo-fi bed.
 ```
 
 The agent then runs:
 
 ```bash
 sh skills/motion-pack/scripts/find-pack.sh            # PACK=...: MOTION_PACK_HOME, ~/.motion-pack/<version>, or `mp init` (checksum-verified)
-mp brief "<your prompt>" --style blueprint --out work/  # picks the format, writes research-pack.md + plan.json + project.json
-mp new ad work/film --project work/project.json        # your project folder, outside the pack
-mp render --dir work/film                              # renders/ad-16x9.mp4 + contact sheet + loudness
-mp lint work/film/renders/ad-16x9.mp4                  # every rule and the style's signature, until nothing FAILs
+mp brief "<your prompt>" --style soft-clay --template style-scene --out work/   # the format, research-pack.md, plan.json, project.json
+mp new style-scene work/film --project work/project.json    # your project folder, outside the pack
+mp render --dir work/film --aspect 16:9,9:16                  # renders/style-scene-16x9.mp4 + 9:16 + sheets + loudness
+mp lint work/film/renders/style-scene-16x9.mp4          # every rule and the style's signature and craft, until nothing FAILs
 ```
 
 Swap the style for any of the <!--n:playbook_styles-->10<!--/n--> (`mp styles`) or the format for a launch film, a proof clip, an explainer or a feature drop. The [prompt gallery](docs/prompts.md) has <!--n:gallery_prompts-->29<!--/n--> tested prompts, one per format and style pair. The same prompt makes a different film on every run.
@@ -49,20 +49,27 @@ Swap the style for any of the <!--n:playbook_styles-->10<!--/n--> (`mp styles`) 
 
 ## The styles
 
-| style | what it looks and sounds like | demo |
+**Hero styles** are full film languages: a scene, craft numbers that `mp lint` checks (`lint.style.craft`), and a 13.5 s demo made with `templates/style-scene` (16:9 and 9:16).
+
+| hero style | its film language | demo |
+|---|---|---|
+| `documentary-grain` | Observational 16 mm at night: handheld drift, rack focus, a mono lower third, an archival card, gate and grain. | [16:9](media/styles/documentary-grain.mp4) · [9:16](media/styles/documentary-grain-9x16.mp4) |
+| `neon-night` | Rain on glass at night: neon rim light, passing light streaks, a slow push-in, bloom and a synthwave bed. | [16:9](media/styles/neon-night.mp4) · [9:16](media/styles/neon-night-9x16.mp4) |
+| `paper-cut` | A cut-paper diorama: layered planes with drop shadows, boil on twelves, page-peel cuts and kraft colours. | [16:9](media/styles/paper-cut.mp4) · [9:16](media/styles/paper-cut-9x16.mp4) |
+| `soft-clay` | Stop-motion clay at night: a lilac room, a figure on 2s, squash and stretch, a soft key and a warm lamp. | [16:9](media/styles/soft-clay.mp4) · [9:16](media/styles/soft-clay-9x16.mp4) |
+
+**Starter skins** lay a palette, type, transitions, finishing layers and sound over any format (their demo is a 10 s `ad` on a placeholder subject).
+
+| starter skin | what it looks and sounds like | demo |
 |---|---|---|
 | `blueprint` | A technical drawing: mono type on drafting blue, signal yellow, outlines that fill in. | [10 s MP4](media/styles/blueprint.mp4) |
 | `chrome-product` | Graphite stage, silver type, an ice-blue glint: the premium product reveal. | [10 s MP4](media/styles/chrome-product.mp4) |
-| `documentary-grain` | 16 mm warmth: cream type on dark umber, amber accent, film grain, dust and warm light leaks. | [10 s MP4](media/styles/documentary-grain.mp4) |
 | `editorial-print` | A magazine spread that moves: serif headlines on warm newsprint, one red, a halftone tooth. | [10 s MP4](media/styles/editorial-print.mp4) |
 | `kinetic-poster` | A loud poster: giant black type slammed on signal yellow, one cobalt, whips on the beat. | [10 s MP4](media/styles/kinetic-poster.mp4) |
-| `neon-night` | Night city glow: light type on deep indigo, a magenta accent, bokeh and a synthwave bed. | [10 s MP4](media/styles/neon-night.mp4) |
-| `paper-cut` | Craft paper and cardboard, a deep teal, bouncy type and page peels: made by hand. | [10 s MP4](media/styles/paper-cut.mp4) |
 | `retro-crt` | An old terminal: phosphor green mono type, an amber accent, scanlines, tape wobble and chiptune. | [10 s MP4](media/styles/retro-crt.mp4) |
-| `soft-clay` | Rounded 3D clay under studio light: lilac ground, friendly purple, a bouncy lo-fi bed. | [10 s MP4](media/styles/soft-clay.mp4) |
 | `swiss-grid` | Black sans on white, one signal red, hard cuts on the beat: information as design. | [10 s MP4](media/styles/swiss-grid.mp4) |
 
-`mp styles <id>` prints a style's prompt, palette (contrast-checked), type, motion, transitions, sound and parts; `mp plan <format> --style <id>` lays it over any format. Full table: [`playbook/README.md`](playbook/README.md#styles).
+`mp styles <id>` prints a style's prompt, palette (contrast-checked), type, motion, transitions, sound, craft and parts; `mp plan <format> --style <id>` lays it over any format (`--template style-scene` for a hero's scene). Full table: [`playbook/README.md`](playbook/README.md#styles).
 
 ## More films
 
@@ -158,7 +165,7 @@ The skills pair well with [charlie947/social-media-skills](https://github.com/ch
 | `storyboard/` | a storyboard sheet (PNG, HTML, PDF) and an animatic MP4 drawn from `shotlist.json` before any build: one panel per shot with the text at its real size and the safe zone, 7 checks (the story-script linter, reading speed, safe zone, label hold, panel count, animatic duration to the frame and loudness), real key frames from a built composition, the sound intent as real sounds mastered to the pack spec | `storyboard/README.md` |
 | `eyes/` | automated looking and critique of a delivered MP4's picture, the visual twin of ears: 9 checks (frame 0, black and frozen frames, WCAG flashes, banding, safe zones, text size / time / contrast, pacing, composition, encode), each with a fix and timestamps | `eyes/README.md` |
 | `patterns/` | 20 beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), 13 hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/evidence/`; `tools/structure_check.py` scores a plan against them | `patterns/README.md` |
-| `playbook/` | 338 graded rules learned from studied films and our own renders (119 enforced by 69 `mp lint` checks, 22 written in by `mp plan`, 63 carried by a part, 134 prose-only gaps) and 14 formats (beats as fractions of the runtime, sound shape, exemplars, recommended parts, signals), 10 named visual styles (palette, type, motion, transitions, layers, sound, signature features) and 29 gallery prompts: `mp brief`, `mp plan`, `mp styles`, `mp lint`, `mp study` | `playbook/README.md` |
+| `playbook/` | 338 graded rules learned from studied films and our own renders (119 enforced by 69 `mp lint` checks, 22 written in by `mp plan`, 63 carried by a part, 134 prose-only gaps) and 14 formats (beats as fractions of the runtime, sound shape, exemplars, recommended parts, signals), 10 named visual styles (4 hero scenes with their own film craft, 6 starter skins) and 29 gallery prompts: `mp brief`, `mp plan`, `mp styles`, `mp lint`, `mp study` | `playbook/README.md` |
 | delivery + accessibility | `tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) to 42 chars, 2 lines, 20 cps (17 kids); an audio-description script (standard + extended, no TTS); an accessibility lint (flash, caption contrast, size, reading time, colour-blind, colour-only); 14 platform delivery presets with BT.709 tags, faststart and loudness by source; Lottie export of kinetic type and draw-on icons | `docs/DELIVERY-AND-ACCESSIBILITY.md` |
 | `cloud/` | optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, Gemini Live voiceover with a word-for-word check, a Gemini mood judge | `cloud/README.md` |
 

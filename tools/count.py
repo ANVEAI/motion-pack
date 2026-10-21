@@ -65,7 +65,10 @@ def _extra():
         c['playbook_rules'] = len(rules)
         c['playbook_formats'] = sum(1 for f in os.listdir(os.path.join(pb, 'formats')) if f.endswith('.json') and _tracked('playbook/formats/' + f)) if os.path.isdir(os.path.join(pb, 'formats')) else 0
         sd = os.path.join(pb, 'styles')   # v0.6: named visual styles and the prompt gallery
-        c['playbook_styles'] = sum(1 for f in os.listdir(sd) if f.endswith('.json') and _tracked('playbook/styles/' + f)) if os.path.isdir(sd) else 0
+        sts = [json.load(open(os.path.join(sd, f), encoding='utf-8')) for f in sorted(os.listdir(sd)) if f.endswith('.json') and _tracked('playbook/styles/' + f)] if os.path.isdir(sd) else []
+        c['playbook_styles'] = len(sts)
+        c['playbook_styles_hero'] = sum(1 for x in sts if x.get('tier') == 'hero')
+        c['playbook_styles_starter'] = len(sts) - c['playbook_styles_hero']
         pj = os.path.join(pb, 'prompts.json')
         c['gallery_prompts'] = len(json.load(open(pj, encoding='utf-8')).get('prompts') or []) if os.path.exists(pj) and _tracked('playbook/prompts.json') else 0
         sys.path.insert(0, os.path.join(REPO, 'tools'))
@@ -195,7 +198,7 @@ def table(c):
         rows.append(('`playbook/`', f"{c['playbook_rules']} graded rules learned from studied films and our own renders ({c['playbook_enforced']} enforced by {c['playbook_checks']} `mp lint` checks, "
                                     f"{c['playbook_default']} written in by `mp plan`, {c['playbook_part']} carried by a part, {c['playbook_prose_only']} prose-only gaps) and {c['playbook_formats']} formats "
                                     "(beats as fractions of the runtime, sound shape, exemplars, recommended parts, signals)"
-                                    + (f", {c['playbook_styles']} named visual styles (palette, type, motion, transitions, layers, sound, signature features) and {c['gallery_prompts']} gallery prompts" if c.get('playbook_styles') else '')
+                                    + (f", {c['playbook_styles']} named visual styles ({c['playbook_styles_hero']} hero scenes with their own film craft, {c['playbook_styles_starter']} starter skins) and {c['gallery_prompts']} gallery prompts" if c.get('playbook_styles') else '')
                                     + ": `mp brief`, `mp plan`, `mp styles`, `mp lint`, `mp study`", '`playbook/README.md`'))
     if os.path.isfile(os.path.join(REPO, 'tools', 'deliver.py')):   # xp access lane
         rows.append(('delivery + accessibility', "`tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) "

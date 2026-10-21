@@ -17,6 +17,17 @@ A format says what happens when; a **style** now says what it looks and sounds l
 - **Demos:** one 10 s, 16:9 film per style (the `ad` format on a placeholder subject, rendered through the render lock at CRF 18, 0 FAIL in `mp lint`). All ten are rendered. The small previews are in `media/styles/`; the full demos go to the release assets (`motion-pack-style-<id>-v0.6.0.mp4`).
 - **`templates/ad`:** a 10 s cut, an all-type mode (`plates: false`, a kicker tab on frame 0), fonts, muted and on-accent colours, upper case, and a reveal name fitted to one line. Default builds are unchanged.
 
+### New: four hero styles with their own film language
+
+- **soft-clay, documentary-grain, neon-night and paper-cut are hero styles** (`tier: hero`): each is a scene with its own craft, made with the new `templates/style-scene` (three.js objects kit) from one tiny shared story (a night reading room, a lamp, a book; the title is a placeholder), 13.5 s in 16:9 and 9:16:
+  - soft-clay: stop motion on 2s, squash and stretch on the tap and the landing, a soft moonlight key and a warm lamp pool;
+  - documentary-grain: handheld drift that settles, rack focus lamp -> book -> face, a mono lower third, a typed archival card, a film gate, grain and dips to black;
+  - neon-night: the room through rain running down glass, passing light streaks, a slow push-in, magenta and cyan rim light, heavy bloom, light-leak cuts;
+  - paper-cut: cut-paper layers at real depths with drop shadows, curtains and stars, boil on twelves, animation on 12s, page-peel cuts.
+- **The craft is encoded, not just shown:** each hero style carries `craft` numbers and a `world`; `mp plan <format> --style <hero> --template style-scene` writes them into the project, the template records them (`plan.scene`), and `lint.style.craft` checks them. All eight hero renders lint with 0 FAIL (`mp lint --format character-spot`).
+- **New parts** (ids, registry, README, catalog stills): `objects/night-set`, `objects/lamp`, `objects/book`, `objects/rain-glass`, `objects/paper-layers`, `objects/page-peel`, on `objects/lib/scene-craft.js` (stop motion, handheld, rack focus, rain, light streaks, paper boil, page peel, squash: pure functions of time, `tools/tests/scene-craft.test.mjs`).
+- **The other six are starter skins** (`tier: starter`), labelled so in `mp styles`, the catalog and the README. The README mosaic shows the four hero scenes.
+
 ### New: works from any folder
 
 - `skills/motion-pack/scripts/find-pack.sh` finds the pack: `MOTION_PACK_HOME`, the clone the skill sits in, `~/.motion-pack/<version>`, else `mp init`.

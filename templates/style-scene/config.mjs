@@ -66,8 +66,8 @@ export function buildPlan(C) {
     ...[0, 0.55, 1.1].map((d) => ({ id: S.flutter, t: E.flip[0] + d, gainDb: -10, why: 'pages run' })),
     { id: S.delight, t: E.hop[1], gainDb: -6, why: 'delight (the landing)' },
     { id: S.sting, t: at('message') + 0.35, gainDb: -2, why: 'the sting on the title' }];
-  const title = at('message') + 0.3, texts = [{ id: 'title', text: C.brand.name, t: [+(title).toFixed(3), seconds], role: 'headline', fontPx: 120 }, { id: 'line', text: C.brand.line.replace(/\*/g, ''), t: [+(title + 0.25).toFixed(3), seconds], role: 'line', fontPx: 52 }];
-  if (K.lowerThird) texts.push({ id: 'lower-third', text: C.copy.lowerThird, t: [+(at('setup') + 0.3).toFixed(3), +(at('escalation') - 0.1).toFixed(3)], role: 'label', fontPx: 34 });
+  const title = at('message') + 0.3, texts = [{ id: 'title', text: C.brand.name, t: [+(title).toFixed(3), seconds], role: 'headline', fontPx: 120 }, { id: 'line', text: C.brand.line.replace(/\*/g, ''), t: [+(title + 0.25).toFixed(3), seconds], role: 'line', fontPx: 62 }];
+  if (K.lowerThird) texts.push({ id: 'lower-third', text: C.copy.lowerThird, t: [+(at('setup') + 0.3).toFixed(3), +(at('escalation') - 0.1).toFixed(3)], role: 'label', fontPx: 58 });
   return { template: 'style-scene', fps: C.fps, seconds, music: C.music, shots: shots.map((s, i) => (i === shots.length - 1 ? { ...s, hold: true } : s)), cues: cues.sort((a, b) => a.t - b.t), texts, claims: [],
     scene: { world: C.world, craft: { ...K }, cuts: shots.slice(1).map((s) => ({ at: s.start, tx: s.tx, drawn: CUT_DRAWN.includes(s.tx) ? s.tx : 'transitions/cut' })) }, paceRule: { aslMax: 3.8, longMax: 3.8 } };
 }
