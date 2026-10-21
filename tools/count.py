@@ -64,6 +64,10 @@ def _extra():
             c['playbook_' + st.replace('-', '_')] = sum(1 for r in rules if r.get('status') == st)
         c['playbook_rules'] = len(rules)
         c['playbook_formats'] = sum(1 for f in os.listdir(os.path.join(pb, 'formats')) if f.endswith('.json') and _tracked('playbook/formats/' + f)) if os.path.isdir(os.path.join(pb, 'formats')) else 0
+        sd = os.path.join(pb, 'styles')   # v0.6: named visual styles and the prompt gallery
+        c['playbook_styles'] = sum(1 for f in os.listdir(sd) if f.endswith('.json') and _tracked('playbook/styles/' + f)) if os.path.isdir(sd) else 0
+        pj = os.path.join(pb, 'prompts.json')
+        c['gallery_prompts'] = len(json.load(open(pj, encoding='utf-8')).get('prompts') or []) if os.path.exists(pj) and _tracked('playbook/prompts.json') else 0
         sys.path.insert(0, os.path.join(REPO, 'tools'))
         import playbook_checks
         c['playbook_checks'] = len(playbook_checks.CHECKS)
@@ -190,7 +194,9 @@ def table(c):
     if c.get('playbook_rules'):   # v0.5: the learnings as graded rules, bundled into formats
         rows.append(('`playbook/`', f"{c['playbook_rules']} graded rules learned from studied films and our own renders ({c['playbook_enforced']} enforced by {c['playbook_checks']} `mp lint` checks, "
                                     f"{c['playbook_default']} written in by `mp plan`, {c['playbook_part']} carried by a part, {c['playbook_prose_only']} prose-only gaps) and {c['playbook_formats']} formats "
-                                    "(beats as fractions of the runtime, sound shape, exemplars, recommended parts, signals): `mp brief`, `mp plan`, `mp lint`, `mp study`", '`playbook/README.md`'))
+                                    "(beats as fractions of the runtime, sound shape, exemplars, recommended parts, signals)"
+                                    + (f", {c['playbook_styles']} named visual styles (palette, type, motion, transitions, layers, sound, signature features) and {c['gallery_prompts']} gallery prompts" if c.get('playbook_styles') else '')
+                                    + ": `mp brief`, `mp plan`, `mp styles`, `mp lint`, `mp study`", '`playbook/README.md`'))
     if os.path.isfile(os.path.join(REPO, 'tools', 'deliver.py')):   # xp access lane
         rows.append(('delivery + accessibility', "`tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) "
                      f"to 42 chars, 2 lines, 20 cps (17 kids); an audio-description script (standard + extended, no TTS); an accessibility lint (flash, caption contrast, size, reading time, colour-blind, colour-only); "
@@ -252,7 +258,7 @@ if __name__ == '__main__':
         new = re.sub(r'<!-- counts:start -->.*?<!-- counts:end -->', lambda m: '<!-- counts:start -->\n' + t + '\n<!-- counts:end -->', s, flags=re.S)
         vals, stale, unknown, rewrite = inline_values(c), [], [], {}
         for n in marked_files():
-            old = open(os.path.join(REPO, n), encoding='utf-8').read(); fixed, bad = fill(old, vals)
+            old = new if n == 'README.md' else open(os.path.join(REPO, n), encoding='utf-8').read(); fixed, bad = fill(old, vals)   # README.md: fill the markers on top of the new table, or the write would undo it
             unknown += [f'{n}: <!--n:{k}-->' for k in bad]
             if fixed != old:
                 stale.append(n); rewrite[n] = fixed
@@ -262,8 +268,9 @@ if __name__ == '__main__':
             print('inline counts', 'up to date' if not stale else 'STALE in ' + ', '.join(stale) + ': run python3 tools/count.py --write', f'({len(marked_files())} files)')
             for u in unknown: print('UNKNOWN KEY', u, '(python3 tools/count.py --keys lists them)')
             sys.exit(0 if ok else 1)
-        open(p, 'w', encoding='utf-8').write(new); print('README counts written')
-        for n, text in rewrite.items(): open(os.path.join(REPO, n), 'w', encoding='utf-8').write(text)
+        open(p, 'w', encoding='utf-8').write(rewrite.get('README.md', new)); print('README counts written')
+        for n, text in rewrite.items():
+            if n != 'README.md': open(os.path.join(REPO, n), 'w', encoding='utf-8').write(text)
         print('inline counts written:', ', '.join(rewrite) or 'nothing to change')
         if unknown: sys.exit('UNKNOWN KEY ' + '; '.join(unknown))
     else:

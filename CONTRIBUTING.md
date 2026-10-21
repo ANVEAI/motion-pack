@@ -48,3 +48,7 @@ Full-size renders (PNG) and WAV masters are not committed. After a sheet or demo
 - One topic per pull request, with a short note on what you measured (QA output, a contact sheet, or a render hash).
 - New components need a manifest entry, a demo still or sound preview, and a line in the module README.
 - By contributing you agree that your code is released under MIT and your generated media under CC0, as described in `LICENSE` and `LICENSE-MEDIA`.
+
+## Adding a style
+
+A style is one file, `playbook/styles/<id>.json` (schema: `playbook/schema/style.schema.json`), made only from parts the pack already has. Run `python3 tools/playbook_build.py`: it resolves every id, measures the palette with `skills/frame-design/scripts/contrast.py` (and writes `palette.contrast`), checks that the headline and card presets split by word or char, and regenerates `playbook/README.md` and `docs/prompts.md`. Add at least one gallery prompt to `playbook/prompts.json`, render the 8-12 s demo with `mp plan ad --style <id> --length 10` through the template's own path, keep the committed preview under 2 MB, and say in `demo.made_by` who made it and how many human rounds it took.

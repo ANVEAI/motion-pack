@@ -2,6 +2,40 @@
 
 Each release's notes are also on the [Releases page](https://github.com/ANVEAI/motion-pack/releases). The counts below come from `python3 tools/count.py` at each tag.
 
+## v0.6.0 (unreleased, branch v06): styles, any-folder install, prompt gallery
+
+A format says what happens when; a **style** now says what it looks and sounds like. The catalog grows to **<!--n:catalog_total-->1156<!--/n-->** components (10 styles and 14 format films join it).
+
+### New: the STYLE layer (`playbook/styles/`)
+
+- **<!--n:playbook_styles-->10<!--/n--> named styles built only from existing parts:** editorial-print, swiss-grid, neon-night, paper-cut, chrome-product, documentary-grain, blueprint, retro-crt, soft-clay, kinetic-poster. Each one has:
+  - a copy-ready prompt of 150-250 characters (and a Chinese one);
+  - a palette measured by `skills/frame-design/scripts/contrast.py`, type and presets, a motion personality and camera grammar;
+  - one transition per REASON plus banned ones, an overlay stack, a bed and role sounds;
+  - 4-8 signature features, each a `mp lint` check or a review item; formats; recipes whose ids resolve; a demo.
+- **Commands:** `mp styles [<id>] [--zh]`; `mp plan <format> --style <id>` (and `mp brief --style`) writes `plan.style` and lays the style into `project.json`; `mp lint` runs `lint.style.palette`, `.type`, `.transitions` and `.sound` and lists the review features.
+- **Demos:** one 10 s, 16:9 film per style (the `ad` format on a placeholder subject, rendered through the render lock at CRF 18, 0 FAIL in `mp lint`). The small previews are in `media/styles/`; the full demos go to the release assets (`motion-pack-style-<id>-v0.6.0.mp4`). See "Known gaps" for the ones still pending.
+- **`templates/ad`:** a 10 s cut, an all-type mode (`plates: false`, a kicker tab on frame 0), fonts, muted and on-accent colours, upper case, and a reveal name fitted to one line. Default builds are unchanged.
+
+### New: works from any folder
+
+- `skills/motion-pack/scripts/find-pack.sh` finds the pack: `MOTION_PACK_HOME`, the clone the skill sits in, `~/.motion-pack/<version>`, else `mp init`.
+- `mp init` downloads the tagged release tarball (`motion-pack-v<version>.tar.gz`) and `SHA256SUMS`, checks the sha256 and unpacks into `~/.motion-pack/<version>`. **Release step:** `scripts/release-tarball.sh v0.6.0` makes the tarball and its SHA256SUMS line; attach both to the release.
+
+### New: prompt gallery and catalog tabs
+
+- `docs/prompts.md`: <!--n:gallery_prompts-->25<!--/n--> format × style prompts (generated from `playbook/prompts.json`; CI checks that `mp brief` routes each to its format and that `mp plan --style` builds it).
+- The catalog opens on **Styles** and **Films** tabs, each item with its preview and a copy button for its prompt.
+- `README.md` now opens with moving films and a "copy this prompt" quick start; `README.zh-CN.md` translates the top and summarises the rest.
+
+### Fixes found by the v14 film
+
+- eyes reads two-colour lines (plan `fgAlt`); ears keeps a planned quiet before the final sting (merged from `film-v14`).
+- The turn-window check no longer divides the percent range by 100 twice.
+- `mp lint` no longer reuses eyes / ears reports of an older render at the same path (keyed on the render's sha256).
+- `mp brief` ignores negated phrases and meta lines, weights the goal and audience over words like film or hype, and counts a named format; a brand-free copy of the v14 brief is a regression fixture (launch-film, not trailer).
+- `tools/count.py --write` no longer undoes the README table when README.md also carries inline markers.
+
 ## v0.5.0 (21 Oct 2026): the playbook
 
 Everything the pack has learned from studied films and its own renders is now one machine-readable **playbook**, and the `mp` CLI uses it from the brief to the final check. The catalog stays at **1132** components and **24** genre templates (`tools/count.py`).

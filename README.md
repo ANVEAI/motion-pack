@@ -1,3 +1,71 @@
+<p align="center"><a href="https://anveai.github.io/motion-pack/catalog/#styles"><img src="media/styles/mosaic.gif" alt="One ten-second placeholder ad rendered in each of the ten motion-pack styles, playing at once" width="100%"></a></p>
+
+<h1 align="center">motion-pack</h1>
+
+<p align="center"><b>Tell your coding agent what film you want. Get a finished MP4 with music, sound and captions.</b><br>
+<!--n:playbook_styles-->10<!--/n--> named styles · <!--n:playbook_formats-->14<!--/n--> formats · <!--n:catalog_total-->1156<!--/n--> open parts · every frame a pure function of time · MIT code, CC0 sound and music</p>
+
+<p align="center">
+  <a href="https://anveai.github.io/motion-pack/catalog/#styles"><b>▶ Watch the styles</b></a> ·
+  <a href="#copy-this-prompt">Copy a prompt</a> ·
+  <a href="docs/prompts.md">Prompt gallery</a> ·
+  <a href="README.zh-CN.md">简体中文</a> ·
+  <a href="#use-it-with-your-claude">Install</a>
+</p>
+
+<p align="center">
+  <a href="media/films/launch-film.mp4"><img src="media/films/launch-film.gif" alt="A 35-second launch film made with the launch-film format (placeholder brand)" width="32%"></a>
+  <a href="media/films/proof-clip.mp4"><img src="media/films/proof-clip.gif" alt="A 15-second proof clip made with the proof-clip format (example data)" width="32%"></a>
+  <a href="media/films/explainer.mp4"><img src="media/films/explainer.gif" alt="A how-it-works explainer made with the explainer format (placeholder brand)" width="32%"></a>
+</p>
+
+<p align="center"><sub>Above: the same 10-second placeholder ad in all <!--n:playbook_styles-->10<!--/n--> styles. Below it: a launch film, a proof clip and an explainer from the v0.5 proof runs (placeholder brands, example data). Each one was planned, rendered and linted by an agent with this pack. Click for the MP4.</sub></p>
+
+## Copy this prompt
+
+Install the plugin (below), open Claude Code in any folder, and paste:
+
+```text
+Make a 10-second 16:9 ad for <your product> in the Blueprint style: a hook line, the problem, the product reveal, one proof line and an end card with the name and a CTA. Music and sound. Then lint it.
+```
+
+The agent then runs:
+
+```bash
+sh skills/motion-pack/scripts/find-pack.sh            # PACK=...: MOTION_PACK_HOME, ~/.motion-pack/<version>, or `mp init` (checksum-verified)
+mp brief "<your prompt>" --style blueprint --out work/  # picks the format, writes research-pack.md + plan.json + project.json
+mp new ad work/film --project work/project.json        # your project folder, outside the pack
+mp render --dir work/film                              # renders/ad-16x9.mp4 + contact sheet + loudness
+mp lint work/film/renders/ad-16x9.mp4                  # every rule and the style's signature, until nothing FAILs
+```
+
+Swap the style for any of the <!--n:playbook_styles-->10<!--/n--> (`mp styles`) or the format for a launch film, a proof clip, an explainer or a feature drop. The [prompt gallery](docs/prompts.md) has <!--n:gallery_prompts-->25<!--/n--> tested prompts, one per format and style pair. The same prompt makes a different film on every run.
+
+## Why this pack
+
+- **Deterministic.** Every frame is a pure function of time, so any frame re-renders the same, in any order, on any number of workers.
+- **Linted.** `mp lint` checks the plan and the delivered file against <!--n:playbook_rules-->338<!--/n--> graded rules (hooks, safe zones, contrast, reading time, loudness) and each style's signature.
+- **CC0.** Every sound, music bed and render the pack makes is CC0, and the code is MIT. Nothing is sampled, scraped or made by a paid model.
+
+## The styles
+
+| style | what it looks and sounds like | demo |
+|---|---|---|
+| `blueprint` | A technical drawing: mono type on drafting blue, signal yellow, outlines that fill in. | [10 s MP4](media/styles/blueprint.mp4) |
+| `chrome-product` | Graphite stage, silver type, an ice-blue glint: the premium product reveal. | [10 s MP4](media/styles/chrome-product.mp4) |
+| `documentary-grain` | 16 mm warmth: cream type on dark umber, amber accent, film grain, dust and warm light leaks. | [10 s MP4](media/styles/documentary-grain.mp4) |
+| `editorial-print` | A magazine spread that moves: serif headlines on warm newsprint, one red, a halftone tooth. | [10 s MP4](media/styles/editorial-print.mp4) |
+| `kinetic-poster` | A loud poster: giant black type slammed on signal yellow, one cobalt, whips on the beat. | [10 s MP4](media/styles/kinetic-poster.mp4) |
+| `neon-night` | Night city glow: light type on deep indigo, a magenta accent, bokeh and a synthwave bed. | [10 s MP4](media/styles/neon-night.mp4) |
+| `paper-cut` | Craft paper and cardboard, a deep teal, bouncy type and page peels: made by hand. | [10 s MP4](media/styles/paper-cut.mp4) |
+| `retro-crt` | An old terminal: phosphor green mono type, an amber accent, scanlines, tape wobble and chiptune. | [10 s MP4](media/styles/retro-crt.mp4) |
+| `soft-clay` | Rounded 3D clay under studio light: lilac ground, friendly purple, a bouncy lo-fi bed. | [10 s MP4](media/styles/soft-clay.mp4) |
+| `swiss-grid` | Black sans on white, one signal red, hard cuts on the beat: information as design. | [10 s MP4](media/styles/swiss-grid.mp4) |
+
+`mp styles <id>` prints a style's prompt, palette (contrast-checked), type, motion, transitions, sound and parts; `mp plan <format> --style <id>` lays it over any format. Full table: [`playbook/README.md`](playbook/README.md#styles).
+
+## More films
+
 https://github.com/user-attachments/assets/917b9ebc-9679-49bf-b4c8-dc9a1663dead
 
 <p align="center"><sub>The 46-second showcase film (sound on). An agent made every frame with this pack: Blender 3D, GL transitions, kinetic type, synthesised music and sound. Download: <a href="media/film.mp4"><code>media/film.mp4</code></a>.</sub></p>
@@ -8,22 +76,7 @@ https://github.com/user-attachments/assets/917b9ebc-9679-49bf-b4c8-dc9a1663dead
 
 <p align="center"><sub>The first promo, also made with the pack. Click it for the <a href="media/promo.mp4">full 42-second MP4</a>.</sub></p>
 
-<h1 align="center">motion-pack</h1>
-
-<p align="center">
-  <b>Open-source video parts and AI skills that take an agent from a prompt to a finished, beat-synced video.</b><br>
-  Every frame is a pure function of time. Tested against 20 popular motion libraries. MIT code, CC0 sounds and music.
-</p>
-
-<p align="center">
-  <a href="https://anveai.github.io/motion-pack/catalog/"><b>Browse the catalog</b></a> ·
-  <a href="#quickstart-5-minutes">Quickstart</a> ·
-  <a href="#the-skills">Skills</a> ·
-  <a href="#lab-20-motion-libraries-tested">Lab results</a> ·
-  <a href="#use-it-with-your-claude">Install in Claude Code</a>
-</p>
-
----
+## What it is
 
 AI agents can now write the code for a video. Making it *good* is still hard. You need:
 - **a story** worth watching;
@@ -105,11 +158,11 @@ The skills pair well with [charlie947/social-media-skills](https://github.com/ch
 | `storyboard/` | a storyboard sheet (PNG, HTML, PDF) and an animatic MP4 drawn from `shotlist.json` before any build: one panel per shot with the text at its real size and the safe zone, 7 checks (the story-script linter, reading speed, safe zone, label hold, panel count, animatic duration to the frame and loudness), real key frames from a built composition, the sound intent as real sounds mastered to the pack spec | `storyboard/README.md` |
 | `eyes/` | automated looking and critique of a delivered MP4's picture, the visual twin of ears: 9 checks (frame 0, black and frozen frames, WCAG flashes, banding, safe zones, text size / time / contrast, pacing, composition, encode), each with a fix and timestamps | `eyes/README.md` |
 | `patterns/` | 20 beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), 13 hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/evidence/`; `tools/structure_check.py` scores a plan against them | `patterns/README.md` |
-| `playbook/` | 338 graded rules learned from studied films and our own renders (119 enforced by 64 `mp lint` checks, 22 written in by `mp plan`, 63 carried by a part, 134 prose-only gaps) and 14 formats (beats as fractions of the runtime, sound shape, exemplars, recommended parts, signals): `mp brief`, `mp plan`, `mp lint`, `mp study` | `playbook/README.md` |
+| `playbook/` | 338 graded rules learned from studied films and our own renders (119 enforced by 68 `mp lint` checks, 22 written in by `mp plan`, 63 carried by a part, 134 prose-only gaps) and 14 formats (beats as fractions of the runtime, sound shape, exemplars, recommended parts, signals), 10 named visual styles (palette, type, motion, transitions, layers, sound, signature features) and 25 gallery prompts: `mp brief`, `mp plan`, `mp styles`, `mp lint`, `mp study` | `playbook/README.md` |
 | delivery + accessibility | `tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) to 42 chars, 2 lines, 20 cps (17 kids); an audio-description script (standard + extended, no TTS); an accessibility lint (flash, caption contrast, size, reading time, colour-blind, colour-only); 14 platform delivery presets with BT.709 tags, faststart and loudness by source; Lottie export of kinetic type and draw-on icons | `docs/DELIVERY-AND-ACCESSIBILITY.md` |
 | `cloud/` | optional paid Google Cloud audio back-ends (your project, your bill): Lyria music beds, Gemini Live voiceover with a word-for-word check, a Gemini mood judge | `cloud/README.md` |
 
-The catalog lists **1132** browsable components. Counts generated by `python3 tools/count.py`.
+The catalog lists **1156** browsable components. Counts generated by `python3 tools/count.py`.
 <!-- counts:end -->
 
 Every module has a README with its API, measured numbers and honest limits. Modules reference each other by id (`transitions/whip`, `sfx/whoosh/swish_s`, `music/bed_tech_pulse_loop8`, `type/scaleSlam`, `objects/laptop`, `blender/turntable`), and `python3 tools/check_ids.py --docs` resolves them: the nine families of the skill's rule 1 (transitions, sfx, music, type, layers, objects, blender, cam2d / cam3d, cuts) plus template ids, in code, config, data and the `code spans` of every Markdown file. The part ids of `type/gfx` (`ui.promptBar`, `counter.statCard`, ...) are not scanned.
@@ -169,7 +222,7 @@ The repository is a Claude Code plugin and marketplace:
 /plugin install motion-pack@anve
 ```
 
-Then ask for a video ("make a 30-second launch ad for my app") and the skills load on their own. Run Claude Code from a clone of this repo, because renders and audio builds happen in the clone.
+Then ask for a video ("make a 30-second launch ad for my app") from any folder, and the skills load on their own. The skill finds the pack with `skills/motion-pack/scripts/find-pack.sh`: `MOTION_PACK_HOME` if you set it (a clone), else `~/.motion-pack/<version>`, else it runs `mp init`, which downloads that release's tarball from GitHub into `~/.motion-pack/<version>` and checks it against the release's `SHA256SUMS` before unpacking. Your project folders stay where you work; renders and sound builds happen in the pack folder, never in the plugin cache.
 
 **claude.ai (web and desktop apps):** each skill also ships as a zip on the [latest release](https://github.com/ANVEAI/motion-pack/releases/latest) (`skill-<name>-v0.5.0.zip`). Upload one in **Customize > Skills > Upload skill**. Be clear about what you get there. In claude.ai the skills plan the video: the story and script, the shot list, `design.json` with measured contrast, the cue sheet, and the post copy. Rendering, audio builds and the ears checks need the repo's code, Python and ffmpeg on a computer, so they run in Claude Code (or any agent with a shell) inside a clone.
 
