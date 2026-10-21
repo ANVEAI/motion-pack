@@ -139,6 +139,12 @@ jobs:
         run: python3 tools/structure_check.py --all
       - name: "structure check mutation proof (each scoring rule fails its test when broken)"
         run: python3 tools/mutation_check.py tools/tests/structure_check.mutants.json
+      - name: "playbook (rules and formats validate against their schemas; every check, plan default and part id resolves; playbook/README.md is current; the fixture playbook too)"
+        run: python3 tools/playbook_build.py --check && python3 tools/playbook_build.py --check --playbook tools/tests/fixtures/playbook
+      - name: "mp plan (the fixture format at 15, 30 and 45 s and both aspects; beats, sound shape, TODOs, and the filled project builds through the template's own path; node, no browser)"
+        run: node tools/tests/playbook-plan.test.mjs
+      - name: "lint check mutation proof (each playbook lint check and the grade-to-severity rule fail their test when broken)"
+        run: python3 tools/mutation_check.py tools/tests/playbook_checks.mutants.json
       - name: "README counts are current"
         run: python3 tools/count.py --check
       - name: "catalog media all resolve"
