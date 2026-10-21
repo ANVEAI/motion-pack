@@ -2,6 +2,67 @@
 
 Each release's notes are also on the [Releases page](https://github.com/ANVEAI/motion-pack/releases). The counts below come from `python3 tools/count.py` at each tag.
 
+## v0.5.0 (21 Oct 2026): the playbook
+
+Everything the pack has learned from studied films and its own renders is now one machine-readable **playbook**, and the `mp` CLI uses it from the brief to the final check. The catalog stays at **1132** components and **24** genre templates (`tools/count.py`).
+
+### New: the playbook (`playbook/`)
+
+- **338 graded, atomic rules** in `playbook/rules/`.
+  - By how they are kept: 119 enforced by 64 `mp lint` checks, 22 written into the plan by `mp plan`, 63 carried by a pack part, and 134 still prose-only.
+  - By grade: 54 measured-A, 67 measured, 79 craft, 128 house, 10 inferred.
+- **14 formats** in `playbook/formats/`: launch-film, proof-clip, saas-feature-drop, hardware-teaser, trailer, beat-edit, explainer, chat-skit, screen-life, character-spot, talking-head, short-film, documentary and ad. Each one has:
+  - beats as fractions of the runtime;
+  - a sound shape: quiet open, bass entry, silence under the name, tail;
+  - hooks, end shapes and a post plan;
+  - the recommended parts per beat;
+  - 2-5 brand-free measured exemplars.
+- **`tools/playbook_build.py`** validates the rules and formats against their schemas and generates `playbook/README.md`. CI runs it with `--check`.
+- **The evidence moved:** the research notes are now in `docs/evidence/` (with `INDEX.md`: the rules that cite each note). `docs/research/README.md` redirects there.
+- **The skill is a router:** `skills/motion-pack/SKILL.md` is now a 139-line router through the playbook, with the detail in its references.
+
+### How to use it
+
+```bash
+mp formats                                      # the 14 formats, one line each
+mp brief "one-line idea" --goal launch          # picks the format, writes research-pack.md, then the plan
+mp plan launch-film --length 35 --aspect 16:9   # a plan.json skeleton with the format's defaults and TODOs
+mp new saas-launch ~/Movies/film --project project.json   # a project folder outside the pack, with the playbook block
+mp render --aspect 16:9                         # (in the project folder) renders, then remuxes the master (see Fixed)
+mp lint renders/saas-launch-16x9.mp4       # which rules the film kept and which it broke (eyes + ears measured)
+mp study renders/saas-launch-16x9.mp4 --ours   # gaps against the format's closest exemplar, with the direction to move
+mp rules --gaps                                 # the prose-only rules: the backlog
+```
+
+In `mp lint`, a failed house or measured-A rule is a FAIL, a failed measured or craft rule is a WARN, and an inferred rule is information only. The `playbook` block that `mp plan` writes into `project.json` is applied by `templates/_shared/playbook.mjs` (from `cues.mjs`). It plans the quiet open, the bass entry on the reveal, the silence under the name, the tail, the end hold and the first sound, and lists every change in `plan.playbook.applied`.
+
+### Fixed: quiet renders (the v0.4.0 weak spot)
+
+- **The cause was not the true-peak guard.** v0.4.0 blamed HyperFrames' true-peak guard for `data-story` and `explainer-diagram` rendering 7.4 and 8.7 dB under their -14 LUFS mixes. That was wrong: their AAC probes read -5.3 and -2.0 dBTP, under the -1 dBTP guard. HyperFrames' own audio stage, which assembles the track during the render, lowered it.
+- **The fix:** `mp render` now remuxes the template's own master under the rendered picture (`tools/mp-audio.mjs`). It does this only when the page plays one master and every video is muted. The old `explainer-diagram` render, remuxed, reads -14.1 LUFS-I.
+- **The limiter:** every master now ends in a 4x-oversampled true-peak limiter (`music/mixer.py` `master_for_delivery`). Its ceiling is lowered until the AAC probes read ≤ -1.1 dBTP. `film-scene`, whose mix stopped at -17.49 LUFS on the peak ceiling, re-mixes at -14.02 LUFS-I / -1.50 dBTP.
+- **The checks:** `lint.sound.master_limiter` and `lint.sound.renderer_lowering` enforce both. The tests are `music/tests/test_master_delivery.py` and `tools/tests/test_mp_audio.py`.
+
+### Three proof films, scored by `mp lint` before and after
+
+Each film was rendered at 16:9 from a neutral `mp brief` with fictional placeholder brands, then linted with eyes and ears measured.
+
+| format (template) | before | after | delivered loudness after |
+|---|---|---|---|
+| launch-film (`saas-launch`, 35 s) | 77.7, 11 FAIL (the v0.4.0 template) | **90.3, 0 FAIL** | -14.09 LUFS-I / -2.06 dBTP |
+| proof-clip (`proof-film`, clip cut) | no v0.4.0 render exists; the stock plan scored 100 on the plan alone | **97.2, 0 FAIL** | -14.05 / -2.86 |
+| explainer (`explainer-diagram`) | 82.3, 7 FAIL (the v0.4.0 template, rendered at -22.75 LUFS) | **93.9, 0 FAIL** | -14.06 / -1.04 |
+
+The three films are attached to the v0.5.0 release.
+
+### Known gaps
+
+- **134 of the 338 rules are prose-only:** no check, plan default or part keeps them yet (`mp rules --gaps`).
+- **Bass entry is checked from the plan only** (`plan.audio.bass_entry_s`). Ears has no low-band curve over time yet, so a render that moves the bass is not caught.
+- **`refstudy` counts 0 cuts across soft transitions.** A film whose scenes change through dissolves or slides reads 0 cuts per minute, as the launch-film proof did.
+- **5 of 24 templates read `plan.playbook`:** `saas-launch`, `proof-film` and `explainer-diagram` are tested against it (`tools/tests/playbook-apply.test.mjs`) and proved by the films above. `data-story` and `process-howto` build through the same explainer path. The other 19 have not been tuned or tested against a playbook block yet.
+- **Unchanged since v0.4.0:** the eyes and ears weak spots listed under v0.4.0, other than the quiet renders.
+
 ## v0.4.0 (19 Oct 2026): genre templates, an editable project file, delivery and accessibility
 
 The catalog grows from 954 to **1132** components. Genre templates go from 7 to **24**, plus 12 part demos. Every number in this section comes from `tools/count.py` or from a test or check named next to it.
