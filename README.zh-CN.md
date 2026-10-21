@@ -39,7 +39,7 @@ mp render --dir work/film                              # renders/ad-16x9.mp4 + �
 mp lint work/film/renders/ad-16x9.mp4                  # 逐条检查规则和风格特征，直到没有 FAIL
 ```
 
-风格可以换成 <!--n:playbook_styles-->10<!--/n--> 种中的任意一种（`mp styles`，加 `--zh` 显示中文），片型也可以换成发布片、证明片、讲解片或新功能片。[提示词库](docs/prompts.md)里有 <!--n:gallery_prompts-->25<!--/n--> 条经过测试的提示词，每条对应一个片型与风格的组合。同一条提示词每次运行都会做出不同的片子。
+风格可以换成 <!--n:playbook_styles-->10<!--/n--> 种中的任意一种（`mp styles`，加 `--zh` 显示中文），片型也可以换成发布片、证明片、讲解片或新功能片。[提示词库](docs/prompts.md)里有 <!--n:gallery_prompts-->29<!--/n--> 条经过测试的提示词，每条对应一个片型与风格的组合。同一条提示词每次运行都会做出不同的片子。
 
 ## 为什么用这个工具包
 

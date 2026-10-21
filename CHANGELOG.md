@@ -24,7 +24,7 @@ A format says what happens when; a **style** now says what it looks and sounds l
 
 ### New: prompt gallery and catalog tabs
 
-- `docs/prompts.md`: <!--n:gallery_prompts-->25<!--/n--> format × style prompts (generated from `playbook/prompts.json`; CI checks that `mp brief` routes each to its format and that `mp plan --style` builds it).
+- `docs/prompts.md`: <!--n:gallery_prompts-->29<!--/n--> format × style prompts (generated from `playbook/prompts.json`; CI checks that `mp brief` routes each to its format and that `mp plan --style` builds it).
 - The catalog opens on **Styles** and **Films** tabs, each item with its preview and a copy button for its prompt.
 - `README.md` now opens with moving films and a "copy this prompt" quick start; `README.zh-CN.md` translates the top and summarises the rest.
 
