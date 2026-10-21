@@ -2,6 +2,42 @@
  "//": "The prompt gallery: one copy-ready prompt per format x style pair (150-250 characters each). tools/playbook_build.py validates each (format and style exist, the aspect and length fit the format, mp brief routes the prompt to its format) and generates docs/prompts.md.",
  "prompts": [
   {
+   "id": "character-spot--paper-cut",
+   "format": "character-spot",
+   "style": "paper-cut",
+   "template": "style-scene",
+   "length": 13.5,
+   "aspect": "16:9",
+   "prompt": "Make a 14-second 16:9 wordless character spot in the Paper Cut style: a cut-paper night room with layered planes, a figure taps a lamp on, page-peel cuts, then the title <your product>. Folk pluck bed."
+  },
+  {
+   "id": "character-spot--neon-night",
+   "format": "character-spot",
+   "style": "neon-night",
+   "template": "style-scene",
+   "length": 13.5,
+   "aspect": "16:9",
+   "prompt": "Make a 14-second 16:9 wordless character spot in the Neon Night style: through rain on glass, a figure switches on a lamp, light streaks pass, a slow push-in, then the title <your product>. Synthwave bed."
+  },
+  {
+   "id": "character-spot--documentary-grain",
+   "format": "character-spot",
+   "style": "documentary-grain",
+   "template": "style-scene",
+   "length": 13.5,
+   "aspect": "16:9",
+   "prompt": "Make a 14-second 16:9 wordless character spot in the Documentary Grain style: a handheld night scene, rack focus from a lamp to a book, a lower third, an archival card, then the title <your product>."
+  },
+  {
+   "id": "character-spot--soft-clay",
+   "format": "character-spot",
+   "style": "soft-clay",
+   "template": "style-scene",
+   "length": 13.5,
+   "aspect": "16:9",
+   "prompt": "Make a 14-second 16:9 wordless character spot in the Soft Clay style: a sleepy clay figure at a night desk taps a lamp on, a book falls open, delight, then the title <your product>. Lo-fi bed."
+  },
+  {
    "id": "ad--blueprint",
    "format": "ad",
    "style": "blueprint",

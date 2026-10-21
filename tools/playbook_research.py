@@ -282,6 +282,8 @@ def cmd_brief(a):
         cmd += ['--platform', a.platform]
     if getattr(a, 'style', None):
         cmd += ['--style', a.style]   # mp plan lays the named style over the format (playbook/styles)
+    if getattr(a, 'template', None):
+        cmd += ['--template', a.template]   # the format's beats and rules on another template (a hero style on style-scene)
     if os.path.isfile(src):
         cmd += ['--brief', os.path.abspath(src)]
     print('format %s (%s): %s' % (fid, rp['format']['score'], '; '.join(rp['format']['why'])))
@@ -470,6 +472,7 @@ def main(argv=None):
     b.add_argument('--out')
     b.add_argument('--pick-top', action='store_true')
     b.add_argument('--style', help='a named style (mp styles) laid over the chosen format by mp plan')
+    b.add_argument('--template', help='plan the format on this template instead of its own (a hero style: style-scene)')
     b.add_argument('--playbook')
     s = sub.add_parser('study')
     s.add_argument('video')

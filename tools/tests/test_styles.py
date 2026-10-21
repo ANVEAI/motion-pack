@@ -151,7 +151,7 @@ def test_the_gallery_has_twenty_prompts_and_every_style():
 
 @pytest.mark.parametrize('p', PROMPTS, ids=[p['id'] for p in PROMPTS])
 def test_every_gallery_prompt_plans_with_its_style(tmp_path, p):
-    r = mp('plan', p['format'], '--style', p['style'], '--length', str(p['length']), '--aspect', p['aspect'], '--out', str(tmp_path / 'plan.json'), '--project-out', str(tmp_path / 'project.json'))
+    r = mp('plan', p['format'], '--style', p['style'], *(['--template', p['template']] if p.get('template') else []), '--length', str(p['length']), '--aspect', p['aspect'], '--out', str(tmp_path / 'plan.json'), '--project-out', str(tmp_path / 'project.json'))
     assert r.returncode == 0, r.stdout + r.stderr
     plan = json.load(open(tmp_path / 'plan.json'))
     assert plan['style']['id'] == p['style'] and plan['aspect'] == p['aspect'] and plan['style']['applied']

@@ -4,9 +4,45 @@
 
 [简体中文 README](../README.zh-CN.md) · [README](../README.md) · [the styles](../playbook/README.md#styles) · [catalog: Styles and Films tabs](https://anveai.github.io/motion-pack/catalog/)
 
-**25 copy-ready prompts**, one per format and style pair. Paste one into Claude Code (or any agent with the motion-pack skill), swap `<your product>` for yours, and the agent runs `mp brief` → `mp plan --style` → render → `mp lint`.
+**29 copy-ready prompts**, one per format and style pair. Paste one into Claude Code (or any agent with the motion-pack skill), swap `<your product>` for yours, and the agent runs `mp brief` → `mp plan --style` → render → `mp lint`.
 
-**Tested** means: CI checks that `mp brief` routes each prompt to its format with a clear lead and that `mp plan <format> --style <id>` builds its plan (`tools/playbook_build.py --check`, `tools/tests/test_styles.py`). The preview next to each prompt is that style's 10-second demo (the `ad` format on a placeholder subject), not a film made from that exact prompt. The same prompt makes a different film on every run.
+**Tested** means: CI checks that `mp brief` routes each prompt to its format with a clear lead and that `mp plan <format> --style <id>` builds its plan (`tools/playbook_build.py --check`, `tools/tests/test_styles.py`). The preview next to each prompt is that style's demo (a hero style: its 13.5 s scene made with `templates/style-scene`; a starter skin: a 10 s `ad` on a placeholder subject), not a film made from that exact prompt. The same prompt makes a different film on every run.
+
+## Character spot (wordless, one gag, one feature) (`character-spot`)
+
+A wordless cartoon or mime spot: one situation, one product benefit, at most 6 emotions on a neutral stage, a twist on a smash, a reaction hold, one end line.
+
+### Character spot × Paper Cut (hero scene), 13.5 s 16:9
+
+```text
+Make a 14-second 16:9 wordless character spot in the Paper Cut style: a cut-paper night room with layered planes, a figure taps a lamp on, page-peel cuts, then the title <your product>. Folk pluck bed.
+```
+
+preview pending (the Paper Cut demo is not rendered yet) · `mp plan character-spot --style paper-cut --template style-scene --length 13.5 --aspect 16:9` · 201 characters
+
+### Character spot × Neon Night (hero scene), 13.5 s 16:9
+
+```text
+Make a 14-second 16:9 wordless character spot in the Neon Night style: through rain on glass, a figure switches on a lamp, light streaks pass, a slow push-in, then the title <your product>. Synthwave bed.
+```
+
+preview pending (the Neon Night demo is not rendered yet) · `mp plan character-spot --style neon-night --template style-scene --length 13.5 --aspect 16:9` · 204 characters
+
+### Character spot × Documentary Grain (hero scene), 13.5 s 16:9
+
+```text
+Make a 14-second 16:9 wordless character spot in the Documentary Grain style: a handheld night scene, rack focus from a lamp to a book, a lower third, an archival card, then the title <your product>.
+```
+
+preview pending (the Documentary Grain demo is not rendered yet) · `mp plan character-spot --style documentary-grain --template style-scene --length 13.5 --aspect 16:9` · 199 characters
+
+### Character spot × Soft Clay (hero scene), 13.5 s 16:9
+
+```text
+Make a 14-second 16:9 wordless character spot in the Soft Clay style: a sleepy clay figure at a night desk taps a lamp on, a book falls open, delight, then the title <your product>. Lo-fi bed.
+```
+
+preview pending (the Soft Clay demo is not rendered yet) · `mp plan character-spot --style soft-clay --template style-scene --length 13.5 --aspect 16:9` · 192 characters
 
 ## Ad (15 s / 30 s, paid or organic) (`ad`)
 
