@@ -191,10 +191,12 @@
   "template": "templates/ad",
   "seconds": 10,
   "aspect": "16:9",
-  "status": "pending",
+  "status": "rendered",
   "preview": "media/styles/kinetic-poster.mp4",
   "poster": "media/styles/kinetic-poster.jpg",
-  "release_asset": "motion-pack-style-kinetic-poster-v0.6.0.mp4"
+  "release_asset": "motion-pack-style-kinetic-poster-v0.6.0.mp4",
+  "lint": "mp lint 98.3/100, 54 PASS, 2 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint, on 21 Oct 2026; 1 to 4 agent re-renders per style (fixes found by mp lint and the contact sheets), 0 human rounds; the same placeholder copy in every style"
  },
  "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
 }

@@ -50,7 +50,7 @@ Make a 15-second 9:16 promo ad for <your product> in the Neon Night style: a glo
 Make a 10-second 1:1 ad for <your product> in the Kinetic Poster style: one loud word per beat, the problem, the product slammed in, one proof line and a CTA end card. A hype bed and punches.
 ```
 
-preview pending (the Kinetic Poster demo is not rendered yet) · `mp plan ad --style kinetic-poster --length 10 --aspect 1:1` · 191 characters
+[preview: the Kinetic Poster demo](../media/styles/kinetic-poster.mp4) · `mp plan ad --style kinetic-poster --length 10 --aspect 1:1` · 191 characters
 
 ### Ad × Paper Cut, 15 s 16:9
 

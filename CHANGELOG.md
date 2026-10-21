@@ -14,7 +14,7 @@ A format says what happens when; a **style** now says what it looks and sounds l
   - one transition per REASON plus banned ones, an overlay stack, a bed and role sounds;
   - 4-8 signature features, each a `mp lint` check or a review item; formats; recipes whose ids resolve; a demo.
 - **Commands:** `mp styles [<id>] [--zh]`; `mp plan <format> --style <id>` (and `mp brief --style`) writes `plan.style` and lays the style into `project.json`; `mp lint` runs `lint.style.palette`, `.type`, `.transitions` and `.sound` and lists the review features.
-- **Demos:** one 10 s, 16:9 film per style (the `ad` format on a placeholder subject, rendered through the render lock at CRF 18, 0 FAIL in `mp lint`). The small previews are in `media/styles/`; the full demos go to the release assets (`motion-pack-style-<id>-v0.6.0.mp4`). See "Known gaps" for the ones still pending.
+- **Demos:** one 10 s, 16:9 film per style (the `ad` format on a placeholder subject, rendered through the render lock at CRF 18, 0 FAIL in `mp lint`). All ten are rendered. The small previews are in `media/styles/`; the full demos go to the release assets (`motion-pack-style-<id>-v0.6.0.mp4`).
 - **`templates/ad`:** a 10 s cut, an all-type mode (`plates: false`, a kicker tab on frame 0), fonts, muted and on-accent colours, upper case, and a reveal name fitted to one line. Default builds are unchanged.
 
 ### New: works from any folder
