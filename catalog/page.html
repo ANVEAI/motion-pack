@@ -54,6 +54,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 .row h2 { margin: 0; font-size: 17px; }
 button.small { border: 1px solid var(--line); background: var(--chip); color: var(--ink); border-radius: 8px; padding: 5px 10px; cursor: pointer; font: inherit; font-size: 12.5px; }
 table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+.prompt pre { white-space: pre-wrap; font-size: 13px; line-height: 1.45; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; margin: 6px 0; }
 td, th { border-top: 1px solid var(--line); padding: 5px 6px; vertical-align: top; text-align: left; }
 th { color: var(--muted); font-weight: 500; width: 28%; }
 td code, .mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
@@ -123,7 +124,7 @@ function match(it) {
 function render() {
   const list = DATA.items.filter(match);
   $('#count').textContent = `${list.length} of ${DATA.items.length} components`;
-  $('#grid').innerHTML = list.length ? list.map((it) => `<button class="card" type="button" data-id="${esc(it.id)}">${thumbHTML(it)}<div class="body"><div class="id">${esc(it.id)}</div><div class="name">${esc(it.name)}</div>${it.desc ? `<div class="desc">${esc(it.desc)}</div>` : ''}<div class="tags">${(it.tags || []).slice(0, 5).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div></div></button>`).join('') : '<div class="empty">Nothing matches. Try a broader word.</div>';
+  $('#grid').innerHTML = list.length ? list.map((it) => `<button class="card" type="button" data-id="${esc(it.id)}">${thumbHTML(it)}<div class="body"><div class="id">${esc(it.id)}</div><div class="name">${esc(it.name)}</div>${it.desc ? `<div class="desc">${esc(it.desc)}</div>` : ''}${it.prompt ? `<div class="desc">Prompt: “${esc(it.prompt.slice(0, 90))}…”</div>` : ''}<div class="tags">${(it.tags || []).slice(0, 5).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div></div></button>`).join('') : '<div class="empty">Nothing matches. Try a broader word.</div>';
 }
 function fmt(v) {
   if (v == null) return '';
@@ -151,6 +152,7 @@ function open(id) {
     <div class="id">${esc(it.id)}${it.file ? ` <span style="color:var(--muted)">· ${esc(it.file)}</span>` : ''}</div>
     ${media ? `<div class="media">${media}</div>` : ''}
     ${it.desc ? `<div>${esc(it.desc)}</div>` : ''}
+    ${it.prompt ? `<div class="prompt"><h3>Copy this prompt</h3><pre>${esc(it.prompt)}</pre><button class="small" type="button" data-copy="${esc(it.prompt)}">Copy prompt</button>${it.prompt_zh ? `<pre lang="zh-CN">${esc(it.prompt_zh)}</pre><button class="small" type="button" data-copy="${esc(it.prompt_zh)}">复制提示词</button>` : ''}</div>` : ''}
     ${it.use || it.avoid ? `<div class="ua">${it.use ? `<div><h3>Use</h3>${esc(it.use)}</div>` : ''}${it.avoid ? `<div><h3>Avoid</h3>${esc(it.avoid)}</div>` : ''}</div>` : ''}
     ${meta ? `<div><h3>Measured / meta</h3><table>${meta}</table></div>` : ''}
     ${params ? `<div><h3>Params</h3><table>${params}</table></div>` : ''}
@@ -158,7 +160,7 @@ function open(id) {
     <div class="tags">${(it.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>`;
   const d = $('#dlg'); if (!d.open) d.showModal();
 }
-$('#cats').addEventListener('click', (e) => { const b = e.target.closest('[data-cat]'); if (!b) return; cat = b.dataset.cat; save(); cats(); render(); });
+$('#cats').addEventListener('click', (e) => { const b = e.target.closest('[data-cat]'); if (!b) return; cat = b.dataset.cat; save(); try { history.replaceState(null, '', '#' + encodeURIComponent(cat)); } catch (err) {} cats(); render(); });
 $('#q').addEventListener('input', (e) => { q = e.target.value.trim().toLowerCase(); render(); });
 $('#grid').addEventListener('click', (e) => { const c = e.target.closest('.card'); if (c) open(c.dataset.id); });
 $('#grid').addEventListener('mouseover', (e) => { const v = e.target.closest('.card')?.querySelector('video'); if (v) v.play().catch(() => {}); });
@@ -171,6 +173,8 @@ $('#dlgBody').addEventListener('click', (e) => {
 $('#dlg').addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.close(); });
 $('#dlg').addEventListener('close', () => { $('#dlgBody').querySelectorAll('video,audio').forEach((m) => m.pause()); });
 $('#theme').addEventListener('click', () => { const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; r.dataset.theme = dark ? 'light' : 'dark'; save(); });
+{ const h = decodeURIComponent(location.hash.slice(1)); if (h && (h === 'all' || (DATA.counts && DATA.counts[h]))) cat = h; }   // catalog/#styles and #films open those tabs (the README links them)
+window.addEventListener('hashchange', () => { const h = decodeURIComponent(location.hash.slice(1)); if (h === 'all' || DATA.counts[h]) { cat = h; cats(); render(); } });
 cats(); render();
 </script>
 </body>

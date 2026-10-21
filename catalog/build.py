@@ -54,9 +54,9 @@ def wave_env(path, n=48):
 
 
 items = []
-def add(cat, id, name, tags=(), desc='', thumb=None, video=None, audio=None, params=None, pairs=None, meta=None, use=None, avoid=None, wave_=None, file=None, grid=None):
+def add(cat, id, name, tags=(), desc='', thumb=None, video=None, audio=None, params=None, pairs=None, meta=None, use=None, avoid=None, wave_=None, file=None, grid=None, prompt=None, prompt_zh=None):
     items.append({k: v for k, v in dict(cat=cat, id=id, name=name, tags=sorted(set(t for t in tags if t)), desc=desc, thumb=thumb, video=video, audio=audio,
-                                         params=params, pairs=pairs, meta=meta, use=use, avoid=avoid, wave=wave_, file=file, grid=grid).items() if v not in (None, '', [], {})})
+                                         params=params, pairs=pairs, meta=meta, use=use, avoid=avoid, wave=wave_, file=file, grid=grid, prompt=prompt, prompt_zh=prompt_zh).items() if v not in (None, '', [], {})})
 
 
 def beat_cuts(name, beats):
@@ -231,9 +231,47 @@ for k, (name, vid, sheet) in TPL.items():
     add('templates', 'templates/' + k, name, ['template', k], desc=f'node templates/{k}/make.mjs (DOM) or templates/_shared/render3d.sh (three.js); edit the CONFIG block in config.mjs',
         thumb=rel(os.path.join(PACK, 'templates', k, sheet)), video=rel(os.path.join(PACK, 'templates', k, vid)), pairs=groups, file=f'templates/{k}/config.mjs')
 
+# ---------- styles and films (playbook/styles, playbook/formats, playbook/prompts.json): every one with its preview and its copy-ready prompt ----------
+import sys as _sys
+_sys.path.insert(0, os.path.join(PACK, 'tools'))
+import playbook_lib as _PL
+_PB = _PL.playbook_dir(None)
+_STY, _FMT = _PL.load_styles(_PB), _PL.load_formats(_PB)
+_PROMPTS = json.load(open(os.path.join(_PB, 'prompts.json'), encoding='utf-8'))['prompts'] if os.path.exists(os.path.join(_PB, 'prompts.json')) else []
+for sid, st in sorted(_STY.items()):
+    d, p = st.get('demo') or {}, st['palette']
+    add('styles', 'styles/' + sid, st['title'], ['style', st['motion']['personality'], st['type']['display']] + st.get('formats', []), desc=st['line'],
+        video=rel(os.path.join(PACK, d['preview'])) if d.get('status') == 'rendered' and d.get('preview') else None,
+        thumb=rel(os.path.join(PACK, d['poster'])) if d.get('status') == 'rendered' and d.get('poster') and not d.get('preview') else None,
+        params={'palette': {k: p[k] for k in ('paper', 'ink', 'accent', 'muted')}, 'contrast (contrast.py)': p.get('contrast'), 'type': '%s / %s %s, %s case' % (st['type']['display'], st['type']['text'], st['type']['weight'], st['type']['case']),
+                'type presets': st['type']['presets'], 'motion': '%s, ease %s, overshoot <= %s' % (st['motion']['personality'], st['motion']['ease'], st['motion']['overshoot_max']),
+                'transitions by reason': st['transitions']['by_reason'], 'never': st['transitions']['banned'], 'layers': [l['kind'] for l in st['layers']], 'bed': st['sound']['bed']},
+        pairs={'parts': st['recipes'], 'signature (mp lint)': ['%s [%s]' % (f['text'], f['check']) for f in st['signature_features']], 'formats': st.get('formats', [])},
+        meta={'title (zh)': st.get('title_zh'), 'demo': ('%s s %s, %s' % (d.get('seconds'), d.get('aspect'), d.get('lint', ''))) if d.get('status') == 'rendered' else 'pending',
+              'made by': d.get('made_by'), 'cli': 'mp styles %s · mp plan <format> --style %s' % (sid, sid)},
+        use=st['essence'], avoid='; '.join('not %s: %s' % (n['style'], n['difference']) for n in st['not']), file='playbook/styles/%s.json' % sid, prompt=st['prompt'], prompt_zh=st.get('prompt_zh'))
+FILMS = {'launch-film': 'media/films/launch-film.mp4', 'proof-clip': 'media/films/proof-clip.mp4', 'explainer': 'media/films/explainer.mp4'}   # v0.5 proof renders (placeholder brands), small previews
+for fid, fm in sorted(_FMT.items()):
+    tpl = os.path.basename(fm.get('template', ''))
+    gal = [p for p in _PROMPTS if p['format'] == fid]
+    vid = FILMS.get(fid) if FILMS.get(fid) and os.path.exists(os.path.join(PACK, FILMS[fid])) else None
+    if not vid and gal and (_STY.get(gal[0]['style'], {}).get('demo') or {}).get('status') == 'rendered' and fid == 'ad':
+        vid = _STY[gal[0]['style']]['demo']['preview']
+    tdir = os.path.join(PACK, 'templates', tpl, 'out')
+    tv = next((os.path.join(tdir, f) for f in sorted(os.listdir(tdir)) if f.endswith('.mp4')), None) if os.path.isdir(tdir) else None
+    ts = next((os.path.join(tdir, f) for f in sorted(os.listdir(tdir)) if f.endswith('sheet.jpg')), None) if os.path.isdir(tdir) else None
+    prompt = gal[0]['prompt'] if gal else 'Make a %g-second %s %s for <your product> with motion-pack: plan it with mp brief, render it, and lint it until nothing fails.' % (round(sum(fm['length_s']) / 2), fm['lead_aspect'], fm['title'].split(' (')[0].lower())
+    add('films', 'films/' + fid, fm['title'], ['film', 'format', tpl] + fm.get('aspects', []), desc=fm.get('use_when', ''),
+        video=rel(os.path.join(PACK, vid)) if vid else rel(tv), thumb=None if (vid or tv) else rel(ts),
+        params={'length': '%g-%g s' % tuple(fm['length_s']), 'aspects': ' '.join(fm.get('aspects', [])), 'template': fm.get('template'), 'beats': [b['id'] for b in fm.get('beats', [])]},
+        pairs={'gallery prompts (docs/prompts.md)': ['%s × %s' % (fid, p['style']) for p in gal], 'recommended parts': sorted({x for v in (fm.get('recommended_parts') or {}).values() for x in v})[:12]},
+        meta={'cli': 'mp plan %s [--style <id>]' % fid, 'preview': 'v0.5 proof render (placeholder brand)' if vid and vid in FILMS.values() else 'style demo' if vid else 'template render' if tv or ts else 'none yet'},
+        file='playbook/formats/%s.json' % fid, prompt=prompt)
+
+items = [i for i in items if i['cat'] == 'styles'] + [i for i in items if i['cat'] == 'films'] + [i for i in items if i['cat'] not in ('styles', 'films')]   # the Styles and Films tabs come first
 counts = {}
 for it in items: counts[it['cat']] = counts.get(it['cat'], 0) + 1
-LABEL = {'sfx': 'SFX', 'sfx bundles': 'SFX bundles', 'blender': 'Blender plates', 'terminal': 'terminal looks', 'music': 'music items', 'type': 'type parts', 'camera': 'camera moves and helpers', 'templates': 'templates and part demos'}
+LABEL = {'styles': 'named styles', 'films': 'format films', 'sfx': 'SFX', 'sfx bundles': 'SFX bundles', 'blender': 'Blender plates', 'terminal': 'terminal looks', 'music': 'music items', 'type': 'type parts', 'camera': 'camera moves and helpers', 'templates': 'templates and part demos'}
 BREAKDOWN = ', '.join(f'{n} {LABEL.get(k, k)}' for k, n in counts.items())   # the header says what the total is made of, from the same counts (never typed)
 data = json.dumps({'items': items, 'counts': counts, 'aliases': sorted(aliases)}, separators=(',', ':')).replace('</', '<\\/')
 page = open(os.path.join(PACK, 'catalog', 'page.html')).read().replace('/*__DATA__*/null', data).replace('__TOTAL__', str(len(items))).replace('__BREAKDOWN__', BREAKDOWN)
