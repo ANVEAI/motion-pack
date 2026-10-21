@@ -1,0 +1,205 @@
+{
+ "//": "The prompt gallery: one copy-ready prompt per format x style pair (150-250 characters each). tools/playbook_build.py validates each (format and style exist, the aspect and length fit the format, mp brief routes the prompt to its format) and generates docs/prompts.md.",
+ "prompts": [
+  {
+   "id": "ad--blueprint",
+   "format": "ad",
+   "style": "blueprint",
+   "length": 10,
+   "aspect": "16:9",
+   "prompt": "Make a 10-second 16:9 ad for <your product> in the Blueprint style: a hook line, the problem, the product reveal, one proof line and an end card with the name and a CTA. Music and sound. Then lint it."
+  },
+  {
+   "id": "ad--editorial-print",
+   "format": "ad",
+   "style": "editorial-print",
+   "length": 15,
+   "aspect": "9:16",
+   "prompt": "Make a 15-second 9:16 ad for <your product> in the Editorial Print style: a payoff hook, one problem, the product reveal, one proof line and an end card with the name and a CTA. Music and sound."
+  },
+  {
+   "id": "ad--swiss-grid",
+   "format": "ad",
+   "style": "swiss-grid",
+   "length": 10,
+   "aspect": "16:9",
+   "prompt": "Make a 10-second 16:9 ad for <your product> in the Swiss Grid style: a hook line, the problem, the product name, one proof line and an end card with a CTA, cut hard on the beat. Music and sound."
+  },
+  {
+   "id": "ad--neon-night",
+   "format": "ad",
+   "style": "neon-night",
+   "length": 15,
+   "aspect": "9:16",
+   "prompt": "Make a 15-second 9:16 promo ad for <your product> in the Neon Night style: a glowing hook, the problem, the reveal on a synth hit, one proof line and a CTA end card. Music and sound effects."
+  },
+  {
+   "id": "ad--kinetic-poster",
+   "format": "ad",
+   "style": "kinetic-poster",
+   "length": 10,
+   "aspect": "1:1",
+   "prompt": "Make a 10-second 1:1 ad for <your product> in the Kinetic Poster style: one loud word per beat, the problem, the product slammed in, one proof line and a CTA end card. A hype bed and punches."
+  },
+  {
+   "id": "ad--paper-cut",
+   "format": "ad",
+   "style": "paper-cut",
+   "length": 15,
+   "aspect": "16:9",
+   "prompt": "Make a 15-second 16:9 ad for <your product> in the Paper Cut style: a friendly hook, the problem, the product reveal with a stamp, one proof line and a CTA end card. Folk music and paper sounds."
+  },
+  {
+   "id": "ad--retro-crt",
+   "format": "ad",
+   "style": "retro-crt",
+   "length": 10,
+   "aspect": "16:9",
+   "prompt": "Make a 10-second 16:9 ad for <your product> in the Retro CRT style: a typed-out hook, the problem, the product name with a glitch, one proof line and a CTA end card. Chiptune and key clicks."
+  },
+  {
+   "id": "ad--soft-clay",
+   "format": "ad",
+   "style": "soft-clay",
+   "length": 15,
+   "aspect": "16:9",
+   "prompt": "Make a 15-second 16:9 ad for <your product> in the Soft Clay style: the clay cast on frame 0 with the hook, the problem, the clay desk on the reveal, one proof line and a CTA. Lo-fi bed."
+  },
+  {
+   "id": "launch-film--chrome-product",
+   "format": "launch-film",
+   "style": "chrome-product",
+   "length": 35,
+   "aspect": "16:9",
+   "prompt": "Make a 35-second 16:9 launch film introducing <your product> in the Chrome Product style: a pain on frame 0, the reveal on a cinematic hit, three features, sourced proof and an end card. Then draft the X post."
+  },
+  {
+   "id": "launch-film--blueprint",
+   "format": "launch-film",
+   "style": "blueprint",
+   "length": 35,
+   "aspect": "16:9",
+   "prompt": "Make a 35-second 16:9 launch film introducing <your product> in the Blueprint style: the problem drawn as a diagram, the product reveal, how it works in three parts, and an end card with the name."
+  },
+  {
+   "id": "launch-film--neon-night",
+   "format": "launch-film",
+   "style": "neon-night",
+   "length": 35,
+   "aspect": "9:16",
+   "prompt": "Make a 35-second 9:16 launch film announcing <your product> in the Neon Night style: a hook in the first second, the problem, the reveal on the drop, three features and a CTA end card."
+  },
+  {
+   "id": "launch-film--swiss-grid",
+   "format": "launch-film",
+   "style": "swiss-grid",
+   "length": 35,
+   "aspect": "16:9",
+   "prompt": "Make a 35-second 16:9 launch film announcing <your product> in the Swiss Grid style: one claim per card, the reveal, three features, sourced proof and an end card. Hard cuts on a tech pulse bed."
+  },
+  {
+   "id": "launch-film--documentary-grain",
+   "format": "launch-film",
+   "style": "documentary-grain",
+   "length": 35,
+   "aspect": "16:9",
+   "prompt": "Make a 35-second 16:9 launch film introducing <your product> in the Documentary Grain style: a real stake on frame 0, the turn, the product as the answer, and a quiet end card. Ambient bed."
+  },
+  {
+   "id": "saas-feature-drop--swiss-grid",
+   "format": "saas-feature-drop",
+   "style": "swiss-grid",
+   "length": 20,
+   "aspect": "16:9",
+   "prompt": "Make a 20-second 16:9 new feature video for <your product> in the Swiss Grid style: a NEW kicker, the old way, the new feature with its shortcut, before and after, and a CTA. Ticks and clicks."
+  },
+  {
+   "id": "saas-feature-drop--neon-night",
+   "format": "saas-feature-drop",
+   "style": "neon-night",
+   "length": 15,
+   "aspect": "9:16",
+   "prompt": "Make a 15-second 9:16 changelog clip for the new feature in <your product> in the Neon Night style: the old way, the new feature, its shortcut and a CTA end card. Synthwave bed."
+  },
+  {
+   "id": "saas-feature-drop--editorial-print",
+   "format": "saas-feature-drop",
+   "style": "editorial-print",
+   "length": 20,
+   "aspect": "16:9",
+   "prompt": "Make a 20-second 16:9 new feature video for <your product> in the Editorial Print style: a headline for the update, before, after, the shortcut and an end card. Marimba and paper sounds."
+  },
+  {
+   "id": "saas-feature-drop--retro-crt",
+   "format": "saas-feature-drop",
+   "style": "retro-crt",
+   "length": 15,
+   "aspect": "16:9",
+   "prompt": "Make a 15-second 16:9 changelog clip for the new feature in <your product> in the Retro CRT style: the old way typed out, the new feature, its shortcut and a CTA. Chiptune bed."
+  },
+  {
+   "id": "proof-clip--swiss-grid",
+   "format": "proof-clip",
+   "style": "swiss-grid",
+   "length": 15,
+   "aspect": "16:9",
+   "prompt": "Make a 15-second 16:9 proof clip for <your product> in the Swiss Grid style: one claim, the method card, one before and after comparison with a sourced number, and an end card. Clean ticks."
+  },
+  {
+   "id": "proof-clip--blueprint",
+   "format": "proof-clip",
+   "style": "blueprint",
+   "length": 15,
+   "aspect": "16:9",
+   "prompt": "Make a 15-second 16:9 proof clip for <your product> in the Blueprint style: the claim as a drawing, the method, a benchmark with its source, and an end card with the name. Pen clicks."
+  },
+  {
+   "id": "proof-clip--chrome-product",
+   "format": "proof-clip",
+   "style": "chrome-product",
+   "length": 15,
+   "aspect": "9:16",
+   "prompt": "Make a 15-second 9:16 proof clip for <your product> in the Chrome Product style: one claim, the method, a before and after comparison with a sourced number, and a glinting end card."
+  },
+  {
+   "id": "explainer--blueprint",
+   "format": "explainer",
+   "style": "blueprint",
+   "length": 45,
+   "aspect": "16:9",
+   "prompt": "Make a 45-second 16:9 explainer on how <your product> works in the Blueprint style: the question, the wrong model, the mechanism drawn node by node, one example traced, and the takeaway."
+  },
+  {
+   "id": "explainer--editorial-print",
+   "format": "explainer",
+   "style": "editorial-print",
+   "length": 45,
+   "aspect": "16:9",
+   "prompt": "Make a 45-second 16:9 explainer on how <your product> works in the Editorial Print style: the question as a headline, the wrong model, the mechanism step by step, a recap and the takeaway."
+  },
+  {
+   "id": "explainer--paper-cut",
+   "format": "explainer",
+   "style": "paper-cut",
+   "length": 40,
+   "aspect": "9:16",
+   "prompt": "Make a 40-second 9:16 explainer on how <your product> works in the Paper Cut style: the question, the wrong model, the mechanism built from paper layers, a recap and the takeaway."
+  },
+  {
+   "id": "explainer--documentary-grain",
+   "format": "explainer",
+   "style": "documentary-grain",
+   "length": 60,
+   "aspect": "16:9",
+   "prompt": "Make a 60-second 16:9 explainer on why <your product> exists in the Documentary Grain style: the question, what people get wrong, how it works, one real example, and the takeaway."
+  },
+  {
+   "id": "ad--chrome-product",
+   "format": "ad",
+   "style": "chrome-product",
+   "length": 15,
+   "aspect": "16:9",
+   "prompt": "Make a 15-second 16:9 ad for <your product> in the Chrome Product style: a glint on frame 0 with the hook, the problem, the reveal on a cinematic hit, one proof line and a CTA end card."
+  }
+ ]
+}

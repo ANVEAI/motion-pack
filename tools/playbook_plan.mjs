@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 /* motion-pack / tools / playbook_plan.mjs: `mp plan <format>`: a plan.json skeleton that already carries the playbook's learnings.
-     node tools/playbook_plan.mjs <format> [--length N] [--aspect A] [--platform P] [--brief brief.md] [--research research-pack.json] [--out plan.json] [--project-out project.json] [--playbook DIR]
+     node tools/playbook_plan.mjs <format> [--style S] [--length N] [--aspect A] [--platform P] [--brief brief.md] [--research research-pack.json] [--out plan.json] [--project-out project.json] [--playbook DIR]
      node tools/playbook_plan.mjs --defaults            the plan default ids (rule.enforce.default resolves against these; tools/playbook_build.py asks)
      node tools/playbook_plan.mjs --honesty plan.json   {claimsWithoutSource, banned} for mp lint (the same lint.proof as templates/_shared/plan.mjs, the same banned demo words as mp check)
    The plan is in the EXISTING plan shape (fps, seconds, aspect, W, H, shots, structure.sections, texts, claims, audio.quiet ...) that tools/structure_check.py, eyes and ears read, plus
      plan.playbook   the format, the rule ids applied, the plan defaults written in, the sound shape, the template's own length, the research pack and brief it came from
      plan.project    the same film as a project.json for the format's template (its PROJECT_MAP fields): `--project-out` writes it; `mp new <template> <dir> --project project.json` uses it
-   It never writes copy: every line a person or an agent must write is a TODO marker (mp lint FAILs while one is left). makePlan() is a pure function of its inputs: no clock, no random. */
+     plan.style      with --style <id> (playbook/styles/<id>.json): the style laid over the format. applyStyle() writes its palette, fonts and bed into plan.project and,
+                     where the template's CONFIG has the block, its type presets (CONFIG.type roles), sounds (CONFIG.sfx roles), overlay stack (CONFIG.layers) and
+                     transitions (each CONFIG.transitions boundary keeps its REASON; the style picks the id for that reason) as project overrides, plus the style's
+                     own apply[template] paths. plan.style lists what was applied and what the template has no slot for.
+   It never writes copy: every line a person or an agent must write is a TODO marker (mp lint FAILs while one is left). makePlan() and applyStyle() are pure functions of their inputs: no clock, no random. */
 import fs from 'node:fs'; import path from 'node:path'; import { pathToFileURL, fileURLToPath } from 'node:url';
 
 const PACK = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -137,6 +141,34 @@ export function makePlan(fm, rules, o, tpl) {
   };
 }
 
+/* applyStyle(plan, style, tpl { id, keys (PROJECT_MAP keys), config (CONFIG) }) -> plan, with plan.style and the style in plan.project. PURE (the plan is changed in place). */
+export function applyStyle(plan, st, tpl) {
+  const pr = plan.project, keys = new Set(tpl.keys || []), C = tpl.config || {}, applied = [], missing = [], ov = {};
+  const pal = st.palette || {}, ty = st.type || {}, snd = st.sound || {}, tr = (st.transitions || {}).by_reason || {};
+  pr.brand = pr.brand || {};
+  for (const [role, key] of [['accent', 'brand.accent'], ['ink', 'brand.ink'], ['paper', 'brand.paper'], ['muted', 'brand.muted']]) {
+    if (!pal[role]) continue; if (keys.has(key)) { pr.brand[role] = pal[role]; applied.push(`${key} ${pal[role]}`); } else missing.push(`${key} (palette.${role})`); }
+  if (keys.has('brand.font.display') || keys.has('brand.font')) { pr.brand.fonts = { display: ty.display, text: ty.text }; applied.push(`brand.fonts ${ty.display} / ${ty.text}`); } else missing.push('brand.fonts (type.display)');
+  if (snd.bed) { if (keys.has('music')) { pr.music = snd.bed; applied.push(`music ${snd.bed}`); } else missing.push(`music (sound.bed ${snd.bed})`); }
+  /* the CONFIG blocks a style can fill: type roles, sfx roles, the overlay stack, the transitions by reason */
+  if (C.type && typeof C.type === 'object') for (const [role, id] of Object.entries(ty.presets || {})) if (typeof C.type[role] === 'string') { ov[`type.${role}`] = id; applied.push(`type.${role} ${id}`); }
+  if (C.sfx && typeof C.sfx === 'object') for (const [role, id] of Object.entries(snd.sfx || {})) if (role in C.sfx) { ov[`sfx.${role}`] = id; applied.push(`sfx.${role} ${id}`); }
+  if (typeof C.textCase === 'string' && ty.case) { ov.textCase = ty.case === 'upper' ? 'upper' : 'as-written'; applied.push(`textCase ${ov.textCase}`); }
+  if (Array.isArray(C.layers)) { ov.layers = structuredClone(st.layers || []); applied.push(`layers ${(st.layers || []).map((l) => l.kind).join(' + ') || 'none'}`); } else if ((st.layers || []).length) missing.push('layers (the template has no CONFIG.layers stack)');
+  if (C.transitions && typeof C.transitions === 'object') for (const [k, v] of Object.entries(C.transitions)) {
+    if (!Array.isArray(v) || typeof v[1] !== 'string') continue; const reason = v[1].split(':')[0].trim().toUpperCase();
+    if (tr[reason]) { ov[`transitions.${k}`] = [tr[reason], v[1]]; applied.push(`transitions.${k} ${tr[reason]} (${reason})`); } else missing.push(`transitions.${k} (no ${reason} transition in the style)`); }
+  else missing.push('transitions (the template has no CONFIG.transitions block)');
+  for (const [k, v] of Object.entries((st.apply || {})[`templates/${tpl.id}`] || {})) { ov[k] = structuredClone(v); applied.push(`${k} ${JSON.stringify(v)} (style apply)`); }
+  if (Object.keys(ov).length) { pr.overrides = pr.overrides || {}; pr.overrides[tpl.id] = { ...(pr.overrides[tpl.id] || {}), ...ov }; }
+  if (pr.playbook) pr.playbook.style = st.id;
+  plan.playbook.style = st.id;
+  const keep = ['id', 'title', 'line', 'prompt', 'essence', 'not', 'palette', 'type', 'motion', 'transitions', 'layers', 'look', 'grain', 'sound', 'signature_features', 'change_tiers'];
+  plan.style = { ...Object.fromEntries(keep.filter((k) => st[k] !== undefined).map((k) => [k, structuredClone(st[k])])), applied, not_applied: missing,
+    note: 'the style says what the film looks and sounds like; the format still says what happens when. frame-design starts from plan.style; mp lint checks the signature features.' };
+  return plan;
+}
+
 /* the template's facts mp plan needs: its text / brand fields (PROJECT_MAP) with the CONFIG defaults, and the lengths it really builds (probed, pure) */
 export async function templateInfo(id, aspect) {
   const dir = path.join(PACK, 'templates', id); if (!fs.existsSync(path.join(dir, 'config.mjs'))) throw new Error(`no template ${id} (templates/${id}/config.mjs)`);
@@ -145,7 +177,7 @@ export async function templateInfo(id, aspect) {
   const lengths = [], build = (project) => { const r = P.applyProject(m.CONFIG, map, project, { template: id, aspect, ASPECTS: m.ASPECTS }); return m.buildPlan(r.config).seconds; };
   let built = null; try { built = build({}); } catch { /* a template that cannot build alone (needs media) */ }
   if ('length' in map) for (let c = 5; c <= 180; c += 5) { try { if (Math.abs(build({ length: c }) - c) <= 1) lengths.push(c); } catch { /* not a length it offers */ } }
-  return { id, fields, lengths, built: built == null ? null : +(+built).toFixed(2) };
+  return { id, fields, lengths, built: built == null ? null : +(+built).toFixed(2), keys: Object.keys(map), config: structuredClone(m.CONFIG) };
 }
 
 const HON = await imp('templates/_explain/honesty.mjs'), HUM = await imp('templates/_shared/human/core.mjs');
@@ -161,14 +193,18 @@ export function honesty(plan) {
 async function main(argv) {
   if (argv.includes('--defaults')) return console.log(JSON.stringify(DEFAULTS, null, 1));
   if (argv.includes('--honesty')) { const f = flag(argv, '--honesty'); return console.log(JSON.stringify(honesty(JSON.parse(fs.readFileSync(f, 'utf8'))))); }
-  const fid = argv.find((a, i) => !a.startsWith('--') && !argv[i - 1]?.startsWith('--')); if (!fid) die('usage: mp plan <format> [--length N] [--aspect 16:9|9:16|1:1|4:5] [--platform P] [--brief brief.md] [--research research-pack.json] [--out plan.json] [--project-out project.json]  (formats: mp formats)');
+  const fid = argv.find((a, i) => !a.startsWith('--') && !argv[i - 1]?.startsWith('--')); if (!fid) die('usage: mp plan <format> [--style S] [--length N] [--aspect 16:9|9:16|1:1|4:5] [--platform P] [--brief brief.md] [--research research-pack.json] [--out plan.json] [--project-out project.json]  (formats: mp formats)');
   const pb = path.resolve(flag(argv, '--playbook') || process.env.MP_PLAYBOOK || path.join(PACK, 'playbook')), ff = path.join(pb, 'formats', fid + '.json');
   if (!fs.existsSync(ff)) { const have = fs.existsSync(path.join(pb, 'formats')) ? fs.readdirSync(path.join(pb, 'formats')).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)) : []; die(`no format "${fid}" in ${path.relative(process.cwd(), pb) || pb}/formats (formats: ${have.join(', ') || 'none yet'})`); }
   const fm = strip(JSON.parse(fs.readFileSync(ff, 'utf8'))), rules = {};
   if (fs.existsSync(path.join(pb, 'rules'))) for (const f of fs.readdirSync(path.join(pb, 'rules')).filter((x) => x.endsWith('.json')).sort()) for (const r of [].concat(JSON.parse(fs.readFileSync(path.join(pb, 'rules', f), 'utf8')))) rules[r.id] = r;
   const missing = ruleIds(fm).filter((r) => !rules[r]); if (missing.length) console.error(`mp plan: warning: ${fid} names rules that are not in the playbook: ${missing.join(', ')} (python3 tools/playbook_build.py --check)`);
+  const sid = flag(argv, '--style'); let st = null;
+  if (sid) { const sf = path.join(pb, 'styles', sid + '.json'); if (!fs.existsSync(sf)) { const have = fs.existsSync(path.join(pb, 'styles')) ? fs.readdirSync(path.join(pb, 'styles')).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)) : []; die(`no style "${sid}" (styles: ${have.join(', ') || 'none'}; mp styles)`); }
+    st = strip(JSON.parse(fs.readFileSync(sf, 'utf8'))); if (st.formats && !st.formats.includes(fid)) console.error(`mp plan: warning: style ${sid} lists the formats ${st.formats.join(', ')}, not ${fid}: check the signature features still fit`); }
   const aspect = flag(argv, '--aspect', fm.lead_aspect), tpl = await templateInfo(path.basename(fm.template), aspect);
   let plan; try { plan = makePlan(fm, rules, { length: flag(argv, '--length') ?? undefined, aspect, platform: flag(argv, '--platform'), brief: flag(argv, '--brief'), research: flag(argv, '--research') }, tpl); } catch (e) { die(e.message); }
+  if (st) applyStyle(plan, st, tpl);
   if (plan.length < fm.length_s[0] || plan.length > fm.length_s[1]) console.error(`mp plan: warning: ${plan.length} s is outside ${fid}'s ${fm.length_s[0]}-${fm.length_s[1]} s (mp lint will flag lint.pacing.length)`);
   const out = path.resolve(flag(argv, '--out', 'plan.json')); fs.writeFileSync(out, JSON.stringify(plan, null, 1) + '\n');
   const po = flag(argv, '--project-out'); if (po) fs.writeFileSync(path.resolve(po), JSON.stringify({ $schema: path.join(PACK, 'templates', '_shared', 'project.schema.json'), '//': `from mp plan ${fid}: fill every TODO, then mp new ${tpl.id} <dir> --project ${path.basename(po)}`, ...plan.project }, null, 2) + '\n');
@@ -176,6 +212,7 @@ async function main(argv) {
   console.log(`${path.relative(process.cwd(), out) || out}: ${fid}, ${plan.seconds} s at ${aspect} (${plan.W}x${plan.H}, ${plan.platform || 'no platform preset'}), ${plan.shots.length} beats, ${plan.playbook.rules.length} rules, ${plan.playbook.defaults.length} defaults written in, ${todos.length} TODO`);
   for (const s of plan.shots) console.log(`  ${s.start.toFixed(2).padStart(6)}-${(s.start + s.dur).toFixed(2).padEnd(6)} ${s.id.padEnd(10)} ${s.purpose}`);
   const A = plan.audio; console.log(`  sound: ${A.quiet.map((q) => `${q.kind}${q.role ? '/' + q.role : ''} ${q.t[0]}-${q.t[1]} s`).join(', ') || 'no planned quiet'}${A.bass_entry_s != null ? `, bass enters ${A.bass_entry_s} s` : ''}${A.first_hit_s != null ? `, first hit ${A.first_hit_s} s` : ''}, master ${A.master.lufs} LUFS / ${A.master.true_peak_dbtp} dBTP, tail ${A.tail}`);
+  if (plan.style) console.log(`  style: ${plan.style.id} (${plan.style.title}): ${plan.style.applied.length} applied${plan.style.not_applied.length ? `; no slot in ${tpl.id} for: ${plan.style.not_applied.join(', ')}` : ''}`);
   console.log(`  template: ${plan.playbook.template.note}${po ? `; project file ${po}` : ''}\nnext: write the TODOs (story-script, frame-design), then mp lint ${path.basename(out)}`);
 }
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) await main(process.argv.slice(2));

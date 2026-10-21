@@ -1,0 +1,207 @@
+{
+ "id": "paper-cut",
+ "title": "Paper Cut",
+ "title_zh": "剪纸拼贴",
+ "line": "Craft paper and cardboard, a deep teal, bouncy type and page peels: made by hand.",
+ "line_zh": "牛皮纸与瓦楞纸，一抹深青，弹跳字效与翻页转场：手作感。",
+ "prompt": "Paper cut style: kraft paper ground with a cardboard tooth, dark brown ink and one deep teal, bouncy pop-in type, page-peel and swipe-up transitions, a light folk pluck bed with paper rustles, pops and a stamp.",
+ "prompt_zh": "剪纸拼贴风格：牛皮纸底加瓦楞纹理，深棕墨色与一抹深青，弹跳出现的字效，翻页与上滑转场，轻快的民谣拨弦配乐，配纸张沙沙声、弹出声与盖章声。",
+ "essence": "Everything looks cut, stuck and lifted by hand: warm paper, honest texture and a little bounce. It is friendly, not childish.",
+ "not": [
+  {
+   "style": "editorial-print",
+   "difference": "Editorial Print is a flat printed page with serif type; Paper Cut is layered craft paper with bouncy sans type."
+  },
+  {
+   "style": "soft-clay",
+   "difference": "Soft Clay is rounded 3D under studio light; Paper Cut is flat layers with paper texture."
+  }
+ ],
+ "palette": {
+  "logic": "a kraft ground, dark brown ink, ONE deep teal; colours read like coloured paper, never glossy",
+  "paper": "#F2E3C6",
+  "ink": "#3A2618",
+  "accent": "#1F7A6E",
+  "muted": "#6B5440",
+  "contrast": {
+   "ink_on_paper": 11.28,
+   "muted_on_paper": 5.59,
+   "accent_on_paper": 4.08
+  }
+ },
+ "type": {
+  "display": "Manrope",
+  "text": "Manrope",
+  "weight": 800,
+  "case": "sentence",
+  "max_words_per_line": 4,
+  "presets": {
+   "headline": "type/elasticPop",
+   "card": "type/charRise",
+   "end": "type/elasticPop",
+   "sub": "type/blurIn"
+  }
+ },
+ "motion": {
+  "personality": "playful",
+  "ease": "pop",
+  "overshoot_max": 0.2,
+  "asl_s": [
+   1.0,
+   2.0
+  ],
+  "camera": [
+   {
+    "move": "cam2d.dutch2d",
+    "expresses": "a playful tilt of the paper"
+   },
+   {
+    "move": "cam2d.punchIn2d",
+    "expresses": "a quick lean on the cut-out word"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/pagePeel",
+   "ENERGY": "transitions/swipeUp",
+   "STORY": "transitions/pagePeel",
+   "RHYTHM": "transitions/swipeUp"
+  },
+  "banned": [
+   "transitions/glitch",
+   "transitions/lightLeak",
+   "transitions/zoomThrough",
+   "transitions/tvStatic"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "cardboard",
+   "params": {
+    "intensity": 0.25
+   }
+  },
+  {
+   "kind": "paper",
+   "params": {
+    "amount": 0.35
+   }
+  },
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "film16",
+    "amount": 0.04
+   }
+  }
+ ],
+ "grain": "layers/grain.film16",
+ "sound": {
+  "bed": "music/bed_acoustic_folk_pluck_loop8",
+  "alt_beds": [
+   "music/bed_playful_bounce_loop8",
+   "music/bed_comedy_pizzicato_loop8"
+  ],
+  "families": [
+   "paper",
+   "cartoon",
+   "foley"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/paper/rustle",
+   "card": "sfx/paper/flip",
+   "riser": "sfx/paper/card_riffle",
+   "reveal": "sfx/foley/stamp",
+   "sting": "sfx/logo/fifth_lift"
+  },
+  "foley": "paper rustles, flips, a card riffle and a stamp"
+ },
+ "signature_features": [
+  {
+   "text": "kraft ground with dark brown ink at 11:1 and a teal accent at 4:1 (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "page peels and swipe-ups only",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "elastic pop-in type with a small overshoot",
+   "check": "lint.style.type"
+  },
+  {
+   "text": "a folk pluck bed under paper sounds",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "the cardboard and paper tooth reads at phone size",
+   "check": "review"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/pagePeel",
+  "transitions/swipeUp",
+  "type/blurIn",
+  "type/charRise",
+  "type/elasticPop",
+  "music/bed_acoustic_folk_pluck_loop8",
+  "sfx/foley/stamp",
+  "sfx/logo/fifth_lift",
+  "sfx/paper/card_riffle",
+  "sfx/paper/flip",
+  "sfx/paper/rustle",
+  "layers/cardboard",
+  "layers/paper",
+  "layers/grain",
+  "layers/grain.film16",
+  "cam2d.dutch2d",
+  "cam2d.punchIn2d"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": false
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "rendered",
+  "preview": "media/styles/paper-cut.mp4",
+  "poster": "media/styles/paper-cut.jpg",
+  "release_asset": "motion-pack-style-paper-cut-v0.6.0.mp4",
+  "lint": "mp lint 96.3/100, 51 PASS, 5 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint; 0 human rounds; the same placeholder copy in every style"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

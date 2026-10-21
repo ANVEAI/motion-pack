@@ -1,4 +1,4 @@
-"""motion-pack / tools / playbook_lib.py: read the playbook (playbook/rules/<area>.json, playbook/formats/<id>.json, playbook/inbox/*.json).
+"""motion-pack / tools / playbook_lib.py: read the playbook (playbook/rules/<area>.json, playbook/formats/<id>.json, playbook/styles/<id>.json, playbook/inbox/*.json).
 
 Shared by tools/playbook_build.py (validate + generate the index), tools/playbook_checks.py (mp lint) and tools/playbook.py (mp formats, mp rules,
 mp brief, mp study). Stdlib only. The playbook folder is playbook/ in the pack, or MP_PLAYBOOK / --playbook DIR (the tests point it at
@@ -55,6 +55,41 @@ def load_formats(pb):
         fm['_file'] = f
         out[fm.get('id') or os.path.basename(f)[:-5]] = fm
     return out
+
+
+def load_styles(pb):
+    """{id: style} from <pb>/styles/*.json (comments stripped; empty when the playbook has no styles folder)"""
+    out = {}
+    for f in sorted(glob.glob(os.path.join(pb, 'styles', '*.json'))):
+        st = strip_comments(_load(f))
+        st['_file'] = f
+        out[st.get('id') or os.path.basename(f)[:-5]] = st
+    return out
+
+
+def style_parts(st):
+    """every pack part id a style names, in the order it names them (transitions, banned transitions, type presets, layers kinds as layers/<kind>,
+    look, grain, the bed and alternates, sound ids, camera moves): tools/playbook_build.py resolves each one and checks that `recipes` lists the used ones"""
+    used = list((st.get('transitions') or {}).get('by_reason', {}).values())
+    used += list(((st.get('type') or {}).get('presets') or {}).values())
+    used += ['layers/%s' % l['kind'] for l in st.get('layers') or [] if isinstance(l, dict) and l.get('kind')]
+    used += [x for x in (st.get('look'), st.get('grain')) if x]
+    snd = st.get('sound') or {}
+    used += [snd['bed']] if snd.get('bed') else []
+    used += list((snd.get('sfx') or {}).values())
+    used += [c['move'] for c in (st.get('motion') or {}).get('camera') or [] if isinstance(c, dict) and c.get('move')]
+    seen, out = set(), []
+    for u in used:
+        if u not in seen:
+            seen.add(u)
+            out.append(u)
+    return out, list((st.get('transitions') or {}).get('banned') or []) + list(snd.get('alt_beds') or [])
+
+
+def style_palette(st):
+    """the frame-design palette roles of a style (paper, ink, accent, muted), the shape skills/frame-design/scripts/contrast.py reads"""
+    p = st.get('palette') or {}
+    return {k: p[k] for k in ('paper', 'ink', 'accent', 'muted') if p.get(k)}
 
 
 def format_rule_ids(fm):

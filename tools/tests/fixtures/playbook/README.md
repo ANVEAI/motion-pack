@@ -46,4 +46,4 @@ A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a W
 |---|---|---|---|---|
 | `delivery.master_loudness` | house | enforced | `lint.master.loudness` `plan.audio.master` | FIXTURE. The delivered file measures -14 LUFS-I within 0.5 LU. |
 
-Schemas: `playbook/schema/rule.schema.json`, `playbook/schema/format.schema.json`. Checks: `python3 tools/playbook_lint.py --list`. Plan defaults: `node tools/playbook_plan.mjs --defaults`.
+Schemas: `playbook/schema/rule.schema.json`, `playbook/schema/format.schema.json`, `playbook/schema/style.schema.json`. Checks: `python3 tools/playbook_lint.py --list`. Plan defaults: `node tools/playbook_plan.mjs --defaults`.

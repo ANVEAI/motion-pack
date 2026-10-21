@@ -1,0 +1,231 @@
+{
+ "id": "neon-night",
+ "title": "Neon Night",
+ "title_zh": "霓虹之夜",
+ "line": "Night city glow: light type on deep indigo, a magenta accent, bokeh and a synthwave bed.",
+ "line_zh": "夜城光晕：深靛蓝上的亮色字，洋红点缀，散景光斑，合成器浪潮配乐。",
+ "prompt": "Neon night style: light type on deep indigo, one hot magenta accent, soft glow pools and drifting bokeh, staggered letters and a slam, light-leak and zoom-through transitions, a synthwave bed with sci-fi whooshes and a stab on the reveal.",
+ "prompt_zh": "霓虹之夜风格：深靛蓝底上的亮色字，一抹热洋红，柔和光晕与漂移散景，逐字错落与重击字效，漏光与穿越缩放转场，合成器浪潮配乐，揭晓处配科幻呼啸与重音。",
+ "essence": "A city after dark: deep ground, light that blooms around the words, and a bed that drives. The glow is atmosphere around the type, never on the type.",
+ "not": [
+  {
+   "style": "retro-crt",
+   "difference": "Retro CRT is green phosphor in a mono face with scanlines; Neon Night is soft bloom and bokeh with a sans face."
+  },
+  {
+   "style": "chrome-product",
+   "difference": "Chrome Product is cool, metallic and restrained; Neon Night is saturated and warm-hot."
+  }
+ ],
+ "palette": {
+  "logic": "a deep indigo night, near-white ink, ONE hot magenta for the key word and the button",
+  "paper": "#0B0A1F",
+  "ink": "#F4F1FF",
+  "accent": "#FF3EC8",
+  "muted": "#A9A3C9",
+  "contrast": {
+   "ink_on_paper": 17.52,
+   "muted_on_paper": 8.14,
+   "accent_on_paper": 6.29
+  }
+ },
+ "type": {
+  "display": "Manrope",
+  "text": "Manrope",
+  "weight": 800,
+  "case": "sentence",
+  "max_words_per_line": 4,
+  "presets": {
+   "headline": "type/charStagger",
+   "card": "type/charRise",
+   "end": "type/scaleSlam",
+   "sub": "type/blurIn"
+  }
+ },
+ "motion": {
+  "personality": "energetic",
+  "ease": "enter",
+  "overshoot_max": 0.08,
+  "asl_s": [
+   0.9,
+   1.8
+  ],
+  "camera": [
+   {
+    "move": "cam2d.crashZoom",
+    "expresses": "a rush into the light"
+   },
+   {
+    "move": "cam2d.breathe2d",
+    "expresses": "the city breathing on a hold"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/lightLeak",
+   "ENERGY": "transitions/zoomThrough",
+   "STORY": "transitions/blurCross",
+   "RHYTHM": "transitions/flash"
+  },
+  "banned": [
+   "transitions/pagePeel",
+   "transitions/bookFlip",
+   "transitions/ink"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "glow",
+   "params": {
+    "pools": [
+     {
+      "x": 0.15,
+      "y": 0.85,
+      "r": 0.5,
+      "color": "#FF3EC8",
+      "intensity": 0.22
+     },
+     {
+      "x": 0.88,
+      "y": 0.12,
+      "r": 0.4,
+      "color": "#3EC8FF",
+      "intensity": 0.18
+     }
+    ]
+   }
+  },
+  {
+   "kind": "bokeh",
+   "params": {
+    "count": 14,
+    "intensity": 0.35,
+    "colors": [
+     "#FF3EC8",
+     "#3EC8FF",
+     "#FFD08A"
+    ]
+   }
+  },
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "digital-soft"
+   }
+  }
+ ],
+ "look": "layers/look.neon-night",
+ "grain": "layers/grain.digital-soft",
+ "sound": {
+  "bed": "music/bed_synthwave_loop8",
+  "alt_beds": [
+   "music/bed_deep_house_loop8",
+   "music/bed_dnb_170_loop8"
+  ],
+  "families": [
+   "whoosh",
+   "hit",
+   "riser"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/whoosh/scifi_pass",
+   "card": "sfx/ui/blip",
+   "riser": "sfx/riser/supersaw_2bar",
+   "reveal": "sfx/hit/stab",
+   "sting": "sfx/logo/ascend_land"
+  },
+  "foley": "sci-fi passes and a synth stab"
+ },
+ "signature_features": [
+  {
+   "text": "light ink on a deep indigo ground at 17:1, magenta at 6:1 (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "light leaks, zoom-throughs, blur crosses and flashes between sections",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "a synthwave bed with sci-fi whooshes",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "staggered letters and a slam on the name",
+   "check": "lint.style.type"
+  },
+  {
+   "text": "glow pools and bokeh sit behind the words, never on them",
+   "check": "review"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/blurCross",
+  "transitions/flash",
+  "transitions/lightLeak",
+  "transitions/zoomThrough",
+  "type/blurIn",
+  "type/charRise",
+  "type/charStagger",
+  "type/scaleSlam",
+  "music/bed_synthwave_loop8",
+  "sfx/hit/stab",
+  "sfx/logo/ascend_land",
+  "sfx/riser/supersaw_2bar",
+  "sfx/ui/blip",
+  "sfx/whoosh/scifi_pass",
+  "layers/glow",
+  "layers/bokeh",
+  "layers/grain",
+  "layers/look.neon-night",
+  "layers/grain.digital-soft",
+  "cam2d.crashZoom",
+  "cam2d.breathe2d"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": false
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "rendered",
+  "preview": "media/styles/neon-night.mp4",
+  "poster": "media/styles/neon-night.jpg",
+  "release_asset": "motion-pack-style-neon-night-v0.6.0.mp4",
+  "lint": "mp lint 96.3/100, 51 PASS, 5 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint; 0 human rounds; the same placeholder copy in every style"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

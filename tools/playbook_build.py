@@ -12,6 +12,10 @@ every enforce.check is a registered check (tools/playbook_checks.py), every enfo
 every part id and recommended part resolves (tools/check_ids.py families, or a type/gfx id); conflicts_with ids exist; a source that names a
 repo file exists; a format's id matches its file, its template exists, its rules and beat rules exist, its beats start at 0, end at 1 and do not
 overlap, its lead aspect is one of its aspects, its hooks exist in patterns/hooks.json. Candidates in playbook/inbox/*.json are schema-checked.
+STYLES (playbook/styles/<id>.json) validate against style.schema.json; every part id they name resolves (tools/check_ids.py) and `recipes` lists
+each one they use; the palette passes skills/frame-design/scripts/contrast.py and palette.contrast holds the ratios it measures (written here,
+STALE under --check); every format and the demo's format and template exist; every signature check is a registered check or "review"; a demo
+marked rendered has its committed preview (under 2 MB) and poster.
 Exit 0 = valid (and current with --check), 1 = a problem, 2 = usage."""
 import argparse
 import json
@@ -65,6 +69,97 @@ def _rel(p):
     return os.path.relpath(p, PACK) if p.startswith(PACK) else p
 
 
+CONTRAST = os.path.join(PACK, 'skills', 'frame-design', 'scripts', 'contrast.py')
+PREVIEW_MAX = 2 * 1024 * 1024
+
+
+def measure_contrast(pal):
+    """contrast.py --json on a palette -> ({ink_on_paper, accent_on_paper, muted_on_paper}, ok, problems)"""
+    import tempfile
+    with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False) as f:
+        json.dump(pal, f)
+    try:
+        r = subprocess.run([sys.executable, CONTRAST, f.name, '--json'], capture_output=True, text=True)
+    finally:
+        os.unlink(f.name)
+    try:
+        d = json.loads(r.stdout)
+    except ValueError:
+        return {}, False, ['contrast.py did not run: %s' % (r.stderr or r.stdout)[-160:]]
+    got = {}
+    for p in d.get('pairs') or []:
+        key = '%s_on_%s' % (p.get('fg'), p.get('bg'))
+        if key in ('ink_on_paper', 'accent_on_paper', 'muted_on_paper'):
+            got[key] = round(float(p.get('ratio', 0)), 2)
+    bad = ['%s on %s %.2f:1 (%s)' % (p.get('fg'), p.get('bg'), p.get('ratio', 0), p.get('use')) for p in d.get('pairs') or [] if not p.get('pass')]
+    return got, r.returncode == 0, bad
+
+
+_UNITS = None
+
+
+def preset_units():
+    """{preset id: split unit} from type/presets.js (a line-unit preset paints a whole line one colour, so an *accent* word on that line loses its colour)"""
+    global _UNITS
+    if _UNITS is None:
+        r = subprocess.run(['node', '-e', "import('%s/type/presets.js').then((m) => console.log(JSON.stringify(Object.fromEntries(Object.entries(m.PRESETS).map(([k, v]) => [k, v.unit])))))" % PACK],
+                           capture_output=True, text=True)
+        _UNITS = json.loads(r.stdout) if r.returncode == 0 and r.stdout.strip() else {}
+    return _UNITS
+
+
+def style_problems(where, sid, st, formats, checks, styles):
+    out = []
+    units = preset_units()
+    for role in ('headline', 'card'):   # the lines that carry the accent word
+        pid = ((st.get('type') or {}).get('presets') or {}).get(role, '')
+        u = units.get(pid.split('/', 1)[-1])
+        if u == 'line':
+            out.append('%s: type.presets.%s %s splits by line, so the accent word on that line loses its colour: use a word or char preset' % (where, role, pid))
+    if sid != os.path.basename(st['_file'])[:-5]:
+        out.append('%s: id "%s" does not match the file name' % (where, sid))
+    used, named = L.style_parts(st)
+    for pid in used + named:
+        if not part_ok(pid):
+            out.append('%s: %s does not resolve to a pack id' % (where, pid))
+    rec = set(st.get('recipes') or [])
+    for pid in used:
+        if pid not in rec:
+            out.append('%s: recipes does not list %s (the style uses it)' % (where, pid))
+    for pid in rec:
+        if not part_ok(pid):
+            out.append('%s: recipe %s does not resolve' % (where, pid))
+    for f in st.get('formats') or []:
+        if f not in formats:
+            out.append('%s: format %s is not in the playbook' % (where, f))
+    demo = st.get('demo') or {}
+    if demo.get('format') and demo['format'] not in formats:
+        out.append('%s: demo.format %s is not in the playbook' % (where, demo['format']))
+    if demo.get('format') and demo['format'] not in (st.get('formats') or []):
+        out.append('%s: demo.format %s is not one of the style formats' % (where, demo['format']))
+    if demo.get('template') and not os.path.exists(os.path.join(PACK, demo['template'], 'config.mjs')):
+        out.append('%s: demo.template %s has no config.mjs' % (where, demo['template']))
+    if demo.get('status') == 'rendered':
+        for k in ('preview', 'poster'):
+            f = demo.get(k)
+            if not f or not os.path.exists(os.path.join(PACK, f)):
+                out.append('%s: demo is rendered but demo.%s %s is missing' % (where, k, f))
+        pv = demo.get('preview')
+        if pv and os.path.exists(os.path.join(PACK, pv)) and os.path.getsize(os.path.join(PACK, pv)) > PREVIEW_MAX:
+            out.append('%s: demo.preview %s is over 2 MB' % (where, pv))
+    for t in (st.get('apply') or {}):
+        if not os.path.exists(os.path.join(PACK, t, 'config.mjs')):
+            out.append('%s: apply names %s, which has no config.mjs' % (where, t))
+    for sf in st.get('signature_features') or []:
+        c = sf.get('check')
+        if c and c != 'review' and c not in checks:
+            out.append('%s: signature check %s is not a registered check (python3 tools/playbook_lint.py --list)' % (where, c))
+    for n in st.get('not') or []:
+        if n.get('style') == sid:
+            out.append('%s: not names the style itself' % where)
+    return out
+
+
 def validate(pb, checks=None, defaults=None):
     """-> (problems [str], rules [(file, rule)], formats {id: fm}, inbox [(file, rule)])"""
     import playbook_checks as K
@@ -104,6 +199,26 @@ def validate(pb, checks=None, defaults=None):
             probs.append('%s: %s%s' % (where, '.'.join(map(str, e.path)) + ': ' if e.path else '', e.message))
         probs += format_problems(where, fid, fm, ids, hooks)
     return probs, rules, formats, inbox
+
+
+def validate_styles(pb, formats, checks=None):
+    """-> (problems [str], styles {id: style}, contrast {file: measured}): the measured ratios are what palette.contrast must hold"""
+    import playbook_checks as K
+    checks = set(K.CHECKS) if checks is None else checks
+    sv, styles, probs, measured = _validator('style.schema.json'), L.load_styles(pb), [], {}
+    for sid, st in styles.items():
+        where = _rel(st['_file'])
+        body = {k: v for k, v in st.items() if k != '_file'}
+        for e in sorted(sv.iter_errors(body), key=lambda e: list(e.path)):
+            if list(e.path)[:2] == ['palette', 'contrast'] and not (st.get('palette') or {}).get('contrast'):
+                continue   # empty: the build writes the measured ratios in
+            probs.append('%s: %s%s' % (where, '.'.join(map(str, e.path)) + ': ' if e.path else '', e.message))
+        probs += style_problems(where, sid, st, formats, checks, styles)
+        got, ok, bad = measure_contrast(L.style_palette(st))
+        if not ok:
+            probs.append('%s: the palette fails skills/frame-design/scripts/contrast.py: %s' % (where, '; '.join(bad) or 'see contrast.py'))
+        measured[st['_file']] = got
+    return probs, styles, measured
 
 
 def rule_problems(where, r, checks, defaults, inbox):
@@ -192,9 +307,62 @@ def format_problems(where, fid, fm, ids, hooks):
     return out
 
 
+def validate_prompts(pb, formats, styles):
+    """playbook/prompts.json: every prompt is 150-250 characters, names an existing format and style, fits the format's lengths and aspects, carries a
+    <your product> slot, and `mp brief` routes it to its format with a clear lead (2 points) -> (problems, prompts)"""
+    f = os.path.join(pb, 'prompts.json')
+    if not os.path.exists(f):
+        return [], []
+    import playbook_research as R
+    ps, probs = json.load(open(f, encoding='utf-8')).get('prompts') or [], []
+    seen = set()
+    for p in ps:
+        w = '%s: %s' % (_rel(f), p.get('id'))
+        if p.get('id') in seen:
+            probs.append('%s: repeated id' % w)
+        seen.add(p.get('id'))
+        fm, st, text = formats.get(p.get('format')), styles.get(p.get('style')), p.get('prompt', '')
+        if not fm or not st:
+            probs.append('%s: unknown format or style' % w)
+            continue
+        if not 150 <= len(text) <= 250:
+            probs.append('%s: the prompt is %d characters (150-250)' % (w, len(text)))
+        if '<your product>' not in text or st['title'] not in text:
+            probs.append('%s: the prompt needs the <your product> slot and the style name %s' % (w, st['title']))
+        if not fm['length_s'][0] <= p.get('length', 0) <= fm['length_s'][1] or p.get('aspect') not in fm.get('aspects', []):
+            probs.append('%s: %s s at %s does not fit %s (%s s, %s)' % (w, p.get('length'), p.get('aspect'), fm['id'], fm['length_s'], ', '.join(fm['aspects'])))
+        rk = R.classify(text, formats)
+        if rk[0][1] != fm['id'] or (len(rk) > 1 and rk[0][0] < rk[1][0] + 2):
+            probs.append('%s: mp brief routes it to %s (%s), not %s' % (w, rk[0][1], rk[0][0], fm['id']))
+    return probs, ps
+
+
+def prompts_md(prompts, formats, styles):
+    out = ['# Prompt gallery', '', '<!-- generated by tools/playbook_build.py from playbook/prompts.json and playbook/styles: do not edit by hand -->', '',
+           '[简体中文 README](../README.zh-CN.md) · [README](../README.md) · [the styles](../playbook/README.md#styles) · [catalog: Styles and Films tabs](https://anveai.github.io/motion-pack/catalog/)', '',
+           '**%d copy-ready prompts**, one per format and style pair. Paste one into Claude Code (or any agent with the motion-pack skill), swap `<your product>` for yours, and the agent runs `mp brief` → `mp plan --style` → render → `mp lint`.' % len(prompts), '',
+           '**Tested** means: CI checks that `mp brief` routes each prompt to its format with a clear lead and that `mp plan <format> --style <id>` builds its plan (`tools/playbook_build.py --check`, `tools/tests/test_styles.py`). The preview next to each prompt is that style\'s 10-second demo (the `ad` format on a placeholder subject), not a film made from that exact prompt. The same prompt makes a different film on every run.', '']
+    by = {}
+    for p in prompts:
+        by.setdefault(p['format'], []).append(p)
+    for fid in [f for f in ('ad', 'launch-film', 'saas-feature-drop', 'proof-clip', 'explainer') if f in by] + sorted(f for f in by if f not in ('ad', 'launch-film', 'saas-feature-drop', 'proof-clip', 'explainer')):
+        fm = formats[fid]
+        out += ['## %s (`%s`)' % (fm['title'], fid), '', fm.get('use_when', ''), '']
+        for p in by[fid]:
+            st, d = styles[p['style']], styles[p['style']].get('demo') or {}
+            prev = '[preview: the %s demo](../%s)' % (st['title'], d['preview']) if d.get('status') == 'rendered' and d.get('preview') else 'preview pending (the %s demo is not rendered yet)' % st['title']
+            out += ['### %s × %s, %g s %s' % (fm['title'].split(' (')[0], st['title'], p['length'], p['aspect']), '', '```text', p['prompt'], '```', '',
+                    '%s · `mp plan %s --style %s --length %g --aspect %s` · %d characters' % (prev, fid, p['style'], p['length'], p['aspect'], len(p['prompt'])), '']
+    out += ['## The style prompts', '', 'Each style also has its own prompt (`mp styles <id>` prints it, with the Chinese version under `--zh`):', '',
+            '| style | prompt |', '|---|---|']
+    for sid, st in sorted(styles.items()):
+        out.append('| `%s` | %s |' % (sid, st['prompt'].replace('|', '/')))
+    return '\n'.join(out) + '\n'
+
+
 # ---------------------------------------------------------------- generated files
 
-def readme(pb, rules, formats, inbox):
+def readme(pb, rules, formats, inbox, styles=None):
     rs = [r for _, r in rules if isinstance(r, dict) and 'id' in r]
     cnt = lambda key, vals: ', '.join('%d %s' % (sum(1 for r in rs if r.get(key) == v), v) for v in vals)
     out = ['# The playbook', '', '<!-- generated by tools/playbook_build.py from playbook/rules and playbook/formats: do not edit by hand -->', '',
@@ -206,13 +374,23 @@ def readme(pb, rules, formats, inbox):
            '**Grades:** measured-A (measured on tier A/A- references), measured (any tier), craft (seen, not tied to reach), house (a pack rule), inferred (a reading, never a fact).',
            'A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a WARN, inferred is information only.', '',
            '**Status:** enforced (a check), default (`mp plan` writes it in), part (a pack id implements it), prose-only (a known gap).', '',
-           '**%d rules** (%s; %s) and **%d formats**%s.' % (len(rs), cnt('status', ('enforced', 'default', 'part', 'prose-only')), cnt('grade', L.GRADES), len(formats),
-                                                          ', %d candidates in playbook/inbox' % len(inbox) if inbox else ''), '']
+           '**%d rules** (%s; %s)%s **%d formats**%s%s.' % (len(rs), cnt('status', ('enforced', 'default', 'part', 'prose-only')), cnt('grade', L.GRADES), ',' if styles else ' and', len(formats),
+                                                          ' and **%d styles**' % len(styles) if styles else '', ', %d candidates in playbook/inbox' % len(inbox) if inbox else ''), '']
     if formats:
         out += ['## Formats', '', '| format | length | aspects | template | beats | rules | use when |', '|---|---|---|---|---|---|---|']
         for fid, fm in sorted(formats.items()):
             out.append('| `%s` | %g-%g s | %s | `%s` | %d | %d | %s |' % (fid, fm['length_s'][0], fm['length_s'][1], ' '.join(fm.get('aspects', [])), fm.get('template', ''),
                                                                len(fm.get('beats', [])), len(L.format_rule_ids(fm)), fm.get('use_when', '').replace('|', '/')))
+        out.append('')
+    if styles:
+        out += ['## Styles', '', 'A format says what happens when; a style says what it looks and sounds like. `mp styles` lists them, `mp plan <format> --style <id>` lays one over a format,',
+                'and `mp lint` checks the measurable signature features (palette, type, transitions, sound). Schema: `playbook/schema/style.schema.json`.', '',
+                '| style | what it is | palette (paper / ink / accent) | type | bed | demo |', '|---|---|---|---|---|---|']
+        for sid, st in sorted(styles.items()):
+            p, d = st.get('palette') or {}, st.get('demo') or {}
+            demo = '[%s s %s](../%s)' % (d.get('seconds'), d.get('aspect'), d['preview']) if d.get('status') == 'rendered' and d.get('preview') else 'pending'
+            out.append('| `%s` %s | %s | `%s` / `%s` / `%s` | %s | `%s` | %s |' % (sid, st.get('title_zh', ''), st.get('line', '').replace('|', '/'), p.get('paper'), p.get('ink'), p.get('accent'),
+                                                             (st.get('type') or {}).get('display'), (st.get('sound') or {}).get('bed'), demo))
         out.append('')
     by = {}
     for r in rs:
@@ -228,7 +406,7 @@ def readme(pb, rules, formats, inbox):
             how = ' '.join('`%s`' % x for x in (en.get('check'), en.get('default'), en.get('part')) if x) or '-'
             out.append('| `%s` | %s | %s | %s | %s |' % (r['id'], r.get('grade'), r.get('status'), how, r.get('statement', '').replace('|', '/').replace('\n', ' ')))
         out.append('')
-    out += ['Schemas: `playbook/schema/rule.schema.json`, `playbook/schema/format.schema.json`. Checks: `python3 tools/playbook_lint.py --list`. Plan defaults: `node tools/playbook_plan.mjs --defaults`.', '']
+    out += ['Schemas: `playbook/schema/rule.schema.json`, `playbook/schema/format.schema.json`, `playbook/schema/style.schema.json`. Checks: `python3 tools/playbook_lint.py --list`. Plan defaults: `node tools/playbook_plan.mjs --defaults`.', '']
     return '\n'.join(out)
 
 
@@ -274,9 +452,22 @@ def main(argv=None):
     a = ap.parse_args(argv)
     pb = L.playbook_dir(a.playbook)
     probs, rules, formats, inbox = validate(pb)
+    sprobs, styles, measured = validate_styles(pb, formats)
+    probs += sprobs
+    pprobs, prompts = validate_prompts(pb, formats, styles)
+    probs += pprobs
     for p in probs:
         print('PROBLEM ' + p)
-    gen = {os.path.join(pb, 'README.md'): readme(pb, rules, formats, inbox)}
+    gen = {os.path.join(pb, 'README.md'): readme(pb, rules, formats, inbox, styles)}
+    for f, got in measured.items():   # palette.contrast holds what contrast.py measures: generated, like the index
+        if not got:
+            continue
+        raw = json.load(open(f, encoding='utf-8'))
+        if (raw.get('palette') or {}).get('contrast') != got:
+            raw['palette']['contrast'] = got
+            gen[f] = json.dumps(raw, indent=1, ensure_ascii=False) + '\n'
+    if prompts and pb == L.playbook_dir(None):
+        gen[os.path.join(PACK, 'docs', 'prompts.md')] = prompts_md(prompts, formats, styles)
     if os.path.isdir(os.path.join(PACK, 'docs', 'evidence')) and pb == L.playbook_dir(None):
         gen[os.path.join(PACK, 'docs', 'evidence', 'INDEX.md')] = evidence_index(rules, formats)
     stale = []
@@ -292,7 +483,7 @@ def main(argv=None):
     for s in stale:
         print('STALE ' + s + ' (run python3 tools/playbook_build.py)')
     n = sum(1 for _, r in rules if isinstance(r, dict))
-    print('playbook %s: %d rules, %d formats, %d candidates, %d problems%s' % (_rel(pb), n, len(formats), len(inbox), len(probs), ', %d stale' % len(stale) if stale else ''))
+    print('playbook %s: %d rules, %d formats, %d styles, %d candidates, %d problems%s' % (_rel(pb), n, len(formats), len(styles), len(inbox), len(probs), ', %d stale' % len(stale) if stale else ''))
     return 1 if probs or stale else 0
 
 

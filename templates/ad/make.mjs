@@ -42,23 +42,42 @@ const css = `
 video.clip { z-index: 0; } .card, .proof, .end { z-index: 1; } .over { z-index: 3; }   /* a later coverage cut must never cover the line */`
   + (plan.shots.some((s) => s.placeholder) ? `\n.ph { background: repeating-linear-gradient(135deg, #e6e2d8 0 22px, #ddd8cc 22px 44px); display: flex; align-items: flex-end; padding: 0 0 70px 110px; z-index: 0; } .ph .tag { font-family: "IBM Plex Mono"; font-weight: 600; font-size: 34px; color: #3d3a34; background: rgba(245,242,234,.92); padding: 12px 20px; border-radius: 8px; }` : '')
   + (B.logo ? `\n.end .logo { max-width: 520px; max-height: 150px; }` : '');
-const cssOut = RL ? cardCss(L, B) + `\n#fx { pointer-events: none; } #fx canvas { z-index: 5; }\nvideo.clip, .ph { z-index: 0; } .card, .proof, .end { z-index: 1; } .over { z-index: 3; }` : css;
+/* the brand's type and colours beyond accent / paper (a style or a project sets them): emitted only when they differ from the defaults, so a default build is unchanged */
+const FONT_FILE = { 'Manrope': null, 'IBM Plex Mono': null, 'STIX Two Text': 'STIXTwoText.ttf' }, FONT = B.font || {}, disp = FONT.display || 'Manrope', txt = FONT.text || disp;
+for (const f of [disp, txt]) if (!(f in FONT_FILE)) { console.error(`ad: brand.font ${JSON.stringify(f)} is not a bundled family (${Object.keys(FONT_FILE).join(', ')})`); process.exit(2); }
+const lum = (h) => { const c = h.replace('#', '').match(/../g).map((x) => { const v = parseInt(x, 16) / 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+const onAccent = ['#fff', B.ink, B.paper].reduce((a, c) => (ratio(c.length === 4 ? '#ffffff' : c, B.accent) > ratio(a.length === 4 ? '#ffffff' : a, B.accent) ? c : a));   // the CTA and tick ink: white, else the brand ink or paper, whichever reads best on the accent
+const styleCss = [
+  disp !== 'Manrope' || txt !== 'Manrope' ? `${Object.entries(FONT_FILE).filter(([f, file]) => file && [disp, txt].includes(f)).map(([f, file]) => `@font-face { font-family: "${f}"; src: url("assets/fonts/${file}") format("truetype"); font-weight: 400 700; }`).join('\n')}\n#root { font-family: "${txt}", sans-serif; } .hl, .end .name, .end .cta { font-family: "${disp}", sans-serif; }${disp !== 'Manrope' ? ' .hl, .end .name { letter-spacing: -0.01em; }' : ''}` : '',
+  B.ink.toLowerCase() !== '#111111' ? `#root { color: ${B.ink}; }` : '',
+  B.muted && B.muted.toLowerCase() !== '#5d5850' ? `.end .url { color: ${B.muted}; }` : '',
+  C.plates === false && !RL ? (() => { const name = String((plan.shots.find((x) => x.kind === 'reveal') || {}).text || '').replace(/\*/g, ''), k = disp === 'IBM Plex Mono' ? 0.6 : C.textCase === 'upper' ? 0.68 : disp === 'STIX Two Text' ? 0.5 : 0.54;
+    const px = Math.min(220, Math.floor((W * 0.82) / Math.max(1, name.length * k)));   // the type-only reveal card holds the name on ONE line: a char-unit preset splits letters, so a wrap could break inside the word
+    return `.card.reveal .hl { white-space: nowrap; max-width: none; font-size: ${px}px; }`; })() : '',
+  C.plates === false ? `.kick { position: absolute; left: ${RL ? L.S.x0 : Math.round(W * 0.09)}px; top: ${RL ? Math.round(L.S.y0 + 40 * L.u) : Math.round(H * 0.2)}px; font-family: "IBM Plex Mono"; font-weight: 600; font-size: ${RL ? Math.round(40 * L.u) : 40}px; letter-spacing: 0.08em; text-transform: uppercase; background: ${B.accent}; color: ${onAccent}; padding: 18px 28px; border-radius: 6px; }` : '',   // a solid tab: frame 0 has a readable subject (eyes/frame0 needs 3:1 in a 9% window)
+  C.textCase === 'upper' ? '.hl, .end .name, .end .cta { text-transform: uppercase; }' : '',
+  onAccent !== '#fff' ? `.end .cta { color: ${onAccent}; } .proof .tick path { stroke: ${onAccent}; }` : '',
+].filter(Boolean).join('\n');
+for (const f of [disp, txt]) if (FONT_FILE[f]) { fs.mkdirSync(path.join(DIR, 'assets', 'fonts'), { recursive: true }); fs.copyFileSync(path.join(SH, 'fonts', FONT_FILE[f]), path.join(DIR, 'assets', 'fonts', FONT_FILE[f])); }
+const cssOut = (RL ? cardCss(L, B) + `\n#fx { pointer-events: none; } #fx canvas { z-index: 5; }\nvideo.clip, .ph { z-index: 0; } .card, .proof, .end { z-index: 1; } .over { z-index: 3; }` : css) + (styleCss ? '\n' + styleCss : '');
 let body = '', tl = '';
 const P = txPlan(plan.shots, F);   // transition overlap windows (transitions module registry); clips are stretched through span()
 const sp = (sel, start, dur, mediaStart) => { const o = span(P, { sel, start, dur, mediaStart }); return `data-start="${o.start.toFixed(4)}" data-duration="${o.dur.toFixed(4)}"` + (mediaStart != null ? ` data-media-start="${o.mediaStart}"` : ''); };
 for (const s of plan.shots) {
   const at = s.start.toFixed(4), d = s.dur.toFixed(4), tid = 't-' + s.id, ts = () => sp('#' + s.id, s.start, s.dur);
-  if (s.kind === 'plate' || s.kind === 'reveal') {
+  if ((s.kind === 'plate' || s.kind === 'reveal') && (s.media || s.placeholder)) {
     const v = s.placeholder ? `<section id="v-${s.id}" class="clip ph" ${sp('#v-' + s.id, s.start, s.dur)} data-track-index="0"><div class="tag">placeholder: ${esc(s.placeholder)}</div></section>`   // null media: a labelled pack placeholder, never a fake shot
       : `<video id="v-${s.id}" class="clip fill" src="assets/media/${base(s.media)}" muted playsinline ${sp('#v-' + s.id, s.start, s.dur, s.mediaStart)} data-track-index="0"></video>`;
     body += s.kind === 'reveal' ? `\n<div class="clip" id="w-${s.id}">${v}</div>` : '\n' + v;   // untimed wrapper: animate it, never the timed <video>
     if (s.text) { body += `\n<section id="${s.id}" class="clip over ${s.kind}" ${sp('#' + s.id, s.start, s.textDur ?? s.dur)} data-track-index="2"><div class="hl" id="${tid}"${fsz(s.kind === 'reveal' ? 'reveal' : 'over', s.text)}>${rich(s.text)}</div></section>`; note(s, s.text, s.kind === 'reveal' ? 'reveal' : 'over'); }   // text spans its coverage cuts
-  } else if (s.kind === 'card') { body += `\n<section id="${s.id}" class="clip card" ${ts()} data-track-index="1"><div class="hl" id="${tid}"${fsz('card', s.text)}>${rich(s.text)}</div></section>`; note(s, s.text, 'card'); }
+  } else if (s.kind === 'card' || s.kind === 'reveal') { const kick = C.plates === false && s.id === 'hook' && s.start === 0 && C.hook.kicker ? `<div class="kick">${esc(C.hook.kicker)}</div>` : '';   // the type-only hook: a kicker tab in the accent, still from frame 0
+    body += `\n<section id="${s.id}" class="clip card${s.kind === 'reveal' ? ' reveal' : ''}" ${ts()} data-track-index="1">${kick}<div class="hl" id="${tid}"${fsz('card', s.text)}>${rich(s.text)}</div></section>`; note(s, s.text, 'card'); }   // a reveal with no plate (plates: false) is a type card
   else if (s.kind === 'proof') body += `\n<section id="${s.id}" class="clip proof" ${ts()} data-track-index="1"><div class="tick"><svg viewBox="0 0 64 64"><path d="M14 33 L27 46 L51 19" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hl" id="${tid}"${fsz('proof', s.text)}>${rich(s.text)}</div></section>`, note(s, s.text, 'proof');
   else if (s.kind === 'end') { body += `\n<section id="${s.id}" class="clip end" ${ts()} data-track-index="1">${B.logo ? `<img class="logo" src="assets/media/${base(B.logo)}" alt="">` : ''}<div class="name" id="${tid}"${fsz('name', B.name + '.')}>${esc(B.name)}<i>.</i></div><div class="cta" id="${tid}-cta"${fsz('cta', s.text)}>${esc(s.text)}</div><div class="url" id="${tid}-url">${esc(B.url)}</div></section>`; note(s, B.name, 'name'); note(s, s.text, 'cta'); }
   if (s.text) tl += `\n  MP.type(tl, ${JSON.stringify(s.type)}, '#${tid}', { at: ${at}, dur: ${(s.textDur ?? s.dur).toFixed(4)}, fps: ${F}, kind: ${JSON.stringify(s.kind)} });`;
   if (s.kind === 'end') tl += `\n  MP.type(tl, ${JSON.stringify(C.type.sub)}, '#${tid}-cta', { at: ${(s.start + 0.25).toFixed(4)}, dur: ${(s.dur - 0.25).toFixed(4)}, fps: ${F} });\n  MP.type(tl, ${JSON.stringify(C.type.sub)}, '#${tid}-url', { at: ${(s.start + 0.4).toFixed(4)}, dur: ${(s.dur - 0.4).toFixed(4)}, fps: ${F} });`;
-  if (s.kind === 'reveal') tl += `\n  tl.fromTo('#w-${s.id}', { scale: 1.0 }, { scale: 1.06, duration: ${d}, ease: 'none' }, ${at});   // slow push on the hero hold (cam.push)`;
+  if (s.kind === 'reveal' && (s.media || s.placeholder)) tl += `\n  tl.fromTo('#w-${s.id}', { scale: 1.0 }, { scale: 1.06, duration: ${d}, ease: 'none' }, ${at});   // slow push on the hero hold (cam.push)`;
 }
 tl += txCalls(P, { W, H });
 if (P.todo.length) console.log('transitions todo:', P.todo.join(' | '));

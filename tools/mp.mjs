@@ -10,17 +10,33 @@
      mp check [--dir D]                               ids (check_ids), honesty (project + plan lint + banned demo words + name denylist), eyes, ears, contact sheet per render
      mp brand <logo.svg|png> [--dir D] [--write]      palette candidates from your logo, contrast-checked (frame-design contrast.py), a suggested accent / ink / paper
      mp doctor                                        node, python + venv, ffmpeg, Chrome on the GPU, puppeteer-core, sound libraries, disk
+     mp init [<version>] [--force]                    download the tagged release into ~/.motion-pack/<version>, checked against its SHA256SUMS (the pack for an
+                                                      agent working outside a clone; mp finds it: MOTION_PACK_HOME, this copy, ~/.motion-pack/<version>)
    The playbook (playbook/: the learnings as graded rules and formats; every one takes --playbook DIR):
      mp formats [--json]                              the formats, one line each (playbook/formats)
-     mp brief <brief.md|"idea"> [--goal G] [--platform P] [--format F] [--length N] [--out D]   pick the format, write research-pack.md/.json, then mp plan
-     mp plan <format> [--length N] [--aspect A] [--platform P] [--research R] [--out plan.json] [--project-out project.json]   a plan.json skeleton with the defaults and TODOs
+     mp styles [<id>] [--json] [--zh]                 the named visual styles (playbook/styles); with an id: its copy-ready prompt, palette, type, sound and parts
+     mp brief <brief.md|"idea"> [--goal G] [--platform P] [--format F] [--style S] [--length N] [--out D]   pick the format, write research-pack.md/.json, then mp plan
+     mp plan <format> [--style S] [--length N] [--aspect A] [--platform P] [--research R] [--out plan.json] [--project-out project.json]   a plan.json skeleton with the defaults and TODOs; --style lays a style over it
      mp lint <plan.json|render.mp4> [--format F] [--json] [--all-checks]   every enforceable rule: PASS / WARN / FAIL with value and fix, a score; exit 1 on a FAIL
      mp study <video.mp4|x-url|study.json> [--format F] [--ours|--reference] [--slug S]   refstudy + lint: our render's gaps vs the exemplars, or candidate rules in playbook/inbox
      mp rules [--area A] [--status S] [--gaps] [--format F] · mp rules promote <inbox.json> [--id C] [--as area.name] [--grade G]   browse the rules, publish candidates
    Every command exits 0 when fine, 1 when a check fails, 2 on a usage or project error (the message names the field and the fix). */
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import { spawnSync } from 'node:child_process'; import { pathToFileURL, fileURLToPath } from 'node:url';
+import { resolvePack, packVersion, init as packInit } from './pack_home.mjs';
 
-const PACK = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), TPL = path.join(PACK, 'templates');
+/* where the pack is (tools/pack_home.mjs): MOTION_PACK_HOME, else this copy when it is a whole pack, else ~/.motion-pack/<version>, else `mp init`.
+   When the pack is another folder, this mp hands the command to that pack's own tools/mp.mjs, so templates and paths always come from one pack. */
+const SELF = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+{ const [c0, ...a0] = process.argv.slice(2);
+  if (c0 === 'init') {
+    const v = a0.find((x) => /^\d+\.\d+\.\d+/.test(x)) || packVersion(SELF);
+    try { const r = await packInit({ version: v, force: a0.includes('--force') }); console.log(`PACK=${r.pack}\nnext: export MOTION_PACK_HOME="${r.pack}"   ·   "${r.pack}/tools/mp" doctor   ·   build the sound libraries: python3 "${r.pack}/sfx/build_library.py" && python3 "${r.pack}/music/build_music.py"`); process.exit(0); }
+    catch (e) { console.error('mp init: ' + e.message); process.exit(1); } }
+  const R = resolvePack({ self: SELF });
+  if (!R.pack && process.env.MOTION_PACK_HOME) { console.error(`mp: ${R.how}: point it at a clone or an mp init folder, or unset it`); process.exit(2); }
+  if (!R.pack) { console.error(`mp: no motion-pack found (${R.how}). Run \`mp init\` to download release ${packVersion(SELF) || '<version>'} into ${R.want || '~/.motion-pack/<version>'} (checksum-verified), or set MOTION_PACK_HOME to a clone.`); process.exit(2); }
+  if (fs.realpathSync(R.pack) !== fs.realpathSync(SELF)) process.exit(spawnSync('node', [path.join(R.pack, 'tools', 'mp.mjs'), ...process.argv.slice(2)], { stdio: 'inherit', env: { ...process.env, MOTION_PACK_HOME: R.pack } }).status ?? 2); }
+const PACK = SELF, TPL = path.join(PACK, 'templates');
 const P = await import(pathToFileURL(path.join(TPL, '_shared', 'project.mjs')).href);
 const { sizeProblem } = await import(pathToFileURL(path.join(PACK, 'tools', 'mp-size.mjs')).href);   // the WxH-vs-aspect check after every render
 const { remuxMaster } = await import(pathToFileURL(path.join(PACK, 'tools', 'mp-audio.mjs')).href);   // the delivered audio is the template's own master (rule sound.no_renderer_lowering)
@@ -238,7 +254,7 @@ const nodeTool = (script, args) => () => process.exit(run('node', [path.join(PAC
 
 const [cmd, ...rest] = process.argv.slice(2);
 const CMDS = { list: cmdList, new: cmdNew, set: cmdSet, build: cmdBuild, render: cmdRender, check: cmdCheck, brand: cmdBrand, doctor: cmdDoctor,
-  formats: pyTool('playbook.py', ['formats', ...rest]), rules: pyTool('playbook.py', ['rules', ...rest]), lint: pyTool('playbook_lint.py', rest),
+  formats: pyTool('playbook.py', ['formats', ...rest]), styles: pyTool('playbook.py', ['styles', ...rest]), style: pyTool('playbook.py', ['styles', ...rest]), rules: pyTool('playbook.py', ['rules', ...rest]), lint: pyTool('playbook_lint.py', rest),
   brief: pyTool('playbook_research.py', ['brief', ...rest]), study: pyTool('playbook_research.py', ['study', ...rest]), plan: nodeTool('playbook_plan.mjs', rest) };
 if (!CMDS[cmd]) { const head = fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n'); console.log(head.slice(1, head.findIndex((l) => l.includes('*/')) + 1).join('\n').replace(/^\/\* /, '   ').replace(/ \*\/$/, '')); process.exit(cmd && !['help', '--help', '-h'].includes(cmd) ? 2 : 0); }
 STRICT = rest.includes('--strict');

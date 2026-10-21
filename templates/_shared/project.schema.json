@@ -263,7 +263,7 @@
     },
     "playbook": {
       "type": "object",
-      "description": "the format's sound shape, written by `mp plan` (tools/playbook_plan.mjs) and applied to the plan by templates/_shared/cues.mjs (templates/_shared/playbook.mjs): quiet_open {s, db}, bass_entry_pct / bass_entry_beat, name_silence {s, db, beat, at_pct}, tail / tail_db, end_hold_s, first_sound_frame_max, format. Omit it and the template keeps its own sound.",
+      "description": "the format's sound shape, written by `mp plan` (tools/playbook_plan.mjs) and applied to the plan by templates/_shared/cues.mjs (templates/_shared/playbook.mjs): quiet_open {s, db}, bass_entry_pct / bass_entry_beat, name_silence {s, db, beat, at_pct}, tail / tail_db, end_hold_s, first_sound_frame_max, format, style. Omit it and the template keeps its own sound.",
       "additionalProperties": false,
       "patternProperties": {
         "^//": {}
@@ -342,6 +342,11 @@
         "first_sound_frame_max": {
           "type": "integer",
           "minimum": 0
+        },
+        "style": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$",
+          "description": "the named style laid over the format (playbook/styles/<id>.json, `mp plan --style`); the template plan carries it as plan.playbook.style so `mp lint` runs the style checks"
         }
       }
     }

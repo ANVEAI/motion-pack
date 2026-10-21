@@ -1,0 +1,194 @@
+{
+ "id": "swiss-grid",
+ "title": "Swiss Grid",
+ "title_zh": "瑞士网格",
+ "line": "Black sans on white, one signal red, hard cuts on the beat: information as design.",
+ "line_zh": "白底黑色无衬线字，一抹信号红，踩点硬切：信息即设计。",
+ "prompt": "Swiss grid style: heavy black sans on pure white, one signal red for the key word, flush-left lines, letters that rise crisp, hard cuts and straight pushes on the beat, a clean tech pulse bed with ticks. No textures.",
+ "prompt_zh": "瑞士网格风格：纯白底上的粗黑无衬线字，关键词用信号红，左对齐，字母利落上升的字效，踩点硬切与直推转场，干净的科技律动配乐加滴答声。不要纹理。",
+ "essence": "The grid is the hero: big flush-left sans type, strict alignment and one red that marks the point. Motion is exact and short; nothing floats.",
+ "not": [
+  {
+   "style": "editorial-print",
+   "difference": "Editorial Print is serif on textured paper; Swiss Grid is sans on clean white with no texture."
+  },
+  {
+   "style": "kinetic-poster",
+   "difference": "Kinetic Poster slams type on a loud ground with overshoot; Swiss Grid stays on white and never overshoots."
+  }
+ ],
+ "palette": {
+  "logic": "pure white, near-black ink, ONE signal red; greys only for secondary lines",
+  "paper": "#FFFFFF",
+  "ink": "#0A0A0A",
+  "accent": "#E2001A",
+  "muted": "#555555",
+  "contrast": {
+   "ink_on_paper": 19.8,
+   "muted_on_paper": 7.46,
+   "accent_on_paper": 4.94
+  }
+ },
+ "type": {
+  "display": "Manrope",
+  "text": "Manrope",
+  "weight": 800,
+  "case": "sentence",
+  "max_words_per_line": 4,
+  "presets": {
+   "headline": "type/charRise",
+   "card": "type/wordStagger",
+   "end": "type/trackingCollapse",
+   "sub": "type/blurIn"
+  }
+ },
+ "motion": {
+  "personality": "precise",
+  "ease": "expoOut",
+  "overshoot_max": 0.0,
+  "asl_s": [
+   0.9,
+   1.8
+  ],
+  "camera": [
+   {
+    "move": "cam2d.dollySnap",
+    "expresses": "a snap to the next grid cell"
+   },
+   {
+    "move": "cam2d.push2d",
+    "expresses": "a straight push that keeps the grid square"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/cut",
+   "ENERGY": "transitions/push",
+   "STORY": "transitions/push",
+   "RHYTHM": "transitions/cut"
+  },
+  "banned": [
+   "transitions/dissolve",
+   "transitions/lightLeak",
+   "transitions/filmBurn",
+   "transitions/glitch",
+   "transitions/ripple"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "clean",
+    "amount": 0.02
+   }
+  }
+ ],
+ "grain": "layers/grain.clean",
+ "sound": {
+  "bed": "music/bed_tech_pulse_loop8",
+  "alt_beds": [
+   "music/bed_corporate_bright_loop8",
+   "music/bed_deep_house_loop8"
+  ],
+  "families": [
+   "ui",
+   "drum"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/ui/tick",
+   "card": "sfx/ui/click",
+   "riser": "sfx/riser/noise_1bar",
+   "reveal": "sfx/drum/kick_punch",
+   "sting": "sfx/logo/pulse_pad"
+  },
+  "foley": "ticks and clicks on the grid lines"
+ },
+ "signature_features": [
+  {
+   "text": "heavy sans (Manrope 800) flush left, crisp char rises, the name tracking in tight",
+   "check": "lint.style.type"
+  },
+  {
+   "text": "white ground, black ink at 19:1, red accent at 4.9:1 (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "hard cuts and straight pushes only; no dissolves, leaks or glitches",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "a tech pulse bed with UI ticks",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "every line starts on the same left edge",
+   "check": "review"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/cut",
+  "transitions/push",
+  "type/blurIn",
+  "type/charRise",
+  "type/trackingCollapse",
+  "type/wordStagger",
+  "music/bed_tech_pulse_loop8",
+  "sfx/drum/kick_punch",
+  "sfx/logo/pulse_pad",
+  "sfx/riser/noise_1bar",
+  "sfx/ui/click",
+  "sfx/ui/tick",
+  "layers/grain",
+  "layers/grain.clean",
+  "cam2d.dollySnap",
+  "cam2d.push2d"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": false
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "rendered",
+  "preview": "media/styles/swiss-grid.mp4",
+  "poster": "media/styles/swiss-grid.jpg",
+  "release_asset": "motion-pack-style-swiss-grid-v0.6.0.mp4",
+  "lint": "mp lint 96.6/100, 52 PASS, 4 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint; 0 human rounds; the same placeholder copy in every style"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

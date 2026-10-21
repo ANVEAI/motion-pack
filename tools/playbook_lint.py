@@ -144,7 +144,9 @@ def find_inputs(target, plan, shotlist=None, design=None, captions=None, page=No
         c = os.path.join(os.path.dirname(d), 'build', 'templates', plan['template'])
         pg = c if os.path.isdir(c) else None
     st = study or (target[:-4] + '.study.json' if target.endswith('.mp4') and os.path.exists(target[:-4] + '.study.json') else None)
-    return {'shotlist': _j(sl) if sl else None, 'design_path': design or first(['design.json']), 'captions_path': cap, 'study': _j(st) if st else None, 'page_dir': pg}
+    pj = first(['project.json'])
+    return {'shotlist': _j(sl) if sl else None, 'design_path': design or first(['design.json']), 'captions_path': cap, 'study': _j(st) if st else None, 'page_dir': pg,
+            'project': _j(pj) if pj and target.endswith('.mp4') else None}
 
 
 ALWAYS = ('lint.honesty.todo', 'lint.honesty.claims', 'lint.honesty.banned_words')
@@ -186,6 +188,24 @@ def lint(ctx, rules, fm=None, all_checks=False):
                 p['length_s'] = fm.get('length_s') if 'length_s' in p else p.get('length_s')
             raw, val, fix = K.run_check(cid, ctx, p)
             rows.append({'rule': '(check) ' + cid, 'title': spec['doc'][:60], 'grade': spec['grade'], 'check': cid, 'beat': None, 'raw': raw, 'verdict': K.severity(raw, spec['grade']), 'value': val, 'fix': fix})
+    style, review = None, []
+    try:
+        import playbook_checks_style as KS
+        style = KS.style_of(ctx)
+    except (OSError, ValueError):
+        style = None
+    if style:   # the style's signature features: the mechanical ones run at their check's grade, the rest are listed for a look by hand
+        for sf in style.get('signature_features') or []:
+            cid = sf.get('check')
+            if cid == 'review' or cid not in K.CHECKS:
+                review.append(sf.get('text', ''))
+                continue
+            if cid in covered:
+                continue
+            spec = K.CHECKS[cid]
+            raw, val, fix = K.run_check(cid, ctx, spec['params'])
+            rows.append({'rule': '(style %s) %s' % (style['id'], cid), 'title': sf.get('text', '')[:60], 'grade': spec['grade'], 'check': cid, 'beat': None, 'raw': raw, 'verdict': K.severity(raw, spec['grade']), 'value': val, 'fix': fix})
+            covered.add(cid)
     num = den = 0.0
     for x in rows:
         w = L.GRADE_WEIGHT.get(x['grade'], 1)
@@ -193,7 +213,8 @@ def lint(ctx, rules, fm=None, all_checks=False):
             num += w * K.SCORE[x['verdict']]
             den += w
     counts = {v: sum(1 for x in rows if x['verdict'] == v) for v in ('PASS', 'WARN', 'FAIL', 'INFO', 'N/A')}
-    return {'format': fm and fm.get('id'), 'rows': rows, 'score': round(100 * num / den, 1) if den else None, 'counts': counts, 'unchecked': unchecked, 'missing_rules': missing}
+    return {'format': fm and fm.get('id'), 'rows': rows, 'score': round(100 * num / den, 1) if den else None, 'counts': counts, 'unchecked': unchecked, 'missing_rules': missing,
+            **({'style': {'id': style['id'], 'review': review}} if style else {})}
 
 
 def table(res):
@@ -215,6 +236,8 @@ def table(res):
         for u in res['unchecked']:
             by.setdefault(u['status'], []).append(u['rule'])
         out.append('not checked here (look by hand): ' + ', '.join('%d %s' % (len(v), k) for k, v in sorted(by.items())) + ('  ·  mp rules --format %s lists them' % res['format'] if res['format'] else '') + '  (--json has every id)')
+    if res.get('style'):
+        out.append('style %s: %d signature feature(s) to look at by hand: %s' % (res['style']['id'], len(res['style']['review']), ' · '.join(res['style']['review'])) if res['style']['review'] else 'style %s: every signature feature is checked above' % res['style']['id'])
     if res['missing_rules']:
         out.append('the format names rules the playbook does not have: ' + ', '.join(res['missing_rules']))
     return '\n'.join(out)
@@ -261,7 +284,7 @@ def main(argv=None):
     fm = formats.get(fid) if fid else None
     if not fm and rules:                                                         # no format: the rules that apply to every format, or to a format on this template
         rules = {k: r for k, r in rules.items() if not (r.get('scope') or {}).get('formats') or set(r['scope']['formats']) & set(by_tpl)}
-    ctx = K.Ctx(plan, _by_id(ears), _by_id(eyes), pr, aspect, fm, plan_path, **find_inputs(a.target, plan, a.shotlist, a.design, a.captions, a.page, a.study))
+    ctx = K.Ctx(plan, _by_id(ears), _by_id(eyes), pr, aspect, fm, plan_path, playbook=pb, **find_inputs(a.target, plan, a.shotlist, a.design, a.captions, a.page, a.study))
     res = lint(ctx, rules, fm, a.all_checks or not rules)
     res['target'] = a.target
     if not rules:

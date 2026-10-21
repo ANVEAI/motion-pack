@@ -90,6 +90,6 @@ export function applyPlaybook(plan, pb) {
   if (last && pb.end_hold_s) { last.hold = true; applied.push(last.dur + 1e-6 >= pb.end_hold_s ? `end card holds ${r3(last.dur)} s (>= ${pb.end_hold_s})` : `end card holds ${r3(last.dur)} s, under the format's ${pb.end_hold_s} s: the template's last shot is shorter`); }
   if (curves.length) plan.bedAutomation = curves.reduce((acc, c) => mergeAutomation(acc, c), plan.bedAutomation && plan.bedAutomation.length ? plan.bedAutomation : [{ frame: 0, gain_db: 0 }]);
   plan.cues.sort((x, y) => x.t - y.t);
-  plan.playbook = { ...(plan.playbook || {}), format: pb.format || null, source: 'project.playbook', applied, cuesDropped: removed };
+  plan.playbook = { ...(plan.playbook || {}), format: pb.format || null, ...(pb.style ? { style: pb.style } : {}), source: 'project.playbook', applied, cuesDropped: removed };   // style: mp lint runs that style's checks on the render
   return plan;
 }

@@ -1,0 +1,227 @@
+{
+ "id": "retro-crt",
+ "title": "Retro CRT",
+ "title_zh": "复古显像管",
+ "line": "An old terminal: phosphor green mono type, an amber accent, scanlines, tape wobble and chiptune.",
+ "line_zh": "一台老终端：荧光绿等宽字，琥珀点缀，扫描线、磁带抖动与芯片音乐。",
+ "prompt": "Retro CRT style: phosphor-green mono type on black, one amber accent, scanlines with a light tape wobble and glow, glitch-split and typewriter type, static and glitch cuts, a chiptune bed with key clicks and a glitch stutter.",
+ "prompt_zh": "复古显像管风格：黑底荧光绿等宽字，一抹琥珀色，扫描线加轻微磁带抖动与辉光，故障分裂与打字机字效，雪花与故障切换，芯片音乐配乐，配按键声与故障卡顿声。",
+ "essence": "A screen from another decade: glowing mono characters, a little signal noise and sounds made by chips. The noise frames the words; the words stay sharp.",
+ "not": [
+  {
+   "style": "neon-night",
+   "difference": "Neon Night is soft bloom and bokeh in a sans face; Retro CRT is a mono terminal with scanlines."
+  },
+  {
+   "style": "blueprint",
+   "difference": "Blueprint is a clean drawing; Retro CRT is a noisy glowing screen."
+  }
+ ],
+ "palette": {
+  "logic": "near-black glass, phosphor green ink, ONE amber for the cursor and the key word",
+  "paper": "#071008",
+  "ink": "#9DFF9D",
+  "accent": "#FFB000",
+  "muted": "#6FBF6F",
+  "contrast": {
+   "ink_on_paper": 15.85,
+   "muted_on_paper": 8.61,
+   "accent_on_paper": 10.55
+  }
+ },
+ "type": {
+  "display": "IBM Plex Mono",
+  "text": "IBM Plex Mono",
+  "weight": 600,
+  "case": "upper",
+  "max_words_per_line": 4,
+  "presets": {
+   "headline": "type/charStagger",
+   "card": "type/typewriter",
+   "end": "type/glitchSplit",
+   "sub": "type/typewriter"
+  }
+ },
+ "motion": {
+  "personality": "energetic",
+  "ease": "lin",
+  "overshoot_max": 0.0,
+  "asl_s": [
+   0.8,
+   1.6
+  ],
+  "camera": [
+   {
+    "move": "cam2d.shake2d",
+    "expresses": "a signal jolt"
+   },
+   {
+    "move": "cam2d.punchCadence",
+    "expresses": "a beat-locked punch on the terminal"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/tvStatic",
+   "ENERGY": "transitions/glitch",
+   "STORY": "transitions/pixelSort",
+   "RHYTHM": "transitions/tvStatic"
+  },
+  "banned": [
+   "transitions/dissolve",
+   "transitions/pagePeel",
+   "transitions/lightLeak",
+   "transitions/dreamyZoom"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "scanlines",
+   "params": {
+    "pitch": 3,
+    "depth": 0.28
+   }
+  },
+  {
+   "kind": "vhs",
+   "params": {
+    "intensity": 0.3,
+    "tracking": 0.3
+   }
+  },
+  {
+   "kind": "glow",
+   "params": {
+    "pools": [
+     {
+      "x": 0.5,
+      "y": 0.5,
+      "r": 0.7,
+      "color": "#3CFF6A",
+      "intensity": 0.18
+     }
+    ]
+   }
+  },
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "vhs",
+    "amount": 0.06
+   }
+  }
+ ],
+ "look": "layers/look.green-matrix",
+ "grain": "layers/grain.vhs",
+ "sound": {
+  "bed": "music/bed_chiptune_8bit_loop8",
+  "alt_beds": [
+   "music/bed_synthwave_loop8",
+   "music/bed_suspense_pulse_loop8"
+  ],
+  "families": [
+   "ui",
+   "tx",
+   "elec"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/tx/glitch_stutter",
+   "card": "sfx/ui/type_key",
+   "riser": "sfx/riser/glitch_stutter",
+   "reveal": "sfx/elec/arc",
+   "sting": "sfx/logo/question"
+  },
+  "foley": "key clicks, a glitch stutter and an electric arc"
+ },
+ "signature_features": [
+  {
+   "text": "phosphor green ink on black at 15:1, amber at 10:1 (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "a mono face typed out, the name glitch-split",
+   "check": "lint.style.type"
+  },
+  {
+   "text": "static, glitch and pixel-sort cuts only",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "a chiptune bed with key and glitch sounds",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "scanlines and wobble frame the words; the letters stay sharp",
+   "check": "review"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/glitch",
+  "transitions/pixelSort",
+  "transitions/tvStatic",
+  "type/charStagger",
+  "type/glitchSplit",
+  "type/typewriter",
+  "music/bed_chiptune_8bit_loop8",
+  "sfx/elec/arc",
+  "sfx/logo/question",
+  "sfx/riser/glitch_stutter",
+  "sfx/tx/glitch_stutter",
+  "sfx/ui/type_key",
+  "layers/scanlines",
+  "layers/vhs",
+  "layers/glow",
+  "layers/grain",
+  "layers/look.green-matrix",
+  "layers/grain.vhs",
+  "cam2d.shake2d",
+  "cam2d.punchCadence"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": false
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "rendered",
+  "preview": "media/styles/retro-crt.mp4",
+  "poster": "media/styles/retro-crt.jpg",
+  "release_asset": "motion-pack-style-retro-crt-v0.6.0.mp4",
+  "lint": "mp lint 100.0/100, 56 PASS, 0 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint; 0 human rounds; the same placeholder copy in every style"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

@@ -1,0 +1,210 @@
+{
+ "id": "documentary-grain",
+ "title": "Documentary Grain",
+ "title_zh": "纪录片颗粒",
+ "line": "16 mm warmth: cream type on dark umber, amber accent, film grain, dust and warm light leaks.",
+ "line_zh": "16 毫米胶片的温度：深棕底上的米色字，琥珀点缀，胶片颗粒、灰尘与暖色漏光。",
+ "prompt": "Documentary grain style: cream type on dark umber, one amber accent, 16 mm grain, light dust and warm light leaks, typewriter and mask-rise type, dissolves and dips, a calm ambient pad with a projector hum and typewriter keys.",
+ "prompt_zh": "纪录片颗粒风格：深棕底上的米色文字，一抹琥珀色，16 毫米胶片颗粒、轻微灰尘与暖色漏光，打字机与遮罩上升字效，叠化与淡入淡出，平静的氛围垫音，配放映机嗡声与打字机按键声。",
+ "essence": "It feels found and true: warm film texture, quiet type that types itself out and slow dissolves. The texture is a frame around the words, not noise over them.",
+ "not": [
+  {
+   "style": "editorial-print",
+   "difference": "Editorial Print is a light printed page; Documentary Grain is a dark projected frame."
+  },
+  {
+   "style": "retro-crt",
+   "difference": "Retro CRT is a green screen with scanlines; Documentary Grain is warm film with grain and dust."
+  }
+ ],
+ "palette": {
+  "logic": "a dark umber frame, cream ink, ONE amber for the key word; everything warm",
+  "paper": "#17150F",
+  "ink": "#EEE6D3",
+  "accent": "#E0A43A",
+  "muted": "#A89F8A",
+  "contrast": {
+   "ink_on_paper": 14.68,
+   "muted_on_paper": 6.95,
+   "accent_on_paper": 8.29
+  }
+ },
+ "type": {
+  "display": "IBM Plex Mono",
+  "text": "IBM Plex Mono",
+  "weight": 600,
+  "case": "sentence",
+  "max_words_per_line": 4,
+  "presets": {
+   "headline": "type/typewriter",
+   "card": "type/maskRise",
+   "end": "type/maskRise",
+   "sub": "type/blurIn"
+  }
+ },
+ "motion": {
+  "personality": "calm",
+  "ease": "sine",
+  "overshoot_max": 0.0,
+  "asl_s": [
+   1.6,
+   3.0
+  ],
+  "camera": [
+   {
+    "move": "cam2d.kenBurns",
+    "expresses": "a slow look across a found image"
+   },
+   {
+    "move": "cam2d.handheld2d",
+    "expresses": "a person holding the camera"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/dissolve",
+   "ENERGY": "transitions/filmBurn",
+   "STORY": "transitions/dissolve",
+   "RHYTHM": "transitions/dip-to-black"
+  },
+  "banned": [
+   "transitions/glitch",
+   "transitions/zoomThrough",
+   "transitions/kaleido",
+   "transitions/swipeUp"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "film16"
+   }
+  },
+  {
+   "kind": "dust",
+   "params": {
+    "density": 0.35,
+    "hair": 0.5,
+    "scratch": 0.3
+   }
+  },
+  {
+   "kind": "leaks",
+   "params": {
+    "intensity": 0.35
+   }
+  }
+ ],
+ "look": "layers/look.film-documentary",
+ "grain": "layers/grain.film16",
+ "sound": {
+  "bed": "music/bed_ambient_pad_loop8",
+  "alt_beds": [
+   "music/bed_documentary_marimba_loop8",
+   "music/bed_raga_calm_loop8"
+  ],
+  "families": [
+   "ambience",
+   "foley"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/amb/projector",
+   "card": "sfx/foley/typewriter",
+   "riser": "sfx/riser/tape_up",
+   "reveal": "sfx/hit/soft",
+   "sting": "sfx/logo/pulse_pad"
+  },
+  "foley": "a projector hum, typewriter keys and a soft hit"
+ },
+ "signature_features": [
+  {
+   "text": "cream ink on dark umber at 14:1, amber at 8:1 (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "a mono typewriter face for every headline",
+   "check": "lint.style.type"
+  },
+  {
+   "text": "dissolves, film burns and dips only",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "an ambient bed with projector and typewriter sounds",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "grain, dust and leaks visible but never over the words; no black gate or bars",
+   "check": "review"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/dip-to-black",
+  "transitions/dissolve",
+  "transitions/filmBurn",
+  "type/blurIn",
+  "type/maskRise",
+  "type/typewriter",
+  "music/bed_ambient_pad_loop8",
+  "sfx/amb/projector",
+  "sfx/foley/typewriter",
+  "sfx/hit/soft",
+  "sfx/logo/pulse_pad",
+  "sfx/riser/tape_up",
+  "layers/grain",
+  "layers/dust",
+  "layers/leaks",
+  "layers/look.film-documentary",
+  "layers/grain.film16",
+  "cam2d.kenBurns",
+  "cam2d.handheld2d"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": false
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "rendered",
+  "preview": "media/styles/documentary-grain.mp4",
+  "poster": "media/styles/documentary-grain.jpg",
+  "release_asset": "motion-pack-style-documentary-grain-v0.6.0.mp4",
+  "lint": "mp lint 99.0/100, 54 PASS, 2 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint; 0 human rounds; the same placeholder copy in every style"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

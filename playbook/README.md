@@ -18,7 +18,7 @@ A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a W
 
 **Status:** enforced (a check), default (`mp plan` writes it in), part (a pack id implements it), prose-only (a known gap).
 
-**338 rules** (119 enforced, 22 default, 63 part, 134 prose-only; 54 measured-A, 67 measured, 79 craft, 128 house, 10 inferred) and **14 formats**.
+**338 rules** (119 enforced, 22 default, 63 part, 134 prose-only; 54 measured-A, 67 measured, 79 craft, 128 house, 10 inferred), **14 formats** and **10 styles**.
 
 ## Formats
 
@@ -38,6 +38,24 @@ A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a W
 | `short-film` | 45-180 s | 16:9 9:16 | `templates/short-film` | 7 | 172 | A story film: one named person with a concrete stake, one obstacle, the product (if any) as the quiet turn, a payoff that pays off the stake, an honesty label in frame. |
 | `talking-head` | 20-90 s | 9:16 16:9 1:1 | `templates/talking-head` | 4 | 166 | A person speaking to camera: a founder update, a tip, a clip from a talk. Cut per sentence, captions on every line, B-roll per idea, punch-ins on key claims. |
 | `trailer` | 60-150 s | 16:9 9:16 | `templates/trailer` | 7 | 166 | A film, series, game or big release trailer: world, turn, wall montage, silence, title, button, date. Tone and escalation over explanation. |
+
+## Styles
+
+A format says what happens when; a style says what it looks and sounds like. `mp styles` lists them, `mp plan <format> --style <id>` lays one over a format,
+and `mp lint` checks the measurable signature features (palette, type, transitions, sound). Schema: `playbook/schema/style.schema.json`.
+
+| style | what it is | palette (paper / ink / accent) | type | bed | demo |
+|---|---|---|---|---|---|
+| `blueprint` 蓝图 | A technical drawing: mono type on drafting blue, signal yellow, outlines that fill in. | `#0E2A5A` / `#EAF2FF` / `#FFD23F` | IBM Plex Mono | `music/bed_tech_pulse_loop8` | [10 s 16:9](../media/styles/blueprint.mp4) |
+| `chrome-product` 铬金属产品 | Graphite stage, silver type, an ice-blue glint: the premium product reveal. | `#1A1C21` / `#ECEFF3` / `#9BD8FF` | Manrope | `music/bed_cinematic_drone_loop8` | [10 s 16:9](../media/styles/chrome-product.mp4) |
+| `documentary-grain` 纪录片颗粒 | 16 mm warmth: cream type on dark umber, amber accent, film grain, dust and warm light leaks. | `#17150F` / `#EEE6D3` / `#E0A43A` | IBM Plex Mono | `music/bed_ambient_pad_loop8` | [10 s 16:9](../media/styles/documentary-grain.mp4) |
+| `editorial-print` 编辑印刷 | A magazine spread that moves: serif headlines on warm newsprint, one red, a halftone tooth. | `#F3EEE3` / `#1A1A1A` / `#C8102E` | STIX Two Text | `music/bed_documentary_marimba_loop8` | [10 s 16:9](../media/styles/editorial-print.mp4) |
+| `kinetic-poster` 动态海报 | A loud poster: giant black type slammed on signal yellow, one cobalt, whips on the beat. | `#FFE600` / `#0A0A0A` / `#1C2FD9` | Manrope | `music/bed_hype_house_loop8` | pending |
+| `neon-night` 霓虹之夜 | Night city glow: light type on deep indigo, a magenta accent, bokeh and a synthwave bed. | `#0B0A1F` / `#F4F1FF` / `#FF3EC8` | Manrope | `music/bed_synthwave_loop8` | [10 s 16:9](../media/styles/neon-night.mp4) |
+| `paper-cut` 剪纸拼贴 | Craft paper and cardboard, a deep teal, bouncy type and page peels: made by hand. | `#F2E3C6` / `#3A2618` / `#1F7A6E` | Manrope | `music/bed_acoustic_folk_pluck_loop8` | [10 s 16:9](../media/styles/paper-cut.mp4) |
+| `retro-crt` 复古显像管 | An old terminal: phosphor green mono type, an amber accent, scanlines, tape wobble and chiptune. | `#071008` / `#9DFF9D` / `#FFB000` | IBM Plex Mono | `music/bed_chiptune_8bit_loop8` | [10 s 16:9](../media/styles/retro-crt.mp4) |
+| `soft-clay` 柔软黏土 | Rounded 3D clay under studio light: lilac ground, friendly purple, a bouncy lo-fi bed. | `#F1ECF7` / `#2B2340` / `#6A4BD6` | Manrope | `music/bed_lofi_warm_loop8` | [10 s 16:9](../media/styles/soft-clay.mp4) |
+| `swiss-grid` 瑞士网格 | Black sans on white, one signal red, hard cuts on the beat: information as design. | `#FFFFFF` / `#0A0A0A` / `#E2001A` | Manrope | `music/bed_tech_pulse_loop8` | [10 s 16:9](../media/styles/swiss-grid.mp4) |
 
 ## Rules by area
 
@@ -439,4 +457,4 @@ A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a W
 | `distribution.utility_over_volume` | measured | prose-only | - | Prefer one useful post that names real people (a list, a teardown) over high-volume rewrites: rewritten news earned about 250 views each while useful lists reached 4,300-18,400. |
 | `distribution.utm_convention` | house | prose-only | - | Tag every off-site link utm_source=<platform>, utm_medium=<surface>, utm_campaign=<series-or-release>, utm_content=<video-slug>[-a/-b/-c], lowercase and hyphenated, with a separate utm_source for AI-assistant referrals and no UTMs on links inside your own site. |
 
-Schemas: `playbook/schema/rule.schema.json`, `playbook/schema/format.schema.json`. Checks: `python3 tools/playbook_lint.py --list`. Plan defaults: `node tools/playbook_plan.mjs --defaults`.
+Schemas: `playbook/schema/rule.schema.json`, `playbook/schema/format.schema.json`, `playbook/schema/style.schema.json`. Checks: `python3 tools/playbook_lint.py --list`. Plan defaults: `node tools/playbook_plan.mjs --defaults`.

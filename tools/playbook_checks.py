@@ -39,9 +39,11 @@ END_LABELS = {'end', 'endcard', 'end_card', 'card', 'cta', 'outro', 'lockup', 'c
 class Ctx:
     """what a check may read: plan (dict | None), tl (structure_check timeline | None), ears / eyes ({check id: check} | None), probe ({width,
     height, duration} | None), aspect, fm (format | None), plan_path; and for the extra checks shotlist (dict), design_path, captions_path,
-    study (a refstudy study.json), page_dir (the composition's folder)"""
-    def __init__(self, plan=None, ears=None, eyes=None, probe=None, aspect=None, fm=None, plan_path=None, shotlist=None, design_path=None, captions_path=None, study=None, page_dir=None):
+    study (a refstudy study.json), page_dir (the composition's folder); for the style checks project (project.json), style (dict), playbook (folder)"""
+    def __init__(self, plan=None, ears=None, eyes=None, probe=None, aspect=None, fm=None, plan_path=None, shotlist=None, design_path=None, captions_path=None, study=None, page_dir=None,
+                 project=None, style=None, playbook=None):
         self.plan, self.ears, self.eyes, self.probe, self.fm, self.plan_path = plan, ears, eyes, probe, fm, plan_path
+        self.project, self.style, self.playbook = project, style, playbook   # tools/playbook_checks_style.py: the project.json next to a render, the style dict, the playbook folder
         self.shotlist, self.design_path, self.captions_path, self.study, self.page_dir = shotlist, design_path, captions_path, study, page_dir   # tools/playbook_checks_extra.py
         self.aspect = aspect or (plan or {}).get('aspect')
         self.tl = SC.timeline(plan) if plan else None
@@ -481,3 +483,4 @@ def run_check(cid, ctx, params):
 SCORE = {'PASS': 1.0, 'WARN': 0.5, 'FAIL': 0.0}
 
 import playbook_checks_extra  # noqa: E402,F401  (registers lint.shotlist.*, lint.mix.*, lint.motion.*, ... into CHECKS)
+import playbook_checks_style  # noqa: E402,F401  (registers lint.style.* into CHECKS)

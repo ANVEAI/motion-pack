@@ -1,0 +1,219 @@
+{
+ "id": "soft-clay",
+ "title": "Soft Clay",
+ "title_zh": "柔软黏土",
+ "line": "Rounded 3D clay under studio light: lilac ground, friendly purple, a bouncy lo-fi bed.",
+ "line_zh": "棚拍光下的圆润黏土 3D：淡紫底，友好的紫色，弹跳的低保真配乐。",
+ "prompt": "Soft clay style: rounded 3D clay figures and props on a pale lilac studio set, dark plum ink and one friendly purple, soft bokeh, elastic pop-in type, gentle dissolves and swipe-ups, a warm lo-fi bed with pops and a boing.",
+ "prompt_zh": "柔软黏土风格：淡紫色棚景中圆润的 3D 黏土人物与道具，深梅色文字与一抹友好的紫色，柔和散景，弹性出现的字效，轻柔叠化与上滑转场，温暖的低保真配乐，配弹出声与弹簧声。",
+ "essence": "Toy-like and warm: soft rounded forms in even studio light, a friendly colour and motion that bounces a little. The pack renders the clay set in 3D; the type sits beside it.",
+ "not": [
+  {
+   "style": "paper-cut",
+   "difference": "Paper Cut is flat craft layers; Soft Clay is rounded 3D under studio light."
+  },
+  {
+   "style": "kinetic-poster",
+   "difference": "Kinetic Poster is loud flat type; Soft Clay is quiet 3D with small type."
+  }
+ ],
+ "palette": {
+  "logic": "a pale lilac set, dark plum ink, ONE friendly purple that matches the clay figures",
+  "paper": "#F1ECF7",
+  "ink": "#2B2340",
+  "accent": "#6A4BD6",
+  "muted": "#5F5875",
+  "contrast": {
+   "ink_on_paper": 12.76,
+   "muted_on_paper": 5.76,
+   "accent_on_paper": 5.04
+  }
+ },
+ "type": {
+  "display": "Manrope",
+  "text": "Manrope",
+  "weight": 800,
+  "case": "sentence",
+  "max_words_per_line": 4,
+  "presets": {
+   "headline": "type/elasticPop",
+   "card": "type/charRise",
+   "end": "type/elasticPop",
+   "sub": "type/blurIn"
+  }
+ },
+ "motion": {
+  "personality": "playful",
+  "ease": "pop",
+  "overshoot_max": 0.15,
+  "asl_s": [
+   1.2,
+   2.2
+  ],
+  "camera": [
+   {
+    "move": "cam3d.orbit",
+    "expresses": "a turn around the clay set"
+   },
+   {
+    "move": "cam3d.pushSlow",
+    "expresses": "a gentle move toward a figure"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/dissolve",
+   "ENERGY": "transitions/swipeUp",
+   "STORY": "transitions/dissolve",
+   "RHYTHM": "transitions/swipeUp"
+  },
+  "banned": [
+   "transitions/glitch",
+   "transitions/tvStatic",
+   "transitions/filmBurn",
+   "transitions/pixelSort"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "bokeh",
+   "params": {
+    "count": 10,
+    "intensity": 0.2,
+    "colors": [
+     "#FFFFFF",
+     "#D9CCF5"
+    ]
+   }
+  },
+  {
+   "kind": "vignette",
+   "params": {
+    "amount": 0.15
+   }
+  },
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "clean",
+    "amount": 0.02
+   }
+  }
+ ],
+ "look": "layers/look.pastel",
+ "grain": "layers/grain.clean",
+ "sound": {
+  "bed": "music/bed_lofi_warm_loop8",
+  "alt_beds": [
+   "music/bed_playful_bounce_loop8",
+   "music/bed_acoustic_folk_pluck_loop8"
+  ],
+  "families": [
+   "ui",
+   "cartoon"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/ui/pop",
+   "card": "sfx/ui/pop_down",
+   "riser": "sfx/cartoon/xylo_up",
+   "reveal": "sfx/cartoon/boing",
+   "sting": "sfx/logo/fifth_lift"
+  },
+  "foley": "pops, a xylophone run and a boing"
+ },
+ "signature_features": [
+  {
+   "text": "dark plum ink on lilac at 12:1, purple at 5:1 (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "rounded 3D clay plates from the pack (no flat clip art)",
+   "check": "review"
+  },
+  {
+   "text": "dissolves and swipe-ups only",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "a warm lo-fi bed with pops and a boing",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "elastic pop-in type",
+   "check": "lint.style.type"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/dissolve",
+  "transitions/swipeUp",
+  "type/blurIn",
+  "type/charRise",
+  "type/elasticPop",
+  "music/bed_lofi_warm_loop8",
+  "sfx/cartoon/boing",
+  "sfx/cartoon/xylo_up",
+  "sfx/logo/fifth_lift",
+  "sfx/ui/pop",
+  "sfx/ui/pop_down",
+  "layers/bokeh",
+  "layers/vignette",
+  "layers/grain",
+  "layers/look.pastel",
+  "layers/grain.clean",
+  "cam3d.orbit",
+  "cam3d.pushSlow"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": true,
+   "hook.media": "plate-cast.mp4",
+   "hook.mediaStart": 0.6,
+   "hook.label": "the clay cast (pack render)",
+   "product.media": "plate-devices.mp4",
+   "product.mediaStart": 1.4,
+   "product.label": "the clay desk (pack render)"
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "rendered",
+  "preview": "media/styles/soft-clay.mp4",
+  "poster": "media/styles/soft-clay.jpg",
+  "release_asset": "motion-pack-style-soft-clay-v0.6.0.mp4",
+  "lint": "mp lint 97.0/100, 52 PASS, 4 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint; 0 human rounds; the same placeholder copy in every style"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

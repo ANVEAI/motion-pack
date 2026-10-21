@@ -1,0 +1,200 @@
+{
+ "id": "kinetic-poster",
+ "title": "Kinetic Poster",
+ "title_zh": "动态海报",
+ "line": "A loud poster: giant black type slammed on signal yellow, one cobalt, whips on the beat.",
+ "line_zh": "一张响亮的海报：信号黄上猛砸的巨大黑字，一抹钴蓝，踩点甩镜。",
+ "prompt": "Kinetic poster style: giant heavy black type slammed onto signal yellow, one cobalt accent, scale-slam and weight-morph type with a small overshoot, whip and scale-punch transitions, a hype house bed with punches and a kick on every card.",
+ "prompt_zh": "动态海报风格：信号黄底上猛砸的巨大粗黑字，一抹钴蓝，缩放重击与字重变化字效带小幅回弹，甩镜与缩放冲击转场，热烈的浩室配乐，每张卡配重拳与底鼓。",
+ "essence": "Type is the image and it is loud: one word fills the frame, lands on the beat and moves on. Everything else is cut away.",
+ "not": [
+  {
+   "style": "swiss-grid",
+   "difference": "Swiss Grid is quiet black on white with no overshoot; Kinetic Poster is loud, saturated and slams."
+  },
+  {
+   "style": "neon-night",
+   "difference": "Neon Night glows on a dark ground; Kinetic Poster is flat ink on a bright ground."
+  }
+ ],
+ "palette": {
+  "logic": "signal yellow ground, near-black ink, ONE cobalt for the key word and the button",
+  "paper": "#FFE600",
+  "ink": "#0A0A0A",
+  "accent": "#1C2FD9",
+  "muted": "#4A4300",
+  "contrast": {
+   "ink_on_paper": 15.62,
+   "muted_on_paper": 7.91,
+   "accent_on_paper": 6.74
+  }
+ },
+ "type": {
+  "display": "Manrope",
+  "text": "Manrope",
+  "weight": 800,
+  "case": "upper",
+  "max_words_per_line": 3,
+  "presets": {
+   "headline": "type/scaleSlam",
+   "card": "type/weightMorph",
+   "end": "type/scaleSlam",
+   "sub": "type/elasticPop"
+  }
+ },
+ "motion": {
+  "personality": "energetic",
+  "ease": "expoOut",
+  "overshoot_max": 0.12,
+  "asl_s": [
+   0.6,
+   1.4
+  ],
+  "camera": [
+   {
+    "move": "cam2d.beatPunch2d",
+    "expresses": "the frame hitting on the beat"
+   },
+   {
+    "move": "cam2d.whip2d",
+    "expresses": "throwing to the next word"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/scalePunch",
+   "ENERGY": "transitions/whip",
+   "STORY": "transitions/whip",
+   "RHYTHM": "transitions/scalePunch"
+  },
+  "banned": [
+   "transitions/dissolve",
+   "transitions/dreamyZoom",
+   "transitions/lightLeak",
+   "transitions/filmBurn"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "halftone",
+   "params": {
+    "cell": 14,
+    "intensity": 0.08,
+    "color": "#0A0A0A"
+   }
+  },
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "clean",
+    "amount": 0.03
+   }
+  }
+ ],
+ "grain": "layers/grain.clean",
+ "sound": {
+  "bed": "music/bed_hype_house_loop8",
+  "alt_beds": [
+   "music/bed_trap_half_loop8",
+   "music/bed_anthem_build_loop8"
+  ],
+  "families": [
+   "hit",
+   "drum",
+   "whoosh"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/hit/punch",
+   "card": "sfx/drum/kick_punch",
+   "riser": "sfx/riser/noise_1bar",
+   "reveal": "sfx/hit/slam",
+   "sting": "sfx/logo/drop_land"
+  },
+  "foley": "punches, kicks and a slam"
+ },
+ "signature_features": [
+  {
+   "text": "near-black ink on signal yellow at 15:1, cobalt at 6.7:1 (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "scale-slam and weight-morph type set upper-case",
+   "check": "lint.style.type"
+  },
+  {
+   "text": "whips and scale punches only",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "a hype house bed with punches and kicks",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "one word or line fills the frame at a time",
+   "check": "review"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/scalePunch",
+  "transitions/whip",
+  "type/elasticPop",
+  "type/scaleSlam",
+  "type/weightMorph",
+  "music/bed_hype_house_loop8",
+  "sfx/drum/kick_punch",
+  "sfx/hit/punch",
+  "sfx/hit/slam",
+  "sfx/logo/drop_land",
+  "sfx/riser/noise_1bar",
+  "layers/halftone",
+  "layers/grain",
+  "layers/grain.clean",
+  "cam2d.beatPunch2d",
+  "cam2d.whip2d"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": false
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "pending",
+  "preview": "media/styles/kinetic-poster.mp4",
+  "poster": "media/styles/kinetic-poster.jpg",
+  "release_asset": "motion-pack-style-kinetic-poster-v0.6.0.mp4"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

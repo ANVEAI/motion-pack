@@ -1,0 +1,212 @@
+{
+ "id": "editorial-print",
+ "title": "Editorial Print",
+ "title_zh": "编辑印刷",
+ "line": "A magazine spread that moves: serif headlines on warm newsprint, one red, a halftone tooth.",
+ "line_zh": "会动的杂志版面：暖色新闻纸上的衬线大标题，一抹红，网点质感。",
+ "prompt": "Editorial print style: serif headlines on warm newsprint, near-black ink and one red accent, a light halftone and paper tooth, mask-rise type, calm wipes and pushes, a marimba bed with paper flips. No glow, no neon.",
+ "prompt_zh": "编辑印刷风格：暖色新闻纸上的衬线大标题，近黑墨色加一抹红，轻微网点与纸纹，遮罩上升字效，平静的擦除与推移转场，马林巴配乐加翻纸声。不要发光，不要霓虹。",
+ "essence": "Type carries the film the way a well-set magazine page does: a serif voice, generous margins and one colour that marks the word that matters. Texture is printed, never glossy.",
+ "not": [
+  {
+   "style": "swiss-grid",
+   "difference": "Swiss Grid is a sans grid with hard cuts; Editorial Print is a serif voice on textured paper with soft wipes."
+  },
+  {
+   "style": "documentary-grain",
+   "difference": "Documentary Grain is dark, filmic and warm amber; Editorial Print is a light printed page."
+  }
+ ],
+ "palette": {
+  "logic": "a warm newsprint ground, near-black ink, ONE editorial red for the key word; nothing else is saturated",
+  "paper": "#F3EEE3",
+  "ink": "#1A1A1A",
+  "accent": "#C8102E",
+  "muted": "#5E5A52",
+  "contrast": {
+   "ink_on_paper": 15.04,
+   "muted_on_paper": 5.93,
+   "accent_on_paper": 5.08
+  }
+ },
+ "type": {
+  "display": "STIX Two Text",
+  "text": "STIX Two Text",
+  "weight": 700,
+  "case": "sentence",
+  "max_words_per_line": 5,
+  "presets": {
+   "headline": "type/maskRise",
+   "card": "type/wordStagger",
+   "end": "type/maskRise",
+   "sub": "type/blurIn"
+  }
+ },
+ "motion": {
+  "personality": "calm",
+  "ease": "soft",
+  "overshoot_max": 0.0,
+  "asl_s": [
+   1.3,
+   2.4
+  ],
+  "camera": [
+   {
+    "move": "cam2d.push2d",
+    "expresses": "leaning in to read the key line"
+   },
+   {
+    "move": "cam2d.kenBurns",
+    "expresses": "a slow drift across a printed page"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/lumaWipe",
+   "ENERGY": "transitions/push",
+   "STORY": "transitions/maskReveal",
+   "RHYTHM": "transitions/dip-to-black"
+  },
+  "banned": [
+   "transitions/glitch",
+   "transitions/kaleido",
+   "transitions/tvStatic",
+   "transitions/pixelSort"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "paper",
+   "params": {
+    "amount": 0.45
+   }
+  },
+  {
+   "kind": "halftone",
+   "params": {
+    "cell": 10,
+    "intensity": 0.12,
+    "color": "#1A1A1A"
+   }
+  },
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "film16",
+    "amount": 0.05
+   }
+  }
+ ],
+ "look": "layers/look.newsprint",
+ "grain": "layers/grain.film16",
+ "sound": {
+  "bed": "music/bed_documentary_marimba_loop8",
+  "alt_beds": [
+   "music/bed_acoustic_folk_pluck_loop8",
+   "music/bed_lofi_jazz_loop8"
+  ],
+  "families": [
+   "paper",
+   "foley"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/paper/flip",
+   "card": "sfx/paper/rustle",
+   "riser": "sfx/riser/tape_up",
+   "reveal": "sfx/foley/stamp",
+   "sting": "sfx/logo/two_note"
+  },
+  "foley": "paper flips and a rubber stamp on the reveal"
+ },
+ "signature_features": [
+  {
+   "text": "a serif display face (STIX Two Text) on every headline",
+   "check": "lint.style.type"
+  },
+  {
+   "text": "ink on paper at 15:1 and the red accent at 5:1 or more (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "only wipes, pushes, mask reveals and dips between sections; no glitch or static",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "a marimba or folk bed under paper and stamp sounds",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "paper tooth and a light halftone visible on the flat ground at phone size",
+   "check": "review"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/dip-to-black",
+  "transitions/lumaWipe",
+  "transitions/maskReveal",
+  "transitions/push",
+  "type/blurIn",
+  "type/maskRise",
+  "type/wordStagger",
+  "music/bed_documentary_marimba_loop8",
+  "sfx/foley/stamp",
+  "sfx/logo/two_note",
+  "sfx/paper/flip",
+  "sfx/paper/rustle",
+  "sfx/riser/tape_up",
+  "layers/paper",
+  "layers/halftone",
+  "layers/grain",
+  "layers/look.newsprint",
+  "layers/grain.film16",
+  "cam2d.push2d",
+  "cam2d.kenBurns"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": false
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "rendered",
+  "preview": "media/styles/editorial-print.mp4",
+  "poster": "media/styles/editorial-print.jpg",
+  "release_asset": "motion-pack-style-editorial-print-v0.6.0.mp4",
+  "lint": "mp lint 97.3/100, 52 PASS, 4 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint; 0 human rounds; the same placeholder copy in every style"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

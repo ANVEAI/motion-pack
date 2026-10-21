@@ -1,0 +1,214 @@
+{
+ "id": "chrome-product",
+ "title": "Chrome Product",
+ "title_zh": "铬金属产品",
+ "line": "Graphite stage, silver type, an ice-blue glint: the premium product reveal.",
+ "line_zh": "石墨色舞台，银色文字，冰蓝光芒：高端产品揭晓。",
+ "prompt": "Chrome product style: graphite stage, silver-white type with an ice-blue accent, a brushed-metal sheen and one star glint, tracking that collapses, zoom-through and luma-wipe transitions, a cinematic drone with a light sweep and a metallic hit.",
+ "prompt_zh": "铬金属产品风格：石墨色舞台，银白文字配冰蓝点缀，拉丝金属光泽与一道星芒，字距收拢字效，穿越缩放与亮度擦除转场，电影感低鸣配乐，配光扫声与金属重击。",
+ "essence": "Restraint and sheen: a dark stage, cool light and metal, and a reveal that lands like a premium product launch. One glint, never a light show.",
+ "not": [
+  {
+   "style": "neon-night",
+   "difference": "Neon Night is saturated, warm-hot and busy with bokeh; Chrome Product is cool, metallic and sparse."
+  },
+  {
+   "style": "swiss-grid",
+   "difference": "Swiss Grid is flat black on white; Chrome Product is light on dark with sheen."
+  }
+ ],
+ "palette": {
+  "logic": "a graphite stage, silver-white ink, ONE ice-blue for the key word and the button",
+  "paper": "#1A1C21",
+  "ink": "#ECEFF3",
+  "accent": "#9BD8FF",
+  "muted": "#9AA1AB",
+  "contrast": {
+   "ink_on_paper": 14.78,
+   "muted_on_paper": 6.54,
+   "accent_on_paper": 11.09
+  }
+ },
+ "type": {
+  "display": "Manrope",
+  "text": "Manrope",
+  "weight": 700,
+  "case": "upper",
+  "max_words_per_line": 3,
+  "presets": {
+   "headline": "type/charRise",
+   "card": "type/maskRise",
+   "end": "type/trackingCollapse",
+   "sub": "type/blurIn"
+  }
+ },
+ "motion": {
+  "personality": "dramatic",
+  "ease": "hero",
+  "overshoot_max": 0.0,
+  "asl_s": [
+   1.4,
+   2.6
+  ],
+  "camera": [
+   {
+    "move": "cam2d.push2d",
+    "expresses": "a slow push onto the product"
+   },
+   {
+    "move": "cam2d.rackFocus2D",
+    "expresses": "attention moving to the detail"
+   }
+  ]
+ },
+ "transitions": {
+  "by_reason": {
+   "EMOTION": "transitions/lumaWipe",
+   "ENERGY": "transitions/zoomThrough",
+   "STORY": "transitions/lumaWipe",
+   "RHYTHM": "transitions/dip-to-black"
+  },
+  "banned": [
+   "transitions/pagePeel",
+   "transitions/glitch",
+   "transitions/swipeUp",
+   "transitions/polkaDots"
+  ]
+ },
+ "layers": [
+  {
+   "kind": "brushedMetal",
+   "params": {
+    "intensity": 0.12
+   }
+  },
+  {
+   "kind": "starburst",
+   "params": {
+    "x": 0.78,
+    "y": 0.3,
+    "rays": 6,
+    "intensity": 0.35,
+    "color": "#DDF2FF"
+   }
+  },
+  {
+   "kind": "grain",
+   "params": {
+    "stock": "digital-soft"
+   }
+  }
+ ],
+ "look": "layers/look.matte-cool",
+ "grain": "layers/grain.digital-soft",
+ "sound": {
+  "bed": "music/bed_cinematic_drone_loop8",
+  "alt_beds": [
+   "music/bed_orchestral_synth_epic_loop8",
+   "music/bed_ambient_pad_loop8"
+  ],
+  "families": [
+   "hw",
+   "trailer",
+   "hit"
+  ],
+  "sfx": {
+   "firstFrame": "sfx/hw/light_sweep",
+   "card": "sfx/hw/click_latch",
+   "riser": "sfx/riser/noise_1bar",
+   "reveal": "sfx/hit/metal_cinematic",
+   "sting": "sfx/hw/chime_reveal"
+  },
+  "foley": "a light sweep, metal latches and a metallic hit"
+ },
+ "signature_features": [
+  {
+   "text": "silver-white ink on graphite at 14:1, ice-blue at 11:1 (contrast.py)",
+   "check": "lint.style.palette"
+  },
+  {
+   "text": "luma wipes, zoom-throughs and dips only",
+   "check": "lint.style.transitions"
+  },
+  {
+   "text": "a cinematic drone bed with hardware sounds",
+   "check": "lint.style.sound"
+  },
+  {
+   "text": "upper-case letters that rise, the name tracking in tight",
+   "check": "lint.style.type"
+  },
+  {
+   "text": "one glint per film, on the reveal side of the frame",
+   "check": "review"
+  }
+ ],
+ "change_tiers": {
+  "safe": [
+   "copy",
+   "palette.accent within the palette logic",
+   "sound.bed among alt_beds",
+   "length",
+   "aspect"
+  ],
+  "character": [
+   "palette.paper and ink",
+   "type.presets",
+   "motion.asl_s",
+   "layers intensity"
+  ],
+  "identity": [
+   "type.display",
+   "transitions.by_reason",
+   "layers kinds"
+  ]
+ },
+ "formats": [
+  "ad",
+  "launch-film",
+  "saas-feature-drop",
+  "proof-clip",
+  "explainer"
+ ],
+ "recipes": [
+  "templates/ad",
+  "transitions/dip-to-black",
+  "transitions/lumaWipe",
+  "transitions/zoomThrough",
+  "type/blurIn",
+  "type/charRise",
+  "type/maskRise",
+  "type/trackingCollapse",
+  "music/bed_cinematic_drone_loop8",
+  "sfx/hit/metal_cinematic",
+  "sfx/hw/chime_reveal",
+  "sfx/hw/click_latch",
+  "sfx/hw/light_sweep",
+  "sfx/riser/noise_1bar",
+  "layers/brushedMetal",
+  "layers/starburst",
+  "layers/grain",
+  "layers/look.matte-cool",
+  "layers/grain.digital-soft",
+  "cam2d.push2d",
+  "cam2d.rackFocus2D"
+ ],
+ "apply": {
+  "templates/ad": {
+   "plates": false
+  }
+ },
+ "demo": {
+  "format": "ad",
+  "template": "templates/ad",
+  "seconds": 10,
+  "aspect": "16:9",
+  "status": "rendered",
+  "preview": "media/styles/chrome-product.mp4",
+  "poster": "media/styles/chrome-product.jpg",
+  "release_asset": "motion-pack-style-chrome-product-v0.6.0.mp4",
+  "lint": "mp lint 96.3/100, 51 PASS, 5 WARN, 0 FAIL, 0 INFO, 13 N/A",
+  "made_by": "Claude Code (Opus 5.5) through mp plan --style, mp new, mp render (HyperFrames, CRF 18) and mp lint; 0 human rounds; the same placeholder copy in every style"
+ },
+ "honesty": "The demo is one run on a neutral placeholder subject (a fictional late-night library, labelled placeholder). The same prompt makes a different film on every run."
+}

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""motion-pack / tools / playbook.py: `mp formats` and `mp rules` (browse the playbook, promote candidates).
+"""motion-pack / tools / playbook.py: `mp formats`, `mp styles` and `mp rules` (browse the playbook, promote candidates).
 
     python3 tools/playbook.py formats [--json]                                  # the formats, one line each
+    python3 tools/playbook.py styles [<id>] [--json] [--zh]                    # the named styles, one line each; with an id: its prompt, palette, type, sound and parts
     python3 tools/playbook.py rules [--area A] [--status S] [--grade G] [--format F] [--gaps] [--json]
                                                                                # browse the rules; --gaps = prose-only rules (the backlog)
     python3 tools/playbook.py rules promote <inbox.json> [--id CANDIDATE] [--as area.name] [--grade G] [--status S]
@@ -30,6 +31,47 @@ def cmd_formats(a):
     for fid, f in sorted(fm.items()):
         print('%-18s %5s s  %-12s %-26s %s' % (fid, '%g-%g' % tuple(f['length_s']), ' '.join(f.get('aspects', [])), f.get('template', ''), f.get('use_when', '')[:90]))
     print('next: mp brief "<idea>"   or   mp plan <format> --length N --aspect A')
+    return 0
+
+
+def cmd_styles(a):
+    styles = L.load_styles(L.playbook_dir(a.playbook))
+    if a.id:
+        st = styles.get(a.id)
+        if not st:
+            print('no style "%s" (styles: %s)' % (a.id, ', '.join(sorted(styles)) or 'none'), file=sys.stderr)
+            return 2
+        if a.json:
+            print(json.dumps({k: v for k, v in st.items() if k != '_file'}, indent=1, ensure_ascii=False))
+            return 0
+        p, t, snd, d = st['palette'], st['type'], st['sound'], st.get('demo') or {}
+        print('%s (%s): %s' % (st['title'], st['title_zh'], st['line_zh'] if a.zh else st['line']))
+        print('\nprompt (copy this):\n  %s\n' % (st['prompt_zh'] if a.zh else st['prompt']))
+        print('palette  paper %s · ink %s · accent %s · muted %s  (ink %s:1, accent %s:1, contrast.py)' % (p['paper'], p['ink'], p['accent'], p['muted'],
+              (p.get('contrast') or {}).get('ink_on_paper'), (p.get('contrast') or {}).get('accent_on_paper')))
+        print('type     %s / %s %s, %s case; presets %s' % (t['display'], t['text'], t['weight'], t['case'], ', '.join('%s %s' % kv for kv in t['presets'].items())))
+        print('motion   %s, ease %s, overshoot <= %s, shots %s-%s s; camera %s' % (st['motion']['personality'], st['motion']['ease'], st['motion']['overshoot_max'], st['motion']['asl_s'][0], st['motion']['asl_s'][1],
+              ', '.join(c['move'] for c in st['motion']['camera'])))
+        print('cuts     %s; never %s' % (', '.join('%s %s' % kv for kv in st['transitions']['by_reason'].items()), ', '.join(st['transitions']['banned'])))
+        print('layers   %s%s' % (' + '.join(l['kind'] for l in st['layers']) or 'none', ('; look %s' % st['look']) if st.get('look') else ''))
+        print('sound    bed %s (or %s); %s' % (snd['bed'], ', '.join(snd.get('alt_beds') or []) or '-', ', '.join('%s %s' % kv for kv in snd['sfx'].items())))
+        print('signature (mp lint checks the lint.* ones):')
+        for sf in st['signature_features']:
+            print('  - %s  [%s]' % (sf['text'], sf['check']))
+        print('formats  %s' % ', '.join(st['formats']))
+        print('demo     %s' % ('%s s %s, %s (%s)' % (d.get('seconds'), d.get('aspect'), d.get('preview'), d.get('made_by', '')) if d.get('status') == 'rendered' else 'pending'))
+        print('\nnext: mp plan %s --style %s --out plan.json --project-out project.json' % ((st['formats'] or ['ad'])[0], st['id']))
+        return 0
+    if a.json:
+        print(json.dumps([{k: v for k, v in st.items() if k != '_file'} for st in styles.values()], indent=1, ensure_ascii=False))
+        return 0
+    if not styles:
+        print('no styles yet in %s/styles' % os.path.relpath(L.playbook_dir(a.playbook)))
+        return 1
+    for sid, st in sorted(styles.items()):
+        p = st['palette']
+        print('%-18s %-18s %s %s %s  %-14s %s' % (sid, st['title_zh'] if a.zh else st['title'], p['paper'], p['ink'], p['accent'], st['type']['display'], st['line_zh'] if a.zh else st['line']))
+    print('next: mp styles <id> (the prompt and the parts)   or   mp plan <format> --style <id>')
     return 0
 
 
@@ -136,8 +178,10 @@ def main(argv=None):
             print('next: python3 tools/playbook_build.py (validates the rule and regenerates playbook/README.md)')
         return 0 if done and not probs else 1
     ap = argparse.ArgumentParser(prog='mp', description=__doc__.split('\n\n')[0])
-    ap.add_argument('cmd', choices=['formats', 'rules'])
+    ap.add_argument('cmd', choices=['formats', 'rules', 'styles'])
+    ap.add_argument('id', nargs='?', help='styles: one style id')
     ap.add_argument('--json', action='store_true')
+    ap.add_argument('--zh', action='store_true', help='styles: the Chinese title, line and prompt')
     ap.add_argument('--playbook')
     ap.add_argument('--area', choices=L.AREAS)
     ap.add_argument('--status', choices=L.STATUSES)
@@ -145,7 +189,7 @@ def main(argv=None):
     ap.add_argument('--format')
     ap.add_argument('--gaps', action='store_true')
     a = ap.parse_args(argv)
-    return cmd_formats(a) if a.cmd == 'formats' else cmd_rules(a)
+    return cmd_formats(a) if a.cmd == 'formats' else cmd_styles(a) if a.cmd == 'styles' else cmd_rules(a)
 
 
 if __name__ == '__main__':

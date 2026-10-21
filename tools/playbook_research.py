@@ -60,6 +60,9 @@ AUDIENCE_FORMATS = {
 }
 
 
+STYLE_RX = re.compile(r"\b(?:in|with) (?:the |a |an )?(?:[a-z0-9-]+ ){1,3}(?:style|look)\b")
+
+
 def _negate(t):
     """the text with every negated phrase blanked: "no voice-over" and "not a book a demo" are not signals"""
     return NEG_RX.sub(lambda m: ' ' * len(m.group(0)), t)
@@ -94,9 +97,10 @@ def classify(text, formats, goal=None, platform=None, length=None):
     """-> [(score, fid, why[])] best first. Pure.
     Signals: keywords and product types +2 each (WEAK words +0.5), from the brief minus negated phrases and meta fields (tone, brand, sound, notes);
     goals: --goal, else the goals named in the brief's Goal field (the first named is primary, +4; the others +2), else any goal word (+3);
-    audience: a business or entertainment audience in the Who / Audience field +3 for the formats made for it; platform +1; a length in range +1."""
+    audience: a business or entertainment audience in the Who / Audience field +3 for the formats made for it; naming the format itself ("a launch
+    film", "an explainer") +4; platform +1; a length in range +1."""
     sig, gtext, aud, ptext, fielded = brief_fields(text)
-    t, gt, at = _negate(sig.lower()), _negate(gtext.lower()), _negate(aud.lower())
+    t, gt, at = _negate(STYLE_RX.sub(' ', sig.lower())), _negate(gtext.lower()), _negate(aud.lower())   # "in the Documentary Grain style" names a look, not a format
     named = sorted(((m.start(), g) for g in GOALS for m in [re.search(r'(?<![a-z0-9])%s' % g, gt)] if m)) if gt else []
     goals_found = [goal] if goal else [g for _, g in named]
     aud_class = [k for k, (rx, _) in AUDIENCE_FORMATS.items() if re.search(r'(?<![a-z0-9])(?:%s)(?![a-z0-9])' % rx, at)]
@@ -114,6 +118,10 @@ def classify(text, formats, goal=None, platform=None, length=None):
                 w = 0.5 if k.lower() in WEAK else 2
                 sc += w
                 why.append('product "%s"%s' % (k, ' (weak)' if w < 2 else ''))
+        names = {fid.replace('-', ' '), (fm.get('title') or '').split('(')[0].strip().lower()} - {''}
+        if any(_has(t, n) for n in names):   # the brief names the format itself ("a launch film", "an explainer", "a 15-second ad")
+            sc += 4
+            why.append('names the format')
         fg = s.get('goals') or []
         if goals_found:
             for i, g in enumerate(goals_found):
@@ -272,6 +280,8 @@ def cmd_brief(a):
            '--out', os.path.join(out, 'plan.json'), '--project-out', os.path.join(out, 'project.json'), '--playbook', pb]
     if a.platform:
         cmd += ['--platform', a.platform]
+    if getattr(a, 'style', None):
+        cmd += ['--style', a.style]   # mp plan lays the named style over the format (playbook/styles)
     if os.path.isfile(src):
         cmd += ['--brief', os.path.abspath(src)]
     print('format %s (%s): %s' % (fid, rp['format']['score'], '; '.join(rp['format']['why'])))
@@ -459,6 +469,7 @@ def main(argv=None):
     b.add_argument('--aspect', choices=['16:9', '9:16', '1:1', '4:5'])
     b.add_argument('--out')
     b.add_argument('--pick-top', action='store_true')
+    b.add_argument('--style', help='a named style (mp styles) laid over the chosen format by mp plan')
     b.add_argument('--playbook')
     s = sub.add_parser('study')
     s.add_argument('video')
