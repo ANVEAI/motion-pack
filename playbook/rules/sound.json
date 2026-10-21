@@ -694,10 +694,7 @@
     "title": "End every master in a true-peak limiter",
     "statement": "Every master path ends in a true-peak limiter (4x oversampled, ceiling -1.5 dBTP); a peak-gain-only ceiling lets dense cues stop the mix short of target (measured -17.49 LUFS-I at a -2.0 dBTP ceiling, 3.5 LU low).",
     "scope": {
-      "formats": [
-        "character-spot",
-        "short-film"
-      ],
+      "formats": [],
       "platforms": [],
       "section": "whole"
     },
@@ -724,13 +721,13 @@
       }
     ],
     "enforce": {
-      "check": null,
+      "check": "lint.sound.master_limiter",
       "default": null,
       "part": null
     },
-    "status": "prose-only",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "Bed mixes go through music/mixer.py limiter() (ceiling -1.5, 5 ms look-ahead); the SFX-only path in templates/_shared/audio.py only reports a shortfall. No check fails a mix short of target before render; ears/loudness catches it on the MP4."
+    "notes": "Integration 21 Oct: done. Both master paths end in music/mixer.py master_for_delivery (4x-oversampled true-peak limiter at -1.5 dBTP, its ceiling lowered until the 192k / 256k aac and aac_at probes read <= -1.1 dBTP); templates/_shared/audio.py's SFX-only path no longer stops at a peak ceiling (film-scene re-mixed: -14.02 LUFS-I, -1.5 dBTP, AAC worst -1.38). lint.sound.master_limiter reads the master's own report (<master>.wav.json). Scope widened to every format: the master contract is the pack's, not one genre's."
   },
   {
     "id": "sound.mute_open_as_before",
@@ -841,10 +838,7 @@
     "title": "Zero renderer 'audio lowered' lines",
     "statement": "The render log shows zero 'Audio lowered' lines: the master reaches the renderer with its encoded (AAC) true peak under -1 dBTP, because the renderer's guard otherwise drops the whole track (measured 7.3 and 8.6 dB).",
     "scope": {
-      "formats": [
-        "data-story",
-        "explainer"
-      ],
+      "formats": [],
       "platforms": [],
       "section": "whole"
     },
@@ -881,13 +875,13 @@
       }
     ],
     "enforce": {
-      "check": null,
+      "check": "lint.sound.renderer_lowering",
       "default": null,
       "part": null
     },
-    "status": "prose-only",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "Nothing greps the render log. music/mixer.py says its AAC probes keep the renderer from lowering the track, yet these two bed mixes were lowered: the probe does not prevent it today. ears/loudness and mp.check.loudness catch the symptom after the render. Changelog workaround: limit the master at 4x oversampling, keep the picture, remux the audio, measure the MP4 with ffmpeg ebur128."
+    "notes": "Integration 21 Oct: the cause was not the AAC guard (the two masters' AAC probes read -2.0 and -5.3 dBTP at 192k, under it) but the renderer's own audio assembly, which lowered the whole track flat by 8.7 and 7.4 dB. mp render now remuxes the template's master under the rendered picture (tools/mp-audio.mjs: one <audio> at volume 1 from 0, every <video> muted), so the renderer cannot lower it; the old explainer-diagram render remuxed reads -14.1 LUFS-I, -1.1 dBTP. lint.sound.renderer_lowering compares the delivered loudness (ears) with the master's report and fails a drop over 1 dB. Scope widened to every format."
   },
   {
     "id": "sound.not_flat",

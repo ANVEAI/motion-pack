@@ -125,6 +125,41 @@ def aac_probe(x, enc="aac", bitrate="256k"):
     return {"enc": enc, "lufs_i": round(meter.lufs_integrated(y), 2), "true_peak_db": round(meter.true_peak_db(y), 2)}
 
 
+# the delivered-file contract (rule sound.no_renderer_lowering): the encoded AAC true peak stays at or under AAC_TP_MAX dBTP on every encoder the
+# pipeline uses, with a margin under HyperFrames' -1.0 dBTP guard (it reads ffmpeg's one-decimal ebur128 peak of its own 192k AAC and lowers the
+# WHOLE track above it). The renderers here encode AAC 192k (HyperFrames, render3d.sh) and 256k (mp render's remux); aac_at is macOS AudioToolbox.
+AAC_TP_MAX = -1.1
+AAC_PROBES = (("aac", "192k"), ("aac", "256k"), ("aac_at", "256k"))
+
+
+def aac_probes(x):
+    """every encoder / bit rate the pipeline delivers with -> [{enc, bitrate, lufs_i, true_peak_db}] (missing encoders are skipped)"""
+    out = []
+    for enc, br in AAC_PROBES:
+        p = aac_probe(x, enc, br)
+        if p:
+            p["bitrate"] = br
+            out.append(p)
+    return out
+
+
+def master_for_delivery(pre, lufs=-14.0, ceiling_db=-1.5, aac=True, tries=5):
+    """rule sound.master_ends_in_tp_limiter: gain to `lufs` into the 4x-oversampled true-peak limiter (ceiling_db on the WAV), then lower the ceiling
+    by the AAC overshoot until every probe encode reads <= AAC_TP_MAX. returns (out, G, gain_curve, ceiling_used, probes)"""
+    ceil = ceiling_db
+    out, G, g = master(pre, lufs, ceil)
+    probes = []
+    if aac:
+        for _ in range(tries):
+            probes = aac_probes(out)
+            worst = max([p["true_peak_db"] for p in probes], default=-99)
+            if worst <= AAC_TP_MAX:
+                break
+            ceil -= (worst - AAC_TP_MAX) + 0.15
+            out, G, g = master(pre, lufs, ceil)
+    return out, G, g, ceil, probes
+
+
 from mpaudio.phone import phone_voice  # noqa: E402
 
 
@@ -373,17 +408,11 @@ class Mix:
                     over = True
             if not over:
                 break
-        # AAC probes: lower the ceiling by the overshoot until the AAC true peak is <= -1.0 dBTP (HyperFrames lowers the whole track above that)
+        # AAC probes (192k and 256k aac, aac_at): lower the ceiling by the overshoot until every encode reads <= AAC_TP_MAX (HyperFrames lowers the whole track over -1.0)
         probes = []
         ceil = ceiling_db
         if aac:
-            for _ in range(4):
-                probes = [p for p in (aac_probe(out, "aac"), aac_probe(out, "aac_at")) if p]
-                worst = max([p["true_peak_db"] for p in probes], default=-99)
-                if worst <= -1.0:
-                    break
-                ceil -= (worst + 1.0) + 0.15
-                out, G, g = master(pre, lufs, ceil)
+            out, G, g, ceil, probes = master_for_delivery(pre, lufs, ceiling_db)
         if tail_zero_s:
             nz = int(tail_zero_s * SR)
             nf = int(0.03 * SR)

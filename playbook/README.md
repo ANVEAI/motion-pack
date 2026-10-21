@@ -18,7 +18,7 @@ A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a W
 
 **Status:** enforced (a check), default (`mp plan` writes it in), part (a pack id implements it), prose-only (a known gap).
 
-**338 rules** (117 enforced, 22 default, 63 part, 136 prose-only; 54 measured-A, 67 measured, 79 craft, 128 house, 10 inferred) and **14 formats**.
+**338 rules** (119 enforced, 22 default, 63 part, 134 prose-only; 54 measured-A, 67 measured, 79 craft, 128 house, 10 inferred) and **14 formats**.
 
 ## Formats
 
@@ -178,11 +178,11 @@ A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a W
 | `sound.limiter_budget` | house | default | `plan.audio.mixer` | Limiter gain reduction on any cue stays <= 1.5 dB for tier 1-2 and <= 1.0 dB for tier 3; when the budget is exceeded the offending cue is lowered, not the limiter. |
 | `sound.loud_open_type_led` | measured-A | enforced | `lint.sound.first_sound` | A type-led launch film may skip the quiet open: put sound on by 0.25 s at 0 to -2.5 dB against the body. |
 | `sound.loudest_on_state_change` | measured | part | `ui.approvalSlider` | The mix's loudest moment lands on the approved or result state change, not on the logo. |
-| `sound.master_ends_in_tp_limiter` | measured | prose-only | - | Every master path ends in a true-peak limiter (4x oversampled, ceiling -1.5 dBTP); a peak-gain-only ceiling lets dense cues stop the mix short of target (measured -17.49 LUFS-I at a -2.0 dBTP ceiling, 3.5 LU low). |
+| `sound.master_ends_in_tp_limiter` | measured | enforced | `lint.sound.master_limiter` | Every master path ends in a true-peak limiter (4x oversampled, ceiling -1.5 dBTP); a peak-gain-only ceiling lets dense cues stop the mix short of target (measured -17.49 LUFS-I at a -2.0 dBTP ceiling, 3.5 LU low). |
 | `sound.mute_open_as_before` | measured | prose-only | - | When silence is the 'before' state, the clip opens on true silence under a mute chip for about 3 s, and the first sound lands on the same frame as the chip flip and the first action. |
 | `sound.no_dead_air` | house | enforced | `lint.ears.structure` | No unplanned stretch of 2 s or more sits 20 dB or more under the programme median; anything longer is either planned in plan.audio.quiet or filled. |
 | `sound.no_doubled_score_hits` | house | prose-only | - | When the score already carries braams and a title hit, no SFX doubles them. |
-| `sound.no_renderer_lowering` | measured | prose-only | - | The render log shows zero 'Audio lowered' lines: the master reaches the renderer with its encoded (AAC) true peak under -1 dBTP, because the renderer's guard otherwise drops the whole track (measured 7.3 and 8.6 dB). |
+| `sound.no_renderer_lowering` | measured | enforced | `lint.sound.renderer_lowering` | The render log shows zero 'Audio lowered' lines: the master reaches the renderer with its encoded (AAC) true peak under -1 dBTP, because the renderer's guard otherwise drops the whole track (measured 7.3 and 8.6 dB). |
 | `sound.not_flat` | measured | enforced | `lint.ears.structure` | The mix is not flat: it has a level step of at least 3 dB, or LRA of 2 LU or more, or half-second levels spread more than 2 dB (P90-P10); the drop does not first arrive after 75% of the runtime. |
 | `sound.one_reveal_hit` | house | part | `sfx/hw/sub_hit` | A device reveal gets exactly one sub hit on the reveal frame, the dark-open hum stops on that frame, and each callout or spec row gets a detent, never a chime per row. |
 | `sound.one_sound_per_ui_action` | measured-A | enforced | `lint.ears.sync` | Every visible UI action (click, keystroke run, card swap) gets its own sound, so picture events land on audio onsets above chance. |

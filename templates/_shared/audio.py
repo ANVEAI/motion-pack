@@ -3,8 +3,9 @@
 Ids: sfx/<cat>/<name> -> sfx module id snd.<cat>.<name> (motion-pack/sfx/mpaudio registry). Missing ids are reported as TODO, never faked.
 Placement (v9 contract, docs/evidence/sound.md): the sound's anchor sample lands on (frame + 1) * SR / fps, frame = round(t * fps).
 Music: plan.music = 'music/<bed id>' (music/manifest.json) hands the whole mix to music/mixer.py (bed + cues, over-bed levels, TP limiter,\nAAC probes). Without a bed this file places the cues itself (SFX-only mix; --stem for a stem under dialogue).
-Master: sum -> gain to target LUFS-I (default -14; --stem skips it) -> true-peak ceiling -2.0 dBTP (lands <= -1.5 after AAC) (simple 4x-oversampled peak gain, no limiter: if the
-cues are too dense to reach target under the ceiling, the report says so). Writes <out>.json with LUFS-I, TP, per-cue placement."""
+Master (rule sound.master_ends_in_tp_limiter, both paths): sum -> gain to target LUFS-I (default -14; --stem skips it) -> music/mixer.py's 4x-oversampled true-peak
+limiter at -1.5 dBTP on the WAV, its ceiling lowered until every AAC probe encode (192k / 256k aac, aac_at) reads <= -1.1 dBTP (music/mixer.py master_for_delivery), so
+dense cues reach the target instead of stopping short at a peak ceiling. Writes <out>.json with LUFS-I, TP, the AAC probes, per-cue placement."""
 import sys, os, json, argparse
 import numpy as np
 from scipy.io import wavfile
@@ -64,7 +65,10 @@ def via_music_mixer(P, out, bed, a):
     if P.get('fadeInMs'):   # a bed that starts on a hit leaves a step at sample 0; some AAC encoders overshoot it by several dB (HyperFrames then lowers the whole track)
         import soundfile as sf
         y, sr = sf.read(out, always_2d=True); info = sf.info(out); n = int(sr * P['fadeInMs'] / 1000); y[:n] *= (0.5 - 0.5 * np.cos(np.pi * np.arange(n) / n))[:, None]; sf.write(out, y, sr, subtype=info.subtype)
-    rep = {'via': 'music/mixer.py', 'bed': P.get('music'), 'mixer_report': r.stdout[-3000:]}
+    rep = {'via': 'music/mixer.py', 'bed': P.get('music'), 'mixer_report': r.stdout[-3000:], 'limiter': True}
+    mr = os.path.join(d, 'master_report.json')
+    if os.path.exists(mr):
+        m = json.load(open(mr)); rep.update({'aac_probes': m.get('aac_probes', []), 'ceiling_dbtp': m.get('ceiling_db_used'), 'target_lufs': a.target})
     import soundfile as sf
     x, _ = sf.read(out)
     rep.update({'lufs_i': round(meter.lufs_integrated(x), 2), 'true_peak_dbtp': round(meter.true_peak_db(x), 2), 'cues': len(cues), 'sfx_modules_missing': MISSING_MODULES})
@@ -72,7 +76,7 @@ def via_music_mixer(P, out, bed, a):
     print(out, 'via music mixer, bed', P.get('music'), 'LUFS-I', rep['lufs_i'], 'TP', rep['true_peak_dbtp'], 'cues', len(cues))
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('plan'); ap.add_argument('out'); ap.add_argument('--target', type=float, default=-14.0); ap.add_argument('--ceiling', type=float, default=-2.0); ap.add_argument('--stem', action='store_true', help='no loudness normalisation: cue gains are absolute (library sounds peak at their registry peak_db); for SFX stems mixed under dialogue')
+    ap = argparse.ArgumentParser(); ap.add_argument('plan'); ap.add_argument('out'); ap.add_argument('--target', type=float, default=-14.0); ap.add_argument('--ceiling', type=float, default=-1.5); ap.add_argument('--stem', action='store_true', help='no loudness normalisation: cue gains are absolute (library sounds peak at their registry peak_db); for SFX stems mixed under dialogue')
     a = ap.parse_args(); P = json.load(open(a.plan)); fps = P.get('fps', 30); N = int(round(P['seconds'] * SR)) + SR
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)   # a template that links no media has no assets/media yet (compose.stage() makes it too)
     bed = music_bed_file(P.get('music'))
@@ -95,12 +99,15 @@ def main():
         rep['placed'].append({'id': c['id'], 'snd': k, 'frame': f, 'anchor_ms': round(anchor / SR * 1000, 1), 'start_s': round(at / SR, 4)})
     mix = mix[:int(round(P['seconds'] * SR))]
     L = meter.lufs_integrated(mix) if np.any(mix) else -120.0
-    gain = 10 ** ((a.target - L) / 20) if (L > -100 and not a.stem) else 1.0
-    tp = meter.true_peak_db(mix * gain)
-    if tp > a.ceiling: gain *= 10 ** ((a.ceiling - tp) / 20)
-    mix *= gain
+    ceil, probes = a.ceiling, []
+    if L > -100 and not a.stem:   # the limiter path (music/mixer.py): never a peak-gain-only ceiling, which stopped the film-scene mix 3.5 LU short
+        sys.path.insert(0, MUSIC); import mixer as MX
+        x, _, _, ceil, probes = MX.master_for_delivery(mix.astype(np.float64), a.target, a.ceiling)
+        mix = x.astype(np.float32)
+        nz, nf = int(0.15 * SR), int(0.03 * SR)   # the last 0.15 s digital zero, as the bed path
+        mix[-nz:] = 0.0; mix[-nz - nf:-nz] *= (np.cos(np.linspace(0, np.pi / 2, nf)) ** 2)[:, None]
     rep.update({'lufs_i': round(meter.lufs_integrated(mix), 2), 'true_peak_dbtp': round(meter.true_peak_db(mix), 2), 'sample_peak_dbfs': round(meter.sample_peak_db(mix), 2),
-                'target_lufs': a.target, 'ceiling_dbtp': a.ceiling, 'reached_target': abs(meter.lufs_integrated(mix) - a.target) < 0.5, 'stem': a.stem, 'sr': SR})
+                'target_lufs': a.target, 'ceiling_dbtp': round(ceil, 2), 'limiter': not a.stem, 'aac_probes': probes, 'reached_target': abs(meter.lufs_integrated(mix) - a.target) < 0.5, 'stem': a.stem, 'sr': SR})
     wavfile.write(a.out, SR, mix.astype(np.float32)); json.dump(rep, open(a.out + '.json', 'w'), indent=1)
     print(a.out, 'LUFS-I', rep['lufs_i'], 'TP', rep['true_peak_dbtp'], 'placed', len(rep['placed']), 'todo', rep['todo'])
 

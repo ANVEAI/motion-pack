@@ -16,6 +16,8 @@ They WRAP the pack's existing gates, each on the file it judges, and return N/A 
   lint.motion.seek         the no-clock scan of tools/tests/test_no_clock.py over the composition's own sources (Date.now, Math.random,
                            performance.now, new Date): the static half of seek safety; the page seek test is motion-stack's seekcheck.mjs
   lint.study.tier          a refstudy study.json's reach tier: a boosted-looking reference is never evidence
+  lint.sound.master_limiter    the master's own report (<master>.wav.json): limiter, target loudness, WAV ceiling, AAC probes
+  lint.sound.renderer_lowering the delivered loudness (ears) against the master's: a renderer that lowered the track fails
 Inputs come from Ctx: shotlist (dict), design_path, captions_path, study (dict), page_dir; tools/playbook_lint.py finds them next to the plan or
 the render (shotlist.json, design.json, captions/, <render>.study.json, the project's build/templates/<template>) or takes them as flags."""
 import glob
@@ -249,6 +251,51 @@ def seek(ctx, p):
         '' if not bad else 'draw from t only: a seeded generator (mulberry32), no wall clock (then seekcheck.mjs on the page)'
 
 
+def _master_report(ctx):
+    """the master's own report (templates/_shared/audio.py writes <master>.wav.json): the newest under the composition folder, or None"""
+    if not ctx.page_dir or not os.path.isdir(ctx.page_dir):
+        return None, None
+    hits = glob.glob(os.path.join(ctx.page_dir, '**', 'assets', 'media', '*.wav.json'), recursive=True) + glob.glob(os.path.join(ctx.page_dir, 'out', '*-mix.wav.json'))
+    if not hits:
+        return None, None
+    f = max(hits, key=os.path.getmtime)
+    try:
+        return json.load(open(f, encoding='utf-8')), f
+    except (OSError, ValueError):
+        return None, f
+
+
+def master_limiter(ctx, p):
+    """rule sound.master_ends_in_tp_limiter: the master went through the true-peak limiter, landed on target and under the ceiling, and its AAC probes read under the guard"""
+    rep, f = _master_report(ctx)
+    if rep is None:
+        return 'na', 'no master report (<master>.wav.json)', 'pass --page <the template build folder>'
+    lim = rep.get('limiter', rep.get('via') == 'music/mixer.py')
+    lufs, tp, tgt = rep.get('lufs_i'), rep.get('true_peak_dbtp'), rep.get('target_lufs', -14.0)
+    worst = max([q.get('true_peak_db', -99) for q in rep.get('aac_probes') or []], default=None)
+    bad = [] if lim else ['no limiter on the master']
+    if lufs is None or abs(lufs - tgt) > p.get('lufs_tol', 0.5) + 1e-6:
+        bad.append('%s LUFS-I, target %g' % (lufs, tgt))
+    if tp is not None and tp > p.get('limiter_ceiling_dbtp', -1.5) + 0.05:
+        bad.append('WAV %.2f dBTP' % tp)
+    if worst is not None and worst > p.get('encoded_true_peak_max_dbtp', -1.0) + 1e-6:
+        bad.append('AAC probe %.2f dBTP' % worst)
+    val = '%s LUFS-I, %s dBTP WAV, AAC worst %s' % (lufs, tp, 'n/a' if worst is None else '%.2f' % worst)
+    return ('pass' if not bad else 'fail'), val + ('' if not bad else ': ' + '; '.join(bad)), '' if not bad else 're-mix through templates/_shared/audio.py (music/mixer.py master_for_delivery: 4x-oversampled limiter, AAC-probed ceiling)'
+
+
+def renderer_lowering(ctx, p):
+    """rule sound.no_renderer_lowering: the delivered file is as loud as its master (no renderer guard or re-mix lowered it)"""
+    rep, _ = _master_report(ctx)
+    m = ctx.em('ears', 'loudness')
+    if rep is None or not m or rep.get('lufs_i') is None:
+        return 'na', 'needs the master report and the ears report', ''
+    d = m['integrated_lufs'] - rep['lufs_i']
+    tol = p.get('lowering_tol_db', 1.0)
+    return ('pass' if d >= -tol - 1e-6 else 'fail'), 'delivered %.2f vs master %.2f LUFS-I (%+.1f dB)' % (m['integrated_lufs'], rep['lufs_i'], d), \
+        '' if d >= -tol - 1e-6 else 'the renderer lowered the track: re-render with mp render (it remuxes the master), or node tools/mp-audio.mjs <build> <mp4>'
+
+
 def study_tier(ctx, p):
     ev = (ctx.study or {}).get('evidence')
     if not ev:
@@ -273,5 +320,7 @@ EXTRA.update({
     'lint.motion.loop_seam': C(loop_seam, 'craft', {'audio_seam_warn_db': 6}, 'a declared loop has no level step at its seam (ears/structure loop_seam)'),
     'lint.motion.seek': C(seek, 'house', {}, 'no wall clock or unseeded random in the composition sources (the test_no_clock scan)'),
     'lint.study.tier': C(study_tier, 'house', {}, 'a reference study is not boosted-looking (refstudy evidence tier)'),
+    'lint.sound.master_limiter': C(master_limiter, 'house', {'limiter_ceiling_dbtp': -1.5, 'encoded_true_peak_max_dbtp': -1.0, 'lufs_tol': 0.5}, 'the master report: limiter, -14 +/- 0.5 LUFS-I, <= -1.5 dBTP WAV, every AAC probe <= -1.0'),
+    'lint.sound.renderer_lowering': C(renderer_lowering, 'house', {'lowering_tol_db': 1.0}, 'the delivered file is within 1 dB of its master (no renderer lowering)'),
 })
 K.CHECKS.update(EXTRA)

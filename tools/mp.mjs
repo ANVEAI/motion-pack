@@ -6,6 +6,7 @@
      mp build [--aspect A] [--template T] [--dir D]   plan + page (+ the mix) for each template of the project
      mp render [--aspect all|A,B] [--template T] [--workers N] [--dir D]   build and render every aspect -> renders/<template>-<WxH>.mp4 (+ plan + sheet + loudness)
                                                       MP_RENDER_PREFIX="<lock script>" runs every render, eyes and ears pass through a shared lock
+                                                      the audio is the template's own master, remuxed under the picture (tools/mp-audio.mjs; --keep-renderer-audio skips it)
      mp check [--dir D]                               ids (check_ids), honesty (project + plan lint + banned demo words + name denylist), eyes, ears, contact sheet per render
      mp brand <logo.svg|png> [--dir D] [--write]      palette candidates from your logo, contrast-checked (frame-design contrast.py), a suggested accent / ink / paper
      mp doctor                                        node, python + venv, ffmpeg, Chrome on the GPU, puppeteer-core, sound libraries, disk
@@ -22,6 +23,7 @@ import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'
 const PACK = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), TPL = path.join(PACK, 'templates');
 const P = await import(pathToFileURL(path.join(TPL, '_shared', 'project.mjs')).href);
 const { sizeProblem } = await import(pathToFileURL(path.join(PACK, 'tools', 'mp-size.mjs')).href);   // the WxH-vs-aspect check after every render
+const { remuxMaster } = await import(pathToFileURL(path.join(PACK, 'tools', 'mp-audio.mjs')).href);   // the delivered audio is the template's own master (rule sound.no_renderer_lowering)
 const HF = 'hyperframes@0.8.142', MIN_FREE_GIB = 10, TAG = (a) => a.replace(':', 'x');
 const VENV = process.env.MP_VENV || path.join(os.homedir(), 'Developer', '.venvs', 'motion-pack311');
 const PY = process.env.PYTHON || (fs.existsSync(path.join(VENV, 'bin', 'python3')) ? path.join(VENV, 'bin', 'python3') : 'python3');
@@ -146,7 +148,8 @@ async function cmdRender(argv) {
       const free = freeGiB(); if (free < MIN_FREE_GIB) die(`${free.toFixed(1)} GiB free, under ${MIN_FREE_GIB}: stopping before a render`, 1);
       const out = path.join(R, `${id}-${TAG(a)}.mp4`); let ok;
       if (t.engine === 'hyperframes') { const b = await build(dir, id, a); if (!b.ok) { bad = 1; continue; }
-        const w = flag(argv, '--workers'); ok = heavy('npx', ['-y', HF, 'render', b.project, '-o', out, '--crf', crf, ...(w ? ['--workers', w] : [])], { cwd: b.project }).status === 0; if (ok) fs.copyFileSync(b.plan, out.replace(/\.mp4$/, '.plan.json')); }
+        const w = flag(argv, '--workers'); ok = heavy('npx', ['-y', HF, 'render', b.project, '-o', out, '--crf', crf, ...(w ? ['--workers', w] : [])], { cwd: b.project }).status === 0; if (ok) fs.copyFileSync(b.plan, out.replace(/\.mp4$/, '.plan.json'));
+        if (ok && !argv.includes('--keep-renderer-audio')) { const m = remuxMaster(b.project, out); console.log(`${id} ${a}: audio ${m.remuxed ? `remuxed from the master (${m.remuxed}), so the renderer cannot lower it` : `kept as rendered: ${m.kept}`}`); } }
       else if (t.engine === 'three') { const T = path.join(dir, 'build', 'templates', id), tag = (t.aspects[a] && t.aspects[a].tag) || 'wide';
         ok = heavy('bash', [path.join(T, '..', '_shared', 'render3d.sh'), T, 'scene.html', tag, crf], { env: { ...ENV, MP_PROJECT: projectFile(dir) } }).status === 0;
         if (ok) { fs.renameSync(path.join(T, 'out', `${id}-${tag}.mp4`), out); fs.copyFileSync(path.join(T, 'out', 'plan.json'), out.replace(/\.mp4$/, '.plan.json')); } }
