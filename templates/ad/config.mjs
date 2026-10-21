@@ -36,7 +36,7 @@ export const CONFIG = {
 /* the shared project file (templates/_shared/project.schema.json) -> this CONFIG. `mp list ad` prints it; `node make.mjs --project p.json [--aspect 9:16]` applies it */
 export const PROJECT_MAP = {
   'brand.name': ['brand.name', 'product.name'], 'brand.accent': 'brand.accent', 'brand.ink': 'brand.ink', 'brand.paper': 'brand.paper',
-  'brand.url': 'brand.url', 'brand.cta': 'brand.cta', 'brand.logo': 'brand.logo', 'brand.muted': 'brand.muted', 'brand.font.display': 'brand.font.display', 'brand.font.text': 'brand.font.text',
+  'brand.url': 'brand.url', 'brand.cta': 'brand.cta', 'brand.logo': 'brand.logo', 'brand.muted': 'brand.muted', 'brand.fonts.display': 'brand.font.display', 'brand.fonts.text': 'brand.font.text',
   'text.headline': 'hook.line', 'text.kicker': 'hook.kicker', 'text.problem': { to: 'problem.lines', list: true }, 'text.product': 'product.line',
   'media.hook.src': 'hook.media', 'media.hook.start': 'hook.mediaStart', 'media.hook.label': 'hook.label',
   'media.problem.src': 'problem.media', 'media.problem.start': 'problem.mediaStart', 'media.problem.label': 'problem.label',

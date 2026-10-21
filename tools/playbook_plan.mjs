@@ -148,7 +148,8 @@ export function applyStyle(plan, st, tpl) {
   pr.brand = pr.brand || {};
   for (const [role, key] of [['accent', 'brand.accent'], ['ink', 'brand.ink'], ['paper', 'brand.paper'], ['muted', 'brand.muted']]) {
     if (!pal[role]) continue; if (keys.has(key)) { pr.brand[role] = pal[role]; applied.push(`${key} ${pal[role]}`); } else missing.push(`${key} (palette.${role})`); }
-  if (keys.has('brand.font.display') || keys.has('brand.font')) { pr.brand.fonts = { display: ty.display, text: ty.text }; applied.push(`brand.fonts ${ty.display} / ${ty.text}`); } else missing.push('brand.fonts (type.display)');
+  /* a map may spell the project key brand.font or brand.fonts */
+  if (['brand.font.display', 'brand.fonts.display', 'brand.font', 'brand.fonts'].some((k) => keys.has(k))) { pr.brand.fonts = { display: ty.display, text: ty.text }; applied.push(`brand.fonts ${ty.display} / ${ty.text}`); } else missing.push('brand.fonts (type.display)');
   if (snd.bed) { if (keys.has('music')) { pr.music = snd.bed; applied.push(`music ${snd.bed}`); } else missing.push(`music (sound.bed ${snd.bed})`); }
   /* the CONFIG blocks a style can fill: type roles, sfx roles, the overlay stack, the transitions by reason */
   if (C.type && typeof C.type === 'object') for (const [role, id] of Object.entries(ty.presets || {})) if (typeof C.type[role] === 'string') { ov[`type.${role}`] = id; applied.push(`type.${role} ${id}`); }
