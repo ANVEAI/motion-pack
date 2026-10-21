@@ -56,6 +56,17 @@ def _extra():
             if line.startswith('## '): sec = line[3:4]
             elif sec in ('A', 'B', 'C') and line.startswith('|') and not line.startswith('|---') and not line.startswith('| Launch'): rows += 1
         c['launch_films'] = rows
+    pb = os.path.join(REPO, 'playbook')   # v0.5 playbook: rules by status, formats, the lint checks that enforce them
+    if os.path.isdir(os.path.join(pb, 'rules')):
+        rules = [r for f in sorted(os.listdir(os.path.join(pb, 'rules'))) if f.endswith('.json') and _tracked('playbook/rules/' + f)
+                 for r in json.load(open(os.path.join(pb, 'rules', f), encoding='utf-8'))]
+        for st in ('enforced', 'default', 'part', 'prose-only'):
+            c['playbook_' + st.replace('-', '_')] = sum(1 for r in rules if r.get('status') == st)
+        c['playbook_rules'] = len(rules)
+        c['playbook_formats'] = sum(1 for f in os.listdir(os.path.join(pb, 'formats')) if f.endswith('.json') and _tracked('playbook/formats/' + f)) if os.path.isdir(os.path.join(pb, 'formats')) else 0
+        sys.path.insert(0, os.path.join(REPO, 'tools'))
+        import playbook_checks
+        c['playbook_checks'] = len(playbook_checks.CHECKS)
     return c
 
 
@@ -176,6 +187,10 @@ def table(c):
         rows.append(('`patterns/`', f"{c['pattern_structures']} beat sheets (section timing as % of runtime, ASL, text ceilings, music intensity, sound role, CTA window, cut-downs), "
                                     f"{c['pattern_hooks']} hook archetypes with frame-0 rules, CTA placement and platform lengths, all graded and sourced in `docs/evidence/`; "
                                     "`tools/structure_check.py` scores a plan against them", '`patterns/README.md`'))
+    if c.get('playbook_rules'):   # v0.5: the learnings as graded rules, bundled into formats
+        rows.append(('`playbook/`', f"{c['playbook_rules']} graded rules learned from studied films and our own renders ({c['playbook_enforced']} enforced by {c['playbook_checks']} `mp lint` checks, "
+                                    f"{c['playbook_default']} written in by `mp plan`, {c['playbook_part']} carried by a part, {c['playbook_prose_only']} prose-only gaps) and {c['playbook_formats']} formats "
+                                    "(beats as fractions of the runtime, sound shape, exemplars, recommended parts, signals): `mp brief`, `mp plan`, `mp lint`, `mp study`", '`playbook/README.md`'))
     if os.path.isfile(os.path.join(REPO, 'tools', 'deliver.py')):   # xp access lane
         rows.append(('delivery + accessibility', "`tools/captions/`, `tools/describe/`, `tools/a11y_check.py`, `tools/deliver.py`, `tools/lottie/`: captions (SRT / WebVTT / IMSC1.1 TTML / burned in, SDH) "
                      f"to 42 chars, 2 lines, 20 cps (17 kids); an audio-description script (standard + extended, no TTS); an accessibility lint (flash, caption contrast, size, reading time, colour-blind, colour-only); "
