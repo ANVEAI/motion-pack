@@ -391,7 +391,7 @@
         "locator": "Platform specs, Masters for every platform"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/hard-rules.md",
         "locator": "Hard rules 5"
       },
       {
@@ -761,7 +761,7 @@
         "locator": "Environment > mp render wrote 1920x1080 files named -9x16"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/edit-without-code.md",
         "locator": "Edit without code step 4"
       },
       {

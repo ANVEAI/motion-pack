@@ -1011,7 +1011,7 @@
         "locator": "9. Short-film grammar (shot-scale ladder)"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "RECIPE F step 2"
       },
       {
@@ -1152,7 +1152,7 @@
         "locator": "2. Hold > Structure > Static limit"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "VIRALITY checklist > Hold; RECIPE E step 1"
       },
       {
@@ -1304,7 +1304,7 @@
     "evidence": "house talking-head defaults.",
     "sources": [
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "RECIPE H steps 2-3"
       },
       {
@@ -1489,7 +1489,7 @@
         "locator": "1. Governing principles, 1-2; 2.1 Hard cut"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/hard-rules.md",
         "locator": "Hard rules 3"
       }
     ],

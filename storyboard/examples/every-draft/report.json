@@ -193,7 +193,7 @@
    },
    "camera": "locked, 100 mm macro, 2% push in",
    "camera_parsed": "in",
-   "honesty": "Illustration \u00b7 fictional product",
+   "honesty": "Render \u00b7 fictional product",
    "source": "schematic",
    "hero_s": null,
    "text_layout": null,
@@ -202,7 +202,7 @@
     "rect": {
      "x0": 96.0,
      "y0": 981.0,
-     "x1": 640.0,
+     "x1": 538.0,
      "y1": 1014.0
     }
    },
@@ -261,7 +261,7 @@
    },
    "camera": "pull back, locked at the end",
    "camera_parsed": "out",
-   "honesty": "Illustration \u00b7 fictional product",
+   "honesty": "Render \u00b7 fictional product",
    "source": "schematic",
    "hero_s": null,
    "text_layout": {
@@ -283,7 +283,7 @@
     "rect": {
      "x0": 96.0,
      "y0": 981.0,
-     "x1": 640.0,
+     "x1": 538.0,
      "y1": 1014.0
     }
    },

@@ -24,13 +24,13 @@
       }
     ],
     "enforce": {
-      "check": "lint.motion.seek",
+      "check": null,
       "default": null,
       "part": null
     },
-    "status": "enforced",
+    "status": "prose-only",
     "conflicts_with": [],
-    "notes": "Set today by: type/ease.js spring / springTrack (SPRING classes) (a pack default outside mp plan). | Re-simulating from 0 on every seek also works but costs O(t) per frame."
+    "notes": "Set today by: type/ease.js spring / springTrack (SPRING classes) (a pack default outside mp plan). | Re-simulating from 0 on every seek also works but costs O(t) per frame. | Integration 21 Oct: lint.motion.seek is the static clock / random scan; it cannot see baking or preloading, so this rule has no lint check (the page seek test is motion-stack seekcheck.mjs, run by hand)."
   },
   {
     "id": "motion.camera_still_on_impacts",
@@ -168,7 +168,7 @@
         "locator": "Hierarchy: one hero per frame"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "QA checklist > Flash safety"
       },
       {
@@ -358,7 +358,7 @@
         "locator": "3. Share and replay > Loop QA"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "RECIPE B step 6"
       }
     ],
@@ -610,13 +610,13 @@
       }
     ],
     "enforce": {
-      "check": "lint.motion.seek",
+      "check": null,
       "default": null,
       "part": null
     },
-    "status": "enforced",
+    "status": "prose-only",
     "conflicts_with": [],
-    "notes": "Text measured before fonts load lays out wrongly; give each animated property one owner timeline."
+    "notes": "Text measured before fonts load lays out wrongly; give each animated property one owner timeline. | Integration 21 Oct: lint.motion.seek is the static clock / random scan; it cannot see baking or preloading, so this rule has no lint check (the page seek test is motion-stack seekcheck.mjs, run by hand)."
   },
   {
     "id": "motion.punch_in_cadence",
@@ -695,7 +695,7 @@
         "locator": "header"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "QA checklist > Determinism"
       },
       {

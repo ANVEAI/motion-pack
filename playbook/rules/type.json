@@ -62,7 +62,7 @@
         "locator": "Shared-file edits NEEDED item 2-3; Findings for other lanes; RECIPE D"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "QA checklist > Legibility; RECIPE D"
       }
     ],
@@ -306,7 +306,7 @@
         "locator": "2. Score it > Phone readability"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "QA checklist > Eyes, Legibility"
       },
       {
@@ -455,7 +455,7 @@
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Set today by: design.json frames.lower_third (a pack default outside mp plan). | docs/research/visual.md gives a hold of at least 60 f (2 s) with bar wipe 10 f, name slide 12 f offset 4 f, out 8 f; frame-design's 2.5-4 s is kept."
+    "notes": "Set today by: design.json frames.lower_third (a pack default outside mp plan). | docs/evidence/visual.md gives a hold of at least 60 f (2 s) with bar wipe 10 f, name slide 12 f offset 4 f, out 8 f; frame-design's 2.5-4 s is kept."
   },
   {
     "id": "type.name_super_one_detail",
@@ -714,7 +714,7 @@
         "locator": "spec.readability"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "QA checklist > Legibility"
       },
       {

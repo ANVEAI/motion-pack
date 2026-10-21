@@ -45,7 +45,7 @@ Use the type module's gfx ids: `lowerThird.cleanBar` (interview), `.accentRule` 
 ## 5. Honesty labels
 
 - A designed component, not a footnote: the mono family, `palette.muted` or a label colour that passes 4.5:1, at least 28 px (16:9) or 30 px (9:16), inside the safe area, on screen for at least 2 s.
-- One vocabulary across a series: "Illustration", "demo figures", "demo data", "fictional", "screens recreated", "3D render", "in development", "planned feature".
+- One vocabulary across a series: "example data", "demo figures", "demo data", "fictional", "screens recreated", "3D render", "render", "in build" (never "in development", "planned" or "illustration").
 - Place the label where it does not cover the hero, and keep its position constant across shots so the eye learns where to find it.
 
 ## 6. Product and hero shots

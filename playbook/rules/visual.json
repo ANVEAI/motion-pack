@@ -505,7 +505,7 @@
     "evidence": "house banned default.",
     "sources": [
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/hard-rules.md",
         "locator": "Banned defaults"
       },
       {
@@ -879,7 +879,7 @@
         "locator": "3. rule 3; 4. Anti-patterns"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "VIRALITY checklist > Thumbnail and title"
       }
     ],
@@ -1061,7 +1061,7 @@
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Set today by: type/captions.js CAPTION_STYLES stroke (a pack default outside mp plan). | docs/research/visual.md 4.2 gives stroke 6% of font size or a 12 px shadow at 60% black; the frame-design reference gives about 8%. The 8% value is kept (later, matches the impact caption style 0.07)."
+    "notes": "Set today by: type/captions.js CAPTION_STYLES stroke (a pack default outside mp plan). | docs/evidence/visual.md 4.2 gives stroke 6% of font size or a 12 px shadow at 60% black; the frame-design reference gives about 8%. The 8% value is kept (later, matches the impact caption style 0.07)."
   },
   {
     "id": "visual.two_worlds",

@@ -294,7 +294,7 @@
         "locator": "lines 40-61, 283-302, 366-384"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/hard-rules.md",
         "locator": "Hard rules 6"
       },
       {
@@ -348,7 +348,7 @@
         "locator": "Failure to fix, Labels kill the mood; Case study items 1 and 4"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/hard-rules.md",
         "locator": "Hard rules 6; Production gates 3; RECIPE U step 1"
       },
       {
@@ -403,7 +403,7 @@
   {
     "id": "honesty.label_vocabulary_claims_in_copy",
     "title": "Fixed label words; claims in copy",
-    "statement": "Use the fixed label vocabulary ('Illustration', 'demo figures', 'demo data', 'fictional', 'in development', 'planned feature', 'screens recreated', '3D render') and keep product claims in captions and descriptions, not in the film.",
+    "statement": "Use the fixed label vocabulary ('example data', 'demo figures', 'demo data', 'fictional', 'in build', 'render', 'screens recreated', '3D render', 'placeholder') and keep product claims in captions and descriptions, not in the film.",
     "scope": {
       "formats": [],
       "platforms": [],
@@ -429,7 +429,7 @@
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "Resolved 21 Oct: CONFLICT WITH A CHECK: mp check (tools/mp.mjs BANNED) fails project copy containing \"in development\", \"planned\" or \"illustration\", which are also honesty-label words here. The check targets demo copy; it should exempt text marked as a label. | Conflict with code: mp.check.banned_words (tools/mp.mjs BANNED) FAILs project copy containing 'in development', 'planned' or 'illustration' and asks for 'placeholder', 'demo data', 'render' or 'example' instead; the two vocabularies need reconciling."
+    "notes": "Resolved 21 Oct (founder): the words 'in development', 'planned' and 'illustration' are banned from labels; use 'in build', 'render' and 'example data'. mp check (tools/mp.mjs) and mp lint (lint.honesty.banned_words) keep failing copy that uses the banned words, so the label vocabulary and the check now agree."
   },
   {
     "id": "honesty.literal_first_lines",
@@ -601,7 +601,7 @@
   {
     "id": "honesty.post_copy_sourced",
     "title": "Post copy: sourced figures, true status",
-    "statement": "Every figure in post copy has a source the user can show, status words match reality ('runs today', 'in build', 'planned', 'in development', 'demo data', 'illustration'), and platform behaviour is tagged as published, practitioner belief or own measurement.",
+    "statement": "Every figure in post copy has a source the user can show, status words match reality ('runs today', 'in build', 'render', 'demo data', 'example data'), and platform behaviour is tagged as published, practitioner belief or own measurement.",
     "scope": {
       "formats": [],
       "platforms": [
@@ -634,7 +634,7 @@
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "plan.lintClaims covers the render plan, not post/ copy."
+    "notes": "plan.lintClaims covers the render plan, not post/ copy. | 21 Oct (founder): 'in development', 'planned' and 'illustration' are not status words; say 'in build', 'render' or 'example data'."
   },
   {
     "id": "honesty.product_does_its_job",

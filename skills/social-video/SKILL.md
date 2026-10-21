@@ -53,7 +53,7 @@ With motion-pack, the format's `post` block (in `research-pack.md`, from `mp bri
 2. **No invented numbers.** Every figure in copy has a source the user can show. Platform behaviour you describe is labelled as published by the platform, as practitioner belief, or as your own measurement.
 3. **Disclose AI honestly, per platform** (table below). Over-disclosing costs little; under-disclosing costs trust and can cost the post.
 4. **Upload the master for each aspect**, never a copy downloaded from another platform with its watermark.
-5. **Product claims live in captions and descriptions**, with their status ("runs today", "in development", "demo data"), not added into the video.
+5. **Product claims live in captions and descriptions**, with their status ("runs today", "in build", "demo data"), not added into the video.
 6. **No automated engagement:** no bots liking, following or commenting, no engagement pods, no bought views, no templated mass DMs.
 
 ## Platform specs (verify the current limits; they change)
@@ -76,7 +76,7 @@ Masters for every platform: H.264 High, yuv420p, AAC, `+faststart`, about -14 LU
 | YouTube | "Altered or synthetic content" (Yes/No) at upload | **No** for stylised CG, animation and motion graphics that nobody could mistake for real footage. **Yes** for any photoreal render or generated footage that could pass as real (a photoreal product that does not exist yet, a generated person, a realistic scene). YouTube says disclosure does not limit the audience |
 | Instagram | "AI info" / "Add AI label" toggle at share | **ON** for every video this pipeline makes (an AI agent wrote the script, the code or the sound). It defaults **OFF**: verify it reads ON (the switch is checked) before Share, every time |
 | TikTok | "AI-generated content" in post settings | ON whenever generated imagery, voices or photoreal renders appear; when unsure, ON |
-| X, LinkedIn | no reliable per-post switch | say it in the text: "3D animation rendered in code", "AI-assisted illustrations, demo figures" |
+| X, LinkedIn | no reliable per-post switch | say it in the text: "3D animation rendered in code", "AI-assisted renders, demo figures" |
 
 Keep the same honesty labels in the video's fine print and in the description. Details: `references/platforms.md`.
 
@@ -136,7 +136,7 @@ Read the numbers at 24 hours and 72 hours (and 7 days for long-form), never at o
 
 ## Honesty in copy
 
-- Status words match the product's reality: "runs today", "in build", "planned", "in development", "demo data", "illustration".
+- Status words match the product's reality: "runs today", "in build", "render", "demo data", "example data" (never "in development", "planned" or "illustration").
 - No "free", "100%", "guaranteed" or security superlatives unless they are literally true and approved; keep a banned-word list per brand in `post/checklist.md`.
 - No real people, brands or logos the user has no right to use; no fake testimonials or reviews.
 

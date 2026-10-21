@@ -34,7 +34,7 @@ These are collected from shipping real spots, films and promos with agents, Oct 
 
 ## Honesty that survives editing
 
-- **Label illustrations and concept renders in frame** ("illustration", "demo data", "in development"). Labels work without killing the story; the story is what earns the label space.
+- **Label examples and concept renders in frame** ("render", "demo data", "in build"). Labels work without killing the story; the story is what earns the label space.
 - **Any number on screen needs a source in your plan.** Lint for digits without a source.
 - **Never let an image model redraw UI, logos or text.** It garbles them. Composite the real screenshot instead.
 - **References are craft to learn from, not designs to copy.** Rebuilding someone's prompt or look literally is a different job from making your own film better.

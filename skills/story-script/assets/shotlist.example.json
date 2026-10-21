@@ -36,7 +36,7 @@
       "transition": { "kind": "smash", "reason": "EMOTION: the loss lands on the face" } },
     { "id": "s05", "beat": "TURN", "role": "turn", "start_s": 10.0, "dur_s": 1.5, "scale": "INSERT",
       "action": "the dead screen wakes by itself; the draft is back, the cursor blinking where it stopped", "sound": "a bright win sting on the wake",
-      "text": "", "text_kind": "super", "honesty": "Illustration · fictional product", "camera": "locked, 100 mm macro, 2% push in",
+      "text": "", "text_kind": "super", "honesty": "Render · fictional product", "camera": "locked, 100 mm macro, 2% push in",
       "transition": { "kind": "smash", "reason": "STORY: the reversal" } },
     { "id": "s06", "beat": "PAYOFF", "role": "payoff", "start_s": 11.5, "dur_s": 1.5, "scale": "MS",
       "action": "a slow wow, then a two-armed cheer", "sound": "a wordless wow; a tada on the cheer",
@@ -44,7 +44,7 @@
       "transition": { "kind": "cut", "reason": null } },
     { "id": "s07", "beat": "CARD", "role": "card", "start_s": 13.0, "dur_s": 3.0, "scale": "CARD",
       "action": "the white world pulls back; end line, logo and fine print", "sound": "two-note sonic sting",
-      "text": "Every draft, saved.", "text_kind": "card", "honesty": "Illustration · fictional product",
+      "text": "Every draft, saved.", "text_kind": "card", "honesty": "Render · fictional product",
       "camera": "pull back, locked at the end",
       "transition": { "kind": "cut", "reason": null } }
   ],

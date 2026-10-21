@@ -178,7 +178,7 @@ def test_text_outside_the_safe_zone_is_flagged_and_inside_is_not(tmp):
 
 def test_a_long_honesty_label_that_leaves_the_safe_zone_is_flagged(tmp):
     doc = example_doc()
-    shot(doc, 's07')['honesty'] = 'Illustration · fictional product · demo data only · not a real customer · no real logos shown · all names invented · not for resale'
+    shot(doc, 's07')['honesty'] = 'Render · fictional product · demo data only · not a real customer · no real logos shown · all names invented · not for resale'
     code, rep = run(put(tmp, 'sl.json', doc), os.path.join(tmp, 'o'))
     p = next(p for p in rep['panels'] if p['id'] == 's07')
     assert any(v['what'] == 'honesty label' and v['side'] == 'right' for v in p['safe_violations'])
@@ -341,7 +341,7 @@ def mini_doc():
         {'id': 'a3', 'beat': 'TURN', 'role': 'turn', 'dur_s': 0.7, 'scale': 'CU', 'action': 'the screen wakes', 'sound': 'a bright win sting', 'text': '', 'text_kind': 'super',
          'honesty': None, 'transition': {'kind': 'dissolve', 'reason': 'EMOTION: relief'}},
         {'id': 'a4', 'beat': 'CARD', 'role': 'payoff', 'dur_s': 0.7, 'scale': 'CARD', 'action': 'the line', 'sound': 'two-note sonic sting', 'text': 'Saved.', 'text_kind': 'card',
-         'honesty': 'Illustration', 'transition': {'kind': 'cut', 'reason': None}}]
+         'honesty': 'Render', 'transition': {'kind': 'cut', 'reason': None}}]
     return d
 
 

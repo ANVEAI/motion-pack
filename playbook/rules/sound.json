@@ -281,7 +281,7 @@
         "locator": "Honest limits, VO bullet"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "RECIPE H step 2.6; RECIPE U step 4"
       },
       {
@@ -476,7 +476,7 @@
         "locator": "spec.sync"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/hard-rules.md",
         "locator": "Hard rules 4"
       },
       {
@@ -1117,7 +1117,7 @@
         "locator": "spec.quiet"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "Reach for X: a quiet open; Ears"
       },
       {
@@ -2157,7 +2157,7 @@
         "locator": "trailer.silenceBeforeHit"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "RECIPE T step 2"
       },
       {
@@ -2166,13 +2166,13 @@
       }
     ],
     "enforce": {
-      "check": "lint.mix.qa",
+      "check": "lint.sound.trailer_gap",
       "default": null,
       "part": "music/bed_trailer_arc"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Mark the gap kind gap and the end kind hold in plan.audio.quiet so ears/structure reads them as shape. cuts/trailer/hitSilenceHit holds the edit side. | Merged: A trailer's last wall hit cuts to black on the next frame, then 1-3 s of planned silence (a faint ring at most, -28 dB for 6 frames), then the title lands on the hit frame by cut, no fade. [craft; Trailer editors describe dropping music for reveals; under 1 s reads as a stutter, over 3 s as a dropout (house reading).] | Mark the gap in plan.audio.quiet (kind gap); ears/structure caps a planned gap at 4 s and warns on unplanned near-silence >= 2 s, so it bounds but does not check the 1-3 s window. A studied hardware film dropped music 5 s before a +20 dB return. | Merged: A trailer holds 1-3 s of declared silence (digital silence or a sub 38-40 dB under the wall) before the title hit, and the title lands on the hit. [house; Film lane recipe and cut pattern; the trailer score is rendered for the exact cut.] | Declare the gap in plan.audio.quiet and any black in the plan holds (see visual.declare_planned_black). | Merged: A trailer accelerates act 3 to about 2 cuts/s at 120 BPM (4 at the end), then holds 1-3 s of silence or one line over near-silence, and lands the title on the next downbeat hit. [house; house trailer shape; round 4/5 trailer arc (tier R and A) holds one line over about -55 dBFS for 2-4 s.] | Cut the picture to black on visual_cut_frame (hit - 1); never trim the arc bed past gap_start."
+    "notes": "Mark the gap kind gap and the end kind hold in plan.audio.quiet so ears/structure reads them as shape. cuts/trailer/hitSilenceHit holds the edit side. | Merged: A trailer's last wall hit cuts to black on the next frame, then 1-3 s of planned silence (a faint ring at most, -28 dB for 6 frames), then the title lands on the hit frame by cut, no fade. [craft; Trailer editors describe dropping music for reveals; under 1 s reads as a stutter, over 3 s as a dropout (house reading).] | Mark the gap in plan.audio.quiet (kind gap); ears/structure caps a planned gap at 4 s and warns on unplanned near-silence >= 2 s, so it bounds but does not check the 1-3 s window. A studied hardware film dropped music 5 s before a +20 dB return. | Merged: A trailer holds 1-3 s of declared silence (digital silence or a sub 38-40 dB under the wall) before the title hit, and the title lands on the hit. [house; Film lane recipe and cut pattern; the trailer score is rendered for the exact cut.] | Declare the gap in plan.audio.quiet and any black in the plan holds (see visual.declare_planned_black). | Merged: A trailer accelerates act 3 to about 2 cuts/s at 120 BPM (4 at the end), then holds 1-3 s of silence or one line over near-silence, and lands the title on the next downbeat hit. [house; house trailer shape; round 4/5 trailer arc (tier R and A) holds one line over about -55 dBFS for 2-4 s.] | Cut the picture to black on visual_cut_frame (hit - 1); never trim the arc bed past gap_start. | Integration 21 Oct: enforced by lint.sound.trailer_gap (the planned gap length and its measured depth under the programme); music/qa.py (lint.mix.qa) checks library beds and the tempo grid, not this shape. The crescendo and wall cut stay prose."
   },
   {
     "id": "sound.transition_paired_sfx",

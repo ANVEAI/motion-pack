@@ -10,8 +10,8 @@ Write one file per platform in `post/copy/`. Count characters and write the coun
 **Description:**
 <line 1: the stake, restated in plain searchable words>
 <one sentence: what the viewer saw>
-<the product and its honest status: runs today / in build / planned / in development>
-<disclosure: "3D animation rendered in code." / "AI-assisted illustrations, demo figures.">
+<the product and its honest status: runs today / in build / render / demo data>
+<disclosure: "3D animation rendered in code." / "AI-assisted renders, demo figures.">
 <link with UTM>
 #tag1 #tag2 #tag3
 **Pinned comment:** <a short question that invites a reply, or one line of how it was made>

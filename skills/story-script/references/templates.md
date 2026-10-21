@@ -102,7 +102,7 @@ One JSON object. Times in seconds; frames are derived from `fps`. `scripts/lint_
 | `sound` | string | cue intents in plain words ("pen tap on the beat; riser into the turn"); motion-pack maps them to ids |
 | `text` | string | on-screen words, `""` for none; **lint:** at most 7 words in the first shot; reading speed at most 3.5 words/s; hold at least max(0.5, 0.35 + 0.28 x words) s (type-module rules) |
 | `text_kind` | string | `super` (default: a statement to the viewer), `in_world` (a clock, a ledger row, a chat bubble inside the fiction), `label` (an honesty label), `card` (end card) |
-| `honesty` | string or null | the label shown in this shot, e.g. `"Illustration · demo figures"`; **lint:** a `super` or `card` with a digit needs a matching sourced claim or a label |
+| `honesty` | string or null | the label shown in this shot, e.g. `"Render · demo figures"`; **lint:** a `super` or `card` with a digit needs a matching sourced claim or a label |
 | `transition` | object | `{ "kind": "cut" | "smash" | "dissolve" | "whip" | ..., "reason": null | "EMOTION: ..." }` into this shot; **lint:** anything but `cut` needs a reason |
 | `camera` | string | optional, e.g. "locked, 85 mm, 4% push" |
 | `notes` | string | optional |

@@ -157,7 +157,7 @@
     "evidence": "house beat sheet [H].",
     "sources": [
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "RECIPE Z"
       }
     ],
@@ -738,7 +738,7 @@
         "locator": "2. L9 multi-voice documentary"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "RECIPE H step 5"
       },
       {
@@ -1070,7 +1070,7 @@
         "locator": "2. Hold > Retention structure"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "VIRALITY checklist > Hold"
       },
       {
@@ -1710,7 +1710,7 @@
     "evidence": "house recipe structure [H].",
     "sources": [
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/recipes.md",
         "locator": "RECIPE F steps 1 and 4"
       }
     ],

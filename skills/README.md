@@ -61,7 +61,7 @@ Six Agent Skills that take a video from a one-line brief to a published post: th
 
 ## House rules every skill follows
 
-- **Honesty:** no invented statistics, quotes, reviews, customers or logos. A number on screen or in copy has a source, or it is labelled ("demo figures", "illustration"). Where a skill gives a threshold, it says whether it is a published platform rule, practitioner belief or a tunable house default.
+- **Honesty:** no invented statistics, quotes, reviews, customers or logos. A number on screen or in copy has a source, or it is labelled ("demo figures", "example data", "render"). Where a skill gives a threshold, it says whether it is a published platform rule, practitioner belief or a tunable house default.
 - **References are craft, never copies:** learn the method from outside work, then make your own.
 - **Draft-first publishing:** social-video prepares everything; the user posts or approves each post.
 - **Never let an image model redraw UI or text:** composite real screenshots.

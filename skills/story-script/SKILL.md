@@ -52,7 +52,7 @@ Then write the **sound-off sentence**: "After one watch with the sound off, a vi
 2. **A list of benefits is not a story.** "One problem and one solution per beat" is a clarity rule *inside* a beat. It is not a structure: five clean problem-to-solution vignettes in a row still read as a feature parade. Tie beats together with one person, one place or one clock.
 3. **The product is the quiet turn, never the pitch.** It arrives as the turn (placed on a shelf, found, switched on, quietly used) and changes the state of the story. It never speaks, explains itself or performs. Name it once mid-film at most, then on the end card. When the product performs, the audience feels sold to; when it resolves the stake, they credit it.
 4. **The payoff pays off the stake.** If the stake was a bill, the payoff is the bill. If it was a confidential file, the payoff is the file safe and the person trusted. A generic cheer is not a payoff.
-5. **Honesty labels sit in frame without killing the story.** Small, designed and specific: "demo figures", "fictional app · demo data", "hardware in development". Product claims go in captions and descriptions, not in the film. Never invent numbers, quotes, reviews, customers or logos.
+5. **Honesty labels sit in frame without killing the story.** Small, designed and specific: "demo figures", "fictional app · demo data", "hardware in build". Product claims go in captions and descriptions, not in the film. Never invent numbers, quotes, reviews, customers or logos.
 6. **A premise is a claim.** If the story sets a condition ("the internet is down", "nothing leaves the room"), every later scene makes a claim under it. Order scenes so nothing contradicts the premise, or drop the premise.
 7. **References are craft, never copies.** When someone shares a reference "to learn from", ask which of *our* deliverables it is for, extract the method (numbers, structure, timing, lighting, sound) and apply it to our story. A literal replica is at most a throwaway technical spike, and only after saying so.
 8. **When a draft is rejected, subtract.** Revisions fail by addition: every note becomes another card, super or scene. Cut back to the spine first; add only what the spine is missing.
@@ -70,7 +70,7 @@ Then write the **sound-off sentence**: "After one watch with the sound off, a vi
 5. **Script** scene by scene in `script.md` (template in `references/templates.md`).
 6. **Shot list** in `shotlist.json`, then lint it: `python3 scripts/lint_shotlist.py shotlist.json` (exit 0 = no failures).
 7. **Hooks.** Write three variants that change only the first one to three seconds.
-8. **Honesty pass.** Every claim with a digit has a `source`; every illustration, demo figure and planned feature carries its label.
+8. **Honesty pass.** Every claim with a digit has a `source`; every example, demo figure and unbuilt feature carries its label.
 9. **Review** with `references/rubric.md`. Fix the lowest score by subtraction, then lint again.
 10. **Storyboard.** Draw the story before anyone builds it: `python3 storyboard/board.py shotlist.json --out storyboard-out` (add `--design design.json` once frame-design has run). It lints the shot list again, draws one panel per shot (scale, camera move, the text at its real size, the safe zone, sound intent, transition, honesty label), flags lines that read too fast and text outside the safe zone, and cuts an animatic with real sounds. Show the sheet and the animatic to whoever approves the story, fix what they or the warnings find in `shotlist.json`, and re-run. This is motion-pack's "storyboard approved" gate.
 11. **Hand off.** Tell the user which files to read and what frame-design should decide next.
@@ -144,7 +144,7 @@ Full schema and a complete example: `references/templates.md` and `assets/shotli
 ## Honesty inside the story
 
 - **Claims:** keep a register in `shotlist.json` `claims`. A line with a digit needs a `source` the user can show; otherwise cut the digit.
-- **Labels:** use a small vocabulary and keep each label on screen for at least 2 s, inside the safe area: "Illustration", "demo figures", "demo data", "fictional", "in development", "planned feature", "screens recreated", "3D render".
+- **Labels:** use a small vocabulary and keep each label on screen for at least 2 s, inside the safe area: "example data", "demo figures", "demo data", "fictional", "in build", "render", "screens recreated", "3D render" (never "in development", "planned" or "illustration": banned words that mp check and mp lint fail).
 - **Fiction:** fictional people, firms and data only. No real company names, logos, badges, insignia or public figures in a comedy or a drama.
 - **Generated people:** if a character was made with an image or video model, say so in the end-card fine print and in the post (social-video handles the platform labels).
 - **Tone:** no gag depends on harm, humiliation or someone losing their job. The worst outcome is mild embarrassment. If AI is in the story, keep it as a prop inside a human conflict; a joke whose butt is "AI" or that implies "AI replaces your colleague" alienates the people you want to reach.

@@ -2,7 +2,7 @@
   {
     "id": "platform.ai_disclosure_in_text",
     "title": "Disclose AI in text on X, LinkedIn",
-    "statement": "On X and LinkedIn, which have no reliable per-post AI switch, state provenance in the post text (e.g. '3D animation rendered in code', 'AI-assisted illustrations, demo figures'), match the video's fine print, and never strip or forge provenance metadata.",
+    "statement": "On X and LinkedIn, which have no reliable per-post AI switch, state provenance in the post text (e.g. '3D animation rendered in code', 'AI-assisted renders, demo figures'), match the video's fine print, and never strip or forge provenance metadata.",
     "scope": {
       "formats": [],
       "platforms": [
@@ -581,7 +581,7 @@
         "locator": "9:16 safe rectangle"
       },
       {
-        "doc": "skills/motion-pack/SKILL.md",
+        "doc": "skills/motion-pack/references/checklists.md",
         "locator": "VIRALITY checklist > Platform fit"
       },
       {
