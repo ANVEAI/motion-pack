@@ -110,6 +110,14 @@ export function makePlan(fm, rules, o, tpl) {
     const v = Array.isArray(dflt) ? dflt.map((_, j) => todo(k, `item ${nword(j + 1)}`)) : line;
     const [top, ...rest] = k.split('.'); if (top === 'brand' && rest.length === 1 && ['name', 'url', 'cta'].includes(rest[0])) project.brand[rest[0]] = rest[0] === 'cta' && beat ? line : todo(k, rest[0] === 'name' ? 'brand name' : rest[0]);
     else if (top === 'text' && rest.length === 1) project.text[rest[0]] = v; }
+  /* the format's sound shape for the template (templates/_shared/playbook.mjs applies it to the template's own timeline): fractions travel, seconds of a 35 s plan would not fit a 45 s build */
+  { const pbk = { format: fm.id, length: L }, sh = fm.sound_shape || {}, open = audio.quiet.find((x) => x.kind === 'open'), nm = audio.quiet.find((x) => x.role === 'name'), eh = paramsFor('plan.end.hold', fm, rules);
+    pbk.quiet_open = open ? { s: r3(open.t[1] - open.t[0]), db: open.db } : false;   // no open in the format: sound from frame 0
+    if (audio.bass_entry_s != null) { pbk.bass_entry_pct = r3(audio.bass_entry_s / L); if (bi >= 0) pbk.bass_entry_beat = beats[bi].id; }
+    if (nm) pbk.name_silence = { s: r3(nm.t[1] - nm.t[0]), db: sh.name_silence_db ?? -50, ...(ni >= 0 ? { beat: beats[ni].id } : {}), at_pct: r3(nm.t[0] / L) };
+    if (audio.tail) { pbk.tail = audio.tail; const td = sh.tail_db_max ?? sh.tail_db; if (td != null) pbk.tail_db = td; }
+    pbk.end_hold_s = eh.min_hold_s ?? (Array.isArray(eh.end_hold_s) ? eh.end_hold_s[0] : eh.end_hold_s); pbk.first_sound_frame_max = 3;
+    project.playbook = pbk; }
   const music = Object.values(fm.recommended_parts || {}).flat().find((id) => /^music\/bed_/.test(id)); if (music) project.music = music;
   if (tpl.lengths && tpl.lengths.length) project.length = tpl.lengths.reduce((a, x) => Math.abs(x - L) < Math.abs(a - L) ? x : a);
   const builtLen = project.length ?? tpl.built ?? null;

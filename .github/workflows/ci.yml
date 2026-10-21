@@ -143,6 +143,8 @@ jobs:
         run: python3 tools/playbook_build.py --check && python3 tools/playbook_build.py --check --playbook tools/tests/fixtures/playbook
       - name: "mp plan (the fixture format at 15, 30 and 45 s and both aspects; beats, sound shape, TODOs, and the filled project builds through the template's own path; node, no browser)"
         run: node tools/tests/playbook-plan.test.mjs
+      - name: "a template follows its format's sound shape (templates/_shared/playbook.mjs on saas-launch, proof-film and explainer-diagram through their own build path; node, no browser)"
+        run: node tools/tests/playbook-apply.test.mjs
       - name: "lint check mutation proof (each playbook lint check, the extra checks that wrap the shotlist, design, caption, mixer and honesty gates, and the grade-to-severity rule fail their test when broken)"
         run: python3 tools/mutation_check.py tools/tests/playbook_checks.mutants.json && python3 tools/mutation_check.py tools/tests/playbook_checks_extra.mutants.json
       - name: "README counts are current"

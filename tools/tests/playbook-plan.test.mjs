@@ -20,7 +20,7 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'mp-plan-test-')), tdir = path
 
 for (const aspect of ['16:9', '9:16']) {
   const tpl = await templateInfo(path.basename(fm.template), aspect);
-  check(`${aspect}: the template's lengths are probed (saas-launch builds 45, 60, 75)`, JSON.stringify(tpl.lengths) === '[45,60,75]', JSON.stringify(tpl.lengths));
+  check(`${aspect}: the template's lengths are probed (saas-launch builds 35, 45, 60, 75)`, JSON.stringify(tpl.lengths) === '[35,45,60,75]', JSON.stringify(tpl.lengths));
   for (const L of [15, 30, 45]) {
     const tag = `${fm.id} ${aspect} ${L}s`, o = { length: L, aspect, research: 'research-pack.json' };
     const p = makePlan(fm, rules, o, tpl), p2 = makePlan(fm, rules, o, tpl);

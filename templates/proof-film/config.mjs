@@ -52,6 +52,7 @@ export const CONFIG = {
     { label: 'Cheaper', value: 3.6, dec: 2, unit: '$', line: 'cost per task', alt: 9.1, altLabel: 'alternative', source: SRC, method: 'list price x tokens (placeholder)' }],
   end: { line: 'Replace every placeholder before you publish.', chips: [] },   // the URL is brand.url; chips are benefit pills without digits
   tail: { holdS: 5.4, liftS: 0.8, fadeMs: 600, bedDb: -40, roomDb: -26 },   // end card: quiet hold (plan.audio.quiet kind hold): the bed lifts liftS, then drops to bedDb and a steady room tone (roomDb under the un-dipped bed) takes over, so the hold is flat, not a pulsing bed; NO stinger. The near-silent part must be 3 to 9 s
+  cutdown: null,                                     // null: the full proof film (36-60 s) | 'clip': the playbook proof-clip cut (13-20 s: claim, builder, number, hold)
   timing: { minS: 36, maxS: 60, travelS: 1.1, enterS: 0.15, ease: 'soft', dip: 0.08, push: 0.035, holdS: 1.4, claim: 2.4, name: 1.8, setting: 2.6, numbers: 2.8, cards: 3.0, endBuild: 1.2, quietOpenS: 1.2 },   // seconds of build per stage; stages are rounded up to whole beats; a stage's content starts `enterS` after the camera leaves for it (the camera is still settling); the camera dips `dip` in a move and pushes `push` while it dwells
   cut: {},                                           // a motivated hard cut instead of a camera move: { 'builder>h2h': 'EMOTION: ...' } (a boundary 'from>to'; the reason is required)
   vo: { words: null, audio: null },                  // optional sparse VO: words = a words.json [{w, s, e}] (seconds) turns it on; audio = your recording (null = a labelled guide signal for a dry run)
@@ -72,6 +73,7 @@ export const PROJECT_MAP = {
   'voice.words': 'vo.words', 'voice.audio': 'vo.audio',
   'music': { to: ['music', 'bpm'], fn: (id, ctx) => { const m = id && ctx.music(id); if (!m) throw new Error(`proof-film needs a pack bed: ${id} is not in music/manifest.json`); return [id, m.bpm]; } },
   'aspect': { to: 'format', values: { '16:9': 'wide', '9:16': 'tall' } },
+  'length': { to: 'cutdown', fn: (v) => (+v <= 20 ? 'clip' : null), note: '20 s or less: the proof-clip cut (claim, builder, number); longer: the full proof film' },
 };
 export const ASPECTS = { '16:9': { how: 'native' }, '9:16': { how: 'native', note: 'own FORMAT constants (a re-layout); ui.branchTrace is landscape-only' }, '1:1': { how: 'manual', note: 'FORMAT has wide and tall only' }, '4:5': { how: 'manual', note: 'FORMAT has wide and tall only' } };
 
@@ -81,7 +83,10 @@ const FORMAT = {   // box = [x, y, w, h] as fractions of the safe rect (pulled i
 };
 const boxFor = (fm, push, key, reserve = 0) => { const S = safeInset(fm.zone, fm.W, fm.H, push), r = fm.box[key]; return [(S.x0 + r[0] * S.w) / fm.W, (S.y0 + r[1] * S.h) / fm.H, (r[2] * S.w) / fm.W, (r[3] * S.h - reserve) / fm.H]; };   // reserve: px kept free at the bottom of the box (the ILLUSTRATIVE pill sits there)
 const pillRoom = (fm, ill) => (ill ? pillH(fm.H > fm.W) + 18 : 0);
-export const STAGE_KINDS = (C) => ['claim', 'name', 'setting', 'builder', ...(C.builder.kind === 'table' ? [] : ['h2h']), 'numbers', 'cards', 'end'];
+export const STAGE_KINDS = (C) => (C.cutdown === 'clip' ? ['claim', 'builder', 'numbers', 'end'] : ['claim', 'name', 'setting', 'builder', ...(C.builder.kind === 'table' ? [] : ['h2h']), 'numbers', 'cards', 'end']);
+/* cutdown 'clip': the playbook proof-clip format (13-20 s): the claim, the ONE builder, the number, a short hold; no name, method card, head-to-head or cards (the method still
+   prints on the builder and the number, and the honesty gate still checks every field). */
+const CLIP = { timing: { minS: 13, maxS: 20, claim: 1.6, numbers: 2.2, holdS: 0.9 }, tail: { holdS: 3.2, liftS: 0.4 } };
 const distinct = (a) => [...new Set(a.filter((v) => !blank(v)).map((v) => String(v).trim()))];
 
 /* ---------- the builder + head-to-head parts: gfx ids and params (the parts print their own source / method / illustrative notes) ---------- */
@@ -127,6 +132,7 @@ export function gateProblems(C) {
 
 export function buildPlan(C) {
   const gate = gateProblems(C); if (gate.length) throw new HonestyError(gate);
+  if (C.cutdown === 'clip') C = { ...C, timing: { ...C.timing, ...CLIP.timing }, tail: { ...C.tail, ...CLIP.tail } };
   const fps = C.fps, fm = FORMAT[C.format], T = C.timing, kinds = STAGE_KINDS(C), q = (s) => Math.round(s * fps) / fps, sec = (f) => +(f / fps).toFixed(4);
   const hasVo = !!(C.vo && C.vo.words), grid = beatGrid(C.bpm, fps, 600), fpb = grid.framesPerBeat, warnings = [], ill = isIllustrative(C), cw = claimWords(C.claim);
   const part = (k) => (k === 'builder' ? builderPart(C, fm) : k === 'h2h' ? h2hPart(C, fm) : null);

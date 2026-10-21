@@ -105,6 +105,7 @@ function tour(C, A, B, L, BUD, tx, hd, win) {
 }
 /* scene lengths in seconds per film length (a section missing from a budget is left out of that cut) */
 export const BUDGETS = {
+  35: { hook: 3, copy: 2, chase: 2, repeat: 1.5, reveal: 3.5, tour: 8, feat1: 3.5, payoff: 3.5, proof: 3, end: 5 },   // the launch-film format (30-38 s): reveal (bass) at 24%, the end card (name) at 86%
   45: { hook: 3, copy: 2, chase: 2, repeat: 2, reveal: 3.5, tour: 11.5, feat1: 4, feat3: 4, payoff: 4.5, proof: 3.5, end: 5 },
   60: { hook: 3, copy: 2, chase: 2, repeat: 2, reveal: 4, tour: 16, feat1: 4, feat2: 4, feat3: 4, works: 4, payoff: 4, proof: 3.5, pricing: 3.5, end: 4 },
   75: { hook: 3, copy: 2, chase: 2, repeat: 2, reveal: 5, tour: 20, feat1: 5, feat2: 5, feat3: 5, works: 5, payoff: 5.5, proof: 4, pricing: 5.5, end: 6 },

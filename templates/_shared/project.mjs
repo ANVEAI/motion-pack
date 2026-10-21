@@ -177,7 +177,7 @@ export function applyProject(CONFIG, MAP = {}, project = {}, opts = {}) {
   if (opts.aspect) { const A = opts.ASPECTS; if (A && !A[opts.aspect]) errors.push(`aspect ${opts.aspect}: ${tpl} does not support it (supported: ${Object.keys(A).join(', ')})`);
     else if (A && A[opts.aspect].how === 'manual') errors.push(`aspect ${opts.aspect}: ${tpl} needs a MANUAL re-layout for it (${A[opts.aspect].note || 'no automatic layout'}); build ${Object.entries(A).filter(([, v]) => v.how !== 'manual').map(([k]) => k).join(' / ')} instead`); }
   const fields = [...(opts.aspect ? [['aspect', opts.aspect]] : []), ...(opts.platform ? [['platform', opts.platform]] : []),
-    ...leaves(Object.fromEntries(Object.entries(project).filter(([k]) => !['template', 'version', 'overrides', 'aspects', 'platforms'].includes(k))))];
+    ...leaves(Object.fromEntries(Object.entries(project).filter(([k]) => !['template', 'version', 'overrides', 'aspects', 'platforms', 'playbook'].includes(k))))];
   if (project.voice && project.voice.words && opts.voiceOut) {   // normalise once: every template reads {words: [{w, s, e}]}
     const { words, approx } = readWords(project.voice.words); fs.mkdirSync(path.dirname(opts.voiceOut), { recursive: true });
     fs.writeFileSync(opts.voiceOut, JSON.stringify({ source: path.basename(project.voice.words) + (approx ? ' (SRT: word times spread evenly over each cue, approximate)' : ''), words }, null, 1));

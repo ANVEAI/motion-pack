@@ -11,7 +11,7 @@ import { safeRect } from '../../../type/safezones.js';
 const here = path.dirname(fileURLToPath(import.meta.url)), ROOT = path.resolve(here, '../../..');
 let pass = 0, fail = 0; const check = (name, ok, info = '') => { if (ok) pass++; else fail++; console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${!ok && info ? '  | ' + info : ''}`); };
 const SFX = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'sfx/manifest.json'), 'utf8')).sounds.map((s) => s.id)), sndOk = (id) => SFX.has('snd.' + id.split('/').slice(1).join('.'));
-const T = { 'saas-launch': [45, 60, 75], 'saas-feature-drop': [15, 20, 30], 'saas-explainer': [60, 70, 90] };
+const T = { 'saas-launch': [35, 45, 60, 75], 'saas-feature-drop': [15, 20, 30], 'saas-explainer': [60, 70, 90] };
 const get = (o, p) => p.split('.').reduce((a, k) => (a == null ? undefined : a[k]), o);
 for (const [name, lengths] of Object.entries(T)) {
   const { CONFIG, buildPlan, PROJECT_MAP } = await import(pathToFileURL(path.join(ROOT, 'templates', name, 'config.mjs')).href), B = (o = {}) => buildPlan({ ...structuredClone(CONFIG), ...o });

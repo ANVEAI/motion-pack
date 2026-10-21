@@ -10,7 +10,7 @@ import { launchScenes } from './scenes.mjs';
 
 /* ============================== CONFIG (edit me) ============================== */
 export const CONFIG = {
-  length: 60,                      // 45 | 60 | 75 (scenes.mjs BUDGETS: a section missing from a budget is cut)
+  length: 60,                      // 35 | 45 | 60 | 75 (35: the playbook launch-film format) (scenes.mjs BUDGETS: a section missing from a budget is cut)
   aspect: '16:9',                  // '16:9' | '9:16' (a re-layout; 9:16 builds its own project in tall/)
   platform: null,                  // null = x.video for 16:9, reels.organic for 9:16 (templates/_shared/plan.mjs PLATFORMS: safe zones, brand-cue deadline)
   fps: 30,

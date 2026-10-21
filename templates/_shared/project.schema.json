@@ -260,6 +260,90 @@
       "patternProperties": {
         "^//": {}
       }
+    },
+    "playbook": {
+      "type": "object",
+      "description": "the format's sound shape, written by `mp plan` (tools/playbook_plan.mjs) and applied to the plan by templates/_shared/cues.mjs (templates/_shared/playbook.mjs): quiet_open {s, db}, bass_entry_pct / bass_entry_beat, name_silence {s, db, beat, at_pct}, tail / tail_db, end_hold_s, first_sound_frame_max, format. Omit it and the template keeps its own sound.",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^//": {}
+      },
+      "properties": {
+        "format": {
+          "type": "string"
+        },
+        "length": {
+          "type": "number"
+        },
+        "quiet_open": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "s": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "db": {
+                  "type": "number",
+                  "maximum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "const": false
+            }
+          ]
+        },
+        "bass_entry_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "bass_entry_beat": {
+          "type": "string"
+        },
+        "name_silence": {
+          "type": "object",
+          "properties": {
+            "s": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 4
+            },
+            "db": {
+              "type": "number",
+              "maximum": 0
+            },
+            "beat": {
+              "type": "string"
+            },
+            "at_pct": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "tail": {
+          "type": "string"
+        },
+        "tail_db": {
+          "type": "number",
+          "maximum": 0
+        },
+        "end_hold_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "first_sound_frame_max": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
     }
   },
   "$defs": {
