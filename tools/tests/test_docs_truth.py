@@ -222,7 +222,7 @@ def test_room_tone_levels_in_the_docs_are_what_the_mixer_places():
             else:
                 assert "trim_clipped_from_db" not in rep["cues"][0] and not rep.get("warnings"), (over, rep["cues"][0], rep.get("warnings"))
     man_item = next(s for s in json.load(open(os.path.join(REPO, "sfx", "manifest.json")))["sounds"] if s["id"] == "snd.amb.room_tone")
-    assert abs(man_item["lufs_integrated"] - (-18.1)) <= 0.05 and "-18.1 LUFS-I" in read("skills/motion-pack/SKILL.md").replace("\u2212", "-")
+    assert abs(man_item["lufs_integrated"] - (-18.1)) <= 0.05 and "-18.1 LUFS-I" in read("skills/motion-pack/references/recipes.md").replace("\u2212", "-")
     assert "-48" not in man_item["desc"], man_item["desc"]
 
 

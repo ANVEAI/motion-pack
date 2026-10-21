@@ -26,6 +26,10 @@ brief.md ─▶ story-script ─▶ script.md + shotlist.json ─▶ frame-desig
 - **Then, before any build:** `storyboard/board.py` turns `shotlist.json` into a storyboard sheet and an animatic to approve (below, workflow step 10).
 - **Next:** frame-design reads `shotlist.json` for the aspect, the hero of each frame, every on-screen line and every honesty label, and returns `design.json`. motion-pack turns `shotlist.json` + `design.json` into `plan.json` (field mapping below). social-video reuses the logline, the stake, the send line and the hook variants for titles and captions.
 
+## Start from the playbook
+
+When the film is made with motion-pack, read `research-pack.md` first (`mp brief` writes it next to `plan.json`; `plan.playbook.research` points at it). It already holds the format, the beats with their timings and word limits, the rules that apply to each beat (with grade and params), the closest measured exemplars and the hook options. Write the story into the plan's `TODO(<beat>)` markers and the matching `project.json` text fields, keep each beat's word limit, and run `mp lint plan.json`: it fails while a TODO is left or a digit has no source. The craft below still decides what the words are.
+
 ## When to use, and when not
 
 - **Use it** for every new video before design or build; to fix a draft that "has no story" or "is a feature list"; to re-cut an opening that loses viewers; to write three hook variants for a test; to plan a series (one episode per feature, a bible of characters and callbacks).

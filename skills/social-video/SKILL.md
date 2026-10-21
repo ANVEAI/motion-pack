@@ -38,6 +38,10 @@ post/
 
 - **Hands back:** what the numbers say goes to story-script (hooks, stakes) and frame-design (covers) for the next video.
 
+## Start from the playbook
+
+With motion-pack, the format's `post` block (in `research-pack.md`, from `mp brief`) gives the release pattern for this kind of film, and the distribution and platform rules in `playbook/rules/` carry the measured posting learnings (`mp rules --area distribution`). Post only a render whose `mp lint` shows no FAIL. What the numbers teach after posting goes back as rules: `mp study <post-url> --reference` writes candidates to `playbook/inbox/`.
+
 ## When to use, and when not
 
 - **Use it** to post or schedule, to write titles, descriptions, captions and first comments, to set disclosure labels, to make an upload copy, to plan a release across platforms, and to diagnose low reach.

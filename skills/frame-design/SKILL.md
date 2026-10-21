@@ -24,6 +24,10 @@ brief.md ─▶ story-script ─▶ script.md + shotlist.json ─▶ frame-desig
 - **Writes:** `design.json` (schema and the full CONFIG mapping in `references/design-json.md`; a complete example in `assets/design.example.json`). Optionally `frames/` with cover and end-card mock-ups.
 - **Next:** motion-pack copies the mapped values into the template's `CONFIG` block (table below). spec-to-loop takes the accent hex for its emissive and rim colours and bakes the display font with its `ttf2typeface.py`. social-video uploads the covers made to this skill's rules.
 
+## Start from the playbook
+
+With motion-pack, `mp plan` has already set the aspect, the platform safe zone (`plan.safe`), each text slot's time and word limit (cut to what it can be read in) and the end-card hold; `research-pack.md` lists the recommended parts per beat. Design inside those numbers, then check them with `mp lint plan.json` and, after the render, `mp lint <render>.mp4` (it wraps eyes: frame 0, safe zones, readability, banding). This skill still owns the palette, type and look.
+
 ## When to use, and when not
 
 - **Use it** for the look of any video, before the build; for covers, thumbnails, title cards, lower thirds and end cards; to fix "the text is unreadable", "it looks cheap" or "it looks like AI slop"; to re-lay out a 16:9 master for 9:16 or 1:1.
