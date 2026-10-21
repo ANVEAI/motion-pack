@@ -7,8 +7,11 @@
 A render is read with its neighbours: <render>.plan.json, <render>.ears.json, <render>.eyes.json and <render>.probe.json (a cached
 {width, height, duration}; else ffprobe, else the eyes report). Missing ears / eyes reports are measured here (ears/listen.py, eyes/look.py,
 through MP_RENDER_PREFIX when set) unless --no-measure. The table: rule, grade, verdict (PASS / WARN / FAIL / INFO / N/A), measured value,
-fix hint, then a score and the rules the format applies that no check enforces (defaults, parts, prose-only gaps). Exit 1 on any FAIL."""
+fix hint, then a score and the rules the format applies that no check enforces (defaults, parts, prose-only gaps). The honesty floor
+(lint.honesty.todo, .claims, .banned_words) runs on every lint, whatever the format names. Inputs the extra checks read (shotlist.json,
+design.json, a caption track, <render>.study.json, the composition folder) are found next to the target or given as flags. Exit 1 on any FAIL."""
 import argparse
+import glob
 import json
 import os
 import re
@@ -82,6 +85,31 @@ def load_target(path, do_measure=True):
     return plan, plan_path, ears, eyes, probe(path, eyes), aspect
 
 
+def find_inputs(target, plan, shotlist=None, design=None, captions=None, page=None, study=None):
+    """the files the extra checks read (tools/playbook_checks_extra.py), from flags or found next to the target: shotlist.json, design.json,
+    captions/*.events.json (or a .vtt / .srt there), <render>.study.json, the project's build/templates/<template> -> Ctx keyword arguments"""
+    d = os.path.dirname(os.path.abspath(target))
+    dirs = [d, os.path.dirname(d)] if target.endswith('.mp4') else [d]
+    first = lambda names: next((os.path.join(x, n) for x in dirs for n in names if os.path.exists(os.path.join(x, n))), None)
+    sl = shotlist or first(['shotlist.json'])
+    cap = captions
+    if not cap:
+        for x in dirs:
+            hits = sorted(glob.glob(os.path.join(x, 'captions', '*.events.json'))) or sorted(glob.glob(os.path.join(x, 'captions', '*.vtt')) + glob.glob(os.path.join(x, 'captions', '*.srt')))
+            if hits:
+                cap = hits[0]
+                break
+    pg = page
+    if not pg and target.endswith('.mp4') and (plan or {}).get('template'):
+        c = os.path.join(os.path.dirname(d), 'build', 'templates', plan['template'])
+        pg = c if os.path.isdir(c) else None
+    st = study or (target[:-4] + '.study.json' if target.endswith('.mp4') and os.path.exists(target[:-4] + '.study.json') else None)
+    return {'shotlist': _j(sl) if sl else None, 'design_path': design or first(['design.json']), 'captions_path': cap, 'study': _j(st) if st else None, 'page_dir': pg}
+
+
+ALWAYS = ('lint.honesty.todo', 'lint.honesty.claims', 'lint.honesty.banned_words')
+
+
 def lint(ctx, rules, fm=None, all_checks=False):
     """-> {format, rows: [{rule, title, grade, check, beat, verdict, raw, value, fix}], score, counts, unchecked}"""
     if fm:
@@ -103,6 +131,11 @@ def lint(ctx, rules, fm=None, all_checks=False):
         covered.add(cid)
         raw, val, fix = K.run_check(cid, ctx, L.rule_params(r, fm, K.CHECKS[cid]['params']))
         rows.append({'rule': r['id'], 'title': r.get('title', ''), 'grade': r['grade'], 'check': cid, 'beat': b and b['id'], 'raw': raw, 'verdict': K.severity(raw, r['grade']), 'value': val, 'fix': fix})
+    for cid in [c for c in ALWAYS if c not in covered] if not all_checks else []:   # the honesty floor runs on every lint, whatever the format names
+        spec = K.CHECKS[cid]
+        raw, val, fix = K.run_check(cid, ctx, spec['params'])
+        rows.append({'rule': '(check) ' + cid, 'title': spec['doc'][:60], 'grade': spec['grade'], 'check': cid, 'beat': None, 'raw': raw, 'verdict': K.severity(raw, spec['grade']), 'value': val, 'fix': fix})
+        covered.add(cid)
     if all_checks:
         for cid, spec in K.CHECKS.items():
             if cid in covered:
@@ -141,7 +174,7 @@ def table(res):
         by = {}
         for u in res['unchecked']:
             by.setdefault(u['status'], []).append(u['rule'])
-        out.append('not checked here: ' + '; '.join('%s %s' % (k, ', '.join(v)) for k, v in sorted(by.items())))
+        out.append('not checked here (look by hand): ' + ', '.join('%d %s' % (len(v), k) for k, v in sorted(by.items())) + ('  ·  mp rules --format %s lists them' % res['format'] if res['format'] else '') + '  (--json has every id)')
     if res['missing_rules']:
         out.append('the format names rules the playbook does not have: ' + ', '.join(res['missing_rules']))
     return '\n'.join(out)
@@ -156,6 +189,11 @@ def main(argv=None):
     ap.add_argument('--all-checks', action='store_true')
     ap.add_argument('--no-measure', action='store_true')
     ap.add_argument('--list', action='store_true')
+    ap.add_argument('--shotlist', help='shotlist.json (story-script); default: next to the target')
+    ap.add_argument('--design', help='design.json (frame-design); default: next to the target')
+    ap.add_argument('--captions', help='a caption track (.events.json, .vtt, .srt); default: captions/ next to the target')
+    ap.add_argument('--page', help="the composition folder for lint.motion.seek; default: the project's build/templates/<template>")
+    ap.add_argument('--study', help='a refstudy study.json; default: <render>.study.json')
     a = ap.parse_args(argv)
     if a.list:
         for cid, s in K.CHECKS.items():
@@ -176,7 +214,7 @@ def main(argv=None):
         print('mp lint: no format "%s" (formats: %s)' % (fid, ', '.join(formats) or 'none yet'), file=sys.stderr)
         return 2
     fm = formats.get(fid) if fid else None
-    ctx = K.Ctx(plan, _by_id(ears), _by_id(eyes), pr, aspect, fm, plan_path)
+    ctx = K.Ctx(plan, _by_id(ears), _by_id(eyes), pr, aspect, fm, plan_path, **find_inputs(a.target, plan, a.shotlist, a.design, a.captions, a.page, a.study))
     res = lint(ctx, rules, fm, a.all_checks or not rules)
     res['target'] = a.target
     if not rules:

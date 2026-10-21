@@ -28,7 +28,7 @@ The research behind the playbook, moved here unchanged. Each document lists the 
 
 ## Evidence ids
 
-Rules and exemplars cite these four studies by a neutral id, so the playbook carries no studied name; the id resolves to the file here.
+Rules and exemplars cite these four studies by a neutral id, so the playbook carries no studied name; the id resolves to the file here (`docs/evidence/ids.json`).
 
 | id | document | formats whose exemplars cite it |
 |---|---|---|

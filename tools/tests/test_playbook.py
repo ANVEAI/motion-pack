@@ -77,7 +77,7 @@ def _rewrite(pb, rel, fn):
     ('rules/sound.json', lambda d: d[0].update(grade='gospel'), "'gospel' is not one of"),
     ('rules/sound.json', lambda d: d[0].update(id='hook.quiet_open'), 'must start with "sound."'),
     ('rules/sound.json', lambda d: d[0].update(colour='red'), "'colour' does not match"),
-    ('rules/sound.json', lambda d: d[0].update(sources=[{'doc': 'docs/research/no-such-study.md'}]), 'does not exist'),
+    ('rules/sound.json', lambda d: d[0].update(sources=[{'doc': 'docs/evidence/no-such-study.md'}]), 'does not exist'),
     ('rules/sound.json', lambda d: d[0].update(conflicts_with=['sound.ghost']), 'unknown rule sound.ghost'),
     ('rules/sound.json', lambda d: d[0].update(status='candidate'), 'belongs in playbook/inbox'),
     ('rules/hook.json', lambda d: d[0].update(sources=[]), 'needs at least one source'),
@@ -261,7 +261,8 @@ def test_lint_the_real_v040_saas_launch_render():
     r = mp('lint', RENDER, '--playbook', FX, '--no-measure', '--json')
     assert r.returncode == 1, r.stderr
     j = json.loads(r.stdout)
-    assert j['format'] is None and {x['rule'] for x in j['rows']} == {'sound.quiet_open', 'hook.text_early', 'delivery.master_loudness'}
+    assert j['format'] is None and {x['rule'] for x in j['rows'] if not x['rule'].startswith('(check)')} == {'sound.quiet_open', 'hook.text_early', 'delivery.master_loudness'}
+    assert {x['check'] for x in j['rows'] if x['rule'].startswith('(check)')} == set(PL.ALWAYS)     # the honesty floor runs on every lint
 
 
 # ---------------------------------------------------------------- mp plan -> fill -> mp lint, through the CLI
@@ -378,3 +379,128 @@ def test_mp_formats_and_rules_cli():
     assert mp('rules', '--playbook', FX, '--gaps').returncode == 1             # no prose-only rule in the fixtures
     r = mp('rules', '--playbook', FX, '--format', 'launch-film', '--json')
     assert {x['id'] for x in json.loads(r.stdout)} == {'sound.quiet_open', 'hook.text_early', 'delivery.master_loudness'}
+
+
+# ---------------------------------------------------------------- the extra checks (tools/playbook_checks_extra.py): each wraps a pack gate, N/A without its input
+
+SHOTLIST = os.path.join(REPO, 'skills', 'story-script', 'assets', 'shotlist.example.json')
+DESIGN = os.path.join(REPO, 'skills', 'frame-design', 'assets', 'design.example.json')
+
+
+def xchk(cid, **kw):
+    ctx = K.Ctx(kw.pop('plan', None), kw.pop('ears', None), None, None, None, None, kw.pop('plan_path', None), **kw)
+    return K.run_check(cid, ctx, {})
+
+
+def test_every_extra_check_is_na_without_its_input():
+    for cid in [c for c in K.CHECKS if c.startswith(('lint.shotlist.', 'lint.design.', 'lint.type.captions', 'lint.study.', 'lint.motion.', 'lint.honesty.charts', 'lint.honesty.quotes'))]:
+        assert K.run_check(cid, K.Ctx(plan()), {})[0] == 'na', cid
+
+
+def test_shotlist_checks_wrap_lint_shotlist():
+    good = J(SHOTLIST)
+    for n in ('hook_variants', 'transition_reason', 'same_scale_run', 'sound_off', 'send_line', 'turn_window', 'payoff_before_turn', 'poster_max_words', 'social_proof'):
+        assert xchk('lint.shotlist.' + n, shotlist=good)[0] == 'pass', n
+    bad = copy.deepcopy(good)
+    bad['hooks'] = bad['hooks'][:1]
+    del bad['sound_off'], bad['send_line']
+    bad['shots'][3]['transition'] = {'kind': 'smash', 'reason': None}
+    bad['hooks'][0]['poster_text'] = 'one two three four five six'
+    assert xchk('lint.shotlist.hook_variants', shotlist=bad)[0] == 'warn'
+    assert xchk('lint.shotlist.sound_off', shotlist=bad)[0] == 'warn' and xchk('lint.shotlist.send_line', shotlist=bad)[0] == 'warn'
+    assert xchk('lint.shotlist.transition_reason', shotlist=bad)[0] == 'fail'
+    assert xchk('lint.shotlist.poster_max_words', shotlist=bad)[0] == 'fail'
+    ctx = K.Ctx(None, shotlist=good)
+    assert K.run_check('lint.shotlist.poster_max_words', ctx, {'poster_max_words': 2})[0] == 'fail'   # the rule's params reach lint_shotlist
+
+
+def test_label_hold_design_contrast_and_captions(tmp_path):
+    sl = J(SHOTLIST)
+    assert xchk('lint.storyboard.label_hold', shotlist=sl)[0] == 'fail'           # the example's 1.5 s labelled shot: the storyboard README's known finding
+    sl['shots'][4]['dur_s'] = 2.5
+    p = plan(texts=[{'text': 'Fictional app · demo data', 't': [1, 4], 'role': 'label'}])
+    assert xchk('lint.storyboard.label_hold', plan=p)[0] == 'pass'
+    p['texts'][0]['t'] = [1, 2.2]
+    assert xchk('lint.storyboard.label_hold', plan=p)[0] == 'fail'
+    assert xchk('lint.design.contrast', design_path=DESIGN)[0] == 'pass'
+    d = J(DESIGN)
+    d['palette']['ink'] = '#E0E0E0'
+    json.dump(d, open(tmp_path / 'design.json', 'w'))
+    r = xchk('lint.design.contrast', design_path=str(tmp_path / 'design.json'))
+    assert r[0] == 'fail' and 'contrast.py' in r[2]
+    ev = [{'start': 0.5, 'end': 2.5, 'lines': ['A short line']}, {'start': 2.6, 'end': 3.0, 'lines': ['x' * 60, 'y' * 60, 'z' * 60]}]
+    json.dump({'events': ev}, open(tmp_path / 'c.events.json', 'w'))
+    assert xchk('lint.type.captions', captions_path=str(tmp_path / 'c.events.json'))[0] == 'fail'
+    json.dump({'events': ev[:1]}, open(tmp_path / 'ok.events.json', 'w'))
+    assert xchk('lint.type.captions', captions_path=str(tmp_path / 'ok.events.json'))[0] in ('pass', 'warn')
+
+
+def test_chart_and_quote_gates_over_template_plans(tmp_path):
+    ds = os.path.join(REPO, 'templates', 'data-story', 'out', 'plan.json')
+    fs = os.path.join(REPO, 'templates', 'founder-story', 'out', 'plan.json')
+    assert xchk('lint.honesty.charts', plan=J(ds), plan_path=ds)[0] == 'pass'
+    assert xchk('lint.honesty.quotes', plan=J(fs), plan_path=fs)[0] == 'pass'
+    b = J(ds)
+    b['datasets']['monthly']['method'] = b['datasets']['monthly']['source']
+    json.dump(b, open(tmp_path / 'ds.json', 'w'))
+    assert xchk('lint.honesty.charts', plan=b, plan_path=str(tmp_path / 'ds.json'))[0] == 'fail'
+    q = J(fs)
+    q['quote']['text'] = 'it always starts with listening'
+    json.dump(q, open(tmp_path / 'fs.json', 'w'))
+    assert xchk('lint.honesty.quotes', plan=q, plan_path=str(tmp_path / 'fs.json'))[0] == 'fail'
+
+
+def test_mix_checks_wrap_the_mixer_and_the_grid():
+    p = plan(cues=[{'t': 0.0, 'id': 'sfx/whoosh/swish_s'}, {'t': 2.0, 'id': 'sfx/ui/pop'}], music='music/bed_tech_pulse_loop8')
+    assert xchk('lint.mix.cues', plan=p)[0] == 'pass'
+    hits = [{'t': t, 'id': 'sfx/tx/smash_cut'} for t in (1.0, 2.0, 3.0)]
+    r = xchk('lint.mix.cues', plan=plan(cues=hits))
+    assert r[0] == 'fail' and 'R4' in r[1]
+    assert xchk('lint.mix.qa', plan=p)[0] == 'pass'                               # 120 BPM at 30 fps: 15 frames a beat
+    assert xchk('lint.mix.qa', plan=plan(bpm=180))[0] == 'fail'                   # exactly 10 frames a beat: on the grid but under 12
+    assert xchk('lint.mix.qa', plan=plan(bpm=133))[0] == 'fail'                   # 13.5 frames a beat: snapping to 14 moves the tempo 3.3%
+    assert xchk('lint.mix.qa', plan=plan())[0] == 'na'
+
+
+def test_trailer_gap_loop_seam_seek_and_study_tier(tmp_path):
+    p = plan()
+    p['audio']['quiet'].append({'t': [24, 26], 'kind': 'gap'})
+    assert xchk('lint.sound.trailer_gap', plan=p)[0] == 'pass'
+    assert xchk('lint.sound.trailer_gap', plan=p, ears=ears_with(quiet=[{'t': [24, 26], 'under_programme_db': 12}]))[0] == 'fail'
+    assert xchk('lint.sound.trailer_gap', plan=p, ears=ears_with(quiet=[{'t': [24, 26], 'under_programme_db': 34}]))[0] == 'pass'
+    p['audio']['quiet'][-1]['t'] = [24, 28.5]
+    assert xchk('lint.sound.trailer_gap', plan=p)[0] == 'fail'
+    e = ears_with()
+    e['ears/structure']['measured']['loop_seam'] = {'level_step_db': 9.0}
+    assert xchk('lint.motion.loop_seam', plan=plan(), ears=e)[0] == 'na'          # no declared loop: a seam step means nothing
+    assert xchk('lint.motion.loop_seam', plan=plan(loop=True), ears=e)[0] == 'fail'
+    e['ears/structure']['measured']['loop_seam'] = {'level_step_db': 1.0}
+    assert xchk('lint.motion.loop_seam', plan=plan(loop=True), ears=e)[0] == 'pass'
+    (tmp_path / 'page').mkdir()
+    (tmp_path / 'page' / 'scene.js').write_text('// Math.random() in a comment is fine\nexport const at = (t) => t * 2;\n')
+    assert xchk('lint.motion.seek', page_dir=str(tmp_path / 'page'))[0] == 'pass'
+    (tmp_path / 'page' / 'bad.js').write_text('export const jitter = () => Math.random();\n')
+    assert xchk('lint.motion.seek', page_dir=str(tmp_path / 'page'))[0] == 'fail'
+    st = J(os.path.join(FX, 'render-v040', 'saas-launch-16x9.study.json'))
+    assert xchk('lint.study.tier', study=st)[0] == 'pass'
+    st['evidence'] = {'tier': 'B', 'boosted': True}
+    assert xchk('lint.study.tier', study=st)[0] == 'fail'
+
+
+def test_evidence_id_sources_resolve(pb):
+    _rewrite(pb, 'rules/sound.json', lambda d: d[0].update(sources=[{'doc': 'docs/evidence/INDEX.md#ref-concept-ad'}]))
+    assert not B.validate(pb)[0]
+    _rewrite(pb, 'rules/sound.json', lambda d: d[0].update(sources=[{'doc': 'docs/evidence/INDEX.md#ref-no-such-study'}]))
+    assert any('names no evidence id' in p for p in B.validate(pb)[0])
+    idx = open(os.path.join(REPO, 'docs', 'evidence', 'INDEX.md')).read()
+    for k in B.evidence_ids():
+        assert '<a id="%s"></a>' % k in idx
+
+
+def test_lint_finds_the_extra_inputs_next_to_the_target(tmp_path):
+    shutil.copy(SHOTLIST, tmp_path / 'shotlist.json')
+    shutil.copy(DESIGN, tmp_path / 'design.json')
+    json.dump(plan(), open(tmp_path / 'plan.json', 'w'))
+    ins = PL.find_inputs(str(tmp_path / 'plan.json'), plan())
+    assert ins['shotlist']['title'] and ins['design_path'].endswith('design.json') and ins['captions_path'] is None
+    assert PL.find_inputs(RENDER, None)['study']['quiet']

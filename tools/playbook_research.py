@@ -222,7 +222,7 @@ def study_ctx(st, plan=None, plan_path=None, aspect=None, fm=None):
             'ears/loudness': {'status': 'n/a', 'measured': {'integrated_lufs': (st.get('loudness') or {}).get('integrated_lufs'), 'true_peak_dbtp': (st.get('loudness') or {}).get('peak_dbfs')}},
             'ears/sync': {'status': 'n/a', 'measured': {'hits': sorted(au.get('hits_top10pct') or []), 'first_audible_frame': None}}}
     dur = q.get('duration_s') or (st.get('meta') or {}).get('duration')
-    return K.Ctx(plan, ears, None, {'duration': dur}, aspect, fm, plan_path)
+    return K.Ctx(plan, ears, None, {'duration': dur}, aspect, fm, plan_path, study=st)
 
 
 METRICS = (('lufs', lambda s, p: (s.get('loudness') or {}).get('integrated_lufs'), 0.8, 'LU', 'master to the exemplar loudness'),
@@ -330,7 +330,9 @@ def cmd_study(a):
         res = None
         if base and (os.path.exists(base + '.mp4') or os.path.exists(base + '.ears.json')):
             plan, plan_path, ears, eyes, pr, aspect = PL.load_target(base + '.mp4', not a.no_measure)
-            ctx = K.Ctx(plan, PL._by_id(ears), PL._by_id(eyes), pr, aspect, fm, plan_path)
+            ins = PL.find_inputs(base + '.mp4', plan)
+            ins['study'] = st
+            ctx = K.Ctx(plan, PL._by_id(ears), PL._by_id(eyes), pr, aspect, fm, plan_path, **ins)
         else:
             plan, ctx = None, study_ctx(st, fm=fm)
         res = PL.lint(ctx, rules, fm, not rules)

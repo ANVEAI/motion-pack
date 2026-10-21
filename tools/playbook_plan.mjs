@@ -29,6 +29,8 @@ export const DEFAULTS = {
   'plan.hook.text': 'a hook text slot from 0.12 s, inside hook_text_by_s, with the hook beat word limit',
   'plan.end.hold': 'the end beat is a hold (shots[].hold) of at least end_hold_s',
   'plan.claims': 'claims: a TODO claim with a TODO source (every digit on screen needs one)',
+  'plan.audio.mixer': 'audio.mixer: the music/mixer.py settings the rules ask for (params and rule ids), applied when the template mixes',
+  'plan.template': 'playbook.template.carries: the rules the format template already carries in its own defaults (type/ease.js, plan.mjs PLATFORMS, ctas.json, ...)',
 };
 const BASE = { quiet_open_db: [-11, -7], quiet_open_s: [1, 2], bass_entry_pct: [0.2, 0.35], name_silence_s: [1.0, 1.5], tail: 'quiet-hold', first_hit_s: [1, 2],
   lufs: -14, true_peak_max_dbtp: -1.5, max_words_per_line: 4, read_base_s: 0.35, read_per_word_s: 0.28, hook_text_by_s: 2, end_hold_s: [1.5, 6] };
@@ -85,6 +87,9 @@ export function makePlan(fm, rules, o, tpl) {
   { const q = used('plan.audio.tail'), last = shots.at(-1); audio.tail = q.tail;
     if (q.tail === 'quiet-hold') audio.quiet.push({ t: [last.start, r3(L)], kind: 'hold', why: 'playbook: end card on a quiet hold' }); }
   { const q = used('plan.audio.master'); audio.master = { lufs: q.lufs, true_peak_dbtp: q.true_peak_max_dbtp }; }
+  const named = (d) => ruleIds(fm).filter((r) => rules[r] && rules[r].enforce && rules[r].enforce.default === d);
+  if (named('plan.audio.mixer').length) { used('plan.audio.mixer'); audio.mixer = { tool: 'music/mixer.py', rules: named('plan.audio.mixer'), params: Object.fromEntries(named('plan.audio.mixer').map((r) => [r, rules[r].params || {}])) }; }
+  const carries = named('plan.template'); if (carries.length) used('plan.template');
   /* end hold */
   { const q = used('plan.end.hold'), last = shots.at(-1); last.hold = true; if (last.dur < q.end_hold_s[0]) last.why = `playbook: the end card holds at least ${q.end_hold_s[0]} s (this length gives ${last.dur} s)`; }
   /* text slots: one per beat with text; the hook slot from 0.12 s */
@@ -114,7 +119,7 @@ export function makePlan(fm, rules, o, tpl) {
     type: { max_words_per_line: tp.max_words_per_line, read_base_s: tp.read_base_s, read_per_word_s: tp.read_per_word_s, hook_text_by_s: tp.hook_text_by_s },
     playbook: { format: fm.id, title: fm.title, length: L, aspect, rules: ruleIds(fm), defaults: applied, sound_shape: fm.sound_shape || {}, hooks: fm.hooks || [], end_shapes: fm.end_shapes || [],
       post: fm.post || null, beats: beats.map((b) => ({ id: b.id, at: b.at, purpose: b.purpose, rules: b.rules || [] })), recommended_parts: fm.recommended_parts || {},
-      template: { id: tpl.id, length_built: builtLen, note: tplNote }, research: o.research || null, brief: o.brief || null },
+      template: { id: tpl.id, length_built: builtLen, note: tplNote, carries }, research: o.research || null, brief: o.brief || null },
     project,
   };
 }
@@ -130,9 +135,14 @@ export async function templateInfo(id, aspect) {
   return { id, fields, lengths, built: built == null ? null : +(+built).toFixed(2) };
 }
 
+const HON = await imp('templates/_explain/honesty.mjs'), HUM = await imp('templates/_shared/human/core.mjs');
+/* the honesty gates the templates run, over a plan: lint.proof (claims), the banned demo words, the data-story dataset gate (source AND a different method; null when the plan
+   has no datasets) and the founder-story verbatim quote gate (null when the plan has no quote, or no transcript to check it against) */
 export function honesty(plan) {
   const copy = JSON.stringify([(plan.texts || []).map((t) => t.text), plan.claims || [], plan.project && plan.project.text, plan.project && plan.project.brand]).toLowerCase();
-  return { claimsWithoutSource: PL.lintClaims(plan.claims || []).map((c) => c.text), banned: PL.BANNED_DEMO_WORDS.filter((w) => copy.includes(w)) };
+  const ds = plan.datasets && typeof plan.datasets === 'object' ? Object.entries(plan.datasets).flatMap(([id, d]) => HON.datasetProblems(id, d)) : null;
+  const qt = plan.quote && plan.quote.text != null ? (Array.isArray(plan.transcript) && plan.transcript.length ? HUM.quoteCheck(plan.quote.text, plan.transcript) : { ok: false, why: 'a pull quote with no transcript to check it against' }) : null;
+  return { claimsWithoutSource: PL.lintClaims(plan.claims || []).map((c) => c.text), banned: PL.BANNED_DEMO_WORDS.filter((w) => copy.includes(w)), datasets: ds, quote: qt };
 }
 
 async function main(argv) {

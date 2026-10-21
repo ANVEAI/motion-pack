@@ -43,20 +43,22 @@ It classifies the brief by each format's `signals` (keywords, product types, goa
 
 To choose by hand, `mp formats` lists them (length range, aspects, template, when to use). The usual picks:
 
-| you are making | format |
-|---|---|
-| a product launch hero for X or a site | `launch-film` |
-| one measured result, a numbered proof clip | `proof-clip` |
-| a chat or DM comedy skit | `chat-skit` |
-| how something works | `explainer` |
-| a screen-life story told on one screen | `screen-life` |
-| a film trailer or teaser | `trailer` |
-| a wordless character gag with one feature | `character-spot` |
-| a talking head, interview or podcast cut | `talking-head` |
-| a music-led edit | `beat-edit` |
-| one new software feature | `saas-feature-drop` |
-| a device or hardware teaser | `hardware-teaser` |
-| a short film with a turn | `short-film` |
+| you are making | format | template |
+|---|---|---|
+| a product or release hero film | `launch-film` | `saas-launch` |
+| one claim proved by one graphic or one run | `proof-clip` | `proof-film` |
+| one new feature of an existing product | `saas-feature-drop` | `saas-feature-drop` |
+| a story told on one desktop or phone screen | `screen-life` | `saas-feature-drop` |
+| a comedy told in a chat thread | `chat-skit` | `character-spot` |
+| how something works, one diagram built step by step | `explainer` | `explainer-diagram` |
+| a device teased before or at launch | `hardware-teaser` | `hardware-teaser` |
+| a direct-response or brand ad for feeds | `ad` | `ad` |
+| a montage cut to a track | `beat-edit` | `beat-edit` |
+| a wordless cartoon or mime spot | `character-spot` | `character-spot` |
+| a person speaking to camera | `talking-head` | `talking-head` |
+| a people-led launch in several voices | `documentary` | `multi-voice-doc` |
+| a story film with a named person and a stake | `short-film` | `short-film` |
+| a film, series or big-release trailer | `trailer` | `trailer` |
 
 No format fits? Work from the decision tree and recipes in `references/recipes.md`, then still run `mp lint` (it falls back to every registered check).
 

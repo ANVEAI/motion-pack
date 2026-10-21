@@ -1,0 +1,7 @@
+{
+  "//": "neutral evidence ids: rules and exemplars cite these studies as docs/evidence/INDEX.md#<id>, so the playbook carries no studied name. tools/playbook_build.py resolves every such source here and writes the anchors into INDEX.md.",
+  "ref-app-builder-launch": "reference-base44-launch-2026-10.md",
+  "ref-concept-ad": "reference-pinterest-concept-ad-2026-10.md",
+  "ref-creator-platform-launch": "reference-stan-launchpad-2026-10.md",
+  "ref-one-prompt-method": "reference-seeco-one-prompt-method-2026-10.md"
+}

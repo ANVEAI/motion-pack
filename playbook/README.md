@@ -18,6 +18,425 @@ A failed house or measured-A rule is a FAIL in `mp lint`, measured and craft a W
 
 **Status:** enforced (a check), default (`mp plan` writes it in), part (a pack id implements it), prose-only (a known gap).
 
-**0 rules** (0 enforced, 0 default, 0 part, 0 prose-only; 0 measured-A, 0 measured, 0 craft, 0 house, 0 inferred) and **0 formats**.
+**338 rules** (117 enforced, 22 default, 63 part, 136 prose-only; 54 measured-A, 67 measured, 79 craft, 128 house, 10 inferred) and **14 formats**.
+
+## Formats
+
+| format | length | aspects | template | beats | rules | use when |
+|---|---|---|---|---|---|---|
+| `ad` | 6-30 s | 9:16 16:9 1:1 | `templates/ad` | 5 | 172 | A direct-response or brand ad for feeds and pre-roll: value inside 3 s, the brand inside the action by 5-7 s, one product moment, one proof, a CTA end card. |
+| `beat-edit` | 8-40 s | 9:16 16:9 1:1 | `templates/beat-edit` | 4 | 158 | A montage cut to a track: a reel, a portfolio, a tool tour on music, a style ladder. The track is the clock. |
+| `character-spot` | 12-32 s | 9:16 16:9 1:1 | `templates/character-spot` | 6 | 162 | A wordless cartoon or mime spot: one situation, one product benefit, at most 6 emotions on a neutral stage, a twist on a smash, a reaction hold, one end line. |
+| `chat-skit` | 10-15 s | 9:16 | `templates/character-spot` | 5 | 157 | A short comedy told in a text thread or group chat: a stake on the first bubble, three escalating beats, a twist punchline, a callback, a send-to close. The product stays out of the video. |
+| `documentary` | 107-185 s | 16:9 | `templates/multi-voice-doc` | 6 | 153 | A people-led launch: several voices in their own words, the lead introduced late with one personal detail, chapters, the product as the thing they built, availability at the end. |
+| `explainer` | 30-90 s | 16:9 9:16 | `templates/explainer-diagram` | 5 | 178 | How something works or why it matters: one idea, one diagram built step by step, a voice or type leading, one real example. |
+| `hardware-teaser` | 6-30 s | 16:9 9:16 1:1 | `templates/hardware-teaser` | 5 | 165 | A device or physical product is teased before or at launch: light on an edge, details, one reveal, the name, a date. Tone over plot, one music cue. |
+| `launch-film` | 30-38 s | 16:9 9:16 1:1 | `templates/saas-launch` | 8 | 268 | A product or release gets one hero film: a stake or claim, one turn, the product acting, one sourced proof, the name, the URL. Type-led or VO-led; a founder on camera is a variant (see exemplars). |
+| `proof-clip` | 13-20 s | 16:9 9:16 1:1 | `templates/proof-film` | 5 | 173 | One claim proved by one physical graphic or one run: before/after on the same footage, one chart, one escalating input ladder. Thread children of a launch, or a stand-alone saves post. |
+| `saas-feature-drop` | 15-40 s | 16:9 9:16 1:1 | `templates/saas-feature-drop` | 5 | 202 | A changelog or "new in" film for one feature of an existing product: the feature already working, its chapters, one use case, the name, the action. |
+| `screen-life` | 12-50 s | 9:16 16:9 1:1 | `templates/saas-feature-drop` | 5 | 156 | A story told entirely on a desktop or phone screen: typing, deleting, a message arriving, the product as proof on the same screen. Short UI loops (12-13 s) or story shorts (40-50 s). |
+| `short-film` | 45-180 s | 16:9 9:16 | `templates/short-film` | 7 | 172 | A story film: one named person with a concrete stake, one obstacle, the product (if any) as the quiet turn, a payoff that pays off the stake, an honesty label in frame. |
+| `talking-head` | 20-90 s | 9:16 16:9 1:1 | `templates/talking-head` | 4 | 166 | A person speaking to camera: a founder update, a tip, a clip from a talk. Cut per sentence, captions on every line, B-roll per idea, punch-ins on key claims. |
+| `trailer` | 60-150 s | 16:9 9:16 | `templates/trailer` | 7 | 166 | A film, series, game or big release trailer: world, turn, wall montage, silence, title, button, date. Tone and escalation over explanation. |
+
+## Rules by area
+
+### hook
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `hook.brand_cue_deadline` | house | default | `plan.template` | The brand appears as a cue inside the action by 5 s on paid YouTube, TikTok and paid in-feed ads, by 6 s on Reels and Shorts and by 7 s on X and LinkedIn, after the hook (>3 s) on organic feeds, and never as a logo card first. |
+| `hook.feed_flash_forward` | craft | prose-only | - | A 9:16 feed cut of a slow film opens on a 1.5-2.5 s flash-forward of the conflict, then starts the story. |
+| `hook.first_change_by_frame6` | house | enforced | `lint.eyes.frame0` | The first visible change happens by frame 6 (200 ms at 30 fps) and never later than 0.5 s, with at most one camera or layout move in the first 1.0 s. |
+| `hook.first_sound_by_frame3` | house | enforced | `lint.sound.first_sound` | The first audible event lands on frames 0-3, or the plan marks a quiet open of at most 2 s that ends on the first visual event. |
+| `hook.frame0_moving` | house | enforced | `lint.hook.frame0` | Frame 0 is the hook image already in motion: never black, a logo, a title card, a slate, a bumper or a fade-in. |
+| `hook.frame0_subject_contrast` | measured | enforced | `lint.eyes.frame0` | Frame 0 holds one readable subject at >= 3:1 contrast against its surround. |
+| `hook.hardware_shown_by_4s` | craft | part | `templates/hardware-reveal` | A hardware launch shows the product within 0-4 s, unless a light reveal (an edge or band sweep from darkness, about +11 dB at 1 s) is itself the hook. |
+| `hook.hold_the_twist` | craft | prose-only | - | Frame 0, the title and the first line show the stake but not the answer; the twist or result stays hidden through the first 1-3 s. |
+| `hook.interrupted_cliche` | craft | part | `cuts/story/interruptOpen` | An interrupted-cliche open plays the cliche for 1.5-8 s (default 3 s), stops it with a hard stop sound, a 300 ms freeze and the music cut on the stop frame, then hard-cuts to the real format already in motion. |
+| `hook.no_offer_as_hook` | measured | prose-only | - | Use an offer only when it is real with honest terms, and never as the hook; discount and deadline framing showed no organic evidence. |
+| `hook.payoff_first_rewind` | craft | prose-only | - | A payoff-first hook shows the finished result already moving on frame 0 (a slow push or reveal sweep), then rewinds or cuts to the start by about 1.2 s. |
+| `hook.real_product_early` | measured | enforced | `lint.structure.score` `templates/saas-launch` | A software launch shows the real product UI by about 10 s and its name by 15-30% of runtime; the studied films showed first UI at 0, 5, 12 and 16 s, and a feature drop shows the feature on frame 0. |
+| `hook.sentence_builds_small` | craft | enforced | `lint.type.reading_time` `cuts/story/sentenceLed` | A sentence-led open builds small centred type word by word, at most 7 words at no more than 3.5 words/s, one word per half beat, holds the full line 2 beats, then cuts to the result on the next downbeat. |
+| `hook.social_proof_sourced` | house | enforced | `lint.shotlist.social_proof` | A social-proof hook runs only with a measured number or a permitted quote whose source is on screen; a digit without a source fails. |
+| `hook.sound_on_pill` | measured | part | `caption.soundOnPill` | On a muted-autoplay feed, a frosted 'sound on' pill shows as an outline on frame 0, is solid at 0.5 s and is gone by 1.5 s. |
+| `hook.speak_from_frame0_on_camera` | measured-A | enforced | `lint.sound.first_sound` | A founder-on-camera film may start mid-sentence on frame 0 with no quiet open (open within 1 dB of the body), the product UI resolving behind the speaker by 0.5 s and no logo or title until the last 2 s. |
+| `hook.text_by_0_3s` | house | enforced | `lint.hook.text_by` `plan.hook.text` | When the hook uses text it is on screen by 0.3 s (0.5 s on wide frames and voice-led explainers, tutorials and data stories) and is at most 7 words (4 for wordless spots, teasers and hardware films). |
+| `hook.three_variants_one_body` | craft | enforced | `lint.shotlist.hook_variants` | Every brief gets 3 hook variants with distinct archetypes on an identical body, so only the hook differs between them. |
+| `hook.title_behind_subject` | measured-A | part | `type.behindSubject` | Over a held frontal portrait with a direct gaze, the first title word animates in behind the subject (the subject occludes it) at about 1.0 s. |
+| `hook.twist_by_5s` | measured | prose-only | - | On a short skit or story short, land the twist by about 5 s: half the viewers of every top Short were gone between 4 and 8 s. |
+| `hook.type_line_on_calm_field` | measured-A | enforced | `lint.eyes.readability` | In a type-led launch film, frame 0 shows 1-3 words (or a placeholder prompt) on a plain or gradient field, and the full hook line of at most 6 words reads by 1-2 s; no product shot first. |
+| `hook.value_by_3s` | house | enforced | `lint.structure.score` | The proposition lands in the first 3 s and the hook is complete by 6 s; a 15 s ad's hook ends by 2.5 s (17%) and a 30 s ad's by 3 s (10%). |
+
+### story
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `story.ab_replay` | measured-A | enforced | `lint.ears.ab_replay` `cuts/story/abReplay` | A before/after replays the same 2-15 s clip twice, both halves level-matched within 1 dB (warn at 2 dB), with the audio swap on the picture's flip frame within 1 frame, the flip at 35-60% of the clip. |
+| `story.chapter_label_ui` | measured-A | prose-only | - | A product film is built from 4-7 chapters of 3-5 s, each a 2-5 word label with one accent word beside the UI doing that job. |
+| `story.character_spot_15s_beats` | house | enforced | `lint.structure.score` `plan.beats` `templates/character-spot` | A wordless 15 s character spot runs one gag and one feature: premise visible 0-2 s, setup 2-5 s, escalation 5-9 s, twist by smash cut 9-11 s, 1.5 s reaction hold 11-12 s, one message line plus brand 12-15 s. |
+| `story.climax_in_world` | craft | part | `blender/cloudFlight` | Put the climax on the product's output used in the world (the made thing doing its job), after the breakdown and proof beats. |
+| `story.command_burst` | measured | part | `cuts/story/commandRapidFire` | A voice-first demo fires about 16 short spoken commands in about 17 s and answers each with a UI change on the frame after the command's last word ends, with hard cuts between states. |
+| `story.contradiction_ladder` | measured-A | prose-only | - | The cold open runs 3-5 rungs where the voice states the sane rule while the picture shows the absurd opposite, rungs shrinking from about 4 s to about 1 s and from full sentences to two-word fragments, then a viewer stand-in before the turn. |
+| `story.cta_window` | house | enforced | `lint.structure.score` `plan.beats` | The CTA section starts inside its pattern window (ad-15 80-90%, ad-30 83-92%, launch 82-94%, explainer 82-95%, tutorial end screen 90-98% for 5-20 s, trailer date 94-99%), with an optional soft CTA at 60-70%. |
+| `story.cutdown_launch_order` | inferred | default | `plan.template` | Launch cut-downs keep, in order, hook-reveal-demo-CTA at 45 and 30 s, hook-reveal-CTA at 15 s and reveal-CTA at 6 s; ads keep hook-product-proof-CTA at 15 s and product-CTA at 6 s, folding the problem into the hook and dropping proof first. |
+| `story.cutdown_trailer_order` | craft | part | `cuts/trailer/cutdown15` | Trailer cut-downs come from the same plan and drop the world beat and the button first: 30 s keeps cold open, production card, inciting beat, acts 2-3, silence, title and date (act bars 2/3/3); 15 s keeps cold open, one wall run, silence, title and date (act bars 1/1/2). |
+| `story.degrading_problem_ladder` | craft | part | `layout.degradingDiagram` | Show the problem as a 3-beat ladder of 2-2.5 s beats, each a two-word caption under one small diagram that gets visibly worse each beat, swapped by a blur-through. |
+| `story.diagram_in_vo_gaps` | measured-A | part | `cuts/story/diagramWalkthrough` | In a VO explainer, grow one diagram with no cuts and advance it only inside speech gaps every 3-6 s (gap start + 2 frames); a wrong branch turns red and the red propagates. |
+| `story.explainer_beats` | inferred | enforced | `lint.structure.score` `plan.beats` `templates/explainer-diagram` | An explainer runs question 0-10%, wrong model 10-30%, reframe 30-65%, proof 65-85% and so-what 85-100%. |
+| `story.explainer_complication` | inferred | prose-only | - | A short explainer re-hooks with a complication ('but...') at 40-50% of runtime; long ones place a re-hook around minutes 3 and 6. |
+| `story.explainer_wrong_model_first` | craft | part | `templates/explainer-diagram` | An explainer shows a simple wrong model before the right one, builds the right one on a single canvas one node per named idea (dimming the rest), dives into at most one box, and traces one example through it as the proof. |
+| `story.fidelity_ladder` | measured-A | part | `cuts/story/fidelityLadder` | Re-do the same output at a higher parameter one step per bar with a live readout of the parameter and the error, then a 2-3 s dropout, then the same result in a new dimension on the next downbeat. |
+| `story.five_faces_cold_open` | measured-A | part | `cuts/story/voicesColdOpen` | A multi-voice documentary opens on 4-6 faces in about 5 s, each mid-sentence with audio leading every cut, before any name; the lead's name super with one personal detail lands at 5-6 s. |
+| `story.launch_one_defensible_number` | craft | prose-only | - | A launch film carries exactly one hard-number proof (around 1:30 in a 2:00 founder film) with its method published in the post or description. |
+| `story.no_voiceover_type_carries` | house | prose-only | - | Carry the argument in on-screen type plus music and sound design, with no voice-over. |
+| `story.one_chart_argument` | craft | prose-only | - | A proof clip can rest on one chart (for example cost vs score) with a frontier line and one starred hero point whose source is on screen. |
+| `story.one_gag_one_feature` | craft | part | `templates/character-spot` | A character spot has exactly one situation and one product benefit, wordless, with at most 6 emotions (neutral, happy, sad, surprised, angry, scheming) on a neutral stage; an idea that needs two setups is two spots. |
+| `story.one_problem_one_solution` | house | prose-only | - | Each scene carries exactly 1 problem and 1 solution, readable at once; a scene with two problems is split or cut. |
+| `story.one_running_example` | craft | prose-only | - | Run one example customer or project through every scene so each feature shows its output on the same case, labelled as fictional when it is. |
+| `story.one_turn_in_window` | craft | enforced | `lint.shotlist.turn_window` | A short has exactly one turn, a single filmable verb, placed between 30% and 80% of the runtime (short film 50-60%, wordless character spot about 45%, ad product reveal about 33%). |
+| `story.open_loop_and_late_payoff` | house | prose-only | - | A 20-35 s short opens a loop or why-stay promise at 3-6 s, delivers 2-4 beats with micro-payoffs, and puts the best payoff in the final 20%. |
+| `story.pain_in_familiar_tool` | measured-A | prose-only | - | Before the product appears, the problem is shown as one concrete scene inside a tool every viewer already uses, and the product then answers that same scene. |
+| `story.payoff_after_turn` | craft | enforced | `lint.shotlist.payoff_before_turn` | The payoff never lands before the turn (fail), and the product should not appear before the turn in a story-led piece (warn). |
+| `story.payoff_pays_stake` | craft | prose-only | - | The payoff shot comes after the turn and shows the stake from the opening visibly resolved (the bill, the file, the empty chair), never a generic cheer or a logo. |
+| `story.podcast_line_first` | inferred | enforced | `lint.structure.score` `plan.beats` `templates/podcast-clip` | A podcast clip opens on its sharpest line (0-10%), restores the host question as context (10-25%), plays the payoff (25-85%) and ends on the punchline with a soft 'full episode' pointer (85-100%), in a 25-60 s window. |
+| `story.problem_pivot_shape` | measured | part | `cuts/story/problemPivot` | A continuous problem-pivot film runs 3 problem rungs of 2-2.5 s, a 1.5-2 s audio gap, the brand line, 3 value rungs of 1.8-3 s, then the address over a quiet hold of at least 2 s, with zero cuts in about 30 s. |
+| `story.product_quiet_turn` | craft | enforced | `lint.shotlist.product_before_turn` | Outside ads, the product first appears at the turn, never speaks, explains or performs, and is named at most once mid-film plus once on the end card. |
+| `story.proof_clip_genre_end` | craft | prose-only | - | A proof clip ends on a genre payoff (a story beat or a genre title card) or a hard stop on the fixed state, never on a CTA card. |
+| `story.proof_clip_one_claim` | measured | prose-only | - | Each proof clip is wordless, 13-15 s long and proves exactly one claim through one physical graphic (a lane going flat, blocks merging, a slider wiping a label). |
+| `story.proof_film_beats` | measured-A | part | `templates/proof-film` | A proof film opens on a claim of at most 6 words, shows a method card by 4-8 s, builds one chart or diagram over 8-22 s that advances in 0.3-0.5 s VO gaps about every 4 s, and ends on a URL with a quiet hold and no spoken CTA. |
+| `story.protagonist_with_stake` | craft | prose-only | - | The film follows one protagonist whose concrete stake (money, a client, a deadline, a secret, a promise, pride) is shown on screen by the end of the setup beat (5 s in a 15 s cut, 9 s in a 30 s cut), never stated abstractly. |
+| `story.query_ladder` | measured-A | part | `cuts/story/queryLadder` | Hold one UI and feed it 4-6 escalating inputs (5 in the reference), one VO line per input, instead of touring many screens. |
+| `story.refrain_card` | craft | prose-only | - | A manifesto film can return to one locked two-word card 3-5 times at an identical position and size, at least 2 s apart. |
+| `story.short_film_one_shift` | craft | enforced | `lint.structure.score` `templates/short-film` | A short under 5 min carries one beat of change (under 10 min, one major shift), opens on an image that asks a question, and ends on a tag of at most 6 s. |
+| `story.short_film_turn_window` | house | enforced | `lint.shotlist.turn_window` `plan.beats` `templates/film-scene` | A short film runs cold open (0-8%), want, one obstacle, the turn at 50-60% with 200-400 ms of silence before it, consequence, resolution image and a credit tag of at most 6 s. |
+| `story.sound_off_sentence` | house | enforced | `lint.shotlist.sound_off` | Write one sentence a viewer could say after one muted watch, short enough for one breath; the muted test passes when 3 of 5 people can say what happened. |
+| `story.speech_gap_before_drop` | craft | part | `cuts/story/lateDrop` | When a voice leads into the drop, leave a 0.5-1 s speech gap immediately before the beat enters on the product name. |
+| `story.state_chip_flip_share` | measured | enforced | `lint.ears.ab_replay` `ui.stateChip` | A persistent corner state chip names the before on frame 0 and flips (colour flash, new label, tick) at 40-45% of a 13-15 s proof clip. |
+| `story.state_list_16s` | craft | prose-only | - | For a 16 s film, write a state list: hook 0-2 s, problem 2-5 s, reveal through a real interaction 5-9 s, proof 9-13 s, readable CTA 13-16 s, each beat with an entry state, an exit state and a reason. |
+| `story.subtract_on_rejection` | craft | prose-only | - | After a rejected draft, cut back to the spine before adding anything: one scene, one problem, one solution, one on-screen language and no unrequested voice-over. |
+| `story.through_line_not_vignettes` | craft | prose-only | - | Tie every beat to one person, one place or one clock; a run of problem-to-solution vignettes (five in the case study) reads as a feature parade, not a story. |
+| `story.trailer_arc` | craft | enforced | `lint.structure.score` `plan.beats` `templates/trailer` | A trailer runs cold open 0-10%, act 1 10-30%, act 2 30-65%, act 3 65-88%, silence then title 88-94%, button 94-97% and date card 97-100%. |
+| `story.trailer_energy_arc` | measured | part | `cuts/story/trailerArc` | A trailer runs quiet dialogue, title cards, a wall montage, one line over near-silence, a crescendo and a hard stop, at about 30/25/20/5/10/10% of the runtime. |
+| `story.turn_at_30pct` | measured-A | prose-only | - | In a story-led launch hero the turn question lands at about 31% of the runtime and the product name at about 36%. |
+| `story.typed_request_to_result` | measured-A | part | `ui.promptBar` | Show a capability as one plain sentence typed into a bar, then the result taking the bar's place. |
+| `story.verb_chapter_cards` | craft | part | `cuts/story/verbLadder` | Spine a feature tour on one giant verb per chapter (at most 6 verbs, one beat each, at least 300 ms), the last verb landing and holding 2 beats before settling into its subtitle. |
+| `story.vo_script_shape` | measured-A | prose-only | - | A product VO opens in the first 5 s, runs 3-6 feature or step lines of 3-5 s each, then says the name, then a tagline or URL in the last 3-5 s. |
+
+### pacing
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `pacing.accelerando_montage` | measured-A | part | `cuts/sections/build_accelerate` | Build a montage with shot lengths halving 1 s, 0.5 s, 0.25 s, 0.125 s into a mosaic or reveal, then a ~1 s near-silence dip. |
+| `pacing.asl_beat_edit` | house | enforced | `lint.eyes.pacing` `cuts/pace/beat_edit` | A music-led beat edit cuts every 1-2 beats (0.4-1.0 s at 120-150 BPM), every 4 beats in verses, 30-60 shots per 30 s, and every drop cut sits on the grid. |
+| `pacing.asl_character_spot` | craft | enforced | `lint.eyes.pacing` `templates/character-spot` | A wordless character spot runs 2-3 s per shot (8-12 shots per 30 s) and holds the reaction close-up 1.5 s after the twist. |
+| `pacing.asl_hype_ad` | measured | enforced | `lint.eyes.pacing` `cuts/pace/hype_ad` | A hype ad or launch sizzle averages 1.2-2.0 s per shot (15-24 shots per 30 s), with one held hero reveal of 3-4 s allowed. |
+| `pacing.asl_short_film` | measured | enforced | `lint.eyes.pacing` `cuts/pace/short_film` | A short film averages 4-8 s per shot (4-8 shots per 30 s), holding each emotional shot until the emotion lands and then 6-12 frames longer. |
+| `pacing.asl_talking_head` | craft | enforced | `lint.eyes.pacing` `cuts/talking_head/punch_in` | A retention-edited talking head cuts per sentence or clause at 2.5-5 s per shot (6-12 shots per 30 s), with a punch-in at most once per 4 s. |
+| `pacing.asl_voice_led` | inferred | enforced | `lint.structure.score` | Under a voice (explainer, tutorial, data story), shots hold about 3-10 s and the visible change is carried by a cursor, a drawing, a node or a camera move rather than by cuts. |
+| `pacing.continuous_ok` | measured-A | enforced | `lint.structure.score` | A film may run on 0-4 hard cuts if something changes on screen at least every 3.5 s; score it by motion events, not by ASL. |
+| `pacing.cut_density_by_section` | craft | prose-only | - | Cut densely where proof is shown and not at all while a claim is said: about 11 cuts in 15 s of montage, 0 cuts in the 21 s claim section. |
+| `pacing.end_card_hold` | house | enforced | `lint.end.hold` `plan.end.hold` `cuts/sections/breath_out` | The end card holds at least 1.8 s after its last motion settles (2.0 s for a 30 s ad, 3.0 s for a launch, proof or data film, a 5 s end screen for a tutorial) and no more than 4.5 s on short-form. |
+| `pacing.founder_open` | craft | enforced | `lint.structure.score` `templates/founder-story` | A founder film opens on the person to camera for the first 8-12 s with the voice alone: no music and few or no cuts (hook ASL 3-12 s), the sharpest sentence inside 15 s, music entering only after the opening statement. |
+| `pacing.front_loaded_cuts` | measured | prose-only | - | The first 9 s cut fast (about 7 cuts in 6 s, 0.5-1 s each) and the rest of the film holds long. |
+| `pacing.hook_three_states` | house | part | `cuts/sections/hook_3s` | An ad shows at least 3 shots or 3 distinct visual states in its first 5 s. |
+| `pacing.interrupt_ladder` | house | part | `cuts/interrupts` | Space pattern interrupts at about 2.5 s (minor), 5 s (medium) and 9 s (major) with 25% jitter, never two majors within 1.5 s, at most one major per 6 s, and flag fatigue when the mean level rises over 4 consecutive 5 s windows. |
+| `pacing.length_30_38` | measured-A | enforced | `lint.pacing.length` | A startup product film runs 30-38 s. |
+| `pacing.length_scales_content` | measured | prose-only | - | A length setting scales the content: a labelled cut lands within its length and fills it; a '15 s' cut at 80-84 BPM ran 19.6 s, and a 60 s title sequence ran out of names at 34 s and held. |
+| `pacing.match_pattern_length` | measured | prose-only | - | Score a plan only against a beat sheet whose length range contains its runtime; a 20-31 s Short scored against a 45-1800 s pattern misplaces the sign-off (73% vs 95-100%), and beats are never stretched to game the score. |
+| `pacing.new_state_every_3s` | measured-A | enforced | `lint.structure.score` | A UI-loop film introduces a new state on a fixed unit of about 3 s (within 2-5 s), for example icon pop, light streak, label, window. |
+| `pacing.new_thing_every_2_4s` | craft | enforced | `lint.eyes.pacing` | Put something new on screen every 2-4 s; a static hold beyond 3.5 s warns. |
+| `pacing.reaction_hold` | craft | prose-only | - | Hold a reaction shot about 1.5 s after the turn or payoff, and at least 0.5 s after every key action. |
+| `pacing.reveal_shots_1_5_to_3_5s` | measured | enforced | `lint.structure.score` | A device reveal film keeps shots at 1.5-3.5 s; 6-8 s shots score 72 and need insert shots. |
+| `pacing.same_scale_run` | craft | enforced | `lint.shotlist.same_scale_run` | No more than 3 shots of the same scale run in a row; move wide to tight as emotion rises and break the pattern on the turn. |
+| `pacing.section_asl_curve` | measured | enforced | `lint.structure.score` | Set a shot-length target per section: shots shorten through the setup, are shortest at the climax, and lengthen again for the reveal hold and the end card (ad-15: hook 0.6-1.6 s, product 1.2-3.5 s, end card 1.8-3.0 s). |
+| `pacing.state_change_every_1_2s` | measured-A | prose-only | - | In a type-led launch film, land a visual state change on the musical grid every 1.1-1.9 s (two beats at about 112 BPM, one bar at about 170 BPM). |
+| `pacing.static_hold_max` | house | enforced | `lint.eyes.pacing` | In short-form something visible changes at least every 3.5 s; a static hold warns at 3.5 s and fails at 7 s unless the plan marks it as a hold. |
+| `pacing.style_ladder` | measured-A | part | `cuts/story/styleLadder` | To show range, one held subject swaps its look on the beat: about 4 looks in 2.5 s (0.5 s each) inside a product film, or one style per 8 s section in a music video. |
+| `pacing.sub_second_beats` | measured-A | enforced | `lint.eyes.pacing` `cuts/beat/every_beat` | Hooks, gag ladders, action runs and beat montages cut every 0.5-1.0 s, one cut per beat, with at most 2 longer holds. |
+| `pacing.talking_head_cut_rules` | house | part | `templates/talking-head` | Talking-head edits cut silences over 0.5 s keeping a 120 ms breath, cover 35-50% with B-roll inserts of 1.2-3 s that lead the line by 150 ms, and hold the face 450 ms after a punchline before cutting, and punch in to 1.12 on emphasis at most once per 4 s, alternating framing anchored on the eyes on every jump cut. |
+| `pacing.tier_a_length_bimodal` | measured-A | prose-only | - | Plan craft and proof pieces at 10-60 s or people-led documentaries at 107-185 s; tier-A references had nothing between 60 and 100 s. |
+| `pacing.tour_chapter_cadence` | measured-A | prose-only | - | A product or world tour can change chapter on a metronomic 6 s cadence (every 2 bars) so it reads as a tour. |
+| `pacing.trailer_accelerate` | craft | enforced | `lint.structure.score` `cuts/trailer/accelerate3Act` | A trailer's beats per shot fall 8 -> 6 in act 1, 4 -> 2 in act 2 and 2 -> 1 -> 0.5 in act 3 on a half-beat grid (about 0.25, 0.6-0.7 and 2-4 cuts/s at 120 BPM), and the fastest stretch stops dead into the silence. |
+| `pacing.transition_needs_reason` | craft | enforced | `lint.shotlist.transition_reason` | Default to the hard cut (about 90% of cuts in an ad or documentary); every non-cut transition carries a reason from the cut hierarchy (emotion, story, rhythm, energy, reveal, place) or the build fails. |
+
+### sound
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `sound.ambience_floor` | house | part | `sfx/amb/room_tone` | Ambience and room tone sit 8-12 dB under the bed's own K-level (or -35 to -28 LUFS-S alone), high-passed at 60 Hz: a floor, not an event. |
+| `sound.decay_tail` | measured-A | enforced | `lint.sound.tail` `plan.audio.tail` | A startup product film ends on a 2-4 s fade under the end card down to -25 dB or lower against the body. |
+| `sound.dip_before_drop` | measured-A | part | `cuts/story/lateDrop` | The bed dips to about -38 dB (roughly 14 dB under the body) for 0.1-0.5 s immediately before the bass drop. |
+| `sound.dropout_before_reveal` | measured-A | part | `cuts/story/fidelityLadder` | Before the reveal, drop the bed at least 20 dB under the body for 1-3 s (a planned gap of at most 4 s), and bring the bed and a bass hit back on the reveal frame. |
+| `sound.duck_depth` | house | enforced | `lint.ears.speech` | Under a voice line the bed ducks at least 9 dB (range 6-12; 6-9 warns) with an 80 ms look-ahead, 15 ms attack, 120 ms hold and 350 ms release, plus a carve of -3 dB at 250 Hz and -3.5 dB at 3 kHz. |
+| `sound.gate_bed_on_cuts` | measured-A | prose-only | - | Drop the bed to near silence (-35 to -42 dBFS) under a text-only card, starting and ending each dip exactly on a cut, for 0.8-1.7 s. |
+| `sound.hero_hit_over_bed` | house | default | `plan.audio.mixer` | A hero impact, stinger or sonic logo sits +4 to +6 dB over the bed (hero default +4.5, logo +5; K-weighted over 60 ms from the anchor against the un-dipped bed), never above +6 dB so viewers do not mute after a loud first second; a logo with no bed sits about -16 LUFS-S. |
+| `sound.hit_hierarchy_spacing` | house | enforced | `lint.mix.cues` | At most one tier-1 hero hit per 8-10 s and never two within 3 s; tier-2 transition cues average at least 1.0 s apart (aim 1.5-2 s); tier-3 micro cues sit 6 dB under tier 2 and never on a tier-2 frame unless they are its layer. |
+| `sound.hit_on_f_plus_1` | house | enforced | `lint.ears.sync` | A cue whose visual lands on frame F puts its designated peak on sample (F + 1) x 48000 / fps (33.3 ms late at 30 fps, 16.7 ms at 60 fps); at least 80% of measurable cues sit within 0.5 frame of that anchor. |
+| `sound.inhale_before_word` | craft | part | `sfx/lift/inhale` | A 200-350 ms rising breath (riser) ends 1 frame before a title or keyword lands, or 150 ms before a talking-head keyword pop. |
+| `sound.level_end_anchored_by_body` | measured | default | `plan.audio.mixer` | A sound that ends on its anchor (riser, reverse swell, suck) is levelled over its body window, not its last 8 ms fade; measured over the fade, the level solver asked for +34 dB. |
+| `sound.limiter_budget` | house | default | `plan.audio.mixer` | Limiter gain reduction on any cue stays <= 1.5 dB for tier 1-2 and <= 1.0 dB for tier 3; when the budget is exceeded the offending cue is lowered, not the limiter. |
+| `sound.loud_open_type_led` | measured-A | enforced | `lint.sound.first_sound` | A type-led launch film may skip the quiet open: put sound on by 0.25 s at 0 to -2.5 dB against the body. |
+| `sound.loudest_on_state_change` | measured | part | `ui.approvalSlider` | The mix's loudest moment lands on the approved or result state change, not on the logo. |
+| `sound.master_ends_in_tp_limiter` | measured | prose-only | - | Every master path ends in a true-peak limiter (4x oversampled, ceiling -1.5 dBTP); a peak-gain-only ceiling lets dense cues stop the mix short of target (measured -17.49 LUFS-I at a -2.0 dBTP ceiling, 3.5 LU low). |
+| `sound.mute_open_as_before` | measured | prose-only | - | When silence is the 'before' state, the clip opens on true silence under a mute chip for about 3 s, and the first sound lands on the same frame as the chip flip and the first action. |
+| `sound.no_dead_air` | house | enforced | `lint.ears.structure` | No unplanned stretch of 2 s or more sits 20 dB or more under the programme median; anything longer is either planned in plan.audio.quiet or filled. |
+| `sound.no_doubled_score_hits` | house | prose-only | - | When the score already carries braams and a title hit, no SFX doubles them. |
+| `sound.no_renderer_lowering` | measured | prose-only | - | The render log shows zero 'Audio lowered' lines: the master reaches the renderer with its encoded (AAC) true peak under -1 dBTP, because the renderer's guard otherwise drops the whole track (measured 7.3 and 8.6 dB). |
+| `sound.not_flat` | measured | enforced | `lint.ears.structure` | The mix is not flat: it has a level step of at least 3 dB, or LRA of 2 LU or more, or half-second levels spread more than 2 dB (P90-P10); the drop does not first arrive after 75% of the runtime. |
+| `sound.one_reveal_hit` | house | part | `sfx/hw/sub_hit` | A device reveal gets exactly one sub hit on the reveal frame, the dark-open hum stops on that frame, and each callout or spec row gets a detent, never a chime per row. |
+| `sound.one_sound_per_ui_action` | measured-A | enforced | `lint.ears.sync` | Every visible UI action (click, keystroke run, card swap) gets its own sound, so picture events land on audio onsets above chance. |
+| `sound.phone_check` | house | enforced | `lint.mix.cues` | Every tier-1 and tier-2 cue still reads at least +1 dB K-weighted over the bed after phone-speaker voicing (the +2 dB table relaxed by 1 dB); a sub-heavy cue that loses more than 6 dB on a phone gets a mid-range partner within 3 frames. |
+| `sound.picture_leads_sound` | measured | prose-only | - | Cuts land 1-4 frames (about 49-76 ms) before the nearest audio onset. |
+| `sound.planned_quiet_maxima` | house | enforced | `lint.ears.structure` | Every intended near-silence is declared in plan.audio.quiet and stays within its maximum: open <= 2 s, mid-film dip or gap <= 4 s, end-card hold <= 9 s (plus 0.5 s margin); near-silence means 0.5 s blocks at least 20 dB under the programme median. |
+| `sound.pre_hit_vacuum` | house | default | `plan.audio.mixer` | Before a tier-1 hit the bed dips 2-4 dB (mixer default 3 dB) for about 100 ms (3 frames at 30 fps) ending exactly on the hit frame; a tier-2 cue gets a 2 dB make-room dip of about 140 ms. |
+| `sound.pre_sting_silence` | measured-A | part | `cuts/story/preStingSilence` | After the lockup, hold the picture still over 1-3 s of near-silence (bed out, room tone at most), then one final sting. |
+| `sound.quiet_hold_ending` | measured | enforced | `lint.ears.structure` `plan.audio.tail` | Explainers, proof films and documentaries end on a quiet hold: the bed decays and the end card holds 3-9 s at least 10 dB under the body on a steady room-tone floor, never on a fading pulse. |
+| `sound.quiet_open` | measured-A | enforced | `lint.sound.quiet_open` `plan.audio.quiet_open` | The first 1-2 s sit 7-11 dB below the body median while frame 0 already moves, and the first sound enters by 0.25 s. |
+| `sound.repetition_round_robin` | house | enforced | `lint.ears.repetition` | A repeated cue id uses seed = base + occurrence with pitch +-3% and gain +-1.5 dB (timing unchanged); the same non-musical sound more than 3 times in 10 s, or the same id 3+ times within 8 events, is flagged. |
+| `sound.riser_ends_frame_before_hit` | house | enforced | `lint.ears.sync` `sfx/riser/noise_1bar` | A riser lasts a whole number of bars (1, 2 or 4; bars x 4 x 60 / BPM) and ends at the hit anchor minus 1 frame (33 ms at 30 fps) with a hard 5 ms fade-out, so the hit lands on the next downbeat after a one-frame gap. |
+| `sound.room_tone_under_cuts` | craft | part | `sfx/amb/room_tone` | In a talking-head or dialogue edit, removed dead air is bridged with 40-80 ms of room tone (about -48 dBFS) under every cut so the cut is never a digital hole; a short film runs room tone under every shot. |
+| `sound.silence_before_turn` | craft | prose-only | - | Leave 200-400 ms of silence just before the turn in a short film or a vlog's cost beat, then let the score enter on the emotion, not on the action. |
+| `sound.silence_cues_action` | measured | prose-only | - | Short silences of 0.3-2.0 s sit right before a button press, a card swap or a typing run. |
+| `sound.silence_under_name` | measured-A | enforced | `lint.sound.name_silence` `plan.audio.name_silence` `cuts/story/preStingSilence` | The bed drops to about -50 dB for 1.5 s under the product name at 85-89% of the runtime, then returns for the tagline. |
+| `sound.silent_loop_ok` | measured-A | prose-only | - | A loop of 16 s or less that is meant to be saved may ship with no audio track. |
+| `sound.slam_end_hardware` | measured-A | enforced | `lint.sound.tail` `plan.audio.tail` | A wordless hardware teaser may end on a slam: the track stays at full level to the last frame over a flat brand-colour end card. |
+| `sound.smash_pre_silence` | house | part | `cuts/smash` | A smash cut drops music and ambience to silence 200 ms before the cut (4 ms ramp), jumps at least 12 dB and 0.4 mean luma across it, and lands its hit on the cut frame + 1. |
+| `sound.speech_over_music` | house | enforced | `lint.ears.speech` | In the 300 Hz-3.4 kHz band, speech sits at least 10 dB over the music (5-10 dB warns). |
+| `sound.split_edits` | craft | part | `cuts/split/film_J` | A J cut starts the next scene's audio 200-800 ms (default 400 ms) before its picture and an L cut lets the previous audio run 200-1200 ms (default 600 ms) over the new picture, each with an 80 ms crossfade; a short-film scene change leads the picture by 12-24 frames. |
+| `sound.support_cues_over_bed` | house | default | `plan.audio.mixer` | Transition whooshes peak +1 to +3 dB over the bed (default +2), UI blips and pops +3 to +5 dB (default +4) and micro-foley +2 to +4 dB, all K-weighted over a 60 ms window. |
+| `sound.sync_above_chance` | measured | prose-only | - | Report cut or motion sync as share against its chance level (the fraction of the timeline inside the 2-frame onset windows) and call it sync only at z >= 2; a raw 40-65% share on a busy track is near chance. |
+| `sound.sync_rule_by_mode` | measured | enforced | `lint.ears.sync` | Music-led cut pieces put at least 60% of cuts within 2 frames of an onset; VO-led films keep every cut out of a word and advance visuals in speech gaps; continuous films put at least 60% of motion events within 2 frames of an onset. |
+| `sound.talking_head_sfx_under_voice` | house | default | `plan.audio.mixer` | In a talking-head edit tier-3 cues sit 12-16 dB under the voice (keyword pop or punch-in -16 to -12, B-roll swish -18, jump-cut tick -24 to -20), and no tier-1 hit is used except the end logo. |
+| `sound.trailer_hit_silence_hit` | measured | enforced | `lint.sound.trailer_gap` `music/bed_trailer_arc` | In a trailer the wall stops dead on a 12 ms fade, 1-3 s of planned silence follows (a sub 30-40 dB under the wall at most), a crescendo rises at least 12 dB into the title hit, and the picture cuts to black one frame before that hit. |
+| `sound.transition_paired_sfx` | house | default | `plan.template` | Every transition, punch-in or emphasis cut has a paired cue on the cut frame (about -4 dB), with at least 80% coverage of non-exempt cuts; dialogue cuts, J/L cuts, on-beat hard cuts and loop seams are exempt. |
+| `sound.vo_wpm` | house | enforced | `lint.ears.speech` | Voice-over runs at 110-175 words per minute; sentence-led on-screen type may run to 210 (3.5 words/s). |
+
+### music
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `music.bass_share_by_role` | measured | prose-only | - | Energy under 150 Hz in the bed matches the role: proof and explainer 20-36%, hype and trailer 50-61%, brand launch 50-60%, VO documentary 15-34%. |
+| `music.bass_share_product_film` | measured-A | prose-only | - | A music-led product launch film keeps the bed's bass share (energy below 150 Hz) at 27-47%. |
+| `music.dark_open_12db_under_drop` | measured | default | `plan.audio.mixer` | In a reveal score the dark open sits about 12 dB under the drop, and the drop lands on the reveal bar at every cut length. |
+| `music.late_bass_entry` | measured-A | enforced | `lint.sound.bass_entry` `plan.audio.bass_entry` `cuts/story/lateDrop` | In a music-led product film the bed stays thin (no bass) until 23-52% of the runtime, and the bass enters on a cut or on the result frame. |
+| `music.late_drop_on_turn` | measured | part | `cuts/story/lateDrop` | Run the problem on UI ticks and texture only (no kick, no bass) for 10-60% of the runtime, then land the beat on the first frame of the turn line or product name, after an optional 0.5-1 s speech gap or a riser ending one frame before. |
+| `music.no_raw_ai_bed` | measured | default | `plan.audio.mixer` | A cloud-generated music bed is never used raw: it arrives around -24 LUFS with 0 dBFS peaks and goes through the mixer, which normalises, ducks and masters to -14 LUFS / -1.5 dBTP. |
+| `music.no_third_party_beds` | house | prose-only | - | No third-party music is used as a bed (no raw CC0 loops either); third-party SFX are layered or processed, never a lone raw hero one-shot, and every import carries an ORIGIN.txt. |
+| `music.phone_bass_cap` | inferred | prose-only | - | Do not ship a bed with more than 70% of its energy below 150 Hz without a phone-speaker check. |
+| `music.phrase_cuts` | craft | part | `cuts/sections/build_accelerate` | Cuts fall on beats, scene changes on 2-, 4- or 8-beat phrases, and the biggest visual on the drop. |
+| `music.tempo_snap_frames` | house | enforced | `lint.mix.qa` | Pick the BPM so one beat is a whole number of frames: n = round(fps x 60 / BPM), BPM = fps x 60 / n (error under about 3% for n >= 12; e.g. 30 fps: 128 -> 128.57, 140 -> 138.46, 110 -> 112.5). |
+| `music.voice_bed_level` | house | prose-only | - | Under a voice the music bed sits at -22 to -26 LUFS-S; with a hero hit and voice sharing the track it sits about -20 LUFS-S (so +4.5 dB hits fit under -14 LUFS-I); alone it can run about -15 LUFS-S. |
+
+### type
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `type.accent_word_swap` | craft | part | `type.accentSwap` | Keep a fixed sentence and swap only its last word or number in place in the accent colour, or land a typed sentence on a one-word accent answer. |
+| `type.caption_standard` | house | enforced | `lint.type.captions` | Captions keep <= 42 characters per line, <= 2 lines and <= 20 characters/s (17 for kids) with 2-frame gaps; a burned 9:16 track at 64 px re-breaks to 23 characters; faster speech is condensed by hand. |
+| `type.caption_style` | house | enforced | `lint.eyes.readability` | Vertical captions are 64-80 px at 1080, at most 2 lines of at most 18 characters, 2-4 words per chunk, with the active word highlighted being exactly the spoken word; 16:9 captions are at least 40 px. |
+| `type.captions_every_sentence` | house | prose-only | - | Every spoken sentence has a caption so the video works on mute; burn captions in for X and LinkedIn, which autoplay muted. |
+| `type.emphasis_scale_max_1_05` | measured | default | `plan.template` | An emphasised caption word scales <= 1.05 while word gaps come from unscaled widths; at 1.12 it eats the 0.28 em gap and two words fuse. |
+| `type.exit_faster_than_entrance` | house | default | `plan.template` | Type entrances decelerate and exits accelerate, with exits about 30% shorter than entrances (e.g. lower third in 10-18 f, out 8-10 f). |
+| `type.floors_by_role_aspect` | house | enforced | `lint.eyes.readability` | At the 1080 reference (shorter side) text is at least: read line 48 px wide / 56 px tall, headline 96, caption 40 / 64 (max 80 tall), label and end-card fine print 28 / 30, lower third 44 / 48, in-world 28; and at least 9 px when rendered on a 360 px wide phone. |
+| `type.honesty_label_size` | house | enforced | `lint.eyes.readability` | Honesty labels are a designed component: mono family, at least 28 px (16:9) or 30 px (9:16), at least 4.5:1, inside the safe area, on screen at least 2 s, in a constant position across shots and never over the hero. |
+| `type.key_word_accent` | measured-A | prose-only | - | Use 1-2 short lines per card and mark the key word in each line with the single accent colour or a highlight chip. |
+| `type.lower_third_spec` | house | enforced | `lint.eyes.readability` `lowerThird.cleanBar` | A lower third shows name and title only, sits inside the platform safe rect, stays on screen about 2.5-4 s, and uses the accent on one element only. |
+| `type.name_super_one_detail` | craft | part | `lowerThird.docSuper` | In a multi-voice documentary, hold names until the lead, and give each later name super one personal detail beyond the role. |
+| `type.no_redundant_on_screen_text` | measured | prose-only | - | Explainers and tutorials put keyword callouts and step cards on screen, not sentences that repeat the narration. |
+| `type.no_text_box_overlap` | measured | prose-only | - | No two on-screen text boxes overlap on any frame; the caption row keeps its own band and lower thirds and speaker tags sit above it. |
+| `type.one_kinetic_style` | house | part | `type/maskRise` | A piece uses one kinetic-type tone family, two at most, chosen from the tone cell (calm-soft, calm-sharp, kinetic-soft, kinetic-sharp, neutral). |
+| `type.phrases_2_to_5_words` | measured-A | enforced | `lint.type.beat_words` | A wordless film carries its whole argument in on-screen phrases of 2-5 words, one phrase per beat. |
+| `type.read_line_max_words` | house | enforced | `lint.eyes.readability` `plan.type.limits` | Each shot carries one read line of at most 6 words; a hook line at most 7 words; a poster or cover at most 4. |
+| `type.reading_time_hold` | house | enforced | `lint.eyes.readability` `plan.type.limits` | Hold each line for max(0.5 s, 0.35 s + 0.28 s per word), keep reading speed at or under 3.5 words per second, and show every line fully formed for at least 9 frames. |
+| `type.real_weights_only` | craft | prose-only | - | Use open-licence (OFL) families, at most 2 per piece (one display, one text), request only weights the family ships, and pin variable fonts to an exact weight; no faux bold or faux italic. |
+| `type.scale_contrast` | craft | enforced | `lint.eyes.readability` | Use scale contrast as rhythm: small type alternates with type that fills the frame, with the small size never below the label floor (28 px wide / 30 px tall at 1080). |
+| `type.sentence_across_shots` | measured-A | part | `type.sentenceAcrossShots` | A 4-5 word hook sentence is spread one word per shot across changing plates in the first 4 s, the last word larger. |
+| `type.typed_text_hold_after` | measured | enforced | `lint.type.reading_time` | Text that types on holds >= 2.2 s after its last character; without that hold, typed slugs read at 18 characters/s, over the 17 cps ceiling. |
+| `type.typing_is_the_clock` | measured-A | part | `type/typewriter` | Key on-screen text is typed with a visible caret, not faded, so each word is a visible event a sound can land on. |
+| `type.word_is_the_scene` | measured-A | part | `type/scramble` | Make one big word the scene with the UI small beneath it, and change the word by scramble, decode or wheel roll as a visible event for sound to hit. |
+
+### visual
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `visual.accent_fixed_meaning` | measured-A | prose-only | - | A film uses one accent colour, and each accent keeps one fixed meaning (for example one colour always means 'fixed', another always 'changing'). |
+| `visual.banding_grain` | measured | enforced | `lint.eyes.banding` | Put grain of at least 0.02 over soft blurs, vignettes and dark mesh gradients (luma about 25-110), or dither before the encode, so 8-bit steps stay under 4% of sampled frames. |
+| `visual.character_comedy_clean` | craft | part | `layers/finish.bright-playful` | Character comedy and kids' spots use a bright saturated grade with no grain, no dust and a vignette of at most 0.06. |
+| `visual.colour_on_pivot` | craft | part | `layers/background.auroraRibbon` | Keep the problem section black-and-white and bring the first colour in on the pivot frame, together with the returning bass and the brand line. |
+| `visual.concrete_artefacts` | craft | prose-only | - | Show objects the story already has (a stamped page, a bill, a sent message, a lamp switched off), never node graphs, glowing threads, orbiting cards, floating UI or holograms. |
+| `visual.declare_planned_black` | measured | enforced | `lint.eyes.frames` | Any planned black (e.g. the silence before a trailer title) is declared as a hold or dip in the plan; undeclared, eyes/frames fails it. |
+| `visual.effect_budget` | house | prose-only | - | At most 2 stylised effects are active in a shot and one hero light effect (flare, god rays, glint); stacked spikes (chroma + leak + flash + shake) occur only on a designated hit frame, at most 1 per 2 s. |
+| `visual.end_card_layout` | house | part | `templates/ad` | An end card holds an unaltered logo, one line with exactly one accent word, one URL or action, and fine print; in 9:16 the stack sits between y 269 and 1248 with the URL above the bottom 35%. |
+| `visual.founder_with_composited_ui` | measured-A | part | `ui.glassPanel` | In a founder-on-camera launch, the product appears as composited glass panels in the room around a locked shot, with at most 2 hard cuts in 80 s. |
+| `visual.glass_fades_by_blur` | measured | part | `ui.glassPanel` | A frosted panel fades by its own blur and tint, never by opacity < 1, a filter, a mask or a blend mode on an ancestor, any of which stops the backdrop blur. |
+| `visual.hero_alone_bokeh` | house | prose-only | - | Show a photoreal 3D hero alone on a defocused background; drop any prop that renders below the hero's realism. |
+| `visual.layer_stack_order` | house | part | `layers/finisher` | Composite optics (lens, chroma, bloom, halation, leaks) before the grade and vignette, story type after the grade and steady, dust and grain over the type, the brand layer above grain at exact hex with no effects, then bars, then dither last. |
+| `visual.mark_in_world` | craft | part | `layout.mockupInContext` | Show the logo or UI composited onto a surface in a real scene (window, billboard, screen) rather than as a bumper on a flat field. |
+| `visual.no_everything_fades_in` | house | prose-only | - | Give each element one entrance verb (mask, slide, scale) and let some arrive by cut; everything fading in is a banned default that needs a written reason. |
+| `visual.no_letterbox_vertical` | house | enforced | `lint.eyes.composition` `layers/bars` | Never letterbox 9:16; bars appear only when the plan asks for them, and unplanned bars warn at 2% of a side and fail at 15% of the frame. |
+| `visual.one_accent_colour` | house | prose-only | - | Use one saturated accent hue, covering at most 10% of the frame area, alongside at most 3 base hues; state colours (success, warning) are the only extra hues and still need 3:1 against their background. |
+| `visual.one_grade_per_piece` | house | part | `layers/grade.emitters` | A piece uses one grade or one LUT (never both stacked); at most 2 grades by scene, joined by a 12-frame crossfade; log footage goes through a log-to-709 LUT first. |
+| `visual.one_hero_per_frame` | house | enforced | `lint.eyes.composition` | Every key frame names one hero (plus one support and texture); no second focal point holds 80% or more of the hero's saliency on more than 30% of key frames. |
+| `visual.one_of_each_finish` | house | part | `layers/finisher` | Each frame carries exactly one bloom, one vignette and one grain; a plate that already bakes one sets plate.baked and the finisher skips it. |
+| `visual.palette_measured_not_trusted` | measured | enforced | `lint.design.contrast` | Run the WCAG checker on every palette, including template defaults and published palettes, and fix every failing pair before the build. |
+| `visual.product_as_actor` | measured-A | prose-only | - | The product's first appearance is UI acting on itself (a field typing, a window drawing, a card swapping), with no explainer card before it. |
+| `visual.product_hero_frame_share` | house | prose-only | - | A product hero fills about 36-46% of the frame width on a long lens (18-22 degree field of view), with quiet negative space where the type will sit; move the product, not the type. |
+| `visual.real_ui_composited` | house | part | `layout.mockupInContext` | Never let an image or video model draw UI, text, logos or clock faces: generate the scene with a flat #00FF00 screen, detect its 4 corners, perspective-warp the real screenshot onto it, remove spill, and label it as real screens in a generated setting. |
+| `visual.safe_zone_every_text_box` | measured | enforced | `lint.eyes.safezones` | Every text box, including placeholder tags, speaker tags, watermarks and end titles, sits inside the platform safe rectangle (tall: top 0.14, bottom 0.35, sides 0.06 of the frame). |
+| `visual.tall_ui_zoom_to_region` | measured | enforced | `lint.eyes.readability` | On 9:16 each product window zooms to its readable region; a whole-screen view (a payoff split, a wide builder) stays too small, and captions must not sit over the windows. |
+| `visual.text_contrast_floor` | house | enforced | `lint.eyes.readability` | On-screen text measures at least 4.5:1 against the pixels behind it after the grade (3.0-4.5 warns, under 3.0 fails); large text and UI graphics need at least 3:1. |
+| `visual.text_over_footage_worst_frame` | craft | enforced | `lint.eyes.readability` | Text over footage is measured against the lightest and the darkest frames it crosses, not the average; when it fails, add a solid box or pill, a 40-60% scrim, or an outline stroke of about 8% of font size plus a hard shadow. |
+| `visual.two_worlds` | measured-A | prose-only | - | A story-led launch film splits into warm low-key footage for the story and near-white pages with black sentence-case type for the product. |
+
+### motion
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `motion.bake_simulation` | house | prose-only | - | Physics, cloth, particles with velocity and fluids are simulated once at a fixed 1/60 s step into a per-frame table that the render reads; springs use the closed-form solution, never a per-frame step. |
+| `motion.camera_still_on_impacts` | house | part | `cam3d.lock` | The camera does not move during a key action (drop, slam, snap, stamp): within those windows it stays under 0.8 deg/s orbit, 0.15 units/s distance and 0.8 deg/s roll; camera travel between zones takes at least 1 s. |
+| `motion.cut_synchronous_fx` | house | part | `layers/leaks` | Cut-synchronous effects (leak flash, chroma hit, bloom pulse) peak on the cut frame with about a 1-frame attack and 8-frame decay, and the next shot starts clean; at most one energy spike per beat. |
+| `motion.declared_audio_only` | measured | default | `plan.audio.mixer` | Sound reaches the render only as declared audio (an audio element with an id and a start time) or an offline master mix; live-playback audio never reaches the MP4. |
+| `motion.flash_limit` | house | enforced | `lint.eyes.flashes` | No more than 3 general or red flashes in any 1 s window (opposing luminance changes of 10% or more over 25% of the frame, darker side under 0.80). |
+| `motion.glitch_on_hit_only` | craft | part | `type/glitchSplit` | Glitches trigger only on a beat or cut, last 4-8 frames, and occur at most once per 2 s; never run continuously. |
+| `motion.handheld_closed_form` | craft | part | `cam3d.handheld` | Handheld shake is a closed-form sum of seeded sines of t: slow position plus or minus 5 px at 0.37/0.83/1.31 Hz, micro plus or minus 0.8 px at 7.1/9.3 Hz, roll plus or minus 0.25 deg, scaled by level subtle 0.4, doc 1.0, action 2.5. |
+| `motion.house_easing` | house | default | `plan.template` | Animate with the named house eases: enter (0.16,1,0.3,1), hero (0.22,1,0.36,1), exit (0.7,0,0.84,0), move (0.65,0,0.35,1), pop (0.34,1.56,0.64,1). |
+| `motion.loop_seam` | measured | enforced | `lint.motion.loop_seam` | A loop is designed, not cut: the last motion runs through frame 0, frame N equals frame 0, and the decoded seam difference (frame N-1 to 0) stays within 1.5x its neighbours plus 0.05. |
+| `motion.mask_hidden_before_start` | measured | prose-only | - | A masked line or character rise is clipped to its start time; shown before its start, the 1.12 em mask leaks the top 0.26 em of the glyphs. |
+| `motion.media_identity_check` | measured | prose-only | - | For anything with its own timeline (video, Lottie, sprite sheets, baked tables), burn a frame-index barcode or counter into the source and read it back at sampled frames; let the renderer own media playback. |
+| `motion.one_container_morphs` | measured-A | part | `ui.stateMorph` | Let one container change shape and meaning through the film (bar to circle to ball to bubble) instead of cutting; type-led films did this with 0-1 cuts. |
+| `motion.one_signature_move` | craft | part | `cam3d.dollyZoom` | Use one signature camera move per film (a dolly zoom of about 2.4 s, fov 20 to 55, or a whip), and never mix handheld with a locked-off studio look in one piece. |
+| `motion.overshoot_cap` | house | prose-only | - | House motion overshoots at most 7%, settles in 3 bounces, anticipates 3-5 frames and delays secondary parts 2-4 frames; bigger springs are for playful (kinetic-soft) pieces only. |
+| `motion.pin_versions` | measured | prose-only | - | Pin every rendering library's version per project and treat an upgrade as its own project (re-run the gates, re-grade), because moving three.js r160 to r186 darkened every lit surface by about 7/255. |
+| `motion.preload_before_ready` | house | prose-only | - | Fonts (document.fonts.ready), images, models and HDRIs load before the page signals ready; nothing is fetched at seek time, and rendering uses a fixed pixel size with device scale factor 1. |
+| `motion.punch_in_cadence` | craft | part | `cam2d.punchCadence` | Talking-head punch-ins scale 1.00 to 1.08 or 1.15 in 6 frames (ease-out expo) on sentence boundaries, re-centred on the face, never two identical framings in a row, and at least 4 s apart. |
+| `motion.pure_function_of_t` | measured | enforced | `lint.motion.seek` | Every pixel at time t is a pure function of t: seek(t) twice, forward/reverse/shuffled orders, and a cold seek to frame N all give identical pixels; a mismatch above about 60 dB PSNR is GPU noise, a real state bug measures 15-40 dB. |
+| `motion.seeded_random` | house | enforced | `lint.motion.seek` | No Math.random, Date.now, performance.now, animation-frame deltas or timeout choreography: every random value is a seeded hash of (seed, frame or particle id, i), indexed by id and never by frame order. |
+| `motion.spring_classes` | craft | default | `plan.template` | Animate with closed-form stacked springs by class: UI snaps with about 1% overshoot, panels settle, the camera glides with none, headlines land hard (about 9%) and hold, mascots bounce. |
+| `motion.whip_pan_spec` | craft | part | `cam3d.whipPan` | A whip pan swings about 70 degrees over 7 frames with about 2 degrees of roll, hides the cut at peak velocity (the middle frame), and pairs with a chroma hit of about 10 px and a whoosh peaking on the cut. |
+
+### honesty
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `honesty.ai_work_as_states` | craft | part | `ui.checklist` | Show AI or background work as a visible checklist or progress UI with named steps ticking, not as a spinner or a jump to the result. |
+| `honesty.audition_before_hero_use` | house | prose-only | - | Synthesised sounds and scores that pass measurement are still heard once by a person on a phone before a hero use. |
+| `honesty.boosted_not_evidence` | house | enforced | `lint.study.tier` | Treat a reference as format evidence only if it is not boosted-looking (likes below 0.05% of views, or 100x+ followers with likes at or below 0.15%) and not claim-driven (10x+ followers with likes under 0.4%) without saying so. |
+| `honesty.chart_source_in_frame` | house | enforced | `lint.honesty.charts` `templates/data-story` | Every chart frame carries its source and method (and a DEMO DATA pill for demo data), and every on-screen number comes from the dataset file, never typed into copy. |
+| `honesty.chart_zero_baseline` | house | enforced | `lint.honesty.charts` `templates/data-story` | Bar and area charts start at zero, a truncated line or scatter axis says so in frame, every number has a unit, and a chart has one axis. |
+| `honesty.compressed_demo_label` | craft | prose-only | - | A sped-up or assembled demo says so in frame ('time-lapse: 12 min shown in 20 s'), a real-time run may say 'real time', and no on-screen clock implies speed while the product works. |
+| `honesty.concept_piece_labelled` | inferred | prose-only | - | Make concept pieces for your own product and label them 'concept'; do not post unsolicited spec work for a tagged third party. |
+| `honesty.digit_needs_source` | house | enforced | `lint.honesty.claims` `plan.claims` | Every on-screen digit or numeric claim carries a specific source or an honesty label in frame; generic sources are refused and the build fails. |
+| `honesty.label_hold_2s` | house | enforced | `lint.storyboard.label_hold` | Each honesty label is small, specific and inside the safe area, held at least 2 s, one per shot that needs it, with the fine print repeated on the end card. |
+| `honesty.label_once_per_frame` | measured | prose-only | - | Each honesty or demo-data label prints once per frame; a source footer that repeats its demo-data line reads as a glitch. |
+| `honesty.label_vocabulary_claims_in_copy` | house | prose-only | - | Use the fixed label vocabulary ('example data', 'demo figures', 'demo data', 'fictional', 'in build', 'render', 'screens recreated', '3D render', 'placeholder') and keep product claims in captions and descriptions, not in the film. |
+| `honesty.literal_first_lines` | craft | prose-only | - | Every hook and post first line is literally true; no AI-bait claims. |
+| `honesty.never_invent_assets` | craft | prose-only | - | Never invent product screens or metrics: if a real asset is missing, stop and ask, or render a labelled placeholder. |
+| `honesty.no_digits_in_plates` | measured | prose-only | - | Placeholder plates and footage carry no unsourced digits either; a plate's on-screen counter showed digits in an ad's problem slot, which the copy lint cannot see. |
+| `honesty.no_real_person_footage` | house | prose-only | - | Use no archival or real-person footage you do not hold rights to; build the montage from your own type, UI and renders. |
+| `honesty.placeholder_labelled_in_frame` | house | enforced | `lint.storyboard.label_hold` | A null media slot renders a labelled placeholder card, and demo numbers, prices and footage keep an in-frame label (placeholder data, indicative price, fictional film) on screen >= 2 s. |
+| `honesty.post_copy_sourced` | house | prose-only | - | Every figure in post copy has a source the user can show, status words match reality ('runs today', 'in build', 'render', 'demo data', 'example data'), and platform behaviour is tagged as published, practitioner belief or own measurement. |
+| `honesty.product_does_its_job` | craft | enforced | `lint.structure.score` `templates/hardware-reveal` | A product film shows the product doing its job in frame (a required section at 78-90% of a hardware film), and any AI answer shown on screen is checked before release. |
+| `honesty.quote_needs_source` | house | prose-only | - | Quote, review and pedigree cards ('from the makers of') appear only with a named real source or work; no invented reviews or stars. |
+| `honesty.real_deadline_only` | craft | prose-only | - | End on a concrete call to act (a date pill, a prize) only when the date and offer are real and approved; never invent one. |
+| `honesty.references_craft_not_copy` | house | prose-only | - | Apply a reference's method (frame-keyed numbers, lighting, timing, measured sound) to your own film; never rebuild its words, brand, footage, music or exact sequence; a literal replica is allowed only as a labelled throwaway spike. |
+| `honesty.same_input_progress` | craft | prose-only | - | Show a version-to-version improvement by running the same prompt or input through each version side by side. |
+| `honesty.synthetic_voice_label` | house | enforced | `lint.storyboard.label_hold` `cuts/story/voiceHandoff` | When a synthetic voice carries on a presenter's line, keep an 'AI voice' label and speaker tag on screen in every frame it speaks, from a consented, documented clone. |
+| `honesty.verbatim_quote_gate` | house | enforced | `lint.honesty.quotes` | A pull quote, or a hook line pulled to the open, is a verbatim run of the transcript, or the build stops. |
+
+### delivery
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `delivery.bt709_in_filter_chain` | measured | enforced | `lint.eyes.encode` | BT.709 colour tags are set in the filter chain (setparams) as well as on the output, because ffmpeg 7+ leaves primaries and transfer unset after a scale filter otherwise. |
+| `delivery.ceiling_for_dense_clicks` | measured | prose-only | - | For click-dense UI mixes or bass-heavy beds (about 60% bass), set the master ceiling to -2.5 to -3.0 dBTP, fade the first 40 ms in, and grep the render log for 'lowered' so the renderer's second AAC encode does not drop the whole track. |
+| `delivery.clean_tail` | house | enforced | `lint.ears.loudness` | The last 0.15 s of the master is digital zero (near-silent after a lossy decode, skipping 25 ms of codec tail); the first sample is not zero when the video opens on a hit. |
+| `delivery.critic_loop` | craft | prose-only | - | Before showing a film, build a 2 fps 6-across contact sheet, a 12-frame strip at the fastest move, 360 px phone frames and a double loop; score hook, phone readability, motion, variety, sound sync and brand 1-10; fix the 3 worst defects and repeat until all are 8 or more. |
+| `delivery.cue_library_complete` | measured | prose-only | - | Render only with a sound library that holds every cue id in the plan; a shared library linked from an older clone lacked all 55 new sounds, and a missing id is reported, never faked. |
+| `delivery.deliver_stems` | house | default | `plan.audio.mixer` | Every mix exports master.wav plus music, sfx and vo stems that sum exactly to the pre-limiter master, and a no-music version for re-scoring or trending-audio swaps. |
+| `delivery.delivered_tp_minus1` | measured | enforced | `lint.master.true_peak` | The delivered MP4's decoded audio is at most -1.0 dBTP: limit with 4x-oversampled true-peak detection (5 ms look-ahead), then encode two AAC probes and lower the ceiling by the overshoot + 0.15 dB until both pass (up to 8 rounds). |
+| `delivery.encode_spec` | house | enforced | `lint.eyes.encode` | Deliver H.264 High yuv420p with faststart, a keyframe every 2 s (GOP warn 5 s, fail 10 s), CRF 18-23 (23 for demos) and BT.709 tags set in the filter chain. |
+| `delivery.grain_survives_reencode` | inferred | part | `layers/grain` | Grain meant to survive platform re-encoding uses at least 1.4 px grain size and 1.5x amount (the upload-safe stock: 0.030 amplitude, 1.5 px, mono), and is masked off the top 8% of luma and flat brand fields. |
+| `delivery.integrated_minus14` | house | enforced | `lint.master.loudness` `plan.audio.master` | The social master lands at -14 LUFS-I +-0.5 LU (warn to +-1.5), measured with BS.1770-4 gating; the pack meter and ffmpeg ebur128 agree within 0.1 LU. |
+| `delivery.loop_audio_aac` | measured | prose-only | - | Choose a loop length whose sample count is a multiple of 1024 (8 s at 48 kHz) to avoid AAC padding, give the single-loop MP4's audio a 2 ms raised-cosine fade (96 samples) at each end, and leave the two-loop file unfaded. |
+| `delivery.lra_short_film` | house | prose-only | - | A narrative short film master uses 10-15 LU of loudness range. |
+| `delivery.lra_short_form` | house | enforced | `lint.ears.loudness` | Short-form social masters keep loudness range at or under 10 LU, measured without planned quiet regions; LinkedIn wants at most 7 LU. |
+| `delivery.master_house_not_reference` | house | enforced | `lint.master.loudness` `plan.audio.master` | Master to -14 LUFS integrated with delivered true peak at or below -1 dBTP, whatever the references measure. |
+| `delivery.master_per_aspect` | house | prose-only | - | Upload the native master for each aspect (9:16 to Shorts, Reels, TikTok and X; 16:9 to LinkedIn and YouTube long-form; cinematic films also 16:9 on X), never a download from another platform carrying its watermark. |
+| `delivery.master_tp_minus1_5` | house | enforced | `lint.master.true_peak` `plan.audio.master` | The 24-bit WAV master's 4x-oversampled true peak is at most -1.5 dBTP (0.01 dB tolerance). |
+| `delivery.native_aspects_only` | measured | prose-only | - | A template renders only the aspects it has a real layout for; any other aspect is marked manual and skipped, never built from the other aspect's page. |
+| `delivery.no_clipping_plr` | house | enforced | `lint.ears.clipping` | No clipped run (3+ samples at full scale) or decoded over 0 dBFS, and the peak-to-loudness ratio stays at 8 LU or more (under 8 warns as squashed, under 5 fails). |
+| `delivery.render_aspect_check` | measured | enforced | `lint.delivery.size` | Every render's ffprobed WxH must match its aspect's size (1920x1080 for 16:9, 1080x1920 for 9:16) before it is checked or posted; a mismatched file fails and is renamed .WRONG-SIZE.mp4. |
+| `delivery.render_each_aspect_from_fresh_build` | measured | default | `plan.template` | Each aspect is rendered immediately after its own build; never point the renderer at a template folder after a multi-aspect build, which leaves the last aspect's page at the root. |
+| `delivery.upload_copy_cap` | house | prose-only | - | When an upload tool caps a file near 10 MB, make a two-pass x264 copy under 9.5 MB that keeps resolution, frame rate and the master's AAC, upload the master by hand if PSNR falls below 44 dB, and never inject a file input or chunk the upload through page scripts. |
+| `delivery.verify_on_mp4` | measured | enforced | `lint.master.loudness` | Loudness and true peak are verified on the rendered MP4 (decoded), not only on the WAV, because the encode and the renderer's guard can change both. |
+| `delivery.web_minus16` | house | default | `plan.audio.master` | A video that autoplays on a web page (hero.web) is mastered to -16 LUFS-I, because the page plays at the listener's volume. |
+
+### platform
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `platform.ai_disclosure_in_text` | house | prose-only | - | On X and LinkedIn, which have no reliable per-post AI switch, state provenance in the post text (e.g. '3D animation rendered in code', 'AI-assisted renders, demo figures'), match the video's fine print, and never strip or forge provenance metadata. |
+| `platform.ai_label_instagram_on` | house | prose-only | - | Switch Instagram's AI label on for every video the pipeline makes and confirm the switch reads on before Share, because it defaults off. |
+| `platform.ai_label_tiktok` | house | prose-only | - | Set TikTok's AI-generated content option on whenever generated imagery, voices or photoreal renders appear, and on when unsure. |
+| `platform.ai_label_youtube` | house | prose-only | - | Answer YouTube's altered-or-synthetic question Yes when any shot is photoreal generated or rendered content that could pass as real (a product that does not exist yet, a generated person, a realistic scene) and No for stylised CG, animation and motion graphics. |
+| `platform.burn_captions_muted` | house | prose-only | - | Burn captions into X and LinkedIn uploads, which autoplay muted, and upload the SRT or VTT as the caption file where the platform takes one. |
+| `platform.length_targets` | house | default | `plan.template` | Organic shorts run 15-35 s, ads 15-30 s plus a 6 s bumper, X 20-45 s, LinkedIn 30-60 s and web heroes 20-45 s. |
+| `platform.linkedin_spec` | house | enforced | `lint.delivery.size` | LinkedIn takes 16:9, 1:1 or 4:5 (aspect 1:2.4 to 2.4:1) as MP4 with H.264 and AAC, 3 s to 15 min, aim 30-60 s organic and 15-30 s for ads. |
+| `platform.master_16x9_relayout` | measured | prose-only | - | Master the launch post at 16:9 and make 9:16 and 1:1 by re-layout, never by crop or letterbox, plus a 6 s cut-down. |
+| `platform.native_upload_x` | craft | prose-only | - | Upload launch and feature videos natively to X; use a YouTube link only for long-form episodes. |
+| `platform.reels_tiktok_spec` | house | enforced | `lint.delivery.size` | Instagram Reels and TikTok take 9:16 at 1080x1920, aim 15-35 s; Reels run up to 180 s, and TikTok publishes no ideal length and shows each account's limit at upload. |
+| `platform.relayout_not_crop` | house | prose-only | - | Author the lead aspect natively and generate 16:9, 9:16 and 1:1 from per-aspect layout constants (positions, sizes, camera distance, lens shift), never by cropping or hand-editing the derived file, then check stills from each delivered file. |
+| `platform.shorts_length_12_15` | house | prose-only | - | Cut chat-skits and story shorts for Shorts to 12-15 s. |
+| `platform.shorts_spec` | house | enforced | `lint.delivery.size` | YouTube Shorts take 9:16 at 1080x1920, up to 180 s, aim 15-35 s; a Short over 60 s with a copyright claim on its music is blocked. |
+| `platform.vertical_safe_rect` | house | enforced | `lint.eyes.safezones` | In 9:16 at 1080x1920, text and logos stay inside the conservative rect: 269 px from the top, 672 px from the bottom, 65 px left, 120 px right (x 65-960, y 269-1248). |
+| `platform.wide_square_safe` | house | enforced | `lint.eyes.safezones` | In 16:9 keep text inside 5% title-safe (96 px sides, 54 px top and bottom at 1920x1080; 3.5% action-safe), and in 1:1 inside top 6%, bottom 10%, sides 6%. |
+| `platform.x_landscape_ok` | measured-A | prose-only | - | On X a 16:9 master is fine: deliver landscape unless the format is a square loop. |
+| `platform.x_name_early_or_end` | measured-A | prose-only | - | On X the brand name shows by 1 s, or is held back to the end card; both shapes appear in tier-A films. |
+| `platform.x_spec` | house | enforced | `lint.delivery.size` | X takes 9:16 or 16:9 (16:9 for cinematic pieces), aim 20-45 s; accounts without a paid tier cap a video at 140 s and 512 MB. |
+
+### distribution
+
+| rule | grade | status | enforced by | statement |
+|---|---|---|---|---|
+| `distribution.audience_finish_prompt` | craft | prose-only | - | Some posts ask the audience to finish one part of the work (pick the music, name it, caption it) instead of announcing. |
+| `distribution.caption_stake_first_125` | house | prose-only | - | Line 1 of an Instagram caption carries the stake inside the first 125 characters (2,200 max), and each platform gets its own caption rather than one pasted everywhere. |
+| `distribution.cover_max_4_words` | house | enforced | `lint.shotlist.poster_max_words` | A cover or poster frame carries at most 4 words and one subject, reads at 120 px wide, uses real type (never image-model text), and keeps words and subject centred for the 3:4 profile-grid crop. |
+| `distribution.cta_one_verb` | house | default | `plan.template` | A CTA states one verb and one destination in the viewer's words, with urgency only if true and no 'free', '100%' or 'guaranteed' unless literally true and approved. |
+| `distribution.cta_timing` | house | prose-only | - | Put a soft CTA at 60-70% of the runtime and the hard CTA end card in the last 2.5 s (2.0 s on a 15 s ad); on a loop, replace the end card with a small tag at 0.8 opacity outside the bottom 35%. |
+| `distribution.day2_is_fresh` | measured | prose-only | - | Every post after launch day is graded as a fresh test with no carry-over reach expected. |
+| `distribution.expected_follower_multiple` | measured-A | prose-only | - | Plan for 1-10x the account's followers in views: tier-A references span 1.2-52x (median 5.5x), and 340x happened only with a launch-hour network. |
+| `distribution.film_to_chat_ratio` | house | prose-only | - | Post at least 1 story film for every 2 chat-skits, and cap chat uploads at 3-4 a week on YouTube with no near-duplicates. |
+| `distribution.first_line_archetype` | craft | prose-only | - | Open the post text with one of five first-line archetypes: 'Introducing X.', a three-word title, a stake or opinion, a specific sourced number, or a prompt or question. |
+| `distribution.fix_hook_before_volume` | measured | prose-only | - | Before adding volume, check views per post on the last 10 posts and fix in order: the first 2 s, then format and length, then topic, then covers and copy; re-cut a flop's opening instead of reposting it. |
+| `distribution.fixed_series_slot` | craft | prose-only | - | Run a series in one fixed daily slot with one fixed caption template so the feed and audience learn the format. |
+| `distribution.hashtag_counts` | house | prose-only | - | Use 3 hashtags on Instagram, up to 3 in a YouTube description, 3-5 on LinkedIn and TikTok, and 0-1 on X. |
+| `distribution.hero_plus_numbered_thread` | measured | prose-only | - | A launch posts one hero film, then one numbered proof clip per claim about 2 minutes apart in one sitting, and ends with a text post carrying the availability link. |
+| `distribution.hook_variant_test` | house | prose-only | - | Render three hook variants on one body and keep the one with the best measured 3 s hold and average view duration, instead of a predicted virality score. |
+| `distribution.hour1_people_not_pods` | inferred | prose-only | - | Before posting, tell real people personally so genuine quote posts can land in the first 70 minutes; never pay, script or pod them. |
+| `distribution.judge_by_saves` | measured | prose-only | - | Read a post's result by its bookmark rate (saves-strong at 1.3% or more) and, for proven organic, 1.5x+ followers with 1.5%+ bookmarks and 0.2%+ likes, not by raw views. |
+| `distribution.launch_window_utc` | craft | prose-only | - | Post launch films between 12:30 and 16:00 UTC. |
+| `distribution.lead_with_usable_today` | measured-A | prose-only | - | The post leads with something people can use today (a free or open tool) and its link. |
+| `distribution.link_in_first_comment` | craft | prose-only | - | Put the one UTM link in the X first reply, the LinkedIn first comment, the YouTube description or pinned comment, and the Instagram or TikTok bio; never in an X or LinkedIn post body or an Instagram caption. |
+| `distribution.link_inline_end` | measured-A | prose-only | - | The link sits inline at the end of the post text, or in the thread's last post, not only in a reply. |
+| `distribution.loop_short_tag` | house | default | `plan.template` | On a looping Short replace the end card with a small tag at 0.8 opacity outside the bottom 35%, so the seam stays clean. |
+| `distribution.low_volume_when_unseen` | inferred | prose-only | - | When median views per post are under about 20, cut to 1-2 originals a day and spend the freed time on manual replies. |
+| `distribution.newsjack_then_launch` | craft | prose-only | - | Publish a genuinely useful teardown of a big move in your category, then launch into that attention within 7 days. |
+| `distribution.next_day_new_angle` | craft | prose-only | - | On day +1 quote-post your own launch with a new angle (a partner, a changelog, a use), and post a behind-the-scenes of making the film 3-4 days after launch. |
+| `distribution.no_batch_posting` | measured | prose-only | - | Post at most 1 video per platform per hour; a batch of 5 Reels posted in 9 minutes decayed 112, 124, 52, 17, 7 views, while one film posted alone the same month got 390. |
+| `distribution.no_spoken_cta_builders` | measured-A | prose-only | - | For builder audiences end on a URL, repo or typed install command on the end card with no spoken CTA, and keep the price and the argument in the post copy. |
+| `distribution.numbered_clip_copy` | craft | prose-only | - | Each thread clip post starts with its number and the problem's name, then a one-line claim, a paragraph on the old workaround and its cost, and a fix paragraph ending in the user's benefit. |
+| `distribution.one_change_per_test` | house | prose-only | - | Change one thing per test, write the pass rule before posting, keep the body identical when testing hooks, and log before and after for every change to a live post or profile. |
+| `distribution.post_spacing` | house | prose-only | - | Leave at least 4 h between two top-level posts on the same platform. |
+| `distribution.read_windows` | house | prose-only | - | Read a post's numbers at 24 h, 72 h and (for long-form) 7 d, never at 1 h; under a few hundred views treat percentages as noise and use the muted and recall tests with 5 people. |
+| `distribution.reply_by_hand_one_voice` | craft | prose-only | - | Genuine replies get hand-written answers in one consistent voice over the first 36 hours. |
+| `distribution.reply_within_first_hour` | craft | prose-only | - | Stay after posting and answer every reply within 60 min, aiming for under 15 min, literally and including 'not yet' answers. |
+| `distribution.self_repost_next_peak` | craft | prose-only | - | Self-repost the launch post once, about 8 h after posting, for the next time-zone peak. |
+| `distribution.send_line` | house | enforced | `lint.shotlist.send_line` | End the caption or the video on a send line ('send this to ...') that names a specific person, and never ask for a keyword comment. |
+| `distribution.single_post_founder` | measured-A | prose-only | - | A founder posting their own free or open tool uses one single post with the film and the link inline at the end, not a thread. |
+| `distribution.teaser_day_before` | craft | prose-only | - | Post a one-line teaser at T-1 day (optionally with a 5 s frame); small founder accounts can ramp 3-5 days of work-in-progress posts first. |
+| `distribution.title_stake_first` | house | prose-only | - | Titles run about 50 characters or fewer (100 max on YouTube), lead with the stake or the payoff in searchable words, and never open with the product name, a series label or all caps. |
+| `distribution.utility_over_volume` | measured | prose-only | - | Prefer one useful post that names real people (a list, a teardown) over high-volume rewrites: rewritten news earned about 250 views each while useful lists reached 4,300-18,400. |
+| `distribution.utm_convention` | house | prose-only | - | Tag every off-site link utm_source=<platform>, utm_medium=<surface>, utm_campaign=<series-or-release>, utm_content=<video-slug>[-a/-b/-c], lowercase and hyphenated, with a separate utm_source for AI-assistant referrals and no UTMs on links inside your own site. |
 
 Schemas: `playbook/schema/rule.schema.json`, `playbook/schema/format.schema.json`. Checks: `python3 tools/playbook_lint.py --list`. Plan defaults: `node tools/playbook_plan.mjs --defaults`.

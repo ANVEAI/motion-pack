@@ -133,7 +133,7 @@ jobs:
         run: node physics/tests/test-player.mjs
       - name: "blender scripts compile (no Blender on CI; renders are tested locally with blender/tests/smoke.sh)"
         run: python3 -m compileall -q blender
-      - name: "no studied account or brand name outside docs/research (hashed denylist; the names themselves are never in the repo)"
+      - name: "no studied account or brand name outside docs/evidence (hashed denylist; the names themselves are never in the repo)"
         run: python3 tools/check_names.py
       - name: "structure check (every genre template plan scored against its beat sheet in patterns/structures.json, or reported with a reason)"
         run: python3 tools/structure_check.py --all
@@ -143,8 +143,8 @@ jobs:
         run: python3 tools/playbook_build.py --check && python3 tools/playbook_build.py --check --playbook tools/tests/fixtures/playbook
       - name: "mp plan (the fixture format at 15, 30 and 45 s and both aspects; beats, sound shape, TODOs, and the filled project builds through the template's own path; node, no browser)"
         run: node tools/tests/playbook-plan.test.mjs
-      - name: "lint check mutation proof (each playbook lint check and the grade-to-severity rule fail their test when broken)"
-        run: python3 tools/mutation_check.py tools/tests/playbook_checks.mutants.json
+      - name: "lint check mutation proof (each playbook lint check, the extra checks that wrap the shotlist, design, caption, mixer and honesty gates, and the grade-to-severity rule fail their test when broken)"
+        run: python3 tools/mutation_check.py tools/tests/playbook_checks.mutants.json && python3 tools/mutation_check.py tools/tests/playbook_checks_extra.mutants.json
       - name: "README counts are current"
         run: python3 tools/count.py --check
       - name: "catalog media all resolve"

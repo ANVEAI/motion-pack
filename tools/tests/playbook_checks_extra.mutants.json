@@ -1,0 +1,23 @@
+{
+ "file": "tools/playbook_checks_extra.py",
+ "test": ["python3", "-m", "pytest", "-q", "-x", "tools/tests/test_playbook.py", "-k", "extra or shotlist or label_hold or chart or mix_checks or trailer_gap"],
+ "timeout": 300,
+ "mutants": [
+  {"name": "shotlist findings never reported", "find": "        hits = [(lv, m) for lv, m in _shot_lint(ctx, p) if rx.search(m)]", "replace": "        hits = []"},
+  {"name": "shotlist FAIL downgraded to WARN", "find": "        lv = 'fail' if any(h[0] == 'FAIL' for h in hits) else 'warn'", "replace": "        lv = 'warn'"},
+  {"name": "rule params never reach lint_shotlist", "find": "    doc['lint'] = dict(doc.get('lint') or {}, **over)", "replace": "    doc['lint'] = dict(doc.get('lint') or {})"},
+  {"name": "short label runs pass", "find": "    short = [t for t in labels if t['b'] - t['a'] < need - 1e-6]", "replace": "    short = []"},
+  {"name": "contrast failures pass", "find": "    return ('pass' if j.get('pass') else 'fail'), '%d pairs, %d below WCAG'", "replace": "    return 'pass', '%d pairs, %d below WCAG'"},
+  {"name": "caption failures pass", "find": "    st = {'fail': 'fail', 'warn': 'warn'}.get(j['status'], 'pass')", "replace": "    st = 'pass'"},
+  {"name": "dataset problems pass", "find": "    return ('pass' if not h['datasets'] else 'fail'), '%d dataset problem(s)'", "replace": "    return 'pass', '%d dataset problem(s)'"},
+  {"name": "a paraphrased quote passes", "find": "    return ('pass' if q.get('ok') else 'fail'), 'verbatim run of the transcript'", "replace": "    return 'pass', 'verbatim run of the transcript'"},
+  {"name": "mixer lint issues ignored", "find": "    iss = mixer.lint_cues(cues, fps=fps, lib=lib, quiet=a.get('quiet'))", "replace": "    iss = []"},
+  {"name": "tempo grid floor ignored", "find": "    ok = err <= p.get('max_error_pct', 3) + 1e-9 and n >= lo", "replace": "    ok = err <= p.get('max_error_pct', 3) + 1e-9"},
+  {"name": "gap length ignored", "find": "    if not K._rng(b - a, lo, hi):\n        return 'fail', 'planned gap", "replace": "    if False:\n        return 'fail', 'planned gap"},
+  {"name": "gap depth ignored", "find": "    if not hit or (hit[0].get('under_programme_db') or 0) < need - 1e-6:", "replace": "    if not hit:"},
+  {"name": "loop seam step ignored", "find": "    ok = ls['level_step_db'] <= mx + 1e-6", "replace": "    ok = True"},
+  {"name": "loop seam judged without a declared loop", "find": "    if not (ctx.plan or {}).get('loop'):", "replace": "    if ctx.plan is None:"},
+  {"name": "clock calls in the composition pass", "find": "        bad += ['%s:%d' % (os.path.relpath(f, ctx.page_dir), i + 1) for i, ln in enumerate(lines) if NC.BAN.search(ln)]", "replace": "        pass"},
+  {"name": "boosted references pass", "find": "    boosted = ev.get('boosted') or ev.get('tier') == 'B'", "replace": "    boosted = False"}
+ ]
+}
