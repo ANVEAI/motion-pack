@@ -105,13 +105,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/banding",
-      "default": "layers meshGradient grain 0.04",
+      "check": "lint.eyes.banding",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Merged: Delivered frames show no 8-bit staircases (warn at 4% of a frame, fail when frames at 20% or more are a quarter of samples); smooth gradients carry grain of at least 0.02 amplitude and TPDF dither of plus or minus 1 LSB as the last step. [measured; thresholds calibrated on pack renders (2% Weber visibility keeps bright demos clean, still flags dark soft ones on 8 of 12 and 9 of 12 frames); synthetic test: a posterised ramp fails, the same ramp with grain passes.] | Banding is a dark-midtone problem (roughly luma 25-110); a 10-bit master re-encoded to 8 bit by the platform can band after delivery. layers/finisher.js lintStack also warns 'dither off and no grain'. | Merged: Dark gradient plates carry grain (>= 0.02) or encode below CRF 23; eyes/banding warns at 4% and fails at 20% of sampled frames. [measured; 19 Oct run: banding failed on 24 of 44 renders (12 templates at both aspects), e.g. 12/12 sampled frames on a device teaser and 10/12 on a vlog.] | The check catches it; no template sets grain or a lower CRF by default, so the fix is prose-only. The 0.02 grain floor is the source eyes/manifest.json cites (gotchas)."
+    "notes": "Set today by: layers meshGradient grain 0.04 (a pack default outside mp plan). | Merged: Delivered frames show no 8-bit staircases (warn at 4% of a frame, fail when frames at 20% or more are a quarter of samples); smooth gradients carry grain of at least 0.02 amplitude and TPDF dither of plus or minus 1 LSB as the last step. [measured; thresholds calibrated on pack renders (2% Weber visibility keeps bright demos clean, still flags dark soft ones on 8 of 12 and 9 of 12 frames); synthetic test: a posterised ramp fails, the same ramp with grain passes.] | Banding is a dark-midtone problem (roughly luma 25-110); a 10-bit master re-encoded to 8 bit by the platform can band after delivery. layers/finisher.js lintStack also warns 'dither off and no grain'. | Merged: Dark gradient plates carry grain (>= 0.02) or encode below CRF 23; eyes/banding warns at 4% and fails at 20% of sampled frames. [measured; 19 Oct run: banding failed on 24 of 44 renders (12 templates at both aspects), e.g. 12/12 sampled frames on a device teaser and 10/12 on a vlog.] | The check catches it; no template sets grain or a lower CRF by default, so the fix is prose-only. The 0.02 grain floor is the source eyes/manifest.json cites (gotchas)."
   },
   {
     "id": "visual.character_comedy_clean",
@@ -144,12 +144,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "layers/presets/finish.js FINISH_PRESETS['bright-playful'] (grain none, vignette 0.06, bloom 0.15)",
-      "part": null
+      "default": null,
+      "part": "layers/finish.bright-playful"
     },
-    "status": "default",
+    "status": "part",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: layers/presets/finish.js FINISH_PRESETS['bright-playful'] (grain none, vignette 0.06, bloom 0.15) (a pack default outside mp plan)."
   },
   {
     "id": "visual.colour_on_pivot",
@@ -242,7 +242,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/frames",
+      "check": "lint.eyes.frames",
       "default": null,
       "part": null
     },
@@ -316,12 +316,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "templates/ad config.mjs brand.cta; templates/character-spot config.mjs brand.line",
+      "default": null,
       "part": "templates/ad"
     },
-    "status": "default",
+    "status": "part",
     "conflicts_with": [],
-    "notes": "The logo is never recoloured, stretched or given effects (brand layer above grain, no fx)."
+    "notes": "Set today by: templates/ad config.mjs brand.cta; templates/character-spot config.mjs brand.line (a pack default outside mp plan). | The logo is never recoloured, stretched or given effects (brand layer above grain, no fx)."
   },
   {
     "id": "visual.founder_with_composited_ui",
@@ -552,7 +552,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/composition",
+      "check": "lint.eyes.composition",
       "default": null,
       "part": "layers/bars"
     },
@@ -611,13 +611,13 @@
       }
     ],
     "enforce": {
-      "check": "skills/frame-design/scripts/contrast.py",
-      "default": "design.json palette.accent",
+      "check": null,
+      "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "contrast.py checks the 3:1 state-colour pairs; nothing measures accent area, so the 10% cap is prose-only. | Merged: Use one display face, one UI face and one accent colour, and apply the accent to every source (duotones, pills, logo, one word tint) so mixed media reads as one film. [craft; A practitioner house rule plus two craft-only films (a manifesto using one accent across archive, grid, type and logo; a concept ad with one brand colour).] | A demo inside the film may use its own client palette, kept apart from the frame's palette (a SaaS breakdown, reach unverified). | Merged: Keep every frame in one colour world (one field colour plus one accent) and let the product's own screens supply the variety. [measured-A; 3 of 3 tier-A video films: pale blue with one blue accent and one warm note; black and white with one blue glyph; one cobalt gradient with one lilac note.]"
+    "notes": "Tools that touch it today: skills/frame-design/scripts/contrast.py. Set today by: design.json palette.accent (a pack default outside mp plan). | contrast.py checks the 3:1 state-colour pairs; nothing measures accent area, so the 10% cap is prose-only. | Merged: Use one display face, one UI face and one accent colour, and apply the accent to every source (duotones, pills, logo, one word tint) so mixed media reads as one film. [craft; A practitioner house rule plus two craft-only films (a manifesto using one accent across archive, grid, type and logo; a concept ad with one brand colour).] | A demo inside the film may use its own client palette, kept apart from the frame's palette (a SaaS breakdown, reach unverified). | Merged: Keep every frame in one colour world (one field colour plus one accent) and let the product's own screens supply the variety. [measured-A; 3 of 3 tier-A video films: pale blue with one blue accent and one warm note; black and white with one blue glyph; one cobalt gradient with one lilac note.]"
   },
   {
     "id": "visual.one_grade_per_piece",
@@ -651,12 +651,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "design.json look.grade / look.lut",
+      "default": null,
       "part": "layers/grade.emitters"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "frame-design says one grade per piece; visual.md allows 2 per piece by scene with a 12-frame crossfade. No lint counts grades."
+    "notes": "Set today by: design.json look.grade / look.lut (a pack default outside mp plan). | frame-design says one grade per piece; visual.md allows 2 per piece by scene with a 12-frame crossfade. No lint counts grades."
   },
   {
     "id": "visual.one_hero_per_frame",
@@ -685,13 +685,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/composition",
-      "default": "design.json frames.hero_by_shot",
+      "check": "lint.eyes.composition",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "The check is a proxy: it counts competing focal points but does not know which one is the hero, and text counts as a focal point."
+    "notes": "Set today by: design.json frames.hero_by_shot (a pack default outside mp plan). | The check is a proxy: it counts competing focal points but does not know which one is the hero, and text counts as a focal point."
   },
   {
     "id": "visual.one_of_each_finish",
@@ -720,13 +720,13 @@
       }
     ],
     "enforce": {
-      "check": "layers/finisher.js lintStack; layers/overlay.js lintOverlayStack",
+      "check": null,
       "default": null,
       "part": "layers/finisher"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "The lints exist as library functions but are not wired into mp check or any template build (grep finds no caller)."
+    "notes": "Tools that touch it today: layers/finisher.js lintStack; layers/overlay.js lintOverlayStack. | The lints exist as library functions but are not wired into mp check or any template build (grep finds no caller)."
   },
   {
     "id": "visual.palette_measured_not_trusted",
@@ -750,7 +750,7 @@
       }
     ],
     "enforce": {
-      "check": "skills/frame-design/scripts/contrast.py",
+      "check": "lint.design.contrast",
       "default": null,
       "part": null
     },
@@ -886,11 +886,11 @@
     "enforce": {
       "check": null,
       "default": null,
-      "part": "layout.cornerPin"
+      "part": "layout.mockupInContext"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "Do not mention green objects in the prompt; keep raw scenes so a re-composite costs nothing. Invented numbers on a demo screen are changed in the product (demo data), not blurred. | Merged: Show real product screens composited into generated scenes, or a labelled placeholder; never let an image model redraw UI or text, and verify every on-screen AI answer. [house; image models garble UI text (own experience); in one 2024 hardware launch, wrong answers on screen were the focus of press coverage.] | Invented UI is a banned default."
+    "notes": "Implemented in layout.cornerPin (not a resolvable pack id). | Do not mention green objects in the prompt; keep raw scenes so a re-composite costs nothing. Invented numbers on a demo screen are changed in the product (demo data), not blurred. | Merged: Show real product screens composited into generated scenes, or a labelled placeholder; never let an image model redraw UI or text, and verify every on-screen AI answer. [house; image models garble UI text (own experience); in one 2024 hardware launch, wrong answers on screen were the focus of press coverage.] | Invented UI is a banned default."
   },
   {
     "id": "visual.safe_zone_every_text_box",
@@ -934,7 +934,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/safezones",
+      "check": "lint.eyes.safezones",
       "default": null,
       "part": null
     },
@@ -973,13 +973,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability",
-      "default": "templates/saas-launch/scenes.mjs LY.tall (zoom-to-region rects)",
+      "check": "lint.eyes.readability",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "A centre-reframed 16:9 plate also loses its sides on 9:16 (editable lane); a per-aspect source is not in the schema yet."
+    "notes": "Set today by: templates/saas-launch/scenes.mjs LY.tall (zoom-to-region rects) (a pack default outside mp plan). | A centre-reframed 16:9 plate also loses its sides on 9:16 (editable lane); a per-aspect source is not in the schema yet."
   },
   {
     "id": "visual.text_contrast_floor",
@@ -1013,7 +1013,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability",
+      "check": "lint.eyes.readability",
       "default": null,
       "part": null
     },
@@ -1055,13 +1055,13 @@
       }
     ],
     "enforce": {
-      "check": "a11y/caption-contrast",
-      "default": "type/captions.js CAPTION_STYLES stroke",
+      "check": "lint.eyes.readability",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "docs/research/visual.md 4.2 gives stroke 6% of font size or a 12 px shadow at 60% black; the frame-design reference gives about 8%. The 8% value is kept (later, matches the impact caption style 0.07)."
+    "notes": "Set today by: type/captions.js CAPTION_STYLES stroke (a pack default outside mp plan). | docs/research/visual.md 4.2 gives stroke 6% of font size or a 12 px shadow at 60% black; the frame-design reference gives about 8%. The 8% value is kept (later, matches the impact caption style 0.07)."
   },
   {
     "id": "visual.two_worlds",

@@ -81,13 +81,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/pacing",
-      "default": "cuts/patterns.json pace.beat_edit",
+      "check": "lint.eyes.pacing",
+      "default": null,
       "part": "cuts/pace/beat_edit"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "The 'eighths' pattern is a 1-2 bar burst only, never sustained (flash safety)."
+    "notes": "Set today by: cuts/patterns.json pace.beat_edit (a pack default outside mp plan). | The 'eighths' pattern is a 1-2 bar burst only, never sustained (flash safety)."
   },
   {
     "id": "pacing.asl_character_spot",
@@ -124,13 +124,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/pacing",
-      "default": "cuts/patterns.json pace.mime_spot",
+      "check": "lint.eyes.pacing",
+      "default": null,
       "part": "templates/character-spot"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "patterns/structures.json character-spot uses asl_s 1.5-3.0 overall and 1.0-2.0 in the twist."
+    "notes": "Set today by: cuts/patterns.json pace.mime_spot (a pack default outside mp plan). | patterns/structures.json character-spot uses asl_s 1.5-3.0 overall and 1.0-2.0 in the twist."
   },
   {
     "id": "pacing.asl_hype_ad",
@@ -188,13 +188,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/pacing",
-      "default": "cuts/patterns.json pace.hype_ad",
+      "check": "lint.eyes.pacing",
+      "default": null,
       "part": "cuts/pace/hype_ad"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "patterns/structures.json uses 0.8-2.0 s for ad-15 and 1.0-2.2 s for ad-30 (the research band is 0.8-2.2 s). plan.lintPace (ASL <= 2.5 s, longest <= 4.5 s, hold exempt) is reported, not enforced. The hero-hold allowance comes from edit.md section 4 ([H]). | Merged: Average shot length follows the format: hype ad or launch 1.2-2.0 s, talking head 2.5-5 s, mime spot 2-3 s with 1.5 s reaction holds, short film 4-8 s, beat edit 1-2 beats. [house; house pace table [H]; rounds 4/5 measured a median shot of about 2.8 s and four speeds (montage 0.46-0.87 s, product 1.1-2 s, documentary 3-4.4 s, continuous).] | structure_check.check_pace applies per-section asl_s from patterns/structures.json; plan.lintPace (ASL <= 2.5, longest <= 4.5) is reported, not enforced."
+    "notes": "Set today by: cuts/patterns.json pace.hype_ad (a pack default outside mp plan). | patterns/structures.json uses 0.8-2.0 s for ad-15 and 1.0-2.2 s for ad-30 (the research band is 0.8-2.2 s). plan.lintPace (ASL <= 2.5 s, longest <= 4.5 s, hold exempt) is reported, not enforced. The hero-hold allowance comes from edit.md section 4 ([H]). | Merged: Average shot length follows the format: hype ad or launch 1.2-2.0 s, talking head 2.5-5 s, mime spot 2-3 s with 1.5 s reaction holds, short film 4-8 s, beat edit 1-2 beats. [house; house pace table [H]; rounds 4/5 measured a median shot of about 2.8 s and four speeds (montage 0.46-0.87 s, product 1.1-2 s, documentary 3-4.4 s, continuous).] | structure_check.check_pace applies per-section asl_s from patterns/structures.json; plan.lintPace (ASL <= 2.5, longest <= 4.5) is reported, not enforced."
   },
   {
     "id": "pacing.asl_short_film",
@@ -238,13 +238,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/pacing",
-      "default": "cuts/patterns.json pace.short_film",
+      "check": "lint.eyes.pacing",
+      "default": null,
       "part": "cuts/pace/short_film"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "patterns/structures.json short-film uses asl_s 3.0-8.0. The extra-hold rule is prose-only."
+    "notes": "Set today by: cuts/patterns.json pace.short_film (a pack default outside mp plan). | patterns/structures.json short-film uses asl_s 3.0-8.0. The extra-hold rule is prose-only."
   },
   {
     "id": "pacing.asl_talking_head",
@@ -283,13 +283,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/pacing",
-      "default": "cuts/patterns.json pace.talking_head",
+      "check": "lint.eyes.pacing",
+      "default": null,
       "part": "cuts/talking_head/punch_in"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "podcast-clip structure allows 2.0-8.0 s overall. Punch-in spacing is a part param, not checked."
+    "notes": "Set today by: cuts/patterns.json pace.talking_head (a pack default outside mp plan). | podcast-clip structure allows 2.0-8.0 s overall. Punch-in spacing is a part param, not checked."
   },
   {
     "id": "pacing.asl_voice_led",
@@ -335,13 +335,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_pace",
-      "default": "patterns/structures.json structures.explainer.asl_s",
+      "check": "lint.structure.score",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Continuous one-canvas films are scored on change_every_s_max (3.5 s) instead of ASL. | Merged: Explainer scenes run 2.5-6 s; an 8-12 s screen-tour scene scores pace 0.27 because in-scene cursor and zoom moves are not counted as shots. [measured; The saas-explainer plan scored pace 0.27 at both aspects with 8-12 s scenes.] | Open question for the checker: continuous-mode films count motion events, screen tours count shots; a long scene with dense in-scene moves may read better than its score."
+    "notes": "Set today by: patterns/structures.json structures.explainer.asl_s (a pack default outside mp plan). | Continuous one-canvas films are scored on change_every_s_max (3.5 s) instead of ASL. | Merged: Explainer scenes run 2.5-6 s; an 8-12 s screen-tour scene scores pace 0.27 because in-scene cursor and zoom moves are not counted as shots. [measured; The saas-explainer plan scored pace 0.27 at both aspects with 8-12 s scenes.] | Open question for the checker: continuous-mode films count motion events, screen tours count shots; a long scene with dense in-scene moves may read better than its score."
   },
   {
     "id": "pacing.continuous_ok",
@@ -369,7 +369,7 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_pace",
+      "check": "lint.structure.score",
       "default": null,
       "part": null
     },
@@ -480,8 +480,8 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_cta",
-      "default": "patterns/structures.json structures.<pattern>.cta.min_hold_s",
+      "check": "lint.end.hold",
+      "default": "plan.end.hold",
       "part": "cuts/sections/breath_out"
     },
     "status": "enforced",
@@ -489,7 +489,7 @@
       "pacing.match_pattern_length",
       "sound.quiet_hold_ending"
     ],
-    "notes": "Resolved 21 Oct: minimum 1.8 s after the motion settles (3.0 s when fine print or a URL must be read); on picture at most 4.5 s (eyes/frames) unless the plan declares a quiet hold, which may run to 9 s (ears/structure). Launch films that hold 3-10 s use the declared hold. | lint_shotlist.end_hold_s (1.8 s) and eyes/frames (endcard hold <= 4.5 s) also check it; eyes/readability asks 3-4.5 s for an endcard, stricter than the 1.8 s floor. Decelerate into the card (breath_out); on a loop replace the card with a small tag. | Merged: The end card holds at least 1.8 s after its motion settles and at most 4.5 s, starting at 80-92% of a 15-30 s ad. [house; Pack default for ad end cards; the launch-film window is a practitioner range.] | patterns/ctas.json launch.film holds the end card 3-10 s (practitioner), above eyes/frames endcard_hold_max_s 4.5; a YouTube end screen needs the last 5-20 s of a video of 25 s or more. | Merged: Hold the end card at least 1.8 s after its motion settles, and 3-4.5 s when fine print must be read. [house; pack defaults; the story linter checks 1.8 s and eyes reads a final freeze of up to 4.5 s as an end card.] | Two tiers, not a conflict: 1.8 s for a line and logo, 3-4.5 s with fine print. On a loop, replace the end card with a small tag at about 0.8 opacity outside the bottom 35%. | Merged: The end card is minimal (wordmark, URL, one verb) and holds at least 1.8 s after motion settles; launch films hold it 3-10 s. [house; house CTA default; launch study end cards held 3-10 s (one wordmark held 10 s).] | Conflict: eyes/frames and eyes/readability cap an endcard hold at 3-4.5 s, while launch end cards run to 10 s and quiet holds to 9 s; structure_check.check_cta has min_hold_s. | Merged: An end card holds 3-4.5 s with few enough words to read in that time; a 2.3 s end card read at 2.9 words/s. [measured; Plan scores: a podcast-clip end card at 2.3 s (2.9 words/s) was lengthened; a founder end line was cut to 4 words; the course end hold set to 3.0 s.] | Conflict: the long-form tutorial and vlog beat sheets pushed end holds to 5.4 s and over 5 s, above the eyes end-card ceiling of 4.5 s (eyes/frames)."
+    "notes": "Set today by: patterns/structures.json structures.<pattern>.cta.min_hold_s (a pack default outside mp plan). | Resolved 21 Oct: minimum 1.8 s after the motion settles (3.0 s when fine print or a URL must be read); on picture at most 4.5 s (eyes/frames) unless the plan declares a quiet hold, which may run to 9 s (ears/structure). Launch films that hold 3-10 s use the declared hold. | lint_shotlist.end_hold_s (1.8 s) and eyes/frames (endcard hold <= 4.5 s) also check it; eyes/readability asks 3-4.5 s for an endcard, stricter than the 1.8 s floor. Decelerate into the card (breath_out); on a loop replace the card with a small tag. | Merged: The end card holds at least 1.8 s after its motion settles and at most 4.5 s, starting at 80-92% of a 15-30 s ad. [house; Pack default for ad end cards; the launch-film window is a practitioner range.] | patterns/ctas.json launch.film holds the end card 3-10 s (practitioner), above eyes/frames endcard_hold_max_s 4.5; a YouTube end screen needs the last 5-20 s of a video of 25 s or more. | Merged: Hold the end card at least 1.8 s after its motion settles, and 3-4.5 s when fine print must be read. [house; pack defaults; the story linter checks 1.8 s and eyes reads a final freeze of up to 4.5 s as an end card.] | Two tiers, not a conflict: 1.8 s for a line and logo, 3-4.5 s with fine print. On a loop, replace the end card with a small tag at about 0.8 opacity outside the bottom 35%. | Merged: The end card is minimal (wordmark, URL, one verb) and holds at least 1.8 s after motion settles; launch films hold it 3-10 s. [house; house CTA default; launch study end cards held 3-10 s (one wordmark held 10 s).] | Conflict: eyes/frames and eyes/readability cap an endcard hold at 3-4.5 s, while launch end cards run to 10 s and quiet holds to 9 s; structure_check.check_cta has min_hold_s. | Merged: An end card holds 3-4.5 s with few enough words to read in that time; a 2.3 s end card read at 2.9 words/s. [measured; Plan scores: a podcast-clip end card at 2.3 s (2.9 words/s) was lengthened; a founder end line was cut to 4 words; the course end hold set to 3.0 s.] | Conflict: the long-form tutorial and vlog beat sheets pushed end holds to 5.4 s and over 5 s, above the eyes end-card ceiling of 4.5 s (eyes/frames)."
   },
   {
     "id": "pacing.founder_open",
@@ -531,15 +531,15 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_pace",
-      "default": "patterns/structures.json structures.founder-story.sections.hook (asl_s 3-12, music 0.0)",
+      "check": "lint.structure.score",
+      "default": null,
       "part": "templates/founder-story"
     },
     "status": "enforced",
     "conflicts_with": [
       "pacing.hook_three_states"
     ],
-    "notes": "The music level is a pattern default, not checked. Founder and agency-polish norms are two presets, not one."
+    "notes": "Set today by: patterns/structures.json structures.founder-story.sections.hook (asl_s 3-12, music 0.0) (a pack default outside mp plan). | The music level is a pattern default, not checked. Founder and agency-polish norms are two presets, not one."
   },
   {
     "id": "pacing.front_loaded_cuts",
@@ -676,12 +676,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "cuts/patterns.json interrupts",
+      "default": null,
       "part": "cuts/interrupts"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "Levels: 1 punch-in / caption emphasis / new angle / scale punch; 2 B-roll, text card, whip, zoom-out, colour field; 3 smash, glitch, flash + music drop, format switch. cuts/cutgen.py lint_interrupts checks generated ladders only; no check reads a finished plan. edit.md 6.1 gives hype-ad cadence as minor 1.5 s, medium 4 s. | Merged: Schedule interrupts at about 2.5 s (minor), 5 s (medium) and 9 s (major, >= 6 s apart, never two within 1.5 s) with 25% jitter, and never let four consecutive 5 s windows each escalate. [house; house reconciliation [H] of a practitioner 3-5 s [P] and a vendor 2-4 s [U] cadence.] | lint-interrupts exits 1; the template plan lint does not run it unless a template calls lint_interrupts."
+    "notes": "Set today by: cuts/patterns.json interrupts (a pack default outside mp plan). | Levels: 1 punch-in / caption emphasis / new angle / scale punch; 2 B-roll, text card, whip, zoom-out, colour field; 3 smash, glitch, flash + music drop, format switch. cuts/cutgen.py lint_interrupts checks generated ladders only; no check reads a finished plan. edit.md 6.1 gives hype-ad cadence as minor 1.5 s, medium 4 s. | Merged: Schedule interrupts at about 2.5 s (minor), 5 s (medium) and 9 s (major, >= 6 s apart, never two within 1.5 s) with 25% jitter, and never let four consecutive 5 s windows each escalate. [house; house reconciliation [H] of a practitioner 3-5 s [P] and a vendor 2-4 s [U] cadence.] | lint-interrupts exits 1; the template plan lint does not run it unless a template calls lint_interrupts."
   },
   {
     "id": "pacing.length_30_38",
@@ -717,11 +717,11 @@
       }
     ],
     "enforce": {
-      "check": null,
+      "check": "lint.pacing.length",
       "default": null,
       "part": null
     },
-    "status": "prose-only",
+    "status": "enforced",
     "conflicts_with": [],
     "notes": "Person-led films run longer and still graded well: a tier-A founder film (round 8) is 82 s and the tier-A* story hero is 73 s. structure_check length windows are wider (saas-launch 30-120 s)."
   },
@@ -856,7 +856,7 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_pace",
+      "check": "lint.structure.score",
       "default": null,
       "part": null
     },
@@ -893,7 +893,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/pacing",
+      "check": "lint.eyes.pacing",
       "default": null,
       "part": null
     },
@@ -978,7 +978,7 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_pace",
+      "check": "lint.structure.score",
       "default": null,
       "part": null
     },
@@ -1020,7 +1020,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.same_scale_run",
+      "check": "lint.shotlist.same_scale_run",
       "default": null,
       "part": null
     },
@@ -1064,13 +1064,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_pace",
-      "default": "patterns/structures.json structures.<pattern>.sections[].asl_s",
+      "check": "lint.structure.score",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Short-form hooks invert the feature-film prologue: the hook is fast (three visual states in 3 s), not long."
+    "notes": "Set today by: patterns/structures.json structures.<pattern>.sections[].asl_s (a pack default outside mp plan). | Short-form hooks invert the feature-film prologue: the hook is fast (three visual states in 3 s), not long."
   },
   {
     "id": "pacing.state_change_every_1_2s",
@@ -1169,13 +1169,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/pacing",
-      "default": "patterns/structures.json structures.saas-feature-drop.change_every_s_max",
+      "check": "lint.eyes.pacing",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "structure_check.check_pace scores continuous films (proof-film, saas-feature-drop, data-story, process-howto) against change_every_s_max 3.5 s from plan.audio.events. | Merged: Something visible or audible changes at least every 3.5 s; a static hold warns at 3.5 s and fails at 7 s unless the plan marks it as a hold. [house; house default R4 [H].] | Explainer recipe: no gap over 3.5 s outside a planned hold. Critic Variety row asks for a visible change every 2-4 s. | Merged: Something visible lands at least every 3.5 s outside a declared hold; in one-canvas films each camera beat, node or highlight is the event. [measured; The proof demo had three 4.0-4.3 s stretches with no event; short-film placeholder plates left 4.4-5.5 s gaps (pace 0); explainer and data renders failed eyes 'frames' / 'pacing' on 19 Oct.] | eyes/pacing (static hold warn 3.5 s, fail 7 s) catches it on the render."
+    "notes": "Set today by: patterns/structures.json structures.saas-feature-drop.change_every_s_max (a pack default outside mp plan). | structure_check.check_pace scores continuous films (proof-film, saas-feature-drop, data-story, process-howto) against change_every_s_max 3.5 s from plan.audio.events. | Merged: Something visible or audible changes at least every 3.5 s; a static hold warns at 3.5 s and fails at 7 s unless the plan marks it as a hold. [house; house default R4 [H].] | Explainer recipe: no gap over 3.5 s outside a planned hold. Critic Variety row asks for a visible change every 2-4 s. | Merged: Something visible lands at least every 3.5 s outside a declared hold; in one-canvas films each camera beat, node or highlight is the event. [measured; The proof demo had three 4.0-4.3 s stretches with no event; short-film placeholder plates left 4.4-5.5 s gaps (pace 0); explainer and data renders failed eyes 'frames' / 'pacing' on 19 Oct.] | eyes/pacing (static hold warn 3.5 s, fail 7 s) catches it on the render."
   },
   {
     "id": "pacing.style_ladder",
@@ -1259,11 +1259,11 @@
       }
     ],
     "enforce": {
-      "check": "eyes/pacing",
+      "check": "lint.eyes.pacing",
       "default": null,
       "part": "cuts/beat/every_beat"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [
       "pacing.new_state_every_3s",
       "pacing.new_thing_every_2_4s",
@@ -1318,12 +1318,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "cuts/patterns.json talking_head.autocut, split.broll_lead, talking_head.beat_hold; plan.autocut; cuts/patterns.json talking_head.punch_in",
+      "default": null,
       "part": "templates/talking-head"
     },
-    "status": "default",
+    "status": "part",
     "conflicts_with": [],
-    "notes": "Multi-voice docs: speaker changes in the breath between lines, never inside a word; B-roll cuts inside sentences on purpose. Crash zooms count as punch-ins. | Merged: Talking-head B-roll starts 150 ms before the VO line it illustrates, not before 2.0 s into the piece, in 1.2-3.0 s inserts covering 35-50% of runtime. [craft; Practitioner talking-head guides (heavy edits run B-roll for roughly half the runtime); offsets are house.] | Prefer specific B-roll (the exact action described) over generic."
+    "notes": "Set today by: cuts/patterns.json talking_head.autocut, split.broll_lead, talking_head.beat_hold; plan.autocut; cuts/patterns.json talking_head.punch_in (a pack default outside mp plan). | Multi-voice docs: speaker changes in the breath between lines, never inside a word; B-roll cuts inside sentences on purpose. Crash zooms count as punch-ins. | Merged: Talking-head B-roll starts 150 ms before the VO line it illustrates, not before 2.0 s into the piece, in 1.2-3.0 s inserts covering 35-50% of runtime. [craft; Practitioner talking-head guides (heavy edits run B-roll for roughly half the runtime); offsets are house.] | Prefer specific B-roll (the exact action described) over generic."
   },
   {
     "id": "pacing.tier_a_length_bimodal",
@@ -1460,13 +1460,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_pace",
-      "default": "patterns/structures.json structures.trailer.sections[].asl_s",
+      "check": "lint.structure.score",
+      "default": null,
       "part": "cuts/trailer/accelerate3Act"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "check_pace scores the per-act ASL bands (act1 2-4, act2 1-2, act3 0.4-1.2); the beat ladder itself is generated by cuts/trailer_plan.py and templates/trailer. White flash frames at most one per two bars."
+    "notes": "Set today by: patterns/structures.json structures.trailer.sections[].asl_s (a pack default outside mp plan). | check_pace scores the per-act ASL bands (act1 2-4, act2 1-2, act3 0.4-1.2); the beat ladder itself is generated by cuts/trailer_plan.py and templates/trailer. White flash frames at most one per two bars."
   },
   {
     "id": "pacing.transition_needs_reason",
@@ -1494,7 +1494,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.transition_reason",
+      "check": "lint.shotlist.transition_reason",
       "default": null,
       "part": null
     },

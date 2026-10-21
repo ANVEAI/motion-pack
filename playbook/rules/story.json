@@ -60,7 +60,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/ab_replay",
+      "check": "lint.ears.ab_replay",
       "default": null,
       "part": "cuts/story/abReplay"
     },
@@ -162,13 +162,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_timing",
-      "default": "patterns/structures.json character-spot",
+      "check": "lint.structure.score",
+      "default": "plan.beats",
       "part": "templates/character-spot"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "If it needs two setups, it is two spots."
+    "notes": "Set today by: patterns/structures.json character-spot (a pack default outside mp plan). | If it needs two setups, it is two spots."
   },
   {
     "id": "story.climax_in_world",
@@ -345,13 +345,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_cta",
-      "default": "patterns/structures.json structures.<pattern>.cta",
+      "check": "lint.structure.score",
+      "default": "plan.beats",
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "One CTA, not three, with a specific phrase; urgency only if true. No measured study of short-form CTA timing exists."
+    "notes": "Set today by: patterns/structures.json structures.<pattern>.cta (a pack default outside mp plan). | One CTA, not three, with a specific phrase; urgency only if true. No measured study of short-form CTA timing exists."
   },
   {
     "id": "story.cutdown_launch_order",
@@ -399,12 +399,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "patterns/structures.json structures.<pattern>.cutdowns",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "edit.md 6 s bumper: hook 0-2 s, product 2-4.5 s, end card 4.5-6 s (includes a hook; structures ad-30 6 s cut drops it). Kept sections are re-timed to their share of the pattern. | Merged: Plan 30, 15 and 6 s cut-downs of every film from one master by keeping listed sections (fold the problem into the hook, drop proof under 45 s). [craft; Launch practitioners ask for 30/15/6 s cut-downs; the per-structure section lists are our inference.] | No renderer re-times the sections yet."
+    "notes": "Set today by: patterns/structures.json structures.<pattern>.cutdowns (a pack default outside mp plan). | edit.md 6 s bumper: hook 0-2 s, product 2-4.5 s, end card 4.5-6 s (includes a hook; structures ad-30 6 s cut drops it). Kept sections are re-timed to their share of the pattern. | Merged: Plan 30, 15 and 6 s cut-downs of every film from one master by keeping listed sections (fold the problem into the hook, drop proof under 45 s). [craft; Launch practitioners ask for 30/15/6 s cut-downs; the per-structure section lists are our inference.] | No renderer re-times the sections yet."
   },
   {
     "id": "story.cutdown_trailer_order",
@@ -445,12 +445,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "cuts/patterns.json trailer.cutdown15",
+      "default": null,
       "part": "cuts/trailer/cutdown15"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "Conflict: patterns/structures.json trailer.cutdowns keeps 30 s = coldopen, act3, title, date and 15 s = act3, title, date (no cold open). The cuts plan is better specified (keeps the cold open and the silence). The score is re-rendered for each cut in whole bars per act. cuts/trailer/cutdown30 is the 30 s part."
+    "notes": "Set today by: cuts/patterns.json trailer.cutdown15 (a pack default outside mp plan). | Conflict: patterns/structures.json trailer.cutdowns keeps 30 s = coldopen, act3, title, date and 15 s = act3, title, date (no cold open). The cuts plan is better specified (keeps the cold open and the silence). The score is re-rendered for each cut in whole bars per act. cuts/trailer/cutdown30 is the 30 s part."
   },
   {
     "id": "story.degrading_problem_ladder",
@@ -526,13 +526,13 @@
       }
     ],
     "enforce": {
-      "check": "cuts/story45.py walkthrough",
+      "check": null,
       "default": null,
       "part": "cuts/story/diagramWalkthrough"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "Merged: A voice-led diagram explainer advances one step per sentence, only in a speech gap (at gap start + 2 frames), about every 3-6 s, with no hard cuts, and holds the end card 3-8 s on near-silence. [measured-A; One tier-A reference (round 4/5) had 14 speech gaps of 0.3-0.5 s, about one every 4 s, with the diagram advancing in them; the step and end-hold ranges are house.] | Single reference; tune on renders."
+    "notes": "Tools that touch it today: cuts/story45.py walkthrough. | Merged: A voice-led diagram explainer advances one step per sentence, only in a speech gap (at gap start + 2 frames), about every 3-6 s, with no hard cuts, and holds the end card 3-8 s on near-silence. [measured-A; One tier-A reference (round 4/5) had 14 speech gaps of 0.3-0.5 s, about one every 4 s, with the diagram advancing in them; the step and end-hold ranges are house.] | Single reference; tune on renders."
   },
   {
     "id": "story.explainer_beats",
@@ -580,13 +580,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_timing",
-      "default": "patterns/structures.json structures.explainer.sections",
+      "check": "lint.structure.score",
+      "default": "plan.beats",
       "part": "templates/explainer-diagram"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: patterns/structures.json structures.explainer.sections (a pack default outside mp plan)."
   },
   {
     "id": "story.explainer_complication",
@@ -752,12 +752,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "templates/multi-voice-doc",
+      "default": null,
       "part": "cuts/story/voicesColdOpen"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "Real people who agreed to speak only; never stage a testimonial. | Merged: A documentary-style launch opens on 4-6 different faces in cuts of 0.5-1.3 s inside the first 6 s, with audio leading each cut and no name, title or product before the lead speaker's line. [measured-A; One tier-A round-4 launch film (153 s, 3.23x followers, 42 cuts) shows five faces in five seconds before any name; n = 1.] | Cut lengths and the J lead are the part's defaults, not values measured on the reference."
+    "notes": "Set today by: templates/multi-voice-doc (a pack default outside mp plan). | Real people who agreed to speak only; never stage a testimonial. | Merged: A documentary-style launch opens on 4-6 different faces in cuts of 0.5-1.3 s inside the first 6 s, with audio leading each cut and no name, title or product before the lead speaker's line. [measured-A; One tier-A round-4 launch film (153 s, 3.23x followers, 42 cuts) shows five faces in five seconds before any name; n = 1.] | Cut lengths and the J lead are the part's defaults, not values measured on the reference."
   },
   {
     "id": "story.launch_one_defensible_number",
@@ -852,13 +852,13 @@
       }
     ],
     "enforce": {
-      "check": "plan.lintClaims",
+      "check": null,
       "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "The chart part is planned, not built; digits on it still need a source (plan.lintClaims fails without one)."
+    "notes": "Tools that touch it today: plan.lintClaims. | The chart part is planned, not built; digits on it still need a source (plan.lintClaims fails without one)."
   },
   {
     "id": "story.one_gag_one_feature",
@@ -1021,7 +1021,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.turn_window",
+      "check": "lint.shotlist.turn_window",
       "default": null,
       "part": null
     },
@@ -1092,14 +1092,14 @@
     ],
     "enforce": {
       "check": null,
-      "default": "patterns/structures.json",
+      "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [
       "sound.quiet_hold_ending"
     ],
-    "notes": "No beat-sheet pattern covers a 20-35 s story short, so structure_check cannot score it. | Also: trim a dead last 1-2 s [P]; the exception is a planned quiet hold. | Merged: Put the best payoff in the final 20% of the runtime and nothing after the button except the brand. [house; Beat-sheet default stated as tunable by eye and by retention data.] | Trim a dead ending: if retention dips at the very end, cut the last 1-2 s. | Merged: Each beat pays off bigger than the last, with a surprise at the open, so the middle never goes flat; put the best payoff in the final 20%. [measured; A 28-ad study using zapping and face tracking found surprise holds attention and the velocity of joy holds viewers (summary); the final-20% placement is a house default.]"
+    "notes": "Set today by: patterns/structures.json (a pack default outside mp plan). | No beat-sheet pattern covers a 20-35 s story short, so structure_check cannot score it. | Also: trim a dead last 1-2 s [P]; the exception is a planned quiet hold. | Merged: Put the best payoff in the final 20% of the runtime and nothing after the button except the brand. [house; Beat-sheet default stated as tunable by eye and by retention data.] | Trim a dead ending: if retention dips at the very end, cut the last 1-2 s. | Merged: Each beat pays off bigger than the last, with a surprise at the open, so the middle never goes flat; put the best payoff in the final 20%. [measured; A 28-ad study using zapping and face tracking found surprise holds attention and the velocity of joy holds viewers (summary); the final-20% placement is a house default.]"
   },
   {
     "id": "story.pain_in_familiar_tool",
@@ -1164,7 +1164,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.payoff_before_turn",
+      "check": "lint.shotlist.payoff_before_turn",
       "default": null,
       "part": null
     },
@@ -1266,13 +1266,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_timing",
-      "default": "patterns/structures.json structures.podcast-clip.sections",
+      "check": "lint.structure.score",
+      "default": "plan.beats",
       "part": "templates/podcast-clip"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "A Short over 60 s with an active music copyright claim is blocked (platform spec): keep beds out unless owned."
+    "notes": "Set today by: patterns/structures.json structures.podcast-clip.sections (a pack default outside mp plan). | A Short over 60 s with an active music copyright claim is blocked (platform spec): keep beds out unless owned."
   },
   {
     "id": "story.problem_pivot_shape",
@@ -1324,13 +1324,13 @@
       }
     ],
     "enforce": {
-      "check": "cuts/story6.py check_problem_pivot",
+      "check": null,
       "default": null,
       "part": "cuts/story/problemPivot"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "One tier-B film: defaults to tune, not a shape proven by reach. | Merged: A zero-cut problem-pivot film runs a 3-beat problem ladder (2-2.5 s a beat), a 1.5-2 s audio gap with at least 1 s of true silence, a pivot where bass, bed, colour and brand line arrive within about 0.1 s, a value ladder (about 3 s a beat) and a quiet hold of at least 2 s. [craft; round 6: one tier-B (boosted-looking, an inference) and one tier-C reference; reception unproven, starting values only.] | cuts/story6.py check_problem_pivot re-derives the rules from the generated plan."
+    "notes": "Tools that touch it today: cuts/story6.py check_problem_pivot. | One tier-B film: defaults to tune, not a shape proven by reach. | Merged: A zero-cut problem-pivot film runs a 3-beat problem ladder (2-2.5 s a beat), a 1.5-2 s audio gap with at least 1 s of true silence, a pivot where bass, bed, colour and brand line arrive within about 0.1 s, a value ladder (about 3 s a beat) and a quiet hold of at least 2 s. [craft; round 6: one tier-B (boosted-looking, an inference) and one tier-C reference; reception unproven, starting values only.] | cuts/story6.py check_problem_pivot re-derives the rules from the generated plan."
   },
   {
     "id": "story.product_quiet_turn",
@@ -1367,7 +1367,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.product_before_turn",
+      "check": "lint.shotlist.product_before_turn",
       "default": null,
       "part": null
     },
@@ -1496,12 +1496,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "templates/proof-film/config.mjs",
+      "default": null,
       "part": "templates/proof-film"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "The VO path is cuts/story/diagramWalkthrough."
+    "notes": "Set today by: templates/proof-film/config.mjs (a pack default outside mp plan). | The VO path is cuts/story/diagramWalkthrough."
   },
   {
     "id": "story.protagonist_with_stake",
@@ -1672,13 +1672,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_timing",
-      "default": "patterns/structures.json structures.short-film.sections",
+      "check": "lint.structure.score",
+      "default": null,
       "part": "templates/short-film"
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "check_timing scores section positions; the one-shift and 6 s tag limits are not checked directly."
+    "notes": "Set today by: patterns/structures.json structures.short-film.sections (a pack default outside mp plan). | check_timing scores section positions; the one-shift and 6 s tag limits are not checked directly."
   },
   {
     "id": "story.short_film_turn_window",
@@ -1715,8 +1715,8 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.turn_window",
-      "default": null,
+      "check": "lint.shotlist.turn_window",
+      "default": "plan.beats",
       "part": "templates/film-scene"
     },
     "status": "enforced",
@@ -1771,7 +1771,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.sound_off",
+      "check": "lint.shotlist.sound_off",
       "default": null,
       "part": null
     },
@@ -1806,12 +1806,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "cuts/patterns.json story.lateDrop.speech_gap_range_ms",
+      "default": null,
       "part": "cuts/story/lateDrop"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: cuts/patterns.json story.lateDrop.speech_gap_range_ms (a pack default outside mp plan)."
   },
   {
     "id": "story.state_chip_flip_share",
@@ -1849,13 +1849,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/ab_replay",
-      "default": "cuts/patterns.json story.abReplay flip_share 0.42 (range 0.35-0.6)",
+      "check": "lint.ears.ab_replay",
+      "default": null,
       "part": "ui.stateChip"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "One team's clips: defaults to tune. When silence is the before, the flip comes at about 3 s instead."
+    "notes": "Set today by: cuts/patterns.json story.abReplay flip_share 0.42 (range 0.35-0.6) (a pack default outside mp plan). | One team's clips: defaults to tune. When silence is the before, the flip comes at about 3 s instead."
   },
   {
     "id": "story.state_list_16s",
@@ -2045,13 +2045,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_timing",
-      "default": "patterns/structures.json structures.trailer.sections",
+      "check": "lint.structure.score",
+      "default": "plan.beats",
       "part": "templates/trailer"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "cuts/patterns.json story.trailerArc encodes a different shape from one measured reference: dialogue 30%, build 25%, wall 20%, one question line 5% (2-4 s, bed >= 30 dB down), crescendo 10%, end 10%. Both are tunable; trailerArc is better for dialogue-led trailers. A logo or production card never comes before the cold open."
+    "notes": "Set today by: patterns/structures.json structures.trailer.sections (a pack default outside mp plan). | cuts/patterns.json story.trailerArc encodes a different shape from one measured reference: dialogue 30%, build 25%, wall 20%, one question line 5% (2-4 s, bed >= 30 dB down), crescendo 10%, end 10%. Both are tunable; trailerArc is better for dialogue-led trailers. A logo or production card never comes before the cold open."
   },
   {
     "id": "story.trailer_energy_arc",
@@ -2090,12 +2090,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/bed_trailer_arc",
+      "default": null,
       "part": "cuts/story/trailerArc"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/bed_trailer_arc (a pack default outside mp plan)."
   },
   {
     "id": "story.turn_at_30pct",

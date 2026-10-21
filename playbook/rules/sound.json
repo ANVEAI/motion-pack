@@ -98,15 +98,15 @@
       }
     ],
     "enforce": {
-      "check": "ears/structure",
-      "default": "templates/saas-launch/config.mjs tail (liftS 2.2, fadeS 1.2, bedDb -40)",
+      "check": "lint.sound.tail",
+      "default": "plan.audio.tail",
       "part": null
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [
       "sound.slam_end_hardware"
     ],
-    "notes": "ears/structure classifies the ending shape; ears/loudness keeps the last 0.15 s at digital silence. | Merged: End a launch film on a 2-4 s decay under the held mark rather than a hard cut to silence. [measured-A; 2 of 3 tier-A films end on a decay (3 s under the logo; 2.2 s fade as the wordmark grows); the third slams then fades 0.7 s; the tier-C manifesto fades 4 s.] | ears/loudness only checks the last 0.15 s is digital silence. | Merged: Default the ending to a decay at least 10 dB under the body over the last 2 s; use a slam for hype teasers and a quiet hold for explainer end cards. [measured-A; End shapes of the 12 tier-A/A- round-4/5 pieces with audio: decay 8, slam 3, quiet hold 1; 17 of all 28 end at least 10 dB under the body.] | ears/structure reports the end shape but does not warn on it; the last 0.15 s of digital silence is enforced by ears/loudness. | Merged: A hero film ends on a ring-out or quiet hold (last 2 s at least 10 dB under the body; the trailer bed holds 40+ dB under its hit), never a fade-out; loops instead wrap their tail into the first 300 ms. [house; Pack ending rule; ring-outs read as designed, fades read as the clip ended (practitioner belief).] | ears classifies the ending (slam, sustained sub, quiet hold, decay) and judges loop seams with --loop (seam warn 6 dB); the 0.15 s zero tail is delivery.clean_tail."
+    "notes": "Tools that touch it today: ears/structure. Set today by: templates/saas-launch/config.mjs tail (liftS 2.2, fadeS 1.2, bedDb -40) (a pack default outside mp plan). | ears/structure classifies the ending shape; ears/loudness keeps the last 0.15 s at digital silence. | Merged: End a launch film on a 2-4 s decay under the held mark rather than a hard cut to silence. [measured-A; 2 of 3 tier-A films end on a decay (3 s under the logo; 2.2 s fade as the wordmark grows); the third slams then fades 0.7 s; the tier-C manifesto fades 4 s.] | ears/loudness only checks the last 0.15 s is digital silence. | Merged: Default the ending to a decay at least 10 dB under the body over the last 2 s; use a slam for hype teasers and a quiet hold for explainer end cards. [measured-A; End shapes of the 12 tier-A/A- round-4/5 pieces with audio: decay 8, slam 3, quiet hold 1; 17 of all 28 end at least 10 dB under the body.] | ears/structure reports the end shape but does not warn on it; the last 0.15 s of digital silence is enforced by ears/loudness. | Merged: A hero film ends on a ring-out or quiet hold (last 2 s at least 10 dB under the body; the trailer bed holds 40+ dB under its hit), never a fade-out; loops instead wrap their tail into the first 300 ms. [house; Pack ending rule; ring-outs read as designed, fades read as the clip ended (practitioner belief).] | ears classifies the ending (slam, sustained sub, quiet hold, decay) and judges loop seams with --loop (seam warn 6 dB); the 0.15 s zero tail is delivery.clean_tail."
   },
   {
     "id": "sound.dip_before_drop",
@@ -224,7 +224,7 @@
       "default": null,
       "part": "cuts/story/fidelityLadder"
     },
-    "status": "prose-only",
+    "status": "part",
     "conflicts_with": [],
     "notes": "ears/structure only bounds a planned gap at 4 s; nothing requires the dropout before a reveal. | ears/structure accepts a planned gap up to 4 s; cuts/story6.py check_problem_pivot checks the bed and bass return on the pivot frame. | Merged: Before a reveal on a music hit, drop the bed for 0.2-5 s (a mid-film reset dip runs 1-3 s at -39 to -52 dBFS) and return with the hit on the reveal frame. [measured; launch study: one hero sizzle used a 5 s dropout then +20 dB, another landed the product with +8 dB at 13 s; round 4/5 measured reset dips at -39 to -52 dBFS.] | Mark it plan.audio.quiet kind dip or gap (<= 4 s) or ears warns of dead air. | Merged: Before each of the biggest hits the soundtrack pulls to near-silence for 1.5-2.3 s. [measured; A 37.7 s proof clip that plays as a short film (thread child, tier B by rule, read as C) has vacuums at 19.3-20.9 s and 25.2-27.5 s before its two biggest moments.] | silenceBeforeHit allows 1.0-3.0 s; ears/structure accepts a planned dip/gap <= 4 s and warns on unplanned near-silence >= 2 s."
   },
@@ -290,13 +290,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/speech",
-      "default": "music/mixer.py duck_envelope (depth 9 dB; cue sheet vo.duck_db)",
+      "check": "lint.ears.speech",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "ears gives verdicts only with a transcript. | Merged: The bed ducks >= 9 dB under speech (warn under 6 dB); the proof demo's guide-voice master measured an 11.6 dB median duck with one line warned. [measured; One VO mix of the proof demo measured a median 11.6 dB duck (one line warned); cues under the voice read as masked.] | Template defaults differ: proof-film duckDb 16, the explainer kit 12, the mixer 9. | Merged: Duck the music bed at least 9 dB under every voice line (12 dB for VO-led films) with speech at least 10 dB over the music. [house; house mixer default; own measurement: a nominal 9 dB duck reads 8.7-8.9 dB in ears, so VO-led films use 12.] | Conflict inside sources: hard rules and L9 say 9 dB; multi-voice-doc and explainers 12 dB; RECIPE U 12-14 dB; a pulsing proof bed needed 16 dB to read 11-13."
+    "notes": "Set today by: music/mixer.py duck_envelope (depth 9 dB; cue sheet vo.duck_db) (a pack default outside mp plan). | ears gives verdicts only with a transcript. | Merged: The bed ducks >= 9 dB under speech (warn under 6 dB); the proof demo's guide-voice master measured an 11.6 dB median duck with one line warned. [measured; One VO mix of the proof demo measured a median 11.6 dB duck (one line warned); cues under the voice read as masked.] | Template defaults differ: proof-film duckDb 16, the explainer kit 12, the mixer 9. | Merged: Duck the music bed at least 9 dB under every voice line (12 dB for VO-led films) with speech at least 10 dB over the music. [house; house mixer default; own measurement: a nominal 9 dB duck reads 8.7-8.9 dB in ears, so VO-led films use 12.] | Conflict inside sources: hard rules and L9 say 9 dB; multi-voice-doc and explainers 12 dB; RECIPE U 12-14 dB; a pulsing proof bed needed 16 dB to read 11-13."
   },
   {
     "id": "sound.gate_bed_on_cuts",
@@ -330,12 +330,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "plan.audio.quiet",
+      "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "ears/structure allows planned dips (<= 4 s) but does not check that a dip starts and ends on a cut. | ears/structure checks a planned dip/gap <= 4 s and warns on unplanned near-silence >= 2 s; alignment of the dip to cuts is not checked. plan.audio.quiet is a planner key, not set by default."
+    "notes": "Set today by: plan.audio.quiet (a pack default outside mp plan). | ears/structure allows planned dips (<= 4 s) but does not check that a dip starts and ends on a cut. | ears/structure checks a planned dip/gap <= 4 s and warns on unplanned near-silence >= 2 s; alignment of the dip to cuts is not checked. plan.audio.quiet is a planner key, not set by default."
   },
   {
     "id": "sound.hero_hit_over_bed",
@@ -387,12 +387,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/mixer.py over-bed solver (hero +4.5, logo +5)",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "If the bed is loud in the hit window, do not push the hit: swap its voicing to a sustained bright 2.2-5.3 kHz partial, which buys about 9 dB more K-weighted energy per unit of peak (measured on one earlier film). | Merged: Every hit sits 3-6 dB over the bed (K-weighted, first 60 ms), stays audible alone (own level at least -6 dB) and takes at most 1.5 dB of limiter gain reduction. [house; House acceptance line; measured builds passed at +3.36 to +5.23 dB with limiter reduction up to 1.32 dB.] | Without the own-level floor a solver once passed by trimming three ticks to -30 dB: look and listen, not just the table. If every hit is low in round 0, lower the bed first."
+    "notes": "Set today by: music/mixer.py over-bed solver (hero +4.5, logo +5) (a pack default outside mp plan). | If the bed is loud in the hit window, do not push the hit: swap its voicing to a sustained bright 2.2-5.3 kHz partial, which buys about 9 dB more K-weighted energy per unit of peak (measured on one earlier film). | Merged: Every hit sits 3-6 dB over the bed (K-weighted, first 60 ms), stays audible alone (own level at least -6 dB) and takes at most 1.5 dB of limiter gain reduction. [house; House acceptance line; measured builds passed at +3.36 to +5.23 dB with limiter reduction up to 1.32 dB.] | Without the own-level floor a solver once passed by trimming three ticks to -30 dB: look and listen, not just the table. If every hit is low in round 0, lower the bed first."
   },
   {
     "id": "sound.hit_hierarchy_spacing",
@@ -433,7 +433,7 @@
       }
     ],
     "enforce": {
-      "check": "music/mixer.py lint_cues (R4)",
+      "check": "lint.mix.cues",
       "default": null,
       "part": null
     },
@@ -501,15 +501,15 @@
       }
     ],
     "enforce": {
-      "check": "ears/sync",
-      "default": "music/mixer.py Mix.add_cue (anchor at (frame + 1) x SR / fps)",
+      "check": "lint.ears.sync",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [
       "sound.picture_leads_sound"
     ],
-    "notes": "Resolved 21 Oct: not a contradiction: F+1 (sound one frame after picture) is the lower edge of the measured 1-4 frame picture-leads window; the pack keeps F+1 as the testable default, accepts F+1..F+4, and never lets sound lead picture. | Applies to sound effects; recorded speech keeps its recorded lip-sync. Alternative view: picture leading sound by 1-4 frames is also inside the detectability windows (see sound.picture_leads_sound_window); the pack picks exactly one frame so the anchor is testable. | Merged: A sound cue for visual frame F puts its anchor sample at (F + 1) x 48000 / fps; a riser ends one frame before the hit and a whoosh peaks on the cut. [house; house hit contract [H]; ears measures 0.0 frames off on the pack's own mixes.] | Quantise cue times to whole frames: a half-frame time rounds two ways between JS and Python. | Merged: Each hit's designated peak lands one frame after its visual event, on sample (F+1) x SR / fps (x 800 at 48 kHz and 60 fps), with tonal peaks within 1 sample and noise or texture within 1 frame or 1 ms. [measured; Tonal timing error was 0 samples in all 4 measured builds; waveshapers and phase-0 sines put peaks milliseconds late.] | A sound event's frame is the VISUAL frame; the engine adds the one-frame delay, so picture and sound cannot desync. In mixed groups noise peaks 2 ms before the tonal crest. | Merged: Each cue's audio lands one frame after its picture event (F+1), and risers end one frame before the hit. [house; Pack rule R1, tested in the pack; the round-8 references point the same way (picture first) but measure a 1-4 frame lead.] | Also checked by skills/spec-to-loop/scripts/measure_audio.py (hit on F+1)."
+    "notes": "Set today by: music/mixer.py Mix.add_cue (anchor at (frame + 1) x SR / fps) (a pack default outside mp plan). | Resolved 21 Oct: not a contradiction: F+1 (sound one frame after picture) is the lower edge of the measured 1-4 frame picture-leads window; the pack keeps F+1 as the testable default, accepts F+1..F+4, and never lets sound lead picture. | Applies to sound effects; recorded speech keeps its recorded lip-sync. Alternative view: picture leading sound by 1-4 frames is also inside the detectability windows (see sound.picture_leads_sound_window); the pack picks exactly one frame so the anchor is testable. | Merged: A sound cue for visual frame F puts its anchor sample at (F + 1) x 48000 / fps; a riser ends one frame before the hit and a whoosh peaks on the cut. [house; house hit contract [H]; ears measures 0.0 frames off on the pack's own mixes.] | Quantise cue times to whole frames: a half-frame time rounds two ways between JS and Python. | Merged: Each hit's designated peak lands one frame after its visual event, on sample (F+1) x SR / fps (x 800 at 48 kHz and 60 fps), with tonal peaks within 1 sample and noise or texture within 1 frame or 1 ms. [measured; Tonal timing error was 0 samples in all 4 measured builds; waveshapers and phase-0 sines put peaks milliseconds late.] | A sound event's frame is the VISUAL frame; the engine adds the one-frame delay, so picture and sound cannot desync. In mixed groups noise peaks 2 ms before the tonal crest. | Merged: Each cue's audio lands one frame after its picture event (F+1), and risers end one frame before the hit. [house; Pack rule R1, tested in the pack; the round-8 references point the same way (picture first) but measure a 1-4 frame lead.] | Also checked by skills/spec-to-loop/scripts/measure_audio.py (hit on F+1)."
   },
   {
     "id": "sound.inhale_before_word",
@@ -570,12 +570,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/mixer.py _window (riser or snd.trailer.* with anchor:end)",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py _window (riser or snd.trailer.* with anchor:end) (a pack default outside mp plan)."
   },
   {
     "id": "sound.limiter_budget",
@@ -604,12 +604,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/mixer.py render (limiter budget per cue)",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py render (limiter budget per cue) (a pack default outside mp plan)."
   },
   {
     "id": "sound.loud_open_type_led",
@@ -641,7 +641,7 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_hook",
+      "check": "lint.sound.first_sound",
       "default": null,
       "part": null
     },
@@ -762,7 +762,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/structure",
+      "check": null,
       "default": null,
       "part": null
     },
@@ -770,7 +770,7 @@
     "conflicts_with": [
       "sound.quiet_open"
     ],
-    "notes": "Breaks the pack's planned quiet open cap of 2.0 s (ears/structure max_s.open, structure_check.check_hook): plan it as a 'gap' or raise the cap for proof clips; the frame must move (slow motion) through the silence."
+    "notes": "Tools that touch it today: ears/structure. | Breaks the pack's planned quiet open cap of 2.0 s (ears/structure max_s.open, structure_check.check_hook): plan it as a 'gap' or raise the cap for proof clips; the frame must move (slow motion) through the silence."
   },
   {
     "id": "sound.no_dead_air",
@@ -799,7 +799,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/structure",
+      "check": "lint.ears.structure",
       "default": null,
       "part": null
     },
@@ -917,7 +917,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/structure",
+      "check": "lint.ears.structure",
       "default": null,
       "part": null
     },
@@ -949,13 +949,13 @@
       }
     ],
     "enforce": {
-      "check": "templates/_hw/hw.test.mjs (one sub hit, the drop on the reveal bar)",
+      "check": null,
       "default": null,
       "part": "sfx/hw/sub_hit"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "The test covers pack templates only; the hum stop uses cue untilT (templates/_shared/audio.py)."
+    "notes": "Tools that touch it today: templates/_hw/hw.test.mjs (one sub hit, the drop on the reveal bar). | The test covers pack templates only; the hum stop uses cue untilT (templates/_shared/audio.py)."
   },
   {
     "id": "sound.one_sound_per_ui_action",
@@ -988,13 +988,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/sync",
-      "default": "templates/_shared/saas/plan-kit.mjs gfxCues",
+      "check": "lint.ears.sync",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "Small sample. ears/sync scores motion events on onsets in continuous mode."
+    "notes": "Set today by: templates/_shared/saas/plan-kit.mjs gfxCues (a pack default outside mp plan). | Small sample. ears/sync scores motion events on onsets in continuous mode."
   },
   {
     "id": "sound.phone_check",
@@ -1027,13 +1027,13 @@
       }
     ],
     "enforce": {
-      "check": "music/mixer.py lint_cues (R12)",
-      "default": "music/mixer.py render (phone_ok per cue)",
+      "check": "lint.mix.cues",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py render (phone_ok per cue) (a pack default outside mp plan)."
   },
   {
     "id": "sound.picture_leads_sound",
@@ -1130,7 +1130,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/structure",
+      "check": "lint.ears.structure",
       "default": null,
       "part": null
     },
@@ -1171,12 +1171,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/mixer.py Mix._bed_with_vacuum",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py Mix._bed_with_vacuum (a pack default outside mp plan)."
   },
   {
     "id": "sound.pre_sting_silence",
@@ -1279,8 +1279,8 @@
       }
     ],
     "enforce": {
-      "check": "ears/structure",
-      "default": "templates/proof-film plan.audio.quiet hold",
+      "check": "lint.ears.structure",
+      "default": "plan.audio.tail",
       "part": null
     },
     "status": "enforced",
@@ -1288,7 +1288,7 @@
       "pacing.end_card_hold",
       "story.open_loop_and_late_payoff"
     ],
-    "notes": "ears calls a tail a quiet hold only if 10 dB under the body AND flat (p90-p10 within 8 dB). Conflicts with 'trim a dead last 1-2 s' and eyes endcard hold <= 4.5 s. | Merged: An explainer may hold its end card 2-9 s on near-silence (bed out or below -30 dB), planned as a quiet hold. [measured-A; A tier-A round-5 explainer holds its end card 9 s in silence (tail -64 dB); a tier-B round-6 film holds 2 s at -73.7 dB.] | ears allows a planned hold up to 9 s, but eyes/frames and eyes/readability cap an end card at 4.5 s: a 9 s hold warns in eyes."
+    "notes": "Set today by: templates/proof-film plan.audio.quiet hold (a pack default outside mp plan). | ears calls a tail a quiet hold only if 10 dB under the body AND flat (p90-p10 within 8 dB). Conflicts with 'trim a dead last 1-2 s' and eyes endcard hold <= 4.5 s. | Merged: An explainer may hold its end card 2-9 s on near-silence (bed out or below -30 dB), planned as a quiet hold. [measured-A; A tier-A round-5 explainer holds its end card 9 s in silence (tail -64 dB); a tier-B round-6 film holds 2 s at -73.7 dB.] | ears allows a planned hold up to 9 s, but eyes/frames and eyes/readability cap an end card at 4.5 s: a 9 s hold warns in eyes."
   },
   {
     "id": "sound.quiet_open",
@@ -1344,17 +1344,17 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_hook",
-      "default": "templates/proof-film/config.mjs timing.quietOpenS (1.2 s, planned quiet open)",
+      "check": "lint.sound.quiet_open",
+      "default": "plan.audio.quiet_open",
       "part": null
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [
       "hook.speak_from_frame0_on_camera",
       "sound.loud_open_type_led",
       "sound.mute_open_as_before"
     ],
-    "notes": "Resolved 21 Oct: a quiet open is a format default, not a law: launch-film and proof-clip default to it; a founder speaking on camera and type-led launch films may open at full level (sound.loud_open_type_led, hook.speak_from_frame0_on_camera). Tier A opens quiet no more often than lower tiers (4/12 vs 9/16, round 4/5), so it is a shape, not a reach cause. | Confounded: the boosted-looking films are ad-native and loud from frame 0, so this is a pattern, not a cause. check_hook and ears/structure only accept a planned open of <= 2 s; neither checks the 7-11 dB depth (ears/compare reports it against references). A tier-A founder-on-camera film (round 8, film 02) has no quiet open (+0.2 dB). | Merged: A planned quiet open may sit 9-39 dB under the body for up to 2 s while frame 0 already moves, ending on the first meaningful visual event. [measured-A; 13 of 28 round-4/5 pieces with audio open at least 6 dB quiet; 4 of 12 tier-A/A- do (-9, -19, -32, -39 dB) against 9 of 16 lower-tier pieces.] | Quiet opens are not more common in tier A than below, so this is a permitted shape, not a reach lever. A round-6 tier-C film stays quiet ~8 s, beyond the 2 s cap that check_hook and ears allow. ears/sync waives the frame 0-3 event for a planned open."
+    "notes": "Tools that touch it today: structure_check.check_hook. Set today by: templates/proof-film/config.mjs timing.quietOpenS (1.2 s, planned quiet open) (a pack default outside mp plan). | Resolved 21 Oct: a quiet open is a format default, not a law: launch-film and proof-clip default to it; a founder speaking on camera and type-led launch films may open at full level (sound.loud_open_type_led, hook.speak_from_frame0_on_camera). Tier A opens quiet no more often than lower tiers (4/12 vs 9/16, round 4/5), so it is a shape, not a reach cause. | Confounded: the boosted-looking films are ad-native and loud from frame 0, so this is a pattern, not a cause. check_hook and ears/structure only accept a planned open of <= 2 s; neither checks the 7-11 dB depth (ears/compare reports it against references). A tier-A founder-on-camera film (round 8, film 02) has no quiet open (+0.2 dB). | Merged: A planned quiet open may sit 9-39 dB under the body for up to 2 s while frame 0 already moves, ending on the first meaningful visual event. [measured-A; 13 of 28 round-4/5 pieces with audio open at least 6 dB quiet; 4 of 12 tier-A/A- do (-9, -19, -32, -39 dB) against 9 of 16 lower-tier pieces.] | Quiet opens are not more common in tier A than below, so this is a permitted shape, not a reach lever. A round-6 tier-C film stays quiet ~8 s, beyond the 2 s cap that check_hook and ears allow. ears/sync waives the frame 0-3 event for a planned open."
   },
   {
     "id": "sound.repetition_round_robin",
@@ -1392,13 +1392,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/repetition",
-      "default": "music/mixer.py (seed + occurrence)",
+      "check": "lint.ears.repetition",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "ears treats a repeated plan id as a note up to 6 in 10 s because the mixer already varies takes; mixer lint_cues R9 flags 3+ in 8 events."
+    "notes": "Set today by: music/mixer.py (seed + occurrence) (a pack default outside mp plan). | ears treats a repeated plan id as a note up to 6 in 10 s because the mixer already varies takes; mixer lint_cues R9 flags 3+ in 8 events."
   },
   {
     "id": "sound.riser_ends_frame_before_hit",
@@ -1447,13 +1447,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/sync",
-      "default": "music/mixer.py (risers placed one frame earlier)",
+      "check": "lint.ears.sync",
+      "default": null,
       "part": "sfx/riser/noise_1bar"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "ears/sync checks the end offset; the whole-bar length is a library default (1-, 2-, 4-bar risers at 120 BPM), not checked. | Merged: A riser ends one frame before its hit, the impact lands on the frame of the visual change or up to 1 frame late (never early), and any offset over 1 frame is flagged. [house; Practitioner sound-design guidance (a transition a frame late reads as a mistake) set as the pack's house rule R1.] | A reverse swell or reverse braam ends ON the hit, not one frame before."
+    "notes": "Set today by: music/mixer.py (risers placed one frame earlier) (a pack default outside mp plan). | ears/sync checks the end offset; the whole-bar length is a library default (1-, 2-, 4-bar risers at 120 BPM), not checked. | Merged: A riser ends one frame before its hit, the impact lands on the frame of the visual change or up to 1 frame late (never early), and any offset over 1 frame is flagged. [house; Practitioner sound-design guidance (a transition a frame late reads as a mistake) set as the pack's house rule R1.] | A reverse swell or reverse braam ends ON the hit, not one frame before."
   },
   {
     "id": "sound.room_tone_under_cuts",
@@ -1545,12 +1545,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "patterns/structures.json structures.short-film.sections.turn.sfx_role",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "prose-only",
     "conflicts_with": [],
-    "notes": "sfx_role is descriptive text in the pattern file; no check reads it. | Merged: Drop 200-400 ms of silence just before the turn; in a wordless character spot the music falls to a drone, then true silence, over a 0.5 s freeze where only one small look moves. [craft; Short-film and character-spot grammars from production practice; not measured against reach.] | templates/character-spot has a freeze event in its CONFIG (events.freeze), but no code sets or checks the 200-400 ms gap. | Merged: A 0.3-0.5 s true silence sits immediately before the turn question, at about 30% of a story-led hero. [measured-A; The tier-A* hero of a 1.8M-view launch (distribution-assisted) has true silence 21.8-22.2 s of 73.2 s, right before the turn question.] | cuts/story/problemPivot uses a longer 1.5-2.0 s gap before the pivot; this shorter gap is a different, voice-led shape."
+    "notes": "Set today by: patterns/structures.json structures.short-film.sections.turn.sfx_role (a pack default outside mp plan). | sfx_role is descriptive text in the pattern file; no check reads it. | Merged: Drop 200-400 ms of silence just before the turn; in a wordless character spot the music falls to a drone, then true silence, over a 0.5 s freeze where only one small look moves. [craft; Short-film and character-spot grammars from production practice; not measured against reach.] | templates/character-spot has a freeze event in its CONFIG (events.freeze), but no code sets or checks the 200-400 ms gap. | Merged: A 0.3-0.5 s true silence sits immediately before the turn question, at about 30% of a story-led hero. [measured-A; The tier-A* hero of a 1.8M-view launch (distribution-assisted) has true silence 21.8-22.2 s of 73.2 s, right before the turn question.] | cuts/story/problemPivot uses a longer 1.5-2.0 s gap before the pivot; this shorter gap is a different, voice-led shape."
   },
   {
     "id": "sound.silence_cues_action",
@@ -1589,13 +1589,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/structure",
+      "check": null,
       "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "ears/structure accepts them only if planned (plan.audio.quiet kind dip/gap); unplanned near-silence of 2 s or more warns as dead air."
+    "notes": "Tools that touch it today: ears/structure. | ears/structure accepts them only if planned (plan.audio.quiet kind dip/gap); unplanned near-silence of 2 s or more warns as dead air."
   },
   {
     "id": "sound.silence_under_name",
@@ -1632,11 +1632,11 @@
       }
     ],
     "enforce": {
-      "check": null,
-      "default": null,
+      "check": "lint.sound.name_silence",
+      "default": "plan.audio.name_silence",
       "part": "cuts/story/preStingSilence"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [],
     "notes": "n = 1. preStingSilence implements silence before a sting under a held lockup (1-3 s); here the VO says the name alone in the vacuum and the bed comes back for the tagline with no sting."
   },
@@ -1707,15 +1707,15 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
-      "default": null,
+      "check": "lint.sound.tail",
+      "default": "plan.audio.tail",
       "part": null
     },
-    "status": "prose-only",
+    "status": "enforced",
     "conflicts_with": [
       "sound.decay_tail"
     ],
-    "notes": "Conflicts with the pack's last-0.15 s digital-silence rule in ears/loudness: keep a 0.15 s zero after the slam."
+    "notes": "Tools that touch it today: ears/loudness. | Conflicts with the pack's last-0.15 s digital-silence rule in ears/loudness: keep a 0.15 s zero after the slam."
   },
   {
     "id": "sound.smash_pre_silence",
@@ -1763,12 +1763,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "cuts/patterns.json smash",
+      "default": null,
       "part": "cuts/smash"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "The silence before is what sells it; the loudness and luma minimums are not checked on renders. | Merged: A comic punchline or smash cut is preceded by a 4-8 frame pause (0.13-0.27 s; the smash part uses 200 ms with a 4 ms ramp) and its sound lands on cut + 1 frame. [craft; Comedy timing practice in the mime-spot bundle; not measured.] | Merged: A smash cut is preceded by 200 ms of silence and its hit lands one frame after the cut, with about 12 dB of loudness contrast. [house; house cut pattern.]"
+    "notes": "Set today by: cuts/patterns.json smash (a pack default outside mp plan). | The silence before is what sells it; the loudness and luma minimums are not checked on renders. | Merged: A comic punchline or smash cut is preceded by a 4-8 frame pause (0.13-0.27 s; the smash part uses 200 ms with a 4 ms ramp) and its sound lands on cut + 1 frame. [craft; Comedy timing practice in the mime-spot bundle; not measured.] | Merged: A smash cut is preceded by 200 ms of silence and its hit lands one frame after the cut, with about 12 dB of loudness contrast. [house; house cut pattern.]"
   },
   {
     "id": "sound.speech_over_music",
@@ -1800,7 +1800,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/speech",
+      "check": "lint.ears.speech",
       "default": null,
       "part": null
     },
@@ -1919,12 +1919,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/mixer.py over-bed solver (whoosh +2, ui +4); sfx/manifest.json over_bed_db",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py over-bed solver (whoosh +2, ui +4); sfx/manifest.json over_bed_db (a pack default outside mp plan)."
   },
   {
     "id": "sound.sync_above_chance",
@@ -1973,7 +1973,7 @@
       }
     ],
     "enforce": {
-      "check": "tools/refstudy.py _vs_chance",
+      "check": null,
       "default": null,
       "part": null
     },
@@ -1981,7 +1981,7 @@
     "conflicts_with": [
       "sound.sync_rule_by_mode"
     ],
-    "notes": "Resolved 21 Oct: the raw 60%-within-2-frames share stays the pass line for music-led cut pieces (ears/sync), but a share counts as SYNC only at z >= 2 against its chance level (round 4/5); report both, and never claim sync on a near-chance share. | refstudy reports chance_share, lift, z_vs_chance and reading but nothing fails on it; ears/sync still passes on a raw 60% share. Not yet run on the references themselves."
+    "notes": "Tools that touch it today: tools/refstudy.py _vs_chance. | Resolved 21 Oct: the raw 60%-within-2-frames share stays the pass line for music-led cut pieces (ears/sync), but a share counts as SYNC only at z >= 2 against its chance level (round 4/5); report both, and never claim sync on a near-chance share. | refstudy reports chance_share, lift, z_vs_chance and reading but nothing fails on it; ears/sync still passes on a raw 60% share. Not yet run on the references themselves."
   },
   {
     "id": "sound.sync_rule_by_mode",
@@ -2052,15 +2052,15 @@
       }
     ],
     "enforce": {
-      "check": "ears/sync",
-      "default": "cuts/patterns.json onset_snap",
+      "check": "lint.ears.sync",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [
       "sound.sync_above_chance"
     ],
-    "notes": "Resolved 21 Oct: the raw 60%-within-2-frames share stays the pass line for music-led cut pieces (ears/sync), but a share counts as SYNC only at z >= 2 against its chance level (round 4/5); report both, and never claim sync on a near-chance share. | Set plan.audio.mode; scoring a VO or no-cut film in music mode gives a meaningless fail. A sync share counts only above its chance level (z >= 2): on a busy bed 40-65% on an onset is luck; tools/refstudy.py prints chance_share and z_vs_chance. | Merged: In a music-led edit at least 60% of cuts sit within 2 frames of an audio onset or beat; in a continuous (few-cut) film at least 60% of motion events do; read the share against the chance level of the onset windows. [house; Critic rule; ears reports the chance level because a busy bed at 4 onsets/s puts about half the timeline inside the windows (pack demos read 35-64% chance at 2.7-5 onsets/s).] | Mode vo instead judges speech continuity (no cut inside a word) and needs word timings. cuts/cutgen.py snaps cuts to onsets. | Merged: In music-led, cut-driven pieces put at least 60% of cuts within 2 frames of an onset; judge VO-led films by speech continuity and continuous films by motion events instead. [house; Reference cut sync median is 47.5% over 18 round-4/5 pieces with 10+ cuts; only 1 of 7 tier-A/A- pieces with 10+ cuts reaches 60% (28-60%), while two tier-A round-3 films sit at 61% and 83%.] | The 60% target is a house value, not a reach finding; with 3-5 onsets/s the chance share alone can be 0.35-0.64. | Merged: In a music-led, cut-driven piece at least 60% of cuts sit within 2 frames of a sound onset. [measured; The pack's studied launch and motion films put 45-80% of their cuts within 2 frames of an onset; 60% is the house target for music-led pieces only.] | VO-led and continuous films are scored in their own ears/sync mode, not against 60%. | Merged: Every audible cue anchors on frame F+1 of its event and >= 60% of cuts in a music-led film land within 2 frames of an onset, checked on the delivered file. [measured; 19 Oct run: ears/sync failed on founder-story and film-scene at both aspects (4 of 44 files); the proof demo measured 100% cue anchors on F+1.] | The cause of the founder-story fail is not diagnosed in the notes. | Merged: For a 0-4-cut film, score sync by visual motion events within 2 frames of audio onsets, read against chance, not by cut sync (which is n/a). [inferred; A rule from the pieces' structure (5 of 7 continuous pieces are tier A/A-, cut sync n/a for them); motion sync has not been measured on the references.] | ears --mode continuous applies the 60% raw share to motion events; no tier-A benchmark exists yet."
+    "notes": "Set today by: cuts/patterns.json onset_snap (a pack default outside mp plan). | Resolved 21 Oct: the raw 60%-within-2-frames share stays the pass line for music-led cut pieces (ears/sync), but a share counts as SYNC only at z >= 2 against its chance level (round 4/5); report both, and never claim sync on a near-chance share. | Set plan.audio.mode; scoring a VO or no-cut film in music mode gives a meaningless fail. A sync share counts only above its chance level (z >= 2): on a busy bed 40-65% on an onset is luck; tools/refstudy.py prints chance_share and z_vs_chance. | Merged: In a music-led edit at least 60% of cuts sit within 2 frames of an audio onset or beat; in a continuous (few-cut) film at least 60% of motion events do; read the share against the chance level of the onset windows. [house; Critic rule; ears reports the chance level because a busy bed at 4 onsets/s puts about half the timeline inside the windows (pack demos read 35-64% chance at 2.7-5 onsets/s).] | Mode vo instead judges speech continuity (no cut inside a word) and needs word timings. cuts/cutgen.py snaps cuts to onsets. | Merged: In music-led, cut-driven pieces put at least 60% of cuts within 2 frames of an onset; judge VO-led films by speech continuity and continuous films by motion events instead. [house; Reference cut sync median is 47.5% over 18 round-4/5 pieces with 10+ cuts; only 1 of 7 tier-A/A- pieces with 10+ cuts reaches 60% (28-60%), while two tier-A round-3 films sit at 61% and 83%.] | The 60% target is a house value, not a reach finding; with 3-5 onsets/s the chance share alone can be 0.35-0.64. | Merged: In a music-led, cut-driven piece at least 60% of cuts sit within 2 frames of a sound onset. [measured; The pack's studied launch and motion films put 45-80% of their cuts within 2 frames of an onset; 60% is the house target for music-led pieces only.] | VO-led and continuous films are scored in their own ears/sync mode, not against 60%. | Merged: Every audible cue anchors on frame F+1 of its event and >= 60% of cuts in a music-led film land within 2 frames of an onset, checked on the delivered file. [measured; 19 Oct run: ears/sync failed on founder-story and film-scene at both aspects (4 of 44 files); the proof demo measured 100% cue anchors on F+1.] | The cause of the founder-story fail is not diagnosed in the notes. | Merged: For a 0-4-cut film, score sync by visual motion events within 2 frames of audio onsets, read against chance, not by cut sync (which is n/a). [inferred; A rule from the pieces' structure (5 of 7 continuous pieces are tier A/A-, cut sync n/a for them); motion sync has not been measured on the references.] | ears --mode continuous applies the 60% raw share to motion events; no tier-A benchmark exists yet."
   },
   {
     "id": "sound.talking_head_sfx_under_voice",
@@ -2099,12 +2099,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/mixer.py cue over_vo_db",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py cue over_vo_db (a pack default outside mp plan)."
   },
   {
     "id": "sound.trailer_hit_silence_hit",
@@ -2166,11 +2166,11 @@
       }
     ],
     "enforce": {
-      "check": "music/qa.py (trailer gap / crescendo / hold)",
+      "check": "lint.mix.qa",
       "default": null,
       "part": "music/bed_trailer_arc"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [],
     "notes": "Mark the gap kind gap and the end kind hold in plan.audio.quiet so ears/structure reads them as shape. cuts/trailer/hitSilenceHit holds the edit side. | Merged: A trailer's last wall hit cuts to black on the next frame, then 1-3 s of planned silence (a faint ring at most, -28 dB for 6 frames), then the title lands on the hit frame by cut, no fade. [craft; Trailer editors describe dropping music for reveals; under 1 s reads as a stutter, over 3 s as a dropout (house reading).] | Mark the gap in plan.audio.quiet (kind gap); ears/structure caps a planned gap at 4 s and warns on unplanned near-silence >= 2 s, so it bounds but does not check the 1-3 s window. A studied hardware film dropped music 5 s before a +20 dB return. | Merged: A trailer holds 1-3 s of declared silence (digital silence or a sub 38-40 dB under the wall) before the title hit, and the title lands on the hit. [house; Film lane recipe and cut pattern; the trailer score is rendered for the exact cut.] | Declare the gap in plan.audio.quiet and any black in the plan holds (see visual.declare_planned_black). | Merged: A trailer accelerates act 3 to about 2 cuts/s at 120 BPM (4 at the end), then holds 1-3 s of silence or one line over near-silence, and lands the title on the next downbeat hit. [house; house trailer shape; round 4/5 trailer arc (tier R and A) holds one line over about -55 dBFS for 2-4 s.] | Cut the picture to black on visual_cut_frame (hit - 1); never trim the arc bed past gap_start."
   },
@@ -2198,12 +2198,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "templates/_shared/plan.mjs TX_SFX",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "No check measures the 80% coverage. Reserve the largest cue for the largest movement; level-match before comparing."
+    "notes": "Set today by: templates/_shared/plan.mjs TX_SFX (a pack default outside mp plan). | No check measures the 80% coverage. Reserve the largest cue for the largest movement; level-match before comparing."
   },
   {
     "id": "sound.vo_wpm",
@@ -2246,7 +2246,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/speech",
+      "check": "lint.ears.speech",
       "default": null,
       "part": null
     },

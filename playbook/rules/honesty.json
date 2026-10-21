@@ -107,7 +107,7 @@
       }
     ],
     "enforce": {
-      "check": "tools/refstudy.py grade",
+      "check": "lint.study.tier",
       "default": null,
       "part": null
     },
@@ -137,7 +137,7 @@
       }
     ],
     "enforce": {
-      "check": "templates/_explain/honesty.mjs datasetProblems",
+      "check": "lint.honesty.charts",
       "default": null,
       "part": "templates/data-story"
     },
@@ -175,7 +175,7 @@
       }
     ],
     "enforce": {
-      "check": "templates/_explain/honesty.mjs chartProblems",
+      "check": "lint.honesty.charts",
       "default": null,
       "part": "templates/data-story"
     },
@@ -315,8 +315,8 @@
       }
     ],
     "enforce": {
-      "check": "plan.lintClaims",
-      "default": null,
+      "check": "lint.honesty.claims",
+      "default": "plan.claims",
       "part": null
     },
     "status": "enforced",
@@ -357,13 +357,13 @@
       }
     ],
     "enforce": {
-      "check": "storyboard/label-hold; eyes/readability",
+      "check": "lint.storyboard.label_hold",
       "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Merged: Label any placeholder, concept render or synthetic voice where a viewer could mistake it for real, with the label on screen for at least 2 s in a row; never fake a person, voice or recording. [house; house honesty rule.] | Synthetic speech keeps its TTS badge on the whole time (part caption.speakerTag); null media slots render labelled placeholders. Disclose AI music and synthetic voices in post copy and platform AI labels; never imitate or clone a real voice without written consent (references/cloud-audio.md Honesty)."
+    "notes": "Tools that touch it today: eyes/readability. | Merged: Label any placeholder, concept render or synthetic voice where a viewer could mistake it for real, with the label on screen for at least 2 s in a row; never fake a person, voice or recording. [house; house honesty rule.] | Synthetic speech keeps its TTS badge on the whole time (part caption.speakerTag); null media slots render labelled placeholders. Disclose AI music and synthetic voices in post copy and platform AI labels; never imitate or clone a real voice without written consent (references/cloud-audio.md Honesty)."
   },
   {
     "id": "honesty.label_once_per_frame",
@@ -485,13 +485,13 @@
       }
     ],
     "enforce": {
-      "check": "plan.lintClaims",
+      "check": null,
       "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "plan.lintClaims covers invented digits only; invented screens are not detectable."
+    "notes": "Tools that touch it today: plan.lintClaims. | plan.lintClaims covers invented digits only; invented screens are not detectable."
   },
   {
     "id": "honesty.no_digits_in_plates",
@@ -590,13 +590,13 @@
       }
     ],
     "enforce": {
-      "check": "storyboard/label-hold",
-      "default": "templates/_shared/project.mjs honesty (null slot -> labelled placeholder)",
+      "check": "lint.storyboard.label_hold",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "The honesty label in the proof demo is 28 px (30 px on 9:16). | Merged: Mock or generated UI carries a 'placeholder UI / demo data' label in frame until real screens replace it, and image models never draw UI. [craft; One production write-up builds UI only from a closed palette of real frames (the agent 'cannot invent UI'); the in-frame label is pack practice.]"
+    "notes": "Set today by: templates/_shared/project.mjs honesty (null slot -> labelled placeholder) (a pack default outside mp plan). | The honesty label in the proof demo is 28 px (30 px on 9:16). | Merged: Mock or generated UI carries a 'placeholder UI / demo data' label in frame until real screens replace it, and image models never draw UI. [craft; One production write-up builds UI only from a closed palette of real frames (the agent 'cannot invent UI'); the in-frame label is pack practice.]"
   },
   {
     "id": "honesty.post_copy_sourced",
@@ -668,13 +668,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_timing",
-      "default": "patterns/structures.json structures.hardware-reveal.sections.job",
+      "check": "lint.structure.score",
+      "default": null,
       "part": "templates/hardware-reveal"
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Only the presence of the job section is checked; answer checking is prose-only. Also: never open on 'done with X' and then demo on X (press criticism of one keynote)."
+    "notes": "Set today by: patterns/structures.json structures.hardware-reveal.sections.job (a pack default outside mp plan). | Only the presence of the job section is checked; answer checking is prose-only. Also: never open on 'done with X' and then demo on X (press criticism of one keynote)."
   },
   {
     "id": "honesty.quote_needs_source",
@@ -834,11 +834,11 @@
       }
     ],
     "enforce": {
-      "check": "storyboard/label-hold",
+      "check": "lint.storyboard.label_hold",
       "default": null,
       "part": "cuts/story/voiceHandoff"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [],
     "notes": ""
   },
@@ -865,7 +865,7 @@
       }
     ],
     "enforce": {
-      "check": "templates/_shared/human/core.mjs quoteCheck",
+      "check": "lint.honesty.quotes",
       "default": null,
       "part": null
     },

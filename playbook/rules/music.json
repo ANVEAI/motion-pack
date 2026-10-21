@@ -116,47 +116,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/compare",
-      "default": null,
-      "part": null
-    },
-    "status": "prose-only",
-    "conflicts_with": [],
-    "notes": "ears/compare checks role ranges that disagree: brand_launch 0.50-0.60, hype 0.50-0.61, proof 0.20-0.36. This range sits between proof and brand_launch."
-  },
-  {
-    "id": "music.bed_under_voice_level",
-    "title": "Sit the bed -22 to -26 LUFS-S",
-    "statement": "Under a voice the music bed sits at -22 to -26 LUFS-S; with a hero hit and voice sharing the track it sits about -20 LUFS-S (so +4.5 dB hits fit under -14 LUFS-I); alone it can run about -15 LUFS-S.",
-    "scope": {
-      "formats": [],
-      "platforms": [],
-      "section": "body"
-    },
-    "params": {
-      "under_voice_lufs_s": [
-        -26,
-        -22
-      ],
-      "with_hits_lufs_s": -20,
-      "solo_lufs_s": -15
-    },
-    "grade": "house",
-    "evidence": "Pack mix targets; not measured on references.",
-    "sources": [
-      {
-        "doc": "docs/evidence/sound.md",
-        "locator": "6. Dialogue table (Music bed); 8.2 Mix of the bed; 8.4"
-      }
-    ],
-    "enforce": {
       "check": null,
       "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Tools that touch it today: ears/compare. | ears/compare checks role ranges that disagree: brand_launch 0.50-0.60, hype 0.50-0.61, proof 0.20-0.36. This range sits between proof and brand_launch."
   },
   {
     "id": "music.dark_open_12db_under_drop",
@@ -183,12 +149,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/reveal.py render_reveal (score composed per cut from the template sections)",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "Do not swap in a loop bed: the dark open and the drop are the shape."
+    "notes": "Set today by: music/reveal.py render_reveal (score composed per cut from the template sections) (a pack default outside mp plan). | Do not swap in a loop bed: the dark open and the drop are the shape."
   },
   {
     "id": "music.late_bass_entry",
@@ -229,13 +195,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/structure",
-      "default": null,
+      "check": "lint.sound.bass_entry",
+      "default": "plan.audio.bass_entry",
       "part": "cuts/story/lateDrop"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "cuts/story/lateDrop defaults drop_share 0.25 (range 0.1-0.6); ears/structure only flags a drop after late_drop_share 0.75, so the 23-52% window itself is not checked."
+    "notes": "Tools that touch it today: ears/structure. | cuts/story/lateDrop defaults drop_share 0.25 (range 0.1-0.6); ears/structure only flags a drop after late_drop_share 0.75, so the 23-52% window itself is not checked."
   },
   {
     "id": "music.late_drop_on_turn",
@@ -313,12 +279,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/mixer.py (bed normalise + master)",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py (bed normalise + master) (a pack default outside mp plan)."
   },
   {
     "id": "music.no_third_party_beds",
@@ -339,13 +305,13 @@
       }
     ],
     "enforce": {
-      "check": "sfx/tools/check_origin.py",
+      "check": null,
       "default": null,
       "part": null
     },
-    "status": "enforced",
+    "status": "prose-only",
     "conflicts_with": [],
-    "notes": "check_origin.py refuses imports without ORIGIN.txt (exit 2); the bed rule itself is policy only. A platform's own audio library is usable only in files that ship on that platform alone."
+    "notes": "Tools that touch it today: sfx/tools/check_origin.py. | check_origin.py refuses imports without ORIGIN.txt (exit 2); the bed rule itself is policy only. A platform's own audio library is usable only in files that ship on that platform alone."
   },
   {
     "id": "music.phone_bass_cap",
@@ -452,12 +418,46 @@
       }
     ],
     "enforce": {
-      "check": "music/qa.py (beat events on whole frames)",
-      "default": "music/grid.py snap_bpm; plan.beatGrid",
+      "check": "lint.mix.qa",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "music/qa.py checks the library beds, not a user's film, so status is default rather than enforced."
+    "notes": "Set today by: music/grid.py snap_bpm; plan.beatGrid (a pack default outside mp plan). | music/qa.py checks the library beds, not a user's film, so status is default rather than enforced."
+  },
+  {
+    "id": "music.voice_bed_level",
+    "title": "Sit the bed -22 to -26 LUFS-S",
+    "statement": "Under a voice the music bed sits at -22 to -26 LUFS-S; with a hero hit and voice sharing the track it sits about -20 LUFS-S (so +4.5 dB hits fit under -14 LUFS-I); alone it can run about -15 LUFS-S.",
+    "scope": {
+      "formats": [],
+      "platforms": [],
+      "section": "body"
+    },
+    "params": {
+      "under_voice_lufs_s": [
+        -26,
+        -22
+      ],
+      "with_hits_lufs_s": -20,
+      "solo_lufs_s": -15
+    },
+    "grade": "house",
+    "evidence": "Pack mix targets; not measured on references.",
+    "sources": [
+      {
+        "doc": "docs/evidence/sound.md",
+        "locator": "6. Dialogue table (Music bed); 8.2 Mix of the bed; 8.4"
+      }
+    ],
+    "enforce": {
+      "check": null,
+      "default": null,
+      "part": null
+    },
+    "status": "prose-only",
+    "conflicts_with": [],
+    "notes": ""
   }
 ]

@@ -20,13 +20,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/encode",
-      "default": "tools/deliver.py TAG709",
+      "check": "lint.eyes.encode",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "The same note: the native VP9 decoder drops WebM alpha; decode with libvpx-vp9 (tools/deliver.py --alpha-src)."
+    "notes": "Set today by: tools/deliver.py TAG709 (a pack default outside mp plan). | The same note: the native VP9 decoder drops WebM alpha; decode with libvpx-vp9 (tools/deliver.py --alpha-src)."
   },
   {
     "id": "delivery.ceiling_for_dense_clicks",
@@ -57,13 +57,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
+      "check": null,
       "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "plan.ceilingDb and plan.fadeInMs are read by templates/_shared/audio.py but not set by default; ears only catches the result."
+    "notes": "Tools that touch it today: ears/loudness. | plan.ceilingDb and plan.fadeInMs are read by templates/_shared/audio.py but not set by default; ears only catches the result."
   },
   {
     "id": "delivery.clean_tail",
@@ -93,13 +93,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
-      "default": "music/mixer.py render (tail_zero_s 0.15)",
+      "check": "lint.ears.loudness",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py render (tail_zero_s 0.15) (a pack default outside mp plan)."
   },
   {
     "id": "delivery.critic_loop",
@@ -128,12 +128,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "tools/critic_pack.sh",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "prose-only",
     "conflicts_with": [],
-    "notes": "critic_pack builds the evidence; the 8/10 bar is a human or agent judgement, not a check."
+    "notes": "Set today by: tools/critic_pack.sh (a pack default outside mp plan). | critic_pack builds the evidence; the 8/10 bar is a human or agent judgement, not a check."
   },
   {
     "id": "delivery.cue_library_complete",
@@ -196,12 +196,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "music/mixer.py render (stems=True, nomusic.wav)",
+      "default": "plan.audio.mixer",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: music/mixer.py render (stems=True, nomusic.wav) (a pack default outside mp plan)."
   },
   {
     "id": "delivery.delivered_tp_minus1",
@@ -241,13 +241,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
-      "default": "music/mixer.py render (AAC probes)",
+      "check": "lint.master.true_peak",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Resolved 21 Oct: true peak -1.0 vs -1.5 settled: the 24-bit WAV master is limited to -1.5 dBTP, the decoded delivered MP4 must read <= -1.0 dBTP (AAC adds ~0.5 dB). | Also mp.check.loudness and tools/deliver.py (pack preset tp -1.0). Settled pair with delivery.master_tp_minus1_5."
+    "notes": "Set today by: music/mixer.py render (AAC probes) (a pack default outside mp plan). | Resolved 21 Oct: true peak -1.0 vs -1.5 settled: the 24-bit WAV master is limited to -1.5 dBTP, the decoded delivered MP4 must read <= -1.0 dBTP (AAC adds ~0.5 dB). | Also mp.check.loudness and tools/deliver.py (pack preset tp -1.0). Settled pair with delivery.master_tp_minus1_5."
   },
   {
     "id": "delivery.encode_spec",
@@ -290,13 +290,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/encode",
-      "default": "tools/deliver.py presets",
+      "check": "lint.eyes.encode",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "ffmpeg 7+ needs setparams for bt709 after a scale filter. | Merged: The master is H.264 yuv420p with moov before mdat, bt709 tags on HD, a keyframe interval of at most 5 s (fail over 10 s), at least 0.01 bits per pixel (fail under 0.004), blockiness under 1.75 (fail at 2.5) and a 1080 px short side. [house; pack delivery defaults; pack CRF 23 demos measured 0.008-0.03 bpp and blockiness 1.3-1.9, and two templates shipped without faststart.] | x264's default 250-frame GOP is 8.3 s at 30 fps, over the 5 s house limit. For byte-identical files use x264 -threads 1; for byte-identical stills render with GPU raster disabled (GPU raster varied at 98-111 dB)."
+    "notes": "Set today by: tools/deliver.py presets (a pack default outside mp plan). | ffmpeg 7+ needs setparams for bt709 after a scale filter. | Merged: The master is H.264 yuv420p with moov before mdat, bt709 tags on HD, a keyframe interval of at most 5 s (fail over 10 s), at least 0.01 bits per pixel (fail under 0.004), blockiness under 1.75 (fail at 2.5) and a 1080 px short side. [house; pack delivery defaults; pack CRF 23 demos measured 0.008-0.03 bpp and blockiness 1.3-1.9, and two templates shipped without faststart.] | x264's default 250-frame GOP is 8.3 s at 30 fps, over the 5 s house limit. For byte-identical files use x264 -threads 1; for byte-identical stills render with GPU raster disabled (GPU raster varied at 98-111 dB)."
   },
   {
     "id": "delivery.grain_survives_reencode",
@@ -337,12 +337,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "layers/presets/stocks.js STOCKS['upload-safe']",
+      "default": null,
       "part": "layers/grain"
     },
-    "status": "default",
+    "status": "part",
     "conflicts_with": [],
-    "notes": "Never put heavy grain on flat brand colour fields or gradients in a CRF-heavy delivery (banding and pumping)."
+    "notes": "Set today by: layers/presets/stocks.js STOCKS['upload-safe'] (a pack default outside mp plan). | Never put heavy grain on flat brand colour fields or gradients in a CRF-heavy delivery (banding and pumping)."
   },
   {
     "id": "delivery.integrated_minus14",
@@ -400,13 +400,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
-      "default": "music/mixer.py master (lufs -14); plan.PLATFORMS lufs",
+      "check": "lint.master.loudness",
+      "default": "plan.audio.master",
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Also mp.check.loudness. Unverified claims of -13 to -10 for Reels/TikTok exist; the planned upload test (-14 vs -10 clip) has not been run. | Merged: Deliver one master for every platform at -14 LUFS integrated (±0.5), true peak -1.5 dBTP on the WAV master and at or below -1.0 dBTP decoded from the MP4 (a web hero at -16 LUFS). [house; Platform spec: only YouTube publishes normalisation (loud content turned down toward about -14); the others publish nothing, so one -14 master is the pack default.] | spec-to-loop masters use a -1.2 dBFS limiter ceiling and measured -1.20 to -2.62 dBTP: they pass the -1.0 delivered line but not always the -1.5 master line. | Merged: Master to -14 LUFS-I (+/-0.5) with true peak <= -1.5 dBTP on the WAV and <= -1.0 dBTP decoded from the delivered MP4, LRA <= 10 LU, and the last 0.15 s digital zero. [house; house loudness contract; YouTube normalises toward about -14 (grade B) and other feeds publish no spec (grade D).] | Also mp.check.loudness. References sat at -24.8 to -8.1 LUFS and many clipped: copy neither end. Web hero -16 LUFS; broadcast gets a separate -23 LUFS / -1 dBTP master (EBU R128); LinkedIn LRA <= 7 LU. Measure the delivered MP4, not the WAV."
+    "notes": "Set today by: music/mixer.py master (lufs -14); plan.PLATFORMS lufs (a pack default outside mp plan). | Also mp.check.loudness. Unverified claims of -13 to -10 for Reels/TikTok exist; the planned upload test (-14 vs -10 clip) has not been run. | Merged: Deliver one master for every platform at -14 LUFS integrated (±0.5), true peak -1.5 dBTP on the WAV master and at or below -1.0 dBTP decoded from the MP4 (a web hero at -16 LUFS). [house; Platform spec: only YouTube publishes normalisation (loud content turned down toward about -14); the others publish nothing, so one -14 master is the pack default.] | spec-to-loop masters use a -1.2 dBFS limiter ceiling and measured -1.20 to -2.62 dBTP: they pass the -1.0 delivered line but not always the -1.5 master line. | Merged: Master to -14 LUFS-I (+/-0.5) with true peak <= -1.5 dBTP on the WAV and <= -1.0 dBTP decoded from the delivered MP4, LRA <= 10 LU, and the last 0.15 s digital zero. [house; house loudness contract; YouTube normalises toward about -14 (grade B) and other feeds publish no spec (grade D).] | Also mp.check.loudness. References sat at -24.8 to -8.1 LUFS and many clipped: copy neither end. Web hero -16 LUFS; broadcast gets a separate -23 LUFS / -1 dBTP master (EBU R128); LinkedIn LRA <= 7 LU. Measure the delivered MP4, not the WAV."
   },
   {
     "id": "delivery.loop_audio_aac",
@@ -439,12 +439,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "skills/spec-to-loop/scripts/mux.sh",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "prose-only",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: skills/spec-to-loop/scripts/mux.sh (a pack default outside mp plan)."
   },
   {
     "id": "delivery.lra_short_film",
@@ -529,7 +529,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
+      "check": "lint.ears.loudness",
       "default": null,
       "part": null
     },
@@ -589,8 +589,8 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
-      "default": null,
+      "check": "lint.master.loudness",
+      "default": "plan.audio.master",
       "part": null
     },
     "status": "enforced",
@@ -666,13 +666,13 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
-      "default": "music/mixer.py render (ceiling_db -1.5)",
+      "check": "lint.master.true_peak",
+      "default": "plan.audio.master",
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Resolved 21 Oct: true peak -1.0 vs -1.5 settled: the 24-bit WAV master is limited to -1.5 dBTP, the decoded delivered MP4 must read <= -1.0 dBTP (AAC adds ~0.5 dB). | Settled pair with delivery.delivered_tp_minus1: master -1.5, delivered MP4 <= -1.0. Alternative from a streaming service's published spec: -1 dBTP for lossy, -2 dBTP if the master is louder than -14 LUFS."
+    "notes": "Set today by: music/mixer.py render (ceiling_db -1.5) (a pack default outside mp plan). | Resolved 21 Oct: true peak -1.0 vs -1.5 settled: the 24-bit WAV master is limited to -1.5 dBTP, the decoded delivered MP4 must read <= -1.0 dBTP (AAC adds ~0.5 dB). | Settled pair with delivery.delivered_tp_minus1: master -1.5, delivered MP4 <= -1.0. Alternative from a streaming service's published spec: -1 dBTP for lossy, -2 dBTP if the master is louder than -14 LUFS."
   },
   {
     "id": "delivery.native_aspects_only",
@@ -697,13 +697,13 @@
       }
     ],
     "enforce": {
-      "check": "tools/tests/aspect-builds.test.mjs",
-      "default": "config.mjs ASPECTS (native | relayout | manual) read by tools/mp.mjs aspectsFor",
+      "check": null,
+      "default": null,
       "part": null
     },
-    "status": "enforced",
+    "status": "prose-only",
     "conflicts_with": [],
-    "notes": "The CI test covers pack templates; for user output mp.check.size is the backstop."
+    "notes": "Tools that touch it today: tools/tests/aspect-builds.test.mjs. Set today by: config.mjs ASPECTS (native | relayout | manual) read by tools/mp.mjs aspectsFor (a pack default outside mp plan). | The CI test covers pack templates; for user output mp.check.size is the backstop."
   },
   {
     "id": "delivery.no_clipping_plr",
@@ -732,7 +732,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/clipping",
+      "check": "lint.ears.clipping",
       "default": null,
       "part": null
     },
@@ -782,7 +782,7 @@
       }
     ],
     "enforce": {
-      "check": "mp.check.size",
+      "check": "lint.delivery.size",
       "default": null,
       "part": null
     },
@@ -814,12 +814,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "tools/mp.mjs cmdRender (rebuilds each aspect right before rendering it, names the file by its real WxH)",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "A hand-run render outside mp is still possible; mp.check.size catches the result."
+    "notes": "Set today by: tools/mp.mjs cmdRender (rebuilds each aspect right before rendering it, names the file by its real WxH) (a pack default outside mp plan). | A hand-run render outside mp is still possible; mp.check.size catches the result."
   },
   {
     "id": "delivery.upload_copy_cap",
@@ -858,13 +858,13 @@
       }
     ],
     "enforce": {
-      "check": "skills/social-video/scripts/upload_copy.py",
-      "default": "upload_copy.py --max-mb 9.5 --min-psnr 44",
+      "check": null,
+      "default": null,
       "part": null
     },
-    "status": "enforced",
+    "status": "prose-only",
     "conflicts_with": [],
-    "notes": "upload_copy.py exits 1 over the cap and 3 under the PSNR floor; use -tune film for camera footage."
+    "notes": "Tools that touch it today: skills/social-video/scripts/upload_copy.py. Set today by: upload_copy.py --max-mb 9.5 --min-psnr 44 (a pack default outside mp plan). | upload_copy.py exits 1 over the cap and 3 under the PSNR floor; use -tune film for camera footage."
   },
   {
     "id": "delivery.verify_on_mp4",
@@ -897,7 +897,7 @@
       }
     ],
     "enforce": {
-      "check": "ears/loudness",
+      "check": "lint.master.loudness",
       "default": null,
       "part": null
     },
@@ -933,11 +933,11 @@
     ],
     "enforce": {
       "check": null,
-      "default": "plan.PLATFORMS hero.web lufs -16",
+      "default": "plan.audio.master",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: plan.PLATFORMS hero.web lufs -16 (a pack default outside mp plan)."
   }
 ]

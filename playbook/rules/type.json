@@ -67,7 +67,7 @@
       }
     ],
     "enforce": {
-      "check": "tools/captions/validate.py",
+      "check": "lint.type.captions",
       "default": null,
       "part": null
     },
@@ -123,13 +123,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability; type/captions.js lintCaptions (called in templates/_shared/human/edit.mjs)",
-      "default": "templates/talking-head config.mjs captions.maxWords 3, maxChars 15",
+      "check": "lint.eyes.readability",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Conflict: templates/_shared/plan.mjs chunkCaptions defaults to maxChars 22 per chunk, which can exceed 18 characters on one line; the talking-head template is stricter (3 words, 15 chars)."
+    "notes": "Tools that touch it today: type/captions.js lintCaptions (called in templates/_shared/human/edit.mjs). Set today by: templates/talking-head config.mjs captions.maxWords 3, maxChars 15 (a pack default outside mp plan). | Conflict: templates/_shared/plan.mjs chunkCaptions defaults to maxChars 22 per chunk, which can exceed 18 characters on one line; the talking-head template is stricter (3 words, 15 chars)."
   },
   {
     "id": "type.captions_every_sentence",
@@ -205,12 +205,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "templates/vlog-personal/config.mjs captions.override.emphScale 1.05",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "The real fix (gap from the scaled width) belongs in type/dom.js; other templates still use the 1.12 style default."
+    "notes": "Set today by: templates/vlog-personal/config.mjs captions.override.emphScale 1.05 (a pack default outside mp plan). | The real fix (gap from the scaled width) belongs in type/dom.js; other templates still use the 1.12 style default."
   },
   {
     "id": "type.exit_faster_than_entrance",
@@ -250,12 +250,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "type/presets.js PRESETS durations; type/gfx/editorial.js inF/outF",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "lintType does not test exit speed; the presets set it."
+    "notes": "Set today by: type/presets.js PRESETS durations; type/gfx/editorial.js inF/outF (a pack default outside mp plan). | lintType does not test exit speed; the presets set it."
   },
   {
     "id": "type.floors_by_role_aspect",
@@ -323,7 +323,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability; a11y/text-size",
+      "check": "lint.eyes.readability",
       "default": null,
       "part": null
     },
@@ -359,13 +359,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability; storyboard/label-hold",
-      "default": "design.json frames.labels.min_on_screen_s",
+      "check": "lint.eyes.readability",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Keep one label vocabulary across a series."
+    "notes": "Tools that touch it today: storyboard/label-hold. Set today by: design.json frames.labels.min_on_screen_s (a pack default outside mp plan). | Keep one label vocabulary across a series."
   },
   {
     "id": "type.key_word_accent",
@@ -449,13 +449,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability (lowerthird floor)",
-      "default": "design.json frames.lower_third",
+      "check": "lint.eyes.readability",
+      "default": null,
       "part": "lowerThird.cleanBar"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "docs/research/visual.md gives a hold of at least 60 f (2 s) with bar wipe 10 f, name slide 12 f offset 4 f, out 8 f; frame-design's 2.5-4 s is kept."
+    "notes": "Set today by: design.json frames.lower_third (a pack default outside mp plan). | docs/research/visual.md gives a hold of at least 60 f (2 s) with bar wipe 10 f, name slide 12 f offset 4 f, out 8 f; frame-design's 2.5-4 s is kept."
   },
   {
     "id": "type.name_super_one_detail",
@@ -596,13 +596,13 @@
       }
     ],
     "enforce": {
-      "check": "type/presets.js lintPiece",
-      "default": "design.json tone.cell, motion.type_presets",
+      "check": null,
+      "default": null,
       "part": "type/maskRise"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": "lintPiece is a library lint, called only by templates/demo-l7/make.mjs; no build gate runs it."
+    "notes": "Tools that touch it today: type/presets.js lintPiece. Set today by: design.json tone.cell, motion.type_presets (a pack default outside mp plan). | lintPiece is a library lint, called only by templates/demo-l7/make.mjs; no build gate runs it."
   },
   {
     "id": "type.phrases_2_to_5_words",
@@ -639,13 +639,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability",
+      "check": "lint.type.beat_words",
       "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "eyes/readability caps a read at 6 words; the 2-word floor is not checked."
+    "notes": "Tools that touch it today: eyes/readability. | eyes/readability caps a read at 6 words; the 2-word floor is not checked."
   },
   {
     "id": "type.read_line_max_words",
@@ -674,13 +674,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability; lint_shotlist.hook_max_words",
-      "default": "design.json type.max_words_per_line",
+      "check": "lint.eyes.readability",
+      "default": "plan.type.limits",
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Tools that touch it today: lint_shotlist.hook_max_words. Set today by: design.json type.max_words_per_line (a pack default outside mp plan)."
   },
   {
     "id": "type.reading_time_hold",
@@ -727,13 +727,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability; a11y/reading-time; structure_check.check_text",
-      "default": null,
+      "check": "lint.eyes.readability",
+      "default": "plan.type.limits",
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Captions that follow the voice only warn, never fail. | Merged: Non-speech on-screen text runs at most 3.5 words/s and holds at least max(0.5 s, 0.35 s + 0.28 s per word); the beat-sheet floor max(0.83 s, 0.3 s per word) also applies and the longer hold wins. Kinetic type holds each line fully formed for at least 9 frames and uses at most two tone families. [house; house reading formula shared by eyes, frame-design and story-script.] | Also lint_shotlist (hold 0.35+0.28/word) and structure_check.check_text (floor max(0.833, 0.3 s/word)). check_text one_word_frames 9 covers the formed hold; judge legibility on the hold frame, not mid mask-rise. | Merged: Every text holds at least max(0.833 s, 0.3 s per word) and reads at <= 17 characters/s; a 4-5 word super needs 1.5 s, not 1.03 s. [measured; Plan scores: name supers held 1.03 s for 4-5 words; three ad proof lines read over 17 cps (fix: hold 2.0-2.3 s or cut to 4-5 words); tutorial step cards rose to 1.0 s after reading at 3.5 words/s.] | eyes/readability and lint_shotlist use 0.35 s + 0.28 s per word (min 0.5 s): a second formula for the same rule; the two disagree slightly on short lines."
+    "notes": "Tools that touch it today: a11y/reading-time; structure_check.check_text. | Captions that follow the voice only warn, never fail. | Merged: Non-speech on-screen text runs at most 3.5 words/s and holds at least max(0.5 s, 0.35 s + 0.28 s per word); the beat-sheet floor max(0.83 s, 0.3 s per word) also applies and the longer hold wins. Kinetic type holds each line fully formed for at least 9 frames and uses at most two tone families. [house; house reading formula shared by eyes, frame-design and story-script.] | Also lint_shotlist (hold 0.35+0.28/word) and structure_check.check_text (floor max(0.833, 0.3 s/word)). check_text one_word_frames 9 covers the formed hold; judge legibility on the hold frame, not mid mask-rise. | Merged: Every text holds at least max(0.833 s, 0.3 s per word) and reads at <= 17 characters/s; a 4-5 word super needs 1.5 s, not 1.03 s. [measured; Plan scores: name supers held 1.03 s for 4-5 words; three ad proof lines read over 17 cps (fix: hold 2.0-2.3 s or cut to 4-5 words); tutorial step cards rose to 1.0 s after reading at 3.5 words/s.] | eyes/readability and lint_shotlist use 0.35 s + 0.28 s per word (min 0.5 s): a second formula for the same rule; the two disagree slightly on short lines."
   },
   {
     "id": "type.real_weights_only",
@@ -762,12 +762,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "design.json type.display / type.text (license field)",
+      "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "Also tighten display type -0.02 to -0.035 em at 96 px and up, open mono labels +0.02 em; test every glyph (currency, diacritics) before locking a family."
+    "notes": "Set today by: design.json type.display / type.text (license field) (a pack default outside mp plan). | Also tighten display type -0.02 to -0.035 em at 96 px and up, open mono labels +0.02 em; test every glyph (currency, diacritics) before locking a family."
   },
   {
     "id": "type.scale_contrast",
@@ -802,7 +802,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability",
+      "check": "lint.eyes.readability",
       "default": null,
       "part": null
     },
@@ -882,13 +882,13 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_text",
-      "default": "templates/short-film config (slug hold 2.2 s)",
+      "check": "lint.type.reading_time",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: templates/short-film config (slug hold 2.2 s) (a pack default outside mp plan)."
   },
   {
     "id": "type.typing_is_the_clock",

@@ -57,12 +57,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "templates/_shared/plan.mjs PLATFORMS.brandCueBy",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "Conflict: TikTok-oriented agencies advise minimal branding in the first 5 s; the resolution is a diegetic cue (product in hand, the UI), pulsed in short repeated exposures (a study found pulsing reduced zapping vs one block). structures.json hook.brand_by_s (5, or 10 for saas-launch / founder-story) is not read by check_hook. | Merged: A brand cue lands inside the action (product in frame, UI, brand colour), never as a standalone logo card first, by 5 s on TikTok and paid YouTube or 9:16 feed ads, 6 s on Reels and Shorts, and 7 s on X and LinkedIn. [house; Platform spec for paid YouTube (brand inside 5 s); the organic values are pack defaults.] | templates/ad reports brandCueAt / brandCueOk but does not fail. patterns/hooks.json says 2-5 s for ads; formats.md says organic feeds tolerate the brand after the hook, before about 7 s; TikTok-oriented advice is minimal branding in the first 5 s. | Merged: The brand appears by 5 s on paid YouTube, Meta and TikTok, by 6 s on Reels and Shorts, and by 7 s on X and LinkedIn, after the hook. [house; paid YouTube 5 s from a platform ad guideline (second-hand) [S]; the organic values are a house resolution of a conflict [H].] | templates/ad/config.mjs computes plan.brandCueOk but nothing fails on it."
+    "notes": "Set today by: templates/_shared/plan.mjs PLATFORMS.brandCueBy (a pack default outside mp plan). | Conflict: TikTok-oriented agencies advise minimal branding in the first 5 s; the resolution is a diegetic cue (product in hand, the UI), pulsed in short repeated exposures (a study found pulsing reduced zapping vs one block). structures.json hook.brand_by_s (5, or 10 for saas-launch / founder-story) is not read by check_hook. | Merged: A brand cue lands inside the action (product in frame, UI, brand colour), never as a standalone logo card first, by 5 s on TikTok and paid YouTube or 9:16 feed ads, 6 s on Reels and Shorts, and 7 s on X and LinkedIn. [house; Platform spec for paid YouTube (brand inside 5 s); the organic values are pack defaults.] | templates/ad reports brandCueAt / brandCueOk but does not fail. patterns/hooks.json says 2-5 s for ads; formats.md says organic feeds tolerate the brand after the hook, before about 7 s; TikTok-oriented advice is minimal branding in the first 5 s. | Merged: The brand appears by 5 s on paid YouTube, Meta and TikTok, by 6 s on Reels and Shorts, and by 7 s on X and LinkedIn, after the hook. [house; paid YouTube 5 s from a platform ad guideline (second-hand) [S]; the organic values are a house resolution of a conflict [H].] | templates/ad/config.mjs computes plan.brandCueOk but nothing fails on it."
   },
   {
     "id": "hook.feed_flash_forward",
@@ -172,7 +172,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/frame0",
+      "check": "lint.eyes.frame0",
       "default": null,
       "part": null
     },
@@ -240,7 +240,7 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_hook",
+      "check": "lint.sound.first_sound",
       "default": null,
       "part": null
     },
@@ -292,7 +292,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.bad_open",
+      "check": "lint.hook.frame0",
       "default": null,
       "part": null
     },
@@ -336,7 +336,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/frame0",
+      "check": "lint.eyes.frame0",
       "default": null,
       "part": null
     },
@@ -448,12 +448,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "cuts/patterns.json story.interruptOpen",
+      "default": null,
       "part": "cuts/story/interruptOpen"
     },
     "status": "part",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: cuts/patterns.json story.interruptOpen (a pack default outside mp plan)."
   },
   {
     "id": "hook.no_offer_as_hook",
@@ -571,15 +571,15 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_timing",
-      "default": "patterns/structures.json structures.saas-launch.sections.reveal",
+      "check": "lint.structure.score",
+      "default": null,
       "part": "templates/saas-launch"
     },
     "status": "enforced",
     "conflicts_with": [
       "hook.text_by_0_3s"
     ],
-    "notes": "Engagement in business video peaks in the first 10% whatever the length (vendor dataset), so the outcome shot belongs there. One studied live-action film revealed the product at about 40 s; it is the exception. | Merged: A product UI launch film states its brand or promise by 3 s and shows the first real UI between 0 and 16 s. [measured; launch study: four software films showed first real UI at 0, 5, 12 and 16 s; one states its claim by 3 s, another its headline by 2 s.] | Reception figures in the launch study are observations, not tiered reach."
+    "notes": "Set today by: patterns/structures.json structures.saas-launch.sections.reveal (a pack default outside mp plan). | Engagement in business video peaks in the first 10% whatever the length (vendor dataset), so the outcome shot belongs there. One studied live-action film revealed the product at about 40 s; it is the exception. | Merged: A product UI launch film states its brand or promise by 3 s and shows the first real UI between 0 and 16 s. [measured; launch study: four software films showed first real UI at 0, 5, 12 and 16 s; one states its claim by 3 s, another its headline by 2 s.] | Reception figures in the launch study are observations, not tiered reach."
   },
   {
     "id": "hook.sentence_builds_small",
@@ -617,11 +617,11 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.words_per_sec",
+      "check": "lint.type.reading_time",
       "default": null,
       "part": "cuts/story/sentenceLed"
     },
-    "status": "part",
+    "status": "enforced",
     "conflicts_with": [],
     "notes": ""
   },
@@ -652,13 +652,13 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.social_proof; plan.lintClaims",
+      "check": "lint.shotlist.social_proof",
       "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Tools that touch it today: plan.lintClaims."
   },
   {
     "id": "hook.sound_on_pill",
@@ -743,7 +743,7 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_hook",
+      "check": "lint.sound.first_sound",
       "default": null,
       "part": null
     },
@@ -813,15 +813,15 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_hook",
-      "default": "patterns/structures.json structures.<pattern>.hook.text_by_s",
+      "check": "lint.hook.text_by",
+      "default": "plan.hook.text",
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [
       "hook.real_product_early"
     ],
-    "notes": "Resolved 21 Oct: 0.3 s (vertical) / 0.5 s (wide) stays the house target the checks use; tier-A launch films land readable text by 1.0 s, which passes as a WARN, not a FAIL. | Also eyes/readability (hook text by 0.3 s tall / 0.5 s wide, max 7 words) and lint_shotlist.hook_max_words. Hook text, VO and picture should say the same idea (layered hook, practitioner). | Merged: Hook text is on screen by 0.3 s (0.5 s on wide frames) with at most 7 words, and the poster frame carries at most 4 words. [house; house default [H]; platforms publish no hook thresholds.] | Also lint_shotlist.hook_max_words / poster_max_words and structure_check.check_hook. Launch beat sheets allow the claim by 2-3 s (L3) and a thesis sentence in 0-5 s (L1). Poster frame: one high-contrast subject readable at 120 px wide; title front-loads the payoff in about 50 characters (virality.md 6). | Merged: Hook text has at most 7 words and is on screen by 0.3 s in a vertical cut (0.5 s in a wide cut). [house; Pack defaults shared by the linter, the reading checks and patterns/hooks.json universal.hook_text.] | Merged: Readable on-screen text is on frame 0 or by 1.0 s, and in VO films the word lands with or before the first spoken word. [measured-A; 9 of 16 round-7 films show text by 1 s, including 3 of the 4 tier-A films (the fourth is a wordless music video); in every VO case the word arrives with or before the voice.] | The pack is stricter than the evidence: pattern hooks use text_by_s 0.3 and eyes/readability wants hook text by 0.3 s tall / 0.5 s wide."
+    "notes": "Set today by: patterns/structures.json structures.<pattern>.hook.text_by_s (a pack default outside mp plan). | Resolved 21 Oct: 0.3 s (vertical) / 0.5 s (wide) stays the house target the checks use; tier-A launch films land readable text by 1.0 s, which passes as a WARN, not a FAIL. | Also eyes/readability (hook text by 0.3 s tall / 0.5 s wide, max 7 words) and lint_shotlist.hook_max_words. Hook text, VO and picture should say the same idea (layered hook, practitioner). | Merged: Hook text is on screen by 0.3 s (0.5 s on wide frames) with at most 7 words, and the poster frame carries at most 4 words. [house; house default [H]; platforms publish no hook thresholds.] | Also lint_shotlist.hook_max_words / poster_max_words and structure_check.check_hook. Launch beat sheets allow the claim by 2-3 s (L3) and a thesis sentence in 0-5 s (L1). Poster frame: one high-contrast subject readable at 120 px wide; title front-loads the payoff in about 50 characters (virality.md 6). | Merged: Hook text has at most 7 words and is on screen by 0.3 s in a vertical cut (0.5 s in a wide cut). [house; Pack defaults shared by the linter, the reading checks and patterns/hooks.json universal.hook_text.] | Merged: Readable on-screen text is on frame 0 or by 1.0 s, and in VO films the word lands with or before the first spoken word. [measured-A; 9 of 16 round-7 films show text by 1 s, including 3 of the 4 tier-A films (the fourth is a wordless music video); in every VO case the word arrives with or before the voice.] | The pack is stricter than the evidence: pattern hooks use text_by_s 0.3 and eyes/readability wants hook text by 0.3 s tall / 0.5 s wide."
   },
   {
     "id": "hook.three_variants_one_body",
@@ -879,13 +879,13 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.hook_variants",
-      "default": "templates/ad/config.mjs hook.archetype",
+      "check": "lint.shotlist.hook_variants",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "lint_shotlist demands three variants with distinct archetypes; a social-proof hook needs a sourced claim. | Merged: Every brief gets three hook variants with distinct archetypes over an identical body, so a test isolates the hook. [craft; Practitioner advice to test several hooks on the same core content; a platform's ad help asks for 3-5 creatives per ad group that differ a lot.] | A social-proof hook needs a sourced claim (lint_shotlist). | Merged: Write three hook variants with three different archetypes on an identical body, changing only the first 1-3 s. [house; Pack method for hook tests: identical bodies isolate the hook; patterns/hooks.json lists 13 archetypes, 7 of them accepted by the linter.] | WARN unless exactly three, WARN if two share an archetype, FAIL on an archetype outside the seven; the six extra archetypes in hooks.json (live-demo, cold-open, light-from-dark, provocative-line, promise, founder-to-camera) fail the linter today. | Merged: Write three hook variants from three distinct archetypes, because 13 tier-A/A- openers spread over 6 archetypes with none above 3 of 13 (23%). [inferred; Our hand classification of the one-line summaries of the 13 tier-A/A- round-4/5 pieces: in-medias-res 3, claim-or-question 3, payoff-first 3, curiosity-gap 2, pattern-break 1, problem-agitate 1.] | The share is our classification from summaries, not a measured field; the three-variant rule itself is enforced by the story-script linter."
+    "notes": "Set today by: templates/ad/config.mjs hook.archetype (a pack default outside mp plan). | lint_shotlist demands three variants with distinct archetypes; a social-proof hook needs a sourced claim. | Merged: Every brief gets three hook variants with distinct archetypes over an identical body, so a test isolates the hook. [craft; Practitioner advice to test several hooks on the same core content; a platform's ad help asks for 3-5 creatives per ad group that differ a lot.] | A social-proof hook needs a sourced claim (lint_shotlist). | Merged: Write three hook variants with three different archetypes on an identical body, changing only the first 1-3 s. [house; Pack method for hook tests: identical bodies isolate the hook; patterns/hooks.json lists 13 archetypes, 7 of them accepted by the linter.] | WARN unless exactly three, WARN if two share an archetype, FAIL on an archetype outside the seven; the six extra archetypes in hooks.json (live-demo, cold-open, light-from-dark, provocative-line, promise, founder-to-camera) fail the linter today. | Merged: Write three hook variants from three distinct archetypes, because 13 tier-A/A- openers spread over 6 archetypes with none above 3 of 13 (23%). [inferred; Our hand classification of the one-line summaries of the 13 tier-A/A- round-4/5 pieces: in-medias-res 3, claim-or-question 3, payoff-first 3, curiosity-gap 2, pattern-break 1, problem-agitate 1.] | The share is our classification from summaries, not a measured field; the three-variant rule itself is enforced by the story-script linter."
   },
   {
     "id": "hook.title_behind_subject",
@@ -998,7 +998,7 @@
       }
     ],
     "enforce": {
-      "check": "eyes/readability",
+      "check": "lint.eyes.readability",
       "default": null,
       "part": null
     },
@@ -1044,12 +1044,12 @@
       }
     ],
     "enforce": {
-      "check": "structure_check.check_timing",
-      "default": "patterns/structures.json structures.ad-15.sections.hook",
+      "check": "lint.structure.score",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "A view now counts on start, so judge a hook by 3 s hold and average view duration, not views."
+    "notes": "Set today by: patterns/structures.json structures.ad-15.sections.hook (a pack default outside mp plan). | A view now counts on start, so judge a hook by 3 s hold and average view duration, not views."
   }
 ]

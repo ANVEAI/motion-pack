@@ -231,14 +231,14 @@
     ],
     "enforce": {
       "check": null,
-      "default": "patterns/lengths.json",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [
       "pacing.tier_a_length_bimodal"
     ],
-    "notes": "Launch films override this: L1 1:30-2:30, L9 1:45-3:00."
+    "notes": "Set today by: patterns/lengths.json (a pack default outside mp plan). | Launch films override this: L1 1:30-2:30, L9 1:45-3:00."
   },
   {
     "id": "platform.linkedin_spec",
@@ -276,13 +276,13 @@
       }
     ],
     "enforce": {
-      "check": "mp.check.size",
-      "default": "tools/deliver.py PRESETS['linkedin']",
+      "check": "lint.delivery.size",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": ""
+    "notes": "Set today by: tools/deliver.py PRESETS['linkedin'] (a pack default outside mp plan)."
   },
   {
     "id": "platform.master_16x9_relayout",
@@ -319,12 +319,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "templates --set aspect=9:16 (tall/ re-layout)",
+      "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "eyes/composition catches unrequested bars (visual.no_letterbox_vertical) but not a crop, and nothing checks which aspect leads. | eyes/composition flags unrequested bars and wrong aspect; 9:16 film looks are re-laid out, never letterboxed."
+    "notes": "Set today by: templates --set aspect=9:16 (tall/ re-layout) (a pack default outside mp plan). | eyes/composition catches unrequested bars (visual.no_letterbox_vertical) but not a crop, and nothing checks which aspect leads. | eyes/composition flags unrequested bars and wrong aspect; 9:16 film looks are re-laid out, never letterboxed."
   },
   {
     "id": "platform.native_upload_x",
@@ -390,13 +390,13 @@
       }
     ],
     "enforce": {
-      "check": "mp.check.size",
-      "default": "tools/deliver.py PRESETS['reels'], PRESETS['tiktok']",
+      "check": "lint.delivery.size",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "references/platforms.md tags Reels up to 3 min as [pub]; patterns/lengths.json grades it practitioner because the help page did not render."
+    "notes": "Set today by: tools/deliver.py PRESETS['reels'], PRESETS['tiktok'] (a pack default outside mp plan). | references/platforms.md tags Reels up to 3 min as [pub]; patterns/lengths.json grades it practitioner because the help page did not render."
   },
   {
     "id": "platform.relayout_not_crop",
@@ -441,13 +441,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/composition (aspect only)",
+      "check": null,
       "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "16:9 to 9:16: pull back or reframe and stack type vertically; 9:16 to 16:9: fill the width with scene, never empty side panels; 1:1: centre the hero, keep the bottom 10% clear. The aspect check does not prove the layout was re-authored. | Merged: Make every aspect from one timeline by re-layout: vertical gets bigger type and fewer elements, square gets tighter holds, wide gets more spatial context. [craft; Practitioner method from a round method article; market complaints include resizing that crops important content.] | mp.check.size only checks WxH against the aspect; nothing checks that content was re-laid out rather than cropped."
+    "notes": "Tools that touch it today: eyes/composition (aspect only). | 16:9 to 9:16: pull back or reframe and stack type vertically; 9:16 to 16:9: fill the width with scene, never empty side panels; 1:1: centre the hero, keep the bottom 10% clear. The aspect check does not prove the layout was re-authored. | Merged: Make every aspect from one timeline by re-layout: vertical gets bigger type and fewer elements, square gets tighter holds, wide gets more spatial context. [craft; Practitioner method from a round method article; market complaints include resizing that crops important content.] | mp.check.size only checks WxH against the aspect; nothing checks that content was re-laid out rather than cropped."
   },
   {
     "id": "platform.shorts_length_12_15",
@@ -521,13 +521,13 @@
       }
     ],
     "enforce": {
-      "check": "mp.check.size",
-      "default": "tools/deliver.py PRESETS['shorts']",
+      "check": "lint.delivery.size",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "mp.check.size enforces WxH against the aspect; length is not checked. Replays count as views since 31 Mar 2025."
+    "notes": "Set today by: tools/deliver.py PRESETS['shorts'] (a pack default outside mp plan). | mp.check.size enforces WxH against the aspect; length is not checked. Replays count as views since 31 Mar 2025."
   },
   {
     "id": "platform.vertical_safe_rect",
@@ -590,13 +590,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/safezones",
-      "default": "type/safezones.js SAFE.conservative (eyes default for 9:16)",
+      "check": "lint.eyes.safezones",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "Conflict: visual.md gives top 220 / bottom 420 / right 120 / left 60 (now the reels row); another research note gives 14% / 35% / 6%. Per-platform rows (tiktok 150/480/60/140, reels 220/420/60/120, shorts 140/380/60/120, ytAd 200/500/60/120, metaStory 250/340/60/60) are working estimates flagged verify: check the live apps before a paid campaign. | Merged: On a 1080x1920 frame keep faces, words and CTAs out of the top 269 px, bottom 672 px, left 65 px and right 120 px, and never burn a CTA into the bottom 35% where the platform's own button sits. [house; Conservative union of conflicting sources, every per-platform row flagged 'verify'; the bottom-35% band is a platform ad spec.] | eyes/safezones and plan.PLATFORMS use side 0.06 (65 px) on both sides; the 120 px right margin of type/safezones.js 'conservative' is not checked. | Merged: On 1080x1920 keep text and CTAs inside x 65-960 and y 269-1248 (top 14%, bottom 35% reserved), and on wide frames inside 5% top, 8% bottom, 5% sides. [house; conservative union of two conflicting sources (platform UI estimates, flagged verify).] | Looser alternative x 60-960, y 220-1500 in the research. eyes uses symmetric side 0.06 (right edge ~1015) while the conservative rect reserves 120 px on the right. | Merged: In a vertical frame, faces and key text stay out of the bottom 35% (and the top 14%), where captions, titles and feed buttons sit. [house; pack framing rule; eyes flags persistent text-like edge blocks 15% (warn) or 50% (fail) outside the safe rectangle.] | eyes cannot see faces: only text-like edges and plan boxes are checked; face placement is prose-only."
+    "notes": "Set today by: type/safezones.js SAFE.conservative (eyes default for 9:16) (a pack default outside mp plan). | Conflict: visual.md gives top 220 / bottom 420 / right 120 / left 60 (now the reels row); another research note gives 14% / 35% / 6%. Per-platform rows (tiktok 150/480/60/140, reels 220/420/60/120, shorts 140/380/60/120, ytAd 200/500/60/120, metaStory 250/340/60/60) are working estimates flagged verify: check the live apps before a paid campaign. | Merged: On a 1080x1920 frame keep faces, words and CTAs out of the top 269 px, bottom 672 px, left 65 px and right 120 px, and never burn a CTA into the bottom 35% where the platform's own button sits. [house; Conservative union of conflicting sources, every per-platform row flagged 'verify'; the bottom-35% band is a platform ad spec.] | eyes/safezones and plan.PLATFORMS use side 0.06 (65 px) on both sides; the 120 px right margin of type/safezones.js 'conservative' is not checked. | Merged: On 1080x1920 keep text and CTAs inside x 65-960 and y 269-1248 (top 14%, bottom 35% reserved), and on wide frames inside 5% top, 8% bottom, 5% sides. [house; conservative union of two conflicting sources (platform UI estimates, flagged verify).] | Looser alternative x 60-960, y 220-1500 in the research. eyes uses symmetric side 0.06 (right edge ~1015) while the conservative rect reserves 120 px on the right. | Merged: In a vertical frame, faces and key text stay out of the bottom 35% (and the top 14%), where captions, titles and feed buttons sit. [house; pack framing rule; eyes flags persistent text-like edge blocks 15% (warn) or 50% (fail) outside the safe rectangle.] | eyes cannot see faces: only text-like edges and plan boxes are checked; face placement is prose-only."
   },
   {
     "id": "platform.wide_square_safe",
@@ -637,13 +637,13 @@
       }
     ],
     "enforce": {
-      "check": "eyes/safezones",
-      "default": "eyes default_by_aspect (16:9 wideTitle, 1:1 linkedin.video)",
+      "check": "lint.eyes.safezones",
+      "default": null,
       "part": null
     },
     "status": "enforced",
     "conflicts_with": [],
-    "notes": "16:9 grid: 12 columns, 96 px margins, 24 px gutters; 1:1 grid 6 columns."
+    "notes": "Set today by: eyes default_by_aspect (16:9 wideTitle, 1:1 linkedin.video) (a pack default outside mp plan). | 16:9 grid: 12 columns, 96 px margins, 24 px gutters; 1:1 grid 6 columns."
   },
   {
     "id": "platform.x_landscape_ok",
@@ -672,13 +672,13 @@
       }
     ],
     "enforce": {
-      "check": "mp.check.size",
+      "check": null,
       "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "mp.check.size only checks WxH against the planned aspect, not the choice."
+    "notes": "Tools that touch it today: mp.check.size. | mp.check.size only checks WxH against the planned aspect, not the choice."
   },
   {
     "id": "platform.x_name_early_or_end",
@@ -751,12 +751,12 @@
       }
     ],
     "enforce": {
-      "check": "mp.check.size",
-      "default": "tools/deliver.py PRESETS['x']",
+      "check": "lint.delivery.size",
+      "default": null,
       "part": null
     },
-    "status": "default",
+    "status": "enforced",
     "conflicts_with": [],
-    "notes": "patterns/lengths.json grades the 140 s limit practitioner; references/platforms.md tags it [pub]."
+    "notes": "Set today by: tools/deliver.py PRESETS['x'] (a pack default outside mp plan). | patterns/lengths.json grades the 140 s limit practitioner; references/platforms.md tags it [pub]."
   }
 ]

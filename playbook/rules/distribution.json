@@ -126,7 +126,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.poster_max_words",
+      "check": "lint.shotlist.poster_max_words",
       "default": null,
       "part": null
     },
@@ -165,12 +165,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "patterns/ctas.json wording.rules",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "On a launch platform that bans vote requests, ask the viewer to try it, never to vote (ctas.json launch.film)."
+    "notes": "Set today by: patterns/ctas.json wording.rules (a pack default outside mp plan). | On a launch platform that bans vote requests, ask the viewer to try it, never to vote (ctas.json launch.film)."
   },
   {
     "id": "distribution.cta_timing",
@@ -204,12 +204,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "patterns/ctas.json",
+      "default": null,
       "part": null
     },
     "status": "prose-only",
     "conflicts_with": [],
-    "notes": "structure_check.check_cta covers only the end-card window (story.cta_window); nothing checks the soft CTA at 60-70%. | Use urgency only if true; use the platform's CTA button for the link."
+    "notes": "Set today by: patterns/ctas.json (a pack default outside mp plan). | structure_check.check_cta covers only the end-card window (story.cta_window); nothing checks the soft CTA at 60-70%. | Use urgency only if true; use the platform's CTA button for the link."
   },
   {
     "id": "distribution.day2_is_fresh",
@@ -873,12 +873,12 @@
     ],
     "enforce": {
       "check": null,
-      "default": "patterns/ctas.json ctas.loop.short",
+      "default": "plan.template",
       "part": null
     },
     "status": "default",
     "conflicts_with": [],
-    "notes": "Loop kinds: state-return (last frame equals first), reveal-to-hook, ping-pong."
+    "notes": "Set today by: patterns/ctas.json ctas.loop.short (a pack default outside mp plan). | Loop kinds: state-return (last frame equals first), reveal-to-hook, ping-pong."
   },
   {
     "id": "distribution.low_volume_when_unseen",
@@ -1360,7 +1360,7 @@
       }
     ],
     "enforce": {
-      "check": "lint_shotlist.send_line",
+      "check": "lint.shotlist.send_line",
       "default": null,
       "part": null
     },
