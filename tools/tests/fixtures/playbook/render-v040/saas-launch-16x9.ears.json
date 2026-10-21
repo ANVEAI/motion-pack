@@ -1,0 +1,2666 @@
+{
+ "input": "saas-launch-16x9.mp4",
+ "duration_s": 60.011,
+ "channels": 2,
+ "fps": 30,
+ "is_master": false,
+ "mode": "music",
+ "checks": [
+  {
+   "id": "ears/loudness",
+   "category": "loudness",
+   "status": "pass",
+   "measured": {
+    "integrated_lufs": -14.16,
+    "short_term_max_lufs": -12.2,
+    "momentary_max_lufs": -8.2,
+    "lra_lu": 1.9,
+    "lra_without_planned_quiet_lu": 1.9,
+    "sample_peak_dbfs": -1.34,
+    "true_peak_dbtp": -1.33,
+    "plr_lu": 12.8,
+    "tail_peak_dbfs": -150.0,
+    "short_term_curve": [
+     [
+      3.0,
+      -14.3
+     ],
+     [
+      3.5,
+      -14.1
+     ],
+     [
+      4.0,
+      -14.1
+     ],
+     [
+      4.5,
+      -14.5
+     ],
+     [
+      5.0,
+      -14.7
+     ],
+     [
+      5.5,
+      -14.5
+     ],
+     [
+      6.0,
+      -14.4
+     ],
+     [
+      6.5,
+      -14.5
+     ],
+     [
+      7.0,
+      -14.6
+     ],
+     [
+      7.5,
+      -14.1
+     ],
+     [
+      8.0,
+      -14.0
+     ],
+     [
+      8.5,
+      -14.0
+     ],
+     [
+      9.0,
+      -13.6
+     ],
+     [
+      9.5,
+      -13.2
+     ],
+     [
+      10.0,
+      -13.2
+     ],
+     [
+      10.5,
+      -13.7
+     ],
+     [
+      11.0,
+      -13.8
+     ],
+     [
+      11.5,
+      -13.8
+     ],
+     [
+      12.0,
+      -14.4
+     ],
+     [
+      12.5,
+      -15.1
+     ],
+     [
+      13.0,
+      -15.0
+     ],
+     [
+      13.5,
+      -14.7
+     ],
+     [
+      14.0,
+      -14.7
+     ],
+     [
+      14.5,
+      -15.0
+     ],
+     [
+      15.0,
+      -15.0
+     ],
+     [
+      15.5,
+      -14.6
+     ],
+     [
+      16.0,
+      -14.5
+     ],
+     [
+      16.5,
+      -14.6
+     ],
+     [
+      17.0,
+      -14.4
+     ],
+     [
+      17.5,
+      -14.1
+     ],
+     [
+      18.0,
+      -13.8
+     ],
+     [
+      18.5,
+      -14.0
+     ],
+     [
+      19.0,
+      -14.1
+     ],
+     [
+      19.5,
+      -14.1
+     ],
+     [
+      20.0,
+      -14.3
+     ],
+     [
+      20.5,
+      -14.6
+     ],
+     [
+      21.0,
+      -14.9
+     ],
+     [
+      21.5,
+      -14.1
+     ],
+     [
+      22.0,
+      -12.7
+     ],
+     [
+      22.5,
+      -12.7
+     ],
+     [
+      23.0,
+      -12.5
+     ],
+     [
+      23.5,
+      -12.2
+     ],
+     [
+      24.0,
+      -12.2
+     ],
+     [
+      24.5,
+      -12.8
+     ],
+     [
+      25.0,
+      -14.1
+     ],
+     [
+      25.5,
+      -13.7
+     ],
+     [
+      26.0,
+      -13.8
+     ],
+     [
+      26.5,
+      -14.0
+     ],
+     [
+      27.0,
+      -13.9
+     ],
+     [
+      27.5,
+      -13.5
+     ],
+     [
+      28.0,
+      -13.5
+     ],
+     [
+      28.5,
+      -14.2
+     ],
+     [
+      29.0,
+      -14.3
+     ],
+     [
+      29.5,
+      -14.3
+     ],
+     [
+      30.0,
+      -14.3
+     ],
+     [
+      30.5,
+      -14.7
+     ],
+     [
+      31.0,
+      -14.6
+     ],
+     [
+      31.5,
+      -14.4
+     ],
+     [
+      32.0,
+      -14.5
+     ],
+     [
+      32.5,
+      -14.7
+     ],
+     [
+      33.0,
+      -14.9
+     ],
+     [
+      33.5,
+      -14.8
+     ],
+     [
+      34.0,
+      -14.8
+     ],
+     [
+      34.5,
+      -15.1
+     ],
+     [
+      35.0,
+      -13.6
+     ],
+     [
+      35.5,
+      -13.1
+     ],
+     [
+      36.0,
+      -13.1
+     ],
+     [
+      36.5,
+      -13.3
+     ],
+     [
+      37.0,
+      -13.3
+     ],
+     [
+      37.5,
+      -13.0
+     ],
+     [
+      38.0,
+      -13.9
+     ],
+     [
+      38.5,
+      -14.3
+     ],
+     [
+      39.0,
+      -14.4
+     ],
+     [
+      39.5,
+      -14.2
+     ],
+     [
+      40.0,
+      -14.3
+     ],
+     [
+      40.5,
+      -14.6
+     ],
+     [
+      41.0,
+      -14.9
+     ],
+     [
+      41.5,
+      -14.8
+     ],
+     [
+      42.0,
+      -14.6
+     ],
+     [
+      42.5,
+      -14.8
+     ],
+     [
+      43.0,
+      -14.7
+     ],
+     [
+      43.5,
+      -14.5
+     ],
+     [
+      44.0,
+      -14.4
+     ],
+     [
+      44.5,
+      -14.9
+     ],
+     [
+      45.0,
+      -15.0
+     ],
+     [
+      45.5,
+      -14.4
+     ],
+     [
+      46.0,
+      -14.4
+     ],
+     [
+      46.5,
+      -14.5
+     ],
+     [
+      47.0,
+      -14.5
+     ],
+     [
+      47.5,
+      -14.2
+     ],
+     [
+      48.0,
+      -14.3
+     ],
+     [
+      48.5,
+      -14.9
+     ],
+     [
+      49.0,
+      -14.6
+     ],
+     [
+      49.5,
+      -14.0
+     ],
+     [
+      50.0,
+      -14.0
+     ],
+     [
+      50.5,
+      -14.3
+     ],
+     [
+      51.0,
+      -14.2
+     ],
+     [
+      51.5,
+      -14.0
+     ],
+     [
+      52.0,
+      -14.3
+     ],
+     [
+      52.5,
+      -15.0
+     ],
+     [
+      53.0,
+      -14.6
+     ],
+     [
+      53.5,
+      -14.3
+     ],
+     [
+      54.0,
+      -14.1
+     ],
+     [
+      54.5,
+      -14.4
+     ],
+     [
+      55.0,
+      -14.4
+     ],
+     [
+      55.5,
+      -14.3
+     ],
+     [
+      56.0,
+      -14.6
+     ],
+     [
+      56.5,
+      -14.4
+     ],
+     [
+      57.0,
+      -14.4
+     ],
+     [
+      57.5,
+      -14.1
+     ],
+     [
+      58.0,
+      -14.1
+     ],
+     [
+      58.5,
+      -14.4
+     ],
+     [
+      59.0,
+      -15.0
+     ],
+     [
+      59.5,
+      -16.7
+     ],
+     [
+      60.0,
+      -17.7
+     ]
+    ],
+    "platforms": {
+     "youtube": {
+      "target_lufs": -14.0,
+      "playback_gain_db": 0.0,
+      "grade": "B"
+     },
+     "spotify": {
+      "target_lufs": -14.0,
+      "playback_gain_db": 0.2,
+      "grade": "A"
+     },
+     "tiktok / reels / shorts / x / linkedin (house)": {
+      "target_lufs": -14.0,
+      "playback_gain_db": 0.0,
+      "grade": "D (no published spec)"
+     },
+     "hero.web": {
+      "target_lufs": -16.0,
+      "playback_gain_db": -1.8,
+      "grade": "house"
+     },
+     "broadcast (EBU R128)": {
+      "target_lufs": -23.0,
+      "playback_gain_db": -8.8,
+      "grade": "A"
+     }
+    },
+    "master_spec": "delivered file"
+   },
+   "target": "-14 +- 0.5 LUFS-I, TP <= -1.0 dBTP, LRA <= 10 LU, last 0.15 s silent",
+   "issues": [],
+   "notes": [
+    "loudness range 1.9 LU over the whole file, 1.9 LU without the planned quiet regions (plan.audio.quiet): the range is judged on the latter",
+    "platform playback offsets (negative = turned down): youtube +0.0 dB, spotify +0.2 dB, tiktok / reels / shorts / x / linkedin (house) +0.0 dB, hero.web -1.8 dB, broadcast (EBU R128) -8.8 dB"
+   ]
+  },
+  {
+   "id": "ears/clipping",
+   "category": "cleanliness",
+   "status": "pass",
+   "measured": {
+    "clipped_runs": 0,
+    "samples_over_0dbfs": 0,
+    "intersample_over_samples": 0,
+    "true_peak_dbtp": -1.33,
+    "sample_peak_dbfs": -1.34,
+    "crest_factor_db": 14.8,
+    "plr_lu": 12.8,
+    "duration_s": 60.01
+   },
+   "target": "no flat-topped runs, no samples or true peaks over 0 dBFS, PLR >= 8 LU",
+   "issues": [],
+   "notes": []
+  },
+  {
+   "id": "ears/tone",
+   "category": "tone",
+   "status": "pass",
+   "measured": {
+    "band_share": {
+     "sub": 0.302,
+     "low": 0.46,
+     "mud": 0.044,
+     "mid": 0.104,
+     "presence": 0.061,
+     "sibilance": 0.02,
+     "air": 0.009
+    },
+    "db_per_octave_vs_mid": {
+     "sub": 5.6,
+     "low": 6.3,
+     "mud": -0.7,
+     "mid": 0.0,
+     "presence": -0.5,
+     "sibilance": -4.2,
+     "air": -7.4
+    },
+    "centroid_hz": 680.0
+   },
+   "target": "per-octave energy vs 500 Hz-2 kHz inside sub -24..12, low -10..10, mud -8..6, presence -16..2, sibilance -26..-3, air -38..-4 dB",
+   "issues": [],
+   "notes": [
+    "locally sibilant at 2.1 s, 3.6 s, 4.1 s, 4.6 s",
+    "locally harsh at 8.6 s, 9.1 s, 24.6 s, 25.1 s",
+    "locally boomy at 14.6 s, 15.1 s, 15.6 s, 16.1 s"
+   ]
+  },
+  {
+   "id": "ears/speech",
+   "category": "speech",
+   "status": "n/a",
+   "measured": {
+    "source": "vad",
+    "speech_s": 0.0
+   },
+   "target": "speech-to-music >= 10 dB, ducking >= 9 dB",
+   "issues": [],
+   "notes": [
+    "no speech detected (music / SFX-only mix); pass --transcript to check a voice the detector missed"
+   ]
+  },
+  {
+   "id": "ears/sync",
+   "category": "sync",
+   "status": "pass",
+   "measured": {
+    "tempo_bpm": 120.0,
+    "tempo_confidence": 0.75,
+    "beats": 119,
+    "onsets": 463,
+    "onsets_per_s": 7.72,
+    "hits": [
+     1.001,
+     2.002,
+     3.259,
+     5.265,
+     5.509,
+     6.001,
+     6.518,
+     10.001,
+     11.269,
+     13.255,
+     13.516,
+     14.006,
+     14.505,
+     15.491,
+     16.002,
+     17.232,
+     17.757,
+     18.007,
+     19.254,
+     22.518,
+     25.001,
+     26.001,
+     27.269,
+     29.255,
+     29.516,
+     30.001,
+     30.505,
+     32.001,
+     34.002,
+     35.255,
+     37.255,
+     37.512,
+     38.001,
+     38.505,
+     40.001,
+     42.001,
+     43.255,
+     44.006,
+     46.001,
+     46.505
+    ],
+    "first_audible_frame": 0,
+    "fps": 30.0,
+    "mode": "music",
+    "cuts": 13,
+    "cuts_on_onset": 1.0,
+    "cuts_on_beat": 1.0,
+    "cuts_on_onset_chance": 0.89,
+    "cut_rows": [
+     {
+      "t": 3.0,
+      "onset_dt_frames": -0.2,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 5.0,
+      "onset_dt_frames": -0.5,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 7.0,
+      "onset_dt_frames": -0.9,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 9.0,
+      "onset_dt_frames": 0.2,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 13.0,
+      "onset_dt_frames": 0.1,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 29.0,
+      "onset_dt_frames": 0.0,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 33.0,
+      "onset_dt_frames": 0.0,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 37.0,
+      "onset_dt_frames": 0.2,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 41.0,
+      "onset_dt_frames": 0.0,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 45.0,
+      "onset_dt_frames": 0.3,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 49.0,
+      "onset_dt_frames": -0.0,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 52.5,
+      "onset_dt_frames": 0.3,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     },
+     {
+      "t": 56.0,
+      "onset_dt_frames": 0.0,
+      "beat_dt_frames": -0.3,
+      "on_onset": true,
+      "on_beat": true
+     }
+    ],
+    "cue_rows": [
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 0.0,
+      "expected_s": 0.033,
+      "measured_s": 0.033,
+      "dt_frames": 0.0,
+      "match": 0.66,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 0.0667,
+      "expected_s": 0.1,
+      "measured_s": 0.1,
+      "dt_frames": 0.0,
+      "match": 0.83,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 0.1333,
+      "expected_s": 0.167,
+      "measured_s": 0.167,
+      "dt_frames": 0.0,
+      "match": 0.24,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 0.6,
+      "expected_s": 0.633,
+      "measured_s": 0.633,
+      "dt_frames": 0.0,
+      "match": 0.81,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 1.1667,
+      "expected_s": 1.2,
+      "measured_s": 1.2,
+      "dt_frames": 0.0,
+      "match": 0.83,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 1.7,
+      "expected_s": 1.733,
+      "measured_s": 1.733,
+      "dt_frames": 0.0,
+      "match": 0.86,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 2.2667,
+      "expected_s": 2.3,
+      "measured_s": 2.3,
+      "dt_frames": 0.0,
+      "match": 0.79,
+      "riser": false
+     },
+     {
+      "id": "sfx/tx/smash_cut",
+      "t": 3.0,
+      "expected_s": 3.033,
+      "measured_s": 3.033,
+      "dt_frames": 0.0,
+      "match": 0.39,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 3.0,
+      "expected_s": 3.033,
+      "measured_s": 3.033,
+      "dt_frames": 0.0,
+      "match": 0.51,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 3.0,
+      "expected_s": 3.033,
+      "measured_s": 3.033,
+      "dt_frames": 0.0,
+      "match": 0.51,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 3.0667,
+      "expected_s": 3.1,
+      "measured_s": 3.1,
+      "dt_frames": 0.0,
+      "match": 0.3,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/drag_lift",
+      "t": 3.4667,
+      "expected_s": 3.5,
+      "measured_s": 3.5,
+      "dt_frames": 0.0,
+      "match": 0.8,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/drop_snap",
+      "t": 4.2667,
+      "expected_s": 4.3,
+      "measured_s": 4.3,
+      "dt_frames": 0.0,
+      "match": 0.59,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 5.0,
+      "expected_s": 5.033,
+      "measured_s": 5.033,
+      "dt_frames": 0.0,
+      "match": 0.7,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 5.0667,
+      "expected_s": 5.1,
+      "measured_s": 5.1,
+      "dt_frames": 0.0,
+      "match": 0.39,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/pop",
+      "t": 5.9333,
+      "expected_s": 5.967,
+      "measured_s": 5.967,
+      "dt_frames": 0.0,
+      "match": 0.89,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 6.1,
+      "expected_s": 6.133,
+      "measured_s": 6.133,
+      "dt_frames": 0.0,
+      "match": 0.82,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 7.0,
+      "expected_s": 7.033,
+      "measured_s": 7.033,
+      "dt_frames": 0.0,
+      "match": 0.74,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 7.0667,
+      "expected_s": 7.1,
+      "measured_s": 7.1,
+      "dt_frames": 0.0,
+      "match": 0.2,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 7.1,
+      "expected_s": 7.133,
+      "measured_s": 7.133,
+      "dt_frames": 0.0,
+      "match": 0.87,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 7.4,
+      "expected_s": 7.433,
+      "measured_s": 7.433,
+      "dt_frames": 0.0,
+      "match": 0.75,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 7.7,
+      "expected_s": 7.733,
+      "measured_s": 7.733,
+      "dt_frames": 0.0,
+      "match": 0.85,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 8.0,
+      "expected_s": 8.033,
+      "measured_s": 8.033,
+      "dt_frames": 0.0,
+      "match": 0.86,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 8.3,
+      "expected_s": 8.333,
+      "measured_s": 8.333,
+      "dt_frames": 0.0,
+      "match": 0.81,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 8.6,
+      "expected_s": 8.633,
+      "measured_s": 8.633,
+      "dt_frames": 0.0,
+      "match": 0.72,
+      "riser": false
+     },
+     {
+      "id": "sfx/riser/noise_1bar",
+      "t": 9.0,
+      "expected_s": 9.0,
+      "measured_s": 9.0,
+      "dt_frames": 0.0,
+      "match": 0.44,
+      "riser": true
+     },
+     {
+      "id": "sfx/whoosh/whip_pan",
+      "t": 9.0,
+      "expected_s": 9.033,
+      "measured_s": 9.033,
+      "dt_frames": 0.0,
+      "match": 0.64,
+      "riser": false
+     },
+     {
+      "id": "sfx/hit/soft",
+      "t": 9.1,
+      "expected_s": 9.133,
+      "measured_s": null,
+      "dt_frames": null,
+      "match": 0.0,
+      "riser": false
+     },
+     {
+      "id": "sfx/sparkle/letter_assemble",
+      "t": 9.2667,
+      "expected_s": 9.3,
+      "measured_s": 9.3,
+      "dt_frames": 0.0,
+      "match": 0.75,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 9.9,
+      "expected_s": 9.933,
+      "measured_s": 9.933,
+      "dt_frames": 0.0,
+      "match": 0.2,
+      "riser": false
+     },
+     {
+      "id": "sfx/tx/zoom_through",
+      "t": 13.0,
+      "expected_s": 13.033,
+      "measured_s": 13.033,
+      "dt_frames": 0.0,
+      "match": 0.39,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 13.0,
+      "expected_s": 13.033,
+      "measured_s": 13.033,
+      "dt_frames": 0.0,
+      "match": 0.5,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 13.0667,
+      "expected_s": 13.1,
+      "measured_s": 13.1,
+      "dt_frames": 0.0,
+      "match": 0.47,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/hover_tick",
+      "t": 14.1667,
+      "expected_s": 14.2,
+      "measured_s": 14.2,
+      "dt_frames": 0.0,
+      "match": 0.92,
+      "riser": false
+     },
+     {
+      "id": "sfx/device/mouse_click",
+      "t": 14.5333,
+      "expected_s": 14.567,
+      "measured_s": 14.567,
+      "dt_frames": 0.0,
+      "match": 0.5,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 14.7667,
+      "expected_s": 14.8,
+      "measured_s": 14.8,
+      "dt_frames": 0.0,
+      "match": 0.33,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/typing_burst",
+      "t": 15.4,
+      "expected_s": 15.433,
+      "measured_s": 15.433,
+      "dt_frames": 0.0,
+      "match": 0.55,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/typing_burst",
+      "t": 16.3,
+      "expected_s": 16.333,
+      "measured_s": 16.333,
+      "dt_frames": 0.0,
+      "match": 0.57,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/typing_burst",
+      "t": 17.2,
+      "expected_s": 17.233,
+      "measured_s": 17.233,
+      "dt_frames": 0.0,
+      "match": 0.6,
+      "riser": false
+     },
+     {
+      "id": "sfx/device/message_sent",
+      "t": 17.8,
+      "expected_s": 17.833,
+      "measured_s": 17.833,
+      "dt_frames": -0.0,
+      "match": 0.65,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/ai_think_pulse",
+      "t": 18.0333,
+      "expected_s": 18.067,
+      "measured_s": 18.068,
+      "dt_frames": 0.05,
+      "match": 0.86,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "t": 18.3333,
+      "expected_s": 18.367,
+      "measured_s": 18.367,
+      "dt_frames": 0.0,
+      "match": 0.7,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 18.6,
+      "expected_s": 18.633,
+      "measured_s": 18.633,
+      "dt_frames": 0.0,
+      "match": 0.32,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "t": 18.8,
+      "expected_s": 18.833,
+      "measured_s": 18.833,
+      "dt_frames": 0.0,
+      "match": 0.78,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "t": 19.2333,
+      "expected_s": 19.267,
+      "measured_s": 19.267,
+      "dt_frames": 0.0,
+      "match": 0.54,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "t": 19.7,
+      "expected_s": 19.733,
+      "measured_s": 19.733,
+      "dt_frames": 0.0,
+      "match": 0.83,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "t": 20.1333,
+      "expected_s": 20.167,
+      "measured_s": 20.167,
+      "dt_frames": 0.0,
+      "match": 0.88,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "t": 20.6,
+      "expected_s": 20.633,
+      "measured_s": 20.633,
+      "dt_frames": 0.0,
+      "match": 0.85,
+      "riser": false
+     },
+     {
+      "id": "sfx/device/mouse_click",
+      "t": 21.0,
+      "expected_s": 21.033,
+      "measured_s": 21.033,
+      "dt_frames": 0.0,
+      "match": 0.31,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "t": 21.0333,
+      "expected_s": 21.067,
+      "measured_s": 21.067,
+      "dt_frames": 0.0,
+      "match": 0.61,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/success_chime",
+      "t": 21.1,
+      "expected_s": 21.133,
+      "measured_s": null,
+      "dt_frames": null,
+      "match": 0.0,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/zoom_in",
+      "t": 21.4,
+      "expected_s": 21.433,
+      "measured_s": 21.433,
+      "dt_frames": 0.0,
+      "match": 0.89,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 21.4,
+      "expected_s": 21.433,
+      "measured_s": null,
+      "dt_frames": null,
+      "match": 0.0,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "t": 21.5,
+      "expected_s": 21.533,
+      "measured_s": 21.533,
+      "dt_frames": 0.0,
+      "match": 0.61,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/ai_reply",
+      "t": 21.6333,
+      "expected_s": 21.667,
+      "measured_s": null,
+      "dt_frames": null,
+      "match": 0.0,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/highlight_draw",
+      "t": 21.7333,
+      "expected_s": 21.767,
+      "measured_s": 21.767,
+      "dt_frames": 0.0,
+      "match": 0.74,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/pop",
+      "t": 22.7333,
+      "expected_s": 22.767,
+      "measured_s": 22.767,
+      "dt_frames": 0.0,
+      "match": 0.91,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 22.9,
+      "expected_s": 22.933,
+      "measured_s": 22.933,
+      "dt_frames": 0.0,
+      "match": 0.34,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/zoom_in",
+      "t": 23.1,
+      "expected_s": 23.133,
+      "measured_s": 23.133,
+      "dt_frames": 0.0,
+      "match": 0.93,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 23.3,
+      "expected_s": 23.333,
+      "measured_s": 23.333,
+      "dt_frames": 0.0,
+      "match": 0.41,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/drag_lift",
+      "t": 23.7,
+      "expected_s": 23.733,
+      "measured_s": 23.733,
+      "dt_frames": 0.0,
+      "match": 0.9,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/drop_snap",
+      "t": 24.6,
+      "expected_s": 24.633,
+      "measured_s": 24.633,
+      "dt_frames": 0.0,
+      "match": 0.6,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/zoom_in",
+      "t": 25.4,
+      "expected_s": 25.433,
+      "measured_s": 25.433,
+      "dt_frames": 0.0,
+      "match": 0.96,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 25.5,
+      "expected_s": 25.533,
+      "measured_s": 25.533,
+      "dt_frames": 0.0,
+      "match": 0.3,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/hover_tick",
+      "t": 25.6,
+      "expected_s": 25.633,
+      "measured_s": 25.633,
+      "dt_frames": 0.0,
+      "match": 0.82,
+      "riser": false
+     },
+     {
+      "id": "sfx/device/mouse_click",
+      "t": 25.9333,
+      "expected_s": 25.967,
+      "measured_s": 25.967,
+      "dt_frames": 0.0,
+      "match": 0.48,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 26.5,
+      "expected_s": 26.533,
+      "measured_s": 26.533,
+      "dt_frames": 0.0,
+      "match": 0.68,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/zoom_in",
+      "t": 26.5,
+      "expected_s": 26.533,
+      "measured_s": 26.533,
+      "dt_frames": 0.0,
+      "match": 0.7,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 26.9,
+      "expected_s": 26.933,
+      "measured_s": 26.933,
+      "dt_frames": 0.0,
+      "match": 0.42,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "t": 27.3,
+      "expected_s": 27.333,
+      "measured_s": 27.333,
+      "dt_frames": 0.0,
+      "match": 0.89,
+      "riser": false
+     },
+     {
+      "id": "sfx/tx/push",
+      "t": 29.0,
+      "expected_s": 29.033,
+      "measured_s": 29.033,
+      "dt_frames": 0.0,
+      "match": 0.58,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 29.0,
+      "expected_s": 29.033,
+      "measured_s": 29.033,
+      "dt_frames": 0.0,
+      "match": 0.48,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 29.0667,
+      "expected_s": 29.1,
+      "measured_s": 29.1,
+      "dt_frames": 0.0,
+      "match": 0.31,
+      "riser": false
+     },
+     {
+      "id": "sfx/device/keyboard_mech_soft",
+      "t": 29.5,
+      "expected_s": 29.533,
+      "measured_s": 29.533,
+      "dt_frames": 0.0,
+      "match": 0.75,
+      "riser": false
+     },
+     {
+      "id": "sfx/device/keyboard_mech_soft",
+      "t": 29.6333,
+      "expected_s": 29.667,
+      "measured_s": 29.667,
+      "dt_frames": 0.0,
+      "match": 0.68,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/key_chord",
+      "t": 29.6667,
+      "expected_s": 29.7,
+      "measured_s": 29.7,
+      "dt_frames": 0.0,
+      "match": 0.73,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/palette_open",
+      "t": 30.2667,
+      "expected_s": 30.3,
+      "measured_s": 30.3,
+      "dt_frames": 0.0,
+      "match": 0.86,
+      "riser": false
+     },
+     {
+      "id": "sfx/device/keyboard_mech_soft",
+      "t": 30.5667,
+      "expected_s": 30.6,
+      "measured_s": 30.6,
+      "dt_frames": 0.0,
+      "match": 0.8,
+      "riser": false
+     },
+     {
+      "id": "sfx/device/keyboard_mech_soft",
+      "t": 30.8667,
+      "expected_s": 30.9,
+      "measured_s": 30.9,
+      "dt_frames": 0.0,
+      "match": 0.87,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/click",
+      "t": 31.9,
+      "expected_s": 31.933,
+      "measured_s": 31.933,
+      "dt_frames": 0.0,
+      "match": 0.46,
+      "riser": false
+     },
+     {
+      "id": "sfx/tx/push",
+      "t": 33.0,
+      "expected_s": 33.033,
+      "measured_s": 33.033,
+      "dt_frames": 0.0,
+      "match": 0.53,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 33.0,
+      "expected_s": 33.033,
+      "measured_s": 33.033,
+      "dt_frames": 0.0,
+      "match": 0.56,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 33.0667,
+      "expected_s": 33.1,
+      "measured_s": 33.1,
+      "dt_frames": 0.0,
+      "match": 0.32,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/hover_tick",
+      "t": 34.6,
+      "expected_s": 34.633,
+      "measured_s": 34.633,
+      "dt_frames": 0.0,
+      "match": 0.85,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/highlight_draw",
+      "t": 34.7667,
+      "expected_s": 34.8,
+      "measured_s": 34.8,
+      "dt_frames": 0.0,
+      "match": 0.94,
+      "riser": false
+     },
+     {
+      "id": "sfx/tx/push",
+      "t": 37.0,
+      "expected_s": 37.033,
+      "measured_s": 37.033,
+      "dt_frames": 0.0,
+      "match": 0.66,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 37.0667,
+      "expected_s": 37.1,
+      "measured_s": 37.1,
+      "dt_frames": 0.0,
+      "match": 0.3,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/count_run",
+      "t": 38.1,
+      "expected_s": 38.133,
+      "measured_s": 38.133,
+      "dt_frames": 0.0,
+      "match": 0.89,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 41.0667,
+      "expected_s": 41.1,
+      "measured_s": 41.1,
+      "dt_frames": 0.0,
+      "match": 0.21,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/pop",
+      "t": 41.1,
+      "expected_s": 41.133,
+      "measured_s": 41.133,
+      "dt_frames": 0.0,
+      "match": 0.92,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/tick",
+      "t": 41.3,
+      "expected_s": 41.333,
+      "measured_s": 41.333,
+      "dt_frames": 0.0,
+      "match": 0.87,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/tick",
+      "t": 41.4333,
+      "expected_s": 41.467,
+      "measured_s": 41.467,
+      "dt_frames": 0.0,
+      "match": 0.86,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/tick",
+      "t": 41.5667,
+      "expected_s": 41.6,
+      "measured_s": 41.6,
+      "dt_frames": 0.0,
+      "match": 0.88,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/tick",
+      "t": 41.7333,
+      "expected_s": 41.767,
+      "measured_s": 41.767,
+      "dt_frames": 0.0,
+      "match": 0.87,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/connect",
+      "t": 41.8667,
+      "expected_s": 41.9,
+      "measured_s": 41.9,
+      "dt_frames": 0.0,
+      "match": 0.51,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/tick",
+      "t": 41.8667,
+      "expected_s": 41.9,
+      "measured_s": 41.9,
+      "dt_frames": 0.0,
+      "match": 0.57,
+      "riser": false
+     },
+     {
+      "id": "sfx/tx/blur_cross",
+      "t": 45.0,
+      "expected_s": 45.033,
+      "measured_s": 45.033,
+      "dt_frames": 0.0,
+      "match": 0.81,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 45.0667,
+      "expected_s": 45.1,
+      "measured_s": 45.1,
+      "dt_frames": 0.0,
+      "match": 0.21,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "t": 45.3667,
+      "expected_s": 45.4,
+      "measured_s": 45.4,
+      "dt_frames": 0.0,
+      "match": 0.76,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 46.3,
+      "expected_s": 46.333,
+      "measured_s": 46.333,
+      "dt_frames": 0.0,
+      "match": 0.88,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 47.2,
+      "expected_s": 47.233,
+      "measured_s": 47.233,
+      "dt_frames": 0.0,
+      "match": 0.79,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 49.0667,
+      "expected_s": 49.1,
+      "measured_s": 49.1,
+      "dt_frames": 0.0,
+      "match": 0.26,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/count_run",
+      "t": 49.2667,
+      "expected_s": 49.3,
+      "measured_s": 49.3,
+      "dt_frames": 0.0,
+      "match": 0.83,
+      "riser": false
+     },
+     {
+      "id": "sfx/tx/push",
+      "t": 52.5,
+      "expected_s": 52.533,
+      "measured_s": 52.533,
+      "dt_frames": 0.0,
+      "match": 0.76,
+      "riser": false
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "t": 52.5667,
+      "expected_s": 52.6,
+      "measured_s": 52.6,
+      "dt_frames": 0.0,
+      "match": 0.3,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/pop",
+      "t": 52.7667,
+      "expected_s": 52.8,
+      "measured_s": 52.8,
+      "dt_frames": 0.0,
+      "match": 0.92,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/pop",
+      "t": 52.9,
+      "expected_s": 52.933,
+      "measured_s": 52.933,
+      "dt_frames": 0.0,
+      "match": 0.64,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/pop",
+      "t": 53.0333,
+      "expected_s": 53.067,
+      "measured_s": 53.067,
+      "dt_frames": 0.0,
+      "match": 0.88,
+      "riser": false
+     },
+     {
+      "id": "sfx/ui/price_reveal",
+      "t": 53.5,
+      "expected_s": 53.533,
+      "measured_s": 53.533,
+      "dt_frames": 0.0,
+      "match": 0.67,
+      "riser": false
+     },
+     {
+      "id": "sfx/hit/brand_field_slam",
+      "t": 56.0,
+      "expected_s": 56.033,
+      "measured_s": 56.033,
+      "dt_frames": 0.0,
+      "match": 0.41,
+      "riser": false
+     },
+     {
+      "id": "sfx/logo/hybrid",
+      "t": 56.2,
+      "expected_s": 56.233,
+      "measured_s": 56.233,
+      "dt_frames": 0.0,
+      "match": 0.92,
+      "riser": false
+     }
+    ],
+    "cues_checked": 107,
+    "cues_on_anchor": 1.0
+   },
+   "target": ">= 60% of cuts within 2 frames of an onset, cue anchors on F + 1, risers end on F, an event by frame 3 (or a planned quiet open)",
+   "issues": [],
+   "notes": [
+    "tempo can read as half or double time; 120.0 BPM also fits 60.0 / 240.0",
+    "chance level: 89% of the timeline is inside the onset windows, so 100% of cuts on an onset is about what luck gives (z 1.3); it is not evidence of sync",
+    "4 cue(s) not detectable in the mix (buried under the bed or soft attack): sfx/hit/soft at 9.10 s, sfx/ui/success_chime at 21.10 s, sfx/whoosh/swish_xs at 21.40 s, sfx/ui/ai_reply at 21.63 s"
+   ]
+  },
+  {
+   "id": "ears/structure",
+   "category": "structure",
+   "status": "pass",
+   "measured": {
+    "lra_lu": 1.9,
+    "section_spread_db": 5.8,
+    "sections": [
+     {
+      "t": [
+       0.0,
+       9.5
+      ],
+      "level_dbfs": -16.0,
+      "label": "intro"
+     },
+     {
+      "t": [
+       9.5,
+       15.0
+      ],
+      "level_dbfs": -16.7,
+      "label": "body"
+     },
+     {
+      "t": [
+       15.0,
+       18.0
+      ],
+      "level_dbfs": -15.5,
+      "label": "body"
+     },
+     {
+      "t": [
+       18.0,
+       21.0
+      ],
+      "level_dbfs": -16.5,
+      "label": "body"
+     },
+     {
+      "t": [
+       21.0,
+       23.0
+      ],
+      "level_dbfs": -14.9,
+      "label": "body"
+     },
+     {
+      "t": [
+       23.0,
+       26.5
+      ],
+      "level_dbfs": -15.6,
+      "label": "body"
+     },
+     {
+      "t": [
+       26.5,
+       30.5
+      ],
+      "level_dbfs": -16.1,
+      "label": "body"
+     },
+     {
+      "t": [
+       30.5,
+       38.5
+      ],
+      "level_dbfs": -16.0,
+      "label": "body"
+     },
+     {
+      "t": [
+       38.5,
+       40.5
+      ],
+      "level_dbfs": -16.3,
+      "label": "body"
+     },
+     {
+      "t": [
+       40.5,
+       48.0
+      ],
+      "level_dbfs": -16.2,
+      "label": "body"
+     },
+     {
+      "t": [
+       48.0,
+       52.0
+      ],
+      "level_dbfs": -16.0,
+      "label": "body"
+     },
+     {
+      "t": [
+       52.0,
+       54.0
+      ],
+      "level_dbfs": -15.8,
+      "label": "body"
+     },
+     {
+      "t": [
+       54.0,
+       59.5
+      ],
+      "level_dbfs": -16.8,
+      "label": "outro"
+     }
+    ],
+    "energy_curve_dbfs": [
+     [
+      0.0,
+      -16.7
+     ],
+     [
+      0.5,
+      -18.6
+     ],
+     [
+      1.0,
+      -13.4
+     ],
+     [
+      1.5,
+      -18.1
+     ],
+     [
+      2.0,
+      -15.1
+     ],
+     [
+      2.5,
+      -19.4
+     ],
+     [
+      3.0,
+      -14.0
+     ],
+     [
+      3.5,
+      -18.1
+     ],
+     [
+      4.0,
+      -15.4
+     ],
+     [
+      4.5,
+      -19.3
+     ],
+     [
+      5.0,
+      -14.0
+     ],
+     [
+      5.5,
+      -17.5
+     ],
+     [
+      6.0,
+      -15.7
+     ],
+     [
+      6.5,
+      -19.3
+     ],
+     [
+      7.0,
+      -13.2
+     ],
+     [
+      7.5,
+      -18.6
+     ],
+     [
+      8.0,
+      -15.0
+     ],
+     [
+      8.5,
+      -17.7
+     ],
+     [
+      9.0,
+      -14.0
+     ],
+     [
+      9.5,
+      -19.0
+     ],
+     [
+      10.0,
+      -15.4
+     ],
+     [
+      10.5,
+      -19.5
+     ],
+     [
+      11.0,
+      -13.8
+     ],
+     [
+      11.5,
+      -19.0
+     ],
+     [
+      12.0,
+      -15.5
+     ],
+     [
+      12.5,
+      -19.3
+     ],
+     [
+      13.0,
+      -14.2
+     ],
+     [
+      13.5,
+      -18.9
+     ],
+     [
+      14.0,
+      -15.6
+     ],
+     [
+      14.5,
+      -19.6
+     ],
+     [
+      15.0,
+      -13.4
+     ],
+     [
+      15.5,
+      -18.2
+     ],
+     [
+      16.0,
+      -15.1
+     ],
+     [
+      16.5,
+      -17.7
+     ],
+     [
+      17.0,
+      -14.0
+     ],
+     [
+      17.5,
+      -16.9
+     ],
+     [
+      18.0,
+      -15.4
+     ],
+     [
+      18.5,
+      -19.5
+     ],
+     [
+      19.0,
+      -14.1
+     ],
+     [
+      19.5,
+      -18.8
+     ],
+     [
+      20.0,
+      -15.4
+     ],
+     [
+      20.5,
+      -19.3
+     ],
+     [
+      21.0,
+      -13.3
+     ],
+     [
+      21.5,
+      -14.1
+     ],
+     [
+      22.0,
+      -15.6
+     ],
+     [
+      22.5,
+      -17.8
+     ],
+     [
+      23.0,
+      -13.5
+     ],
+     [
+      23.5,
+      -18.2
+     ],
+     [
+      24.0,
+      -15.4
+     ],
+     [
+      24.5,
+      -19.1
+     ],
+     [
+      25.0,
+      -13.3
+     ],
+     [
+      25.5,
+      -18.8
+     ],
+     [
+      26.0,
+      -15.0
+     ],
+     [
+      26.5,
+      -18.6
+     ],
+     [
+      27.0,
+      -13.4
+     ],
+     [
+      27.5,
+      -19.0
+     ],
+     [
+      28.0,
+      -15.5
+     ],
+     [
+      28.5,
+      -19.3
+     ],
+     [
+      29.0,
+      -14.3
+     ],
+     [
+      29.5,
+      -17.8
+     ],
+     [
+      30.0,
+      -15.1
+     ],
+     [
+      30.5,
+      -18.8
+     ],
+     [
+      31.0,
+      -13.6
+     ],
+     [
+      31.5,
+      -19.4
+     ],
+     [
+      32.0,
+      -15.4
+     ],
+     [
+      32.5,
+      -19.3
+     ],
+     [
+      33.0,
+      -14.3
+     ],
+     [
+      33.5,
+      -19.0
+     ],
+     [
+      34.0,
+      -15.4
+     ],
+     [
+      34.5,
+      -15.4
+     ],
+     [
+      35.0,
+      -13.9
+     ],
+     [
+      35.5,
+      -18.9
+     ],
+     [
+      36.0,
+      -15.4
+     ],
+     [
+      36.5,
+      -19.4
+     ],
+     [
+      37.0,
+      -14.0
+     ],
+     [
+      37.5,
+      -17.7
+     ],
+     [
+      38.0,
+      -14.9
+     ],
+     [
+      38.5,
+      -19.4
+     ],
+     [
+      39.0,
+      -13.7
+     ],
+     [
+      39.5,
+      -19.6
+     ],
+     [
+      40.0,
+      -15.4
+     ],
+     [
+      40.5,
+      -19.6
+     ],
+     [
+      41.0,
+      -13.5
+     ],
+     [
+      41.5,
+      -18.3
+     ],
+     [
+      42.0,
+      -15.4
+     ],
+     [
+      42.5,
+      -19.6
+     ],
+     [
+      43.0,
+      -13.8
+     ],
+     [
+      43.5,
+      -19.0
+     ],
+     [
+      44.0,
+      -15.4
+     ],
+     [
+      44.5,
+      -19.0
+     ],
+     [
+      45.0,
+      -13.5
+     ],
+     [
+      45.5,
+      -18.9
+     ],
+     [
+      46.0,
+      -15.4
+     ],
+     [
+      46.5,
+      -19.5
+     ],
+     [
+      47.0,
+      -13.7
+     ],
+     [
+      47.5,
+      -19.5
+     ],
+     [
+      48.0,
+      -15.4
+     ],
+     [
+      48.5,
+      -17.9
+     ],
+     [
+      49.0,
+      -13.1
+     ],
+     [
+      49.5,
+      -19.0
+     ],
+     [
+      50.0,
+      -15.4
+     ],
+     [
+      50.5,
+      -19.5
+     ],
+     [
+      51.0,
+      -13.7
+     ],
+     [
+      51.5,
+      -18.9
+     ],
+     [
+      52.0,
+      -15.3
+     ],
+     [
+      52.5,
+      -17.5
+     ],
+     [
+      53.0,
+      -13.6
+     ],
+     [
+      53.5,
+      -18.4
+     ],
+     [
+      54.0,
+      -15.6
+     ],
+     [
+      54.5,
+      -19.4
+     ],
+     [
+      55.0,
+      -13.7
+     ],
+     [
+      55.5,
+      -18.4
+     ],
+     [
+      56.0,
+      -13.9
+     ],
+     [
+      56.5,
+      -18.5
+     ],
+     [
+      57.0,
+      -13.8
+     ],
+     [
+      57.5,
+      -19.0
+     ],
+     [
+      58.0,
+      -16.0
+     ],
+     [
+      58.5,
+      -34.2
+     ],
+     [
+      59.0,
+      -45.0
+     ]
+    ],
+    "novelty": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.09,
+     5.94,
+     2.27,
+     2.38,
+     2.2,
+     1.85,
+     2.56,
+     2.49,
+     2.74,
+     5.12,
+     6.16,
+     3.03,
+     2.71,
+     5.89,
+     9.27,
+     10.29,
+     8.33,
+     5.38,
+     1.2,
+     3.54,
+     3.14,
+     2.59,
+     1.12,
+     1.95,
+     3.24,
+     7.13,
+     12.84,
+     12.38,
+     6.45,
+     5.6,
+     9.11,
+     14.68,
+     15.58,
+     8.5,
+     4.61,
+     2.33,
+     9.63,
+     9.56,
+     10.75,
+     4.68,
+     4.07,
+     4.82,
+     9.21,
+     6.35,
+     7.58,
+     5.0,
+     6.82,
+     3.01,
+     4.72,
+     9.21,
+     8.16,
+     4.97,
+     4.82,
+     4.97,
+     4.24,
+     6.6,
+     4.08,
+     8.98,
+     7.53,
+     5.83,
+     1.85,
+     2.8,
+     4.52,
+     3.23,
+     2.09,
+     2.26,
+     2.68,
+     1.94,
+     1.08,
+     2.13,
+     3.61,
+     3.59,
+     4.36,
+     14.61,
+     12.55,
+     3.99,
+     3.03,
+     6.83,
+     6.61,
+     1.94,
+     3.5,
+     4.27,
+     2.9,
+     3.15,
+     3.64,
+     6.05,
+     3.43,
+     2.52,
+     4.2,
+     4.83,
+     1.81,
+     3.65,
+     7.03,
+     6.2,
+     1.33,
+     2.2,
+     2.74,
+     1.58,
+     2.02,
+     5.6,
+     10.59,
+     3.58,
+     2.09,
+     5.59,
+     13.71,
+     4.64,
+     1.47,
+     3.45,
+     1.39,
+     2.56,
+     4.92,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "final_sting_s": 56.23,
+    "programme_median_db": -17.6,
+    "breath": null,
+    "quiet": [],
+    "programme_block_median_dbfs": -15.9,
+    "quiet_shape": {
+     "body_median_dbfs": -14.4,
+     "open_vs_body_db": -0.9,
+     "open_2s_vs_body_db": 0.5,
+     "tail_2s_vs_body_db": -24.8,
+     "tail_3s_vs_body_db": -10.2,
+     "quiet_open": false,
+     "quiet_tail": true,
+     "end_shape": "decay",
+     "sound_enters_s": 0.0,
+     "duration_s": 60.0
+    },
+    "end_shape": "decay",
+    "loop_seam": {
+     "level_step_db": 41.3,
+     "spectral_distance_db": 3.6
+    }
+   },
+   "target": "drop <= 75% of runtime, a 0.2-5 s breath before the final sting, no unplanned dead air >= 2 s",
+   "issues": [],
+   "notes": [
+    "no drop: no section is 3 dB louder than the one before",
+    "suggestion: no breath before the final sting at 56.23 s; a 200-400 ms dip (10 dB) right before it makes the payoff land (references/launch-playbook.md, silence before the payoff)",
+    "ending: decay (the last 2 s -25 dB against the body)"
+   ]
+  },
+  {
+   "id": "ears/repetition",
+   "category": "variety",
+   "status": "warn",
+   "measured": {
+    "onset_clusters": 46,
+    "rhythm_elements": 45,
+    "repeats": [
+     {
+      "times": [
+       0.24,
+       32.24,
+       48.24
+      ],
+      "max_in_window": 1,
+      "window_start": 0.24,
+      "rhythm_element": false
+     }
+    ],
+    "plan_repeats": [
+     {
+      "id": "sfx/device/keyboard_mech_soft",
+      "count": 4,
+      "max_in_window": 4
+     },
+     {
+      "id": "sfx/tx/push",
+      "count": 4,
+      "max_in_window": 3
+     },
+     {
+      "id": "sfx/ui/pop",
+      "count": 6,
+      "max_in_window": 3
+     },
+     {
+      "id": "sfx/ui/stream_tick",
+      "count": 8,
+      "max_in_window": 8
+     },
+     {
+      "id": "sfx/ui/tick",
+      "count": 5,
+      "max_in_window": 5
+     },
+     {
+      "id": "sfx/ui/toast_in",
+      "count": 14,
+      "max_in_window": 11
+     },
+     {
+      "id": "sfx/ui/typing_burst",
+      "count": 3,
+      "max_in_window": 3
+     },
+     {
+      "id": "sfx/ui/zoom_in",
+      "count": 4,
+      "max_in_window": 4
+     },
+     {
+      "id": "sfx/whoosh/swish_s",
+      "count": 9,
+      "max_in_window": 5
+     },
+     {
+      "id": "sfx/whoosh/swish_xs",
+      "count": 22,
+      "max_in_window": 6
+     }
+    ]
+   },
+   "target": "the same non-rhythmic sound <= 3 times per 10 s",
+   "issues": [
+    {
+     "severity": "warn",
+     "t": [
+      18.3333,
+      21.5
+     ],
+     "what": "plan: sfx/ui/stream_tick is cued 8 times within 10 s",
+     "fix": "swap some for a sibling id in the same family (the mixer already round-robins seeds; the id itself still repeats)",
+     "listener": "The same kind of effect keeps coming back.",
+     "kind": null
+    },
+    {
+     "severity": "warn",
+     "t": [
+      0.0667,
+      27.3
+     ],
+     "what": "plan: sfx/ui/toast_in is cued 11 times within 10 s",
+     "fix": "swap some for a sibling id in the same family (the mixer already round-robins seeds; the id itself still repeats)",
+     "listener": "The same kind of effect keeps coming back.",
+     "kind": null
+    }
+   ],
+   "notes": [
+    "plan repeats id sfx/device/keyboard_mech_soft 4x in 10 s (the mixer varies the take, so this is a note up to 6)",
+    "plan repeats id sfx/tx/push 3x in 10 s (the mixer varies the take, so this is a note up to 6)",
+    "plan repeats id sfx/ui/pop 3x in 10 s (the mixer varies the take, so this is a note up to 6)",
+    "plan repeats id sfx/ui/tick 5x in 10 s (the mixer varies the take, so this is a note up to 6)",
+    "plan repeats id sfx/ui/typing_burst 3x in 10 s (the mixer varies the take, so this is a note up to 6)",
+    "plan repeats id sfx/ui/zoom_in 4x in 10 s (the mixer varies the take, so this is a note up to 6)",
+    "plan repeats id sfx/whoosh/swish_s 5x in 10 s (the mixer varies the take, so this is a note up to 6)",
+    "plan repeats id sfx/whoosh/swish_xs 6x in 10 s (the mixer varies the take, so this is a note up to 6)"
+   ]
+  },
+  {
+   "id": "ears/stereo",
+   "category": "stereo",
+   "status": "pass",
+   "measured": {
+    "mono": false,
+    "correlation": 0.98,
+    "min_block_correlation": 0.78,
+    "mono_loss_db": 0.06,
+    "width_db": -21.1
+   },
+   "target": "correlation > 0, mono loss <= 1.5 dB, side <= -3 dB vs mid",
+   "issues": [],
+   "notes": []
+  },
+  {
+   "id": "ears/compare",
+   "category": "compare",
+   "status": "n/a",
+   "measured": {},
+   "target": "n/a",
+   "issues": [],
+   "notes": [
+    "no --ref study.json given"
+   ]
+  }
+ ],
+ "mood": {
+  "available": false,
+  "reason": "EARS_CLAP_MODEL is not set to a local directory",
+  "text": "mood: not available (no local model)"
+ },
+ "scores": {
+  "loudness": 10,
+  "cleanliness": 10,
+  "tone": 10,
+  "speech": null,
+  "sync": 10,
+  "structure": 10,
+  "variety": 8,
+  "stereo": 10,
+  "critic_sound_sync": 10
+ },
+ "top_issues": [
+  {
+   "check": "ears/repetition",
+   "severity": "warn",
+   "t": [
+    18.3333,
+    21.5
+   ],
+   "listener": "The same kind of effect keeps coming back.",
+   "fix": "swap some for a sibling id in the same family (the mixer already round-robins seeds; the id itself still repeats)"
+  },
+  {
+   "check": "ears/repetition",
+   "severity": "warn",
+   "t": [
+    0.0667,
+    27.3
+   ],
+   "listener": "The same kind of effect keeps coming back.",
+   "fix": "swap some for a sibling id in the same family (the mixer already round-robins seeds; the id itself still repeats)"
+  }
+ ]
+}

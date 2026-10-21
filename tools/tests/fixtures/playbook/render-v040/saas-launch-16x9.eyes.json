@@ -1,0 +1,1734 @@
+{
+ "input": "saas-launch-16x9.mp4",
+ "duration_s": 60.0,
+ "width": 1920,
+ "height": 1080,
+ "fps": 30.0,
+ "platform": "x.video",
+ "plan": true,
+ "frames": 1800,
+ "checks": [
+  {
+   "id": "eyes/frame0",
+   "category": "hook",
+   "status": "warn",
+   "measured": {
+    "mean_luma": 240.9,
+    "std_luma": 16.1,
+    "p5_p95_luma": [
+     229,
+     253
+    ],
+    "subject_contrast": 2.18,
+    "first_change_frame": 3,
+    "first_change_s": 0.1
+   },
+   "target": "not black or flat, subject >= 3.0:1, first change by frame 6 (<= 0.5 s)",
+   "issues": [
+    {
+     "severity": "warn",
+     "t": [
+      0.0,
+      0.0
+     ],
+     "what": "the subject of frame 0 reads at 2.18:1 against the rest (needs 3.0:1)",
+     "fix": "push the hero away from its backdrop by 1.5x in luminance (grade, scrim, or a darker plate behind it)",
+     "viewer": "The first frame is soft: the subject barely separates from the background.",
+     "kind": "subject"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "id": "eyes/frames",
+   "category": "continuity",
+   "status": "fail",
+   "measured": {
+    "frames": 1800,
+    "duration_s": 60.0,
+    "black_runs": [],
+    "empty_runs": [],
+    "frozen_runs": [
+     {
+      "t": [
+       10.33,
+       12.8
+      ],
+      "planned": true,
+      "end_card": false
+     },
+     {
+      "t": [
+       31.27,
+       31.77
+      ],
+      "planned": false,
+      "end_card": false
+     },
+     {
+      "t": [
+       39.0,
+       41.0
+      ],
+      "planned": false,
+      "end_card": false
+     },
+     {
+      "t": [
+       48.03,
+       49.0
+      ],
+      "planned": false,
+      "end_card": false
+     },
+     {
+      "t": [
+       50.27,
+       52.33
+      ],
+      "planned": false,
+      "end_card": false
+     },
+     {
+      "t": [
+       53.87,
+       56.0
+      ],
+      "planned": false,
+      "end_card": false
+     },
+     {
+      "t": [
+       56.8,
+       60.0
+      ],
+      "planned": true,
+      "end_card": false
+     }
+    ],
+    "stalls": [],
+    "duplicate_frame_share": 0.2883
+   },
+   "target": "no unplanned black, empty or frozen run over 0.5 s, no stall, no black tail",
+   "issues": [
+    {
+     "severity": "warn",
+     "t": [
+      31.27,
+      31.77
+     ],
+     "what": "the picture is frozen for 0.50 s at 31.27 s (consecutive frames differ by under 0.15 level)",
+     "fix": "a render stall or a duplicated frame run: re-render that span; for an intended hold, mark it (plan.shots[].hold true, plan.holds, or audio.quiet kind hold)",
+     "viewer": "The video stops dead for a moment, like a stall.",
+     "kind": "frozen"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      39.0,
+      41.0
+     ],
+     "what": "the picture is frozen for 2.00 s at 39.00 s (consecutive frames differ by under 0.15 level)",
+     "fix": "a render stall or a duplicated frame run: re-render that span; for an intended hold, mark it (plan.shots[].hold true, plan.holds, or audio.quiet kind hold)",
+     "viewer": "The video stops dead for a moment, like a stall.",
+     "kind": "frozen"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      48.03,
+      49.0
+     ],
+     "what": "the picture is frozen for 0.97 s at 48.03 s (consecutive frames differ by under 0.15 level)",
+     "fix": "a render stall or a duplicated frame run: re-render that span; for an intended hold, mark it (plan.shots[].hold true, plan.holds, or audio.quiet kind hold)",
+     "viewer": "The video stops dead for a moment, like a stall.",
+     "kind": "frozen"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      50.27,
+      52.33
+     ],
+     "what": "the picture is frozen for 2.07 s at 50.27 s (consecutive frames differ by under 0.15 level)",
+     "fix": "a render stall or a duplicated frame run: re-render that span; for an intended hold, mark it (plan.shots[].hold true, plan.holds, or audio.quiet kind hold)",
+     "viewer": "The video stops dead for a moment, like a stall.",
+     "kind": "frozen"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      53.87,
+      56.0
+     ],
+     "what": "the picture is frozen for 2.13 s at 53.87 s (consecutive frames differ by under 0.15 level)",
+     "fix": "a render stall or a duplicated frame run: re-render that span; for an intended hold, mark it (plan.shots[].hold true, plan.holds, or audio.quiet kind hold)",
+     "viewer": "The video stops dead for a moment, like a stall.",
+     "kind": "frozen"
+    }
+   ],
+   "notes": [
+    "still picture 10.33-12.80 s is a planned hold",
+    "still picture 56.80-60.00 s is a planned hold"
+   ]
+  },
+  {
+   "id": "eyes/flashes",
+   "category": "flashes",
+   "status": "pass",
+   "measured": {
+    "general": {
+     "max_per_s": 1,
+     "at_s": 12.93,
+     "transitions": 5
+    },
+    "red": {
+     "max_per_s": 0,
+     "at_s": null,
+     "transitions": 0
+    },
+    "peak_changed_area": 0.901,
+    "fps": 30.0
+   },
+   "target": "at most 3 general and 3 red flashes in any 1 s (WCAG 2.3.1; 10% luminance change over 25% of the frame)",
+   "issues": [],
+   "notes": []
+  },
+  {
+   "id": "eyes/banding",
+   "category": "banding",
+   "status": "pass",
+   "measured": {
+    "samples": 12,
+    "max_banded_share": 0.0014,
+    "worst_t": 34.83,
+    "mean_banded_share": 0.0004,
+    "frames": [
+     {
+      "frame": 45,
+      "t": 1.5,
+      "banded_share": 0.0003,
+      "box": [
+       516,
+       63,
+       1808,
+       932
+      ]
+     },
+     {
+      "frame": 120,
+      "t": 4.0,
+      "banded_share": 0.0001,
+      "box": [
+       767,
+       384,
+       768,
+       864
+      ]
+     },
+     {
+      "frame": 507,
+      "t": 16.9,
+      "banded_share": 0.0009,
+      "box": [
+       70,
+       203,
+       1776,
+       1007
+      ]
+     },
+     {
+      "frame": 887,
+      "t": 29.57,
+      "banded_share": 0.0004,
+      "box": [
+       167,
+       237,
+       1754,
+       912
+      ]
+     },
+     {
+      "frame": 941,
+      "t": 31.37,
+      "banded_share": 0.0003,
+      "box": [
+       174,
+       609,
+       415,
+       1014
+      ]
+     },
+     {
+      "frame": 978,
+      "t": 32.6,
+      "banded_share": 0.001,
+      "box": [
+       164,
+       284,
+       1755,
+       1024
+      ]
+     },
+     {
+      "frame": 1045,
+      "t": 34.83,
+      "banded_share": 0.0014,
+      "box": [
+       162,
+       281,
+       1759,
+       1024
+      ]
+     },
+     {
+      "frame": 1167,
+      "t": 38.9,
+      "banded_share": 0.0002,
+      "box": [
+       336,
+       760,
+       1424,
+       832
+      ]
+     },
+     {
+      "frame": 1350,
+      "t": 45.0,
+      "banded_share": 0.0,
+      "box": null
+     },
+     {
+      "frame": 1520,
+      "t": 50.67,
+      "banded_share": 0.0001,
+      "box": [
+       637,
+       484,
+       1208,
+       593
+      ]
+     },
+     {
+      "frame": 1625,
+      "t": 54.17,
+      "banded_share": 0.0002,
+      "box": [
+       702,
+       560,
+       1696,
+       955
+      ]
+     },
+     {
+      "frame": 1740,
+      "t": 58.0,
+      "banded_share": 0.0,
+      "box": null
+     }
+    ]
+   },
+   "target": "banded share under 4% of the frame (fail from 20%)",
+   "issues": [],
+   "notes": []
+  },
+  {
+   "id": "eyes/safezones",
+   "category": "safezones",
+   "status": "pass",
+   "measured": {
+    "mode": "plan",
+    "platform": "x.video",
+    "safe_rect": [
+     96.0,
+     54.0,
+     1824.0,
+     993.6
+    ],
+    "safe_rect_source": "templates/_shared/plan.mjs x.video",
+    "blocks": [
+     {
+      "id": "hook.head0",
+      "box": [
+       110.0,
+       300.0,
+       763.0,
+       652.0
+      ],
+      "t": [
+       0.12,
+       3.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "copy.head0",
+      "box": [
+       110.0,
+       300.0,
+       466.0,
+       533.0
+      ],
+      "t": [
+       3.05,
+       5.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "chase.head0",
+      "box": [
+       110.0,
+       300.0,
+       766.0,
+       414.0
+      ],
+      "t": [
+       5.05,
+       7.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "repeat.head0",
+      "box": [
+       110.0,
+       300.0,
+       526.0,
+       652.0
+      ],
+      "t": [
+       7.05,
+       9.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "reveal.head0",
+      "box": [
+       464.0,
+       604.0,
+       1456.0,
+       665.0
+      ],
+      "t": [
+       9.9,
+       13.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "tour.head0",
+      "box": [
+       110.0,
+       62.0,
+       610.0,
+       135.0
+      ],
+      "t": [
+       13.05,
+       14.73
+      ],
+      "violations": []
+     },
+     {
+      "id": "tour.head1",
+      "box": [
+       110.0,
+       62.0,
+       1111.0,
+       135.0
+      ],
+      "t": [
+       14.75,
+       18.58
+      ],
+      "violations": []
+     },
+     {
+      "id": "tour.head2",
+      "box": [
+       110.0,
+       62.0,
+       880.0,
+       135.0
+      ],
+      "t": [
+       18.6,
+       21.38
+      ],
+      "violations": []
+     },
+     {
+      "id": "tour.head3",
+      "box": [
+       110.0,
+       62.0,
+       842.0,
+       135.0
+      ],
+      "t": [
+       21.4,
+       23.28
+      ],
+      "violations": []
+     },
+     {
+      "id": "tour.head4",
+      "box": [
+       110.0,
+       62.0,
+       687.0,
+       135.0
+      ],
+      "t": [
+       23.3,
+       25.48
+      ],
+      "violations": []
+     },
+     {
+      "id": "tour.head5",
+      "box": [
+       110.0,
+       62.0,
+       1034.0,
+       135.0
+      ],
+      "t": [
+       25.5,
+       29.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "feat1.head0",
+      "box": [
+       110.0,
+       62.0,
+       992.0,
+       135.0
+      ],
+      "t": [
+       29.05,
+       33.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "feat2.head0",
+      "box": [
+       110.0,
+       62.0,
+       918.0,
+       135.0
+      ],
+      "t": [
+       33.05,
+       37.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "feat3.head0",
+      "box": [
+       110.0,
+       62.0,
+       839.0,
+       135.0
+      ],
+      "t": [
+       37.05,
+       41.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "works.head0",
+      "box": [
+       110.0,
+       62.0,
+       1535.0,
+       135.0
+      ],
+      "t": [
+       41.05,
+       45.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "payoff.head0",
+      "box": [
+       110.0,
+       62.0,
+       685.0,
+       135.0
+      ],
+      "t": [
+       45.05,
+       49.0
+      ],
+      "violations": []
+     },
+     {
+      "id": "proof.head0",
+      "box": [
+       110.0,
+       62.0,
+       1149.0,
+       135.0
+      ],
+      "t": [
+       49.05,
+       52.5
+      ],
+      "violations": []
+     },
+     {
+      "id": "pricing.head0",
+      "box": [
+       110.0,
+       62.0,
+       649.0,
+       135.0
+      ],
+      "t": [
+       52.55,
+       56.0
+      ],
+      "violations": []
+     }
+    ]
+   },
+   "target": "every text box inside the x.video safe rectangle (templates/_shared/plan.mjs x.video)",
+   "issues": [],
+   "notes": []
+  },
+  {
+   "id": "eyes/readability",
+   "category": "readability",
+   "status": "fail",
+   "measured": {
+    "texts": [
+     {
+      "id": "hook.head0",
+      "text": "Requests land everywhere.",
+      "role": "headline",
+      "words": 3,
+      "t": [
+       0.12,
+       3.0
+      ],
+      "on_screen_s": 2.88,
+      "needed_s": 1.19,
+      "source": "plan.texts",
+      "font_px": 112.0,
+      "size_at_1080": 112.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 21.0,
+      "size_estimated": false,
+      "contrast_worst": 3.5,
+      "contrast_median": 3.5,
+      "contrast_t": 0.6,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.149,
+       0.888
+      ]
+     },
+     {
+      "id": "copy.head0",
+      "text": "Copy. Paste.",
+      "role": "headline",
+      "words": 2,
+      "t": [
+       3.05,
+       5.0
+      ],
+      "on_screen_s": 1.95,
+      "needed_s": 0.91,
+      "source": "plan.texts",
+      "font_px": 112.0,
+      "size_at_1080": 112.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 21.0,
+      "size_estimated": false,
+      "contrast_worst": 16.26,
+      "contrast_median": 16.26,
+      "contrast_t": 3.4,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.875,
+       0.879
+      ]
+     },
+     {
+      "id": "chase.head0",
+      "text": "Then chase.",
+      "role": "headline",
+      "words": 2,
+      "t": [
+       5.05,
+       7.0
+      ],
+      "on_screen_s": 1.95,
+      "needed_s": 0.91,
+      "source": "plan.texts",
+      "font_px": 112.0,
+      "size_at_1080": 112.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 21.0,
+      "size_estimated": false,
+      "contrast_worst": 3.46,
+      "contrast_median": 3.47,
+      "contrast_t": 5.4,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.147,
+       0.889
+      ]
+     },
+     {
+      "id": "repeat.head0",
+      "text": "Every. Single. Day.",
+      "role": "headline",
+      "words": 3,
+      "t": [
+       7.05,
+       9.0
+      ],
+      "on_screen_s": 1.95,
+      "needed_s": 1.19,
+      "source": "plan.texts",
+      "font_px": 112.0,
+      "size_at_1080": 112.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 21.0,
+      "size_estimated": false,
+      "contrast_worst": 3.56,
+      "contrast_median": 3.57,
+      "contrast_t": 8.03,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.153,
+       0.886
+      ]
+     },
+     {
+      "id": "reveal.head0",
+      "text": "Requests that route themselves.",
+      "role": "headline",
+      "words": 4,
+      "t": [
+       9.9,
+       13.0
+      ],
+      "on_screen_s": 3.1,
+      "needed_s": 1.47,
+      "source": "plan.texts",
+      "font_px": 60.0,
+      "size_at_1080": 60.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 11.2,
+      "size_estimated": false,
+      "contrast_worst": 3.47,
+      "contrast_median": 3.47,
+      "contrast_t": 11.47,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.148,
+       0.896
+      ]
+     },
+     {
+      "id": "tour.head0",
+      "text": "Start a flow.",
+      "role": "headline",
+      "words": 3,
+      "t": [
+       13.05,
+       14.73
+      ],
+      "on_screen_s": 1.68,
+      "needed_s": 1.19,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 16.15,
+      "contrast_median": 16.2,
+      "contrast_t": 13.33,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.869,
+       0.89
+      ]
+     },
+     {
+      "id": "tour.head1",
+      "text": "Describe it in a sentence.",
+      "role": "headline",
+      "words": 5,
+      "t": [
+       14.75,
+       18.58
+      ],
+      "on_screen_s": 3.83,
+      "needed_s": 1.75,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.47,
+      "contrast_median": 3.47,
+      "contrast_t": 15.4,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.148,
+       0.89
+      ]
+     },
+     {
+      "id": "tour.head2",
+      "text": "It builds the steps.",
+      "role": "headline",
+      "words": 4,
+      "t": [
+       18.6,
+       21.38
+      ],
+      "on_screen_s": 2.78,
+      "needed_s": 1.47,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.49,
+      "contrast_median": 3.49,
+      "contrast_t": 19.07,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.149,
+       0.89
+      ]
+     },
+     {
+      "id": "tour.head3",
+      "text": "Rules you can read.",
+      "role": "headline",
+      "words": 4,
+      "t": [
+       21.4,
+       23.28
+      ],
+      "on_screen_s": 1.88,
+      "needed_s": 1.47,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.51,
+      "contrast_median": 3.51,
+      "contrast_t": 22.37,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.15,
+       0.889
+      ]
+     },
+     {
+      "id": "tour.head4",
+      "text": "Drag to adjust.",
+      "role": "headline",
+      "words": 3,
+      "t": [
+       23.3,
+       25.48
+      ],
+      "on_screen_s": 2.18,
+      "needed_s": 1.19,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.46,
+      "contrast_median": 3.46,
+      "contrast_t": 24.4,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.147,
+       0.892
+      ]
+     },
+     {
+      "id": "tour.head5",
+      "text": "Test it before it ships.",
+      "role": "headline",
+      "words": 5,
+      "t": [
+       25.5,
+       29.0
+      ],
+      "on_screen_s": 3.5,
+      "needed_s": 1.75,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.57,
+      "contrast_median": 3.57,
+      "contrast_t": 28.43,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.153,
+       0.89
+      ]
+     },
+     {
+      "id": "feat1.head0",
+      "text": "One shortcut, anywhere.",
+      "role": "headline",
+      "words": 3,
+      "t": [
+       29.05,
+       33.0
+      ],
+      "on_screen_s": 3.95,
+      "needed_s": 1.19,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 2.26,
+      "contrast_median": 2.63,
+      "contrast_t": 31.03,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.078,
+       0.445
+      ]
+     },
+     {
+      "id": "feat2.head0",
+      "text": "Every run, on record.",
+      "role": "headline",
+      "words": 4,
+      "t": [
+       33.05,
+       37.0
+      ],
+      "on_screen_s": 3.95,
+      "needed_s": 1.47,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.51,
+      "contrast_median": 3.51,
+      "contrast_t": 35.03,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.149,
+       0.89
+      ]
+     },
+     {
+      "id": "feat3.head0",
+      "text": "Your numbers, live.",
+      "role": "headline",
+      "words": 3,
+      "t": [
+       37.05,
+       41.0
+      ],
+      "on_screen_s": 3.95,
+      "needed_s": 1.19,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.55,
+      "contrast_median": 3.55,
+      "contrast_t": 37.73,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.152,
+       0.89
+      ]
+     },
+     {
+      "id": "works.head0",
+      "text": "Works with the tools you already use.",
+      "role": "headline",
+      "words": 7,
+      "t": [
+       41.05,
+       45.0
+      ],
+      "on_screen_s": 3.95,
+      "needed_s": 2.31,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.53,
+      "contrast_median": 3.54,
+      "contrast_t": 44.37,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.151,
+       0.89
+      ]
+     },
+     {
+      "id": "payoff.head0",
+      "text": "Inbox, handled.",
+      "role": "headline",
+      "words": 2,
+      "t": [
+       45.05,
+       49.0
+      ],
+      "on_screen_s": 3.95,
+      "needed_s": 0.91,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.46,
+      "contrast_median": 3.46,
+      "contrast_t": 48.37,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.147,
+       0.893
+      ]
+     },
+     {
+      "id": "proof.head0",
+      "text": "Routed in the private beta.",
+      "role": "headline",
+      "words": 5,
+      "t": [
+       49.05,
+       52.5
+      ],
+      "on_screen_s": 3.45,
+      "needed_s": 1.75,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.55,
+      "contrast_median": 3.55,
+      "contrast_t": 51.93,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.152,
+       0.89
+      ]
+     },
+     {
+      "id": "pricing.head0",
+      "text": "Free to start.",
+      "role": "headline",
+      "words": 3,
+      "t": [
+       52.55,
+       56.0
+      ],
+      "on_screen_s": 3.45,
+      "needed_s": 1.19,
+      "source": "plan.texts",
+      "font_px": 72.0,
+      "size_at_1080": 72.0,
+      "floor_at_1080": 96,
+      "size_on_phone_px": 13.5,
+      "size_estimated": false,
+      "contrast_worst": 3.49,
+      "contrast_median": 3.5,
+      "contrast_t": 53.13,
+      "contrast_samples": 3,
+      "fg_source": "plan",
+      "bg_luminance": [
+       0.149,
+       0.889
+      ]
+     },
+     {
+      "id": "end.cta",
+      "text": "Start free",
+      "role": "endcard",
+      "words": 2,
+      "t": [
+       56.5,
+       60.0
+      ],
+      "on_screen_s": 3.5,
+      "needed_s": 0.91,
+      "source": "plan.texts",
+      "font_px": 44.0,
+      "size_at_1080": 44.0,
+      "floor_at_1080": 28,
+      "size_on_phone_px": 8.2,
+      "size_estimated": false
+     }
+    ],
+    "hook_text_start_s": 0.12,
+    "with_boxes": 18
+   },
+   "target": "text over the frame-design floors (48 px / 56 px at 1080, wide / tall read line), held 0.35 s + 0.28 s per word, >= 4.5:1 contrast",
+   "issues": [
+    {
+     "severity": "fail",
+     "t": [
+      9.9,
+      13.0
+     ],
+     "what": "headline \"Requests that route themselves\" (reveal.head0) is 60 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      13.05,
+      14.73
+     ],
+     "what": "headline \"Start a flow.\" (tour.head0) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      14.75,
+      18.58
+     ],
+     "what": "headline \"Describe it in a sentence.\" (tour.head1) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      18.6,
+      21.38
+     ],
+     "what": "headline \"It builds the steps.\" (tour.head2) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      21.4,
+      23.28
+     ],
+     "what": "headline \"Rules you can read.\" (tour.head3) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      23.3,
+      25.48
+     ],
+     "what": "headline \"Drag to adjust.\" (tour.head4) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      25.5,
+      29.0
+     ],
+     "what": "headline \"Test it before it ships.\" (tour.head5) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      29.05,
+      33.0
+     ],
+     "what": "headline \"One shortcut, anywhere.\" (feat1.head0) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      33.05,
+      37.0
+     ],
+     "what": "headline \"Every run, on record.\" (feat2.head0) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      37.05,
+      41.0
+     ],
+     "what": "headline \"Your numbers, live.\" (feat3.head0) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      41.05,
+      45.0
+     ],
+     "what": "headline \"Works with the tools you alrea\" (works.head0) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      45.05,
+      49.0
+     ],
+     "what": "headline \"Inbox, handled.\" (payoff.head0) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      49.05,
+      52.5
+     ],
+     "what": "headline \"Routed in the private beta.\" (proof.head0) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      52.55,
+      56.0
+     ],
+     "what": "headline \"Free to start.\" (pricing.head0) is 72 px at 1080; the wide floor is 96 px",
+     "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits",
+     "viewer": "The text is too small to read on a phone.",
+     "kind": "size"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      56.5,
+      60.0
+     ],
+     "what": "text \"Start free\" renders 8.2 px high on a 360 px wide phone (floor 9 px)",
+     "fix": "make it larger or re-lay out so it is not shrunk by the aspect (type sizes come from the shorter frame side)",
+     "viewer": "On a phone the text is a smear.",
+     "kind": "phone"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      0.12,
+      3.0
+     ],
+     "what": "text \"Requests land everywhere.\" (hook.head0) has 3.50:1 contrast against what is behind it at 0.60 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      5.05,
+      7.0
+     ],
+     "what": "text \"Then chase.\" (chase.head0) has 3.46:1 contrast against what is behind it at 5.40 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      7.05,
+      9.0
+     ],
+     "what": "text \"Every. Single. Day.\" (repeat.head0) has 3.56:1 contrast against what is behind it at 8.03 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      9.9,
+      13.0
+     ],
+     "what": "text \"Requests that route themselves\" (reveal.head0) has 3.47:1 contrast against what is behind it at 11.47 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      14.75,
+      18.58
+     ],
+     "what": "text \"Describe it in a sentence.\" (tour.head1) has 3.47:1 contrast against what is behind it at 15.40 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      18.6,
+      21.38
+     ],
+     "what": "text \"It builds the steps.\" (tour.head2) has 3.49:1 contrast against what is behind it at 19.07 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      21.4,
+      23.28
+     ],
+     "what": "text \"Rules you can read.\" (tour.head3) has 3.51:1 contrast against what is behind it at 22.37 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      23.3,
+      25.48
+     ],
+     "what": "text \"Drag to adjust.\" (tour.head4) has 3.46:1 contrast against what is behind it at 24.40 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      25.5,
+      29.0
+     ],
+     "what": "text \"Test it before it ships.\" (tour.head5) has 3.57:1 contrast against what is behind it at 28.43 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "fail",
+     "t": [
+      29.05,
+      33.0
+     ],
+     "what": "text \"One shortcut, anywhere.\" (feat1.head0) has 2.26:1 contrast against what is behind it at 31.03 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      33.05,
+      37.0
+     ],
+     "what": "text \"Every run, on record.\" (feat2.head0) has 3.51:1 contrast against what is behind it at 35.03 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      37.05,
+      41.0
+     ],
+     "what": "text \"Your numbers, live.\" (feat3.head0) has 3.55:1 contrast against what is behind it at 37.73 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      41.05,
+      45.0
+     ],
+     "what": "text \"Works with the tools you alrea\" (works.head0) has 3.53:1 contrast against what is behind it at 44.37 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      45.05,
+      49.0
+     ],
+     "what": "text \"Inbox, handled.\" (payoff.head0) has 3.46:1 contrast against what is behind it at 48.37 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      49.05,
+      52.5
+     ],
+     "what": "text \"Routed in the private beta.\" (proof.head0) has 3.55:1 contrast against what is behind it at 51.93 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    },
+    {
+     "severity": "warn",
+     "t": [
+      52.55,
+      56.0
+     ],
+     "what": "text \"Free to start.\" (pricing.head0) has 3.49:1 contrast against what is behind it at 53.13 s (from the plan colour #14131A; needs 4.5:1, hard floor 3.0:1)",
+     "fix": "put a scrim, plate or stroke behind it (40-60% dark under light text), or move it over a calmer area; the colour fix: python3 skills/frame-design/scripts/contrast.py --pair \"#14131A\" \"#bg\"",
+     "viewer": "The text blends into the picture behind it and is hard to read.",
+     "kind": "contrast"
+    }
+   ],
+   "notes": [
+    "text reveal.head0 renders 11.2 px on a 360 px wide phone (under 12 px: check a 360 px still)"
+   ]
+  },
+  {
+   "id": "eyes/pacing",
+   "category": "pacing",
+   "status": "pass",
+   "measured": {
+    "cuts": 11,
+    "cuts_per_min": 11.0,
+    "shots": 12,
+    "shots_per_30s": 6.0,
+    "shot_median_s": 3.5,
+    "shot_mean_s": 5.0,
+    "shot_longest_s": 23.83,
+    "format": null,
+    "cut_times_s": [
+     3.0,
+     5.0,
+     28.833,
+     30.333,
+     32.4,
+     32.833,
+     36.833,
+     41.0,
+     49.0,
+     52.333,
+     56.0
+    ],
+    "plan_cuts": 13,
+    "plan_cuts_found": 5,
+    "static_hold_longest_s": 3.47,
+    "static_hold_at_s": 56.53,
+    "rule": {
+     "aslMax": 5.5,
+     "longMax": 18.5,
+     "source": "plan.paceRule"
+    }
+   },
+   "target": "a visible change at least every 3.5 s; shot length against the format (cuts/patterns.json pace) or the plan paceRule",
+   "issues": [],
+   "notes": [
+    "5 of 13 planned shot starts show as a hard cut in the picture (within 2 frames); the rest are dissolves, in-shot moves or transitions the detector does not count"
+   ]
+  },
+  {
+   "id": "eyes/composition",
+   "category": "composition",
+   "status": "pass",
+   "measured": {
+    "aspect": "16:9",
+    "size": [
+     1920,
+     1080
+    ],
+    "platform": "x.video",
+    "accepted_aspects": [
+     "16:9",
+     "1:1",
+     "9:16"
+    ],
+    "bars": {},
+    "bar_area": 0.0,
+    "letterbox_asked": false,
+    "key_frames": [
+     {
+      "frame": 0,
+      "t": 0.0,
+      "blobs": 1,
+      "competing": 0,
+      "hero_share": 1.0,
+      "spread": 0.307
+     },
+     {
+      "frame": 45,
+      "t": 1.5,
+      "blobs": 5,
+      "competing": 0,
+      "hero_share": 0.36,
+      "spread": 0.375
+     },
+     {
+      "frame": 120,
+      "t": 4.0,
+      "blobs": 4,
+      "competing": 3,
+      "hero_share": 0.26,
+      "spread": 0.359
+     },
+     {
+      "frame": 507,
+      "t": 16.9,
+      "blobs": 2,
+      "competing": 0,
+      "hero_share": 0.61,
+      "spread": 0.441
+     },
+     {
+      "frame": 887,
+      "t": 29.57,
+      "blobs": 4,
+      "competing": 2,
+      "hero_share": 0.3,
+      "spread": 0.39
+     },
+     {
+      "frame": 941,
+      "t": 31.37,
+      "blobs": 3,
+      "competing": 0,
+      "hero_share": 0.85,
+      "spread": 0.3
+     },
+     {
+      "frame": 978,
+      "t": 32.6,
+      "blobs": 3,
+      "competing": 1,
+      "hero_share": 0.39,
+      "spread": 0.406
+     },
+     {
+      "frame": 1045,
+      "t": 34.83,
+      "blobs": 3,
+      "competing": 0,
+      "hero_share": 0.49,
+      "spread": 0.387
+     },
+     {
+      "frame": 1167,
+      "t": 38.9,
+      "blobs": 2,
+      "competing": 1,
+      "hero_share": 0.54,
+      "spread": 0.383
+     },
+     {
+      "frame": 1350,
+      "t": 45.0,
+      "blobs": 2,
+      "competing": 0,
+      "hero_share": 0.79,
+      "spread": 0.32
+     },
+     {
+      "frame": 1520,
+      "t": 50.67,
+      "blobs": 4,
+      "competing": 0,
+      "hero_share": 0.57,
+      "spread": 0.274
+     },
+     {
+      "frame": 1625,
+      "t": 54.17,
+      "blobs": 1,
+      "competing": 0,
+      "hero_share": 1.0,
+      "spread": 0.348
+     },
+     {
+      "frame": 1740,
+      "t": 58.0,
+      "blobs": 3,
+      "competing": 0,
+      "hero_share": 0.48,
+      "spread": 0.23
+     },
+     {
+      "frame": 1799,
+      "t": 59.97,
+      "blobs": 3,
+      "competing": 0,
+      "hero_share": 0.48,
+      "spread": 0.23
+     }
+    ],
+    "competing_share": 0.29
+   },
+   "target": "one hero per key frame (under 30% competing), no unplanned bars, 16:9/1:1/9:16 at 1080 px or more on the shorter side",
+   "issues": [],
+   "notes": []
+  },
+  {
+   "id": "eyes/encode",
+   "category": "encode",
+   "status": "warn",
+   "measured": {
+    "codec": "h264",
+    "profile": "High",
+    "pix_fmt": "yuv420p",
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "faststart": true,
+    "gop_max_s": 8.33,
+    "video_bitrate_bps": 950470,
+    "bits_per_pixel": 0.0153,
+    "blockiness": 1.228,
+    "blockiness_max": 1.644,
+    "color_space": "bt709",
+    "color_primaries": "bt709",
+    "color_transfer": "bt709",
+    "color_range": "tv",
+    "size_bytes": 8663816,
+    "has_audio": true
+   },
+   "target": "H.264 yuv420p, faststart, colour tagged, keyframe at least every 5 s, >= 0.010 bits per pixel, blockiness under 1.75",
+   "issues": [
+    {
+     "severity": "warn",
+     "t": null,
+     "what": "the longest keyframe interval is 8.3 s (250 frames); over 5 s warns",
+     "fix": "re-encode with -g 60 -keyint_min 60 (a keyframe every 2 s) and scenecut on",
+     "viewer": "The video seeks and loops slowly, and a platform re-encode keeps the long gap.",
+     "kind": "gop"
+    }
+   ],
+   "notes": []
+  }
+ ],
+ "scores": {
+  "hook": 9,
+  "continuity": 7,
+  "flashes": 10,
+  "banding": 10,
+  "safezones": 10,
+  "readability": 1,
+  "pacing": 10,
+  "composition": 10,
+  "encode": 9,
+  "critic_hook_2s": 9,
+  "critic_phone_readability": 1,
+  "critic_motion": 7,
+  "critic_variety": 10
+ },
+ "top_issues": [
+  {
+   "check": "eyes/frames",
+   "severity": "fail",
+   "t": [
+    39.0,
+    41.0
+   ],
+   "viewer": "The video stops dead for a moment, like a stall.",
+   "fix": "a render stall or a duplicated frame run: re-render that span; for an intended hold, mark it (plan.shots[].hold true, plan.holds, or audio.quiet kind hold)"
+  },
+  {
+   "check": "eyes/readability",
+   "severity": "fail",
+   "t": [
+    9.9,
+    13.0
+   ],
+   "viewer": "The text is too small to read on a phone.",
+   "fix": "raise it to 96 px or more at the 1080 reference (shorter side), or cut words so a bigger size fits"
+  },
+  {
+   "check": "eyes/frame0",
+   "severity": "warn",
+   "t": [
+    0.0,
+    0.0
+   ],
+   "viewer": "The first frame is soft: the subject barely separates from the background.",
+   "fix": "push the hero away from its backdrop by 1.5x in luminance (grade, scrim, or a darker plate behind it)"
+  }
+ ]
+}

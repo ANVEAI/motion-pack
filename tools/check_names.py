@@ -44,12 +44,12 @@ import unicodedata
 
 PACK = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 DENYLIST = os.path.join(PACK, 'tools', 'name_denylist.txt')
-EXEMPT_DIR = 'docs/research/'                    # the one place named studies live
+EXEMPT_DIR = ('docs/research/', 'docs/evidence/')   # the one place named studies live (docs/evidence since v0.5; docs/research keeps a redirect)
 MAX_WINDOW = 4                                   # tokens joined per candidate (a four-word brand or a three-part handle with a suffix)
 MAX_LEN = 40                                     # no listed name is longer once normalised
 MAX_BYTES = 8_000_000                            # text files only; skip anything bigger
 WORDS = '/usr/share/dict/words'
-DOCS_PATH = re.compile(r'docs/research/[A-Za-z0-9_.\-/]*')
+DOCS_PATH = re.compile(r'docs/(?:research|evidence)/[A-Za-z0-9_.\-/]*')
 JOINERS = set('_-.')                             # the only characters a handle may have between its parts
 SPACES = set(' \t')                              # a one-word brand may also be written spaced ("Zor Blaxo"); a handle may not
 
