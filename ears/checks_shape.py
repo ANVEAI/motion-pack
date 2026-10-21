@@ -181,14 +181,14 @@ def _quiet(ctx, lev, bt, dur, m, issues, notes):
     rows = []
     for a, b in rs:
         b = min(b, round(dur, 2))
-        if sting is not None and abs(sting - b) <= 0.3 + BLOCK and b - a <= SPEC['structure']['breath_max_s'] and b < dur - BLOCK:
-            continue                                                       # the breath before the final sting: judged above
-        depth = round(med - float(np.mean(lev[(bt >= a) & (bt < b)])), 1)
         hit = None
         for p in planned:
             ov = min(b, p['t'][1]) - max(a, p['t'][0])
             if ov >= q['plan_overlap'] * (b - a) - 1e-6:
                 hit = p; break
+        if hit is None and sting is not None and abs(sting - b) <= 0.3 + BLOCK and b - a <= SPEC['structure']['breath_max_s'] and b < dur - BLOCK:
+            continue                                                       # the breath before the final sting: judged above (a PLANNED region, e.g. the silence under the name before the sonic logo, stays a row)
+        depth = round(med - float(np.mean(lev[(bt >= a) & (bt < b)])), 1)
         kind = (hit or {}).get('kind') or _kind(a, b, dur)
         row = {'t': [a, b], 'length_s': round(b - a, 2), 'under_programme_db': depth, 'kind': kind, 'planned': hit is not None}
         if hit is not None and hit.get('why'):

@@ -367,7 +367,7 @@ def plan_texts(plan, W, H):
             bx = [bx.get('x0'), bx.get('y0'), bx.get('x1'), bx.get('y1')]
         box = tuple(float(v) * k for v in bx) if bx and len(bx) == 4 and all(v is not None for v in bx) else None
         out.append({'id': x.get('id') or 'text%d' % i, 'text': str(x.get('text', '')), 't': [float(t[0]), float(t[1])], 'box': box,
-                    'font_px': float(x['fontPx']) * k if x.get('fontPx') else None, 'role': (x.get('role') or 'read').lower(), 'fg': x.get('fg'), 'bg': x.get('bg'),
+                    'font_px': float(x['fontPx']) * k if x.get('fontPx') else None, 'role': (x.get('role') or 'read').lower(), 'fg': x.get('fg'), 'bg': x.get('bg'), 'fg_alt': list(x.get('fgAlt') or []),
                     'lines': x.get('lines'), 'src': 'plan.texts'})
     if out:
         return out

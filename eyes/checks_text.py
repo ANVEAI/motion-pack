@@ -147,17 +147,31 @@ def otsu(v):
     return float(edges[int(np.nanargmax(sb)) + 1]) if np.isfinite(sb).any() else 127.0
 
 
-def box_contrast(crop, fg=None):
+def box_contrast(crop, fg=None, fg_alt=()):
     """text contrast in a decoded crop (h, w, 3) uint8: (worst WCAG ratio, fg luminance, bg P5 and P95 luminance, estimated?, fg share) or None when no text pixels are found.
     fg = '#rrggbb': text pixels are those within bg_dist (RGB distance) of it; otherwise the minority side of an Otsu split of the luma is the text"""
     sp = SPEC['readability']
     rgb = parse_hex(fg)
     lum = rel_lum(crop)
+    alts = [c for c in (parse_hex(h) for h in (fg_alt or ())) if c is not None]
     if rgb is not None:
-        d = np.sqrt(((crop.astype(np.float32) - np.array(rgb, np.float32)) ** 2).sum(axis=2))
-        fgm = d <= sp['bg_dist']
+        near = lambda c: np.sqrt(((crop.astype(np.float32) - np.array(c, np.float32)) ** 2).sum(axis=2)) <= sp['bg_dist']
+        fgm = near(rgb)
         est = False
         fl = float(core.rel_lum(np.array(rgb, np.uint8)))
+        if alts:   # a two-colour line (an accent word): the accent glyphs are text too, never backdrop; each colour is scored against the real backdrop
+            masks = [(fgm, fl)] + [(near(c), float(core.rel_lum(np.array(c, np.uint8)))) for c in alts]
+            allm = np.logical_or.reduce([m for m, _ in masks])
+            share = float(allm.mean())
+            if share < 0.005 or share > 0.9:
+                return None
+            bgm = ~ndimage.binary_dilation(allm, iterations=2)
+            if bgm.mean() < 0.05:
+                bgm = ~allm
+            bg = lum[bgm]
+            p5, p95 = np.percentile(bg, [5, 95])
+            worst = min((min(ratio(l, p5), ratio(l, p95)), l) for m, l in masks if m.mean() >= 0.002)
+            return float(worst[0]), worst[1], float(p5), float(p95), est, share
     else:
         y = core.luma(crop.astype(np.float32))
         th = otsu(y.ravel())
@@ -245,7 +259,7 @@ def readability(ctx):
                 x0, y0, x1, y1 = max(0, x0), max(0, y0), min(c.W, x1), min(c.H, y1)
                 if x1 - x0 < sp['min_box_px'] or y1 - y0 < sp['min_box_px']:
                     continue
-                r = box_contrast(fr[y0:y1, x0:x1], t['fg'])
+                r = box_contrast(fr[y0:y1, x0:x1], t['fg'], t.get('fg_alt') or ())
                 if r:
                     row.setdefault('_c', []).append((r[0], float(c.t[i]), r))
     for row in rows:

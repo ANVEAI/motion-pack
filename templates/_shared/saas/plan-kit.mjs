@@ -36,7 +36,7 @@ export function scenesToPlan(list, C, A, { template, paceRule = { aslMax: 5, lon
   for (const c of cues) c.t = r4(Math.floor(c.t * fps + 0.5 + 1e-9) / fps);   // whole frames (the mixer places a cue on round(t * fps))
   cues.sort((a, b) => a.t - b.t || (a.id < b.id ? -1 : 1));
   /* plan.texts: every headline and kicker with its box for eyes (node measure = the textW estimate; the page measures with canvas metrics) */
-  const texts = []; for (const sc of scenes) { sc.heads.forEach((h, j) => { const b = headBox(h, measure); texts.push({ id: `${sc.id}.head${j}`, text: plain(h.text), t: [h.at, r4(Math.min(h.out ?? sc.end, sc.end))], box: b, fontPx: h.size, role: h.role || 'headline', fg: h.color ?? C.brand.ink }); });
+  const texts = []; for (const sc of scenes) { sc.heads.forEach((h, j) => { const b = headBox(h, measure); texts.push({ id: `${sc.id}.head${j}`, text: plain(h.text), t: [h.at, r4(Math.min(h.out ?? sc.end, sc.end))], box: b, fontPx: h.size, role: h.role || 'headline', fg: h.color ?? C.brand.ink, ...(/\*[^*]+\*/.test(h.text || '') ? { fgAlt: [C.brand.accent] } : {}) }); });   // a two-colour line declares its accent, so eyes reads the accent glyphs as text, not backdrop
     if (sc.card) texts.push({ id: `${sc.id}.cta`, text: C.brand.cta, t: [r4(sc.card.at + 0.45), sc.end], box: null, fontPx: Math.round(52 * (sc.card.unit ?? 1)), role: 'endcard', fg: '#FFFFFF' }); }
   const videos = []; for (const sc of scenes) for (const it of [...sc.under, ...sc.items]) if (it.video) videos.push({ scene: sc.id, item: it.key || it.id, src: it.video.src, start: it.video.start, at: it.at, dur: it.dur });
   const P = PLATFORMS[A.platform] || PLATFORMS['x.video'];

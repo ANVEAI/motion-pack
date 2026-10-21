@@ -747,3 +747,16 @@ def test_the_9_16_demo_with_a_16_9_platform_override_is_a_composition_failure():
     assert c['measured']['aspect'] == '9:16' and c['status'] in ('pass', 'warn')                      # yt.ad.15 takes 9:16
     c2 = check(analyze(mp4, only=['composition'], platform='hero.web'), 'composition')
     assert c2['status'] == 'fail' and 'takes 16:9' in whats(c2)
+
+
+def test_two_colour_line_accent_is_text_not_backdrop():
+    """a headline with an accent word (ink + violet on paper): with fgAlt the accent glyphs are text, so the line scores its real worst pair (violet 7.2:1), not ink vs violet"""
+    import numpy as np
+    from eyes.checks_text import box_contrast
+    crop = np.full((60, 200, 3), (0xF5, 0xF4, 0xF0), np.uint8)
+    crop[20:40, 10:80] = (0x14, 0x13, 0x1A)       # ink word
+    crop[20:40, 110:190] = (0x4A, 0x18, 0xED)     # accent word
+    without = box_contrast(crop, '#14131A')
+    with_alt = box_contrast(crop, '#14131A', ['#4A18ED'])
+    assert without[0] < 3.0                        # the old reading: the accent counted as backdrop
+    assert 6.5 < with_alt[0] < 8.0                 # violet on paper, about 7.2:1
