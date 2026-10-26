@@ -332,3 +332,7 @@ Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Th
 - reference other modules by id;
 - run the checks;
 - never commit third-party media.
+
+---
+
+Built and maintained by CiterLabs (citerlabs.com), the development and open-source firm of ANVEAI.
